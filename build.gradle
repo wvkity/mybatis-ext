@@ -1,0 +1,212 @@
+import java.text.SimpleDateFormat
+
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://plugins.gradle.org/m2/' }
+        maven { url "https://repo.spring.io/plugins-release" }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.1.7.RELEASE"
+        classpath "gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:0.15.0"
+    }
+}
+
+ext {
+    configuration = [
+            JAVA_VERSION = JavaVersion.VERSION_1_8
+    ]
+    libraries = [
+            junit = "5.4.2",
+            junitGradle = "1.2.0",
+            jmockit = "1.45",
+            lombok = "1.18.8",
+            fastjson = "1.2.60",
+            gson = "2.8.5",
+            mybatis = "3.5.2",
+            mybatisSpring = "2.0.2",
+            jsqlparser = "2.0",
+            cglib = "3.2.10",
+            aspectjweaver = "1.9.3",
+            slf4j = "1.7.26",
+            log4j2 = "2.11.2",
+            disruptor = "3.4.2",
+            guava = "28.0-jre",
+            servlet = "4.0.1",
+            spring = "5.1.9.RELEASE",
+            springBoot = "2.1.7.RELEASE",
+            springGradle = "1.0.8.RELEASE",
+            findbugs = "3.0.1"
+    ]
+    lib = [
+            // region 单元测试
+            "junit-jupiter"                     : "org.junit.jupiter:junit-jupiter:$junit",
+            "junit-api"                         : "org.junit.jupiter:junit-jupiter-api:$junit",
+            "junit-params"                      : "org.junit.jupiter:junit-jupiter-params:$junit",
+            "junit-engine"                      : "org.junit.jupiter:junit-jupiter-engine:$junit",
+            "jmockit"                           : "org.jmockit:jmockit:$jmockit",
+            "mybatis-test"                      : "org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.1.0",
+            // endregion依赖
+            // region 基础依赖
+            "inject"                            : "javax.inject:javax.inject:1",
+            "lombok"                            : "org.projectlombok:lombok:$lombok",
+            "lombok-plugin"                     : "io.freefair.gradle:lombok-plugin:3.8.4",
+            "fastjson"                          : "com.alibaba:fastjson:$fastjson",
+            "gson"                              : "com.google.code.gson:gson:$gson",
+            "mybatis"                           : "org.mybatis:mybatis:$mybatis",
+            "mybatis-spring"                    : "org.mybatis:mybatis-spring:$mybatisSpring",
+            "jsqlparser"                        : "com.github.jsqlparser:jsqlparser:$jsqlparser",
+            "cglib"                             : "cglib:cglib-nodep:$cglib",
+            "aspect"                            : "org.aspectj:aspectjweaver:$aspectjweaver",
+            "slf4j"                             : "org.slf4j:slf4j-api:$slf4j",
+            "slf4j-simple"                      : "org.slf4j:slf4j-simple:$slf4j",
+            "log4j2"                            : "org.apache.logging.log4j:log4j-api:$log4j2",
+            "disruptor"                         : "com.lmax:disruptor:$disruptor",
+            "guava"                             : "com.google.guava:guava:$guava",
+            "persistence"                       : "javax.persistence:javax.persistence-api:2.2",
+            "servlet"                           : "javax.servlet:javax.servlet-api:$servlet",
+            // endregion
+            // region springboot管理依赖(gradle、maven)
+            "springboot-gradle"                 : "org.springframework.boot:spring-boot-gradle-plugin:$springBoot",
+            "spring-gradle-management"          : "io.spring.gradle:dependency-management-plugin:$springGradle",
+            "platform-bom"                      : "io.spring.platform:platform-bom:Cairo-SR8",
+            // endregion
+            // region spring依赖
+            "spring-jdbc"                       : "org.springframework:spring-jdbc:$spring",
+            "spring-context"                    : "org.springframework:spring-context:$spring",
+            "spring-beans"                      : "org.springframework:spring-beans:$spring",
+            "spring-tx"                         : "org.springframework:spring-tx:$spring",
+            "spring-web"                        : "org.springframework:spring-web:$spring",
+            // endregion
+            // region springboot依赖
+            "springboot-dependencies"           : "org.springframework.boot:spring-boot-dependencies:$springBoot",
+            "springboot-jdbc"                   : "org.springframework.boot:spring-boot-starter-jdbc",
+            "springboot-autoconfigure"          : "org.springframework.boot:spring-boot-autoconfigure",
+            "springboot-configuration-processor": "org.springframework.boot:spring-boot-configuration-processor",
+            "springboot-autoconfigure-processor": "org.springframework.boot:spring-boot-autoconfigure-processor",
+            "springboot-log4j2"                 : "org.springframework.boot:spring-boot-starter-log4j2",
+            "springboot-thymeleaf"              : "org.springframework.boot:spring-boot-starter-thymeleaf",
+            "springboot-web"                    : "org.springframework.boot:spring-boot-starter-web",
+            "springboot-webflux"                : "org.springframework.boot:spring-boot-starter-webflux",
+            "springboot-security"               : "org.springframework.boot:spring-boot-starter-security",
+            "springboot-undertow"               : "org.springframework.boot:spring-boot-starter-undertow",
+            "springboot-test"                   : "org.springframework.boot:spring-boot-starter-test",
+            // endregion
+    ]
+}
+
+allprojects {
+    group 'com.wkit'
+    version "1.0.0"
+}
+
+subprojects {
+    apply plugin: "java-library"
+    apply plugin: "kotlin"
+    apply plugin: "maven"
+
+    sourceCompatibility = "${JAVA_VERSION}"
+    targetCompatibility = "${JAVA_VERSION}"
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        options.deprecation = true
+        options.compilerArgs += ["-parameters"]
+    }
+
+    jar {
+        afterEvaluate {
+            manifest {
+                attributes 'Implementation-Version': version
+                attributes 'Built-Gradle': gradle.gradleVersion
+                attributes 'Bundle-DocURL': 'https://mybatis.plus/'
+                attributes 'Build-OS': System.getProperty("os.name")
+                attributes 'Built-By': System.getProperty("user.name")
+                attributes 'Build-Jdk': System.getProperty("java.version")
+                attributes 'Build-Timestamp': new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
+            }
+        }
+    }
+
+    task sourcesJar(type: Jar) {
+        archiveClassifier = 'sources'
+        from sourceSets.main.allJava
+    }
+
+    task mkdir {
+        sourceSets*.java.srcDirs*.each { it.mkdirs() }
+        sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+    }
+
+    javadoc {
+        afterEvaluate {
+            configure(options) {
+                encoding "UTF-8"
+                charSet 'UTF-8'
+                author true
+                version true
+                failOnError false
+                links "http://docs.oracle.com/javase/8/docs/api"
+            }
+        }
+    }
+
+    task javadocJar(type: Jar) {
+        archiveClassifier = 'javadoc'
+        from javadoc
+    }
+
+    task clear(type: Delete) {
+        delete 'build', 'target', 'out'
+    }
+
+    sourceSets {
+        main {
+            java {
+                srcDir 'src/main/java'
+            }
+            resources {
+                srcDir 'src/main/resources'
+            }
+        }
+        test {
+            java {
+                srcDir 'src/main/java'
+            }
+            resources {
+                srcDir 'src/main/resources'
+            }
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://plugins.gradle.org/m2/' }
+        jcenter()
+        mavenCentral()
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    dependencies {
+        implementation fileTree(dir: "lib", include: ["*.jar"])
+        api "${lib.log4j2}"
+        annotationProcessor "${lib.log4j2}"
+        compileOnly "${lib.lombok}"
+        annotationProcessor "${lib.lombok}"
+        testCompileOnly "${lib.lombok}"
+        testAnnotationProcessor "${lib.lombok}"
+        testImplementation "${lib["junit-jupiter"]}"
+    }
+}

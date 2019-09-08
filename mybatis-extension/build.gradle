@@ -1,0 +1,5 @@
+dependencies {
+    api project(":mybatis-core")
+    compileOnly "${lib["spring-tx"]}"
+    annotationProcessor "${lib["spring-tx"]}"
+}

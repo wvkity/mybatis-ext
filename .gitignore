@@ -1,0 +1,46 @@
+# Compiled class file
+*.class
+
+# Eclipse files
+target
+.settings
+.classpath
+.project
+
+# Gradle files
+.gradle
+build
+out
+
+# Idea files
+.idea
+*.iml
+
+# Mac files
+.DS_Store
+.DS_Store?
+
+# Log files
+*.log
+logs
+log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# JRebel files
+rebel.xml

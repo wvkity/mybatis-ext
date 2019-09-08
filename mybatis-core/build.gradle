@@ -1,0 +1,10 @@
+dependencies {
+    api project(":mybatis-annotation")
+    api "${lib.inject}"
+    api "${lib.mybatis}"
+    api "${lib["mybatis-spring"]}"
+    api "${lib.jsqlparser}"
+    api "${lib.cglib}"
+    api "${lib.guava}"
+    api "${lib.persistence}"
+}
