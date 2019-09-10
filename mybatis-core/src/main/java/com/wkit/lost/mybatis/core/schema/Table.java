@@ -1,0 +1,238 @@
+package com.wkit.lost.mybatis.core.schema;
+
+import com.wkit.lost.mybatis.utils.CollectionUtil;
+import com.wkit.lost.mybatis.utils.StringUtil;
+import lombok.*;
+import lombok.experimental.Accessors;
+
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+/**
+ * 数据库表映射信息
+ * @author DT
+ */
+@Accessors( chain = true )
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
+public class Table {
+
+    public static final Pattern PATTERN = Pattern.compile( "^[`\\[\"]?(.*?)[`\\]\"]?$" );
+
+    /**
+     * 定义信息
+     */
+    @Getter
+    private Map<String, Column> definitions = new ConcurrentHashMap<>();
+
+    /**
+     * 实体类
+     */
+    @Getter
+    private Class<?> entity;
+
+    /**
+     * 表名
+     */
+    @Getter
+    @Setter
+    private String name;
+
+    /**
+     * 别名
+     */
+    @Getter
+    private String alias;
+
+    /**
+     * 数据库CATALOG
+     */
+    @Getter
+    @Setter
+    private String catalog;
+
+    /**
+     * 数据库SCHEMA
+     */
+    @Getter
+    @Setter
+    private String schema;
+
+    /**
+     * 前缀
+     */
+    @Getter
+    @Setter
+    private String prefix;
+
+    /**
+     * 排序
+     */
+    @Getter
+    @Setter
+    private String order;
+
+    /**
+     * 所有字段
+     */
+    @Getter
+    private Set<Column> columns = new LinkedHashSet<>();
+
+    /**
+     * 组合主键字段
+     */
+    @Getter
+    private Set<Column> compositeColumns = new LinkedHashSet<>();
+
+    /**
+     * 主键字段
+     */
+    @Getter
+    @Setter
+    private Column primaryKey;
+
+    /**
+     * 主键属性
+     */
+    @Getter
+    private Set<String> primaryKeyProperties = new LinkedHashSet<>();
+
+    /**
+     * 主键字段
+     */
+    @Getter
+    private Set<String> primaryKeyColumns = new LinkedHashSet<>();
+
+    /**
+     * 构造方法
+     * @param entity 实体类
+     */
+    public Table( Class<?> entity ) {
+        this.setEntity( entity );
+    }
+
+    /**
+     * 构造方法
+     * @param name    表名
+     * @param catalog 数据库CATALOG
+     * @param schema  数据库SCHEMA
+     */
+    public Table( String name, String catalog, String schema ) {
+        this.name = name;
+        this.catalog = catalog;
+        this.schema = schema;
+        //this.alias = StringUtil.getSimpleNameOfSplitFirstUpper( this.name );
+    }
+
+    /**
+     * 检查是否存在主键
+     * @return true: 存在 | false: 不存在
+     */
+    public boolean hasPrimaryKey() {
+        return this.primaryKey != null;
+    }
+
+    /**
+     * 添加字段映射信息
+     * @param column {@link Column}(字段信息对象)
+     */
+    public void addColumn( Column column ) {
+        if ( column != null ) {
+            this.columns.add( column );
+        }
+    }
+
+    /**
+     * 添加主键属性
+     * @param property 属性
+     */
+    public void addPrimaryKeyProperty( final String property ) {
+        if ( StringUtil.hasText( property ) ) {
+            this.primaryKeyProperties.add( property );
+        }
+    }
+
+    /**
+     * 添加主键字段名
+     * @param column 字段名
+     */
+    public void addPrimaryKeyColumn( final String column ) {
+        if ( StringUtil.hasText( column ) ) {
+            this.primaryKeyColumns.add( column );
+        }
+    }
+
+    /**
+     * 添加主键字段
+     * @param column 字段映射信息
+     */
+    public void addPrimaryKey( final Column column ) {
+        if ( column != null ) {
+            this.compositeColumns.add( column );
+        }
+    }
+
+    /**
+     * 获取可更新字段信息
+     * @return 字段集合
+     */
+    public Set<Column> getUpdatableColumns() {
+        return this.columns.stream().filter( Column::isUpdatable ).collect( Collectors.toCollection( LinkedHashSet::new ) );
+    }
+
+    /**
+     * 获取所有可保存字段信息
+     * @return 字段集合
+     */
+    public Set<Column> getInsertableColumns() {
+        return this.columns.stream().filter( Column::isInsertable ).collect( Collectors.toCollection( LinkedHashSet::new ) );
+    }
+
+    /**
+     * 初始化定义信息
+     */
+    public void initDefinition() {
+        if ( CollectionUtil.hasElement( this.columns ) && definitions.isEmpty() ) {
+            this.definitions.putAll( this.columns.stream().collect( Collectors.toMap( Column::getProperty, Function.identity() ) ) );
+        }
+    }
+
+    public Table setEntity( Class<?> entity ) {
+        this.entity = entity;
+        if ( this.alias == null ) {
+            this.alias = StringUtil.getSimpleNameOfSplitFirstUpper( this.entity );
+        }
+        return this;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

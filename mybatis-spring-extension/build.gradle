@@ -1,7 +1,7 @@
 dependencies {
     api project(":mybatis-core")
-    compileOnly "org.springframework:spring-jdbc:${spring}"
+    implementation "org.springframework:spring-jdbc:${spring}"
     annotationProcessor "org.springframework:spring-jdbc:${spring}"
-    compileOnly "org.springframework:spring-context:${spring}"
+    implementation "org.springframework:spring-context:${spring}"
     annotationProcessor "org.springframework:spring-context:${spring}"
 }

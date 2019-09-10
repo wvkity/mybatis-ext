@@ -1,5 +1,6 @@
 dependencies {
     api project(":mybatis-annotation")
+    api project(":pageable")
     api "${lib.inject}"
     api "${lib.mybatis}"
     api "${lib["mybatis-spring"]}"

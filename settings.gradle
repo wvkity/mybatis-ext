@@ -1,4 +1,5 @@
 rootProject.name = 'mybatis'
+include 'pageable'
 include 'mybatis-annotation'
 include 'mybatis-core'
 include 'mybatis-extension'
