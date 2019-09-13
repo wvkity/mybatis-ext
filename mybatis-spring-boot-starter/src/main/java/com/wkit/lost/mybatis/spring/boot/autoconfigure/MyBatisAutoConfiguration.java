@@ -1,16 +1,16 @@
 package com.wkit.lost.mybatis.spring.boot.autoconfigure;
 
 
+import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.keygen.PrimaryKeyGenerator;
-import com.wkit.lost.mybatis.utils.StringUtil;
-import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.resolver.EntityResolver;
 import com.wkit.lost.mybatis.resolver.FieldResolver;
 import com.wkit.lost.mybatis.scripting.MyBatisXMLLanguageDriver;
 import com.wkit.lost.mybatis.session.MyBatisConfiguration;
 import com.wkit.lost.mybatis.spring.SqlSessionFactoryBean;
 import com.wkit.lost.mybatis.sql.injector.SqlInjector;
+import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
@@ -51,9 +51,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Log4j2
 @org.springframework.context.annotation.Configuration
@@ -71,7 +69,6 @@ public class MyBatisAutoConfiguration implements InitializingBean {
     private final List<ConfigurationCustomizer> configurationCustomizers;
     private final List<PropertiesCustomizer> propertiesCustomizers;
     private final ApplicationContext applicationContext;
-    private static final AtomicInteger INDEX = new AtomicInteger();
 
     public MyBatisAutoConfiguration( MyBatisProperties properties,
                                      ObjectProvider<Interceptor[]> interceptorsProvider,
@@ -168,7 +165,6 @@ public class MyBatisAutoConfiguration implements InitializingBean {
             customConfig.setKeyGenerator( getBean( PrimaryKeyGenerator.class ) );
         }
         factory.setCustomConfiguration( customConfig );
-        log.info( "我是第{}次初始化数据，{}", INDEX.incrementAndGet(), Arrays.toString( properties.getMapperLocations() ) );
         return factory.getObject();
     }
 
