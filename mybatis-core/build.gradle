@@ -6,6 +6,7 @@ dependencies {
     api "${lib["mybatis-spring"]}"
     api "${lib.jsqlparser}"
     api "${lib.cglib}"
-    api "${lib.guava}"
+    //api "${lib.guava}"
+    api "${lib.caffeine}"
     api "${lib.persistence}"
 }

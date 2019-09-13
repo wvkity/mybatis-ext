@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.builder.xml;
 
-import com.wkit.lost.mybatis.session.Configuration;
+import com.wkit.lost.mybatis.session.MyBatisConfiguration;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import org.apache.ibatis.builder.BaseBuilder;
 import org.apache.ibatis.builder.BuilderException;
@@ -34,38 +34,38 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.util.Properties;
 
-public class XmlConfigBuilder extends BaseBuilder {
+public class MyBatisXMLConfigBuilder extends BaseBuilder {
     private boolean parsed;
     private final XPathParser parser;
     private String environment;
     private final ReflectorFactory localReflectorFactory = new DefaultReflectorFactory();
 
-    public XmlConfigBuilder( Reader reader ) {
+    public MyBatisXMLConfigBuilder( Reader reader ) {
         this( reader, null, null );
     }
 
-    public XmlConfigBuilder( Reader reader, String environment ) {
+    public MyBatisXMLConfigBuilder( Reader reader, String environment ) {
         this( reader, environment, null );
     }
 
-    public XmlConfigBuilder( Reader reader, String environment, Properties props ) {
+    public MyBatisXMLConfigBuilder( Reader reader, String environment, Properties props ) {
         this( new XPathParser( reader, true, props, new XMLMapperEntityResolver() ), environment, props );
     }
 
-    public XmlConfigBuilder( InputStream inputStream ) {
+    public MyBatisXMLConfigBuilder( InputStream inputStream ) {
         this( inputStream, null, null );
     }
 
-    public XmlConfigBuilder( InputStream inputStream, String environment ) {
+    public MyBatisXMLConfigBuilder( InputStream inputStream, String environment ) {
         this( inputStream, environment, null );
     }
 
-    public XmlConfigBuilder( InputStream inputStream, String environment, Properties props ) {
+    public MyBatisXMLConfigBuilder( InputStream inputStream, String environment, Properties props ) {
         this( new XPathParser( inputStream, true, props, new XMLMapperEntityResolver() ), environment, props );
     }
 
-    public XmlConfigBuilder( XPathParser parser, String environment, Properties props ) {
-        super( new Configuration() );
+    public MyBatisXMLConfigBuilder( XPathParser parser, String environment, Properties props ) {
+        super( new MyBatisConfiguration() );
         ErrorContext.instance().resource( "SQL Mapper Configuration" );
         this.configuration.setVariables( props );
         this.parsed = false;
@@ -73,18 +73,18 @@ public class XmlConfigBuilder extends BaseBuilder {
         this.parser = parser;
     }
 
-    public Configuration parse() {
+    public MyBatisConfiguration parse() {
         if ( this.parsed ) {
             throw new BuilderException( "Each XMLConfigBuilder can only be used once." );
         }
         parsed = true;
         parseConfiguration( parser.evalNode( "/configuration" ) );
-        return ( Configuration ) this.configuration;
+        return ( MyBatisConfiguration ) this.configuration;
     }
 
     @Override
-    public Configuration getConfiguration() {
-        return ( Configuration ) this.configuration;
+    public MyBatisConfiguration getConfiguration() {
+        return ( MyBatisConfiguration ) this.configuration;
     }
 
     private void parseConfiguration( XNode root ) {
@@ -240,7 +240,8 @@ public class XmlConfigBuilder extends BaseBuilder {
         this.configuration.setDefaultExecutorType( ExecutorType.valueOf( props.getProperty( "defaultExecutorType", "SIMPLE" ) ) );
         this.configuration.setDefaultStatementTimeout( integerValueOf( props.getProperty( "defaultStatementTimeout" ), null ) );
         this.configuration.setDefaultFetchSize( integerValueOf( props.getProperty( "defaultFetchSize" ), null ) );
-        this.configuration.setMapUnderscoreToCamelCase( booleanValueOf( props.getProperty( "mapUnderscoreToCamelCase" ), false ) );
+        // mapUnderscoreToCamelCase属性默认为: true
+        this.configuration.setMapUnderscoreToCamelCase( booleanValueOf( props.getProperty( "mapUnderscoreToCamelCase" ), true ) );
         this.configuration.setSafeRowBoundsEnabled( booleanValueOf( props.getProperty( "safeRowBoundsEnabled" ), false ) );
         this.configuration.setLocalCacheScope( LocalCacheScope.valueOf( props.getProperty( "localCacheScope", "SESSION" ) ) );
         this.configuration.setJdbcTypeForNull( JdbcType.valueOf( props.getProperty( "jdbcTypeForNull", "OTHER" ) ) );

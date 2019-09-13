@@ -1,21 +1,9 @@
 import java.text.SimpleDateFormat
 
-buildscript {
-    repositories {
-        mavenLocal()
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-        maven { url 'https://plugins.gradle.org/m2/' }
-        maven { url "https://repo.spring.io/plugins-release" }
-        maven { url 'https://maven.aliyun.com/repository/central' }
-        jcenter()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41"
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.1.7.RELEASE"
-        classpath "gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:0.15.0"
-    }
+plugins {
+    //id 'org.jetbrains.kotlin.jvm' version '1.3.41'
+    id 'org.springframework.boot' version '2.1.7.RELEASE'
+    id 'com.gradle.build-scan' version '2.4.2' apply true
 }
 
 ext {
@@ -69,6 +57,7 @@ ext {
             "log4j2"                            : "org.apache.logging.log4j:log4j-api:$log4j2",
             "disruptor"                         : "com.lmax:disruptor:$disruptor",
             "guava"                             : "com.google.guava:guava:$guava",
+            "caffeine"                          : "com.github.ben-manes.caffeine:caffeine:2.8.0",
             "persistence"                       : "javax.persistence:javax.persistence-api:2.2",
             "servlet"                           : "javax.servlet:javax.servlet-api:$servlet",
             // endregion
@@ -101,14 +90,19 @@ ext {
     ]
 }
 
+buildScan {
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
+}
+
 allprojects {
     group 'com.wkit'
     version "1.0.0"
 }
 
 subprojects {
+    //apply plugin: "kotlin"
     apply plugin: "java-library"
-    apply plugin: "kotlin"
     apply plugin: "maven"
 
     sourceCompatibility = "${JAVA_VERSION}"
@@ -162,6 +156,10 @@ subprojects {
         from javadoc
     }
 
+    test {
+        useJUnitPlatform()
+    }
+
     task clear(type: Delete) {
         delete 'build', 'target', 'out'
     }
@@ -200,13 +198,13 @@ subprojects {
     }
 
     dependencies {
-        implementation fileTree(dir: "lib", include: ["*.jar"])
+        implementation fileTree(dir: "libs", include: ["*.jar"])
         api "${lib.log4j2}"
-        annotationProcessor "${lib.log4j2}"
         compileOnly "${lib.lombok}"
         annotationProcessor "${lib.lombok}"
         testCompileOnly "${lib.lombok}"
         testAnnotationProcessor "${lib.lombok}"
         testImplementation "${lib["junit-jupiter"]}"
+        testAnnotationProcessor "${lib["junit-jupiter"]}"
     }
 }

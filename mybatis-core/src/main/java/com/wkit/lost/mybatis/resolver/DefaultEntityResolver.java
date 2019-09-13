@@ -16,7 +16,7 @@ import com.wkit.lost.mybatis.annotation.extension.UseJavaType;
 import com.wkit.lost.mybatis.annotation.extension.Validate;
 import com.wkit.lost.mybatis.annotation.naming.Naming;
 import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
-import com.wkit.lost.mybatis.config.MyBatisConfiguration;
+import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.core.PropertyMappingForLambda;
 import com.wkit.lost.mybatis.core.schema.Attribute;
 import com.wkit.lost.mybatis.core.schema.Column;
@@ -49,7 +49,7 @@ public class DefaultEntityResolver implements EntityResolver {
     /**
      * 自定义配置
      */
-    private MyBatisConfiguration configuration;
+    private MyBatisCustomConfiguration configuration;
 
     /**
      * 命名策略
@@ -62,7 +62,7 @@ public class DefaultEntityResolver implements EntityResolver {
     private PhysicalNamingStrategy physicalNamingStrategy;
 
     @Override
-    public Table resolve( Class<?> entity, MyBatisConfiguration configuration ) {
+    public Table resolve( Class<?> entity, MyBatisCustomConfiguration configuration ) {
         if ( entity == null ) {
             throw new MapperResolverException( "The entity class parameter cannot be empty." );
         }
@@ -456,7 +456,7 @@ public class DefaultEntityResolver implements EntityResolver {
      * @param configuration 自定义配置
      * @return 新字符串
      */
-    private String transformStrategy( boolean isTable, String value, MyBatisConfiguration configuration ) {
+    private String transformStrategy( boolean isTable, String value, MyBatisCustomConfiguration configuration ) {
         if ( StringUtil.isBlank( value ) ) {
             return null;
         }

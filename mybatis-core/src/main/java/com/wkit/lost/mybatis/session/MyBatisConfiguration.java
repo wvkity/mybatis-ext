@@ -1,9 +1,9 @@
 package com.wkit.lost.mybatis.session;
 
-import com.wkit.lost.mybatis.binding.MapperRegistry;
+import com.wkit.lost.mybatis.binding.MyBatisMapperRegistry;
 import com.wkit.lost.mybatis.executor.resultset.MyBatisResultSetHandler;
-import com.wkit.lost.mybatis.reflection.wrapper.CamelCaseObjectWrapperFactory;
-import com.wkit.lost.mybatis.scripting.XmlLanguageDriver;
+import com.wkit.lost.mybatis.reflection.wrapper.MyBatisObjectWrapperFactory;
+import com.wkit.lost.mybatis.scripting.MyBatisXMLLanguageDriver;
 import com.wkit.lost.mybatis.type.handlers.StandardInstantTypeHandler;
 import com.wkit.lost.mybatis.type.handlers.StandardJapaneseDateTypeHandler;
 import com.wkit.lost.mybatis.type.handlers.StandardLocalDateTimeTypeHandler;
@@ -19,6 +19,7 @@ import org.apache.ibatis.executor.resultset.ResultSetHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.scripting.LanguageDriver;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -37,13 +38,13 @@ import java.time.chrono.JapaneseDate;
  * {@inheritDoc}
  */
 @Log4j2
-public class Configuration extends org.apache.ibatis.session.Configuration {
+public class MyBatisConfiguration extends Configuration {
 
-    protected final MapperRegistry mapperRegistry = new MapperRegistry( this );
+    protected final MyBatisMapperRegistry mapperRegistry = new MyBatisMapperRegistry( this );
 
-    public Configuration() {
+    public MyBatisConfiguration() {
         super();
-        setDefaultScriptingLanguage( XmlLanguageDriver.class );
+        setDefaultScriptingLanguage( MyBatisXMLLanguageDriver.class );
         // registry JDK8+ time api(JSR-310)
         TypeHandlerRegistry typeHandlerRegistry = this.getTypeHandlerRegistry();
         typeHandlerRegistry.register( Instant.class, StandardInstantTypeHandler.class );
@@ -55,7 +56,9 @@ public class Configuration extends org.apache.ibatis.session.Configuration {
         typeHandlerRegistry.register( OffsetTime.class, StandardOffsetTimeTypeHandler.class );
         typeHandlerRegistry.register( ZonedDateTime.class, StandardZonedDateTimeTypeHandler.class );
         // 设置ObjectWrapperFactory对象
-        this.objectWrapperFactory = new CamelCaseObjectWrapperFactory();
+        this.objectWrapperFactory = new MyBatisObjectWrapperFactory();
+        // 默认开启驼峰转换
+        this.setMapUnderscoreToCamelCase( true );
     }
 
     @Override
@@ -70,13 +73,13 @@ public class Configuration extends org.apache.ibatis.session.Configuration {
     @Override
     public void setDefaultScriptingLanguage( Class<? extends LanguageDriver> driver ) {
         if ( driver == null ) {
-            driver = XmlLanguageDriver.class;
+            driver = MyBatisXMLLanguageDriver.class;
         }
         super.setDefaultScriptingLanguage( driver );
     }
 
     @Override
-    public MapperRegistry getMapperRegistry() {
+    public MyBatisMapperRegistry getMapperRegistry() {
         return this.mapperRegistry;
     }
 

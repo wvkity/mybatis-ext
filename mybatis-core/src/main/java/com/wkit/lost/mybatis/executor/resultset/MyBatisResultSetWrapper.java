@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.executor.resultset;
 
+import com.wkit.lost.mybatis.utils.CaseFormat;
 import org.apache.ibatis.executor.resultset.ResultSetWrapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.ResultMap;
@@ -22,6 +23,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 /**
  * {@inheritDoc}
@@ -36,9 +38,11 @@ public class MyBatisResultSetWrapper extends ResultSetWrapper {
     private final Map<String, Map<Class<?>, TypeHandler<?>>> typeHandlerMap = new HashMap<>();
     private final Map<String, List<String>> mappedColumnNamesMap = new HashMap<>();
     private final Map<String, List<String>> unMappedColumnNamesMap = new HashMap<>();
-    //
+    // 无法自动映射
     private final List<String> simpleColumnNames = new ArrayList<>();
     private final Map<String, String> simpleMappedCache = new HashMap<>();
+    private final Map<String, String> originalMappedCache = new HashMap<>();
+    private static final Pattern UPPER_UNDERSCORE_PATTERN = Pattern.compile( "[A-Z0-9_]+" );
 
     /**
      * 构造方法
@@ -69,10 +73,19 @@ public class MyBatisResultSetWrapper extends ResultSetWrapper {
                 }
                 simpleColumnNames.add( simpleColumnName );
                 simpleMappedCache.put( columnName, simpleColumnName );
+                originalMappedCache.put( toUpperUnderscore( simpleColumnName ), columnName );
             } else {
                 simpleColumnNames.add( columnName );
+                originalMappedCache.put( toUpperUnderscore( columnName ), columnName );
             }
         }
+    }
+
+    private String toUpperUnderscore( String string ) {
+        if ( UPPER_UNDERSCORE_PATTERN.matcher( string ).matches() ) {
+            return string;
+        }
+        return CaseFormat.LOWER_CAMEL.to( CaseFormat.UPPER_UNDERSCORE, string );
     }
 
     /**
@@ -216,5 +229,9 @@ public class MyBatisResultSetWrapper extends ResultSetWrapper {
 
     public Map<String, String> getSimpleMappedCache() {
         return simpleMappedCache;
+    }
+
+    public Map<String, String> getOriginalMappedCache() {
+        return originalMappedCache;
     }
 }

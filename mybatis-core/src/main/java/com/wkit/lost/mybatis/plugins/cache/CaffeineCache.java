@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.plugins.cache;
 
-import com.google.common.cache.CacheBuilder;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 import java.util.Optional;
 import java.util.Properties;
@@ -10,20 +10,20 @@ import java.util.concurrent.TimeUnit;
  * Guava缓存
  * @author DT
  */
-public class GuavaCache<K, V> implements Cache<K, V> {
+public class CaffeineCache<K, V> implements Cache<K, V> {
 
     /**
      * 缓存对象
      */
-    private final com.google.common.cache.Cache<K, V> CACHE;
+    private final com.github.benmanes.caffeine.cache.Cache<K, V> CACHE;
 
     /**
      * 构造方法
      * @param properties 配置
      * @param prefix     前缀
      */
-    public GuavaCache( Properties properties, String prefix ) {
-        CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder();
+    public CaffeineCache( Properties properties, String prefix ) {
+        Caffeine<Object, Object> cacheBuilder = Caffeine.newBuilder();
         // JDK9+
         /*Optional.ofNullable( properties.getProperty( prefix + ".maximumSize" ) )
                 .ifPresentOrElse( value -> cacheBuilder.maximumSize( Long.parseLong( value ) ), () -> cacheBuilder.maximumSize( 1000 ) );*/

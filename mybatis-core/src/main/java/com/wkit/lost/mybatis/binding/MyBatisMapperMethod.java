@@ -31,7 +31,7 @@ import java.util.Optional;
  * <p>重写{@link org.apache.ibatis.binding.MapperMethod}</p>
  * @author DT
  */
-public class MapperMethod {
+public class MyBatisMapperMethod {
 
     /**
      * SQL指令
@@ -48,7 +48,7 @@ public class MapperMethod {
      * @param method          方法
      * @param configuration   配置
      */
-    public MapperMethod( Class<?> mapperInterface, Method method, Configuration configuration ) {
+    public MyBatisMapperMethod( Class<?> mapperInterface, Method method, Configuration configuration ) {
         this.command = new SqlCommand( configuration, mapperInterface, method );
         this.method = new MethodSignature( configuration, mapperInterface, method );
     }

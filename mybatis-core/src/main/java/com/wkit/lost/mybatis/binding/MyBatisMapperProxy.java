@@ -16,14 +16,14 @@ import java.util.Map;
  * @param <T> 类型
  * @author DT
  */
-public class MapperProxy<T> implements InvocationHandler, Serializable {
+public class MyBatisMapperProxy<T> implements InvocationHandler, Serializable {
 
     private static final long serialVersionUID = -7693549967640740615L;
     private final SqlSession sqlSession;
     private final Class<T> mapperInterface;
-    private final Map<Method, MapperMethod> methodCache;
+    private final Map<Method, MyBatisMapperMethod> methodCache;
 
-    public MapperProxy( SqlSession sqlSession, Class<T> mapperInterface, Map<Method, MapperMethod> methodCache ) {
+    public MyBatisMapperProxy( SqlSession sqlSession, Class<T> mapperInterface, Map<Method, MyBatisMapperMethod> methodCache ) {
         this.sqlSession = sqlSession;
         this.mapperInterface = mapperInterface;
         this.methodCache = methodCache;
@@ -40,12 +40,12 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
         } catch ( Throwable t ) {
             throw ExceptionUtil.unwrapThrowable( t );
         }
-        final MapperMethod mapperMethod = cacheMapperMethod( method );
+        final MyBatisMapperMethod mapperMethod = cacheMapperMethod( method );
         return mapperMethod.execute( this.sqlSession, args );
     }
 
-    private MapperMethod cacheMapperMethod( Method method ) {
-        return this.methodCache.computeIfAbsent( method, key -> new MapperMethod( mapperInterface, method, this.sqlSession.getConfiguration() ) );
+    private MyBatisMapperMethod cacheMapperMethod( Method method ) {
+        return this.methodCache.computeIfAbsent( method, key -> new MyBatisMapperMethod( mapperInterface, method, this.sqlSession.getConfiguration() ) );
     }
 
     private Object invokeDefaultMethod( Object proxy, Method method, Object[] args ) throws Throwable {

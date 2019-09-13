@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.spring.boot.autoconfigure;
 
-import com.wkit.lost.mybatis.config.MyBatisConfiguration;
-import com.wkit.lost.mybatis.session.Configuration;
+import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
+import com.wkit.lost.mybatis.session.MyBatisConfiguration;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.apache.ibatis.session.ExecutorType;
@@ -35,7 +35,7 @@ public class MyBatisProperties {
     /**
      * MyBatis接口映射文件位置
      */
-    private String[] mapperLocations = new String[]{ "classpath*:/mapper/**/*.xml" };
+    private String[] mapperLocations = new String[]{ "classpath*:/mybatis/mapper/**/*.xml" };
 
     /**
      * 类型别名包(分隔符: [,|;|\t|\n])
@@ -76,13 +76,13 @@ public class MyBatisProperties {
      * 配置对象
      */
     @NestedConfigurationProperty
-    private Configuration configuration;
+    private MyBatisConfiguration configuration;
 
     /**
      * MyBatis自定义全局配置
      */
     @NestedConfigurationProperty
-    private MyBatisConfiguration customConfiguration;
+    private MyBatisCustomConfiguration customConfiguration;
 
     public Resource[] resolveMapperLocations() {
         return Stream.of( Optional.ofNullable( this.mapperLocations ).orElse( new String[ 0 ] ) )

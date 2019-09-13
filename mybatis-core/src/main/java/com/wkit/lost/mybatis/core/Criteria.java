@@ -27,13 +27,13 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
      * @param resultMap result key
      * @return 当前对象
      */
-    Criteria<T> setResultMap( String resultMap );
+    Criteria<T> resultMap( String resultMap );
 
     /**
      * 设置自定义返回值类型
      * @return 当前对象
      */
-    Criteria<T> setResultType( Class<?> resultType );
+    Criteria<T> resultType( Class<?> resultType );
 
     /**
      * 获取实体类

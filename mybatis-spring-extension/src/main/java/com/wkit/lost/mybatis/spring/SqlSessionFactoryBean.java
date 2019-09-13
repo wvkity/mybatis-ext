@@ -1,11 +1,12 @@
 package com.wkit.lost.mybatis.spring;
 
-import com.wkit.lost.mybatis.builder.xml.XmlConfigBuilder;
+import com.wkit.lost.mybatis.builder.xml.MyBatisXMLConfigBuilder;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
-import com.wkit.lost.mybatis.config.MyBatisConfiguration;
+import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.plugins.interceptor.LimitQueryInterceptor;
 import com.wkit.lost.mybatis.plugins.interceptor.PageableQueryInterceptor;
-import com.wkit.lost.mybatis.session.Configuration;
+import com.wkit.lost.mybatis.session.MyBatisConfiguration;
+import com.wkit.lost.mybatis.session.MyBatisSqlSessionFactoryBuilder;
 import com.wkit.lost.mybatis.type.handlers.EnumSupport;
 import com.wkit.lost.mybatis.type.handlers.EnumTypeHandler;
 import com.wkit.lost.mybatis.type.handlers.StandardOffsetDateTimeTypeHandler;
@@ -67,12 +68,12 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
     private static final MetadataReaderFactory METADATA_READER_FACTORY = new CachingMetadataReaderFactory();
 
     private Resource configLocation;
-    private Configuration configuration;
+    private MyBatisConfiguration configuration;
     private Resource[] mapperLocations;
     private DataSource dataSource;
     private TransactionFactory transactionFactory;
     private Properties configurationProperties;
-    private SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
+    private SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new MyBatisSqlSessionFactoryBuilder();
     private SqlSessionFactory sqlSessionFactory;
     //EnvironmentAware requires spring 3.1
     private String environment = SqlSessionFactoryBean.class.getSimpleName();
@@ -92,7 +93,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
     /**
      * 自定义配置
      */
-    private MyBatisConfiguration customConfiguration = MyBatisConfigCache.defaults();
+    private MyBatisCustomConfiguration customConfiguration = MyBatisConfigCache.defaults();
 
     /**
      * {@inheritDoc}
@@ -111,14 +112,14 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * <p>
      * The default implementation uses the standard MyBatis {@code XMLConfigBuilder} API to build a
      * {@code SqlSessionFactory} instance based on an Reader.
-     * Since 1.3.0, it can be specified a {@link Configuration} instance directly(without config file).
+     * Since 1.3.0, it can be specified a {@link MyBatisConfiguration} instance directly(without config file).
      * @return SqlSessionFactory
      * @throws Exception if configuration is failed
      */
     protected SqlSessionFactory buildSqlSessionFactory() throws Exception {
-        final Configuration targetConfiguration;
+        final MyBatisConfiguration targetConfiguration;
         // 
-        XmlConfigBuilder xmlConfigBuilder;
+        MyBatisXMLConfigBuilder xmlConfigBuilder;
         if ( this.configuration != null ) {
             targetConfiguration = configuration;
             if ( targetConfiguration.getVariables() == null ) {
@@ -128,11 +129,11 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
             }
             xmlConfigBuilder = null;
         } else if ( this.configLocation != null ) {
-            xmlConfigBuilder = new XmlConfigBuilder( this.configLocation.getInputStream(), null, this.configurationProperties );
+            xmlConfigBuilder = new MyBatisXMLConfigBuilder( this.configLocation.getInputStream(), null, this.configurationProperties );
             targetConfiguration = xmlConfigBuilder.getConfiguration();
         } else {
             log.debug( "{}", "Property 'configuration' or 'configLocation' not specified, using default MyBatis Configuration" );
-            targetConfiguration = new Configuration();
+            targetConfiguration = new MyBatisConfiguration();
             Optional.ofNullable( this.configurationProperties ).ifPresent( targetConfiguration::setVariables );
             xmlConfigBuilder = null;
         }
@@ -486,7 +487,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * @param configuration MyBatis configuration
      * @since 1.3.0
      */
-    public void setConfiguration( Configuration configuration ) {
+    public void setConfiguration( MyBatisConfiguration configuration ) {
         this.configuration = configuration;
     }
 
@@ -582,7 +583,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
         this.typeEnumsPackage = typeEnumsPackage;
     }
 
-    public void setCustomConfiguration( MyBatisConfiguration customConfiguration ) {
+    public void setCustomConfiguration( MyBatisCustomConfiguration customConfiguration ) {
         this.customConfiguration = customConfiguration;
     }
 }

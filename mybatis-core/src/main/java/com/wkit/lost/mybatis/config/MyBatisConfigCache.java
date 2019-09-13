@@ -24,7 +24,7 @@ public class MyBatisConfigCache {
     /**
      * 全局配置信息缓存
      */
-    private static final Map<String, MyBatisConfiguration> CONFIGURATION_CACHE = new ConcurrentHashMap<>();
+    private static final Map<String, MyBatisCustomConfiguration> CONFIGURATION_CACHE = new ConcurrentHashMap<>();
 
     /**
      * 接口注册
@@ -34,14 +34,14 @@ public class MyBatisConfigCache {
     /**
      * 默认配置
      */
-    private static final MyBatisConfiguration DEFAULT_CONFIG = defaults();
+    private static final MyBatisCustomConfiguration DEFAULT_CONFIG = defaults();
 
     /**
      * 默认配置
      * @return 自定义配置对象
      */
-    public static MyBatisConfiguration defaults() {
-        MyBatisConfiguration config = new MyBatisConfiguration();
+    public static MyBatisCustomConfiguration defaults() {
+        MyBatisCustomConfiguration config = new MyBatisCustomConfiguration();
         config.setDialect( Dialect.MYSQL );
         config.setStrategy( NamingStrategy.CAMEL_HUMP_UPPERCASE );
         return config;
@@ -52,7 +52,7 @@ public class MyBatisConfigCache {
      * @param configuration MyBatis配置
      * @return {@link MyBatisConfigCache}
      */
-    public static MyBatisConfiguration getCustomConfiguration( final Configuration configuration ) {
+    public static MyBatisCustomConfiguration getCustomConfiguration( final Configuration configuration ) {
         if ( configuration == null ) {
             throw new MapperException( "The configuration object cannot be empty. You need initialize Configuration." );
         }
@@ -64,8 +64,8 @@ public class MyBatisConfigCache {
      * @param mark MyBatis配置标识
      * @return {@link MyBatisConfigCache}
      */
-    public static MyBatisConfiguration getCustomConfiguration( final String mark ) {
-        MyBatisConfiguration cache = CONFIGURATION_CACHE.get( mark );
+    public static MyBatisCustomConfiguration getCustomConfiguration( final String mark ) {
+        MyBatisCustomConfiguration cache = CONFIGURATION_CACHE.get( mark );
         if ( cache == null ) {
             CONFIGURATION_CACHE.putIfAbsent( mark, DEFAULT_CONFIG );
             log.debug( "MyBatis custom configuration initializing: `{}`", DEFAULT_CONFIG );
@@ -79,7 +79,7 @@ public class MyBatisConfigCache {
      * @param configuration       MyBatis配置
      * @param customConfiguration 自定义全局配置
      */
-    public static void cacheCustomConfiguration( final Configuration configuration, MyBatisConfiguration customConfiguration ) {
+    public static void cacheCustomConfiguration( final Configuration configuration, MyBatisCustomConfiguration customConfiguration ) {
         if ( configuration == null || customConfiguration == null ) {
             throw new MyBatisException( "Mybatis configuration object cannot be empty, please initialize it first" );
         }
@@ -125,7 +125,7 @@ public class MyBatisConfigCache {
      * @return {@link SqlInjector}
      */
     public static SqlInjector getSqlInjector( final Configuration configuration ) {
-        MyBatisConfiguration customConfiguration = getCustomConfiguration( configuration );
+        MyBatisCustomConfiguration customConfiguration = getCustomConfiguration( configuration );
         SqlInjector injector = customConfiguration.getInjector();
         if ( injector != null ) {
             return injector;

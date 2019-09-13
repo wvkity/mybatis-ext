@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.executor.resultset;
 
+import com.wkit.lost.mybatis.utils.StringUtil;
 import org.apache.ibatis.annotations.AutomapConstructor;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.cache.CacheKey;
@@ -46,6 +47,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -53,6 +55,7 @@ import java.util.Set;
  * <p>支持返回List&lt;Object[]&gt;结果</p>
  * @see org.apache.ibatis.executor.resultset.DefaultResultSetHandler
  */
+@SuppressWarnings( "unchecked" )
 public class MyBatisResultSetHandler extends DefaultResultSetHandler {
 
     private static final Object DEFERRED = new Object();
@@ -85,7 +88,7 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
 
     // custom result type
     private final Class<?> customResultType;
-    //private final String customResultMap;
+    private final String customResultMap;
 
     private static class PendingRelation {
         public MetaObject metaObject;
@@ -120,7 +123,7 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         this.reflectorFactory = configuration.getReflectorFactory();
         this.resultHandler = resultHandler;
         Object parameter = parameterHandler.getParameterObject();
-        //String resultMap = null;
+        String resultMap = null;
         Class<?> resultType = null;
         // 获取自定义配置
         if ( parameter instanceof Map ) {
@@ -129,11 +132,11 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
             if ( value instanceof ReturnType ) {
                 ReturnType returnType = ( ReturnType ) value;
                 resultType = returnType.getResultType();
-                //resultMap = StringUtil.hasText( criteria.getResultMap() ) ? criteria.getResultMap() : null;
+                resultMap = StringUtil.hasText( returnType.getResultMap() ) ? returnType.getResultMap() : null;
             }
         }
         this.customResultType = resultType;
-        //this.customResultMap = resultMap;
+        this.customResultMap = resultMap;
     }
 
     //
@@ -190,15 +193,23 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
 
         int resultSetCount = 0;
         MyBatisResultSetWrapper rsw = getFirstResultSet( stmt );
-        List<ResultMap> resultMaps = mappedStatement.getResultMaps();
-        int resultMapCount = resultMaps.size();
-        validateResultMapsCount( rsw, resultMapCount );
-        while ( rsw != null && resultMapCount > resultSetCount ) {
-            ResultMap resultMap = resultMaps.get( resultSetCount );
-            handleResultSet( rsw, resultMap, multipleResults, null );
-            rsw = getNextResultSet( stmt );
-            cleanUpAfterHandlingResultSet();
-            resultSetCount++;
+        // 检查是否存在自定义resultMap
+        ResultMap customResultMapCache = Optional.ofNullable( customResultMap ).map( configuration::getResultMap ).orElse( null );
+        if ( customResultMapCache != null ) {
+            // 自定义resultMap
+            rsw = fillValue( rsw, customResultMapCache, multipleResults, stmt );
+        } else {
+            List<ResultMap> resultMaps = mappedStatement.getResultMaps();
+            int resultMapCount = resultMaps.size();
+            validateResultMapsCount( rsw, resultMapCount );
+            while ( rsw != null && resultMapCount > resultSetCount ) {
+                ResultMap resultMap = resultMaps.get( resultSetCount );
+                /**handleResultSet( rsw, resultMap, multipleResults, null );
+                 rsw = getNextResultSet( stmt );
+                 cleanUpAfterHandlingResultSet();*/
+                rsw = fillValue( rsw, resultMap, multipleResults, stmt );
+                resultSetCount++;
+            }
         }
 
         String[] resultSets = mappedStatement.getResultSets();
@@ -217,6 +228,13 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         }
 
         return collapseSingleResultList( multipleResults );
+    }
+
+    private MyBatisResultSetWrapper fillValue( MyBatisResultSetWrapper rsw, ResultMap resultMap, List<Object> multipleResults, Statement stmt ) throws SQLException {
+        handleResultSet( rsw, resultMap, multipleResults, null );
+        MyBatisResultSetWrapper nextRsw = getNextResultSet( stmt );
+        cleanUpAfterHandlingResultSet();
+        return nextRsw;
     }
 
     @Override
@@ -314,7 +332,6 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         }
     }
 
-    @SuppressWarnings( "unchecked" )
     private List<Object> collapseSingleResultList( List<Object> multipleResults ) {
         return multipleResults.size() == 1 ? ( List<Object> ) multipleResults.get( 0 ) : multipleResults;
     }
@@ -433,6 +450,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         final List<String> mappedColumnNames = rsw.getMappedColumnNames( resultMap, columnPrefix );
         boolean foundValues = false;
         final List<ResultMapping> propertyMappings = resultMap.getPropertyResultMappings();
+        // 列名和resultMap中column无法匹配时
+        final Map<String, String> originalMappedColumns = rsw.getOriginalMappedCache();
         for ( ResultMapping propertyMapping : propertyMappings ) {
             String column = prependPrefix( propertyMapping.getColumn(), columnPrefix );
             if ( propertyMapping.getNestedResultMapId() != null ) {
@@ -441,8 +460,12 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
             }
             if ( propertyMapping.isCompositeResult()
                     || ( column != null && mappedColumnNames.contains( column.toUpperCase( Locale.ENGLISH ) ) )
-                    || propertyMapping.getResultSet() != null ) {
-                Object value = getPropertyMappingValue( rsw.getResultSet(), metaObject, propertyMapping, lazyLoader, columnPrefix );
+                    || propertyMapping.getResultSet() != null
+                    || ( column != null && originalMappedColumns.containsKey( column.toUpperCase( Locale.ENGLISH ) ) ) ) {
+                ResultSet resultSet = rsw.getResultSet();
+                // Object value = getPropertyMappingValue( resultSet , metaObject, propertyMapping, lazyLoader, columnPrefix );
+                // 使用该方式获取值
+                Object value = getPropertyMappingValue( resultSet , metaObject, propertyMapping, lazyLoader, columnPrefix, originalMappedColumns );
                 // issue #541 make property optional
                 final String property = propertyMapping.getProperty();
                 if ( property == null ) {
@@ -474,6 +497,26 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
             final TypeHandler<?> typeHandler = propertyMapping.getTypeHandler();
             final String column = prependPrefix( propertyMapping.getColumn(), columnPrefix );
             return typeHandler.getResult( rs, column );
+        }
+    }
+
+    private Object getPropertyMappingValue( ResultSet rs, MetaObject metaResultObject, ResultMapping propertyMapping, ResultLoaderMap lazyLoader, String columnPrefix, Map<String, String> originalMappedColumns )
+            throws SQLException {
+        if ( propertyMapping.getNestedQueryId() != null ) {
+            return getNestedQueryMappingValue( rs, metaResultObject, propertyMapping, lazyLoader, columnPrefix );
+        } else if ( propertyMapping.getResultSet() != null ) {
+            addPendingChildRelation( rs, metaResultObject, propertyMapping );   // TODO is that OK?
+            return DEFERRED;
+        } else {
+            final TypeHandler<?> typeHandler = propertyMapping.getTypeHandler();
+            final String column = prependPrefix( propertyMapping.getColumn(), columnPrefix );
+            final String realColumn;
+            if ( originalMappedColumns != null && originalMappedColumns.containsKey( column.toUpperCase( Locale.ENGLISH ) ) ) {
+                realColumn = originalMappedColumns.get( column.toUpperCase( Locale.ENGLISH ) );
+            } else {
+                realColumn = column;
+            }
+            return typeHandler.getResult( rs, realColumn );
         }
     }
 
@@ -730,7 +773,6 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
             columnName = prependPrefix( mapping.getColumn(), columnPrefix );
         } else if ( resultType.isArray() ) {
             // 针对数组处理
-            // columnName = rsw.getColumnNames().get( 0 );
             String realColumnName;
             List<String> columnNames = rsw.getColumnNames();
             int size = columnNames.size();

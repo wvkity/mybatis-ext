@@ -1,4 +1,4 @@
 package com.wkit.lost.mybatis.scripting.defaults;
 
-public class DefaultParameterHandler {
+public class MyBatisDefaultParameterHandler {
 }

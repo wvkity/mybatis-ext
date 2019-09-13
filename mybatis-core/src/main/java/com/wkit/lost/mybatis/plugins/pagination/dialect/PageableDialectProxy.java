@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.plugins.pagination.dialect;
 
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
-import com.wkit.lost.mybatis.config.MyBatisConfiguration;
+import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.plugins.pagination.dialect.exact.MySqlDialect;
 import com.wkit.lost.mybatis.plugins.pagination.dialect.exact.OracleSqlDialect;
 import com.wkit.lost.mybatis.plugins.pagination.exception.PageableException;
@@ -167,7 +167,7 @@ public class PageableDialectProxy {
     private AbstractPageableDialect getDialectFromSpecified( MappedStatement statement ) {
         String dialectAlias = Optional.ofNullable( this.dialect )
                 .orElse( Optional.ofNullable( MyBatisConfigCache.getCustomConfiguration( statement.getConfiguration() ) )
-                        .map( MyBatisConfiguration::getDialect )
+                        .map( MyBatisCustomConfiguration::getDialect )
                         .map( Enum::name )
                         .orElse( "UNDEFINED" ) );
         if ( !"UNDEFINED".equalsIgnoreCase( dialectAlias ) ) {

@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.resolver;
 
-import com.wkit.lost.mybatis.config.MyBatisConfiguration;
+import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.core.schema.Table;
 
 /**
@@ -16,5 +16,5 @@ public interface EntityResolver {
      * @param configuration 自定义配置对象
      * @return 表映射信息
      */
-    Table resolve( final Class<?> entity, final MyBatisConfiguration configuration );
+    Table resolve( final Class<?> entity, final MyBatisCustomConfiguration configuration );
 }

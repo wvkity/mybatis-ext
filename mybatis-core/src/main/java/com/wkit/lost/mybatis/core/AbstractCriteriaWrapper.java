@@ -97,14 +97,12 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
      * 返回值映射Map
      */
     @Getter
-    @Setter
     protected String resultMap;
 
     /**
      * 返回值类型
      */
     @Getter
-    @Setter
     protected Class<?> resultType;
 
     /**
@@ -1171,6 +1169,18 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     @Override
     public Context reset() {
         this.lastLogic = Logic.NORMAL;
+        return this.context;
+    }
+
+    @Override
+    public Context resultMap( String resultMap ) {
+        this.resultMap = resultMap;
+        return this.context;
+    }
+
+    @Override
+    public Context resultType( Class<?> resultType ) {
+        this.resultType = resultType;
         return this.context;
     }
 

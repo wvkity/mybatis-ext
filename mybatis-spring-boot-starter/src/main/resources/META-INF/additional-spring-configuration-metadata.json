@@ -1,0 +1,21 @@
+{
+  "groups": [
+    {
+      "sourceType": "com.wkit.lost.mybatis.spring.boot.autoconfigure.MyBatisProperties",
+      "name": "lost.mybatis",
+      "type": "com.wkit.lost.mybatis.spring.boot.autoconfigure.MyBatisProperties"
+    },
+    {
+      "sourceType": "com.wkit.lost.mybatis.spring.boot.autoconfigure.MyBatisProperties",
+      "name": "lost.mybatis.configuration",
+      "sourceMethod": "getConfiguration()",
+      "type": "com.wkit.lost.mybatis.session.MyBatisConfiguration"
+    },
+    {
+      "sourceType": "com.wkit.lost.mybatis.spring.boot.autoconfigure.MyBatisProperties",
+      "name": "lost.mybatis.customConfiguration",
+      "sourceMethod": "getCustomConfiguration",
+      "type": "com.wkit.lost.mybatis.config.MyBatisCustomConfiguration"
+    }
+  ]
+}

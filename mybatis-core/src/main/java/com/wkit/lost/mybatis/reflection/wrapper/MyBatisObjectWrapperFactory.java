@@ -6,7 +6,7 @@ import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 
 import java.util.Map;
 
-public class CamelCaseObjectWrapperFactory implements ObjectWrapperFactory {
+public class MyBatisObjectWrapperFactory implements ObjectWrapperFactory {
     @Override
     public boolean hasWrapperFor( Object object ) {
         return object instanceof Map;
@@ -15,6 +15,6 @@ public class CamelCaseObjectWrapperFactory implements ObjectWrapperFactory {
     @SuppressWarnings( "unchecked" )
     @Override
     public ObjectWrapper getWrapperFor( MetaObject metaObject, Object object ) {
-        return new CamelCaseMapWrapper( metaObject, ( Map<String, Object> ) object );
+        return new MyBatisMapWrapper( metaObject, ( Map<String, Object> ) object );
     }
 }

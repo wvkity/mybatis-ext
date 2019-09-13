@@ -23,7 +23,7 @@ import java.io.Serializable;
 @Data
 @Accessors( chain = true )
 @NoArgsConstructor
-public class MyBatisConfiguration implements Serializable {
+public class MyBatisCustomConfiguration implements Serializable {
 
     private static final long serialVersionUID = -3928045766093460184L;
 
@@ -108,9 +108,9 @@ public class MyBatisConfiguration implements Serializable {
     private String[] primaryKeys = { "id" };
 
     /**
-     * UUID接口
+     * 主键接口
      */
-    private PrimaryKeyGenerator generator;
+    private PrimaryKeyGenerator keyGenerator;
 
     /**
      * 使用简单类型

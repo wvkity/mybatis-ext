@@ -5,7 +5,7 @@ import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.scripting.xmltags.XMLLanguageDriver;
 
-public class XmlLanguageDriver extends XMLLanguageDriver {
+public class MyBatisXMLLanguageDriver extends XMLLanguageDriver {
 
     @Override
     public ParameterHandler createParameterHandler( MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql ) {

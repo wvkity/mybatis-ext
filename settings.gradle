@@ -1,3 +1,15 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+        maven { url 'https://plugins.gradle.org/m2/' }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url "https://repo.spring.io/plugins-release" }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        jcenter()
+        mavenCentral()
+    }
+}
 rootProject.name = 'mybatis'
 include 'pageable'
 include 'mybatis-annotation'
@@ -5,4 +17,5 @@ include 'mybatis-core'
 include 'mybatis-extension'
 include 'mybatis-spring-extension'
 include 'mybatis-spring-boot-starter'
+include 'mybatis-spring-boot-starter-example'
 

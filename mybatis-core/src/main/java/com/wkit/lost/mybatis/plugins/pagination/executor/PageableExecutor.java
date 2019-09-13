@@ -96,13 +96,13 @@ public class PageableExecutor extends AbstractPageableExecutor {
                 resultList = ExecutorUtil.executeQueryPageableOfCustom( this.proxyFactory, executor, statement, parameter,
                         rowBounds, resultHandler, boundSql, cacheKey );
             } else {
-                //resultList = ExecutorUtil.executeQueryPageableOfCustom( this.proxyFactory, executor, statement, parameter,
-                //        rowBounds, resultHandler, boundSql, cacheKey );
                 // 默认查询
                 resultList = executor.query( statement, parameter, rowBounds, resultHandler, cacheKey, boundSql );
             }
+            // 处理分页查询结果
             return this.proxyFactory.executePagingOnAfter( resultList, parameter, rowBounds );
         } finally {
+            // 所有查询完成后
             Optional.ofNullable( proxyFactory ).ifPresent( Dialect::completed );
         }
     }

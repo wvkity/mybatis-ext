@@ -81,10 +81,6 @@ public interface Customize<Context, R> extends LambdaResolver<R> {
 
     /**
      * 模板条件
-     * <p>
-     * &nbsp;&nbsp;&nbsp;&nbsp;eg:<br/>
-     * &nbsp;&nbsp;&nbsp;&nbsp;criteria.orTemplate("LEFT({}, 2) = {}", "userName", "张三") &nbsp; => &nbsp;OR LEFT(USER_NAME, 2) = #{param_0, jdbcType="xx.xxx", javaType="xx.xxx"}
-     * </p>
      * @param template 模板
      * @param property 属性
      * @param value    值
@@ -96,6 +92,10 @@ public interface Customize<Context, R> extends LambdaResolver<R> {
 
     /**
      * 模板条件
+     * <p>
+     * &nbsp;&nbsp;&nbsp;&nbsp;eg:<br/>
+     * &nbsp;&nbsp;&nbsp;&nbsp;criteria.orTemplate("LEFT({}, 2) = {}", "userName", "张三") &nbsp; => &nbsp;OR LEFT(USER_NAME, 2) = #{param_0, jdbcType="xx.xxx", javaType="xx.xxx"}
+     * </p>
      * @param template 模板
      * @param property 属性
      * @param value    值

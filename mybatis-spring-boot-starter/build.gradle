@@ -3,12 +3,11 @@ dependencies {
     api project(":mybatis-extension")
     api "${lib["springboot-jdbc"]}"
     api "${lib["springboot-autoconfigure"]}"
-    implementation(enforcedPlatform("${lib["springboot-dependencies"]}" as String))
+    api(enforcedPlatform("${lib["springboot-dependencies"]}" as String))
     annotationProcessor "${lib["springboot-autoconfigure-processor"]}:$springBoot"
     annotationProcessor "${lib["springboot-configuration-processor"]}:$springBoot"
     implementation "${lib["springboot-autoconfigure-processor"]}"
     implementation "${lib["springboot-configuration-processor"]}"
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 compileJava.dependsOn(processResources)

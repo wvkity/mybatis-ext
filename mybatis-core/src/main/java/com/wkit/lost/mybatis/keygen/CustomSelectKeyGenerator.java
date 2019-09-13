@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.keygen;
 
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
-import com.wkit.lost.mybatis.config.MyBatisConfiguration;
+import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.ExecutorException;
 import org.apache.ibatis.executor.keygen.SelectKeyGenerator;
@@ -46,7 +46,7 @@ public class CustomSelectKeyGenerator extends SelectKeyGenerator {
             processGeneratedKeys( executor, ms, parameter );
         }
     }
-    
+
     public void processGeneratedKeys( Executor executor, MappedStatement ms, Object parameter ) {
         try {
             if ( parameter != null && this.keyStatement != null && this.keyStatement.getKeyProperties() != null ) {
@@ -55,13 +55,13 @@ public class CustomSelectKeyGenerator extends SelectKeyGenerator {
                 final MetaObject metaParam = configuration.newMetaObject( parameter );
                 if ( keyProperties != null ) {
                     // 获取自定义全局配置
-                    MyBatisConfiguration customConfiguration = MyBatisConfigCache.getCustomConfiguration( configuration );
+                    MyBatisCustomConfiguration customConfiguration = MyBatisConfigCache.getCustomConfiguration( configuration );
                     // guid接口
-                    PrimaryKeyGenerator guidGenerator = Optional.ofNullable( customConfiguration ).map( MyBatisConfiguration::getGenerator ).orElse( new GuidGenerator() );
+                    PrimaryKeyGenerator guidGenerator = Optional.ofNullable( customConfiguration ).map( MyBatisCustomConfiguration::getKeyGenerator ).orElse( new GuidGenerator() );
                     if ( customConfiguration != null ) {
                         // 接口为空则填充
-                        if ( customConfiguration.getGenerator() == null ) {
-                            customConfiguration.setGenerator( guidGenerator );
+                        if ( customConfiguration.getKeyGenerator() == null ) {
+                            customConfiguration.setKeyGenerator( guidGenerator );
                         }
                     }
                     // 生成ID

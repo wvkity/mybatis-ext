@@ -24,13 +24,13 @@ public abstract class CacheFactory {
     public static <K, V> Cache<K, V> createCache( String cacheClass, String prefix, Properties properties ) {
         if ( StringUtil.isBlank( cacheClass ) ) {
             try {
-                Class.forName( "com.google.common.cache.Cache" );
-                return new GuavaCache<>( properties, prefix );
+                Class.forName( "com.github.benmanes.caffeine.cache.Cache" );
+                return new CaffeineCache<>( properties, prefix );
             } catch ( Exception e ) {
                 return new SimpleCache<>( properties, prefix );
             }
         } else {
-            Class<? extends Cache> clazz = null;
+            Class<? extends Cache> clazz;
             try {
                 clazz = (Class<? extends Cache>) Class.forName( cacheClass );
                 try {

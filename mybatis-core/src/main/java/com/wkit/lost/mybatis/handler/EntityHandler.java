@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.handler;
 import com.wkit.lost.mybatis.utils.ClassUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
-import com.wkit.lost.mybatis.config.MyBatisConfiguration;
+import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.core.schema.Table;
 import com.wkit.lost.mybatis.exception.MapperException;
 import com.wkit.lost.mybatis.resolver.DefaultEntityResolver;
@@ -44,7 +44,7 @@ public class EntityHandler {
      * @return {@link Table}(表信息)
      */
     public synchronized static Table intercept( final MapperBuilderAssistant assistant, final Class<?> entity ) {
-        MyBatisConfiguration customConfiguration = MyBatisConfigCache.getCustomConfiguration( assistant.getConfiguration() );
+        MyBatisCustomConfiguration customConfiguration = MyBatisConfigCache.getCustomConfiguration( assistant.getConfiguration() );
         // 初始化实体解析器
         if ( EntityHandler.resolver == null ) {
             EntityHandler.resolver = customConfiguration == null ? DEFAULT_RESOLVER : Optional.ofNullable( customConfiguration.getEntityResolver() )

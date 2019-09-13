@@ -1,19 +1,22 @@
 package com.wkit.lost.mybatis.binding;
 
-import com.wkit.lost.mybatis.builder.annotation.MapperAnnotationBuilder;
-import com.wkit.lost.mybatis.session.Configuration;
+import com.wkit.lost.mybatis.builder.annotation.MyBatisMapperAnnotationBuilder;
+import com.wkit.lost.mybatis.session.MyBatisConfiguration;
 import org.apache.ibatis.binding.BindingException;
-import org.apache.ibatis.io.ResolverUtil;
+import org.apache.ibatis.binding.MapperRegistry;
 import org.apache.ibatis.session.SqlSession;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-public class MapperRegistry extends org.apache.ibatis.binding.MapperRegistry {
+public class MyBatisMapperRegistry extends MapperRegistry {
 
-    private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<>();
-    private final Configuration config;
+    private final Map<Class<?>, MyBatisMapperProxyFactory<?>> knownMappers = new HashMap<>();
+    private final MyBatisConfiguration config;
 
-    public MapperRegistry( Configuration config ) {
+    public MyBatisMapperRegistry( MyBatisConfiguration config ) {
         super( config );
         this.config = config;
     }
@@ -21,7 +24,7 @@ public class MapperRegistry extends org.apache.ibatis.binding.MapperRegistry {
     @SuppressWarnings( "unchecked" )
     @Override
     public <T> T getMapper( Class<T> type, SqlSession sqlSession ) {
-        final MapperProxyFactory<T> mapperProxyFactory = (MapperProxyFactory<T>) knownMappers.get( type );
+        final MyBatisMapperProxyFactory<T> mapperProxyFactory = ( MyBatisMapperProxyFactory<T> ) knownMappers.get( type );
         if ( mapperProxyFactory == null ) {
             throw new BindingException( "Type " + type + " is not known to the MapperRegistry." );
         }
@@ -46,11 +49,11 @@ public class MapperRegistry extends org.apache.ibatis.binding.MapperRegistry {
             }
             boolean loadCompleted = false;
             try {
-                this.knownMappers.put( type, new MapperProxyFactory<>( type ) );
+                this.knownMappers.put( type, new MyBatisMapperProxyFactory<>( type ) );
                 // It's important that the type is added before the parser is run
                 // otherwise the binding may automatically be attempted by the
                 // mapper parser. If the type is already known, it won't try.
-                MapperAnnotationBuilder parser = new MapperAnnotationBuilder( config, type );
+                MyBatisMapperAnnotationBuilder parser = new MyBatisMapperAnnotationBuilder( config, type );
                 parser.parse();
                 loadCompleted = true;
             } finally {
@@ -71,22 +74,4 @@ public class MapperRegistry extends org.apache.ibatis.binding.MapperRegistry {
         return Collections.unmodifiableCollection( this.knownMappers.keySet() );
     }
 
-    /**
-     * @since 3.2.2
-     */
-    public void addMappers( String packageName, Class<?> superType ) {
-        ResolverUtil<Class<?>> resolverUtil = new ResolverUtil<>();
-        resolverUtil.find( new ResolverUtil.IsA( superType ), packageName );
-        Set<Class<? extends Class<?>>> mapperSet = resolverUtil.getClasses();
-        for ( Class<?> mapperClass : mapperSet ) {
-            addMapper( mapperClass );
-        }
-    }
-
-    /**
-     * @since 3.2.2
-     */
-    public void addMappers( String packageName ) {
-        addMappers( packageName, Object.class );
-    }
 }

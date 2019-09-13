@@ -185,7 +185,7 @@ public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T,
 
     @Override
     public List<R> list( Criteria<T> criteria ) {
-        return criteria == null ? new ArrayList<>() : executor.listByCriteria( criteria.setResultMap( null ).setResultType( null ) );
+        return criteria == null ? new ArrayList<>() : executor.listByCriteria( criteria.resultMap( null ).resultType( null ) );
     }
 
     @SuppressWarnings( "unchecked" )
@@ -200,17 +200,17 @@ public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T,
 
     @Override
     public List<Object> listForObject( Criteria<T> criteria ) {
-        return executor.listForObject( criteria.setResultMap( null ).setResultType( null ) );
+        return executor.listForObject( criteria.resultMap( null ).resultType( null ) );
     }
 
     @Override
     public List<Object[]> listForArray( Criteria<T> criteria ) {
-        return executor.listForArray( criteria.setResultMap( null ).setResultType( null ) );
+        return executor.listForArray( criteria.resultMap( null ).resultType( null ) );
     }
 
     @Override
     public List<Map<String, Object>> listForMap( Criteria<T> criteria ) {
-        return executor.listForMap( criteria.setResultMap( null ).setResultType( null ) );
+        return executor.listForMap( criteria.resultMap( null ).resultType( null ) );
     }
 
     @Override
@@ -220,7 +220,7 @@ public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T,
 
     @Override
     public List<R> pageableList( Pageable pageable, Criteria<T> criteria ) {
-        return executor.pageableListByCriteria( pageable, criteria.setResultMap( null ).setResultType( null ) );
+        return executor.pageableListByCriteria( pageable, criteria.resultMap( null ).resultType( null ) );
     }
 
     @Override

@@ -1,13 +1,14 @@
 package com.wkit.lost.mybatis.spring.boot.autoconfigure;
 
 
+import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
+import com.wkit.lost.mybatis.keygen.PrimaryKeyGenerator;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
-import com.wkit.lost.mybatis.config.MyBatisConfiguration;
 import com.wkit.lost.mybatis.resolver.EntityResolver;
 import com.wkit.lost.mybatis.resolver.FieldResolver;
-import com.wkit.lost.mybatis.scripting.XmlLanguageDriver;
-import com.wkit.lost.mybatis.session.Configuration;
+import com.wkit.lost.mybatis.scripting.MyBatisXMLLanguageDriver;
+import com.wkit.lost.mybatis.session.MyBatisConfiguration;
 import com.wkit.lost.mybatis.spring.SqlSessionFactoryBean;
 import com.wkit.lost.mybatis.sql.injector.SqlInjector;
 import lombok.extern.log4j.Log4j2;
@@ -50,7 +51,9 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Log4j2
 @org.springframework.context.annotation.Configuration
@@ -68,6 +71,7 @@ public class MyBatisAutoConfiguration implements InitializingBean {
     private final List<ConfigurationCustomizer> configurationCustomizers;
     private final List<PropertiesCustomizer> propertiesCustomizers;
     private final ApplicationContext applicationContext;
+    private static final AtomicInteger INDEX = new AtomicInteger();
 
     public MyBatisAutoConfiguration( MyBatisProperties properties,
                                      ObjectProvider<Interceptor[]> interceptorsProvider,
@@ -135,23 +139,18 @@ public class MyBatisAutoConfiguration implements InitializingBean {
             factory.setMapperLocations( this.properties.resolveMapperLocations() );
         }
         // 全局配置
-        MyBatisConfiguration customConfig;
+        MyBatisCustomConfiguration customConfig;
         if ( !ObjectUtils.isEmpty( this.properties.getCustomConfiguration() ) ) {
             customConfig = this.properties.getCustomConfiguration();
         } else {
             // 优先从容器中获取
-            if ( hasBeanFromContext( MyBatisConfiguration.class ) ) {
-                customConfig = getBean( MyBatisConfiguration.class );
+            if ( hasBeanFromContext( MyBatisCustomConfiguration.class ) ) {
+                customConfig = getBean( MyBatisCustomConfiguration.class );
             } else {
                 // 直接创建
                 customConfig = MyBatisConfigCache.defaults();
             }
         }
-        // 注册分页拦截器
-        /*if ( customConfig.isUsePageablePlugin() ) {
-            factory.setPlugins( new Interceptor[]{ new PageableInterceptor() } );
-        }*/
-        factory.setCustomConfiguration( customConfig );
         // SQL注入器
         if ( hasBeanFromContext( SqlInjector.class ) ) {
             customConfig.setInjector( getBean( SqlInjector.class ) );
@@ -164,14 +163,21 @@ public class MyBatisAutoConfiguration implements InitializingBean {
         if ( hasBeanFromContext( FieldResolver.class ) ) {
             customConfig.setFieldResolver( getBean( FieldResolver.class ) );
         }
+        // 主键生成器
+        if ( hasBeanFromContext( PrimaryKeyGenerator.class ) ) {
+            customConfig.setKeyGenerator( getBean( PrimaryKeyGenerator.class ) );
+        }
         factory.setCustomConfiguration( customConfig );
+        log.info( "我是第{}次初始化数据，{}", INDEX.incrementAndGet(), Arrays.toString( properties.getMapperLocations() ) );
         return factory.getObject();
     }
 
     private void applyConfiguration( SqlSessionFactoryBean factory ) {
-        Configuration configuration = this.properties.getConfiguration();
+        MyBatisConfiguration configuration = this.properties.getConfiguration();
         if ( configuration == null && !StringUtils.hasText( this.properties.getConfigLocation() ) ) {
-            configuration = new Configuration();
+            configuration = new MyBatisConfiguration();
+            // 默认开启下划线大写转驼峰命名规则
+            configuration.setMapUnderscoreToCamelCase( true );
         }
         if ( configuration != null && !CollectionUtils.isEmpty( this.configurationCustomizers ) ) {
             for ( ConfigurationCustomizer customizer : this.configurationCustomizers ) {
@@ -179,7 +185,7 @@ public class MyBatisAutoConfiguration implements InitializingBean {
             }
         }
         if ( configuration != null ) {
-            configuration.setDefaultScriptingLanguage( XmlLanguageDriver.class );
+            configuration.setDefaultScriptingLanguage( MyBatisXMLLanguageDriver.class );
         }
         factory.setConfiguration( configuration );
     }

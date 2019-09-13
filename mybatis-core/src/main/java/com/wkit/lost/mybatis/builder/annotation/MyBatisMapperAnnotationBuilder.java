@@ -1,9 +1,9 @@
 package com.wkit.lost.mybatis.builder.annotation;
 
-import com.wkit.lost.mybatis.binding.MapperMethod;
+import com.wkit.lost.mybatis.binding.MyBatisMapperMethod;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.mapper.MapperExecutor;
-import com.wkit.lost.mybatis.session.Configuration;
+import com.wkit.lost.mybatis.session.MyBatisConfiguration;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.annotations.Arg;
@@ -34,6 +34,7 @@ import org.apache.ibatis.builder.BuilderException;
 import org.apache.ibatis.builder.CacheRefResolver;
 import org.apache.ibatis.builder.IncompleteElementException;
 import org.apache.ibatis.builder.MapperBuilderAssistant;
+import org.apache.ibatis.builder.annotation.MapperAnnotationBuilder;
 import org.apache.ibatis.builder.annotation.MethodResolver;
 import org.apache.ibatis.builder.annotation.ProviderSqlSource;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
@@ -84,11 +85,11 @@ import java.util.Set;
  * 继承{@link org.apache.ibatis.builder.annotation.MapperAnnotationBuilder}实现无XML配置文件CURD操作
  */
 @Log4j2
-public class MapperAnnotationBuilder extends org.apache.ibatis.builder.annotation.MapperAnnotationBuilder {
+public class MyBatisMapperAnnotationBuilder extends MapperAnnotationBuilder {
 
     private static final Set<Class<? extends Annotation>> SQL_ANNOTATION_TYPES = new HashSet<>();
     private static final Set<Class<? extends Annotation>> SQL_PROVIDER_ANNOTATION_TYPES = new HashSet<>();
-    private final Configuration configuration;
+    private final MyBatisConfiguration configuration;
     private final MapperBuilderAssistant assistant;
     private final Class<?> type;
 
@@ -103,7 +104,7 @@ public class MapperAnnotationBuilder extends org.apache.ibatis.builder.annotatio
         SQL_PROVIDER_ANNOTATION_TYPES.add( DeleteProvider.class );
     }
 
-    public MapperAnnotationBuilder( Configuration configuration, Class<?> type ) {
+    public MyBatisMapperAnnotationBuilder( MyBatisConfiguration configuration, Class<?> type ) {
         super( configuration, type );
         String resource = type.getName().replace( '.', '/' ) + ".java (best guess)";
         this.assistant = new MapperBuilderAssistant( configuration, resource );
@@ -131,7 +132,7 @@ public class MapperAnnotationBuilder extends org.apache.ibatis.builder.annotatio
                     }
                 } catch ( IncompleteElementException e ) {
                     //configuration.addIncompleteMethod( new MethodResolver( this, method ) );
-                    configuration.addIncompleteMethod( new com.wkit.lost.mybatis.builder.annotation.MethodResolver( this, method ) );
+                    configuration.addIncompleteMethod( new MyBatisMethodResolver( this, method ) );
                 }
             }
             // 注入无XML配置文件CURD-SQL
@@ -313,7 +314,7 @@ public class MapperAnnotationBuilder extends org.apache.ibatis.builder.annotatio
                 if ( parameterType == null ) {
                     parameterType = currentParameterType;
                 } else {
-                    parameterType = MapperMethod.ParamMap.class;
+                    parameterType = MyBatisMapperMethod.ParamMap.class;
                 }
             }
         }
