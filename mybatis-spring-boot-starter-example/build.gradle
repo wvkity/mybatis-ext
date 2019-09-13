@@ -1,0 +1,33 @@
+
+apply plugin: "org.springframework.boot"
+apply plugin: 'io.spring.dependency-management'
+
+dependencies {
+    api project(":mybatis-spring-boot-starter")
+    implementation "${lib.inject}"
+    implementation "${lib.aspect}"
+    implementation "${lib.fastjson}"
+    //implementation "druid"]
+    implementation "com.zaxxer:HikariCP:3.3.1"
+    implementation "mysql:mysql-connector-java:8.0.15"
+    implementation "com.github.noraui:ojdbc8:12.2.0.1"
+    implementation "${lib.cglib}"
+    implementation "${lib.disruptor}"
+    implementation "${lib["springboot-log4j2"]}"
+    implementation "${lib["springboot-thymeleaf"]}"
+    implementation "${lib["springboot-web"]}"
+    implementation "${lib["springboot-undertow"]}"
+    testImplementation "${lib["springboot-test"]}"
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    all*.exclude module: 'spring-boot-starter-logging'
+    all*.exclude module: 'logback-classic'
+    all*.exclude module: 'log4j-over-slf4j'
+    all*.exclude module: 'org.hibernate.validator'
+    all*.exclude module: 'spring-boot-starter-tomcat'
+}
+
