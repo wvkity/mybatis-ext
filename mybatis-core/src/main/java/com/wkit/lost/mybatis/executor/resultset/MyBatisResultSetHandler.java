@@ -197,17 +197,14 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         ResultMap customResultMapCache = Optional.ofNullable( customResultMap ).map( configuration::getResultMap ).orElse( null );
         if ( customResultMapCache != null ) {
             // 自定义resultMap
-            rsw = fillValue( rsw, customResultMapCache, multipleResults, stmt );
+            rsw = resultSet( rsw, customResultMapCache, multipleResults, stmt );
         } else {
             List<ResultMap> resultMaps = mappedStatement.getResultMaps();
             int resultMapCount = resultMaps.size();
             validateResultMapsCount( rsw, resultMapCount );
             while ( rsw != null && resultMapCount > resultSetCount ) {
                 ResultMap resultMap = resultMaps.get( resultSetCount );
-                /**handleResultSet( rsw, resultMap, multipleResults, null );
-                 rsw = getNextResultSet( stmt );
-                 cleanUpAfterHandlingResultSet();*/
-                rsw = fillValue( rsw, resultMap, multipleResults, stmt );
+                rsw = resultSet( rsw, resultMap, multipleResults, stmt );
                 resultSetCount++;
             }
         }
@@ -230,7 +227,7 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         return collapseSingleResultList( multipleResults );
     }
 
-    private MyBatisResultSetWrapper fillValue( MyBatisResultSetWrapper rsw, ResultMap resultMap, List<Object> multipleResults, Statement stmt ) throws SQLException {
+    private MyBatisResultSetWrapper resultSet( MyBatisResultSetWrapper rsw, ResultMap resultMap, List<Object> multipleResults, Statement stmt ) throws SQLException {
         handleResultSet( rsw, resultMap, multipleResults, null );
         MyBatisResultSetWrapper nextRsw = getNextResultSet( stmt );
         cleanUpAfterHandlingResultSet();
