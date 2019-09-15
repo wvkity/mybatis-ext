@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.utils;
 
-import com.wkit.lost.mybatis.plugins.pagination.exception.PageableException;
+import com.wkit.lost.mybatis.plugins.exception.MyBatisPluginException;
 import com.wkit.lost.mybatis.reflection.wrapper.MyBatisObjectWrapperFactory;
 import org.apache.ibatis.reflection.DefaultReflectorFactory;
 import org.apache.ibatis.reflection.MetaObject;
@@ -23,7 +23,7 @@ public abstract class MetaObjectWithReflectCache {
         try {
             return MetaObject.forObject( object, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY );
         } catch ( Exception e ) {
-            throw new PageableException( e );
+            throw new MyBatisPluginException( e );
         }
     }
 }

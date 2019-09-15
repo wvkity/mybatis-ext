@@ -188,6 +188,11 @@ public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T,
         return criteria == null ? new ArrayList<>() : executor.listByCriteria( criteria.resultMap( null ).resultType( null ) );
     }
 
+    @Override
+    public List<R> rangeList( Criteria<T> criteria ) {
+        return executor.rangeList( criteria.resultMap( null ).resultType( null ) );
+    }
+
     @SuppressWarnings( "unchecked" )
     @Override
     public <E> List<E> listForCustom( Criteria<T> criteria ) {

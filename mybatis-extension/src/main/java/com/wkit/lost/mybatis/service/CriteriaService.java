@@ -29,6 +29,13 @@ public interface CriteriaService<T, PK, R> {
     List<R> list( Criteria<T> criteria );
 
     /**
+     * 查询范围列表
+     * @param criteria 条件对象
+     * @return 列表
+     */
+    List<R> rangeList( Criteria<T> criteria );
+
+    /**
      * 查询列表(返回自定义类型)
      * @param criteria 条件对象
      * @param <E>      返回值泛型

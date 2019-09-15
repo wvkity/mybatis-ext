@@ -31,8 +31,8 @@ lost:
   mybatis:
     mapper-locations:
       - classpath:/mybatis/mapper/*.xml
-    configuration:
-      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #configuration:
+      #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
       #map-underscore-to-camel-case: false
     custom-configuration:
       identity: true

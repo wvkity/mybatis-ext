@@ -5,7 +5,7 @@ import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.plugins.pagination.dialect.exact.MySqlDialect;
 import com.wkit.lost.mybatis.plugins.pagination.dialect.exact.OracleSqlDialect;
-import com.wkit.lost.mybatis.plugins.pagination.exception.PageableException;
+import com.wkit.lost.mybatis.plugins.exception.MyBatisPluginException;
 import org.apache.ibatis.mapping.MappedStatement;
 
 import javax.sql.DataSource;
@@ -149,7 +149,7 @@ public class PageableDialectProxy {
             }
             String dialectAlias = getDialectAliasNameFromJdbc( jdbcUrl.toUpperCase( Locale.ROOT ) );
             if ( dialectAlias == null ) {
-                throw new PageableException( "The plugin does not currently support the database or cannot identify the current database." );
+                throw new MyBatisPluginException( "The plugin does not currently support the database or cannot identify the current database." );
             }
             AbstractPageableDialect instance = initDialect( dialectAlias, this.properties );
             JDBC_PAGEABLE_DIALECT_CACHE.put( jdbcUrl, instance );
@@ -198,16 +198,16 @@ public class PageableDialectProxy {
      */
     private AbstractPageableDialect initDialect( final String dialectClassName, Properties props ) {
         if ( StringUtil.isBlank( dialectClassName ) ) {
-            throw new PageableException( "The corresponding database paging dialect identifier must be specified" );
+            throw new MyBatisPluginException( "The corresponding database paging dialect identifier must be specified" );
         }
         try {
             Class<?> clazz = resolve( dialectClassName );
             if ( AbstractPageableDialect.class.isAssignableFrom( clazz ) ) {
                 return ( AbstractPageableDialect ) clazz.getDeclaredConstructor().newInstance();
             }
-            throw new PageableException( "The database paging dialect must implement the `" + AbstractPageableDialect.class.getCanonicalName() + "` interface" );
+            throw new MyBatisPluginException( "The database paging dialect must implement the `" + AbstractPageableDialect.class.getCanonicalName() + "` interface" );
         } catch ( Exception e ) {
-            throw new PageableException( "Database paging dialect initialization failed: " + e.getMessage(), e );
+            throw new MyBatisPluginException( "Database paging dialect initialization failed: " + e.getMessage(), e );
         }
     }
 
@@ -233,7 +233,7 @@ public class PageableDialectProxy {
         try ( Connection connection = dataSource.getConnection() ) {
             return connection.getMetaData().getURL();
         } catch ( SQLException e ) {
-            throw new PageableException( e );
+            throw new MyBatisPluginException( e );
         }
     }
 

@@ -24,7 +24,9 @@ import java.util.Collection;
  * 条件工具类
  * @author DT
  */
-public abstract class Restrictions {
+public final class Restrictions {
+
+    private Restrictions(){}
 
     /**
      * 主键等于

@@ -1,24 +1,18 @@
 package com.wkit.lost.mybatis.sql.injector.methods;
 
-import com.wkit.lost.mybatis.core.schema.Table;
-import com.wkit.lost.mybatis.sql.mapping.criteria.CriteriaQuerySqlBuilder;
-import com.wkit.lost.mybatis.sql.mapping.script.DefaultXmlScriptBuilder;
-import com.wkit.lost.mybatis.sql.method.AbstractMethod;
-import org.apache.ibatis.mapping.MappedStatement;
+import com.wkit.lost.mybatis.sql.method.AbstractCriteriaMethod;
 
 import java.util.LinkedHashMap;
 
-public class ListForMap extends AbstractMethod {
-
-    @Override
-    public MappedStatement injectMappedStatement( Class<?> mapperInterface, Class<?> resultType, Table table ) {
-        Class<?> entity = table.getEntity();
-        DefaultXmlScriptBuilder scriptBuilder = new DefaultXmlScriptBuilder( entity, table.getAlias(), table, new CriteriaQuerySqlBuilder() );
-        return addSelectMappedStatement( mapperInterface, LinkedHashMap.class, mappedMethod(), createSqlSource( scriptBuilder, entity ), table );
-    }
+public class ListForMap extends AbstractCriteriaMethod {
 
     @Override
     public String mappedMethod() {
         return "listForMap";
+    }
+
+    @Override
+    public Class<?> getResultType() {
+        return LinkedHashMap.class;
     }
 }

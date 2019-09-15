@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.plugins.sql.parser;
+package com.wkit.lost.mybatis.plugins.dbs.sql;
 
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;

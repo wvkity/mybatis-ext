@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.plugins.filter;
 
-import com.wkit.lost.mybatis.plugins.executor.AbstractQueryExecutor;
+import com.wkit.lost.mybatis.plugins.executor.Argument;
 
 /**
  * 过滤器
@@ -11,8 +11,8 @@ public interface Filter {
 
     /**
      * 过滤
-     * @param argument 参数
+     * @param arg 参数对象
      * @return boolean
      */
-    boolean filter( AbstractQueryExecutor.Argument argument );
+    boolean filter( Argument arg );
 }

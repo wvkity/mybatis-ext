@@ -45,7 +45,7 @@ public class FunctionApp extends RootTestRunner {
                     .asc( "state" ).asc( Aggregations.max( criteria, "score" ) )
                     //.resultType( LinkedHashMap.class );
                     .resultMap( "scoreResultMap" );
-            List<Score> result = sysUserService.listForCustom( criteria );
+            //List<Score> result = sysUserService.listForCustom( criteria );
             //Score score = result.get( 0 );
             //List<Object[]> result = sysUserService.listForArray( criteria );
             //List<Map<String, Object>> result = sysUserService.listForMap( criteria );
@@ -62,12 +62,14 @@ public class FunctionApp extends RootTestRunner {
                     .avg( "avg", "score" )
                     .descFunc( "avg" )
                     .asc( "state" ).asc( Aggregations.max( criteria1, "score" ) )
+                    .limit( 0, 8 )
                     .resultType( Score.class );
+            List<SysUser> limitResult = sysUserService.rangeList( criteria1 );
             //sysUserService.listForMap( criteria1 );
-            List<Score> scores = sysUserService.listForCustom( criteria1 );
-            log.info( "执行结果2：{}", JSON.toJSONString( scores, true ) );
-            Score score = scores.get( 0 );
-            log.info( "获取其中一条记录：{}", JSON.toJSONString( score, true ) );
+            //List<Score> scores = sysUserService.listForCustom( criteria1 );
+            //log.info( "执行结果2：{}", JSON.toJSONString( scores, true ) );
+            //Score score = scores.get( 0 );
+            //log.info( "获取其中一条记录：{}", JSON.toJSONString( score, true ) );
         } catch ( Exception e ) {
             log.error( "系统出现异常：", e );
         }

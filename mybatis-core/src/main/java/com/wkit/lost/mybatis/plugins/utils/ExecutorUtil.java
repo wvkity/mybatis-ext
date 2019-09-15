@@ -1,8 +1,8 @@
 package com.wkit.lost.mybatis.plugins.utils;
 
+import com.wkit.lost.mybatis.plugins.executor.Argument;
 import com.wkit.lost.mybatis.plugins.pagination.dialect.Dialect;
-import com.wkit.lost.mybatis.plugins.pagination.exception.PageableException;
-import com.wkit.lost.mybatis.utils.MappedStatementUtil;
+import com.wkit.lost.mybatis.plugins.exception.MyBatisPluginException;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -29,7 +29,7 @@ public abstract class ExecutorUtil {
             additionalParametersField = BoundSql.class.getDeclaredField( "additionalParameters" );
             additionalParametersField.setAccessible( true );
         } catch ( Exception e ) {
-            throw new PageableException( "Failure to obtain BoundSql attribute additionalParameters：" + e, e );
+            throw new MyBatisPluginException( "Failure to obtain BoundSql attribute additionalParameters：" + e, e );
         }
     }
 
@@ -126,7 +126,7 @@ public abstract class ExecutorUtil {
         try {
             return ( Map<String, Object> ) additionalParametersField.get( boundSql );
         } catch ( Exception e ) {
-            throw new PageableException( "Failure to obtain BoundSql attribute value additionalParameters: " + e, e );
+            throw new MyBatisPluginException( "Failure to obtain BoundSql attribute value additionalParameters: " + e, e );
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.plugins.cache;
 
-import com.wkit.lost.mybatis.plugins.pagination.exception.PageableException;
+import com.wkit.lost.mybatis.plugins.exception.MyBatisPluginException;
 import com.wkit.lost.mybatis.utils.StringUtil;
 
 import java.util.Properties;
@@ -39,7 +39,7 @@ public abstract class CacheFactory {
                     return clazz.getDeclaredConstructor().newInstance();
                 }
             } catch ( Exception e ) {
-                throw new PageableException( "SQL cache instance creation failed - `" + cacheClass + "`: " + e, e );
+                throw new MyBatisPluginException( "SQL cache instance creation failed - `" + cacheClass + "`: " + e, e );
             }
 
         }

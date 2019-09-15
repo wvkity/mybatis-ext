@@ -165,4 +165,22 @@ public final class Ascii {
     public static boolean isNullOrEmpty( String string ) {
         return string == null || string.isEmpty();
     }
+
+    /**
+     * 检查字符串是否存在内容
+     * @param string 待检查字符串
+     * @return true: 是，false: 否
+     */
+    public static boolean hasText( String string ) {
+        return !isNullOrEmpty( string ) && !string.trim().isEmpty();
+    }
+
+    /**
+     * 字符串转boolean
+     * @param string 待转换字符串
+     * @return boolean
+     */
+    public static boolean toBool( String string ) {
+        return hasText( string ) && ( "true".equalsIgnoreCase( string ) || "1".equals( string ) );
+    }
 }

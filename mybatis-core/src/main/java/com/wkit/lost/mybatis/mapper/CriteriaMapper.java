@@ -31,6 +31,14 @@ public interface CriteriaMapper<T, PK, R> {
      */
     List<R> listByCriteria( @Param( "criteria" ) final Criteria<T> criteria );
 
+
+    /**
+     * 根据limit查询范围列表
+     * @param criteria 条件对象
+     * @return 列表
+     */
+    List<R> rangeList( @Param( "criteria" ) final Criteria<T> criteria );
+
     /**
      * 查询数据
      * @param criteria 条件对象

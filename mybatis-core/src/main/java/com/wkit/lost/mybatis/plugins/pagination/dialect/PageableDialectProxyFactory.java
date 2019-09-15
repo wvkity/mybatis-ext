@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.plugins.pagination.dialect;
 
 import com.wkit.lost.mybatis.plugins.pagination.config.PageableConfiguration;
 import com.wkit.lost.mybatis.plugins.pagination.config.ThreadLocalPageable;
-import com.wkit.lost.mybatis.plugins.pagination.exception.PageableException;
+import com.wkit.lost.mybatis.plugins.exception.MyBatisPluginException;
 import com.wkit.lost.paging.Pageable;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.mapping.BoundSql;
@@ -33,7 +33,7 @@ public class PageableDialectProxyFactory implements Dialect {
     public boolean filter( MappedStatement statement, Object parameter, RowBounds rowBounds ) {
         // 检测是否已存在自定义分页查询映射
         if ( statement.getId().endsWith( PAGEABLE_RECORD_SUFFIX ) ) {
-            throw new PageableException( "Multiple paging plug-ins have been found in the current system, please check the paging plug-in configuration!" );
+            throw new MyBatisPluginException( "Multiple paging plug-ins have been found in the current system, please check the paging plug-in configuration!" );
         }
         // 获取分页对象
         Pageable pageable = configuration.getPageable( parameter, rowBounds );

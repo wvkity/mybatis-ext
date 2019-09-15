@@ -5,7 +5,7 @@ import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.plugins.cache.Cache;
 import com.wkit.lost.mybatis.plugins.cache.CacheFactory;
 import com.wkit.lost.mybatis.plugins.pagination.dialect.Dialect;
-import com.wkit.lost.mybatis.plugins.pagination.exception.PageableException;
+import com.wkit.lost.mybatis.plugins.exception.MyBatisPluginException;
 import com.wkit.lost.mybatis.plugins.utils.ExecutorUtil;
 import com.wkit.lost.mybatis.utils.MappedStatementUtil;
 import lombok.extern.log4j.Log4j2;
@@ -163,7 +163,7 @@ public class PageableExecutor extends AbstractPageableExecutor {
         }
         this.proxyFactory = ( Dialect ) ClassUtil.newInstance( this.dialectClass );
         if ( this.proxyFactory == null ) {
-            throw new PageableException( "Database paging dialect initialization failed: `" + this.dialectClass + "`" );
+            throw new MyBatisPluginException( "Database paging dialect initialization failed: `" + this.dialectClass + "`" );
         }
         // 设置属性
         this.proxyFactory.setProperties( properties );

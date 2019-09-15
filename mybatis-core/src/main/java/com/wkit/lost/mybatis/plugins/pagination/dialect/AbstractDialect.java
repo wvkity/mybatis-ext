@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.plugins.pagination.dialect;
 
-import com.wkit.lost.mybatis.plugins.sql.parser.OriginalSqlParser;
+import com.wkit.lost.mybatis.plugins.dbs.sql.OriginalSqlParser;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;

@@ -1,6 +1,5 @@
 package com.wkit.lost.mybatis.core;
 
-import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.core.condition.AbstractConditionManager;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.function.Aggregation;
@@ -8,6 +7,7 @@ import com.wkit.lost.mybatis.core.schema.Column;
 import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.executor.resultset.ReturnType;
 import com.wkit.lost.mybatis.lambda.Property;
+import com.wkit.lost.mybatis.utils.ArrayUtil;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -73,6 +73,67 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
      * @return true: 是 | false: 否
      */
     boolean isEnableAlias();
+
+    /**
+     * 设置范围
+     * <p>优先级比{@link #limit(long, long, long)}高</p>
+     * @param start 开始位置
+     * @param end   结束位置
+     * @return 当前对象
+     */
+    Criteria<T> limit( long start, long end );
+
+    /**
+     * 设置范围
+     * <p>优先级比{@link #limit(long, long)}低</p>
+     * @param pageStart 开始页
+     * @param pageEnd   结束页
+     * @param size      每页数目
+     * @return 当前对象
+     */
+    Criteria<T> limit( long pageStart, long pageEnd, long size );
+
+    /**
+     * 是否执行limit查询
+     * @return true: 是 false: 否
+     */
+    boolean isLimit();
+
+    /**
+     * limit方式
+     * @return {@link LimitMode}
+     */
+    LimitMode limitMode();
+
+    /**
+     * 获取开始位置
+     * @return 开始位置
+     */
+    long getStart();
+
+    /**
+     * 获取结束位置
+     * @return 结束位置
+     */
+    long getEnd();
+
+    /**
+     * 获取开始页
+     * @return 页数
+     */
+    long getPageStart();
+
+    /**
+     * 获取结束页
+     * @return 页数
+     */
+    long getPageEnd();
+
+    /**
+     * 获取每页数目
+     * @return 每页大小
+     */
+    long getPageSize();
 
     /**
      * 获取主条件对象

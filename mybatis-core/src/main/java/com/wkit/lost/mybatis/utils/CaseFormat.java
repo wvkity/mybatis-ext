@@ -3,6 +3,10 @@ package com.wkit.lost.mybatis.utils;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
+/**
+ * 字符串格式化
+ * @author DT
+ */
 public enum CaseFormat {
 
     /**

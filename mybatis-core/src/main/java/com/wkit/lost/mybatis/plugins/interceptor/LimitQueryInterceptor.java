@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.plugins.interceptor;
 
-import com.wkit.lost.mybatis.plugins.limit.LimitExecutor;
+import com.wkit.lost.mybatis.plugins.executor.LimitQueryExecutor;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -25,7 +25,7 @@ import java.util.Properties;
 } )
 public class LimitQueryInterceptor implements Interceptor {
 
-    private final LimitExecutor executor = new LimitExecutor();
+    private final LimitQueryExecutor executor = new LimitQueryExecutor();
 
     @Override
     public Object intercept( Invocation invocation ) throws Throwable {

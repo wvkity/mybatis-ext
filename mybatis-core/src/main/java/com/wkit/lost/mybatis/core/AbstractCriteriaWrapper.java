@@ -126,6 +126,36 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     protected boolean enableAlias;
 
     /**
+     * 开始位置
+     */
+    @Getter
+    protected long start;
+
+    /**
+     * 结束位置
+     */
+    @Getter
+    protected long end;
+
+    /**
+     * 开始页
+     */
+    @Getter
+    protected long pageStart;
+
+    /**
+     * 结束页
+     */
+    @Getter
+    protected long pageEnd;
+
+    /**
+     * 每页数目
+     */
+    @Getter
+    protected long pageSize;
+
+    /**
      * 参数序号生成
      */
     protected AtomicInteger parameterSequence;
@@ -1153,6 +1183,37 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     // endregion
 
     // region auxiliary methods
+
+    @Override
+    public Context limit( long start, long end ) {
+        this.start = start;
+        this.end = end;
+        return this.context;
+    }
+
+    @Override
+    public Context limit( long pageStart, long pageEnd, long size ) {
+        this.pageStart = pageStart;
+        this.pageEnd = pageEnd;
+        this.pageSize = size;
+        return this.context;
+    }
+
+    @Override
+    public boolean isLimit() {
+        return ( start >= 0 && end > 0 ) || ( pageStart > 0 && pageEnd > 0 );
+    }
+
+    @Override
+    public LimitMode limitMode() {
+        if ( start > 0 && end > 0 ) {
+            return LimitMode.IMMEDIATE;
+        }
+        if ( pageStart > 0 && pageEnd > 0 ) {
+            return LimitMode.PAGEABLE;
+        }
+        return LimitMode.NORMAL;
+    }
 
     @Override
     public Context and() {
