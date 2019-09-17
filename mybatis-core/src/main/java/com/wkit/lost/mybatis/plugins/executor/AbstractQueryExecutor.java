@@ -13,6 +13,7 @@ import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -72,9 +73,9 @@ public abstract class AbstractQueryExecutor implements Filter {
         // 参数对象
         Argument argument = new Argument( args, statement, executor, rowBounds, resultHandler, cacheKey, boundSql, parameter, size );
         if ( filter( argument ) ) {
-            return doIntercept( argument );
+            return doIntercept( executor, statement, parameter, rowBounds, resultHandler, cacheKey, boundSql );
         } else {
-            return executeOriginalQuery( argument );
+            return executor.query( statement, parameter, rowBounds, resultHandler, cacheKey, boundSql );
         }
     }
 
@@ -101,16 +102,6 @@ public abstract class AbstractQueryExecutor implements Filter {
             throw new IllegalArgumentException( "Failed to initialize database dialect based on the specified class name: `" + this.dialectClass + "`" );
         }
         this.factory.setProperties( properties );
-    }
-
-    /**
-     * 执行原查询
-     * @param arg 参数对象
-     * @return 结果
-     * @throws Exception 异常信息
-     */
-    protected Object executeOriginalQuery( Argument arg ) throws Exception {
-        return arg.query();
     }
 
     /**
@@ -144,10 +135,16 @@ public abstract class AbstractQueryExecutor implements Filter {
 
     /**
      * 执行拦截
-     * @param arg 参数对象
+     * @param executor      执行对象
+     * @param statement     {@link MappedStatement}
+     * @param parameter     接口参数
+     * @param rowBounds     分页参数
+     * @param resultHandler 结果处理对象
+     * @param cacheKey      缓存key
+     * @param boundSql      绑定SQL对象
      * @return 结果
      * @throws Exception 异常信息
      */
-    protected abstract Object doIntercept( Argument arg ) throws Exception;
+    protected abstract Object doIntercept( Executor executor, MappedStatement statement, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey cacheKey, BoundSql boundSql ) throws Exception;
 
 }

@@ -1,62 +1,48 @@
 package com.wkit.lost.mybatis.plugins.dbs.dialect;
 
-import com.wkit.lost.mybatis.plugins.executor.Argument;
+import com.wkit.lost.mybatis.plugins.zconfig.ThreadLocalPageable;
+import com.wkit.lost.paging.Pageable;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.session.RowBounds;
 
-import java.util.List;
-import java.util.Properties;
+import java.util.Optional;
 
 /**
  * 抽象分页方言
  * @author DT
  */
 public abstract class AbstractPageableDialect extends AbstractDialect implements PageableDialect {
-    @Override
-    public boolean beforeOfQueryRecord( Argument arg ) {
-        return false;
+
+    /**
+     * 获取分页对象
+     * @return {@link Pageable}
+     */
+    public Pageable getPageable() {
+        return ThreadLocalPageable.getPageable();
     }
 
     @Override
-    public String generateQueryRecordSql( Argument arg ) {
-        return null;
+    public boolean beforeOfQueryRecord( MappedStatement statement, Object parameter, RowBounds rowBounds ) {
+        return Optional.ofNullable( getPageable() ).map( pageable -> pageable.getSize() > 0 ).orElse( false );
     }
 
     @Override
-    public boolean afterOfQueryRecord( long records, Argument arg ) {
-        return false;
+    public boolean executePagingOnBefore( MappedStatement statement, Object parameter, RowBounds rowBounds ) {
+        if ( isLimit() ) {
+            return super.executePagingOnBefore( statement, parameter, rowBounds );
+        } else {
+            return Optional.ofNullable( getPageable() ).map( pageable -> pageable.getSize() > 0 ).orElse( false );
+        }
     }
 
     @Override
-    public boolean executePagingOnBefore( Argument arg ) {
-        return false;
+    public boolean afterOfQueryRecord( long records, Object parameter, RowBounds rowBounds ) {
+        Pageable pageable = getPageable();
+        pageable.setRecord( records );
+        if ( pageable.getSize() < 0 ) {
+            return false;
+        }
+        return pageable.hasNext();
     }
 
-    @Override
-    public void setProperties( Properties props ) {
-
-    }
-
-    @Override
-    public boolean filter( Argument arg ) {
-        return false;
-    }
-
-    @Override
-    public Object processParameter( Argument arg ) {
-        return null;
-    }
-
-    @Override
-    public String generatePageableSql( Argument arg ) {
-        return null;
-    }
-
-    @Override
-    public Object executePagingOnAfter( List result, Argument arg ) {
-        return null;
-    }
-
-    @Override
-    public void completed() {
-
-    }
 }

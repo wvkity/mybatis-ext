@@ -3,8 +3,8 @@ package com.wkit.lost.mybatis.spring;
 import com.wkit.lost.mybatis.builder.xml.MyBatisXMLConfigBuilder;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
-import com.wkit.lost.mybatis.plugins.interceptor.LimitQueryInterceptor;
-import com.wkit.lost.mybatis.plugins.interceptor.PageableQueryInterceptor;
+import com.wkit.lost.mybatis.plugins.interceptor.LimitInterceptor;
+import com.wkit.lost.mybatis.plugins.interceptor.PageableInterceptor;
 import com.wkit.lost.mybatis.session.MyBatisConfiguration;
 import com.wkit.lost.mybatis.session.MyBatisSqlSessionFactoryBuilder;
 import com.wkit.lost.mybatis.type.handlers.EnumSupport;
@@ -174,9 +174,11 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
             } );
         }
 
+        // 默认拦截器LimitPlugin > PageablePlugin，存在多个插件，由于内部使用代理(代理类又被代理)，越是在外面优先级越高，故LimitPlugin需要注册在后面
+
         // 注册分页拦截器
         if ( customConfiguration.isUsePageablePlugin() ) {
-            PageableQueryInterceptor interceptor = new PageableQueryInterceptor();
+            PageableInterceptor interceptor = new PageableInterceptor();
             if ( this.configurationProperties != null ) {
                 interceptor.setProperties( this.configurationProperties );
             }
@@ -185,7 +187,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
 
         // 注册limit查询拦截器
         if ( customConfiguration.isUseLimitPlugin() ) {
-            LimitQueryInterceptor interceptor = new LimitQueryInterceptor();
+            LimitInterceptor interceptor = new LimitInterceptor();
             if ( this.configurationProperties != null ) {
                 interceptor.setProperties( configurationProperties );
             }

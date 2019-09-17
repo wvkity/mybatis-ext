@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.plugins.cache;
+package com.wkit.lost.mybatis.plugins.zcache;
 
 import com.wkit.lost.mybatis.plugins.exception.MyBatisPluginException;
 import com.wkit.lost.mybatis.utils.StringUtil;

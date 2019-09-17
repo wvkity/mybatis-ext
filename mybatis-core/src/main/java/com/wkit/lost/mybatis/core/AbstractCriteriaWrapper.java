@@ -1206,7 +1206,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
 
     @Override
     public LimitMode limitMode() {
-        if ( start > 0 && end > 0 ) {
+        if ( start >= 0 && end > 0 ) {
             return LimitMode.IMMEDIATE;
         }
         if ( pageStart > 0 && pageEnd > 0 ) {

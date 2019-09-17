@@ -1,6 +1,5 @@
 package com.wkit.lost.paging;
 
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
@@ -21,9 +20,9 @@ public abstract class AbstractPager implements Pageable {
     public static final long ZERO = 0;
 
     /**
-     * 当前页
+     * 第一页
      */
-    public static final long CURRENT_PAGE = 1;
+    public static final long FIRST_PAGE = 1;
 
     /**
      * 每页显示数目
@@ -84,7 +83,7 @@ public abstract class AbstractPager implements Pageable {
      * 构造方法
      */
     public AbstractPager() {
-        this( CURRENT_PAGE, PAGE_SIZE );
+        this( FIRST_PAGE, PAGE_SIZE );
     }
 
     /**
@@ -199,15 +198,13 @@ public abstract class AbstractPager implements Pageable {
 
     @Override
     public long getPage() {
-        if ( this.page < CURRENT_PAGE ) {
-            this.page = CURRENT_PAGE;
-        }
+        this.page = Math.max( this.page, FIRST_PAGE );
         return this.page;
     }
 
     @Override
     public void setPage( long page ) {
-        this.page = page < 1 ? CURRENT_PAGE : page;
+        this.page = page < 1 ? FIRST_PAGE : page;
     }
 
     @Override
@@ -227,7 +224,7 @@ public abstract class AbstractPager implements Pageable {
 
     @Override
     public void setRecord( long record ) {
-        this.record = record < 0 ? ZERO : record;
+        this.record = Math.max( ZERO, record );
         this.calculateTotal();
     }
 
@@ -260,5 +257,13 @@ public abstract class AbstractPager implements Pageable {
     @Override
     public long getEnd() {
         return this.end;
+    }
+
+    @Override
+    public boolean hasNext() {
+        if ( record > 0 ) {
+            return record > ( getPage() - 1 ) * getSize();
+        }
+        return false;
     }
 }

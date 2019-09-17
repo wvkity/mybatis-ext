@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.plugins.interceptor;
 
-import com.wkit.lost.mybatis.plugins.pagination.executor.PageableExecutor;
+import com.wkit.lost.mybatis.plugins.executor.LimitQueryExecutor;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -16,16 +16,16 @@ import org.apache.ibatis.session.RowBounds;
 import java.util.Properties;
 
 /**
- * 分页拦截器
+ * 指定范围查询拦截器
  * @author DT
  */
 @Intercepts( {
-        @Signature( type = Executor.class, method = "query", args = { MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class }),
-        @Signature( type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class, CacheKey.class, BoundSql.class })
+        @Signature( type = Executor.class, method = "query", args = { MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class } ),
+        @Signature( type = Executor.class, method = "query", args = { MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class, CacheKey.class, BoundSql.class } )
 } )
-public class PageableQueryInterceptor implements Interceptor {
+public class LimitInterceptor implements Interceptor {
 
-    private final PageableExecutor executor = new PageableExecutor();
+    private final LimitQueryExecutor executor = new LimitQueryExecutor();
 
     @Override
     public Object intercept( Invocation invocation ) throws Throwable {

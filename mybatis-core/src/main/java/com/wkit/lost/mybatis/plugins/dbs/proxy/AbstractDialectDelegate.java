@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
 @Log4j2
-public abstract class AbstractDelegate {
+public abstract class AbstractDialectDelegate {
 
     /**
      * 数据库方言

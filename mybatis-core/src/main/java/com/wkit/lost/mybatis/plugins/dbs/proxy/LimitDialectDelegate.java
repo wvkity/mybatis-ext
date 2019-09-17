@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.plugins.dbs.dialect.AbstractDialect;
 
 import java.util.Optional;
 
-public class LimitDialectDelegate extends AbstractDelegate {
+public class LimitDialectDelegate extends AbstractDialectDelegate {
 
     @Override
     public AbstractDialect getDelegate() {

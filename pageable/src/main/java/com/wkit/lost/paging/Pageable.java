@@ -79,4 +79,10 @@ public interface Pageable extends Serializable {
      * @return 页码
      */
     long getEnd();
+
+    /**
+     * 检查是否存在下一页
+     * @return true: 是, false: 否
+     */
+    boolean hasNext();
 }

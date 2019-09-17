@@ -1,7 +1,6 @@
-package com.wkit.lost.mybatis.plugins.utils;
+package com.wkit.lost.mybatis.plugins.executor;
 
-import com.wkit.lost.mybatis.plugins.executor.Argument;
-import com.wkit.lost.mybatis.plugins.pagination.dialect.Dialect;
+import com.wkit.lost.mybatis.plugins.dbs.dialect.Dialect;
 import com.wkit.lost.mybatis.plugins.exception.MyBatisPluginException;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
@@ -20,7 +19,7 @@ import java.util.Optional;
  * 执行工具类
  * @author DT
  */
-public abstract class ExecutorUtil {
+public abstract class Executors {
 
     private static Field additionalParametersField;
 

@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.plugins.pagination.config;
+package com.wkit.lost.mybatis.plugins.zconfig;
 
 import com.wkit.lost.paging.Pageable;
 
@@ -27,7 +27,7 @@ public class ThreadLocalPageable {
      */
     public static void setPageable( Pageable pageable ) {
         if ( pageable == null ) {
-            clearPageable();
+            remove();
         } else {
             THREAD_LOCAL_PAGEABLE.set( pageable );
         }
@@ -36,7 +36,7 @@ public class ThreadLocalPageable {
     /**
      * 移除本地分页对象
      */
-    public static void clearPageable() {
+    public static void remove() {
         THREAD_LOCAL_PAGEABLE.remove();
     }
 }

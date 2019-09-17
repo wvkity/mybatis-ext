@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.plugins.cache;
+package com.wkit.lost.mybatis.plugins.zcache;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 

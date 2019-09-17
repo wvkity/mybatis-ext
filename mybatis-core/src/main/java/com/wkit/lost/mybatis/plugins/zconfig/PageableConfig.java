@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.plugins.pagination.config;
+package com.wkit.lost.mybatis.plugins.zconfig;
 
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.plugins.utils.PageableUtil;
@@ -15,7 +15,7 @@ import java.util.Properties;
  * 分页配置
  * @author DT
  */
-public class PageableConfiguration {
+public class PageableConfig {
 
     /**
      * RowBounds参数offset是否作为Pages使用

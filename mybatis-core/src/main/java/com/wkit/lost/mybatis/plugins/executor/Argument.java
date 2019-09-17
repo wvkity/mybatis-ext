@@ -11,6 +11,7 @@ import org.apache.ibatis.session.RowBounds;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -79,7 +80,8 @@ public class Argument {
     @Getter
     private int size;
 
-    public Argument( Object[] args, MappedStatement statement, Executor executor, RowBounds rowBounds, ResultHandler resultHandler, CacheKey cacheKey, BoundSql boundSql, Object parameter, int size ) {
+    public Argument( Object[] args, MappedStatement statement, Executor executor, RowBounds rowBounds,
+                     ResultHandler resultHandler, CacheKey cacheKey, BoundSql boundSql, Object parameter, int size ) {
         this.args = args;
         this.statement = statement;
         this.executor = executor;
@@ -105,7 +107,7 @@ public class Argument {
      */
     @SuppressWarnings( "unchecked" )
     public <T> T getParameter( String key ) {
-        if ( Ascii.hasText( key ) ) {
+        if ( Ascii.hasText( key ) && paramMap.containsKey( key ) ) {
             Object value = paramMap.get( key );
             if ( value != null ) {
                 return ( T ) value;
@@ -119,7 +121,7 @@ public class Argument {
      * @return 结果
      * @throws SQLException 异常信息
      */
-    public Object query() throws SQLException {
+    public <E> List<E> query() throws SQLException {
         return executor.query( statement, parameter, rowBounds, resultHandler, cacheKey, boundSql );
     }
 
