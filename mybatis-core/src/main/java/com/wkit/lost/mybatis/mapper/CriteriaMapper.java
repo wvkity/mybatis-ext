@@ -11,11 +11,10 @@ import java.util.Map;
 /**
  * 查询数据操作接口
  * @param <T>  泛型类
- * @param <PK> 主键类型
  * @param <R>  返回值类型
  */
 @EnableMapper
-public interface CriteriaMapper<T, PK, R> {
+public interface CriteriaMapper<T, R> {
 
     /**
      * 查询记录是否存在

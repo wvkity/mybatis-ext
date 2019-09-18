@@ -9,10 +9,9 @@ import java.util.Map;
 /**
  * 查询操作接口
  * @param <T>  泛型类
- * @param <PK> 主键类型
  * @param <R>  返回值类
  */
-public interface CriteriaService<T, PK, R> {
+public interface CriteriaService<T, R> {
 
     /**
      * 根据Criteria对象查询记录是否存在

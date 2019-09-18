@@ -5,10 +5,9 @@ import com.wkit.lost.mybatis.annotation.EnableMapper;
 /**
  * 保存数据操作接口
  * @param <T>  泛型类
- * @param <PK> 主键类型
  */
 @EnableMapper
-public interface InsertMapper<T, PK> {
+public interface InsertMapper<T> {
 
     /**
      * 保存记录

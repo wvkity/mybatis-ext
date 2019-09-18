@@ -2,10 +2,10 @@ package com.wkit.lost.mybatis.service;
 
 /**
  * 更细操作接口
- * @param <T>  泛型类
- * @param <PK> 主键类型
+ * @param <T>  泛型类型
+ * @author DT
  */
-public interface UpdateService<T, PK> {
+public interface UpdateService<T> {
 
     /**
      * 根据指定对象更新记录

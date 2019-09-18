@@ -1,13 +1,13 @@
 package com.wkit.lost.mybatis.service;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
  * 删除操作接口
- * @param <T> 泛型类
- * @param <PK> 主键类型
+ * @param <T>  泛型类
  */
-public interface DeleteService<T, PK> {
+public interface DeleteService<T> {
 
     /**
      * 根据指定对象删除记录
@@ -19,10 +19,10 @@ public interface DeleteService<T, PK> {
 
     /**
      * 根据主键删除记录
-     * @param primaryKey 主键
+     * @param id 主键
      * @return 受影响行数
      */
-    int deleteById( PK primaryKey );
+    int delete( Serializable id );
 
     /**
      * 根据指定对象批量删除记录
@@ -37,20 +37,19 @@ public interface DeleteService<T, PK> {
      * @param entities 对象集合
      * @return 受影响行数
      */
-    int batchDelete( Collection<T> entities );
+    int batchDeleteByEntities( Collection<T> entities );
 
     /**
      * 根据主键批量删除记录
-     * @param primaryKeys 主键数组
+     * @param idArray 主键数组
      * @return 受影响行数
      */
-    @SuppressWarnings( "unchecked" )
-    int batchDeleteById( PK... primaryKeys );
-    
+    int batchDelete( Serializable... idArray );
+
     /**
      * 根据主键批量删除记录
-     * @param primaryKeys 主键集合
+     * @param idList 主键集合
      * @return 受影响行数
      */
-    int batchDeleteById( Collection<PK> primaryKeys );
+    int batchDelete( Collection<? extends Serializable> idList );
 }

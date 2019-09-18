@@ -1,16 +1,17 @@
 package com.wkit.lost.mybatis.service;
 
-import com.wkit.lost.mybatis.utils.ArrayUtil;
-import com.wkit.lost.mybatis.utils.CollectionUtil;
-import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.factory.AbstractCriteriaBuilderFactory;
 import com.wkit.lost.mybatis.mapper.MapperExecutor;
+import com.wkit.lost.mybatis.utils.ArrayUtil;
+import com.wkit.lost.mybatis.utils.CollectionUtil;
+import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.paging.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,13 +23,12 @@ import java.util.stream.Collectors;
 
 /**
  * 泛型接口
- * @param <T>  实体类
- * @param <PK> 主键类型
- * @param <R>  返回值类型
+ * @param <T> 实体类
+ * @param <R> 返回值类型
  * @author DT
  */
-public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T, PK, R>, T, PK, R> extends AbstractCriteriaBuilderFactory<T>
-        implements ServiceExecutor<T, PK, R> {
+public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T, R>, T, R> extends AbstractCriteriaBuilderFactory<T>
+        implements ServiceExecutor<T, R> {
 
     @Inject
     protected Executor executor;
@@ -74,49 +74,48 @@ public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T,
 
     @Transactional( rollbackFor = Exception.class )
     @Override
-    public int deleteById( PK primaryKey ) {
-        if ( primaryKey == null ) {
+    public int delete( Serializable id ) {
+        if ( id == null ) {
             throw new MyBatisException( "The primary key parameter cannot be empty" );
         }
-        return executor.deleteById( primaryKey );
+        return executor.deleteById( id );
     }
 
     @SuppressWarnings( "unchecked" )
     @Transactional( rollbackFor = Exception.class )
     @Override
     public int batchDelete( T... entities ) {
-        return batchDelete( Arrays.asList( entities ) );
+        return batchDeleteByEntities( Arrays.asList( entities ) );
     }
 
     @Transactional( rollbackFor = Exception.class )
     @Override
-    public int batchDelete( Collection<T> entities ) {
-        if ( CollectionUtil.isEmpty( entities ) ) {
-            throw new MyBatisException( "The specified object collection parameter cannot be empty" );
+    public int batchDeleteByEntities( Collection<T> entities ) {
+        if ( entities == null ) {
+            throw new MyBatisException( "The entity object collection parameter cannot be empty." );
         }
         List<T> list = entities.stream().filter( Objects::nonNull ).collect( Collectors.toCollection( ArrayList::new ) );
         if ( CollectionUtil.isEmpty( list ) ) {
-            throw new MyBatisException( "The specified object collection parameter cannot be empty" );
+            throw new MyBatisException( "The entity object collection parameter cannot be empty." );
         }
         return executor.batchDelete( list );
     }
 
-    @SuppressWarnings( "unchecked" )
     @Transactional( rollbackFor = Exception.class )
     @Override
-    public int batchDeleteById( PK... primaryKeys ) {
-        return batchDeleteById( Arrays.asList( primaryKeys ) );
+    public int batchDelete( Serializable... idArray ) {
+        return batchDelete( ArrayUtil.toList( idArray ) );
     }
 
     @Transactional( rollbackFor = Exception.class )
     @Override
-    public int batchDeleteById( Collection<PK> primaryKeys ) {
-        if ( CollectionUtil.isEmpty( primaryKeys ) ) {
-            throw new MyBatisException( "The primary key collection parameter cannot be empty" );
+    public int batchDelete( Collection<? extends Serializable> idList ) {
+        if ( CollectionUtil.isEmpty( idList ) ) {
+            throw new MyBatisException( "Primary key set parameters cannot be empty" );
         }
-        List<PK> list = primaryKeys.stream().filter( Objects::nonNull ).collect( Collectors.toCollection( ArrayList::new ) );
+        List<? extends Serializable> list = idList.stream().filter( Objects::nonNull ).collect( Collectors.toCollection( ArrayList::new ) );
         if ( CollectionUtil.isEmpty( list ) ) {
-            throw new MyBatisException( "The primary key collection parameter cannot be empty" );
+            throw new MyBatisException( "Primary key set parameters cannot be empty" );
         }
         return executor.batchDeleteById( list );
     }
@@ -132,8 +131,8 @@ public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T,
     }
 
     @Override
-    public boolean existsById( PK primaryKey ) {
-        return this.executor.existsById( primaryKey ) > 0;
+    public boolean exists( Serializable id ) {
+        return this.executor.existsById( id ) > 0;
     }
 
     @Override
@@ -142,19 +141,17 @@ public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T,
     }
 
     @Override
-    public Optional<R> selectOne( PK primaryKey ) {
-        return primaryKey == null ? Optional.empty() : executor.selectOne( primaryKey );
-    }
-
-    @SuppressWarnings( "unchecked" )
-    @Override
-    public List<R> listById( PK... primaryKeys ) {
-        return ArrayUtil.isEmpty( primaryKeys ) ? new ArrayList<>() : listById( Arrays.asList( primaryKeys ) );
+    public Optional<R> selectOne( Serializable id ) {
+        return id == null ? Optional.empty() : executor.selectOne( id );
     }
 
     @Override
-    public List<R> listById( Collection<PK> primaryKeys ) {
-        List<PK> pks = Optional.ofNullable( primaryKeys )
+    public List<R> list( Serializable... idArray ) {
+        return ArrayUtil.isEmpty( idArray ) ? new ArrayList<>() : list( Arrays.asList( idArray ) );
+    }
+
+    public List<R> list( Collection<? extends Serializable> idList ) {
+        List<? extends Serializable> pks = Optional.ofNullable( idList )
                 .orElse( new ArrayList<>() )
                 .stream()
                 .filter( Objects::nonNull )
@@ -170,11 +167,11 @@ public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T,
     @SuppressWarnings( "unchecked" )
     @Override
     public List<R> list( T... entities ) {
-        return ArrayUtil.isEmpty( entities ) ? new ArrayList<>() : list( Arrays.asList( entities ) );
+        return ArrayUtil.isEmpty( entities ) ? new ArrayList<>() : listByEntities( Arrays.asList( entities ) );
     }
 
     @Override
-    public List<R> list( Collection<T> entities ) {
+    public List<R> listByEntities( Collection<T> entities ) {
         List<T> list = Optional.ofNullable( entities )
                 .orElse( new ArrayList<>() )
                 .stream()

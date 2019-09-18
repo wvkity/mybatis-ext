@@ -5,10 +5,9 @@ import com.wkit.lost.mybatis.annotation.EnableMapper;
 /**
  * 更新数据操作接口
  * @param <T>  泛型类
- * @param <PK> 主键类型
  */
 @EnableMapper
-public interface UpdateMapper<T, PK> {
+public interface UpdateMapper<T> {
 
     /**
      * 根据指定对象更新记录(主键为条件，更新所有字段[updatable=true])

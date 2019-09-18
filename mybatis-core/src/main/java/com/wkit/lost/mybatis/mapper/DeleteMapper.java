@@ -3,16 +3,16 @@ package com.wkit.lost.mybatis.mapper;
 import com.wkit.lost.mybatis.annotation.EnableMapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
 /**
  * 删除数据操作接口
- * @param <T>  泛型类
- * @param <PK> 主键类型
+ * @param <T> 泛型类
  */
 @EnableMapper
-public interface DeleteMapper<T, PK> {
+public interface DeleteMapper<T> {
 
     /**
      * 根据指定对象删除记录
@@ -23,10 +23,10 @@ public interface DeleteMapper<T, PK> {
 
     /**
      * 根据主键删除记录
-     * @param primaryKey 主键
+     * @param id 主键
      * @return 受影响行数
      */
-    int deleteById( PK primaryKey );
+    int deleteById( Serializable id );
 
     /**
      * 根据指定对象批量删除记录
@@ -37,9 +37,9 @@ public interface DeleteMapper<T, PK> {
 
     /**
      * 根据主键批量删除记录
-     * @param primaryKeys 主键集合
+     * @param idList 主键集合
      * @return 受影响行数
      */
-    int batchDeleteById( @Param( "primaryKeys" ) List<PK> primaryKeys );
-    
+    int batchDeleteById( @Param( "primaryKeys" ) List<? extends Serializable> idList );
+
 }

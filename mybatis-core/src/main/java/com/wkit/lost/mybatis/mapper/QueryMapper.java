@@ -4,18 +4,18 @@ import com.wkit.lost.mybatis.annotation.EnableMapper;
 import com.wkit.lost.paging.Pageable;
 import org.apache.ibatis.annotations.Param;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * 查询数据操作接口
- * @param <T>  泛型类
- * @param <PK> 主键
- * @param <R>  返回值类
+ * @param <T> 泛型类
+ * @param <R> 返回值类
  */
 @EnableMapper
-public interface QueryMapper<T, PK, R> {
+public interface QueryMapper<T, R> {
 
     /**
      * 根据指定对象查询记录是否存在
@@ -26,10 +26,10 @@ public interface QueryMapper<T, PK, R> {
 
     /**
      * 根据主键查询记录是否存在
-     * @param primaryKey 主键值
+     * @param id 主键值
      * @return 1: 存在 | 0: 不存在
      */
-    int existsById( PK primaryKey );
+    int existsById( Serializable id );
 
     /**
      * 根据指定对象查询记录数
@@ -40,17 +40,17 @@ public interface QueryMapper<T, PK, R> {
 
     /**
      * 根据条件查询记录
-     * @param primaryKey 主键
+     * @param id 主键
      * @return 对应数据
      */
-    Optional<R> selectOne( PK primaryKey );
+    Optional<R> selectOne( Serializable id );
 
     /**
      * 根据多个主键查询记录
-     * @param primaryKeys 主键集合
+     * @param idList 主键集合
      * @return 多条记录
      */
-    List<R> list( @Param( "primaryKeys" ) Collection<PK> primaryKeys );
+    List<R> list( @Param( "primaryKeys" ) Collection<? extends Serializable> idList );
 
     /**
      * 根据制定对象查询记录
