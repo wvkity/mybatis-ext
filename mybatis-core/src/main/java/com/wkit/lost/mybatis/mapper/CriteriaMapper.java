@@ -1,6 +1,5 @@
 package com.wkit.lost.mybatis.mapper;
 
-import com.wkit.lost.mybatis.annotation.EnableMapper;
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.paging.Pageable;
 import org.apache.ibatis.annotations.Param;
@@ -13,7 +12,6 @@ import java.util.Map;
  * @param <T>  泛型类
  * @param <R>  返回值类型
  */
-@EnableMapper
 public interface CriteriaMapper<T, R> {
 
     /**
