@@ -67,6 +67,14 @@ public enum CaseFormat {
         String normalizeFirstWord( String word ) {
             return Ascii.toLowerCase( word );
         }
+
+        @Override
+        String convert( CaseFormat format, String source ) {
+            if ( format == UPPER_UNDERSCORE && CHECK_FOR_UPPER_NORMAL.matcher( source ).matches() ) {
+                return source;
+            }
+            return super.convert( format, source );
+        }
     },
 
     /**
@@ -138,6 +146,7 @@ public enum CaseFormat {
     private final Predicate<Character> charMatcher;
     private final String wordSeparator;
     private static final Pattern CHECK_FOR_NORMAL = Pattern.compile( "[A-Z]+\\d*" );
+    private static final Pattern CHECK_FOR_UPPER_NORMAL = Pattern.compile( "[A-Z_]+\\d*" );
 
     CaseFormat( Predicate<Character> charMatcher, String wordSeparator ) {
         this.charMatcher = charMatcher;

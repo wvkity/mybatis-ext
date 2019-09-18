@@ -1,7 +1,9 @@
 package com.wkit.lost.mybatis.resolver;
 
+import com.wkit.lost.mybatis.annotation.Entity;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.AnnotationUtil;
+import com.wkit.lost.mybatis.utils.Ascii;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.annotation.ColumnExt;
 import com.wkit.lost.mybatis.annotation.GeneratedValue;
@@ -154,6 +156,10 @@ public class DefaultEntityResolver implements EntityResolver {
                     schema = tableAnnotation.schema();
                 }
             }
+            //  解析@Entity注解
+            if ( Ascii.isNullOrEmpty( tableName ) ) {
+                tableName = processEntityAnnotation( entity );
+            }
         }
         if ( StringUtil.isBlank( catalog ) ) {
             catalog = this.configuration.getCatalog();
@@ -178,8 +184,18 @@ public class DefaultEntityResolver implements EntityResolver {
         return table;
     }
 
-    protected void processEntityAnnotation( final Class<?> entity ) {
-
+    /**
+     * 处理@Entity注解
+     * @param entity 实体类
+     * @return 表名
+     */
+    protected String processEntityAnnotation( final Class<?> entity ) {
+        if ( entity.isAnnotationPresent( Entity.class ) ) {
+            return entity.getDeclaredAnnotation( Entity.class ).name();
+        } else if ( entity.isAnnotationPresent( javax.persistence.Entity.class ) ) {
+            return entity.getDeclaredAnnotation( javax.persistence.Entity.class ).name();
+        }
+        return null;
     }
 
     /**
