@@ -96,7 +96,11 @@ public class Argument {
 
     @SuppressWarnings( "unchecked" )
     private void init() {
-        paramMap = Optional.ofNullable( parameter ).map( value -> ( Map<String, Object> ) value ).orElse( new HashMap<>( 0 ) );
+        if ( parameter instanceof Map ) {
+            paramMap = ( Map<String, Object> ) parameter;
+        } else {
+            paramMap = new HashMap<>();
+        }
     }
 
     /**

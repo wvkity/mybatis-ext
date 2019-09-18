@@ -22,14 +22,14 @@ public class InsertSelectiveSqlBuilder extends AbstractSqlBuilder {
         String columnSegment = "(<trim suffixOverrides=\", \">\n" +
                 ( primary != null ? " " + primary.getColumn() + ", " : "" ) +
                 columns.stream()
-                        .map( column -> converToIfTagOfNotNull( false, Execute.INSERT, false, 0, null, column, ", ", null ) )
+                        .map( column -> convertToIfTagOfNotNull( false, Execute.INSERT, false, 0, null, column, ", ", null ) )
                         .collect( Collectors.joining( "", "\n", "\n" ) )
                 + "\n</trim>)";
         // 值部分
         String valueSegment = "(<trim suffixOverrides=\", \">\n" +
                 ( primary != null ? primary.convertToInsertArg() + ", " : "" ) +
                 columns.stream()
-                        .map( column -> converToIfTagOfNotNull( true, Execute.INSERT, false, 0, null, column, ", ", null ) )
+                        .map( column -> convertToIfTagOfNotNull( true, Execute.INSERT, false, 0, null, column, ", ", null ) )
                         .collect( Collectors.joining( "", "\n", "\n" ) ) +
                 "\n</trim>)";
         return insert( columnSegment, valueSegment );

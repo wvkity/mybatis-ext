@@ -14,7 +14,7 @@ public class CountSqlBuilder extends AbstractSqlBuilder {
     @Override
     public String build() {
         String condition = "<where>" + table.getColumns().stream()
-                .map( column -> converToIfTagOfNotNull( true, Execute.REPLACE, true, 0, null, column, "", AND ) )
+                .map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, true, 0, null, column, "", AND ) )
                 .collect( Collectors.joining( "", "\n", "\n" ) )
                 + "\n</where>";
         return select( "COUNT(*) COUNT", condition );

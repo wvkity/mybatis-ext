@@ -18,7 +18,7 @@ public enum SqlTemplate {
     SELECT {
         @Override
         public String toSqlString( Table table, String alias ) {
-            return "SELECT %s FROM " + SqlTemplate.parseTableName( table ) + (StringUtil.isBlank( alias ) ? "" : " " + alias + " ") + "%s";
+            return "SELECT %s FROM " + SqlTemplate.parseTableName( table ) + (StringUtil.isBlank( alias ) ? " " : " " + alias + " ") + "%s";
         }
     },
 

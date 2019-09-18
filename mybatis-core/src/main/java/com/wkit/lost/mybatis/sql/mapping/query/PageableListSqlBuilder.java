@@ -19,7 +19,7 @@ public class PageableListSqlBuilder extends AbstractSqlBuilder {
                 .collect( Collectors.joining( ", " ) );
         String condition = "<where>" +
                 table.getColumns().stream()
-                        .map( column -> converToIfTagOfNotNull( true, Execute.REPLACE, false, 0, "entity", column, "", AND ) )
+                        .map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, false, 0, "entity", column, "", AND ) )
                         .collect( Collectors.joining( "", "\n", "\n" ) )
                 + "\n</where>";
         return select( querySegment, condition );

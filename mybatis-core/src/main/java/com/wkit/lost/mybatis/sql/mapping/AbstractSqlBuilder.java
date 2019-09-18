@@ -159,7 +159,7 @@ public abstract class AbstractSqlBuilder implements SqlBuilder {
      * @return XML-IF标签字符串
      * @see Column#convertToArg(Execute, String, String, String, String)
      */
-    protected String converToIfTagOfNotNull( final boolean toValue, final Execute execute, final boolean isQuery, final int indent, final String argName, final Column column, final String separator, String join ) {
+    protected String convertToIfTagOfNotNull( final boolean toValue, final Execute execute, final boolean isQuery, final int indent, final String argName, final Column column, final String separator, String join ) {
         boolean hasArgName = StringUtil.hasText( argName );
         String property = column.getProperty();
         StringBuffer buffer = new StringBuffer( 60 );

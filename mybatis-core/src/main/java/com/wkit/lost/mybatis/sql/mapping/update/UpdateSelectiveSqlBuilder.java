@@ -18,7 +18,7 @@ public class UpdateSelectiveSqlBuilder extends AbstractSqlBuilder {
         Set<Column> columns = table.getUpdatableColumns();
         buffer.append( "<trim prefix=\"SET\" suffixOverrides=\",\">\n" );
         for ( Column column : columns ) {
-            buffer.append( this.converToIfTagOfNotNull( true, Execute.REPLACE, false, 0, null, column, ",", "" ) );
+            buffer.append( this.convertToIfTagOfNotNull( true, Execute.REPLACE, false, 0, null, column, ",", "" ) );
         }
         buffer.append( "</trim>" );
         String condition = "WHERE " + this.table.getPrimaryKey().convertToArg( Execute.REPLACE, null );

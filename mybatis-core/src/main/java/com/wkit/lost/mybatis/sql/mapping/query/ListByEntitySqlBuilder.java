@@ -19,7 +19,7 @@ public class ListByEntitySqlBuilder extends AbstractSqlBuilder {
                 .collect( Collectors.joining( ", " ) );
         String condition = "<where>" +
                 table.getColumns().stream()
-                        .map( column -> converToIfTagOfNotNull( true, Execute.REPLACE, false, 0, null, column, "", AND ) )
+                        .map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, false, 0, null, column, "", AND ) )
                         .collect( Collectors.joining( "", "\n", "\n" ) )
                 + "\n</where>";
         return select( querySegment, condition );

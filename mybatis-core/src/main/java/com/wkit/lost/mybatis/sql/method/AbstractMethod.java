@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.sql.method;
 
+import com.wkit.lost.mybatis.mapper.MapperSameExecutor;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.schema.Table;
@@ -49,9 +50,15 @@ public abstract class AbstractMethod implements Method {
         this.languageDriver = this.configuration.getDefaultScriptingLanguageInstance();
         if ( entityClass != null ) {
             // 获取返回类型
-            Class<?> resultType = extractGenericClass( mapperInterface, 2 );
-            if ( resultType == null ) {
+            int index = MapperSameExecutor.class.isAssignableFrom( mapperInterface ) ? 0 : 1;
+            Class<?> resultType;
+            if ( index == 0 ) {
                 resultType = entityClass;
+            } else {
+                resultType = extractGenericClass( mapperInterface, index );
+                if ( resultType == null ) {
+                    resultType = entityClass;
+                }
             }
             // 解析实体-表映射信息
             Table table = EntityHandler.intercept( assistant, entityClass );
