@@ -8,5 +8,5 @@ import com.wkit.lost.mybatis.starter.example.vo.SchoolVo;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DefaultSchoolService extends AbstractServiceExecutor<SchoolMapper, School, String, SchoolVo> implements SchoolService {
+public class DefaultSchoolService extends AbstractServiceExecutor<SchoolMapper, School, SchoolVo> implements SchoolService {
 }

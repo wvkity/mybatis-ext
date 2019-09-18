@@ -8,5 +8,5 @@ import com.wkit.lost.mybatis.starter.example.vo.ClassVo;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DefaultClassService extends AbstractServiceExecutor<ClassMapper, Class, Long, ClassVo> implements ClassService {
+public class DefaultClassService extends AbstractServiceExecutor<ClassMapper, Class, ClassVo> implements ClassService {
 }

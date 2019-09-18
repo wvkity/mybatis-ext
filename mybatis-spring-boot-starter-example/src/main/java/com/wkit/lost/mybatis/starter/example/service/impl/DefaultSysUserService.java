@@ -7,6 +7,6 @@ import com.wkit.lost.mybatis.starter.example.service.SysUserService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DefaultSysUserService extends AbstractServiceExecutor<SysUserMapper, SysUser, Long, SysUser> implements SysUserService {
+public class DefaultSysUserService extends AbstractServiceExecutor<SysUserMapper, SysUser, SysUser> implements SysUserService {
     
 }

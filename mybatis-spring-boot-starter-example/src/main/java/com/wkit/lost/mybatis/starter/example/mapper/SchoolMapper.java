@@ -6,5 +6,5 @@ import com.wkit.lost.mybatis.starter.example.vo.SchoolVo;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SchoolMapper extends MapperExecutor<School, String, SchoolVo> {
+public interface SchoolMapper extends MapperExecutor<School, SchoolVo> {
 }
