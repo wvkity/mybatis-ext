@@ -61,12 +61,40 @@ public class DefaultEntityResolver implements EntityResolver {
      */
     private PhysicalNamingStrategy physicalNamingStrategy;
 
+    /**
+     * 属性解析器
+     */
+    private FieldResolver fieldResolver;
+
+    /**
+     * 构造方法
+     * @param configuration 配置
+     */
+    public DefaultEntityResolver( MyBatisCustomConfiguration configuration ) {
+        this.configuration = configuration;
+        init();
+    }
+
+    private void init() {
+        // 命名策略处理器
+        if ( configuration == null ) {
+            this.physicalNamingStrategy = new DefaultPhysicalNamingStrategy();
+            this.fieldResolver = new DefaultFieldResolver();
+        } else {
+            this.physicalNamingStrategy = Optional.ofNullable( configuration.getPhysicalNamingStrategy() ).orElse( new DefaultPhysicalNamingStrategy() );
+            // 类属性解析器
+            this.fieldResolver = Optional.ofNullable( configuration.getFieldResolver() ).orElse( new DefaultFieldResolver() );
+            if ( configuration.getFieldResolver() == null ) {
+                configuration.setFieldResolver( fieldResolver );
+            }
+        }
+    }
+
     @Override
-    public Table resolve( Class<?> entity, MyBatisCustomConfiguration configuration ) {
+    public Table resolve( Class<?> entity ) {
         if ( entity == null ) {
             throw new MapperResolverException( "The entity class parameter cannot be empty." );
         }
-        this.configuration = configuration;
         // 命名策略
         NamingStrategy strategy = configuration.getStrategy();
         // 检查实体类是否存在@Naming注解
@@ -79,13 +107,6 @@ public class DefaultEntityResolver implements EntityResolver {
             strategy = NamingStrategy.CAMEL_HUMP_UPPERCASE;
         }
         this.strategy = strategy;
-        // 命名策略处理器
-        this.physicalNamingStrategy = Optional.ofNullable( configuration.getPhysicalNamingStrategy() ).orElse( new DefaultPhysicalNamingStrategy() );
-        // 类属性解析器
-        FieldResolver fieldResolver = Optional.ofNullable( configuration.getFieldResolver() ).orElse( new DefaultFieldResolver() );
-        if ( configuration.getFieldResolver() == null ) {
-            configuration.setFieldResolver( fieldResolver );
-        }
         // 解析@Table注解(处理表映射信息)
         Table table = processTableMappingFromEntity( entity );
         // 处理字段映射信息
@@ -342,7 +363,7 @@ public class DefaultEntityResolver implements EntityResolver {
             column.setIdentity( true ).setExecuting( Executing.AFTER ).setGenerator( identity.dialect().getKeyGenerator() );
         } else {
             if ( StringUtil.isBlank( identity.identitySql() ) ) {
-                throw new MapperResolverException( StringUtil.format( "The @indentity annotation on the '{}' class's attribute '{}' is invalid", column.getEntity().getCanonicalName(), column.getProperty() ) );
+                throw new MapperResolverException( StringUtil.format( "The @identity annotation on the '{}' class's attribute '{}' is invalid", column.getEntity().getCanonicalName(), column.getProperty() ) );
             }
             column.setIdentity( true ).setExecuting( identity.execution() ).setGenerator( identity.identitySql() );
         }

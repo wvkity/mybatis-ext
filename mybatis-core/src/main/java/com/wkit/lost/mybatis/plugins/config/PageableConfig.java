@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.plugins.zconfig;
+package com.wkit.lost.mybatis.plugins.config;
 
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.plugins.utils.PageableUtil;

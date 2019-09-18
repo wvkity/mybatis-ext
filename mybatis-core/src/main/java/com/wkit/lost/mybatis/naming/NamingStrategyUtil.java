@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.naming;
 
-import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
+import com.wkit.lost.mybatis.utils.CaseFormat;
 
 import java.util.Locale;
 
@@ -23,15 +23,15 @@ public class NamingStrategyUtil {
         }
         switch ( strategy ) {
             case LOWERCASE:
-                return name.toLowerCase( Locale.ROOT );
+                return name.toLowerCase( Locale.ENGLISH );
             case UPPERCASE:
-                return name.toUpperCase( Locale.ROOT );
+                return name.toUpperCase( Locale.ENGLISH );
             case CAMEL_HUMP:
-                return StringUtil.camelHumpToUnderline( name );
+                return CaseFormat.LOWER_CAMEL.to( CaseFormat.LOWER_CAMEL_UNDERSCORE, name );
             case CAMEL_HUMP_LOWERCASE:
-                return StringUtil.camelHumpToUnderline( name ).toLowerCase( Locale.ROOT );
+                return CaseFormat.LOWER_CAMEL.to( CaseFormat.LOWER_UNDERSCORE, name );
             case CAMEL_HUMP_UPPERCASE:
-                return StringUtil.camelHumpToUnderline( name ).toUpperCase( Locale.ROOT );
+                return CaseFormat.LOWER_CAMEL.to( CaseFormat.UPPER_UNDERSCORE, name );
             case NORMAL:
             default:
                 return name;

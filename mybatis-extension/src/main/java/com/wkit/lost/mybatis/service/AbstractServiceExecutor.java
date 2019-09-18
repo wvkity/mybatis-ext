@@ -185,11 +185,6 @@ public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T,
         return criteria == null ? new ArrayList<>() : executor.listByCriteria( criteria.resultMap( null ).resultType( null ) );
     }
 
-    @Override
-    public List<R> rangeList( Criteria<T> criteria ) {
-        return executor.rangeList( criteria.resultMap( null ).resultType( null ) );
-    }
-
     @SuppressWarnings( "unchecked" )
     @Override
     public <E> List<E> listForCustom( Criteria<T> criteria ) {
@@ -216,12 +211,12 @@ public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T,
     }
 
     @Override
-    public List<R> pageableList( Pageable pageable, T entity ) {
+    public List<R> list( Pageable pageable, T entity ) {
         return executor.pageableList( pageable, entity );
     }
 
     @Override
-    public List<R> pageableList( Pageable pageable, Criteria<T> criteria ) {
+    public List<R> list( Pageable pageable, Criteria<T> criteria ) {
         return executor.pageableListByCriteria( pageable, criteria.resultMap( null ).resultType( null ) );
     }
 

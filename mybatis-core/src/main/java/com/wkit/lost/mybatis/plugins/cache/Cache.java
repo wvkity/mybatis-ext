@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.plugins.zcache;
+package com.wkit.lost.mybatis.plugins.cache;
 
 /**
  * 缓存接口

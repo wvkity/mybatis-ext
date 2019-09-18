@@ -70,6 +70,22 @@ public enum CaseFormat {
     },
 
     /**
+     * 驼峰下划线变量命名规则
+     * <p>如: lower_Camel</p>
+     */
+    LOWER_CAMEL_UNDERSCORE( Ascii::isUpperCase, "_" ) {
+        @Override
+        String normalizeWord( String word ) {
+            return firstCharOnlyToUpper( word );
+        }
+
+        @Override
+        String normalizeFirstWord( String word ) {
+            return Ascii.toLowerCase( word );
+        }
+    },
+
+    /**
      * Java变量命名规则
      * <p>如: lowerCamel</p>
      * <p>注: 当字符串为lowerCamel规则时返回原字符串</p>

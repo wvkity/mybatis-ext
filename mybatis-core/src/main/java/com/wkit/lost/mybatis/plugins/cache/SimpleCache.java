@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.plugins.zcache;
+package com.wkit.lost.mybatis.plugins.cache;
 
 import com.wkit.lost.mybatis.utils.StringUtil;
 import org.apache.ibatis.cache.decorators.FifoCache;

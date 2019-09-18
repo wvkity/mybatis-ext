@@ -28,11 +28,6 @@ public class EntityHandler {
     private static final Map<Class<?>, Table> TABLE_CACHE = new ConcurrentHashMap<>( 128 );
 
     /**
-     * 实体-表映射默认解析器
-     */
-    private static final EntityResolver DEFAULT_RESOLVER = new DefaultEntityResolver();
-
-    /**
      * 实体-表映射解析器
      */
     private static EntityResolver resolver;
@@ -47,15 +42,18 @@ public class EntityHandler {
         MyBatisCustomConfiguration customConfiguration = MyBatisConfigCache.getCustomConfiguration( assistant.getConfiguration() );
         // 初始化实体解析器
         if ( EntityHandler.resolver == null ) {
-            EntityHandler.resolver = customConfiguration == null ? DEFAULT_RESOLVER : Optional.ofNullable( customConfiguration.getEntityResolver() )
-                    .orElse( DEFAULT_RESOLVER );
+            if ( customConfiguration == null || customConfiguration.getEntityResolver() == null ) {
+                EntityHandler.resolver = new DefaultEntityResolver( customConfiguration );
+            } else {
+                EntityHandler.resolver = customConfiguration.getEntityResolver();
+            }
         }
         if ( entity != null ) {
             Table table = TABLE_CACHE.get( entity );
             if ( table == null ) {
                 log.debug( "Resolve entity class - table mapping information：`{}`", entity.getCanonicalName() );
                 // 解析&缓存
-                table = resolver.resolve( entity, customConfiguration );
+                table = resolver.resolve( entity );
                 TABLE_CACHE.put( entity, table );
             }
             return table;

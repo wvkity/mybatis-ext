@@ -83,5 +83,5 @@ public interface QueryService<T, R> {
      * @param entity   指定对象
      * @return 多条记录
      */
-    List<R> pageableList( Pageable pageable, T entity );
+    List<R> list( Pageable pageable, T entity );
 }

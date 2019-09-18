@@ -16,7 +16,7 @@ public class PagerTest {
 
     @Test
     public void test() {
-        Pageable pager = new Pager(2L, 30L);
+        Pageable pager = new Pager(4L);
         pager.setRecord( 173 );
         println( pager );
         System.out.println(pager.offset());

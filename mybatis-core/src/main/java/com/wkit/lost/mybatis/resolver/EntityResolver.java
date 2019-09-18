@@ -12,9 +12,8 @@ public interface EntityResolver {
 
     /**
      * 解析实体映射信息
-     * @param entity        实体类
-     * @param configuration 自定义配置对象
+     * @param entity 实体类
      * @return 表映射信息
      */
-    Table resolve( final Class<?> entity, final MyBatisCustomConfiguration configuration );
+    Table resolve( final Class<?> entity );
 }

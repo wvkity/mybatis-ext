@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.plugins.dbs.decorator;
 
-import com.wkit.lost.mybatis.plugins.zconfig.PageableConfig;
-import com.wkit.lost.mybatis.plugins.zconfig.ThreadLocalPageable;
+import com.wkit.lost.mybatis.plugins.config.PageableConfig;
+import com.wkit.lost.mybatis.plugins.config.ThreadLocalPageable;
 import com.wkit.lost.mybatis.plugins.dbs.dialect.PageableDialect;
 import com.wkit.lost.mybatis.plugins.dbs.proxy.PageableDialectDelegate;
 import com.wkit.lost.mybatis.plugins.exception.MyBatisPluginException;

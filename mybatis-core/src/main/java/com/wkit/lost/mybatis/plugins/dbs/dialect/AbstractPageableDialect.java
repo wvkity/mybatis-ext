@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.plugins.dbs.dialect;
 
-import com.wkit.lost.mybatis.plugins.zconfig.ThreadLocalPageable;
+import com.wkit.lost.mybatis.plugins.config.ThreadLocalPageable;
 import com.wkit.lost.paging.Pageable;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.session.RowBounds;

@@ -1,6 +1,7 @@
 package com.wkit.lost.mybatis.utils.test.junit;
 
 import com.wkit.lost.mybatis.utils.CaseFormat;
+import com.wkit.lost.mybatis.utils.StringUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.regex.Pattern;
@@ -23,6 +24,9 @@ public class CaseFormatApp {
         System.out.println( CaseFormat.UPPER_UNDERSCORE.to( CaseFormat.NORMAL_LOWER_CAMEL, "TEST_DATA" ) );
         System.out.println( CaseFormat.UPPER_UNDERSCORE.to( CaseFormat.NORMAL_LOWER_CAMEL, "testData" ) );
         System.out.println( CaseFormat.UPPER_UNDERSCORE.to( CaseFormat.NORMAL_LOWER_CAMEL, "TESTDATA" ) );
+        System.out.println( CaseFormat.LOWER_CAMEL.to( CaseFormat.LOWER_UNDERSCORE, "testData" ) );
+        System.out.println( CaseFormat.UPPER_UNDERSCORE.to( CaseFormat.LOWER_CAMEL_UNDERSCORE, "TEST_DATA" ) );
+        System.out.println( StringUtil.camelHumpToUnderline( "testData" ) );
     }
 
     @Test

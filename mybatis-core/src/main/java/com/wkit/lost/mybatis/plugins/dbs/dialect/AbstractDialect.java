@@ -1,8 +1,8 @@
 package com.wkit.lost.mybatis.plugins.dbs.dialect;
 
-import com.wkit.lost.mybatis.plugins.zconfig.Limit;
-import com.wkit.lost.mybatis.plugins.zconfig.ThreadLocalLimit;
-import com.wkit.lost.mybatis.plugins.zconfig.ThreadLocalPageable;
+import com.wkit.lost.mybatis.plugins.config.Limit;
+import com.wkit.lost.mybatis.plugins.config.ThreadLocalLimit;
+import com.wkit.lost.mybatis.plugins.config.ThreadLocalPageable;
 import com.wkit.lost.mybatis.plugins.dbs.sql.OriginalSqlParser;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.MetaObjectUtil;
@@ -79,7 +79,7 @@ public abstract class AbstractDialect implements Dialect {
             return processPageableParameter( statement, paramMap, boundSql, cacheKey, limit.getStart(), limit.getEnd(), limit.getOffset() );
         } else {
             Pageable pageable = ThreadLocalPageable.getPageable();
-            return processPageableParameter( statement, paramMap, boundSql, cacheKey, pageable.offset(), pageable.getSize(), pageable.getSize() );
+            return processPageableParameter( statement, paramMap, boundSql, cacheKey, pageable.offset(), pageable.getSize() + pageable.offset(), pageable.getSize() );
         }
     }
 

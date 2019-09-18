@@ -1,8 +1,8 @@
 package com.wkit.lost.mybatis.plugins.dbs.decorator;
 
-import com.wkit.lost.mybatis.plugins.zconfig.Limit;
-import com.wkit.lost.mybatis.plugins.zconfig.LimitConfig;
-import com.wkit.lost.mybatis.plugins.zconfig.ThreadLocalLimit;
+import com.wkit.lost.mybatis.plugins.config.Limit;
+import com.wkit.lost.mybatis.plugins.config.LimitConfig;
+import com.wkit.lost.mybatis.plugins.config.ThreadLocalLimit;
 import com.wkit.lost.mybatis.plugins.dbs.dialect.Dialect;
 import com.wkit.lost.mybatis.plugins.dbs.proxy.LimitDialectDelegate;
 import org.apache.ibatis.cache.CacheKey;

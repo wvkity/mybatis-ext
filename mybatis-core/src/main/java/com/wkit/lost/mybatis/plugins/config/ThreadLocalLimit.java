@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.plugins.zconfig;
+package com.wkit.lost.mybatis.plugins.config;
 
 public class ThreadLocalLimit {
 

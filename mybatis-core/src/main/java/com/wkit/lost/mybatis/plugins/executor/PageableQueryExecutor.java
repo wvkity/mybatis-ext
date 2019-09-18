@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.plugins.executor;
 
-import com.wkit.lost.mybatis.plugins.zcache.Cache;
-import com.wkit.lost.mybatis.plugins.zcache.CacheFactory;
+import com.wkit.lost.mybatis.plugins.cache.Cache;
+import com.wkit.lost.mybatis.plugins.cache.CacheFactory;
 import com.wkit.lost.mybatis.plugins.dbs.dialect.Dialect;
 import com.wkit.lost.mybatis.plugins.dbs.dialect.PageableDialect;
 import com.wkit.lost.mybatis.utils.MappedStatementUtil;
