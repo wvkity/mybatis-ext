@@ -1,25 +1,24 @@
 package com.wkit.lost.mybatis.sql.injector;
 
-import com.wkit.lost.mybatis.sql.injector.methods.BatchDeleteByPrimaryKey;
 import com.wkit.lost.mybatis.sql.injector.methods.BatchDelete;
+import com.wkit.lost.mybatis.sql.injector.methods.BatchDeleteByPrimaryKey;
+import com.wkit.lost.mybatis.sql.injector.methods.Count;
 import com.wkit.lost.mybatis.sql.injector.methods.Delete;
 import com.wkit.lost.mybatis.sql.injector.methods.DeleteByPrimaryKey;
+import com.wkit.lost.mybatis.sql.injector.methods.Exists;
 import com.wkit.lost.mybatis.sql.injector.methods.ExistsByCriteria;
+import com.wkit.lost.mybatis.sql.injector.methods.ExistsByPrimaryKey;
 import com.wkit.lost.mybatis.sql.injector.methods.Insert;
 import com.wkit.lost.mybatis.sql.injector.methods.InsertSelective;
-import com.wkit.lost.mybatis.sql.injector.methods.Count;
+import com.wkit.lost.mybatis.sql.injector.methods.List;
 import com.wkit.lost.mybatis.sql.injector.methods.ListByCriteria;
 import com.wkit.lost.mybatis.sql.injector.methods.ListByEntities;
-import com.wkit.lost.mybatis.sql.injector.methods.List;
-import com.wkit.lost.mybatis.sql.injector.methods.ExistsByPrimaryKey;
-import com.wkit.lost.mybatis.sql.injector.methods.Exists;
 import com.wkit.lost.mybatis.sql.injector.methods.ListByEntity;
 import com.wkit.lost.mybatis.sql.injector.methods.ListForArray;
 import com.wkit.lost.mybatis.sql.injector.methods.ListForMap;
 import com.wkit.lost.mybatis.sql.injector.methods.ListForObject;
 import com.wkit.lost.mybatis.sql.injector.methods.PageableList;
 import com.wkit.lost.mybatis.sql.injector.methods.PageableListByCriteria;
-import com.wkit.lost.mybatis.sql.injector.methods.RangeList;
 import com.wkit.lost.mybatis.sql.injector.methods.SelectOne;
 import com.wkit.lost.mybatis.sql.injector.methods.Update;
 import com.wkit.lost.mybatis.sql.injector.methods.UpdateSelective;
@@ -45,7 +44,6 @@ public class DefaultSqlInjector extends AbstractSqlInjector {
                 new Count(),
                 new SelectOne(),
                 new List(),
-                new RangeList(),
                 new ListByEntity(),
                 new ListByEntities(),
                 new ListByCriteria(),

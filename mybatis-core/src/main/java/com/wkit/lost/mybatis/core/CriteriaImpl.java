@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Criteria查询实现类
+ * Criteria查询条件实现类
  * @param <T> 类型
  * @author DT
  */

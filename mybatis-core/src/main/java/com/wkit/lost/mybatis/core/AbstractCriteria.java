@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * 抽象Criteria查询类
+ * 抽象Criteria条件类
  * @param <T> 类型
  * @author DT
  */

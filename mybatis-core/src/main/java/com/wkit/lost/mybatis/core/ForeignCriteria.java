@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Criteria联表条件类
+ * Criteria联表查询条件类
  * @param <T> 类型
  * @author DT
  */

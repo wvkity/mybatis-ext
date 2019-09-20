@@ -127,7 +127,6 @@ public class Table {
         this.name = name;
         this.catalog = catalog;
         this.schema = schema;
-        //this.alias = StringUtil.getSimpleNameOfSplitFirstUpper( this.name );
     }
 
     /**
