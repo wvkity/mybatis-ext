@@ -1,9 +1,11 @@
 package com.wkit.lost.mybatis.snowflake.sequence;
 
-import com.wkit.lost.mybatis.snowflake.clock.MillisecondClock;
+import com.wkit.lost.mybatis.snowflake.clock.MillisecondsClock;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -20,6 +22,7 @@ public class SnowFlakeSequence implements Sequence {
     private BitsAllocator bitsAllocator;
     private long sequence = 0L;
     private long lastTimestamp = -1L;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss.SSS" );
 
     public SnowFlakeSequence( int timestampBits, int workerIdBits, int dataCenterIdBits, int sequenceBits, long epochTimestamp, long workerId, long dataCenterId ) {
         bitsAllocator = new BitsAllocator( timestampBits, workerIdBits, dataCenterIdBits, sequenceBits );
@@ -51,6 +54,24 @@ public class SnowFlakeSequence implements Sequence {
         this.epochTimestamp = epochTimestamp;
     }
 
+    public SnowFlakeSequence( TimeUnit timeUnit, long epochTimestamp, long workerId, long dataCenterId ) {
+        this.timeUnit = timeUnit;
+        if ( timeUnit == TimeUnit.MILLISECONDS ) {
+            bitsAllocator = new BitsAllocator( 41, 5, 5, 12 );
+        } else {
+            bitsAllocator = new BitsAllocator( 31, 5, 5, 22 );
+        }
+        if ( workerId > bitsAllocator.getMaxWorkerId() ) {
+            throw new SnowFlakeException( "Worker id " + workerId + " exceeds the max " + bitsAllocator.getMaxWorkerId() );
+        }
+        if ( dataCenterId > bitsAllocator.getMaxDataCenterId() ) {
+            throw new SnowFlakeException( "DataCenter id " + dataCenterId + " exceeds the max " + bitsAllocator.getMaxDataCenterId() );
+        }
+        this.workerId = workerId;
+        this.dataCenterId = dataCenterId;
+        this.epochTimestamp = epochTimestamp;
+    }
+
     @Override
     public synchronized long nextId() {
         long currentTime = getTimestamp();
@@ -64,7 +85,8 @@ public class SnowFlakeSequence implements Sequence {
             }
         } else {
             //sequence = 0L;
-            sequence = ThreadLocalRandom.current().nextLong( 1, 3 );
+            // 避免都是从0开始
+            sequence = ThreadLocalRandom.current().nextLong( 1, 5 );
         }
         lastTimestamp = currentTime;
         return bitsAllocator.allocate( currentTime - epochTimestamp, workerId, dataCenterId, sequence );
@@ -81,13 +103,12 @@ public class SnowFlakeSequence implements Sequence {
 
         // parse id
         long sequence = ( id << ( totalBits - sequenceBits ) ) >>> ( totalBits - sequenceBits );
-        long workerId = (id << (timestampBits + signBits + dataCenterIdBits)) >>> (totalBits - workerIdBits);
-        long dataCenterId = (id << (timestampBits + signBits)) >>> (totalBits - dataCenterIdBits);
+        long workerId = ( id << ( timestampBits + signBits + dataCenterIdBits ) ) >>> ( totalBits - workerIdBits );
+        long dataCenterId = ( id << ( timestampBits + signBits ) ) >>> ( totalBits - dataCenterIdBits );
         long deltaMillis = id >>> ( workerIdBits + dataCenterIdBits + sequenceBits );
 
-        Date thatTime = new Date( timeUnit.toMillis( this.epochTimestamp + deltaMillis ) );
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss.SSS" );
-        String thatTimeStr = simpleDateFormat.format( thatTime );
+        LocalDateTime thatTime = LocalDateTime.ofInstant( Instant.ofEpochMilli( timeUnit.toMillis( this.epochTimestamp + deltaMillis ) ), ZoneId.systemDefault() );
+        String thatTimeStr = FORMATTER.format( thatTime );
 
         // format as string
         return String.format( "{\"id\":\"%d\",\"timestamp\":\"%s\",\"workerId\":\"%d\", \"dataCenterId\":\"%d\",\"sequence\":\"%d\"}", id,
@@ -96,7 +117,7 @@ public class SnowFlakeSequence implements Sequence {
     }
 
     private long getTimestamp() {
-        long millis = MillisecondClock.currentTimeMillis();
+        long millis = MillisecondsClock.currentTimeMillis();
         long timestamp = timeUnit.convert( millis, TimeUnit.MILLISECONDS );
         if ( timestamp - this.epochTimestamp > bitsAllocator.getMaxDeltaTime() ) {
             throw new SnowFlakeException( "Timestamp bits is exhausted. Refusing UID generate. Now: " + timestamp );

@@ -16,6 +16,11 @@
       "name": "lost.mybatis.customConfiguration",
       "sourceMethod": "getCustomConfiguration",
       "type": "com.wkit.lost.mybatis.config.MyBatisCustomConfiguration"
+    },
+    {
+      "sourceType": "com.wkit.lost.mybatis.spring.boot.worker.WorkerAutoConfiguration",
+      "name": "sequence",
+      "type": "com.wkit.lost.mybatis.spring.boot.worker.WorkerAutoConfiguration"
     }
   ]
 }

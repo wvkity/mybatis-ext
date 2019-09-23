@@ -106,7 +106,7 @@ public class Argument {
     /**
      * 获取参数值
      * @param key key
-     * @param <T> 参数类型
+     * @param <T> 参数值类型
      * @return 参数
      */
     @SuppressWarnings( "unchecked" )
@@ -115,6 +115,24 @@ public class Argument {
             Object value = paramMap.get( key );
             if ( value != null ) {
                 return ( T ) value;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 获取参数值
+     * @param clazz 指定类型
+     * @param <T>   参数值类型
+     * @return 参数
+     */
+    @SuppressWarnings( "unchecked" )
+    public <T> T getParameter( Class<T> clazz ) {
+        if ( clazz != null && !paramMap.isEmpty() ) {
+            for ( Object value : paramMap.values() ) {
+                if ( value != null && clazz.isAssignableFrom( value.getClass() ) ) {
+                    return ( T ) value;
+                }
             }
         }
         return null;

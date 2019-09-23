@@ -6,7 +6,7 @@ import java.util.UUID;
  * 默认GUID生成器
  * @author DT
  */
-public class GuidGenerator implements PrimaryKeyGenerator {
+public class GuidGenerator implements KeyGenerator {
 
     /**
      * 构造方法

@@ -2,11 +2,12 @@ package com.wkit.lost.mybatis.config;
 
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
-import com.wkit.lost.mybatis.keygen.PrimaryKeyGenerator;
+import com.wkit.lost.mybatis.keygen.KeyGenerator;
 import com.wkit.lost.mybatis.naming.DefaultPhysicalNamingStrategy;
 import com.wkit.lost.mybatis.naming.PhysicalNamingStrategy;
 import com.wkit.lost.mybatis.resolver.EntityResolver;
 import com.wkit.lost.mybatis.resolver.FieldResolver;
+import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
 import com.wkit.lost.mybatis.sql.injector.SqlInjector;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -83,6 +84,16 @@ public class MyBatisCustomConfiguration implements Serializable {
     private boolean identity;
 
     /**
+     * 是否为雪花算法主键
+     */
+    private boolean worker;
+
+    /**
+     * 是否为雪花算法字符串主键
+     */
+    private boolean workerString;
+
+    /**
      * 表名前缀
      */
     private String tablePrefix;
@@ -110,7 +121,7 @@ public class MyBatisCustomConfiguration implements Serializable {
     /**
      * 主键接口
      */
-    private PrimaryKeyGenerator keyGenerator;
+    private KeyGenerator keyGenerator;
 
     /**
      * 使用简单类型
@@ -156,6 +167,11 @@ public class MyBatisCustomConfiguration implements Serializable {
      * 是否使用默认的limit查询插件
      */
     private boolean useLimitPlugin = true;
+
+    /**
+     * 主键序列(雪花算法)
+     */
+    private Sequence sequence;
 
     /**
      * 缓存当前对象

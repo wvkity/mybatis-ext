@@ -53,8 +53,8 @@ public class LimitQueryExecutor extends AbstractQueryExecutor {
 
     @Override
     public boolean filter( Argument arg ) {
-        Criteria<?> criteria = arg.getParameter( "criteria" );
-        Pageable pageable = arg.getParameter( "pageable" );
+        Criteria<?> criteria = arg.getParameter( Criteria.class );
+        Pageable pageable = arg.getParameter( Pageable.class );
         return pageable == null && Optional.ofNullable( criteria ).map( Criteria::isLimit ).orElse( false );
     }
 

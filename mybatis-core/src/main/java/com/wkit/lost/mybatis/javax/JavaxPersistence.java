@@ -34,15 +34,15 @@ public abstract class JavaxPersistence {
     /**
      * javax.persistence-api中的{@code @OrderBy}注解
      */
-    public static final String ORDERBY = "javax.persistence.OrderBy";
+    public static final String ORDER_BY = "javax.persistence.OrderBy";
 
     /**
      * javax.persistence-api中的{@code @SequenceGenerator}注解
      */
-    public static final String SEQUENCEGENERATOR = "javax.persistence.SequenceGenerator";
+    public static final String SEQUENCE_GENERATOR = "javax.persistence.SequenceGenerator";
 
     /**
      * javax.persistence-api中的{@code @GeneratedValue}注解
      */
-    public static final String GENERATEDVALUE = "javax.persistence.GeneratedValue";
+    public static final String GENERATED_VALUE = "javax.persistence.GeneratedValue";
 }

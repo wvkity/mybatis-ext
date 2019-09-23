@@ -1,13 +1,12 @@
 package com.wkit.lost.mybatis.sql.method;
 
-import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.annotation.extension.Executing;
 import com.wkit.lost.mybatis.core.schema.Column;
 import com.wkit.lost.mybatis.core.schema.Table;
-import com.wkit.lost.mybatis.keygen.CustomSelectKeyGenerator;
 import com.wkit.lost.mybatis.sql.mapping.SqlBuilder;
 import com.wkit.lost.mybatis.sql.mapping.script.AbstractXmlScriptBuilder;
 import com.wkit.lost.mybatis.sql.mapping.script.DefaultXmlScriptBuilder;
+import com.wkit.lost.mybatis.utils.StringUtil;
 import org.apache.ibatis.executor.keygen.Jdbc3KeyGenerator;
 import org.apache.ibatis.executor.keygen.KeyGenerator;
 import org.apache.ibatis.executor.keygen.NoKeyGenerator;
@@ -42,24 +41,19 @@ public abstract class AbstractInsertMethod extends AbstractMethod {
                 // 自增(数据库自动实现)
                 keyGenerator = new Jdbc3KeyGenerator();
                 this.configuration.setUseGeneratedKeys( true );
-            } else if ( StringUtil.hasText( primaryKey.getGenerator() ) || primaryKey.isUuid() ) {
+            } else if ( StringUtil.hasText( primaryKey.getSequenceName() ) ) {
                 // 创建selectKey映射
                 StatementType statementType = StatementType.PREPARED;
                 String keyProperty = primaryKey.getProperty();
                 String keyColumn = primaryKey.getColumn();
-                SqlSource sqlSource = languageDriver.createSqlSource( this.configuration, primaryKey.isUuid() ? "" : primaryKey.getSequenceScript( this.configuration ), null );
+                SqlSource sqlSource = languageDriver.createSqlSource( this.configuration, primaryKey.getSequenceScript( this.configuration ), null );
                 this.assistant.addMappedStatement( id, sqlSource, statementType, SqlCommandType.SELECT, null, null, null,
                         null, null, primaryKey.getJavaType(), null, false, false, false,
                         new NoKeyGenerator(), keyProperty, keyColumn, null, this.languageDriver, null );
                 id = this.assistant.applyCurrentNamespace( id, false );
                 MappedStatement ms = this.assistant.getConfiguration().getMappedStatement( id, false );
-                if ( primaryKey.isUuid() ) {
-                    // UUID主键生成
-                    keyGenerator = new CustomSelectKeyGenerator( ms, true );
-                } else {
-                    // 根据<selectKey>标签获取主键
-                    keyGenerator = new SelectKeyGenerator( ms, Optional.ofNullable( primaryKey.getExecuting() ).map( Executing::value ).orElse( false ) );
-                }
+                // 根据<selectKey>标签获取主键
+                keyGenerator = new SelectKeyGenerator( ms, Optional.ofNullable( primaryKey.getExecuting() ).map( Executing::value ).orElse( false ) );
                 // useGeneratorKeys = true
                 this.assistant.getConfiguration().addKeyGenerator( id, keyGenerator );
                 this.assistant.getConfiguration().setUseGeneratedKeys( true );

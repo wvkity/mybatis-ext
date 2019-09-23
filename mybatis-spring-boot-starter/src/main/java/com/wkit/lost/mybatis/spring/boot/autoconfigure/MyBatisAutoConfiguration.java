@@ -3,11 +3,13 @@ package com.wkit.lost.mybatis.spring.boot.autoconfigure;
 
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
-import com.wkit.lost.mybatis.keygen.PrimaryKeyGenerator;
+import com.wkit.lost.mybatis.keygen.GuidGenerator;
+import com.wkit.lost.mybatis.keygen.KeyGenerator;
 import com.wkit.lost.mybatis.resolver.EntityResolver;
 import com.wkit.lost.mybatis.resolver.FieldResolver;
 import com.wkit.lost.mybatis.scripting.MyBatisXMLLanguageDriver;
 import com.wkit.lost.mybatis.session.MyBatisConfiguration;
+import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
 import com.wkit.lost.mybatis.spring.SqlSessionFactoryBean;
 import com.wkit.lost.mybatis.sql.injector.SqlInjector;
 import com.wkit.lost.mybatis.utils.StringUtil;
@@ -161,8 +163,14 @@ public class MyBatisAutoConfiguration implements InitializingBean {
             customConfig.setFieldResolver( getBean( FieldResolver.class ) );
         }
         // 主键生成器
-        if ( hasBeanFromContext( PrimaryKeyGenerator.class ) ) {
-            customConfig.setKeyGenerator( getBean( PrimaryKeyGenerator.class ) );
+        if ( hasBeanFromContext( KeyGenerator.class ) ) {
+            customConfig.setKeyGenerator( getBean( KeyGenerator.class ) );
+        } else {
+            customConfig.setKeyGenerator( new GuidGenerator() );
+        }
+        // 雪花算法主键生成器
+        if ( hasBeanFromContext( Sequence.class ) ) {
+            customConfig.setSequence( getBean( Sequence.class ) );
         }
         factory.setCustomConfiguration( customConfig );
         return factory.getObject();

@@ -10,7 +10,7 @@ import com.wkit.lost.mybatis.snowflake.worker.WorkerAssigner;
 public interface SequenceFactory {
 
     /**
-     * 构建ID序列实例
+     * 构建ID序列实例(默认根据MAC地址分配workerId、dataCenterId)
      * @return ID序列实例
      */
     Sequence build();
@@ -25,7 +25,7 @@ public interface SequenceFactory {
     /**
      * 构建ID序列
      * @param workerId     workerId
-     * @param dataCenterId 注册中心ID
+     * @param dataCenterId 数据中心ID
      * @return ID序列
      */
     Sequence build( long workerId, long dataCenterId );

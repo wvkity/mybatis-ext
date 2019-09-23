@@ -18,11 +18,28 @@ public class SequenceWorker {
     }
 
     /**
+     * 生成唯一ID
+     * @return 唯一ID
+     */
+    public static String nextStringId() {
+        return String.valueOf( nextId() );
+    }
+
+    /**
      * 解析唯一ID信息
      * @param id 唯一ID
      * @return 唯一ID相关元素信息
      */
-    public static String parse(long id) {
+    public static String parse( long id ) {
         return SEQUENCE.parse( id );
+    }
+
+    /**
+     * 解析唯一ID信息
+     * @param id 唯一ID
+     * @return 唯一ID相关元素信息
+     */
+    public static String parse( String id ) {
+        return parse( Long.parseLong( id ) );
     }
 }

@@ -4,7 +4,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class MillisecondClock {
+public class MillisecondsClock {
 
     /**
      * 频率
@@ -13,10 +13,10 @@ public class MillisecondClock {
     private volatile long now;
 
     private static final class ClockInstance {
-        protected static final MillisecondClock INSTANCE = new MillisecondClock();
+        protected static final MillisecondsClock INSTANCE = new MillisecondsClock();
     }
 
-    private MillisecondClock() {
+    private MillisecondsClock() {
         this.period = 1L;
         this.now = System.currentTimeMillis();
         start();
@@ -33,7 +33,7 @@ public class MillisecondClock {
                 period, TimeUnit.MILLISECONDS );
     }
 
-    public static MillisecondClock getInstance() {
+    public static MillisecondsClock getInstance() {
         return ClockInstance.INSTANCE;
     }
 

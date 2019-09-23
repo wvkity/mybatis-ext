@@ -5,7 +5,7 @@ package com.wkit.lost.mybatis.keygen;
  * @author DT
  */
 @FunctionalInterface
-public interface PrimaryKeyGenerator {
+public interface KeyGenerator {
 
     /**
      * 生成GUID值

@@ -101,6 +101,20 @@ public class Column {
     private boolean identity = false;
 
     /**
+     * 是否为雪花算法主键
+     */
+    @Getter
+    @Setter
+    private boolean worker;
+
+    /**
+     * 是否为雪花算法字符串主键
+     */
+    @Getter
+    @Setter
+    private boolean workerString;
+
+    /**
      * 是否为Blob类型
      */
     @Getter

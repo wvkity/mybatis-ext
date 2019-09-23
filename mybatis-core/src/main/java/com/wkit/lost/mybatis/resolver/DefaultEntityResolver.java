@@ -1,6 +1,7 @@
 package com.wkit.lost.mybatis.resolver;
 
 import com.wkit.lost.mybatis.annotation.Entity;
+import com.wkit.lost.mybatis.annotation.Worker;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.AnnotationUtil;
 import com.wkit.lost.mybatis.utils.Ascii;
@@ -336,7 +337,7 @@ public class DefaultEntityResolver implements EntityResolver {
         String orderValue = null;
         if ( attribute.isAnnotationPresent( OrderBy.class ) ) {
             orderValue = attribute.getAnnotation( OrderBy.class ).value();
-        } else if ( attribute.isAnnotationPresent( JavaxPersistence.ORDERBY ) ) {
+        } else if ( attribute.isAnnotationPresent( JavaxPersistence.ORDER_BY ) ) {
             orderValue = attribute.getAnnotation( javax.persistence.OrderBy.class ).value();
         }
         if ( orderValue != null ) {
@@ -355,12 +356,19 @@ public class DefaultEntityResolver implements EntityResolver {
         if ( attribute.isAnnotationPresent( Identity.class ) ) {
             // @Identity优先级最高
             processIdentityAnnotation( table, column, attribute );
-        } else if ( attribute.isAnnotationPresent( SequenceGenerator.class, JavaxPersistence.SEQUENCEGENERATOR ) ) {
+        } else if ( attribute.isAnnotationPresent( SequenceGenerator.class, JavaxPersistence.SEQUENCE_GENERATOR ) ) {
             // @SequenceGenerator序列
             processSequenceGeneratorAnnotation( table, column, attribute );
-        } else if ( attribute.isAnnotationPresent( GeneratedValue.class, JavaxPersistence.GENERATEDVALUE ) ) {
+        } else if ( attribute.isAnnotationPresent( GeneratedValue.class, JavaxPersistence.GENERATED_VALUE ) ) {
             // @GeneratedValue
             processGeneratedValueAnnotation( table, column, attribute );
+        } else if ( attribute.isAnnotationPresent( Worker.class ) ) {
+            Worker worker = attribute.getAnnotation( Worker.class );
+            if ( worker.value() ) {
+                column.setWorker( true );
+            } else {
+                column.setWorkerString( true );
+            }
         }
     }
 
@@ -400,7 +408,7 @@ public class DefaultEntityResolver implements EntityResolver {
             if ( StringUtil.isBlank( sequenceName ) ) {
                 sequenceName = sequenceAnnotation.sequenceName();
             }
-        } else if ( attribute.isAnnotationPresent( JavaxPersistence.SEQUENCEGENERATOR ) ) {
+        } else if ( attribute.isAnnotationPresent( JavaxPersistence.SEQUENCE_GENERATOR ) ) {
             // JPA @SequenceGenerator注解
             javax.persistence.SequenceGenerator sequenceAnnotation = attribute.getAnnotation( javax.persistence.SequenceGenerator.class );
             sequenceName = sequenceAnnotation.name();
@@ -409,7 +417,7 @@ public class DefaultEntityResolver implements EntityResolver {
             }
         }
         if ( StringUtil.isBlank( sequenceName ) ) {
-            throw new MapperResolverException( StringUtil.format( "The @sequencegenerator on the `{}` attribute of the `{}` class does not specify the sequenceName value.",
+            throw new MapperResolverException( StringUtil.format( "The @SequenceGenerator on the `{}` attribute of the `{}` class does not specify the sequenceName value.",
                     column.getProperty(), column.getEntity().getCanonicalName() ) );
         }
         column.setSequenceName( sequenceName );
@@ -429,7 +437,7 @@ public class DefaultEntityResolver implements EntityResolver {
             GeneratedValue generatedValueAnnotation = attribute.getAnnotation( GeneratedValue.class );
             generator = generatedValueAnnotation.generator();
             isIdentity = generatedValueAnnotation.strategy() == GenerationType.IDENTITY;
-        } else if ( attribute.isAnnotationPresent( JavaxPersistence.GENERATEDVALUE ) ) {
+        } else if ( attribute.isAnnotationPresent( JavaxPersistence.GENERATED_VALUE ) ) {
             // JPA @GeneratedValue
             javax.persistence.GeneratedValue generatedValueAnnotation = attribute.getAnnotation( javax.persistence.GeneratedValue.class );
             generator = generatedValueAnnotation.generator();
@@ -441,6 +449,10 @@ public class DefaultEntityResolver implements EntityResolver {
             column.setIdentity( true ).setGenerator( generator.toUpperCase( Locale.ROOT ) );
             table.addPrimaryKeyProperty( column.getProperty() );
             table.addPrimaryKeyColumn( column.getColumn() );
+        } else if ( "WORKER".equalsIgnoreCase( generator ) ) {
+            column.setWorker( true );
+        } else if ( "WORKER_STR".equalsIgnoreCase( generator ) || "WORKER_STRING".equalsIgnoreCase( generator ) || "WORKERSTR".equalsIgnoreCase( generator ) ) {
+            column.setWorkerString( true );
         } else {
             if ( isIdentity ) {
                 column.setIdentity( true );
@@ -456,6 +468,8 @@ public class DefaultEntityResolver implements EntityResolver {
                         column.getEntity().getCanonicalName(), column.getProperty(),
                         "@GeneratedValue(generator = \"UUID\")",
                         "@GeneratedValue(generator = \"JDBC\")",
+                        "@GeneratedValue(generator = \"WORKER\")",
+                        "@GeneratedValue(generator = \"WORKER_STR\")",
                         "@GeneratedValue(strategy = GenerationType.IDENTITY, [ generator = \"[ MySql, SQLServer... ]\" ])" ) );
             }
         }
@@ -481,9 +495,12 @@ public class DefaultEntityResolver implements EntityResolver {
 
     private void processCustomKeyGenerator( final Table table, final Column column ) {
         // 检测是否存在主键值生成方式
-        if ( !column.isUuid() && !column.isIdentity() && StringUtil.isBlank( column.getGenerator() ) ) {
+        if ( !column.isUuid() && !column.isIdentity() && !column.isWorker() && !column.isWorkerString()
+                && StringUtil.isBlank( column.getGenerator() ) ) {
             column.setUuid( this.configuration.isUuid() );
             column.setIdentity( this.configuration.isIdentity() );
+            column.setWorker( this.configuration.isWorker() );
+            column.setWorkerString( this.configuration.isWorkerString() );
         }
     }
 

@@ -67,10 +67,6 @@ public class EntityHandler {
      * @return {@link Table}(表信息)
      */
     public static Table getTable( final Class<?> entity ) {
-        Table table = Optional.ofNullable( TABLE_CACHE.get( entity ) ).orElse( TABLE_CACHE.get( ClassUtil.getRealClass( entity ) ) );
-        if ( table == null ) {
-            throw new MapperException( StringUtil.format( "Cannot read table mapping information corresponding to entity: '{}'", entity.getCanonicalName() ) );
-        }
-        return table;
+        return Optional.ofNullable( TABLE_CACHE.get( entity ) ).orElse( TABLE_CACHE.get( ClassUtil.getRealClass( entity ) ) );
     }
 }
