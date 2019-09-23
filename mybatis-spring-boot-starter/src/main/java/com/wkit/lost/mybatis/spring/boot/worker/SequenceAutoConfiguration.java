@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @Accessors( chain = true )
 @Configuration
 @ConfigurationProperties( prefix = "sequence", ignoreInvalidFields = true )
-public class WorkerAutoConfiguration {
+public class SequenceAutoConfiguration {
     /**
      * 开始时间(默认为2019-01-01)
      */

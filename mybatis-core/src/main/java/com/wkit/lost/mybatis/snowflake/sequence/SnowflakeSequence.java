@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * 基于雪花算法生成64位ID
  * @author DT
  */
-public class SnowFlakeSequence implements Sequence {
+public class SnowflakeSequence implements Sequence {
 
     private TimeUnit timeUnit;
     private long epochTimestamp;
@@ -24,37 +24,37 @@ public class SnowFlakeSequence implements Sequence {
     private long lastTimestamp = -1L;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss.SSS" );
 
-    public SnowFlakeSequence( int timestampBits, int workerIdBits, int dataCenterIdBits, int sequenceBits, long epochTimestamp, long workerId, long dataCenterId ) {
+    public SnowflakeSequence( int timestampBits, int workerIdBits, int dataCenterIdBits, int sequenceBits, long epochTimestamp, long workerId, long dataCenterId ) {
         bitsAllocator = new BitsAllocator( timestampBits, workerIdBits, dataCenterIdBits, sequenceBits );
         if ( workerId > bitsAllocator.getMaxWorkerId() ) {
-            throw new SnowFlakeException( "Worker id " + workerId + " exceeds the max " + bitsAllocator.getMaxWorkerId() );
+            throw new SnowflakeException( "Worker id " + workerId + " exceeds the max " + bitsAllocator.getMaxWorkerId() );
         }
         if ( dataCenterId > bitsAllocator.getMaxDataCenterId() ) {
-            throw new SnowFlakeException( "DataCenter id " + dataCenterId + " exceeds the max " + bitsAllocator.getMaxDataCenterId() );
+            throw new SnowflakeException( "DataCenter id " + dataCenterId + " exceeds the max " + bitsAllocator.getMaxDataCenterId() );
         }
         this.workerId = workerId;
         this.dataCenterId = dataCenterId;
         if ( epochTimestamp > bitsAllocator.getMaxDeltaTime() ) {
-            throw new SnowFlakeException( "epoch timestamp " + epochTimestamp + " exceeds the max " + bitsAllocator.getMaxDeltaTime() );
+            throw new SnowflakeException( "epoch timestamp " + epochTimestamp + " exceeds the max " + bitsAllocator.getMaxDeltaTime() );
         }
         this.epochTimestamp = epochTimestamp;
     }
 
-    public SnowFlakeSequence( TimeUnit timeUnit, int timestampBits, int workerIdBits, int dataCenterIdBits, int sequenceBits, long epochTimestamp, long workerId, long dataCenterId ) {
+    public SnowflakeSequence( TimeUnit timeUnit, int timestampBits, int workerIdBits, int dataCenterIdBits, int sequenceBits, long epochTimestamp, long workerId, long dataCenterId ) {
         this.timeUnit = timeUnit;
         bitsAllocator = new BitsAllocator( timestampBits, workerIdBits, dataCenterIdBits, sequenceBits );
         if ( workerId > bitsAllocator.getMaxWorkerId() ) {
-            throw new SnowFlakeException( "Worker id " + workerId + " exceeds the max " + bitsAllocator.getMaxWorkerId() );
+            throw new SnowflakeException( "Worker id " + workerId + " exceeds the max " + bitsAllocator.getMaxWorkerId() );
         }
         if ( dataCenterId > bitsAllocator.getMaxDataCenterId() ) {
-            throw new SnowFlakeException( "DataCenter id " + dataCenterId + " exceeds the max " + bitsAllocator.getMaxDataCenterId() );
+            throw new SnowflakeException( "DataCenter id " + dataCenterId + " exceeds the max " + bitsAllocator.getMaxDataCenterId() );
         }
         this.workerId = workerId;
         this.dataCenterId = dataCenterId;
         this.epochTimestamp = epochTimestamp;
     }
 
-    public SnowFlakeSequence( TimeUnit timeUnit, long epochTimestamp, long workerId, long dataCenterId ) {
+    public SnowflakeSequence( TimeUnit timeUnit, long epochTimestamp, long workerId, long dataCenterId ) {
         this.timeUnit = timeUnit;
         if ( timeUnit == TimeUnit.MILLISECONDS ) {
             bitsAllocator = new BitsAllocator( 41, 5, 5, 12 );
@@ -62,10 +62,10 @@ public class SnowFlakeSequence implements Sequence {
             bitsAllocator = new BitsAllocator( 31, 5, 5, 22 );
         }
         if ( workerId > bitsAllocator.getMaxWorkerId() ) {
-            throw new SnowFlakeException( "Worker id " + workerId + " exceeds the max " + bitsAllocator.getMaxWorkerId() );
+            throw new SnowflakeException( "Worker id " + workerId + " exceeds the max " + bitsAllocator.getMaxWorkerId() );
         }
         if ( dataCenterId > bitsAllocator.getMaxDataCenterId() ) {
-            throw new SnowFlakeException( "DataCenter id " + dataCenterId + " exceeds the max " + bitsAllocator.getMaxDataCenterId() );
+            throw new SnowflakeException( "DataCenter id " + dataCenterId + " exceeds the max " + bitsAllocator.getMaxDataCenterId() );
         }
         this.workerId = workerId;
         this.dataCenterId = dataCenterId;
@@ -76,7 +76,7 @@ public class SnowFlakeSequence implements Sequence {
     public synchronized long nextId() {
         long currentTime = getTimestamp();
         if ( currentTime < lastTimestamp ) {
-            throw new SnowFlakeException( "Clock moved backwards. Refusing for %s timeStamp", lastTimestamp - currentTime );
+            throw new SnowflakeException( "Clock moved backwards. Refusing for %s timeStamp", lastTimestamp - currentTime );
         }
         if ( currentTime == lastTimestamp ) {
             sequence = ( sequence + 1 ) & bitsAllocator.getMaxSequence();
@@ -120,7 +120,7 @@ public class SnowFlakeSequence implements Sequence {
         long millis = MillisecondsClock.currentTimeMillis();
         long timestamp = timeUnit.convert( millis, TimeUnit.MILLISECONDS );
         if ( timestamp - this.epochTimestamp > bitsAllocator.getMaxDeltaTime() ) {
-            throw new SnowFlakeException( "Timestamp bits is exhausted. Refusing UID generate. Now: " + timestamp );
+            throw new SnowflakeException( "Timestamp bits is exhausted. Refusing UID generate. Now: " + timestamp );
         }
         return timestamp;
     }

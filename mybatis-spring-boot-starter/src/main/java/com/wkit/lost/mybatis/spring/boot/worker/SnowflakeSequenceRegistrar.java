@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.spring.boot.worker;
 
-import com.wkit.lost.mybatis.snowflake.sequence.SnowFlakeSequence;
+import com.wkit.lost.mybatis.snowflake.sequence.SnowflakeSequence;
 import com.wkit.lost.mybatis.snowflake.worker.SequenceUtil;
 import com.wkit.lost.mybatis.spring.boot.autoconfigure.MyBatisAutoConfiguration;
 import org.springframework.beans.BeansException;
@@ -24,22 +24,22 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @AutoConfigureBefore( { MyBatisAutoConfiguration.class } )
-@AutoConfigureAfter( { WorkerAutoConfiguration.class } )
-class WorkerSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, ImportBeanDefinitionRegistrar {
+@AutoConfigureAfter( { SequenceAutoConfiguration.class } )
+class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, ImportBeanDefinitionRegistrar {
 
-    private WorkerAutoConfiguration configuration;
+    private SequenceAutoConfiguration configuration;
     private DefaultListableBeanFactory beanFactory;
 
     @Override
     public void registerBeanDefinitions( AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry ) {
         if ( this.configuration == null ) {
             if ( registry.containsBeanDefinition( "workerAutoConfiguration" ) ) {
-                this.configuration = ( WorkerAutoConfiguration ) beanFactory.getBean( "workerAutoConfiguration" );
+                this.configuration = ( SequenceAutoConfiguration ) beanFactory.getBean( "workerAutoConfiguration" );
             } else {
-                this.configuration = new WorkerAutoConfiguration();
+                this.configuration = new SequenceAutoConfiguration();
             }
         }
-        AnnotationAttributes attributes = AnnotationAttributes.fromMap( importingClassMetadata.getAnnotationAttributes( EnableWorkerSequence.class.getName() ) );
+        AnnotationAttributes attributes = AnnotationAttributes.fromMap( importingClassMetadata.getAnnotationAttributes( EnableSnowflakeSequence.class.getName() ) );
         boolean secondEnable = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "secondEnable" ) ).orElse( false );
         boolean macEnable = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "macEnable" ) ).orElse( false );
         if ( secondEnable ) {
@@ -52,9 +52,9 @@ class WorkerSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, Imp
     }
 
     private void registerBean( BeanDefinitionRegistry registry ) {
-        BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.genericBeanDefinition( SnowFlakeSequence.class );
+        BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.genericBeanDefinition( SnowflakeSequence.class );
         GenericBeanDefinition definition = ( GenericBeanDefinition ) definitionBuilder.getRawBeanDefinition();
-        definition.setBeanClass( SnowFlakeSequence.class );
+        definition.setBeanClass( SnowflakeSequence.class );
         definition.setSynthetic( true );
         // 属性
         ConstructorArgumentValues argumentValues = new ConstructorArgumentValues();
@@ -86,11 +86,11 @@ class WorkerSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, Imp
     public void setEnvironment( Environment environment ) {
         try {
             Binder binder = Binder.get( environment );
-            this.configuration = binder.bind( "sequence", WorkerAutoConfiguration.class ).get();
+            this.configuration = binder.bind( "sequence", SequenceAutoConfiguration.class ).get();
         } catch ( Exception e ) {
             try {
                 if ( beanFactory.containsBeanDefinition( "workerAutoConfiguration" ) ) {
-                    this.configuration = ( WorkerAutoConfiguration ) beanFactory.getBean( "workerAutoConfiguration" );
+                    this.configuration = ( SequenceAutoConfiguration ) beanFactory.getBean( "workerAutoConfiguration" );
                 }
             } catch ( Exception e1 ) {
                 // ignore

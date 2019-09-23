@@ -37,7 +37,7 @@ public class BitsAllocator {
     public BitsAllocator( int timestampBits, int workerIdBits, int dataCenterIdBits, int sequenceBits ) {
         int allocateTotalBits = signBits + timestampBits + workerIdBits + dataCenterIdBits + sequenceBits;
         if ( allocateTotalBits > TOTAL_BITS ) {
-            throw new SnowFlakeException( "allocate not enough 64 bits." );
+            throw new SnowflakeException( "allocate not enough 64 bits." );
         }
         // 初始化
         this.timestampBits = timestampBits;

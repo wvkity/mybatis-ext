@@ -11,14 +11,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 启用WorkerSequence
+ * 启用雪花算法ID序列
+ * @author DT
  */
 @Target( ElementType.TYPE )
 @Retention( RetentionPolicy.RUNTIME )
-@Import( { WorkerSequenceRegistrar.class } )
+@Import( { SnowflakeSequenceRegistrar.class } )
 @Documented
 @Inherited
-public @interface EnableWorkerSequence {
+public @interface EnableSnowflakeSequence {
 
     /**
      * 是否开启秒级(默认为false)

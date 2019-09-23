@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.snowflake.factory;
 
 import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
-import com.wkit.lost.mybatis.snowflake.sequence.SnowFlakeSequence;
+import com.wkit.lost.mybatis.snowflake.sequence.SnowflakeSequence;
 import com.wkit.lost.mybatis.snowflake.worker.SequenceUtil;
 import com.wkit.lost.mybatis.snowflake.worker.WorkerAssigner;
 import lombok.NoArgsConstructor;
@@ -40,7 +40,7 @@ public class ElasticSequenceFactory implements SequenceFactory {
 
     @Override
     public Sequence build( long workerId, long dataCenterId ) {
-        return new SnowFlakeSequence( timeUnit, timestampBits, workerBits, dataCenterBits, sequenceBits, epochTimestamp, workerId, dataCenterId );
+        return new SnowflakeSequence( timeUnit, timestampBits, workerBits, dataCenterBits, sequenceBits, epochTimestamp, workerId, dataCenterId );
     }
 
     public long getMaxWorkerId() {
