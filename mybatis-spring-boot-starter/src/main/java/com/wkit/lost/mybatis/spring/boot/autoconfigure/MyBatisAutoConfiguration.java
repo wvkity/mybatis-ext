@@ -7,7 +7,7 @@ import com.wkit.lost.mybatis.keygen.GuidGenerator;
 import com.wkit.lost.mybatis.keygen.KeyGenerator;
 import com.wkit.lost.mybatis.resolver.EntityResolver;
 import com.wkit.lost.mybatis.resolver.FieldResolver;
-import com.wkit.lost.mybatis.scripting.MyBatisXMLLanguageDriver;
+import com.wkit.lost.mybatis.scripting.xmltags.MyBatisXMLLanguageDriver;
 import com.wkit.lost.mybatis.session.MyBatisConfiguration;
 import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
 import com.wkit.lost.mybatis.spring.SqlSessionFactoryBean;

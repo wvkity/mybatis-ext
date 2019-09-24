@@ -52,20 +52,19 @@ class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, 
 
     private void checkConfiguration() {
         if ( this.configuration == null ) {
-            // 从指定的名称获取bean
-            if ( beanFactory.containsBeanDefinition( "sequenceAutoConfiguration" ) ) {
-                try {
-                    this.configuration = beanFactory.getBean( "sequenceAutoConfiguration", SequenceAutoConfiguration.class );
-                } catch ( Exception e ) {
-                    // ignore
+            // 检查Bean容器中是否存在配置实例
+            if ( beanFactory.getBeanNamesForType( SequenceAutoConfiguration.class, false, false ).length > 0 ) {
+                // 从指定的名称获取bean
+                if ( beanFactory.containsBeanDefinition( "sequenceAutoConfiguration" ) ) {
+                    try {
+                        this.configuration = beanFactory.getBean( "sequenceAutoConfiguration", SequenceAutoConfiguration.class );
+                    } catch ( Exception e ) {
+                        // ignore
+                    }
                 }
-            }
-            // 从指定类型获取bean
-            if ( this.configuration == null ) {
-                try {
+                // 从指定类型获取bean
+                if ( this.configuration == null ) {
                     this.configuration = beanFactory.getBean( SequenceAutoConfiguration.class );
-                } catch ( Exception e ) {
-                    // ignore
                 }
             }
             if ( this.configuration == null ) {
