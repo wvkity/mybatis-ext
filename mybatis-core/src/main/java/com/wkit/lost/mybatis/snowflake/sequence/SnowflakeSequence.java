@@ -1,6 +1,7 @@
 package com.wkit.lost.mybatis.snowflake.sequence;
 
 import com.wkit.lost.mybatis.snowflake.clock.MillisecondsClock;
+import com.wkit.lost.mybatis.snowflake.factory.ElasticSequenceFactory;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class SnowflakeSequence implements Sequence {
     private long sequence = 0L;
     private long lastTimestamp = -1L;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss.SSS" );
+    private static final String TEMPLATE = "{\"id\":\"%d\",\"timestamp\":\"%s\",\"workerId\":\"%d\", \"dataCenterId\":\"%d\",\"sequence\":\"%d\"}";
 
     public SnowflakeSequence( int timestampBits, int workerIdBits, int dataCenterIdBits, int sequenceBits, long epochTimestamp, long workerId, long dataCenterId ) {
         bitsAllocator = new BitsAllocator( timestampBits, workerIdBits, dataCenterIdBits, sequenceBits );
@@ -37,7 +39,7 @@ public class SnowflakeSequence implements Sequence {
         if ( epochTimestamp > bitsAllocator.getMaxDeltaTime() ) {
             throw new SnowflakeException( "epoch timestamp " + epochTimestamp + " exceeds the max " + bitsAllocator.getMaxDeltaTime() );
         }
-        this.epochTimestamp = epochTimestamp;
+        checkTime( epochTimestamp );
     }
 
     public SnowflakeSequence( TimeUnit timeUnit, int timestampBits, int workerIdBits, int dataCenterIdBits, int sequenceBits, long epochTimestamp, long workerId, long dataCenterId ) {
@@ -51,7 +53,7 @@ public class SnowflakeSequence implements Sequence {
         }
         this.workerId = workerId;
         this.dataCenterId = dataCenterId;
-        this.epochTimestamp = epochTimestamp;
+        checkTime( epochTimestamp );
     }
 
     public SnowflakeSequence( TimeUnit timeUnit, long epochTimestamp, long workerId, long dataCenterId ) {
@@ -59,7 +61,7 @@ public class SnowflakeSequence implements Sequence {
         if ( timeUnit == TimeUnit.MILLISECONDS ) {
             bitsAllocator = new BitsAllocator( 41, 5, 5, 12 );
         } else {
-            bitsAllocator = new BitsAllocator( 31, 5, 5, 22 );
+            bitsAllocator = new BitsAllocator( 38, 5, 5, 15 );
         }
         if ( workerId > bitsAllocator.getMaxWorkerId() ) {
             throw new SnowflakeException( "Worker id " + workerId + " exceeds the max " + bitsAllocator.getMaxWorkerId() );
@@ -69,7 +71,17 @@ public class SnowflakeSequence implements Sequence {
         }
         this.workerId = workerId;
         this.dataCenterId = dataCenterId;
-        this.epochTimestamp = epochTimestamp;
+        checkTime( epochTimestamp );
+    }
+
+    private void checkTime( long epochTimestamp ) {
+        long realEpochTime;
+        if ( epochTimestamp <= 0 ) {
+            realEpochTime = ( timeUnit == null || timeUnit == TimeUnit.MILLISECONDS ) ? ElasticSequenceFactory.MILLIS_EPOCH_TIMESTAMP : ElasticSequenceFactory.SECOND_EPOCH_TIMESTAMP;
+        } else {
+            realEpochTime = epochTimestamp;
+        }
+        this.epochTimestamp = realEpochTime;
     }
 
     @Override
@@ -86,7 +98,7 @@ public class SnowflakeSequence implements Sequence {
         } else {
             //sequence = 0L;
             // 避免都是从0开始
-            sequence = ThreadLocalRandom.current().nextLong( 1, 5 );
+            sequence = ThreadLocalRandom.current().nextLong( 1, 3 );
         }
         lastTimestamp = currentTime;
         return bitsAllocator.allocate( currentTime - epochTimestamp, workerId, dataCenterId, sequence );
@@ -111,8 +123,7 @@ public class SnowflakeSequence implements Sequence {
         String thatTimeStr = FORMATTER.format( thatTime );
 
         // format as string
-        return String.format( "{\"id\":\"%d\",\"timestamp\":\"%s\",\"workerId\":\"%d\", \"dataCenterId\":\"%d\",\"sequence\":\"%d\"}", id,
-                thatTimeStr, workerId, dataCenterId, sequence );
+        return String.format( TEMPLATE, id, thatTimeStr, workerId, dataCenterId, sequence );
 
     }
 

@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class MillisSequenceFactory extends ElasticSequenceFactory {
 
     public MillisSequenceFactory() {
-        this( DEFAULT_EPOCH_TIMESTAMP );
+        this( MILLIS_EPOCH_TIMESTAMP );
     }
 
     public MillisSequenceFactory( long epochTimestamp ) {

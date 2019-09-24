@@ -10,14 +10,14 @@ import java.util.concurrent.TimeUnit;
 public class SecondsSequenceFactory extends ElasticSequenceFactory {
 
     public SecondsSequenceFactory() {
-        this( DEFAULT_EPOCH_TIMESTAMP );
+        this( SECOND_EPOCH_TIMESTAMP );
     }
 
     public SecondsSequenceFactory( long epochTimestamp ) {
-        super.timestampBits = 31;
+        super.timestampBits = 38;
         super.workerBits = 5;
         super.dataCenterBits = 5;
-        super.sequenceBits = 22;
+        super.sequenceBits = 15;
         // 默认开始时间：2019-01-01
         super.epochTimestamp = epochTimestamp;
         super.timeUnit = TimeUnit.SECONDS;

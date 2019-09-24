@@ -5,6 +5,7 @@ import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
 import com.wkit.lost.mybatis.snowflake.worker.SequenceWorker;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,8 +19,8 @@ public class SequenceWorkerExecutor implements Runnable {
     static final int MAX = 4000;
     static final CountDownLatch LATCH = new CountDownLatch( MAX );
     static final SequenceWorkerExecutor EXECUTOR = new SequenceWorkerExecutor();
-    static final Set<Long> SEQUENCE_CACHE = new LinkedHashSet<>( MAX );
-    static final List<String> REPEAT_SEQUENCE_CACHE = new ArrayList<>();
+    static final Set<Long> SEQUENCE_CACHE = Collections.synchronizedSet( new LinkedHashSet<>( MAX ) );
+    static final List<String> REPEAT_SEQUENCE_CACHE = Collections.synchronizedList( new ArrayList<>() );
     static final AtomicInteger INDEX = new AtomicInteger();
 
     @Override
