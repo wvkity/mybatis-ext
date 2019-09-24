@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.sql.method;
 import com.wkit.lost.mybatis.mapper.MapperSameExecutor;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
-import com.wkit.lost.mybatis.core.schema.Table;
+import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.sql.mapping.script.AbstractXmlScriptBuilder;
 import lombok.extern.log4j.Log4j2;

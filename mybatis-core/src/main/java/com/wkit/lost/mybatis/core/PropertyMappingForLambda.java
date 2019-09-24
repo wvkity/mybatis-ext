@@ -1,8 +1,8 @@
 package com.wkit.lost.mybatis.core;
 
 import com.wkit.lost.mybatis.utils.StringUtil;
-import com.wkit.lost.mybatis.core.schema.Column;
-import com.wkit.lost.mybatis.core.schema.Table;
+import com.wkit.lost.mybatis.core.meta.Column;
+import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.invoke.SerializedLambda;
 import com.wkit.lost.mybatis.lambda.Property;
 

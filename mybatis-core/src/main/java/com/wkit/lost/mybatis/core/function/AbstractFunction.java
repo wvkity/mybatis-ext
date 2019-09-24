@@ -5,7 +5,7 @@ import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.Logic;
-import com.wkit.lost.mybatis.core.schema.Column;
+import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import lombok.Getter;
 import lombok.Setter;

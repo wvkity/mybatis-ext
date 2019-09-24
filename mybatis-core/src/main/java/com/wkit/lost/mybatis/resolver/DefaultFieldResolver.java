@@ -5,7 +5,7 @@ import com.wkit.lost.mybatis.utils.AnnotationUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.annotation.Entity;
 import com.wkit.lost.mybatis.annotation.Transient;
-import com.wkit.lost.mybatis.core.schema.Attribute;
+import com.wkit.lost.mybatis.core.meta.Attribute;
 import com.wkit.lost.mybatis.exception.MapperResolverException;
 import com.wkit.lost.mybatis.javax.JavaxPersistence;
 

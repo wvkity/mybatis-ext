@@ -4,8 +4,6 @@ import com.wkit.lost.mybatis.core.condition.AbstractConditionManager;
 import com.wkit.lost.mybatis.core.condition.ConditionBuilder;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.condition.expression.NestedExpression;
-import com.wkit.lost.mybatis.core.schema.Column;
-import com.wkit.lost.mybatis.lambda.Property;
 
 import java.util.function.Function;
 

@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.handler;
 
 import com.wkit.lost.mybatis.utils.StringUtil;
-import com.wkit.lost.mybatis.core.schema.Attribute;
+import com.wkit.lost.mybatis.core.meta.Attribute;
 import com.wkit.lost.mybatis.resolver.DefaultFieldResolver;
 import com.wkit.lost.mybatis.resolver.FieldResolver;
 

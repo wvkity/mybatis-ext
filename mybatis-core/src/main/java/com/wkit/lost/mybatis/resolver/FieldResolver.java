@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.resolver;
 
-import com.wkit.lost.mybatis.core.schema.Attribute;
+import com.wkit.lost.mybatis.core.meta.Attribute;
 
 import java.util.List;
 

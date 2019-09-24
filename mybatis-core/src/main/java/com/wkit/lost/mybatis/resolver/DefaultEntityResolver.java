@@ -21,9 +21,9 @@ import com.wkit.lost.mybatis.annotation.naming.Naming;
 import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.core.PropertyMappingForLambda;
-import com.wkit.lost.mybatis.core.schema.Attribute;
-import com.wkit.lost.mybatis.core.schema.Column;
-import com.wkit.lost.mybatis.core.schema.Table;
+import com.wkit.lost.mybatis.core.meta.Attribute;
+import com.wkit.lost.mybatis.core.meta.Column;
+import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.exception.MapperResolverException;
 import com.wkit.lost.mybatis.handler.ColumnHandler;
 import com.wkit.lost.mybatis.javax.JavaxPersistence;
@@ -176,10 +176,10 @@ public class DefaultEntityResolver implements EntityResolver {
         if ( StringUtil.isBlank( prefix ) ) {
             prefix = this.configuration.getTablePrefix();
         }
-        String refer = this.strategy.name().toUpperCase( Locale.ROOT );
+        String refer = this.strategy.name().toUpperCase( Locale.ENGLISH );
         int mode = refer.contains( "LOWERCASE" ) ? 0 : refer.contains( "UPPERCASE" ) ? 1 : 2;
         // 表名前缀
-        prefix = Optional.ofNullable( prefix ).map( value -> mode == 0 ? value.toLowerCase( Locale.ROOT ) : mode == 1 ? value.toUpperCase( Locale.ROOT ) : value ).orElse( "" );
+        prefix = Optional.ofNullable( prefix ).map( value -> mode == 0 ? value.toLowerCase( Locale.ENGLISH ) : mode == 1 ? value.toUpperCase( Locale.ENGLISH ) : value ).orElse( "" );
         Table table = new Table( ( prefix + tableName ), catalog, schema );
         table.setEntity( entity ).setPrefix( prefix );
         return table;
@@ -212,7 +212,7 @@ public class DefaultEntityResolver implements EntityResolver {
         // 处理@Column注解
         Column column = processColumnAnnotation( table.getEntity(), attribute, enableAutoJdbcMapping );
         //var column = new Column( table.getEntity() );
-        column.setAttribute( attribute ).setUseJavaType( this.configuration.isUseJavaType() );
+        column.setAttribute( attribute );
         // 处理@ID注解
         if ( attribute.isAnnotationPresentOfId() ) {
             // 检查是否存在主键
@@ -365,9 +365,9 @@ public class DefaultEntityResolver implements EntityResolver {
         } else if ( attribute.isAnnotationPresent( Worker.class ) ) {
             Worker worker = attribute.getAnnotation( Worker.class );
             if ( worker.value() ) {
-                column.setWorker( true );
-            } else {
                 column.setWorkerString( true );
+            } else {
+                column.setWorker( true );
             }
         }
     }

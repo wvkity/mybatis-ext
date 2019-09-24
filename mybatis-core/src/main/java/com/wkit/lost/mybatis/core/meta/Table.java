@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.core.schema;
+package com.wkit.lost.mybatis.core.meta;
 
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;

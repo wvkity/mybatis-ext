@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.session;
 import com.wkit.lost.mybatis.binding.MyBatisMapperRegistry;
 import com.wkit.lost.mybatis.executor.resultset.MyBatisResultSetHandler;
 import com.wkit.lost.mybatis.reflection.wrapper.MyBatisObjectWrapperFactory;
-import com.wkit.lost.mybatis.scripting.MyBatisXMLLanguageDriver;
+import com.wkit.lost.mybatis.scripting.xmltags.MyBatisXMLLanguageDriver;
 import com.wkit.lost.mybatis.type.handlers.StandardInstantTypeHandler;
 import com.wkit.lost.mybatis.type.handlers.StandardJapaneseDateTypeHandler;
 import com.wkit.lost.mybatis.type.handlers.StandardLocalDateTimeTypeHandler;

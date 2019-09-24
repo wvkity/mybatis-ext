@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.sql.mapping.update;
 
 import com.wkit.lost.mybatis.core.Execute;
-import com.wkit.lost.mybatis.core.schema.Column;
+import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.sql.mapping.AbstractSqlBuilder;
 
 import java.util.Set;

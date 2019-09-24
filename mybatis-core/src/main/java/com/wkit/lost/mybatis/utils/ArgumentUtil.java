@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.utils;
 
-import com.wkit.lost.mybatis.core.schema.Column;
+import com.wkit.lost.mybatis.core.meta.Column;
 
 import java.util.Optional;
 

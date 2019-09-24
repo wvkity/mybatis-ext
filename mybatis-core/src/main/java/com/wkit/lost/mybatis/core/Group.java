@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.core;
 
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
-import com.wkit.lost.mybatis.core.schema.Column;
+import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.lambda.Property;

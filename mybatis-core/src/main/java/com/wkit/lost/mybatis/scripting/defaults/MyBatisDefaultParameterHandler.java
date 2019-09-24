@@ -2,11 +2,12 @@ package com.wkit.lost.mybatis.scripting.defaults;
 
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
-import com.wkit.lost.mybatis.core.schema.Column;
-import com.wkit.lost.mybatis.core.schema.Table;
+import com.wkit.lost.mybatis.core.meta.Column;
+import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
 import com.wkit.lost.mybatis.snowflake.worker.SequenceWorker;
+import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.PrimitiveRegistry;
 import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.mapping.BoundSql;
@@ -48,6 +49,7 @@ public class MyBatisDefaultParameterHandler extends DefaultParameterHandler {
         this.boundSql = boundSql;
     }
 
+    @SuppressWarnings( "unchecked" )
     private static Object processFillValue( MappedStatement statement, Object parameterObject ) {
         if ( parameterObject == null
                 || PrimitiveRegistry.isPrimitiveOrWrapper( parameterObject )
@@ -76,6 +78,18 @@ public class MyBatisDefaultParameterHandler extends DefaultParameterHandler {
                     }
                 }
                 return objects;
+            } else {
+                Table table = null;
+                if ( parameterObject instanceof Map ) {
+                    Map<String, Object> map = ( Map<String, Object> ) parameterObject;
+                    Object entity = map.get( Constants.PARAM_ENTITY );
+                    if ( entity != null ) {
+                        table = EntityHandler.getTable( entity.getClass() );
+                    }
+                } else {
+                    table = EntityHandler.getTable( parameterObject.getClass() );
+                }
+                return fillValue( statement, parameterObject, table, isInsert );
             }
         }
         return parameterObject;

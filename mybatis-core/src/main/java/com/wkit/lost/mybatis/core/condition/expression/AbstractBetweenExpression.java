@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.condition.expression;
 
-import com.wkit.lost.mybatis.core.schema.Column;
+import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.utils.ArgumentUtil;
 import lombok.Getter;
 import lombok.Setter;

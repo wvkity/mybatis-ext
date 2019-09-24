@@ -1,6 +1,7 @@
 package com.wkit.lost.mybatis.mapper;
 
 import com.wkit.lost.mybatis.annotation.EnableMapper;
+import com.wkit.lost.mybatis.utils.Constants;
 import org.apache.ibatis.annotations.Param;
 
 import java.io.Serializable;
@@ -33,13 +34,13 @@ public interface DeleteMapper<T> {
      * @param entities 对象集合
      * @return 受影响行数
      */
-    int batchDelete( @Param( "entities" ) Collection<T> entities );
+    int batchDelete( @Param( Constants.PARAM_ENTITIES ) Collection<T> entities );
 
     /**
      * 根据主键批量删除记录
      * @param idList 主键集合
      * @return 受影响行数
      */
-    int batchDeleteById( @Param( "primaryKeys" ) List<? extends Serializable> idList );
+    int batchDeleteById( @Param( Constants.PARAM_PRIMARY_KEYS ) List<? extends Serializable> idList );
 
 }

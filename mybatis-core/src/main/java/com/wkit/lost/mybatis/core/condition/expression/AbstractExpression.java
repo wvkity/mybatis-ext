@@ -7,7 +7,7 @@ import com.wkit.lost.mybatis.core.Operator;
 import com.wkit.lost.mybatis.core.ParamValuePlaceholderConverter;
 import com.wkit.lost.mybatis.core.condition.Range;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
-import com.wkit.lost.mybatis.core.schema.Column;
+import com.wkit.lost.mybatis.core.meta.Column;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;

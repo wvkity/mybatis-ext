@@ -1,5 +1,6 @@
-package com.wkit.lost.mybatis.core.schema;
+package com.wkit.lost.mybatis.core.meta;
 
+import com.wkit.lost.mybatis.annotation.Worker;
 import com.wkit.lost.mybatis.utils.AnnotationUtil;
 import com.wkit.lost.mybatis.annotation.Id;
 import com.wkit.lost.mybatis.javax.JavaxPersistence;
@@ -101,7 +102,7 @@ public class Attribute {
      * @return true: 存在 | false: 不存在
      */
     public boolean isAnnotationPresentOfId() {
-        return isAnnotationPresent( Id.class, JavaxPersistence.ID );
+        return isAnnotationPresent( Id.class, JavaxPersistence.ID ) || isAnnotationPresent( Worker.class );
     }
 
     /**

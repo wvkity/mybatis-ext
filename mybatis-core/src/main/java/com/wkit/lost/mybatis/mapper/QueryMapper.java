@@ -1,6 +1,7 @@
 package com.wkit.lost.mybatis.mapper;
 
 import com.wkit.lost.mybatis.annotation.EnableMapper;
+import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.paging.Pageable;
 import org.apache.ibatis.annotations.Param;
 
@@ -50,7 +51,7 @@ public interface QueryMapper<T, R> {
      * @param idList 主键集合
      * @return 多条记录
      */
-    List<R> list( @Param( "primaryKeys" ) Collection<? extends Serializable> idList );
+    List<R> list( @Param( Constants.PARAM_PRIMARY_KEYS ) Collection<? extends Serializable> idList );
 
     /**
      * 根据制定对象查询记录
@@ -64,7 +65,7 @@ public interface QueryMapper<T, R> {
      * @param entities 对象集合
      * @return 多条记录
      */
-    List<R> listByEntities( @Param( "entities" ) Collection<T> entities );
+    List<R> listByEntities( @Param( Constants.PARAM_ENTITIES ) Collection<T> entities );
 
     /**
      * 分页查询记录
@@ -72,5 +73,5 @@ public interface QueryMapper<T, R> {
      * @param entity   指定对象
      * @return 多条记录
      */
-    List<R> pageableList( @Param( "pageable" ) Pageable pageable, @Param( "entity" ) T entity );
+    List<R> pageableList( @Param( Constants.PARAM_PAGEABLE ) Pageable pageable, @Param( Constants.PARAM_ENTITY ) T entity );
 }

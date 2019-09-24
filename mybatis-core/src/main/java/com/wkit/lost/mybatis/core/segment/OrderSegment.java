@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.Order;
 import com.wkit.lost.mybatis.core.function.Aggregation;
-import com.wkit.lost.mybatis.core.schema.Column;
+import com.wkit.lost.mybatis.core.meta.Column;
 
 import java.util.List;
 import java.util.Set;

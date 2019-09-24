@@ -10,7 +10,7 @@ import com.wkit.lost.mybatis.core.condition.expression.NestedExpression;
 import com.wkit.lost.mybatis.core.function.Aggregation;
 import com.wkit.lost.mybatis.core.function.Aggregations;
 import com.wkit.lost.mybatis.core.function.Comparator;
-import com.wkit.lost.mybatis.core.schema.Column;
+import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
 import com.wkit.lost.mybatis.handler.EntityHandler;
