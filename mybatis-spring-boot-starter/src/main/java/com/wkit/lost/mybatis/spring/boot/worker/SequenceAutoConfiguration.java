@@ -17,17 +17,17 @@ public class SequenceAutoConfiguration {
     /**
      * 开始时间(默认为2019-01-01)
      */
-    private Long epochTimestamp = 1546272000000L;
+    private long epochTimestamp = -1L;
 
     /**
      * workerId
      */
-    private Long workerId = 0L;
+    private long workerId = 0L;
 
     /**
      * 注册中心ID
      */
-    private Long dataCenterId = 0L;
+    private long dataCenterId = 0L;
 
     /**
      * 是否启用秒级别
