@@ -38,6 +38,4 @@ lost:
       identity: true
       dialect: mysql
       auto-jdbc-type-mapping: true
-sequence:
-  worker-id: 2
-  data-center-id: 5
+

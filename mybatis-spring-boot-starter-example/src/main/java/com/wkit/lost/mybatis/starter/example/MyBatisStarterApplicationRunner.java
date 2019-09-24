@@ -7,8 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.*;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@EnableSnowflakeSequence( true )
+@EnableTransactionManagement
+@EnableSnowflakeSequence
 @EnableConfigurationProperties
 @SpringBootApplication
 @EnableAsync
