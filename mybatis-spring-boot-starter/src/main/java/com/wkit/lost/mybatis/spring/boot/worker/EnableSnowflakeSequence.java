@@ -13,6 +13,7 @@ import java.lang.annotation.Target;
 /**
  * 启用雪花算法ID序列
  * @author DT
+ * @see SnowflakeSequenceRegistrar
  */
 @Target( ElementType.TYPE )
 @Retention( RetentionPolicy.RUNTIME )
