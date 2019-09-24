@@ -7,6 +7,7 @@ import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
 import com.wkit.lost.mybatis.snowflake.worker.SequenceWorker;
+import com.wkit.lost.mybatis.utils.Ascii;
 import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.PrimitiveRegistry;
 import org.apache.ibatis.executor.ErrorContext;
@@ -100,23 +101,36 @@ public class MyBatisDefaultParameterHandler extends DefaultParameterHandler {
             return parameter;
         }
         MetaObject metaObject = statement.getConfiguration().newMetaObject( parameter );
-        MyBatisCustomConfiguration customConfiguration = MyBatisConfigCache.getCustomConfiguration( statement.getConfiguration() );
         // 保存操作填充主键值
         if ( insert && table.getPrimaryKey() != null ) {
             Column primaryKey = table.getPrimaryKey();
-            Sequence sequence = customConfiguration.getSequence();
-            if ( primaryKey.isUuid() ) {
-                // guid
-                metaObject.setValue( primaryKey.getProperty(), customConfiguration.getKeyGenerator().value() );
-            } else if ( primaryKey.isWorker() ) {
-                // 雪花算法主键(如果不开启注入Sequence对象，则默认使用mac分配的Sequence对象)
-                metaObject.setValue( primaryKey.getProperty(), Optional.ofNullable( sequence ).map( Sequence::nextId ).orElse( SequenceWorker.nextId() ) );
-            } else if ( primaryKey.isWorkerString() ) {
-                // 雪花算法字符串主键(如果不开启注入Sequence对象，则默认使用mac分配的Sequence对象)
-                metaObject.setValue( primaryKey.getProperty(), Optional.ofNullable( sequence ).map( Sequence::nextStringId ).orElse( SequenceWorker.nextStringId() ) );
+            Object value = metaObject.getValue( primaryKey.getProperty() );
+            if ( isNullOrEmpty( value ) ) {
+                MyBatisCustomConfiguration customConfiguration = MyBatisConfigCache.getCustomConfiguration( statement.getConfiguration() );
+                Sequence sequence = customConfiguration.getSequence();
+                if ( primaryKey.isUuid() ) {
+                    // guid
+                    metaObject.setValue( primaryKey.getProperty(), customConfiguration.getKeyGenerator().value() );
+                } else if ( primaryKey.isWorker() ) {
+                    // 雪花算法主键(如果不开启注入Sequence对象，则默认使用mac分配的Sequence对象)
+                    metaObject.setValue( primaryKey.getProperty(), Optional.ofNullable( sequence ).map( Sequence::nextId ).orElse( SequenceWorker.nextId() ) );
+                } else if ( primaryKey.isWorkerString() ) {
+                    // 雪花算法字符串主键(如果不开启注入Sequence对象，则默认使用mac分配的Sequence对象)
+                    metaObject.setValue( primaryKey.getProperty(), Optional.ofNullable( sequence ).map( Sequence::nextStringId ).orElse( SequenceWorker.nextStringId() ) );
+                }
             }
         }
         return metaObject.getOriginalObject();
+    }
+
+    private static boolean isNullOrEmpty( Object value ) {
+        if ( value != null ) {
+            if ( value instanceof CharSequence ) {
+                return Ascii.isNullOrEmpty( value.toString() );
+            }
+            return false;
+        }
+        return true;
     }
 
     @SuppressWarnings( { "unchecked" } )
