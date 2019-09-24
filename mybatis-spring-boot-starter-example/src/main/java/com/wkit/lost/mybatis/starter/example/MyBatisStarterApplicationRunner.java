@@ -1,15 +1,14 @@
 package com.wkit.lost.mybatis.starter.example;
 
-import org.mybatis.spring.annotation.MapperScan;
+import com.wkit.lost.mybatis.spring.boot.worker.EnableSnowflakeSequence;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.*;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
 
+@EnableSnowflakeSequence( true )
 @EnableConfigurationProperties
 @SpringBootApplication
 @EnableAsync

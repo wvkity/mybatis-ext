@@ -36,7 +36,7 @@ public class DataTestController {
                     .orTemplate( "LEFT({}, 3) = {}", SysUser::getPassword, "123" )
                     .orTemplate( "RIGHT({}, 1) = {}", SysUser::getUserName, "另" )
                     .exactTemplate( "OR LEFT({}, 1) = {}", SysUser::getCreateUser, "神" );
-            Result result = new DataResult( "list", sysUserService.pageableList( pageable, criteria ) );
+            Result result = new DataResult( "list", sysUserService.list( pageable, criteria ) );
             result.add( "pageable", pageable );
             return result;
         } catch ( Exception e ) {

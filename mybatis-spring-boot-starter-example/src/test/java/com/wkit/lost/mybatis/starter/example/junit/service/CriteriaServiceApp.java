@@ -143,7 +143,7 @@ public class CriteriaServiceApp extends RootTestRunner {
             criteria.enableAlias( true ).asc( "state", "password" ).desc( "id" ).asc( "createUser" );
             boolean result = sysUserService.exists( criteria );
             log.info( "执行结果：{}", result );
-            log.info( "执行结果：{}", JSON.toJSONString( sysUserService.pageableList( new Pager( 1L, 40L ), criteria ) ) );
+            log.info( "执行结果：{}", JSON.toJSONString( sysUserService.list( new Pager( 1L, 40L ), criteria ) ) );
         } catch ( Exception e ) {
             e.printStackTrace();
             log.error( "发生异常：{}", e.getMessage(), e );

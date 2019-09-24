@@ -64,7 +64,7 @@ public class FunctionApp extends RootTestRunner {
                     .asc( "state" ).asc( Aggregations.max( criteria1, "score" ) )
                     .limit( 0, 8 )
                     .resultType( Score.class );
-            List<SysUser> limitResult = sysUserService.rangeList( criteria1 );
+            List<SysUser> limitResult = sysUserService.list( criteria1 );
             //sysUserService.listForMap( criteria1 );
             //List<Score> scores = sysUserService.listForCustom( criteria1 );
             //log.info( "执行结果2：{}", JSON.toJSONString( scores, true ) );

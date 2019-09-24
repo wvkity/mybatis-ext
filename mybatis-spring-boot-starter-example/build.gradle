@@ -11,6 +11,7 @@ dependencies {
     implementation "com.zaxxer:HikariCP:3.3.1"
     implementation "mysql:mysql-connector-java:8.0.15"
     implementation "com.github.noraui:ojdbc8:12.2.0.1"
+    implementation 'com.microsoft.sqlserver:mssql-jdbc:7.4.1.jre8'
     implementation "${lib.cglib}"
     implementation "${lib.disruptor}"
     implementation "${lib["springboot-log4j2"]}"

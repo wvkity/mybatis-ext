@@ -8,15 +8,15 @@ server:
 spring:
   datasource:
     # MYSQL
-    #driver-class-name: com.mysql.cj.jdbc.Driver
-    #url: jdbc:mysql://localhost:3306/MS_TEST?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-    #username: root
-    #password: "Love888*+"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/MS_TEST?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: "Love888*+"
     # ORACLE
-    driver-class-name: oracle.jdbc.OracleDriver
-    url: jdbc:oracle:thin:@192.168.61.111:1521:orcl
-    username: flfwsjzx
-    password: flfwsjzx
+    #driver-class-name: oracle.jdbc.OracleDriver
+    #url: jdbc:oracle:thin:@192.168.61.111:1521:orcl
+    #username: flfwsjzx
+    #password: flfwsjzx
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       minimum-idle: 8
@@ -36,5 +36,8 @@ lost:
       #map-underscore-to-camel-case: false
     custom-configuration:
       identity: true
-      dialect: oracle
+      dialect: mysql
       auto-jdbc-type-mapping: true
+sequence:
+  worker-id: 2
+  data-center-id: 5
