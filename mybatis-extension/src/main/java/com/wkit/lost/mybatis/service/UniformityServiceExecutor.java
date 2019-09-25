@@ -5,5 +5,5 @@ package com.wkit.lost.mybatis.service;
  * @param <T> 实体、返回值类型
  * @author DT
  */
-public interface ServiceSameExecutor<T> extends ServiceExecutor<T, T> {
+public interface UniformityServiceExecutor<T> extends ServiceExecutor<T, T> {
 }

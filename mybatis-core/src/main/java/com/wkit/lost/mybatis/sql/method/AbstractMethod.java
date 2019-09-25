@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.sql.method;
 
-import com.wkit.lost.mybatis.mapper.MapperSameExecutor;
+import com.wkit.lost.mybatis.mapper.UniformityMapperExecutor;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.meta.Table;
@@ -50,7 +50,7 @@ public abstract class AbstractMethod implements Method {
         this.languageDriver = this.configuration.getDefaultScriptingLanguageInstance();
         if ( entityClass != null ) {
             // 获取返回类型
-            int index = MapperSameExecutor.class.isAssignableFrom( mapperInterface ) ? 0 : 1;
+            int index = UniformityMapperExecutor.class.isAssignableFrom( mapperInterface ) ? 0 : 1;
             Class<?> resultType;
             if ( index == 0 ) {
                 resultType = entityClass;
