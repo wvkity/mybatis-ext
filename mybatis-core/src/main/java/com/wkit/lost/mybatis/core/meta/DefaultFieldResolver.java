@@ -1,5 +1,6 @@
-package com.wkit.lost.mybatis.resolver;
+package com.wkit.lost.mybatis.core.meta;
 
+import com.wkit.lost.mybatis.resolver.FieldResolver;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.AnnotationUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;

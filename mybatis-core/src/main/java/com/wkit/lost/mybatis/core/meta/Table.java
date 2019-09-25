@@ -81,7 +81,6 @@ public class Table {
     /**
      * 所有字段
      */
-    @Getter
     private Set<Column> columns = new LinkedHashSet<>();
 
     /**
@@ -175,6 +174,14 @@ public class Table {
         if ( column != null ) {
             this.compositeColumns.add( column );
         }
+    }
+
+    /**
+     * 获取所有字段信息
+     * @return 字段集合
+     */
+    public Set<Column> getColumns() {
+        return new LinkedHashSet<>( this.columns );
     }
 
     /**

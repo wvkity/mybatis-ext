@@ -1,13 +1,15 @@
 package com.wkit.lost.mybatis.core.meta;
 
+import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.annotation.extension.Executing;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.core.Execute;
 import com.wkit.lost.mybatis.core.Operator;
-import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.incrementer.SequenceKeyGenerator;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,7 +26,9 @@ import org.apache.ibatis.type.TypeHandler;
 @Accessors( chain = true )
 @EqualsAndHashCode
 @ToString
-public class Column {
+@Setter( AccessLevel.PACKAGE )
+@AllArgsConstructor
+public final class Column {
 
     /**
      * 实体类
@@ -36,7 +40,6 @@ public class Column {
      * 属性对象
      */
     @Getter
-    @Setter
     private Attribute attribute;
 
     /**
@@ -55,126 +58,108 @@ public class Column {
      * Java类型
      */
     @Getter
-    @Setter
     private Class<?> javaType;
 
     /**
      * Jdbc类型
      */
     @Getter
-    @Setter
     private JdbcType jdbcType;
 
     /**
      * 类型处理器
      */
     @Getter
-    @Setter
     private Class<? extends TypeHandler<?>> typeHandler;
 
     /**
      * 序列名称
      */
     @Getter
-    @Setter
     private String sequenceName;
 
     /**
      * 是否为主键
      */
     @Getter
-    @Setter
     private boolean primaryKey = false;
 
     /**
      * 是否为UUID主键
      */
     @Getter
-    @Setter
     private boolean uuid = false;
 
     /**
      * 是否为自增主键
      */
     @Getter
-    @Setter
     private boolean identity = false;
 
     /**
      * 是否为雪花算法主键
      */
     @Getter
-    @Setter
     private boolean worker;
 
     /**
      * 是否为雪花算法字符串主键
      */
     @Getter
-    @Setter
     private boolean workerString;
 
     /**
      * 是否为Blob类型
      */
     @Getter
-    @Setter
     private boolean blob = false;
 
     /**
      * 是否可保存
      */
     @Getter
-    @Setter
     private boolean insertable = true;
 
     /**
      * 是否可修改
      */
     @Getter
-    @Setter
     private boolean updatable = true;
 
     /**
      * SQL语句是否设置Java类型
      */
     @Getter
-    @Setter
     private boolean useJavaType = false;
 
     /**
      * 字符串非空校验
      */
     @Getter
-    @Setter
     private boolean checkNotEmpty;
 
     /**
      * 排序方式
      */
     @Getter
-    @Setter
     private String orderBy;
 
     /**
      * 主键生成方式
      */
     @Getter
-    @Setter
     private String generator;
 
     /**
      * SQL执行时机
      */
     @Getter
-    @Setter
     private Executing executing;
 
     /**
      * 值
      */
     @Getter
-    @Setter
     private Object value;
 
     /**
