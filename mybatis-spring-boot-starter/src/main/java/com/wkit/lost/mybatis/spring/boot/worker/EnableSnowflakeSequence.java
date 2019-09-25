@@ -23,17 +23,24 @@ import java.lang.annotation.Target;
 public @interface EnableSnowflakeSequence {
 
     /**
-     * 是否开启秒级(默认为false)
+     * 是否开启@Primary(默认为false)
      * @return true: 是 false: 否
      */
-    @AliasFor( "secondEnable" )
+    @AliasFor( "primary" )
     boolean value() default false;
+
+    /**
+     * 是否开启@Primary
+     * @return true: 是 false: 否
+     * @see org.springframework.context.annotation.Primary
+     */
+    @AliasFor( "value" )
+    boolean primary() default false;
 
     /**
      * 是否开启秒级(默认为false)
      * @return true: 是 false: 否
      */
-    @AliasFor( "value" )
     boolean secondEnable() default false;
 
     /**
@@ -42,10 +49,4 @@ public @interface EnableSnowflakeSequence {
      */
     boolean macEnable() default false;
 
-    /**
-     * 是否为@Primary
-     * @return true: 是 false: 否
-     * @see org.springframework.context.annotation.Primary
-     */
-    boolean primary() default false;
 }
