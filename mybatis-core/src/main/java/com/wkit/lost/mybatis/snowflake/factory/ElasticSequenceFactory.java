@@ -18,13 +18,13 @@ import java.util.concurrent.TimeUnit;
 public class ElasticSequenceFactory implements SequenceFactory {
 
     /**
-     * 默认开始时间(毫秒: 2019-01-01)
+     * 默认开始时间(毫秒: 2019-09-25)
      */
-    public static final long MILLIS_EPOCH_TIMESTAMP = 1546272000000L;
+    public static final long MILLIS_EPOCH_TIMESTAMP = 1569340800000L;
     /**
-     * 默认开始时间(秒: 2019-01-01)
+     * 默认开始时间(秒: 2019-09-25)
      */
-    public static final long SECOND_EPOCH_TIMESTAMP = 1546272000L;
+    public static final long SECOND_EPOCH_TIMESTAMP = 1569340800L;
     protected int timestampBits;
     protected int workerBits;
     protected int dataCenterBits;

@@ -7,8 +7,8 @@ package com.wkit.lost.mybatis.snowflake.worker;
 public interface WorkerAssigner {
 
     /**
-     * 分配worker id
-     * @return worker id
+     * 分配机器标识
+     * @return 机器标识码
      */
     long workerId();
 

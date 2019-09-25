@@ -7,6 +7,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -22,6 +23,8 @@ import org.springframework.core.type.AnnotationMetadata;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+
+import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_SINGLETON;
 
 /**
  * 注册{@link SnowflakeSequence}实例
@@ -47,7 +50,8 @@ class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, 
         AnnotationAttributes attributes = AnnotationAttributes.fromMap( importingClassMetadata.getAnnotationAttributes( EnableSnowflakeSequence.class.getName() ) );
         boolean secondEnable = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "secondEnable" ) ).orElse( false );
         boolean macEnable = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "macEnable" ) ).orElse( false );
-        registerBean( registry, secondEnable, macEnable );
+        boolean primary = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "primary" ) ).orElse( false );
+        registerBean( registry, secondEnable, macEnable, primary );
     }
 
     private void checkConfiguration() {
@@ -73,11 +77,14 @@ class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, 
         }
     }
 
-    private void registerBean( BeanDefinitionRegistry registry, boolean secondEnable, boolean macEnable ) {
+    private void registerBean( BeanDefinitionRegistry registry, boolean secondEnable, boolean macEnable, boolean primary ) {
         BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.genericBeanDefinition( SnowflakeSequence.class );
         GenericBeanDefinition definition = ( GenericBeanDefinition ) definitionBuilder.getRawBeanDefinition();
         definition.setBeanClass( SnowflakeSequence.class );
         definition.setSynthetic( true );
+        definition.setScope( SCOPE_SINGLETON );
+        definition.setPrimary( primary );
+        definition.setAutowireMode( AbstractBeanDefinition.AUTOWIRE_BY_TYPE );
         // 属性
         ConstructorArgumentValues argumentValues = new ConstructorArgumentValues();
         // 启用秒级

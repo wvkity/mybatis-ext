@@ -41,4 +41,11 @@ public @interface EnableSnowflakeSequence {
      * @return true: 是 false: 否
      */
     boolean macEnable() default false;
+
+    /**
+     * 是否为@Primary
+     * @return true: 是 false: 否
+     * @see org.springframework.context.annotation.Primary
+     */
+    boolean primary() default false;
 }

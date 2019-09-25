@@ -17,14 +17,14 @@ public interface SequenceFactory {
 
     /**
      * 构建ID序列实例
-     * @param workerAssigner workerId分配器
+     * @param workerAssigner 分配器
      * @return ID序列实例
      */
     Sequence build( WorkerAssigner workerAssigner );
 
     /**
      * 构建ID序列
-     * @param workerId     workerId
+     * @param workerId     机器标识ID
      * @param dataCenterId 数据中心ID
      * @return ID序列
      */
