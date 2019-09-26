@@ -2,7 +2,6 @@ package com.wkit.lost.mybatis.spring.boot.worker;
 
 import com.wkit.lost.mybatis.snowflake.sequence.SnowflakeSequence;
 import com.wkit.lost.mybatis.snowflake.worker.SequenceUtil;
-import com.wkit.lost.mybatis.spring.boot.autoconfigure.MyBatisAutoConfiguration;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -12,8 +11,6 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
@@ -37,8 +34,6 @@ import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_SING
  * </p>
  * @author DT
  */
-@AutoConfigureBefore( { MyBatisAutoConfiguration.class } )
-@AutoConfigureAfter( { SequenceAutoConfiguration.class } )
 class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, ImportBeanDefinitionRegistrar {
 
     private SequenceAutoConfiguration configuration;
@@ -84,8 +79,9 @@ class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, 
         definition.setSynthetic( true );
         definition.setScope( SCOPE_SINGLETON );
         definition.setPrimary( primary );
+        definition.setAutowireCandidate( true );
         definition.setAutowireMode( AbstractBeanDefinition.AUTOWIRE_BY_TYPE );
-        // 属性
+        // 采用构造方法注入
         ConstructorArgumentValues argumentValues = new ConstructorArgumentValues();
         // 启用秒级
         if ( configuration.isSecondEnable() || secondEnable ) {
