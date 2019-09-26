@@ -3,6 +3,7 @@ package com.wkit.lost.mybatis.spring.boot.autoconfigure;
 
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
+import com.wkit.lost.mybatis.filling.MetaObjectFillingHandler;
 import com.wkit.lost.mybatis.keygen.GuidGenerator;
 import com.wkit.lost.mybatis.keygen.KeyGenerator;
 import com.wkit.lost.mybatis.resolver.EntityResolver;
@@ -171,6 +172,10 @@ public class MyBatisAutoConfiguration implements InitializingBean {
         // 雪花算法主键生成器
         if ( hasBeanFromContext( Sequence.class ) ) {
             customConfig.setSequence( getBean( Sequence.class ) );
+        }
+        // 自动填充值
+        if ( hasBeanFromContext( MetaObjectFillingHandler.class ) ) {
+            customConfig.setMetaObjectFillingHandler( getBean( MetaObjectFillingHandler.class ) );
         }
         factory.setCustomConfiguration( customConfig );
         return factory.getObject();

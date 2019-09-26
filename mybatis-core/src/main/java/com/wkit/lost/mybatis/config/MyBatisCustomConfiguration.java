@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.config;
 
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
+import com.wkit.lost.mybatis.filling.MetaObjectFillingHandler;
 import com.wkit.lost.mybatis.keygen.KeyGenerator;
 import com.wkit.lost.mybatis.naming.DefaultPhysicalNamingStrategy;
 import com.wkit.lost.mybatis.naming.PhysicalNamingStrategy;
@@ -172,6 +173,11 @@ public class MyBatisCustomConfiguration implements Serializable {
      * 主键序列(雪花算法)
      */
     private Sequence sequence;
+
+    /**
+     * 自动填充值处理器
+     */
+    private MetaObjectFillingHandler metaObjectFillingHandler;
 
     /**
      * 缓存当前对象

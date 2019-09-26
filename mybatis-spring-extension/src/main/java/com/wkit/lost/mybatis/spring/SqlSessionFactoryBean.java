@@ -4,6 +4,7 @@ import com.wkit.lost.mybatis.builder.xml.MyBatisXMLConfigBuilder;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.plugins.interceptor.LimitInterceptor;
+import com.wkit.lost.mybatis.plugins.interceptor.MetaObjectFillingInterceptor;
 import com.wkit.lost.mybatis.plugins.interceptor.PageableInterceptor;
 import com.wkit.lost.mybatis.session.MyBatisConfiguration;
 import com.wkit.lost.mybatis.session.MyBatisSqlSessionFactoryBuilder;
@@ -175,6 +176,13 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
         }
 
         // 默认拦截器LimitPlugin > PageablePlugin，存在多个插件，由于内部使用代理(代理类又被代理)，越是在外面优先级越高，故LimitPlugin需要注册在后面
+
+        // 注册自动填充值拦截器
+        MetaObjectFillingInterceptor fillingInterceptor = new MetaObjectFillingInterceptor();
+        if (this.configurationProperties != null ) {
+            fillingInterceptor.setProperties( configurationProperties );
+        }
+        targetConfiguration.addInterceptor( fillingInterceptor );
 
         // 注册分页拦截器
         if ( customConfiguration.isUsePageablePlugin() ) {

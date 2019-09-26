@@ -4,12 +4,14 @@ import com.wkit.lost.mybatis.annotation.ColumnExt;
 import com.wkit.lost.mybatis.annotation.Entity;
 import com.wkit.lost.mybatis.annotation.GeneratedValue;
 import com.wkit.lost.mybatis.annotation.Identity;
+import com.wkit.lost.mybatis.annotation.MetaFilling;
 import com.wkit.lost.mybatis.annotation.OrderBy;
 import com.wkit.lost.mybatis.annotation.SequenceGenerator;
 import com.wkit.lost.mybatis.annotation.Transient;
 import com.wkit.lost.mybatis.annotation.Worker;
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.annotation.extension.Executing;
+import com.wkit.lost.mybatis.annotation.extension.FillingRule;
 import com.wkit.lost.mybatis.annotation.extension.GenerationType;
 import com.wkit.lost.mybatis.annotation.extension.UseJavaType;
 import com.wkit.lost.mybatis.annotation.extension.Validate;
@@ -212,7 +214,7 @@ public class DefaultEntityResolver implements EntityResolver {
         Column column = processColumnAnnotation( table.getEntity(), attribute, enableAutoJdbcMapping );
         //var column = new Column( table.getEntity() );
         column.setAttribute( attribute );
-        // 处理@ID注解
+        // 检查是否存在@Id或@Worker注解
         if ( attribute.isAnnotationPresentOfId() ) {
             // 检查是否存在主键
             if ( table.hasPrimaryKey() ) {
@@ -220,12 +222,10 @@ public class DefaultEntityResolver implements EntityResolver {
                 table.setPrimaryKey( null );
             } else {
                 // 设置主键
+                column.setPrimaryKey( true );
                 table.setPrimaryKey( column );
             }
         }
-        // 获取全局配置
-        //column.setCheckNotEmpty( this.configuration.isCheckNotEmpty() );
-        //column.setUseJavaType( this.configuration.isUseJavaType() );
 
         // 处理排序
         processOrderByAnnotation( table, column, attribute );
@@ -235,7 +235,8 @@ public class DefaultEntityResolver implements EntityResolver {
         if ( !column.isPrimaryKey() ) {
             processAutoDiscernPrimaryKey( table, column, attribute );
         }
-        table.addColumn( column );
+        // 处理自动填充注解
+        processFillingAnnotation( table, column, attribute );
         // 检查是否为主键
         if ( column.isPrimaryKey() ) {
             column.setUpdatable( false );
@@ -243,6 +244,7 @@ public class DefaultEntityResolver implements EntityResolver {
             // 全局配置-ID值生成方式
             processCustomKeyGenerator( table, column );
         }
+        table.addColumn( column );
     }
 
     /**
@@ -274,6 +276,7 @@ public class DefaultEntityResolver implements EntityResolver {
             columnName = columnAnnotation.name();
         }
         // 处理扩展注解
+        FillingRule rule;
         if ( attribute.isAnnotationPresent( ColumnExt.class ) ) {
             ColumnExt columnExt = attribute.getAnnotation( ColumnExt.class );
             blob = columnExt.blob();
@@ -297,6 +300,9 @@ public class DefaultEntityResolver implements EntityResolver {
             if ( using != UseJavaType.CONFIG ) {
                 useJavaType = using == UseJavaType.REQUIRED;
             }
+            rule = columnExt.fill();
+        } else {
+            rule = null;
         }
         if ( jdbcType == null && enableAutoJdbcMapping ) {
             // 开启自动映射
@@ -323,6 +329,8 @@ public class DefaultEntityResolver implements EntityResolver {
                     "The primitive type is not null at any time in dynamic SQL because it has a default value. It is " +
                     "recommended to modify the primitive type to the corresponding wrapper type!", column.getProperty(), column.getEntity().getCanonicalName() );
         }
+        // 添加填充规则
+        Optional.ofNullable( rule ).ifPresent( column::addRule );
         return column;
     }
 
@@ -488,6 +496,29 @@ public class DefaultEntityResolver implements EntityResolver {
             if ( include ) {
                 column.setPrimaryKey( true );
                 table.setPrimaryKey( column );
+            }
+        }
+    }
+
+    /**
+     * 处理自动填充值注解
+     * @param table     表映射信息对象
+     * @param column    字段映射对象
+     * @param attribute 属性信息对象
+     */
+    private void processFillingAnnotation( Table table, Column column, Attribute attribute ) {
+        if ( attribute.isAnnotationPresent( MetaFilling.class ) && column.canFilling() ) {
+            MetaFilling filling = attribute.getAnnotation( MetaFilling.class );
+            if ( filling.insert() && column.isInsertable() ) {
+                column.addRule( FillingRule.INSERT );
+            }
+            if ( column.isUpdatable() ) {
+                if ( filling.update() ) {
+                    column.addRule( FillingRule.UPDATE );
+                }
+                if ( filling.delete() ) {
+                    column.addRule( FillingRule.DELETE );
+                }
             }
         }
     }

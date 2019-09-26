@@ -2,11 +2,17 @@ package com.wkit.lost.mybatis.core.meta;
 
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -54,29 +60,36 @@ public class Table {
      * 数据库CATALOG
      */
     @Getter
-    @Setter
+    @Setter( AccessLevel.PACKAGE )
     private String catalog;
 
     /**
      * 数据库SCHEMA
      */
     @Getter
-    @Setter
+    @Setter( AccessLevel.PACKAGE )
     private String schema;
 
     /**
      * 前缀
      */
     @Getter
-    @Setter
+    @Setter( AccessLevel.PACKAGE )
     private String prefix;
 
     /**
      * 排序
      */
     @Getter
-    @Setter
+    @Setter( AccessLevel.PACKAGE )
     private String order;
+
+    /**
+     * 主键字段
+     */
+    @Getter
+    @Setter( AccessLevel.PACKAGE )
+    private Column primaryKey;
 
     /**
      * 所有字段
@@ -88,13 +101,6 @@ public class Table {
      */
     @Getter
     private Set<Column> compositeColumns = new LinkedHashSet<>();
-
-    /**
-     * 主键字段
-     */
-    @Getter
-    @Setter
-    private Column primaryKey;
 
     /**
      * 主键属性
@@ -140,7 +146,7 @@ public class Table {
      * 添加字段映射信息
      * @param column {@link Column}(字段信息对象)
      */
-    public void addColumn( Column column ) {
+    void addColumn( Column column ) {
         if ( column != null ) {
             this.columns.add( column );
         }
@@ -150,7 +156,7 @@ public class Table {
      * 添加主键属性
      * @param property 属性
      */
-    public void addPrimaryKeyProperty( final String property ) {
+    void addPrimaryKeyProperty( final String property ) {
         if ( StringUtil.hasText( property ) ) {
             this.primaryKeyProperties.add( property );
         }
@@ -160,7 +166,7 @@ public class Table {
      * 添加主键字段名
      * @param column 字段名
      */
-    public void addPrimaryKeyColumn( final String column ) {
+    void addPrimaryKeyColumn( final String column ) {
         if ( StringUtil.hasText( column ) ) {
             this.primaryKeyColumns.add( column );
         }
@@ -170,10 +176,20 @@ public class Table {
      * 添加主键字段
      * @param column 字段映射信息
      */
-    public void addPrimaryKey( final Column column ) {
+    void addPrimaryKey( final Column column ) {
         if ( column != null ) {
             this.compositeColumns.add( column );
         }
+    }
+
+    /**
+     * 根据属性查找对应的字段信息
+     * @param property 属性
+     * @return 字段信息
+     */
+    public Optional<Column> search( String property ) {
+        return Optional.ofNullable( property ).flatMap( value -> this.columns.parallelStream()
+                .filter( column -> column.getProperty().equals( property ) ).findAny() );
     }
 
     /**
@@ -201,15 +217,39 @@ public class Table {
     }
 
     /**
+     * 获取所有保存操作时可自动插入值字段
+     * @return 字段集合
+     */
+    public Set<Column> getInsertFillings() {
+        return this.columns.stream().filter( Column::enableInsertFilling ).collect( Collectors.toCollection( LinkedHashSet::new ) );
+    }
+
+    /**
+     * 获取所有更新操作时可自动插入值字段
+     * @return 字段集合
+     */
+    public Set<Column> getUpdateFillings() {
+        return this.columns.stream().filter( Column::enableInsertFilling ).collect( Collectors.toCollection( LinkedHashSet::new ) );
+    }
+
+    /**
+     * 获取所有逻辑删除操作时可自动插入值字段
+     * @return 字段集合
+     */
+    public Set<Column> getDeleteFillings() {
+        return this.columns.stream().filter( Column::enableInsertFilling ).collect( Collectors.toCollection( LinkedHashSet::new ) );
+    }
+
+    /**
      * 初始化定义信息
      */
-    public void initDefinition() {
+    void initDefinition() {
         if ( CollectionUtil.hasElement( this.columns ) && definitions.isEmpty() ) {
             this.definitions.putAll( this.columns.stream().collect( Collectors.toMap( Column::getProperty, Function.identity() ) ) );
         }
     }
 
-    public Table setEntity( Class<?> entity ) {
+    Table setEntity( Class<?> entity ) {
         this.entity = entity;
         if ( this.alias == null ) {
             this.alias = StringUtil.getSimpleNameOfSplitFirstUpper( this.entity );

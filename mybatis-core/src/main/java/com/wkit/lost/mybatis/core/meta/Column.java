@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.core.meta;
 
+import com.wkit.lost.mybatis.annotation.extension.FillingRule;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
@@ -19,6 +20,9 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 数据库表字段映射信息
  * @author DT
@@ -26,6 +30,7 @@ import org.apache.ibatis.type.TypeHandler;
 @Accessors( chain = true )
 @EqualsAndHashCode
 @ToString
+@Getter
 @Setter( AccessLevel.PACKAGE )
 @AllArgsConstructor
 public final class Column {
@@ -33,134 +38,123 @@ public final class Column {
     /**
      * 实体类
      */
-    @Getter
     private Class<?> entity;
 
     /**
      * 属性对象
      */
-    @Getter
     private Attribute attribute;
 
     /**
      * 属性
      */
-    @Getter
     private String property;
 
     /**
      * 字段映射
      */
-    @Getter
     private String column;
 
     /**
      * Java类型
      */
-    @Getter
     private Class<?> javaType;
 
     /**
      * Jdbc类型
      */
-    @Getter
     private JdbcType jdbcType;
 
     /**
      * 类型处理器
      */
-    @Getter
     private Class<? extends TypeHandler<?>> typeHandler;
 
     /**
      * 序列名称
      */
-    @Getter
     private String sequenceName;
 
     /**
      * 是否为主键
      */
-    @Getter
     private boolean primaryKey = false;
 
     /**
      * 是否为UUID主键
      */
-    @Getter
     private boolean uuid = false;
 
     /**
      * 是否为自增主键
      */
-    @Getter
     private boolean identity = false;
 
     /**
      * 是否为雪花算法主键
      */
-    @Getter
-    private boolean worker;
+    private boolean worker = false;
 
     /**
      * 是否为雪花算法字符串主键
      */
-    @Getter
-    private boolean workerString;
+    private boolean workerString = false;
 
     /**
      * 是否为Blob类型
      */
-    @Getter
     private boolean blob = false;
 
     /**
      * 是否可保存
      */
-    @Getter
     private boolean insertable = true;
 
     /**
      * 是否可修改
      */
-    @Getter
     private boolean updatable = true;
 
     /**
      * SQL语句是否设置Java类型
      */
-    @Getter
     private boolean useJavaType = false;
 
     /**
      * 字符串非空校验
      */
-    @Getter
     private boolean checkNotEmpty;
+
+    /**
+     * 乐观锁
+     */
+    private boolean version = false;
 
     /**
      * 排序方式
      */
-    @Getter
     private String orderBy;
 
     /**
      * 主键生成方式
      */
-    @Getter
     private String generator;
 
     /**
      * SQL执行时机
      */
-    @Getter
     private Executing executing;
 
     /**
      * 值
      */
-    @Getter
     private Object value;
+
+    /**
+     * 填充规则
+     */
+    @Getter( AccessLevel.PACKAGE )
+    private Set<FillingRule> rules = new HashSet<>( 3 );
 
     /**
      * 构造方法
@@ -180,6 +174,67 @@ public final class Column {
      */
     public Table getTable() {
         return EntityHandler.getTable( this.entity );
+    }
+
+    /**
+     * 添加填充规则
+     * @param rule 填充规则
+     * @return 当前对象
+     */
+    Column addRule( FillingRule rule ) {
+        if ( rule != null && rule != FillingRule.NORMAL ) {
+            this.rules.add( rule );
+        }
+        return this;
+    }
+
+    /**
+     * 检查当前字段是否支持自动填充值
+     * @return true: 是 false: 否
+     */
+    public boolean canFilling() {
+        return ( this.insertable || this.updatable ) && !primaryKey;
+    }
+
+    /**
+     * 检查当前字段是否支持指定填充规则
+     * @param rule 指定填充规则
+     * @return true: 是 false: 否
+     */
+    public boolean canFilling( FillingRule rule ) {
+        return rule != null && this.rules.contains( rule );
+    }
+
+    /**
+     * 检查当前字段是否存在自动填充规则
+     * @return true: 是 false: 否
+     */
+    public boolean hasFillingRule() {
+        return !this.rules.isEmpty();
+    }
+
+    /**
+     * 检查是否启用保存操作自动填充值
+     * @return true: 是 false: 否
+     */
+    public boolean enableInsertFilling() {
+        return rules.contains( FillingRule.INSERT );
+    }
+
+    /**
+     * 检查是否启用更新操作自动填充值
+     * @return true: 是 false: 否
+     */
+    public boolean enableUpdateFilling() {
+        return rules.contains( FillingRule.UPDATE );
+    }
+
+    /**
+     * 检查是否启用逻辑删除操作自动填充值
+     * @return true: 是 false: 否
+     */
+    public boolean enableDeleteFilling() {
+        return rules.contains( FillingRule.DELETE );
     }
 
     /**
@@ -387,3 +442,4 @@ public final class Column {
     }
 
 }
+
