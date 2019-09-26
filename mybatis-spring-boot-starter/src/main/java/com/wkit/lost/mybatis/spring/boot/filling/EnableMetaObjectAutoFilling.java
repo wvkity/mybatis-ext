@@ -11,7 +11,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 开启自动填充值
+ * 启用元对象自动填充值
  * <p>交由拦截器处理</p>
  * @author DT
  * @see MateObjectAutoFillingRegistrar
@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 @Import( { MateObjectAutoFillingRegistrar.class } )
 @Documented
 @Inherited
-public @interface EnableMetaObjectFilling {
+public @interface EnableMetaObjectAutoFilling {
 
     /**
      * 是否开启@Primary(默认为false)
@@ -40,27 +40,27 @@ public @interface EnableMetaObjectFilling {
     boolean primary() default false;
 
     /**
-     * 是否开启自动匹配模式
+     * 是否关闭自动匹配模式
      * @return true: 是 false: 否
      */
-    boolean autoMatching() default true;
+    boolean autoMatching() default false;
 
     /**
-     * 是否开启保存操作自动填充值
+     * 是否关闭保存操作自动填充值
      * @return true: 是 false: 否
      */
-    boolean insert() default true;
+    boolean insert() default false;
 
     /**
-     * 是否开启更新操作自动填充值
+     * 是否关闭更新操作自动填充值
      * @return true: 是 false: 否
      */
-    boolean update() default true;
+    boolean update() default false;
 
     /**
-     * 是否开启逻辑删除操作自动填充值
+     * 是否关闭逻辑删除操作自动填充值
      * @return true: 是 false: 否
      */
-    boolean delete() default true;
+    boolean delete() default false;
 
 }

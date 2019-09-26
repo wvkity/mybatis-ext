@@ -29,12 +29,12 @@ public class MateObjectAutoFillingRegistrar implements BeanFactoryAware, ImportB
 
     @Override
     public void registerBeanDefinitions( AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry ) {
-        AnnotationAttributes attributes = AnnotationAttributes.fromMap( importingClassMetadata.getAnnotationAttributes( EnableMetaObjectFilling.class.getName() ) );
+        AnnotationAttributes attributes = AnnotationAttributes.fromMap( importingClassMetadata.getAnnotationAttributes( EnableMetaObjectAutoFilling.class.getName() ) );
         boolean primary = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "primary" ) ).orElse( false );
-        boolean autoMatching = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "autoMatching" ) ).orElse( false );
-        boolean insert = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "insert" ) ).orElse( false );
-        boolean update = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "update" ) ).orElse( false );
-        boolean delete = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "delete" ) ).orElse( false );
+        boolean disableAutoMatching = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "autoMatching" ) ).orElse( false );
+        boolean disableInsert = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "insert" ) ).orElse( false );
+        boolean disableUpdate = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "update" ) ).orElse( false );
+        boolean disableDelete = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "delete" ) ).orElse( false );
         // 创建bean定义信息
         BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.genericBeanDefinition( DefaultMetaObjectFillingHandler.class );
         GenericBeanDefinition definition = ( GenericBeanDefinition ) definitionBuilder.getRawBeanDefinition();
@@ -46,10 +46,10 @@ public class MateObjectAutoFillingRegistrar implements BeanFactoryAware, ImportB
         definition.setAutowireMode( AbstractBeanDefinition.AUTOWIRE_BY_TYPE );
         // 采用构造方法注入
         ConstructorArgumentValues argumentValues = new ConstructorArgumentValues();
-        argumentValues.addIndexedArgumentValue( 0, insert );
-        argumentValues.addIndexedArgumentValue( 1, update );
-        argumentValues.addIndexedArgumentValue( 2, delete );
-        argumentValues.addIndexedArgumentValue( 3, autoMatching );
+        argumentValues.addIndexedArgumentValue( 0, disableInsert );
+        argumentValues.addIndexedArgumentValue( 1, disableUpdate );
+        argumentValues.addIndexedArgumentValue( 2, disableDelete );
+        argumentValues.addIndexedArgumentValue( 3, disableAutoMatching );
         argumentValues.addIndexedArgumentValue( 4, getDependency() );
         definition.setConstructorArgumentValues( argumentValues );
         registry.registerBeanDefinition( "metaObjectFillingHandler", definition );

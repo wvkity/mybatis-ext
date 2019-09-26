@@ -76,22 +76,22 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
     }
 
     /**
-     * 是否开启保存操作自动填充
+     * 是否禁用保存操作自动填充
      */
-    private boolean enableInsert = true;
+    private boolean disableInsert;
     /**
-     * 是否开启更新操作自动填充
+     * 是否禁用更新操作自动填充
      */
-    private boolean enableUpdate = true;
+    private boolean disableUpdate;
     /**
-     * 是否开启逻辑删除操作自动填充
+     * 是否禁用逻辑删除操作自动填充
      */
-    private boolean enableDelete = true;
+    private boolean disableDelete;
 
     /**
-     * 自动匹配(自定义模式)
+     * 是否禁用自动匹配(自定义模式)
      */
-    private boolean autoMatching = true;
+    private boolean disableAutoMatching;
 
     /**
      * 填充依赖
@@ -100,18 +100,18 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
 
     /**
      * 构造方法
-     * @param enableInsert 是否开启保存操作自动填充
-     * @param enableUpdate 是否开启更新操作自动填充
-     * @param enableDelete 是否开启逻辑删除操作自动填充
-     * @param autoMatching 自动匹配
-     * @param dependency   填充依赖
+     * @param disableInsert       是否禁用保存操作自动填充
+     * @param disableUpdate       是否禁用更新操作自动填充
+     * @param disableDelete       是否禁用逻辑删除操作自动填充
+     * @param disableAutoMatching 是否禁用自动匹配
+     * @param dependency          填充依赖
      */
-    public DefaultMetaObjectFillingHandler( boolean enableInsert, boolean enableUpdate, boolean enableDelete,
-                                            boolean autoMatching, MetaObjectFillingDependency dependency ) {
-        this.enableInsert = enableInsert;
-        this.enableUpdate = enableUpdate;
-        this.enableDelete = enableDelete;
-        this.autoMatching = autoMatching;
+    public DefaultMetaObjectFillingHandler( boolean disableInsert, boolean disableUpdate, boolean disableDelete,
+                                            boolean disableAutoMatching, MetaObjectFillingDependency dependency ) {
+        this.disableInsert = disableInsert;
+        this.disableUpdate = disableUpdate;
+        this.disableDelete = disableDelete;
+        this.disableAutoMatching = disableAutoMatching;
         this.dependency = dependency;
     }
 
@@ -171,7 +171,7 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
     }
 
     private void autoFilling( MetaObject metaObject, Table table, Set<String> properties, boolean isUserName ) {
-        if ( autoMatching && table != null && dependency != null && properties != null ) {
+        if ( enableAutoMatching() && table != null && dependency != null && properties != null ) {
             Object value = isUserName ? dependency.currentUserName() : dependency.currentUserId();
             if ( value != null ) {
                 for ( String property : properties ) {
@@ -188,7 +188,7 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
     }
 
     private void autoFilingDateTime( MetaObject metaObject, Table table, Set<String> properties ) {
-        if ( autoMatching && table != null && properties != null ) {
+        if ( enableAutoMatching() && table != null && properties != null ) {
             for ( String property : properties ) {
                 if ( metaValueIsEmpty( metaObject, property ) ) {
                     Optional<Column> optional = table.search( property );
@@ -207,21 +207,21 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
 
     @Override
     public boolean enableInsert() {
-        return this.enableInsert;
+        return !this.disableInsert;
     }
 
     @Override
     public boolean enableUpdate() {
-        return this.enableUpdate;
+        return !this.disableUpdate;
     }
 
     @Override
     public boolean enableDelete() {
-        return this.enableDelete;
+        return !this.disableDelete;
     }
 
     @Override
     public boolean enableAutoMatching() {
-        return this.autoMatching;
+        return !this.disableAutoMatching;
     }
 }
