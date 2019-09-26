@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.starter.example.beans;
 
 import com.wkit.lost.mybatis.annotation.GeneratedValue;
 import com.wkit.lost.mybatis.annotation.Transient;
+import com.wkit.lost.mybatis.annotation.Worker;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -20,7 +21,7 @@ public class SysUser implements Serializable {
     /**
      * ID
      */
-    @GeneratedValue( generator = "WORKER" )
+    @Worker
     private Long id;
 
     /**

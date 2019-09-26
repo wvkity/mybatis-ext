@@ -17,12 +17,12 @@ public class InsertServiceApp extends RootTestRunner {
     @Test
     public void insert() {
         SysUser sysUser = new SysUser();
-        sysUser.setUserName( "测试主键填充" ).setGmtCreate( Instant.now() );
-        sysUser.setCount( 55L );
-        sysUser.setScore( 88 );
-        sysUser.setCreateUser( "wangzhang" );
-        sysUser.setState( 6 ).setPassword( "123456a" );
-        int result = sysUserService.save( sysUser );
+        sysUser.setUserName( "测试自动填充" );
+        sysUser.setCount( 56L );
+        sysUser.setScore( 85 );
+        //sysUser.setCreateUser( "我是自动填充" );
+        sysUser.setState( 4 ).setPassword( "123456a" );
+        int result = sysUserService.saveSelective( sysUser );
         log.info( "执行结果：{}", result );
     }
 }

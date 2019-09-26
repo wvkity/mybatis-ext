@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.starter.example.config;
 
+import com.wkit.lost.mybatis.filling.MetaObjectFillingDependency;
 import com.wkit.lost.mybatis.spring.boot.worker.SequenceAutoConfiguration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
@@ -14,5 +15,10 @@ public class MyBatisConfigurer {
         SequenceAutoConfiguration configuration = new SequenceAutoConfiguration();
         configuration.setWorkerId( 1L ).setDataCenterId( 3L );
         return configuration;
+    }
+
+    @Bean
+    public MetaObjectFillingDependency dependency() {
+        return new FillingDependency();
     }
 }

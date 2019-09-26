@@ -1,16 +1,18 @@
 package com.wkit.lost.mybatis.starter.example;
 
+import com.wkit.lost.mybatis.spring.boot.filling.EnableMetaObjectFilling;
 import com.wkit.lost.mybatis.spring.boot.worker.EnableSnowflakeSequence;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
-@EnableSnowflakeSequence
+@EnableSnowflakeSequence( value = true )
+@EnableMetaObjectFilling( value = true, delete = false )
 @EnableConfigurationProperties
 @SpringBootApplication
 @EnableAsync
