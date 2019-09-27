@@ -3,6 +3,7 @@ package com.wkit.lost.mybatis.starter.example.junit.service;
 import com.alibaba.fastjson.JSON;
 import com.wkit.lost.mybatis.core.CriteriaImpl;
 import com.wkit.lost.mybatis.core.function.Aggregations;
+import com.wkit.lost.mybatis.core.function.Avg;
 import com.wkit.lost.mybatis.starter.example.beans.SysUser;
 import com.wkit.lost.mybatis.starter.example.service.SysUserService;
 import com.wkit.lost.mybatis.starter.example.vo.Score;
@@ -33,25 +34,27 @@ public class FunctionApp extends RootTestRunner {
             criteria.asc( "state" );*/
 
             criteria.useAlias( "t2" )
-                    .query( "state", "sex", "gmtCreate" )
+                    .query( "state", "sex" )
                     .lt( "score", 150 )
-                    .group( "state", "sex" )
-                    .count("*" )
+                    .groupAll( true )
+                    .count( "*" )
                     .min( "score" )
                     .max( "score" )
                     .sum( "score" )
-                    .avg( "avg", "score" )
+                    .avg( "avg", "score", 6 )
                     .descFunc( "avg" )
                     .asc( "state" ).asc( Aggregations.max( criteria, "score" ) )
                     //.resultType( LinkedHashMap.class );
-                    .resultMap( "scoreResultMap" );
-            //List<Score> result = sysUserService.listForCustom( criteria );
+                    .resultMap( "scoreResultMap" ).limit( 0, 10 );
+            List<Score> result = sysUserService.listForCustom( criteria );
+            /*Avg avg = Aggregations.avg( criteria, "score", 5 );
+            criteria.addFunction( avg ).desc( avg );*/
             //Score score = result.get( 0 );
             //List<Object[]> result = sysUserService.listForArray( criteria );
             //List<Map<String, Object>> result = sysUserService.listForMap( criteria );
-            //log.info( "执行结果1：{}", JSON.toJSONString( result, true ) );
+            log.info( "执行结果1：{}", JSON.toJSONString( result, true ) );
             //log.info( "执行结果：{}", JSON.toJSONString( sysUserService.listForObject( criteria ), true ) );
-            CriteriaImpl<SysUser> criteria1 = sysUserService.getCriteria("t3");
+            /*CriteriaImpl<SysUser> criteria1 = sysUserService.getCriteria("t3");
             criteria1.query( "state", "sex", "gmtCreate" )
                     .lt( "score", 150 )
                     .group( "state", "sex" )
@@ -64,7 +67,7 @@ public class FunctionApp extends RootTestRunner {
                     .asc( "state" ).asc( Aggregations.max( criteria1, "score" ) )
                     .limit( 0, 8 )
                     .resultType( Score.class );
-            List<SysUser> limitResult = sysUserService.list( criteria1 );
+            List<SysUser> limitResult = sysUserService.list( criteria1 );*/
             //sysUserService.listForMap( criteria1 );
             //List<Score> scores = sysUserService.listForCustom( criteria1 );
             //log.info( "执行结果2：{}", JSON.toJSONString( scores, true ) );
