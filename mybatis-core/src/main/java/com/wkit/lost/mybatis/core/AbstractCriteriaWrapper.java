@@ -1215,6 +1215,17 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
+    public Context addFunction( Aggregation function ) {
+        if ( function != null ) {
+            getRootMaster().aggregations.add( function );
+            if ( StringUtil.hasText( function.getAlias() ) ) {
+                getRootMaster().aggregationCache.put( function.getAlias(), function );
+            }
+        }
+        return this.context;
+    }
+
+    @Override
     public Context addFunction( Aggregation... functions ) {
         return addFunction( ArrayUtil.toList( functions ) );
     }

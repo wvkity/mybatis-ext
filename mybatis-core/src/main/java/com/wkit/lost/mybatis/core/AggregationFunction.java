@@ -680,6 +680,13 @@ public interface AggregationFunction<T> {
 
     /**
      * 添加聚合函数
+     * @param function 聚合函数
+     * @return 条件对象
+     */
+    Criteria<T> addFunction( Aggregation function );
+
+    /**
+     * 添加聚合函数
      * @param functions 聚合函数数组
      * @return 条件对象
      */
