@@ -25,6 +25,7 @@ public abstract class Aggregations {
      * COUNT聚合函数
      * @param criteria 条件对象
      * @param property 属性
+     * @param distinct 是否去重
      */
     public static Count count( Criteria<?> criteria, String property, boolean distinct ) {
         return new Count( criteria, property, distinct );
@@ -102,11 +103,11 @@ public abstract class Aggregations {
     /**
      * COUNT聚合函数
      * @param criteria   条件对象
-     * @param property   属性
      * @param alias      别名
      * @param distinct   是否去重
      * @param comparator 比较运算
      * @param logic      逻辑操作
+     * @param property   属性
      * @param values     值
      */
     public static Count count( Criteria<?> criteria, String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {
@@ -130,9 +131,31 @@ public abstract class Aggregations {
      * SUM聚合函数
      * @param criteria 条件对象
      * @param property 属性
+     * @param scale    保留小数位数
+     */
+    public static Sum sum( Criteria<?> criteria, String property, Integer scale ) {
+        return new Sum( criteria, property, scale, false );
+    }
+
+    /**
+     * SUM聚合函数
+     * @param criteria 条件对象
+     * @param property 属性
+     * @param distinct 是否去重
      */
     public static Sum sum( Criteria<?> criteria, String property, boolean distinct ) {
         return new Sum( criteria, property, distinct );
+    }
+
+    /**
+     * SUM聚合函数
+     * @param criteria 条件对象
+     * @param property 属性
+     * @param scale    保留小数位数
+     * @param distinct 是否去重
+     */
+    public static Sum sum( Criteria<?> criteria, String property, Integer scale, boolean distinct ) {
+        return new Sum( criteria, property, scale, distinct );
     }
 
     /**
@@ -143,6 +166,17 @@ public abstract class Aggregations {
      */
     public static Sum sum( Criteria<?> criteria, String alias, String property ) {
         return new Sum( criteria, alias, property, false );
+    }
+
+    /**
+     * SUM聚合函数
+     * @param criteria 条件对象
+     * @param alias    别名
+     * @param property 属性
+     * @param scale    保留小数位数
+     */
+    public static Sum sum( Criteria<?> criteria, String alias, String property, Integer scale ) {
+        return new Sum( criteria, alias, property, scale, false );
     }
 
     /**
@@ -161,10 +195,34 @@ public abstract class Aggregations {
      * @param criteria 条件对象
      * @param alias    别名
      * @param property 属性
+     * @param scale    保留小数位数
+     * @param distinct 是否去重
+     */
+    public static Sum sum( Criteria<?> criteria, String alias, String property, Integer scale, boolean distinct ) {
+        return new Sum( criteria, alias, property, scale, distinct );
+    }
+
+    /**
+     * SUM聚合函数
+     * @param criteria 条件对象
+     * @param alias    别名
+     * @param property 属性
      * @param values   值
      */
     public static Sum sum( Criteria<?> criteria, String alias, String property, Object... values ) {
         return sum( criteria, alias, Comparator.EQ, Logic.AND, property, values );
+    }
+
+    /**
+     * SUM聚合函数
+     * @param criteria 条件对象
+     * @param alias    别名
+     * @param scale    保留小数位数
+     * @param property 属性
+     * @param values   值
+     */
+    public static Sum sum( Criteria<?> criteria, String alias, Integer scale, String property, Object... values ) {
+        return sum( criteria, alias, scale, Comparator.EQ, Logic.AND, property, values );
     }
 
     /**
@@ -181,6 +239,19 @@ public abstract class Aggregations {
 
     /**
      * SUM聚合函数
+     * @param criteria   条件对象
+     * @param alias      别名
+     * @param scale      保留小数位数
+     * @param comparator 比较运算
+     * @param property   属性
+     * @param values     值
+     */
+    public static Sum sum( Criteria<?> criteria, String alias, Integer scale, Comparator comparator, String property, Object... values ) {
+        return sum( criteria, alias, scale, comparator, Logic.AND, property, values );
+    }
+
+    /**
+     * SUM聚合函数
      * @param criteria 条件对象
      * @param alias    别名
      * @param logic    逻辑操作
@@ -189,6 +260,19 @@ public abstract class Aggregations {
      */
     public static Sum sum( Criteria<?> criteria, String alias, Logic logic, String property, Object... values ) {
         return sum( criteria, alias, Comparator.EQ, logic, property, values );
+    }
+
+    /**
+     * SUM聚合函数
+     * @param criteria 条件对象
+     * @param alias    别名
+     * @param scale    保留小数位数
+     * @param logic    逻辑操作
+     * @param property 属性
+     * @param values   值
+     */
+    public static Sum sum( Criteria<?> criteria, String alias, Integer scale, Logic logic, String property, Object... values ) {
+        return sum( criteria, alias, scale, Comparator.EQ, logic, property, values );
     }
 
     /**
@@ -207,15 +291,44 @@ public abstract class Aggregations {
     /**
      * SUM聚合函数
      * @param criteria   条件对象
+     * @param alias      别名
+     * @param scale      保留小数位数
+     * @param comparator 比较运算
+     * @param logic      逻辑操作
      * @param property   属性
+     * @param values     值
+     */
+    public static Sum sum( Criteria<?> criteria, String alias, Integer scale, Comparator comparator, Logic logic, String property, Object... values ) {
+        return new Sum( criteria, alias, scale, false, comparator, logic, property, ArrayUtil.toList( values ) );
+    }
+
+    /**
+     * SUM聚合函数
+     * @param criteria   条件对象
      * @param alias      别名
      * @param distinct   是否去重
      * @param comparator 比较运算
      * @param logic      逻辑操作
+     * @param property   属性
      * @param values     值
      */
     public static Sum sum( Criteria<?> criteria, String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {
         return new Sum( criteria, alias, distinct, comparator, logic, property, ArrayUtil.toList( values ) );
+    }
+
+    /**
+     * SUM聚合函数
+     * @param criteria   条件对象
+     * @param alias      别名
+     * @param scale      保留小数位数
+     * @param distinct   是否去重
+     * @param comparator 比较运算
+     * @param logic      逻辑操作
+     * @param property   属性
+     * @param values     值
+     */
+    public static Sum sum( Criteria<?> criteria, String alias, Integer scale, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {
+        return new Sum( criteria, alias, scale, distinct, comparator, logic, property, ArrayUtil.toList( values ) );
     }
     // endregion
 
@@ -234,9 +347,30 @@ public abstract class Aggregations {
      * AVG聚合函数
      * @param criteria 条件对象
      * @param property 属性
+     * @param scale    保留小数位数
+     */
+    public static Avg avg( Criteria<?> criteria, String property, Integer scale ) {
+        return new Avg( criteria, property, scale, false );
+    }
+
+    /**
+     * AVG聚合函数
+     * @param criteria 条件对象
+     * @param property 属性
      */
     public static Avg avg( Criteria<?> criteria, String property, boolean distinct ) {
         return new Avg( criteria, property, distinct );
+    }
+
+    /**
+     * AVG聚合函数
+     * @param criteria 条件对象
+     * @param property 属性
+     * @param scale    保留小数位数
+     * @param distinct 是否去重
+     */
+    public static Avg avg( Criteria<?> criteria, String property, Integer scale, boolean distinct ) {
+        return new Avg( criteria, property, scale, distinct );
     }
 
     /**
@@ -247,6 +381,17 @@ public abstract class Aggregations {
      */
     public static Avg avg( Criteria<?> criteria, String alias, String property ) {
         return new Avg( criteria, alias, property, false );
+    }
+
+    /**
+     * AVG聚合函数
+     * @param criteria 条件对象
+     * @param alias    别名
+     * @param property 属性
+     * @param scale    保留小数位数
+     */
+    public static Avg avg( Criteria<?> criteria, String alias, String property, Integer scale ) {
+        return new Avg( criteria, alias, property, scale, false );
     }
 
     /**
@@ -265,10 +410,34 @@ public abstract class Aggregations {
      * @param criteria 条件对象
      * @param alias    别名
      * @param property 属性
+     * @param scale    保留小数位数
+     * @param distinct 是否去重
+     */
+    public static Avg avg( Criteria<?> criteria, String alias, String property, Integer scale, boolean distinct ) {
+        return new Avg( criteria, alias, property, scale, distinct );
+    }
+
+    /**
+     * AVG聚合函数
+     * @param criteria 条件对象
+     * @param alias    别名
+     * @param property 属性
      * @param values   值
      */
     public static Avg avg( Criteria<?> criteria, String alias, String property, Object... values ) {
         return avg( criteria, alias, Comparator.EQ, Logic.AND, property, values );
+    }
+
+    /**
+     * AVG聚合函数
+     * @param criteria 条件对象
+     * @param alias    别名
+     * @param scale    保留小数位数
+     * @param property 属性
+     * @param values   值
+     */
+    public static Avg avg( Criteria<?> criteria, String alias, Integer scale, String property, Object... values ) {
+        return avg( criteria, alias, scale, Comparator.EQ, Logic.AND, property, values );
     }
 
     /**
@@ -285,6 +454,19 @@ public abstract class Aggregations {
 
     /**
      * AVG聚合函数
+     * @param criteria   条件对象
+     * @param alias      别名
+     * @param scale      保留小数位数
+     * @param comparator 比较运算
+     * @param property   属性
+     * @param values     值
+     */
+    public static Avg avg( Criteria<?> criteria, String alias, Integer scale, Comparator comparator, String property, Object... values ) {
+        return avg( criteria, alias, scale, comparator, Logic.AND, property, values );
+    }
+
+    /**
+     * AVG聚合函数
      * @param criteria 条件对象
      * @param alias    别名
      * @param logic    逻辑操作
@@ -293,6 +475,19 @@ public abstract class Aggregations {
      */
     public static Avg avg( Criteria<?> criteria, String alias, Logic logic, String property, Object... values ) {
         return avg( criteria, alias, Comparator.EQ, logic, property, values );
+    }
+
+    /**
+     * AVG聚合函数
+     * @param criteria 条件对象
+     * @param alias    别名
+     * @param scale    保留小数位数
+     * @param logic    逻辑操作
+     * @param property 属性
+     * @param values   值
+     */
+    public static Avg avg( Criteria<?> criteria, String alias, Integer scale, Logic logic, String property, Object... values ) {
+        return avg( criteria, alias, scale, Comparator.EQ, logic, property, values );
     }
 
     /**
@@ -311,15 +506,44 @@ public abstract class Aggregations {
     /**
      * AVG聚合函数
      * @param criteria   条件对象
+     * @param alias      别名
+     * @param scale      保留小数位数
+     * @param comparator 比较运算
+     * @param logic      逻辑操作
      * @param property   属性
+     * @param values     值
+     */
+    public static Avg avg( Criteria<?> criteria, String alias, Integer scale, Comparator comparator, Logic logic, String property, Object... values ) {
+        return new Avg( criteria, alias, scale, false, comparator, logic, property, ArrayUtil.toList( values ) );
+    }
+
+    /**
+     * AVG聚合函数
+     * @param criteria   条件对象
      * @param alias      别名
      * @param distinct   是否去重
      * @param comparator 比较运算
      * @param logic      逻辑操作
+     * @param property   属性
      * @param values     值
      */
     public static Avg avg( Criteria<?> criteria, String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {
         return new Avg( criteria, alias, distinct, comparator, logic, property, ArrayUtil.toList( values ) );
+    }
+
+    /**
+     * AVG聚合函数
+     * @param criteria   条件对象
+     * @param alias      别名
+     * @param scale      保留小数位数
+     * @param distinct   是否去重
+     * @param comparator 比较运算
+     * @param logic      逻辑操作
+     * @param property   属性
+     * @param values     值
+     */
+    public static Avg avg( Criteria<?> criteria, String alias, Integer scale, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {
+        return new Avg( criteria, alias, scale, distinct, comparator, logic, property, ArrayUtil.toList( values ) );
     }
 
     // endregion
@@ -339,6 +563,7 @@ public abstract class Aggregations {
      * MAX聚合函数
      * @param criteria 条件对象
      * @param property 属性
+     * @param distinct 是否去重
      */
     public static Max max( Criteria<?> criteria, String property, boolean distinct ) {
         return new Max( criteria, property, distinct );
@@ -416,11 +641,11 @@ public abstract class Aggregations {
     /**
      * MAX聚合函数
      * @param criteria   条件对象
-     * @param property   属性
      * @param alias      别名
      * @param distinct   是否去重
      * @param comparator 比较运算
      * @param logic      逻辑操作
+     * @param property   属性
      * @param values     值
      */
     public static Max max( Criteria<?> criteria, String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {
@@ -444,6 +669,7 @@ public abstract class Aggregations {
      * MIN聚合函数
      * @param criteria 条件对象
      * @param property 属性
+     * @param distinct 是否去重
      */
     public static Min min( Criteria<?> criteria, String property, boolean distinct ) {
         return new Min( criteria, property, distinct );
@@ -521,11 +747,11 @@ public abstract class Aggregations {
     /**
      * MIN聚合函数
      * @param criteria   条件对象
-     * @param property   属性
      * @param alias      别名
      * @param distinct   是否去重
      * @param comparator 比较运算
      * @param logic      逻辑操作
+     * @param property   属性
      * @param values     值
      */
     public static Min min( Criteria<?> criteria, String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {

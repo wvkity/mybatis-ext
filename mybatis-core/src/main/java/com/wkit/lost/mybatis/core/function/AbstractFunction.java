@@ -1,12 +1,12 @@
 package com.wkit.lost.mybatis.core.function;
 
-import com.wkit.lost.mybatis.utils.ArrayUtil;
-import com.wkit.lost.mybatis.utils.CollectionUtil;
-import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.Logic;
 import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.exception.MyBatisException;
+import com.wkit.lost.mybatis.utils.ArrayUtil;
+import com.wkit.lost.mybatis.utils.CollectionUtil;
+import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -84,6 +84,13 @@ public abstract class AbstractFunction implements Aggregation {
     protected boolean distinct = false;
 
     /**
+     * 小数位数
+     */
+    @Getter
+    @Setter
+    protected Integer scale;
+
+    /**
      * 值
      */
     protected List<Object> values;
@@ -118,10 +125,6 @@ public abstract class AbstractFunction implements Aggregation {
                 buffer.append( this.logic.getSqlSegment() ).append( " " );
             }
             String functionName = getFunctionBody();
-            //boolean hasAlias = StringUtil.hasText( alias );
-            //boolean hasDot = hasAlias && alias.contains( "." );
-            // 暂时无法确定是否所有主流数据库都支持order by
-            //String havingFunName = hasDot ? functionName : alias;
             if ( isQuery ) {
                 buffer.append( functionName );
                 // 查询别名
@@ -131,6 +134,8 @@ public abstract class AbstractFunction implements Aggregation {
                     } else {
                         buffer.append( " " ).append( alias );
                     }
+                } else if ( hasScale() ) {
+                    buffer.append( " " ).append( name );
                 }
             } else {
                 // having条件
@@ -157,6 +162,10 @@ public abstract class AbstractFunction implements Aggregation {
 
     private String getFunctionBody() {
         StringBuffer buffer = new StringBuffer( 30 );
+        boolean hasScale = hasScale();
+        if ( hasScale ) {
+            buffer.append( "CAST(" );
+        }
         buffer.append( this.name ).append( "(" );
         if ( IGNORE_TRANSFORM.contains( this.property ) ) {
             buffer.append( this.property );
@@ -170,7 +179,14 @@ public abstract class AbstractFunction implements Aggregation {
             buffer.append( tabAlias ).append( column.getColumn() );
         }
         buffer.append( ")" );
+        if ( hasScale ) {
+            buffer.append( " AS DECIMAL(38, " ).append( scale ).append( "))" );
+        }
         return buffer.toString();
+    }
+
+    private boolean hasScale() {
+        return scale != null && scale > 0;
     }
 
     @Override

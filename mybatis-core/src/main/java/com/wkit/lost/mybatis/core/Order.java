@@ -200,7 +200,7 @@ public class Order<T> implements Segment {
      * @return 排序对象
      */
     public static <T> Order desc( Aggregation... aggregations ) {
-        return asc( ArrayUtil.toList( aggregations ) );
+        return desc( ArrayUtil.toList( aggregations ) );
     }
 
     /**

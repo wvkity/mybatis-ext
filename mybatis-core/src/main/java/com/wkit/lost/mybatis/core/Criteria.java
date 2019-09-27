@@ -75,6 +75,14 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
     boolean isEnableAlias();
 
     /**
+     * 设置是否启用根据所有查询字段分组
+     * <p>针对oracle、mysql5.7+等数据</p>
+     * @param enable 是否启用
+     * @return 当前对象
+     */
+    Criteria<T> groupAll( boolean enable );
+
+    /**
      * 设置范围
      * <p>优先级比{@link #limit(long, long, long)}高</p>
      * @param start 开始位置

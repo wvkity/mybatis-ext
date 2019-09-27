@@ -117,6 +117,14 @@ public interface AggregationFunction<T> {
 
     /**
      * SUM聚合函数
+     * @param property 属性
+     * @param scale    保留小数位数
+     * @return 条件对象
+     */
+    Criteria<T> sum( String property, Integer scale );
+
+    /**
+     * SUM聚合函数
      * @param alias    聚合函数别名
      * @param property 属性
      * @return 条件对象
@@ -125,11 +133,29 @@ public interface AggregationFunction<T> {
 
     /**
      * SUM聚合函数
+     * @param alias    聚合函数别名
+     * @param property 属性
+     * @param scale    保留小数位数
+     * @return 条件对象
+     */
+    Criteria<T> sum( String alias, String property, Integer scale );
+
+    /**
+     * SUM聚合函数
      * @param property 属性
      * @param distinct 是否去重
      * @return 条件对象
      */
     Criteria<T> sum( String property, boolean distinct );
+
+    /**
+     * SUM聚合函数
+     * @param property 属性
+     * @param scale    保留小数位数
+     * @param distinct 是否去重
+     * @return 条件对象
+     */
+    Criteria<T> sum( String property, Integer scale, boolean distinct );
 
     /**
      * SUM聚合函数
@@ -144,10 +170,30 @@ public interface AggregationFunction<T> {
      * SUM聚合函数
      * @param alias    聚合函数别名
      * @param property 属性
+     * @param scale    保留小数位数
+     * @param distinct 是否去重
+     * @return 条件对象
+     */
+    Criteria<T> sum( String alias, String property, Integer scale, boolean distinct );
+
+    /**
+     * SUM聚合函数
+     * @param alias    聚合函数别名
+     * @param property 属性
      * @param values   值
      * @return 条件对象
      */
     Criteria<T> sum( String alias, String property, Object... values );
+
+    /**
+     * SUM聚合函数
+     * @param alias    聚合函数别名
+     * @param scale    保留小数位数
+     * @param property 属性
+     * @param values   值
+     * @return 条件对象
+     */
+    Criteria<T> sum( String alias, Integer scale, String property, Object... values );
 
     /**
      * SUM聚合函数
@@ -158,6 +204,17 @@ public interface AggregationFunction<T> {
      * @return 条件对象
      */
     Criteria<T> sum( String alias, Comparator comparator, String property, Object... values );
+
+    /**
+     * SUM聚合函数
+     * @param alias      聚合函数别名
+     * @param scale      保留小数位数
+     * @param comparator 比较运算
+     * @param property   属性
+     * @param values     值
+     * @return 条件对象
+     */
+    Criteria<T> sum( String alias, Integer scale, Comparator comparator, String property, Object... values );
 
     /**
      * SUM聚合函数
@@ -173,6 +230,18 @@ public interface AggregationFunction<T> {
     /**
      * SUM聚合函数
      * @param alias      聚合函数别名
+     * @param scale      保留小数位数
+     * @param comparator 比较运算
+     * @param logic      逻辑操作符
+     * @param property   属性
+     * @param values     值
+     * @return 条件对象
+     */
+    Criteria<T> sum( String alias, Integer scale, Comparator comparator, Logic logic, String property, Object... values );
+
+    /**
+     * SUM聚合函数
+     * @param alias      聚合函数别名
      * @param distinct   是否去重
      * @param comparator 比较运算
      * @param property   属性
@@ -180,6 +249,18 @@ public interface AggregationFunction<T> {
      * @return 条件对象
      */
     Criteria<T> sum( String alias, boolean distinct, Comparator comparator, String property, Object... values );
+
+    /**
+     * SUM聚合函数
+     * @param alias      聚合函数别名
+     * @param scale      保留小数位数
+     * @param distinct   是否去重
+     * @param comparator 比较运算
+     * @param property   属性
+     * @param values     值
+     * @return 条件对象
+     */
+    Criteria<T> sum( String alias, Integer scale, boolean distinct, Comparator comparator, String property, Object... values );
 
     /**
      * SUM聚合函数
@@ -192,6 +273,19 @@ public interface AggregationFunction<T> {
      * @return 条件对象
      */
     Criteria<T> sum( String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values );
+
+    /**
+     * SUM聚合函数
+     * @param alias      聚合函数别名
+     * @param scale      保留小数位数
+     * @param distinct   是否去重
+     * @param comparator 比较运算
+     * @param logic      逻辑操作
+     * @param property   属性
+     * @param values     值
+     * @return 条件对象
+     */
+    Criteria<T> sum( String alias, Integer scale, boolean distinct, Comparator comparator, Logic logic, String property, Object... values );
 
     // endregion
 
@@ -206,6 +300,14 @@ public interface AggregationFunction<T> {
 
     /**
      * AVG聚合函数
+     * @param property 属性
+     * @param scale    保留小数位数
+     * @return 条件对象
+     */
+    Criteria<T> avg( String property, Integer scale );
+
+    /**
+     * AVG聚合函数
      * @param alias    聚合函数别名
      * @param property 属性
      * @return 条件对象
@@ -214,11 +316,29 @@ public interface AggregationFunction<T> {
 
     /**
      * AVG聚合函数
+     * @param alias    聚合函数别名
+     * @param property 属性
+     * @param scale    保留小数位数
+     * @return 条件对象
+     */
+    Criteria<T> avg( String alias, String property, Integer scale );
+
+    /**
+     * AVG聚合函数
      * @param property 属性
      * @param distinct 是否去重
      * @return 条件对象
      */
     Criteria<T> avg( String property, boolean distinct );
+
+    /**
+     * AVG聚合函数
+     * @param property 属性
+     * @param scale    保留小数位数
+     * @param distinct 是否去重
+     * @return 条件对象
+     */
+    Criteria<T> avg( String property, Integer scale, boolean distinct );
 
     /**
      * AVG聚合函数
@@ -233,10 +353,30 @@ public interface AggregationFunction<T> {
      * AVG聚合函数
      * @param alias    聚合函数别名
      * @param property 属性
+     * @param scale    保留小数位数
+     * @param distinct 是否去重
+     * @return 条件对象
+     */
+    Criteria<T> avg( String alias, String property, Integer scale, boolean distinct );
+
+    /**
+     * AVG聚合函数
+     * @param alias    聚合函数别名
+     * @param property 属性
      * @param values   值
      * @return 条件对象
      */
     Criteria<T> avg( String alias, String property, Object... values );
+
+    /**
+     * AVG聚合函数
+     * @param alias    聚合函数别名
+     * @param scale    保留小数位数
+     * @param property 属性
+     * @param values   值
+     * @return 条件对象
+     */
+    Criteria<T> avg( String alias, Integer scale, String property, Object... values );
 
     /**
      * AVG聚合函数
@@ -247,6 +387,17 @@ public interface AggregationFunction<T> {
      * @return 条件对象
      */
     Criteria<T> avg( String alias, Comparator comparator, String property, Object... values );
+
+    /**
+     * AVG聚合函数
+     * @param alias      聚合函数别名
+     * @param scale      保留小数位数
+     * @param comparator 比较运算
+     * @param property   属性
+     * @param values     值
+     * @return 条件对象
+     */
+    Criteria<T> avg( String alias, Integer scale, Comparator comparator, String property, Object... values );
 
     /**
      * AVG聚合函数
@@ -262,6 +413,18 @@ public interface AggregationFunction<T> {
     /**
      * AVG聚合函数
      * @param alias      聚合函数别名
+     * @param scale      保留小数位数
+     * @param comparator 比较运算
+     * @param logic      逻辑操作符
+     * @param property   属性
+     * @param values     值
+     * @return 条件对象
+     */
+    Criteria<T> avg( String alias, Integer scale, Comparator comparator, Logic logic, String property, Object... values );
+
+    /**
+     * AVG聚合函数
+     * @param alias      聚合函数别名
      * @param distinct   是否去重
      * @param comparator 比较运算
      * @param property   属性
@@ -269,6 +432,18 @@ public interface AggregationFunction<T> {
      * @return 条件对象
      */
     Criteria<T> avg( String alias, boolean distinct, Comparator comparator, String property, Object... values );
+
+    /**
+     * AVG聚合函数
+     * @param alias      聚合函数别名
+     * @param scale      保留小数位数
+     * @param distinct   是否去重
+     * @param comparator 比较运算
+     * @param property   属性
+     * @param values     值
+     * @return 条件对象
+     */
+    Criteria<T> avg( String alias, Integer scale, boolean distinct, Comparator comparator, String property, Object... values );
 
     /**
      * AVG聚合函数
@@ -281,6 +456,19 @@ public interface AggregationFunction<T> {
      * @return 条件对象
      */
     Criteria<T> avg( String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values );
+
+    /**
+     * AVG聚合函数
+     * @param alias      聚合函数别名
+     * @param scale      保留小数位数
+     * @param distinct   是否去重
+     * @param comparator 比较运算
+     * @param logic      逻辑操作
+     * @param property   属性
+     * @param values     值
+     * @return 条件对象
+     */
+    Criteria<T> avg( String alias, Integer scale, boolean distinct, Comparator comparator, Logic logic, String property, Object... values );
 
     // endregion
 

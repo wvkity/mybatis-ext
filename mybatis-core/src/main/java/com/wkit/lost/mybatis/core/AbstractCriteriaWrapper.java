@@ -188,7 +188,6 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
      * <p>如oracle数据库</p>
      */
     @Getter
-    @Setter
     protected boolean groupAll;
 
     /**
@@ -918,8 +917,18 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
+    public Context sum( String property, Integer scale ) {
+        return addFunction( Aggregations.sum( this, property, scale ) );
+    }
+
+    @Override
     public Context sum( String alias, String property ) {
         return addFunction( Aggregations.sum( this, alias, property ) );
+    }
+
+    @Override
+    public Context sum( String alias, String property, Integer scale ) {
+        return addFunction( Aggregations.sum( this, alias, property, scale ) );
     }
 
     @Override
@@ -928,8 +937,18 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
+    public Context sum( String property, Integer scale, boolean distinct ) {
+        return addFunction( Aggregations.sum( this, property, scale, distinct ) );
+    }
+
+    @Override
     public Context sum( String alias, String property, boolean distinct ) {
         return addFunction( Aggregations.sum( this, alias, property, distinct ) );
+    }
+
+    @Override
+    public Context sum( String alias, String property, Integer scale, boolean distinct ) {
+        return addFunction( Aggregations.sum( this, alias, property, scale, distinct ) );
     }
 
     @Override
@@ -938,8 +957,18 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
+    public Context sum( String alias, Integer scale, String property, Object... values ) {
+        return sum( alias, scale, false, Comparator.EQ, Logic.AND, property, values );
+    }
+
+    @Override
     public Context sum( String alias, Comparator comparator, String property, Object... values ) {
         return sum( alias, false, comparator, Logic.AND, property, values );
+    }
+
+    @Override
+    public Context sum( String alias, Integer scale, Comparator comparator, String property, Object... values ) {
+        return sum( alias, scale, false, comparator, Logic.AND, property, values );
     }
 
     @Override
@@ -948,13 +977,28 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
+    public Context sum( String alias, Integer scale, Comparator comparator, Logic logic, String property, Object... values ) {
+        return sum( alias, scale, false, comparator, logic, property, values );
+    }
+
+    @Override
     public Context sum( String alias, boolean distinct, Comparator comparator, String property, Object... values ) {
         return sum( alias, distinct, comparator, Logic.AND, property, values );
     }
 
     @Override
+    public Context sum( String alias, Integer scale, boolean distinct, Comparator comparator, String property, Object... values ) {
+        return sum( alias, scale, distinct, comparator, Logic.AND, property, values );
+    }
+
+    @Override
     public Context sum( String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {
         return addFunction( Aggregations.sum( this, alias, distinct, comparator, logic, property, values ) );
+    }
+
+    @Override
+    public Context sum( String alias, Integer scale, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {
+        return addFunction( Aggregations.sum( this, alias, scale, distinct, comparator, logic, property, values ) );
     }
     // endregion
 
@@ -966,8 +1010,18 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
+    public Context avg( String property, Integer scale ) {
+        return addFunction( Aggregations.avg( this, property, scale ) );
+    }
+
+    @Override
     public Context avg( String alias, String property ) {
         return addFunction( Aggregations.avg( this, alias, property ) );
+    }
+
+    @Override
+    public Context avg( String alias, String property, Integer scale ) {
+        return addFunction( Aggregations.avg( this, alias, property, scale ) );
     }
 
     @Override
@@ -976,8 +1030,18 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
+    public Context avg( String property, Integer scale, boolean distinct ) {
+        return addFunction( Aggregations.avg( this, property, scale, distinct ) );
+    }
+
+    @Override
     public Context avg( String alias, String property, boolean distinct ) {
         return addFunction( Aggregations.avg( this, alias, property, distinct ) );
+    }
+
+    @Override
+    public Context avg( String alias, String property, Integer scale, boolean distinct ) {
+        return addFunction( Aggregations.avg( this, alias, property, scale, distinct ) );
     }
 
     @Override
@@ -986,8 +1050,18 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
+    public Context avg( String alias, Integer scale, String property, Object... values ) {
+        return avg( alias, scale, false, Comparator.EQ, Logic.AND, property, values );
+    }
+
+    @Override
     public Context avg( String alias, Comparator comparator, String property, Object... values ) {
         return avg( alias, false, comparator, Logic.AND, property, values );
+    }
+
+    @Override
+    public Context avg( String alias, Integer scale, Comparator comparator, String property, Object... values ) {
+        return avg( alias, scale, false, comparator, Logic.AND, property, values );
     }
 
     @Override
@@ -996,13 +1070,28 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
+    public Context avg( String alias, Integer scale, Comparator comparator, Logic logic, String property, Object... values ) {
+        return avg( alias, scale, false, comparator, logic, property, values );
+    }
+
+    @Override
     public Context avg( String alias, boolean distinct, Comparator comparator, String property, Object... values ) {
         return avg( alias, distinct, comparator, Logic.AND, property, values );
     }
 
     @Override
+    public Context avg( String alias, Integer scale, boolean distinct, Comparator comparator, String property, Object... values ) {
+        return avg( alias, scale, distinct, comparator, Logic.AND, property, values );
+    }
+
+    @Override
     public Context avg( String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {
         return addFunction( Aggregations.avg( this, alias, distinct, comparator, logic, property, values ) );
+    }
+
+    @Override
+    public Context avg( String alias, Integer scale, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {
+        return addFunction( Aggregations.avg( this, alias, scale, distinct, comparator, logic, property, values ) );
     }
     // endregion
 
@@ -1183,6 +1272,12 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     // endregion
 
     // region auxiliary methods
+
+    @Override
+    public Context groupAll( boolean enable ) {
+        this.groupAll = enable;
+        return this.context;
+    }
 
     @Override
     public Context limit( long start, long end ) {
