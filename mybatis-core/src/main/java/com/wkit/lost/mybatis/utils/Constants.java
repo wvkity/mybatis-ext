@@ -30,4 +30,9 @@ public interface Constants {
      * 主键参数对象
      */
     String PARAM_PRIMARY_KEYS = "primaryKeys";
+
+    /**
+     * 逻辑删除填充值键
+     */
+    String PARAM_LOGIC_DELETED_AUTO_KEY = "LOGIC_DELETED_AUTO_FV";
 }

@@ -8,8 +8,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 填充值
+ * 标识为自动填充字段
+ * <p>优先级比@ColumnExt中的fill属性高</p>
  * @author DT
+ * @see ColumnExt
+ * @see ColumnExt#fill()
  */
 @Target( ElementType.FIELD )
 @Retention( RetentionPolicy.RUNTIME )

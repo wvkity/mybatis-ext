@@ -4,6 +4,7 @@ import com.wkit.lost.mybatis.annotation.ColumnExt;
 import com.wkit.lost.mybatis.annotation.Entity;
 import com.wkit.lost.mybatis.annotation.GeneratedValue;
 import com.wkit.lost.mybatis.annotation.Identity;
+import com.wkit.lost.mybatis.annotation.LogicalDeletion;
 import com.wkit.lost.mybatis.annotation.MetaFilling;
 import com.wkit.lost.mybatis.annotation.OrderBy;
 import com.wkit.lost.mybatis.annotation.SequenceGenerator;
@@ -226,7 +227,8 @@ public class DefaultEntityResolver implements EntityResolver {
                 table.setPrimaryKey( column );
             }
         }
-
+        // 处理@LogicDelete注解
+        processLogicDeleteAnnotation( table, column, attribute );
         // 处理排序
         processOrderByAnnotation( table, column, attribute );
         // 处理主键策略
@@ -276,7 +278,6 @@ public class DefaultEntityResolver implements EntityResolver {
             columnName = columnAnnotation.name();
         }
         // 处理扩展注解
-        FillingRule rule;
         if ( attribute.isAnnotationPresent( ColumnExt.class ) ) {
             ColumnExt columnExt = attribute.getAnnotation( ColumnExt.class );
             blob = columnExt.blob();
@@ -300,9 +301,6 @@ public class DefaultEntityResolver implements EntityResolver {
             if ( using != UseJavaType.CONFIG ) {
                 useJavaType = using == UseJavaType.REQUIRED;
             }
-            rule = columnExt.fill();
-        } else {
-            rule = null;
         }
         if ( jdbcType == null && enableAutoJdbcMapping ) {
             // 开启自动映射
@@ -329,9 +327,28 @@ public class DefaultEntityResolver implements EntityResolver {
                     "The primitive type is not null at any time in dynamic SQL because it has a default value. It is " +
                     "recommended to modify the primitive type to the corresponding wrapper type!", column.getProperty(), column.getEntity().getCanonicalName() );
         }
-        // 添加填充规则
-        Optional.ofNullable( rule ).ifPresent( column::addRule );
         return column;
+    }
+
+    /**
+     * 解析逻辑删除注解
+     * @param table     实体类
+     * @param column    字段映射对象
+     * @param attribute 属性对象
+     */
+    private void processLogicDeleteAnnotation( Table table, Column column, Attribute attribute ) {
+        if ( attribute.isAnnotationPresent( LogicalDeletion.class ) ) {
+            if ( table.isEnableLogicDelete() ) {
+                throw new MapperResolverException( "There are already `" + table.getLogicalDeletionColumn().getProperty() + "` attributes in `" + table.getEntity().getName() + "` entity class identified as logical deleted. " +
+                        "Only one deleted attribute can exist in an entity class. Please check the entity class attributes." );
+            }
+            LogicalDeletion logicalDeletion = attribute.getAnnotation( LogicalDeletion.class );
+            String deletedValue = StringUtil.isBlank( logicalDeletion.value() ) ? configuration.getLogicDeleted() : logicalDeletion.value();
+            String notDeletedValue = StringUtil.isBlank( logicalDeletion.not() ) ? configuration.getLogicNotDeleted() : logicalDeletion.not();
+            column.setLogicDelete( true ).setLogicDeleteValue( deletedValue ).setLogicNotDeleteValue( notDeletedValue );
+            table.setEnableLogicDelete( true );
+            table.setLogicalDeletionColumn( column );
+        }
     }
 
     /**
@@ -507,19 +524,15 @@ public class DefaultEntityResolver implements EntityResolver {
      * @param attribute 属性信息对象
      */
     private void processFillingAnnotation( Table table, Column column, Attribute attribute ) {
+        if ( attribute.isAnnotationPresent( ColumnExt.class ) ) {
+            FillingRule rule = attribute.getAnnotation( ColumnExt.class ).fill();
+            column.setFilling( rule, true );
+        }
         if ( attribute.isAnnotationPresent( MetaFilling.class ) && column.canFilling() ) {
             MetaFilling filling = attribute.getAnnotation( MetaFilling.class );
-            if ( filling.insert() && column.isInsertable() ) {
-                column.addRule( FillingRule.INSERT );
-            }
-            if ( column.isUpdatable() ) {
-                if ( filling.update() ) {
-                    column.addRule( FillingRule.UPDATE );
-                }
-                if ( filling.delete() ) {
-                    column.addRule( FillingRule.DELETE );
-                }
-            }
+            column.setFilling( FillingRule.INSERT, filling.insert() );
+            column.setFilling( FillingRule.UPDATE, filling.update() );
+            column.setFilling( FillingRule.DELETE, filling.delete() );
         }
     }
 

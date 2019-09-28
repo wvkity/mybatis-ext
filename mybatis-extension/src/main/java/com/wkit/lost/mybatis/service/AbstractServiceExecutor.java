@@ -81,6 +81,24 @@ public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T,
         return executor.deleteById( id );
     }
 
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int logicDelete( T entity ) {
+        if ( entity == null ) {
+            throw new MyBatisException( "The specified object parameter cannot be null" );
+        }
+        return executor.logicDelete( entity );
+    }
+
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int logicDelete( Criteria<T> criteria ) {
+        if ( criteria == null ) {
+            throw new MyBatisException( "The specified criteria parameter cannot be null" );
+        }
+        return executor.logicDeleteByCriteria( criteria );
+    }
+
     @SuppressWarnings( "unchecked" )
     @Transactional( rollbackFor = Exception.class )
     @Override

@@ -43,9 +43,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler {
 
     private static final Map<Class<?>, Class<? extends AbstractGenerator>> DATE_TYPE_FILLING_CACHE = new ConcurrentHashMap<>( 32 );
-    private static final Set<String> INSERT_FILLING_PROPERTIES = new HashSet<>( 8 );
-    private static final Set<String> UPDATE_FILLING_PROPERTIES = new HashSet<>( 8 );
-    private static final Set<String> DELETE_FILLING_PROPERTIES = new HashSet<>( 8 );
+    private static final Set<String> INSERT_TIME_FILLING_PROPERTIES = new HashSet<>( 8 );
+    private static final Set<String> UPDATE_TIME_FILLING_PROPERTIES = new HashSet<>( 8 );
+    private static final Set<String> DELETE_TIME_FILLING_PROPERTIES = new HashSet<>( 8 );
     private static final Set<String> CREATOR_FILLING_PROPERTIES = new HashSet<>( 8 );
     private static final Set<String> CREATOR_ID_FILLING_PROPERTIES = new HashSet<>( 8 );
     private static final Set<String> MODIFIER_FILLING_PROPERTIES = new HashSet<>( 8 );
@@ -54,9 +54,9 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
     private static final Set<String> DELETED_ID_FILLING_PROPERTIES = new HashSet<>( 8 );
 
     static {
-        INSERT_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "gmtCreate", "createTime", "createDate", "createdTime", "createdDate" ) );
-        UPDATE_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "gmtModify", "gmtModified", "modifyTime", "modifiedTime", "updateTime", "updatedTime" ) );
-        DELETE_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "gmtDelete", "gmtDeleted", "gmtDel", "deleteTime", "deletedTime", "delTime" ) );
+        INSERT_TIME_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "gmtCreate", "createTime", "createDate", "createdTime", "createdDate" ) );
+        UPDATE_TIME_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "gmtModify", "gmtModified", "modifyTime", "modifiedTime", "updateTime", "updatedTime" ) );
+        DELETE_TIME_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "gmtDelete", "gmtDeleted", "gmtDel", "deleteTime", "deletedTime", "delTime" ) );
         CREATOR_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "creator", "createBy", "createUser", "createUserName", "createdBy", "createdUser", "updatedUserName" ) );
         CREATOR_ID_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "creatorId", "createId", "createUserId", "createdId", "createdUserId" ) );
         MODIFIER_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "modifier", "modifyBy", "modifiedBy", "modifyUser", "modifyUserName", "updateBy", "updateUser" ) );
@@ -125,7 +125,7 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
             // 自动匹配
             autoFilling( metaObject, table, CREATOR_FILLING_PROPERTIES, true );
             autoFilling( metaObject, table, CREATOR_ID_FILLING_PROPERTIES, false );
-            autoFilingDateTime( metaObject, table, INSERT_FILLING_PROPERTIES );
+            autoFilingDateTime( metaObject, table, INSERT_TIME_FILLING_PROPERTIES );
         }
     }
 
@@ -139,7 +139,7 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
             // 自动匹配
             autoFilling( metaObject, table, MODIFIER_FILLING_PROPERTIES, true );
             autoFilling( metaObject, table, MODIFIER_ID_FILLING_PROPERTIES, false );
-            autoFilingDateTime( metaObject, table, UPDATE_FILLING_PROPERTIES );
+            autoFilingDateTime( metaObject, table, UPDATE_TIME_FILLING_PROPERTIES );
         }
     }
 
@@ -153,7 +153,7 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
             // 自动匹配
             autoFilling( metaObject, table, DELETED_FILLING_PROPERTIES, true );
             autoFilling( metaObject, table, DELETED_ID_FILLING_PROPERTIES, false );
-            autoFilingDateTime( metaObject, table, DELETE_FILLING_PROPERTIES );
+            autoFilingDateTime( metaObject, table, DELETE_TIME_FILLING_PROPERTIES );
         }
     }
 
@@ -175,12 +175,10 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
             Object value = isUserName ? dependency.currentUserName() : dependency.currentUserId();
             if ( value != null ) {
                 for ( String property : properties ) {
-                    if ( metaValueIsEmpty( metaObject, property ) ) {
-                        Optional<Column> optional = table.search( property );
-                        if ( optional.isPresent() ) {
-                            fillingValue( metaObject, property, value );
-                            break;
-                        }
+                    Optional<Column> optional = table.search( property );
+                    if ( optional.isPresent() ) {
+                        fillingValue( metaObject, property, value );
+                        break;
                     }
                 }
             }
@@ -190,15 +188,13 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
     private void autoFilingDateTime( MetaObject metaObject, Table table, Set<String> properties ) {
         if ( enableAutoMatching() && table != null && properties != null ) {
             for ( String property : properties ) {
-                if ( metaValueIsEmpty( metaObject, property ) ) {
-                    Optional<Column> optional = table.search( property );
-                    if ( optional.isPresent() ) {
-                        Column column = optional.get();
-                        Class<? extends AbstractGenerator> target = DATE_TYPE_FILLING_CACHE.get( column.getJavaType() );
-                        if ( target != null ) {
-                            fillingValue( metaObject, property, GeneratorFactory.build( target ) );
-                            break;
-                        }
+                Optional<Column> optional = table.search( property );
+                if ( optional.isPresent() ) {
+                    Column column = optional.get();
+                    Class<? extends AbstractGenerator> target = DATE_TYPE_FILLING_CACHE.get( column.getJavaType() );
+                    if ( target != null ) {
+                        fillingValue( metaObject, property, GeneratorFactory.build( target ) );
+                        break;
                     }
                 }
             }

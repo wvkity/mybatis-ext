@@ -8,8 +8,8 @@ import java.util.Map;
 
 /**
  * 查询操作接口
- * @param <T>  泛型类
- * @param <R>  返回值类
+ * @param <T> 泛型类
+ * @param <R> 返回值类
  */
 public interface CriteriaService<T, R> {
 
@@ -19,6 +19,13 @@ public interface CriteriaService<T, R> {
      * @return true: 存在 , false: 不存在
      */
     boolean exists( Criteria<T> criteria );
+
+    /**
+     * 根据Criteria对象执行逻辑删除记录
+     * @param criteria 条件对象
+     * @return 受影响行数
+     */
+    int logicDelete( Criteria<T> criteria );
 
     /**
      * 查询列表

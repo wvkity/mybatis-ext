@@ -47,7 +47,7 @@ public class Table {
      * 表名
      */
     @Getter
-    @Setter
+    @Setter( AccessLevel.PACKAGE )
     private String name;
 
     /**
@@ -90,6 +90,20 @@ public class Table {
     @Getter
     @Setter( AccessLevel.PACKAGE )
     private Column primaryKey;
+
+    /**
+     * 标识是否启用逻辑删除
+     */
+    @Getter
+    @Setter( AccessLevel.PACKAGE )
+    private boolean enableLogicDelete;
+
+    /**
+     * 逻辑删除标识字段
+     */
+    @Getter
+    @Setter( AccessLevel.PACKAGE )
+    private Column logicalDeletionColumn;
 
     /**
      * 所有字段
@@ -229,7 +243,7 @@ public class Table {
      * @return 字段集合
      */
     public Set<Column> getUpdateFillings() {
-        return this.columns.stream().filter( Column::enableInsertFilling ).collect( Collectors.toCollection( LinkedHashSet::new ) );
+        return this.columns.stream().filter( Column::enableUpdateFilling ).collect( Collectors.toCollection( LinkedHashSet::new ) );
     }
 
     /**
@@ -237,8 +251,19 @@ public class Table {
      * @return 字段集合
      */
     public Set<Column> getDeleteFillings() {
-        return this.columns.stream().filter( Column::enableInsertFilling ).collect( Collectors.toCollection( LinkedHashSet::new ) );
+        return this.columns.stream().filter( Column::enableDeleteFilling ).collect( Collectors.toCollection( LinkedHashSet::new ) );
     }
+
+    /**
+     * 获取非逻辑删除填充字段
+     * @return 字段列表
+     */
+    public Set<Column> getIgnoreDeleteFillingsColumns() {
+        return this.columns.stream()
+                .filter( column -> !column.enableDeleteFilling() )
+                .collect( Collectors.toCollection( LinkedHashSet::new ) );
+    }
+
 
     /**
      * 初始化定义信息

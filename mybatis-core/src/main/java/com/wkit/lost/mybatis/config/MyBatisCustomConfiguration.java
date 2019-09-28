@@ -170,6 +170,16 @@ public class MyBatisCustomConfiguration implements Serializable {
     private boolean useLimitPlugin = true;
 
     /**
+     * 标识已删除
+     */
+    private String logicDeleted = "1";
+
+    /**
+     * 标识未删除
+     */
+    private String logicNotDeleted = "0";
+
+    /**
      * 主键序列(雪花算法)
      */
     private Sequence sequence;

@@ -10,10 +10,17 @@ import java.util.Map;
 
 /**
  * 查询数据操作接口
- * @param <T>  泛型类
- * @param <R>  返回值类型
+ * @param <T> 泛型类
+ * @param <R> 返回值类型
  */
 public interface CriteriaMapper<T, R> {
+
+    /**
+     * 根据条件对象逻辑删除记录
+     * @param criteria 条件对象
+     * @return 受影响行数
+     */
+    int logicDeleteByCriteria( @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria );
 
     /**
      * 查询记录是否存在

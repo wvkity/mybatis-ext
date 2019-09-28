@@ -201,7 +201,7 @@ public abstract class AbstractSqlBuilder implements SqlBuilder {
      * @return SQL字符串
      */
     protected String toSqlString( SqlTemplate template, String segment, String condition ) {
-        return StringUtil.isBlank( segment ) ? "" : String.format( template.toSqlString( this.table, this.alias ), segment, condition );
+        return segment == null ? "" : String.format( template.toSqlString( this.table, this.alias ), segment, condition );
     }
 
     /**

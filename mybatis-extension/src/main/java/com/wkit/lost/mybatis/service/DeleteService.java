@@ -5,7 +5,7 @@ import java.util.Collection;
 
 /**
  * 删除操作接口
- * @param <T>  泛型类
+ * @param <T> 泛型类
  */
 public interface DeleteService<T> {
 
@@ -23,6 +23,13 @@ public interface DeleteService<T> {
      * @return 受影响行数
      */
     int delete( Serializable id );
+
+    /**
+     * 逻辑删除
+     * @param entity 实体
+     * @return 受影响行数
+     */
+    int logicDelete( T entity );
 
     /**
      * 根据指定对象批量删除记录

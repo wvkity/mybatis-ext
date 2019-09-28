@@ -20,7 +20,7 @@ public interface DeleteMapper<T> {
      * @param entity 指定对象
      * @return 受影响行数
      */
-    int delete( T entity );
+    int delete( @Param( Constants.PARAM_ENTITY ) T entity );
 
     /**
      * 根据主键删除记录
@@ -28,6 +28,13 @@ public interface DeleteMapper<T> {
      * @return 受影响行数
      */
     int deleteById( Serializable id );
+
+    /**
+     * 逻辑删除
+     * @param entity 实体
+     * @return 受影响行数
+     */
+    int logicDelete( @Param( Constants.PARAM_ENTITY ) T entity );
 
     /**
      * 根据指定对象批量删除记录

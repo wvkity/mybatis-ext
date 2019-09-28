@@ -17,6 +17,8 @@ import com.wkit.lost.mybatis.sql.injector.methods.ListByEntity;
 import com.wkit.lost.mybatis.sql.injector.methods.ListForArray;
 import com.wkit.lost.mybatis.sql.injector.methods.ListForMap;
 import com.wkit.lost.mybatis.sql.injector.methods.ListForObject;
+import com.wkit.lost.mybatis.sql.injector.methods.LogicDelete;
+import com.wkit.lost.mybatis.sql.injector.methods.LogicDeleteByCriteria;
 import com.wkit.lost.mybatis.sql.injector.methods.PageableList;
 import com.wkit.lost.mybatis.sql.injector.methods.PageableListByCriteria;
 import com.wkit.lost.mybatis.sql.injector.methods.SelectOne;
@@ -61,6 +63,8 @@ public class DefaultSqlInjector extends AbstractSqlInjector {
                 // 删除
                 new Delete(),
                 new DeleteByPrimaryKey(),
+                new LogicDelete(),
+                new LogicDeleteByCriteria(),
                 new BatchDelete(),
                 new BatchDeleteByPrimaryKey()
         ).collect( Collectors.toSet() );

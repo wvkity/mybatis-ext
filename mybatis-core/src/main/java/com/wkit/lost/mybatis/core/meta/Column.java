@@ -151,10 +151,34 @@ public final class Column {
     private Object value;
 
     /**
-     * 填充规则
+     * 保存操作是否自动填充值
      */
-    @Getter( AccessLevel.PACKAGE )
-    private Set<FillingRule> rules = new HashSet<>( 3 );
+    private boolean insertFilling;
+
+    /**
+     * 保存操作是否自动填充值
+     */
+    private boolean updateFilling;
+
+    /**
+     * 保存操作是否自动填充值
+     */
+    private boolean deleteFilling;
+
+    /**
+     * 是否为逻辑删除属性
+     */
+    private boolean logicDelete;
+
+    /**
+     * 标识为已删除值
+     */
+    private String logicDeleteValue;
+
+    /**
+     * 标识为未删除值
+     */
+    private String logicNotDeleteValue;
 
     /**
      * 构造方法
@@ -177,13 +201,22 @@ public final class Column {
     }
 
     /**
-     * 添加填充规则
-     * @param rule 填充规则
+     * 设置是否自动填充值
+     * @param rule  填充规则
+     * @param value 值
      * @return 当前对象
      */
-    Column addRule( FillingRule rule ) {
-        if ( rule != null && rule != FillingRule.NORMAL ) {
-            this.rules.add( rule );
+    Column setFilling( FillingRule rule, boolean value ) {
+        if ( rule != null ) {
+            if ( rule != FillingRule.NORMAL ) {
+                if ( rule == FillingRule.INSERT ) {
+                    this.insertFilling = value && insertable && !primaryKey;
+                } else if ( rule == FillingRule.UPDATE ) {
+                    this.updateFilling = value && updatable;
+                } else {
+                    this.deleteFilling = value && updatable && !logicDelete;
+                }
+            }
         }
         return this;
     }
@@ -193,7 +226,7 @@ public final class Column {
      * @return true: 是 false: 否
      */
     public boolean canFilling() {
-        return ( this.insertable || this.updatable ) && !primaryKey;
+        return ( this.insertable || this.updatable ) && !primaryKey && !logicDelete;
     }
 
     /**
@@ -202,7 +235,7 @@ public final class Column {
      * @return true: 是 false: 否
      */
     public boolean canFilling( FillingRule rule ) {
-        return rule != null && this.rules.contains( rule );
+        return rule == FillingRule.INSERT && insertFilling || rule == FillingRule.UPDATE && updateFilling || rule == FillingRule.DELETE && deleteFilling;
     }
 
     /**
@@ -210,7 +243,7 @@ public final class Column {
      * @return true: 是 false: 否
      */
     public boolean hasFillingRule() {
-        return !this.rules.isEmpty();
+        return enableInsertFilling() || enableUpdateFilling() || enableDeleteFilling();
     }
 
     /**
@@ -218,7 +251,7 @@ public final class Column {
      * @return true: 是 false: 否
      */
     public boolean enableInsertFilling() {
-        return rules.contains( FillingRule.INSERT );
+        return insertFilling;
     }
 
     /**
@@ -226,7 +259,7 @@ public final class Column {
      * @return true: 是 false: 否
      */
     public boolean enableUpdateFilling() {
-        return rules.contains( FillingRule.UPDATE );
+        return updateFilling;
     }
 
     /**
@@ -234,7 +267,7 @@ public final class Column {
      * @return true: 是 false: 否
      */
     public boolean enableDeleteFilling() {
-        return rules.contains( FillingRule.DELETE );
+        return deleteFilling;
     }
 
     /**
