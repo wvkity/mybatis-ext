@@ -17,7 +17,7 @@ public enum Execute {
     INSERT,
 
     /**
-     * 替换
+     * 替换(更新)
      */
     REPLACE
 }
