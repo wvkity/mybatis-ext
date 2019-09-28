@@ -1,6 +1,5 @@
 package com.wkit.lost.mybatis.sql.mapping;
 
-import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.Execute;
 import com.wkit.lost.mybatis.core.Logic;
 import com.wkit.lost.mybatis.core.Operator;
@@ -9,6 +8,7 @@ import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.sql.SqlTemplate;
 import com.wkit.lost.mybatis.utils.Assert;
+import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
@@ -185,7 +185,7 @@ public abstract class AbstractSqlBuilder implements SqlBuilder {
         }
         buffer.append( indentOfSpace( indent + 1 ) );
         if ( toValue ) {
-            buffer.append( join ).append( column.convertToArg( execute, argName, isQuery ? this.alias : null, Operator.EQ.getSqlSegment(), separator ) ).append( "\n" );
+            buffer.append( join ).append( " " ).append( column.convertToArg( execute, argName, isQuery ? this.alias : null, Operator.EQ.getSqlSegment(), separator ) ).append( "\n" );
         } else {
             buffer.append( column.getColumn() ).append( ", \n" );
         }
@@ -201,7 +201,7 @@ public abstract class AbstractSqlBuilder implements SqlBuilder {
      * @return SQL字符串
      */
     protected String toSqlString( SqlTemplate template, String segment, String condition ) {
-        return String.format( template.toSqlString( this.table, this.alias ), segment, condition );
+        return StringUtil.isBlank( segment ) ? "" : String.format( template.toSqlString( this.table, this.alias ), segment, condition );
     }
 
     /**
@@ -209,5 +209,5 @@ public abstract class AbstractSqlBuilder implements SqlBuilder {
      * @return SQL语句
      */
     public abstract String build();
-    
+
 }
