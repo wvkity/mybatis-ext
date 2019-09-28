@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
 @EnableSnowflakeSequence( value = true )
-@EnableMetaObjectAutoFilling( true )
+@EnableMetaObjectAutoFilling( value = true )
 @EnableConfigurationProperties
 @SpringBootApplication
 @EnableAsync
