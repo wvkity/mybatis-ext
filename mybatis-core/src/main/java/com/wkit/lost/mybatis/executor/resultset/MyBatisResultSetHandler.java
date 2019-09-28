@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.executor.resultset;
 
+import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import org.apache.ibatis.annotations.AutomapConstructor;
 import org.apache.ibatis.binding.MapperMethod;
@@ -128,11 +129,13 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         // 获取自定义配置
         if ( parameter instanceof Map ) {
             Map<String, Object> paramMap = ( Map<String, Object> ) parameter;
-            Object value = paramMap.get( "criteria" );
-            if ( value instanceof ReturnType ) {
-                ReturnType returnType = ( ReturnType ) value;
-                resultType = returnType.getResultType();
-                resultMap = StringUtil.hasText( returnType.getResultMap() ) ? returnType.getResultMap() : null;
+            if ( paramMap.containsKey( Constants.PARAM_CRITERIA ) ) {
+                Object value = paramMap.get( Constants.PARAM_CRITERIA );
+                if ( value instanceof ReturnType ) {
+                    ReturnType returnType = ( ReturnType ) value;
+                    resultType = returnType.getResultType();
+                    resultMap = StringUtil.hasText( returnType.getResultMap() ) ? returnType.getResultMap() : null;
+                }
             }
         }
         this.customResultType = resultType;
@@ -462,7 +465,7 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
                 ResultSet resultSet = rsw.getResultSet();
                 // Object value = getPropertyMappingValue( resultSet , metaObject, propertyMapping, lazyLoader, columnPrefix );
                 // 使用该方式获取值
-                Object value = getPropertyMappingValue( resultSet , metaObject, propertyMapping, lazyLoader, columnPrefix, originalMappedColumns );
+                Object value = getPropertyMappingValue( resultSet, metaObject, propertyMapping, lazyLoader, columnPrefix, originalMappedColumns );
                 // issue #541 make property optional
                 final String property = propertyMapping.getProperty();
                 if ( property == null ) {
