@@ -1,15 +1,18 @@
 package com.wkit.lost.mybatis.core;
 
 import com.wkit.lost.mybatis.utils.CollectionUtil;
+import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.function.Aggregation;
 import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.handler.EntityHandler;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
  * @param <T> 类型
  * @author DT
  */
+@Log4j2
 @SuppressWarnings( "serial" )
 public abstract class AbstractCriteria<T> extends AbstractChainCriteriaWrapper<T, AbstractCriteria<T>> {
 
@@ -157,6 +161,18 @@ public abstract class AbstractCriteria<T> extends AbstractChainCriteriaWrapper<T
 
     @Override
     public String getUpdateSegment() {
-        return null;
+        if ( CollectionUtil.hasElement( this.modifies ) ) {
+            List<String> modifyColumns = new ArrayList<>();
+            for ( Map.Entry<String, Object> entry : modifies.entrySet() ) {
+                String property = entry.getKey();
+                Object value = entry.getValue();
+                Column column = searchColumn( property );
+                if ( column.isUpdatable() ) {
+                    modifyColumns.add( column.convertToCustomArg( defaultPlaceholder( value ), null, Operator.EQ, null ) );
+                }
+            }
+            return String.join( ", ", modifyColumns );
+        }
+        return "";
     }
 }

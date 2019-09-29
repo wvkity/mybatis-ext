@@ -16,6 +16,21 @@ import java.util.Map;
 public interface CriteriaMapper<T, R> {
 
     /**
+     * 根据指定条件对象更新记录
+     * @param criteria 条件对象
+     * @return 受影响行数
+     */
+    int updateByCriteria( @Param( Constants.PARAM_CRITERIA ) Criteria<T> criteria );
+
+    /**
+     * 根据指定条件对象、实体对象更新记录
+     * @param entity   实体对象(更新值部分)
+     * @param criteria 条件对象(条件部分)
+     * @return 受影响行数
+     */
+    int mixinUpdateSelective( @Param( Constants.PARAM_ENTITY ) T entity, @Param( Constants.PARAM_CRITERIA ) Criteria<T> criteria );
+
+    /**
      * 根据条件对象逻辑删除记录
      * @param criteria 条件对象
      * @return 受影响行数

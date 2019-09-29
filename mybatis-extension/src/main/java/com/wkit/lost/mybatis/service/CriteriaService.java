@@ -1,7 +1,9 @@
 package com.wkit.lost.mybatis.service;
 
 import com.wkit.lost.mybatis.core.Criteria;
+import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.paging.Pageable;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,21 @@ public interface CriteriaService<T, R> {
      * @return true: 存在 , false: 不存在
      */
     boolean exists( Criteria<T> criteria );
+
+    /**
+     * 根据指定条件对象更新记录
+     * @param criteria 条件对象
+     * @return 受影响行数
+     */
+    int update( Criteria<T> criteria );
+
+    /**
+     * 根据指定条件对象、实体对象更新记录
+     * @param entity   实体对象(更新值部分)
+     * @param criteria 条件对象(条件部分)
+     * @return 受影响行数
+     */
+    int updateSelective( T entity, Criteria<T> criteria );
 
     /**
      * 根据Criteria对象执行逻辑删除记录

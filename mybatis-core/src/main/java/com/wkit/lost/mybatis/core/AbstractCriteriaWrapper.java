@@ -1,6 +1,7 @@
 package com.wkit.lost.mybatis.core;
 
 import com.wkit.lost.mybatis.utils.ArrayUtil;
+import com.wkit.lost.mybatis.utils.Ascii;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.condition.AbstractConditionManager;
@@ -206,6 +207,11 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     protected Set<Column> queries = new LinkedHashSet<>();
 
     /**
+     * 更新列(属性)
+     */
+    protected Map<String, Object> modifies = new LinkedHashMap<>();
+
+    /**
      * 排除列(属性)
      */
     protected Set<String> excludes = new HashSet<>();
@@ -388,7 +394,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
         instance.useAlias( this.getAlias() );
         Context newInstance = function.apply( instance );
         // 获取条件
-        List<Segment> segments = newInstance.segmentManager.getNormals().getSegments();
+        List<Segment> segments = newInstance.segmentManager.getWheres().getSegments();
         // 添加到当前对象
         if ( isAnd ) {
             Optional.ofNullable( segmentConvertToCondition( segments ) ).ifPresent( this::nested );
@@ -685,6 +691,29 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
         }
         return this.context;
     }
+
+    // endregion
+
+    // region modify
+
+    @Override
+    public Context modify( String property, Object value ) {
+        if ( StringUtil.hasText( property ) ) {
+            this.modifies.put( property, value );
+        }
+        return context;
+    }
+
+    @Override
+    public Context modify( Map<String, Object> map ) {
+        if ( CollectionUtil.hasElement( map ) ) {
+            for( Map.Entry<String, Object> entry: map.entrySet() ) {
+                modify( entry.getKey(), entry.getValue() );
+            }
+        }
+        return context;
+    }
+
 
     // endregion
 
