@@ -27,7 +27,7 @@ public class SegmentManager implements Segment {
      * 普通SQL片段
      */
     @Getter
-    private WhereSegment normals = new WhereSegment();
+    private WhereSegment wheres = new WhereSegment();
 
     /**
      * 分组SQL片段
@@ -66,7 +66,7 @@ public class SegmentManager implements Segment {
      */
     public SegmentManager conditions( Collection<Criterion<?>> conditions ) {
         if ( CollectionUtil.hasElement( conditions ) ) {
-            this.normals.addAll( conditions.stream().filter( Objects::nonNull ).collect( Collectors.toList() ) );
+            this.wheres.addAll( conditions.stream().filter( Objects::nonNull ).collect( Collectors.toList() ) );
         }
         return this;
     }
@@ -139,12 +139,12 @@ public class SegmentManager implements Segment {
      * @return true: 是 false: 否
      */
     public boolean hasCondition() {
-        return normals.isNotEmpty() || groups.isNotEmpty() || having.isNotEmpty() || orders.isNotEmpty();
+        return wheres.isNotEmpty() || groups.isNotEmpty() || having.isNotEmpty() || orders.isNotEmpty();
     }
 
     @Override
     public String getSqlSegment() {
-        return this.normals.getSqlSegment() + this.groups.getSqlSegment() + this.having.getSqlSegment() + this.orders.getSqlSegment();
+        return this.wheres.getSqlSegment() + this.groups.getSqlSegment() + this.having.getSqlSegment() + this.orders.getSqlSegment();
     }
 
     /**
@@ -154,7 +154,7 @@ public class SegmentManager implements Segment {
      */
     public String getSqlSegment( String groupReplace ) {
         return StringUtil.hasText( groupReplace ) ?
-                ( this.normals.getSqlSegment() + groupReplace + this.having.getSqlSegment() + this.orders.getSqlSegment() )
+                ( this.wheres.getSqlSegment() + groupReplace + this.having.getSqlSegment() + this.orders.getSqlSegment() )
                 : getSqlSegment();
     }
 }
