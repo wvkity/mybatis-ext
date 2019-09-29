@@ -42,7 +42,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ToString
 public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler {
 
-    private static final Map<Class<?>, Class<? extends AbstractGenerator>> DATE_TYPE_FILLING_CACHE = new ConcurrentHashMap<>( 32 );
+    private static final Map<Class<?>, Class<? extends AbstractGenerator>> DATE_TYPE_FILLING_CACHE = new ConcurrentHashMap<>( 10 );
     private static final Set<String> INSERT_TIME_FILLING_PROPERTIES = new HashSet<>( 8 );
     private static final Set<String> UPDATE_TIME_FILLING_PROPERTIES = new HashSet<>( 8 );
     private static final Set<String> DELETE_TIME_FILLING_PROPERTIES = new HashSet<>( 8 );
