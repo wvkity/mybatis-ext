@@ -43,24 +43,24 @@ public @interface EnableMetaObjectAutoFilling {
      * 是否关闭自动匹配模式
      * @return true: 是 false: 否
      */
-    boolean autoMatching() default false;
+    boolean disableAutoMatching() default false;
 
     /**
      * 是否关闭保存操作自动填充值
      * @return true: 是 false: 否
      */
-    boolean insert() default false;
+    boolean disableInsert() default false;
 
     /**
      * 是否关闭更新操作自动填充值
      * @return true: 是 false: 否
      */
-    boolean update() default false;
+    boolean disableUpdate() default false;
 
     /**
      * 是否关闭逻辑删除操作自动填充值
      * @return true: 是 false: 否
      */
-    boolean delete() default false;
+    boolean disableDelete() default false;
 
 }

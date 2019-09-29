@@ -31,10 +31,10 @@ public class MateObjectAutoFillingRegistrar implements BeanFactoryAware, ImportB
     public void registerBeanDefinitions( AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry ) {
         AnnotationAttributes attributes = AnnotationAttributes.fromMap( importingClassMetadata.getAnnotationAttributes( EnableMetaObjectAutoFilling.class.getName() ) );
         boolean primary = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "primary" ) ).orElse( false );
-        boolean disableAutoMatching = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "autoMatching" ) ).orElse( false );
-        boolean disableInsert = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "insert" ) ).orElse( false );
-        boolean disableUpdate = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "update" ) ).orElse( false );
-        boolean disableDelete = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "delete" ) ).orElse( false );
+        boolean disableAutoMatching = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "disableAutoMatching" ) ).orElse( false );
+        boolean disableInsert = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "disableInsert" ) ).orElse( false );
+        boolean disableUpdate = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "disableUpdate" ) ).orElse( false );
+        boolean disableDelete = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "disableDelete" ) ).orElse( false );
         // 创建bean定义信息
         BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.genericBeanDefinition( DefaultMetaObjectFillingHandler.class );
         GenericBeanDefinition definition = ( GenericBeanDefinition ) definitionBuilder.getRawBeanDefinition();
