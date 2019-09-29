@@ -1,5 +1,7 @@
 package com.wkit.lost.mybatis.spring.boot.worker;
 
+import com.wkit.lost.mybatis.snowflake.sequence.Level;
+import com.wkit.lost.mybatis.snowflake.sequence.Mode;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 
@@ -38,15 +40,15 @@ public @interface EnableSnowflakeSequence {
     boolean primary() default false;
 
     /**
-     * 是否开启秒级(默认为false)
-     * @return true: 是 false: 否
+     * 启用级别(默认毫秒级)
+     * @return 级别
      */
-    boolean secondEnable() default false;
+    Level level() default Level.MILLISECOND;
 
     /**
-     * 是否通过mac地址自动分配worker、dataCenter
-     * @return true: 是 false: 否
+     * 模式(默认指定机器码、数据中心模式)
+     * @return 模式
      */
-    boolean macEnable() default false;
+    Mode mode() default Mode.SPECIFIED;
 
 }

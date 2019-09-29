@@ -1,5 +1,7 @@
 package com.wkit.lost.mybatis.spring.boot.worker;
 
+import com.wkit.lost.mybatis.snowflake.sequence.Level;
+import com.wkit.lost.mybatis.snowflake.sequence.Mode;
 import com.wkit.lost.mybatis.snowflake.sequence.SnowflakeSequence;
 import com.wkit.lost.mybatis.snowflake.worker.SequenceUtil;
 import org.springframework.beans.BeansException;
@@ -43,10 +45,10 @@ class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, 
     public void registerBeanDefinitions( AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry ) {
         checkConfiguration();
         AnnotationAttributes attributes = AnnotationAttributes.fromMap( importingClassMetadata.getAnnotationAttributes( EnableSnowflakeSequence.class.getName() ) );
-        boolean secondEnable = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "secondEnable" ) ).orElse( false );
-        boolean macEnable = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "macEnable" ) ).orElse( false );
+        Level level = ( Level ) Optional.ofNullable( attributes ).map( attr -> attr.getEnum( "level" ) ).orElse( Level.MILLISECOND );
+        Mode mode = ( Mode ) Optional.ofNullable( attributes ).map( attr -> attr.getEnum( "mode" ) ).orElse( Mode.SPECIFIED );
         boolean primary = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "primary" ) ).orElse( false );
-        registerBean( registry, secondEnable, macEnable, primary );
+        registerBean( registry, level, mode, primary );
     }
 
     private void checkConfiguration() {
@@ -72,7 +74,7 @@ class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, 
         }
     }
 
-    private void registerBean( BeanDefinitionRegistry registry, boolean secondEnable, boolean macEnable, boolean primary ) {
+    private void registerBean( BeanDefinitionRegistry registry, Level level, Mode mode, boolean primary ) {
         BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.genericBeanDefinition( SnowflakeSequence.class );
         GenericBeanDefinition definition = ( GenericBeanDefinition ) definitionBuilder.getRawBeanDefinition();
         definition.setBeanClass( SnowflakeSequence.class );
@@ -84,14 +86,14 @@ class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, 
         // 采用构造方法注入
         ConstructorArgumentValues argumentValues = new ConstructorArgumentValues();
         // 启用秒级
-        if ( configuration.isSecondEnable() || secondEnable ) {
+        if ( configuration.getLevel() == Level.SECOND || level == Level.SECOND ) {
             argumentValues.addIndexedArgumentValue( 0, TimeUnit.SECONDS );
         } else {
             argumentValues.addIndexedArgumentValue( 0, TimeUnit.MILLISECONDS );
         }
         argumentValues.addIndexedArgumentValue( 1, configuration.getEpochTimestamp() );
         // 启用mac地址动态获取
-        if ( configuration.isMacEnable() || macEnable ) {
+        if ( configuration.getMode() == Mode.MAC || mode == Mode.MAC ) {
             argumentValues.addIndexedArgumentValue( 2, SequenceUtil.getDefaultWorkerId( 5, 5 ) );
             argumentValues.addIndexedArgumentValue( 3, SequenceUtil.getDefaultDataCenterId( 5 ) );
         } else {

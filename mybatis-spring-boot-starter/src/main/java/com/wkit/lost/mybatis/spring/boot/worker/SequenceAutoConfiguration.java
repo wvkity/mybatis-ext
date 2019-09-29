@@ -1,5 +1,7 @@
 package com.wkit.lost.mybatis.spring.boot.worker;
 
+import com.wkit.lost.mybatis.snowflake.sequence.Level;
+import com.wkit.lost.mybatis.snowflake.sequence.Mode;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -30,12 +32,12 @@ public class SequenceAutoConfiguration {
     private long dataCenterId = 0L;
 
     /**
-     * 是否启用秒级别
+     * 级别
      */
-    private boolean secondEnable = false;
+    private Level level = Level.MILLISECOND;
 
     /**
-     * 使用默认sequence(即根据mac地址自动分配)
+     * 模式
      */
-    private boolean macEnable = false;
+    private Mode mode = Mode.SPECIFIED;
 }
