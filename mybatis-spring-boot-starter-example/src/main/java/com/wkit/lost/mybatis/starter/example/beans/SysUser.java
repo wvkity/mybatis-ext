@@ -81,6 +81,7 @@ public class SysUser implements Serializable {
     /**
      * 逻辑删除
      */
+    @LogicalDeletion( value = "4", not = "5" )
     private Integer deleted;
 
     /**

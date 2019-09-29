@@ -1,5 +1,7 @@
 package com.wkit.lost.mybatis.starter.example;
 
+import com.wkit.lost.mybatis.snowflake.sequence.Level;
+import com.wkit.lost.mybatis.snowflake.sequence.Mode;
 import com.wkit.lost.mybatis.spring.boot.filling.EnableMetaObjectAutoFilling;
 import com.wkit.lost.mybatis.spring.boot.worker.EnableSnowflakeSequence;
 import org.springframework.boot.CommandLineRunner;
@@ -11,8 +13,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
-@EnableSnowflakeSequence( value = true )
-@EnableMetaObjectAutoFilling( value = true )
+@EnableSnowflakeSequence( value = true, level = Level.SECOND )
+@EnableMetaObjectAutoFilling( value = true, disableAutoMatching = true, disableDelete = true )
 @EnableConfigurationProperties
 @SpringBootApplication
 @EnableAsync
