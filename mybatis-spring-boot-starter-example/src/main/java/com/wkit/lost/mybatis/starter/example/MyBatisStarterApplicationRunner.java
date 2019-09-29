@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
 @EnableSnowflakeSequence( value = true, level = Level.SECOND )
-@EnableMetaObjectAutoFilling( value = true, disableAutoMatching = true, disableDelete = true )
+@EnableMetaObjectAutoFilling( value = true, disableDelete = true )
 @EnableConfigurationProperties
 @SpringBootApplication
 @EnableAsync
