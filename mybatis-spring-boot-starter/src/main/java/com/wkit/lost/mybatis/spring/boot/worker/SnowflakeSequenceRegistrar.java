@@ -29,8 +29,8 @@ import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_SING
  * 注册{@link SnowflakeSequence}实例
  * <p>
  *     <ul>
- *         <li>优先从配置文件获取{@link SequenceAutoConfiguration}实例，
- *         如果获取到的对象是空，则从Bean容器中根据名称和类型匹配获取配置实例，此时还是空的话直接new一个实例</li>
+ *         <li>优先从Bean容器中根据名称和类型匹配获取{@link SequenceAutoConfiguration}实例，
+ *         如果获取到的对象是空，则从配置文件获取配置实例，此时还是空的话直接new一个实例</li>
  *         <li>注册到Bean容器的实例名称为sequence，同时还给该实例起了一个snowflakeSequence别名</li>
  *     </ul>
  * </p>
@@ -40,6 +40,7 @@ class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, 
 
     private SequenceAutoConfiguration configuration;
     private DefaultListableBeanFactory beanFactory;
+    private Environment environment;
 
     @Override
     public void registerBeanDefinitions( AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry ) {
@@ -69,7 +70,10 @@ class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, 
                 }
             }
             if ( this.configuration == null ) {
-                this.configuration = new SequenceAutoConfiguration();
+                this.configuration = getConfiguration();
+                if ( this.configuration == null ) {
+                    this.configuration = new SequenceAutoConfiguration();
+                }
             }
         }
     }
@@ -112,11 +116,16 @@ class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, 
 
     @Override
     public void setEnvironment( Environment environment ) {
+        this.environment = environment;
+    }
+
+    private SequenceAutoConfiguration getConfiguration() {
         try {
             Binder binder = Binder.get( environment );
-            this.configuration = binder.bind( "sequence", SequenceAutoConfiguration.class ).get();
+            return binder.bind( "sequence", SequenceAutoConfiguration.class ).get();
         } catch ( Exception e ) {
             // ignore
+            return null;
         }
     }
 }
