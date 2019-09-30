@@ -1,9 +1,7 @@
 package com.wkit.lost.mybatis.service;
 
 import com.wkit.lost.mybatis.core.Criteria;
-import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.paging.Pageable;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -36,6 +34,13 @@ public interface CriteriaService<T, R> {
      * @return 受影响行数
      */
     int updateSelective( T entity, Criteria<T> criteria );
+
+    /**
+     * 根据条件对象删除记录
+     * @param criteria 条件对象
+     * @return 受影响行数
+     */
+    int delete( Criteria<T> criteria );
 
     /**
      * 根据Criteria对象执行逻辑删除记录

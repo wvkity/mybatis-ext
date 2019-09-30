@@ -21,6 +21,14 @@ public class LogicalDeletionApp extends RootTestRunner {
     }
 
     @Test
+    public void deletionTest1() {
+        CriteriaImpl<SysUser> criteria = userService.getCriteria();
+        criteria.idEq( 18L ).eq( SysUser::getState, 7 ).eq( SysUser::getCreateUser, "张三" );
+        int result = userService.delete( criteria );
+        log.info( "执行结果: {}", result );
+    }
+
+    @Test
     public void deletionTest2() {
         int result = userService.delete( new SysUser().setId( 17L ).setState( 8 ) );
         log.info( "执行结果: {}", result );

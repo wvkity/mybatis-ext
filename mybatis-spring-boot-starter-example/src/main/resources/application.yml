@@ -38,6 +38,5 @@ lost:
       identity: false
       worker: true
       dialect: mysql
-      auto-jdbc-type-mapping: true
-      use-pageable-plugin: false
+      jdbc-type-auto-mapping: true
 
