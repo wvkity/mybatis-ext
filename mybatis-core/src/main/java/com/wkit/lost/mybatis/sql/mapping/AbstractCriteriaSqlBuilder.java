@@ -15,11 +15,21 @@ public abstract class AbstractCriteriaSqlBuilder extends AbstractLogicalDeletion
     }
 
     /**
-     * 获取条件
+     * 获取查询条件
      * @return XML-SQL字符串
      */
-    protected String getCondition() {
+    protected String getConditionForQuery() {
         return "${criteria.foreignSegment} \n<if test=\"criteria != null and criteria.hasCondition\">\n" +
+                "  ${criteria.sqlSegment}\n" +
+                "</if>\n";
+    }
+
+    /**
+     * 获取更新或删除条件
+     * @return XML-SQL字符串
+     */
+    protected String getConditionForUpdateOrDelete() {
+        return "<if test=\"criteria != null and criteria.hasCondition\">\n" +
                 "  ${criteria.sqlSegment}\n" +
                 "</if>\n";
     }

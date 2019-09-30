@@ -6,6 +6,6 @@ public class LogicDeleteSqlBuilder extends AbstractCriteriaSqlBuilder {
 
     @Override
     public String build() {
-        return logicDelete( getCondition() );
+        return logicDelete( getConditionForUpdateOrDelete() );
     }
 }

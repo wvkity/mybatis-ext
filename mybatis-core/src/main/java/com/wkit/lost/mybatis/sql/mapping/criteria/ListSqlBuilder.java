@@ -6,6 +6,6 @@ public class ListSqlBuilder extends AbstractCriteriaSqlBuilder {
 
     @Override
     public String build() {
-        return criteriaSelect( "${criteria.querySegment}", getCondition() );
+        return criteriaSelect( "${criteria.querySegment}", getConditionForQuery() );
     }
 }

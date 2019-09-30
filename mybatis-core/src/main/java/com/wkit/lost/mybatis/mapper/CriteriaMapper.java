@@ -31,6 +31,13 @@ public interface CriteriaMapper<T, R> {
     int mixinUpdateSelective( @Param( Constants.PARAM_ENTITY ) T entity, @Param( Constants.PARAM_CRITERIA ) Criteria<T> criteria );
 
     /**
+     * 根据条件对象删除记录
+     * @param criteria 条件对象
+     * @return 受影响行数
+     */
+    int deleteByCriteria( @Param( Constants.PARAM_CRITERIA ) Criteria<T> criteria );
+
+    /**
      * 根据条件对象逻辑删除记录
      * @param criteria 条件对象
      * @return 受影响行数

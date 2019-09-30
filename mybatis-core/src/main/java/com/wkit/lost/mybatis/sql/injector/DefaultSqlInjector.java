@@ -4,6 +4,7 @@ import com.wkit.lost.mybatis.sql.injector.methods.BatchDelete;
 import com.wkit.lost.mybatis.sql.injector.methods.BatchDeleteByPrimaryKey;
 import com.wkit.lost.mybatis.sql.injector.methods.Count;
 import com.wkit.lost.mybatis.sql.injector.methods.Delete;
+import com.wkit.lost.mybatis.sql.injector.methods.DeleteByCriteria;
 import com.wkit.lost.mybatis.sql.injector.methods.DeleteByPrimaryKey;
 import com.wkit.lost.mybatis.sql.injector.methods.Exists;
 import com.wkit.lost.mybatis.sql.injector.methods.ExistsByCriteria;
@@ -67,6 +68,7 @@ public class DefaultSqlInjector extends AbstractSqlInjector {
                 // 删除
                 new Delete(),
                 new DeleteByPrimaryKey(),
+                new DeleteByCriteria(),
                 new LogicDelete(),
                 new LogicDeleteByCriteria(),
                 new BatchDelete(),

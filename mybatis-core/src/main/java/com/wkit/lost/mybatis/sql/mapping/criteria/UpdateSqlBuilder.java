@@ -7,7 +7,6 @@ public class UpdateSqlBuilder extends AbstractCriteriaSqlBuilder {
 
     @Override
     public String build() {
-        String condition = "\n<if test=\"criteria != null and criteria.hasCondition\">\n ${criteria.sqlSegment}\n</if>\n";
-        return update( String.format( " SET ${%s.updateSegment}", Constants.PARAM_CRITERIA ), condition );
+        return update( String.format( " SET ${%s.updateSegment}", Constants.PARAM_CRITERIA ), getConditionForUpdateOrDelete() );
     }
 }

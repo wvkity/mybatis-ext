@@ -11,6 +11,6 @@ public class ExistsSqlBuilder extends AbstractCriteriaSqlBuilder {
     @Override
     public String build() {
         String querySegment = "CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END COUNT";
-        return criteriaSelect( querySegment, getCondition() );
+        return criteriaSelect( querySegment, getConditionForQuery() );
     }
 }

@@ -18,7 +18,6 @@ public class MixinUpdateSqlBuilder extends AbstractCriteriaSqlBuilder {
             buffer.append( this.convertToIfTagOfNotNull( true, Execute.REPLACE, false, 0, Constants.PARAM_ENTITY, column, ", ", "" ) );
         }
         buffer.append( "</trim>" );
-        String condition = "\n<if test=\"criteria != null and criteria.hasCondition\">\n ${criteria.sqlSegment}\n</if>\n";
-        return update( buffer.toString(), condition );
+        return update( buffer.toString(), getConditionForUpdateOrDelete() );
     }
 }
