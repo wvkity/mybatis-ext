@@ -122,23 +122,37 @@ public class MetaObjectFillingExecutor {
         if ( table == null ) {
             return parameter;
         }
+
         MetaObject metaObject = statement.getConfiguration().newMetaObject( parameter );
         // 保存操作填充主键值
         MyBatisCustomConfiguration customConfiguration = MyBatisConfigCache.getCustomConfiguration( statement.getConfiguration() );
         if ( isInsert && table.getPrimaryKey() != null ) {
+            MetaObject realMetaObject = null;
             Column primaryKey = table.getPrimaryKey();
-            Object value = metaObject.getValue( primaryKey.getProperty() );
+            String property = primaryKey.getProperty();
+            if ( metaObject.hasGetter( property ) && metaObject.hasSetter( property ) ) {
+                realMetaObject = metaObject;
+            } else {
+                // 采用@Param方式指定
+                if ( metaObject.hasGetter( Constants.PARAM_ENTITY ) ) {
+                    Object entity = metaObject.getValue( Constants.PARAM_ENTITY );
+                    if ( entity != null ) {
+                        realMetaObject = SystemMetaObject.forObject( entity );
+                    }
+                }
+            }
+            Object value = realMetaObject.getValue( property );
             if ( isNullOrEmpty( value ) ) {
                 Sequence sequence = customConfiguration.getSequence();
                 if ( primaryKey.isUuid() ) {
                     // guid
-                    metaObject.setValue( primaryKey.getProperty(), customConfiguration.getKeyGenerator().value() );
+                    realMetaObject.setValue( property, customConfiguration.getKeyGenerator().value() );
                 } else if ( primaryKey.isWorker() ) {
                     // 雪花算法主键(如果不开启注入Sequence对象，则默认使用mac地址分配的Sequence对象)
-                    metaObject.setValue( primaryKey.getProperty(), Optional.ofNullable( sequence ).map( Sequence::nextId ).orElse( SequenceWorker.nextId() ) );
+                    realMetaObject.setValue( property, Optional.ofNullable( sequence ).map( Sequence::nextId ).orElse( SequenceWorker.nextId() ) );
                 } else if ( primaryKey.isWorkerString() ) {
                     // 雪花算法字符串主键(如果不开启注入Sequence对象，则默认使用mac地址分配的Sequence对象)
-                    metaObject.setValue( primaryKey.getProperty(), Optional.ofNullable( sequence ).map( Sequence::nextStringId ).orElse( SequenceWorker.nextStringId() ) );
+                    realMetaObject.setValue( property, Optional.ofNullable( sequence ).map( Sequence::nextStringId ).orElse( SequenceWorker.nextStringId() ) );
                 }
             }
         }

@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.sql.mapping.delete;
 
 import com.wkit.lost.mybatis.core.Execute;
 import com.wkit.lost.mybatis.sql.mapping.AbstractSqlBuilder;
+import com.wkit.lost.mybatis.utils.Constants;
 
 import java.util.stream.Collectors;
 
@@ -15,7 +16,7 @@ public class DeleteSqlBuilder extends AbstractSqlBuilder {
     public String build() {
         String condition = "<where>" +
                 table.getColumns().stream()
-                        .map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, false, 0, null, column, "", AND ) )
+                        .map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, false, 0, Constants.PARAM_ENTITY, column, "", AND ) )
                         .collect( Collectors.joining( "", "\n", "\n" ) )
                 + "\n</where>";
         return delete( condition );
