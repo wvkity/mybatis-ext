@@ -15,7 +15,18 @@ public class InsertServiceApp extends RootTestRunner {
     private SysUserService sysUserService;
 
     @Test
-    public void insert() {
+    public void insertTest() {
+        SysUser sysUser = new SysUser();
+        sysUser.setUserName( "测试自动填充1" );
+        sysUser.setScore( 77 );
+        //sysUser.setCreateUser( "我是自动填充" );
+        sysUser.setState( 4 ).setPassword( "77858a" );
+        int result = sysUserService.save( sysUser );
+        log.info( "执行结果：{}", result );
+    }
+
+    @Test
+    public void insertSelectiveTest() {
         SysUser sysUser = new SysUser();
         sysUser.setUserName( "测试自动填充" );
         sysUser.setCount( 56L );

@@ -35,7 +35,8 @@ lost:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
       #map-underscore-to-camel-case: false
     custom-configuration:
-      identity: true
+      identity: false
+      worker: true
       dialect: mysql
       auto-jdbc-type-mapping: true
       use-pageable-plugin: false

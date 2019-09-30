@@ -21,6 +21,12 @@ public class LogicalDeletionApp extends RootTestRunner {
     }
 
     @Test
+    public void deletionTest2() {
+        int result = userService.delete( new SysUser().setId( 17L ).setState( 8 ) );
+        log.info( "执行结果: {}", result );
+    }
+
+    @Test
     public void logicDeleteTest() {
         SysUser sysUser = new SysUser();
         sysUser.setId( 11L );
