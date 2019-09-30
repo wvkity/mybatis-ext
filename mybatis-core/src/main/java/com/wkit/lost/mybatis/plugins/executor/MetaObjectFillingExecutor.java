@@ -38,7 +38,7 @@ import java.util.Set;
 @Log4j2
 public class MetaObjectFillingExecutor {
 
-    private static final Set<String> LOGICAL_DELETION_METHODS = new HashSet<>( Arrays.asList( "logicDelete", "logicDeleteByCriteria", "mixinLogicDelete" ) );
+    private static final Set<String> LOGICAL_DELETION_METHODS = new HashSet<>( Arrays.asList( "logicDelete", "logicDeleteByCriteria" ) );
 
     public Object intercept( Invocation invocation ) throws Throwable {
         MappedStatement statement = ( MappedStatement ) invocation.getArgs()[ 0 ];
