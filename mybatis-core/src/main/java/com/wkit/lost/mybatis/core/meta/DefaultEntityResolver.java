@@ -40,9 +40,12 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.UnknownTypeHandler;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * 默认实体-表映射解析器
@@ -50,6 +53,11 @@ import java.util.Optional;
  */
 @Log4j2
 public class DefaultEntityResolver implements EntityResolver {
+
+    /**
+     * 雪花算法字符串主键
+     */
+    private static final Set<String> WORKER_KEYS = new HashSet<>( Arrays.asList( "WORKERSTRING", "WORKER_STRING", "WORKERSTR", "WORKER_STR" ) );
 
     /**
      * 自定义配置
@@ -475,7 +483,7 @@ public class DefaultEntityResolver implements EntityResolver {
             table.addPrimaryKeyColumn( column.getColumn() );
         } else if ( "WORKER".equalsIgnoreCase( generator ) ) {
             column.setWorker( true );
-        } else if ( "WORKER_STR".equalsIgnoreCase( generator ) || "WORKER_STRING".equalsIgnoreCase( generator ) || "WORKERSTR".equalsIgnoreCase( generator ) ) {
+        } else if ( WORKER_KEYS.contains( generator.toUpperCase( Locale.ENGLISH ) ) ) {
             column.setWorkerString( true );
         } else {
             if ( isIdentity ) {
@@ -540,6 +548,7 @@ public class DefaultEntityResolver implements EntityResolver {
         // 检测是否存在主键值生成方式
         if ( !column.isUuid() && !column.isIdentity() && !column.isWorker() && !column.isWorkerString()
                 && StringUtil.isBlank( column.getGenerator() ) ) {
+            // 直接使用全局主键
             column.setUuid( this.configuration.isUuid() );
             column.setIdentity( this.configuration.isIdentity() );
             column.setWorker( this.configuration.isWorker() );
