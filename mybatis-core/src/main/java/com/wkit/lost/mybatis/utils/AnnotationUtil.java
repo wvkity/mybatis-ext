@@ -1,10 +1,18 @@
 package com.wkit.lost.mybatis.utils;
 
+import com.wkit.lost.mybatis.core.meta.AnnotationMetaObject;
+import com.wkit.lost.mybatis.exception.MapperResolverException;
+import lombok.extern.log4j.Log4j2;
+import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.SystemMetaObject;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,6 +21,7 @@ import java.util.stream.Collectors;
  * 注解工具类
  * @author DT
  */
+@Log4j2
 public abstract class AnnotationUtil {
 
     /**
@@ -186,5 +195,45 @@ public abstract class AnnotationUtil {
                 .map( Annotation::annotationType )
                 .map( Class::getCanonicalName )
                 .collect( Collectors.toCollection( HashSet::new ) );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public static AnnotationMetaObject getAnnotationMetaObject( Class<?> target, String annotationClass ) {
+        if ( target != null && !Ascii.isNullOrEmpty( annotationClass ) ) {
+            try {
+                Class<? extends Annotation> clazz = ( Class<? extends Annotation> ) Class.forName( annotationClass );
+                return getAnnotationMetaObject( target.getAnnotation( clazz ) );
+            } catch ( Exception e ) {
+                log.warn( "Cannot resolve entity class `{}` annotation `{}`: {}", target.getName(), annotationClass, e );
+            }
+        }
+        return new AnnotationMetaObject( new HashMap<>( 0 ) );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public static AnnotationMetaObject getAnnotationMetaObject( Field target, String annotationClass ) {
+        if ( target != null && StringUtil.hasText( annotationClass ) ) {
+            try {
+                Class<? extends Annotation> clazz = ( Class<? extends Annotation> ) Class.forName( annotationClass );
+                return getAnnotationMetaObject( target.getAnnotation( clazz ) );
+            } catch ( Exception e ) {
+                log.warn( "Unable to parse attributes `{}` annotation `{}`: {}", target.getName(), annotationClass, e );
+            }
+        }
+        return new AnnotationMetaObject( new HashMap<>( 0 ) );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public static AnnotationMetaObject getAnnotationMetaObject( Annotation annotation ) {
+        if ( annotation != null ) {
+            MetaObject metaObject = SystemMetaObject.forObject( annotation );
+            if ( metaObject != null ) {
+                Object value = metaObject.getValue( "h.memberValues" );
+                if ( value instanceof Map ) {
+                    return new AnnotationMetaObject( ( Map<String, Object> ) value );
+                }
+            }
+        }
+        return new AnnotationMetaObject( new HashMap<>( 0 ) );
     }
 }

@@ -161,10 +161,10 @@ public class DefaultEntityResolver implements EntityResolver {
             } else {
                 // javax定义的@Table注解
                 if ( AnnotationUtil.isAnnotationPresent( entity, JavaxPersistence.TABLE ) ) {
-                    javax.persistence.Table tableAnnotation = entity.getDeclaredAnnotation( javax.persistence.Table.class );
-                    tableName = tableAnnotation.name();
-                    catalog = tableAnnotation.catalog();
-                    schema = tableAnnotation.schema();
+                    AnnotationMetaObject metaObject = AnnotationMetaObject.forObject( entity, JavaxPersistence.TABLE );
+                    tableName = metaObject.stringValue( "name" );
+                    catalog = metaObject.stringValue( "catalog" );
+                    schema = metaObject.stringValue( "schema" );
                 }
             }
             //  解析@Entity注解
@@ -203,8 +203,8 @@ public class DefaultEntityResolver implements EntityResolver {
     protected String processEntityAnnotation( final Class<?> entity ) {
         if ( entity.isAnnotationPresent( Entity.class ) ) {
             return entity.getDeclaredAnnotation( Entity.class ).name();
-        } else if ( entity.isAnnotationPresent( javax.persistence.Entity.class ) ) {
-            return entity.getDeclaredAnnotation( javax.persistence.Entity.class ).name();
+        } else if ( AnnotationUtil.isAnnotationPresent( entity, JavaxPersistence.ENTITY ) ) {
+            return AnnotationMetaObject.forObject( entity, JavaxPersistence.ENTITY ).stringValue( "name" );
         }
         return null;
     }
@@ -279,11 +279,11 @@ public class DefaultEntityResolver implements EntityResolver {
             updatable = columnAnnotation.updatable();
             columnName = columnAnnotation.name();
         } else if ( attribute.isAnnotationPresent( JavaxPersistence.COLUMN ) ) {
+            AnnotationMetaObject metaObject = AnnotationMetaObject.forObject( attribute.getField(), JavaxPersistence.COLUMN );
             // JPA @Column注解
-            javax.persistence.Column columnAnnotation = attribute.getAnnotation( javax.persistence.Column.class );
-            insertable = columnAnnotation.insertable();
-            updatable = columnAnnotation.updatable();
-            columnName = columnAnnotation.name();
+            insertable = metaObject.booleanValue( "insertable", true );
+            updatable = metaObject.booleanValue( "updatable", true );
+            columnName = metaObject.stringValue( "name" );
         }
         // 处理扩展注解
         if ( attribute.isAnnotationPresent( ColumnExt.class ) ) {
@@ -370,7 +370,7 @@ public class DefaultEntityResolver implements EntityResolver {
         if ( attribute.isAnnotationPresent( OrderBy.class ) ) {
             orderValue = attribute.getAnnotation( OrderBy.class ).value();
         } else if ( attribute.isAnnotationPresent( JavaxPersistence.ORDER_BY ) ) {
-            orderValue = attribute.getAnnotation( javax.persistence.OrderBy.class ).value();
+            orderValue = AnnotationMetaObject.forObject( attribute.getField(), JavaxPersistence.ORDER_BY ).stringValue();
         }
         if ( orderValue != null ) {
             orderValue = "".equals( StringUtil.strip( orderValue ) ) ? "ASC" : orderValue;
@@ -442,10 +442,10 @@ public class DefaultEntityResolver implements EntityResolver {
             }
         } else if ( attribute.isAnnotationPresent( JavaxPersistence.SEQUENCE_GENERATOR ) ) {
             // JPA @SequenceGenerator注解
-            javax.persistence.SequenceGenerator sequenceAnnotation = attribute.getAnnotation( javax.persistence.SequenceGenerator.class );
-            sequenceName = sequenceAnnotation.name();
+            AnnotationMetaObject metaObject = AnnotationMetaObject.forObject( attribute.getField(), JavaxPersistence.SEQUENCE_GENERATOR );
+            sequenceName = metaObject.stringValue( "name" );
             if ( StringUtil.isBlank( sequenceName ) ) {
-                sequenceName = sequenceAnnotation.sequenceName();
+                sequenceName = metaObject.stringValue( "sequenceName" );
             }
         }
         if ( StringUtil.isBlank( sequenceName ) ) {
@@ -471,9 +471,10 @@ public class DefaultEntityResolver implements EntityResolver {
             isIdentity = generatedValueAnnotation.strategy() == GenerationType.IDENTITY;
         } else if ( attribute.isAnnotationPresent( JavaxPersistence.GENERATED_VALUE ) ) {
             // JPA @GeneratedValue
-            javax.persistence.GeneratedValue generatedValueAnnotation = attribute.getAnnotation( javax.persistence.GeneratedValue.class );
-            generator = generatedValueAnnotation.generator();
-            isIdentity = generatedValueAnnotation.strategy() == javax.persistence.GenerationType.IDENTITY;
+            AnnotationMetaObject metaObject = AnnotationMetaObject.forObject( attribute.getField(), JavaxPersistence.GENERATED_VALUE );
+            generator = metaObject.stringValue( "generator" );
+            Enum<?> enumValue = metaObject.enumValue( "strategy", null );
+            isIdentity = enumValue != null && "IDENTITY".equals( enumValue.name() );
         }
         if ( "UUID".equalsIgnoreCase( generator ) ) {
             column.setUuid( true );
