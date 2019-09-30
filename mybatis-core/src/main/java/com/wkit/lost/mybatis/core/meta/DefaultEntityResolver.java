@@ -129,7 +129,7 @@ public class DefaultEntityResolver implements EntityResolver {
         } else {
             attributes = ColumnHandler.getAllAttributes( entity, fieldResolver );
         }
-        boolean enableAutoJdbcMapping = this.configuration.isAutoJdbcTypeMapping();
+        boolean enableAutoJdbcMapping = this.configuration.isJdbcTypeAutoMapping();
         attributes.stream().filter( this::attributeFilter )
                 .forEach( attribute -> processAttribute( table, attribute, enableAutoJdbcMapping ) );
         // 初始化定义信息

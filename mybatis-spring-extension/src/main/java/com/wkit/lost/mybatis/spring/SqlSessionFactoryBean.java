@@ -94,7 +94,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
     /**
      * 自定义配置
      */
-    private MyBatisCustomConfiguration customConfiguration = MyBatisConfigCache.defaults();
+    private MyBatisCustomConfiguration customConfiguration;
 
     /**
      * {@inheritDoc}
@@ -184,6 +184,10 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
         }
         targetConfiguration.addInterceptor( fillingInterceptor );
 
+        if ( this.customConfiguration == null ) {
+            this.customConfiguration = MyBatisConfigCache.defaults();
+        }
+
         // 注册分页拦截器
         if ( customConfiguration.isUsePageablePlugin() ) {
             PageableInterceptor interceptor = new PageableInterceptor();
@@ -256,10 +260,11 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
                 ErrorContext.instance().reset();
             }
         }
-
         targetConfiguration.setEnvironment( new Environment( this.environment,
                 this.transactionFactory == null ? new SpringManagedTransactionFactory() : this.transactionFactory,
                 this.dataSource ) );
+        // 自定义操作(针对MyBatisCache)
+        customConfiguration.cacheSelf( targetConfiguration );
         if ( this.mapperLocations != null ) {
             if ( this.mapperLocations.length == 0 ) {
                 log.warn( "{}", "Property 'mapperLocations' was specified but matching resources are not found." );
@@ -283,10 +288,8 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
         } else {
             log.debug( "{}", "Property 'mapperLocations' was not specified." );
         }
-        SqlSessionFactory factory = this.sqlSessionFactoryBuilder.build( configuration );
-        // 自定义操作(针对MyBatisCache)
+        SqlSessionFactory factory = this.sqlSessionFactoryBuilder.build( targetConfiguration );
         customConfiguration.setSqlSessionFactory( factory );
-        customConfiguration.cacheSelf( factory );
         return factory;
     }
 

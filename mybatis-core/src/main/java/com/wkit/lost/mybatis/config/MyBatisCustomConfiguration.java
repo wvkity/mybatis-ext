@@ -13,6 +13,7 @@ import com.wkit.lost.mybatis.sql.injector.SqlInjector;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -135,9 +136,9 @@ public class MyBatisCustomConfiguration implements Serializable {
     private boolean useJavaType;
 
     /**
-     * 类型自动映射(缺省jdbcType)
+     * JDBC类型自动映射(缺省jdbcType)
      */
-    private boolean autoJdbcTypeMapping;
+    private boolean jdbcTypeAutoMapping;
 
     /**
      * 枚举类型学转简单类型
@@ -196,8 +197,18 @@ public class MyBatisCustomConfiguration implements Serializable {
      */
     public SqlSessionFactory cacheSelf( SqlSessionFactory factory ) {
         if ( factory != null ) {
-            MyBatisConfigCache.cacheCustomConfiguration( factory.getConfiguration(), this );
+            cacheSelf( factory.getConfiguration() );
         }
         return factory;
+    }
+
+    /**
+     * 缓存当前对象
+     * @param configuration {@link Configuration}
+     */
+    public void cacheSelf( Configuration configuration ) {
+        if ( configuration != null ) {
+            MyBatisConfigCache.cacheCustomConfiguration( configuration, this );
+        }
     }
 }
