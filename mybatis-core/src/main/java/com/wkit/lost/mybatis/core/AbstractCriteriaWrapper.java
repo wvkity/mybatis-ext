@@ -363,7 +363,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     // region search foreign criteria methods
 
     @Override
-    public <E> ForeignCriteria<E> search( String alias ) {
+    public <E> ForeignCriteria<E> searchForeign( String alias ) {
         if ( CollectionUtil.hasElement( foreignCriteriaSet ) ) {
             return ( ForeignCriteria<E> ) Optional.ofNullable( foreignCriteriaCache.get( alias ) ).orElse( null );
         }
@@ -371,7 +371,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public <E> ForeignCriteria<E> search( Class<E> entity ) {
+    public <E> ForeignCriteria<E> searchForeign( Class<E> entity ) {
         if ( entity != null && CollectionUtil.hasElement( foreignCriteriaSet ) ) {
             ForeignCriteria<?> criteria = foreignCriteriaSet.stream()
                     .filter( subCriteria -> entity.equals( subCriteria.getEntity() ) ).findFirst().orElse( null );
@@ -381,18 +381,18 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public <E> ForeignCriteria<E> search( String alias, Class<E> entity ) {
+    public <E> ForeignCriteria<E> searchForeign( String alias, Class<E> entity ) {
         if ( CollectionUtil.hasElement( foreignCriteriaSet ) ) {
             if ( StringUtil.hasText( alias ) || entity != null ) {
                 if ( StringUtil.hasText( alias ) && entity != null ) {
-                    ForeignCriteria<E> criteria = search( alias );
+                    ForeignCriteria<E> criteria = searchForeign( alias );
                     if ( criteria != null && entity.equals( criteria.getEntity() ) ) {
                         return criteria;
                     }
                 } else if ( StringUtil.hasText( alias ) ) {
-                    return search( alias );
+                    return searchForeign( alias );
                 } else {
-                    return search( entity );
+                    return searchForeign( entity );
                 }
             }
         }
@@ -718,17 +718,17 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
 
     @Override
     public <E> Context aliasAsc( String alias, Property<E, ?>... properties ) {
-        return addOrder( Order.asc( this.search( alias ), properties ) );
+        return addOrder( Order.asc( this.searchForeign( alias ), properties ) );
     }
 
     @Override
     public Context aliasAsc( String alias, String... properties ) {
-        return addOrder( Order.asc( this.search( alias ), properties ) );
+        return addOrder( Order.asc( this.searchForeign( alias ), properties ) );
     }
 
     @Override
     public Context aliasAsc( String alias, List<String> properties ) {
-        return addOrder( Order.asc( this.search( alias ), properties ) );
+        return addOrder( Order.asc( this.searchForeign( alias ), properties ) );
     }
 
     @Override
@@ -763,17 +763,17 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
 
     @Override
     public <E> Context aliasDesc( String alias, Property<E, ?>... properties ) {
-        return addOrder( Order.desc( search( alias ), properties ) );
+        return addOrder( Order.desc( searchForeign( alias ), properties ) );
     }
 
     @Override
     public Context aliasDesc( String alias, String... properties ) {
-        return addOrder( Order.desc( search( alias ), properties ) );
+        return addOrder( Order.desc( searchForeign( alias ), properties ) );
     }
 
     @Override
     public Context aliasDesc( String alias, List<String> properties ) {
-        return addOrder( Order.desc( search( alias ), properties ) );
+        return addOrder( Order.desc( searchForeign( alias ), properties ) );
     }
 
     @Override
@@ -815,7 +815,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
 
     @Override
     public <E> Context aliasGroup( String alias, Property<E, ?>... properties ) {
-        return addGroup( Group.group( search( alias ), properties ) );
+        return addGroup( Group.group( searchForeign( alias ), properties ) );
     }
 
     @Override
@@ -825,7 +825,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
 
     @Override
     public Context aliasGroup( String alias, Collection<String> properties ) {
-        return addGroup( Group.group( search( alias ), properties ) );
+        return addGroup( Group.group( searchForeign( alias ), properties ) );
     }
 
     @Override

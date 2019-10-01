@@ -162,7 +162,7 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
      * @param alias 别名
      * @return {@link ForeignCriteria}对象
      */
-    <E> ForeignCriteria<E> search( String alias );
+    <E> ForeignCriteria<E> searchForeign( String alias );
 
     /**
      * 搜索{@link ForeignCriteria}对象
@@ -170,7 +170,7 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
      * @param <E>    泛型类型
      * @return {@link ForeignCriteria}对象
      */
-    <E> ForeignCriteria<E> search( Class<E> entity );
+    <E> ForeignCriteria<E> searchForeign( Class<E> entity );
 
     /**
      * 搜索{@link ForeignCriteria}对象
@@ -179,7 +179,7 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
      * @param <E>    泛型类型
      * @return {@link ForeignCriteria}对象
      */
-    <E> ForeignCriteria<E> search( String alias, Class<E> entity );
+    <E> ForeignCriteria<E> searchForeign( String alias, Class<E> entity );
 
     /**
      * 搜索字段映射对象

@@ -106,7 +106,7 @@ public class Group<T> implements Segment {
      */
     @SafeVarargs
     public static <T, E> Group group( String alias, Criteria<T> master, Property<E, ?>... properties ) {
-        Criteria<E> criteria = master.search( alias );
+        Criteria<E> criteria = master.searchForeign( alias );
         return new Group<>( criteria, CriteriaUtil.transform( ArrayUtil.toList( properties ), criteria ) );
     }
 
@@ -119,7 +119,7 @@ public class Group<T> implements Segment {
      * @return 分组对象
      */
     public static <T, E> Group group( String alias, Criteria<T> master, Collection<String> properties ) {
-        Criteria<E> criteria = master.search( alias );
+        Criteria<E> criteria = master.searchForeign( alias );
         return new Group<>( criteria, CriteriaUtil.transform( criteria, properties ) );
     }
 

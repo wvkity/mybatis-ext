@@ -252,7 +252,7 @@ public class Order<T> implements Segment {
      * @return 排序对象
      */
     public static <T> Order asc( String alias, Criteria<T> master, String... properties ) {
-        return asc( master.search( alias ), ArrayUtil.toList( properties ) );
+        return asc( master.searchForeign( alias ), ArrayUtil.toList( properties ) );
     }
 
     /**
@@ -264,7 +264,7 @@ public class Order<T> implements Segment {
      */
     @SafeVarargs
     public static <T, E> Order asc( String alias, Criteria<T> master, Property<E, ?>... properties ) {
-        Criteria<E> criteria = master.search( alias );
+        Criteria<E> criteria = master.searchForeign( alias );
         return new Order<>( criteria, true, CriteriaUtil.transform( ArrayUtil.toList( properties ), criteria ) );
     }
 
@@ -276,7 +276,7 @@ public class Order<T> implements Segment {
      * @return 排序对象
      */
     public static <T> Order asc( String alias, Criteria<T> master, List<String> properties ) {
-        return asc( master.search( alias ), properties );
+        return asc( master.searchForeign( alias ), properties );
     }
 
     /**
@@ -288,7 +288,7 @@ public class Order<T> implements Segment {
      */
     @SafeVarargs
     public static <T, E> Order desc( String alias, Criteria<T> master, Property<E, ?>... properties ) {
-        Criteria<E> criteria = master.search( alias );
+        Criteria<E> criteria = master.searchForeign( alias );
         return new Order<>( criteria, false, CriteriaUtil.transform( ArrayUtil.toList( properties ), criteria ) );
     }
 
@@ -300,7 +300,7 @@ public class Order<T> implements Segment {
      * @return 排序对象
      */
     public static <T> Order desc( String alias, Criteria<T> master, String... properties ) {
-        return desc( master.search( alias ), properties );
+        return desc( master.searchForeign( alias ), properties );
     }
 
     /**
@@ -311,7 +311,7 @@ public class Order<T> implements Segment {
      * @return 排序对象
      */
     public static <T> Order desc( String alias, Criteria<T> master, List<String> properties ) {
-        return desc( master.search( alias ), properties );
+        return desc( master.searchForeign( alias ), properties );
     }
 
     @Override
