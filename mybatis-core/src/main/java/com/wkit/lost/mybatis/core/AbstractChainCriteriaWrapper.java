@@ -16,7 +16,7 @@ import java.util.Optional;
 @SuppressWarnings( "serial" )
 @Log4j2
 public abstract class AbstractChainCriteriaWrapper<T, Context extends AbstractChainCriteriaWrapper<T, Context>>
-        extends AbstractCriteriaWrapper<T, Property<T, ?>, Context> implements Serializable {
+        extends AbstractCriteriaWrapper<T, Property<T, ?>, Context> {
 
     /**
      * 实体属性-数据库字段映射缓存

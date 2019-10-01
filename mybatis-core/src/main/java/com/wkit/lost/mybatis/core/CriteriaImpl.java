@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author DT
  */
 @Accessors( chain = true )
-public class CriteriaImpl<T> extends AbstractCriteria<T> {
+public class CriteriaImpl<T> extends AbstractModifyCriteria<T> {
 
     private static final long serialVersionUID = 505287408705513144L;
 
@@ -26,7 +26,7 @@ public class CriteriaImpl<T> extends AbstractCriteria<T> {
         this.entity = entity;
         this.init();
         this.initMappingCache( this.entity.getName(), true );
-        this.conditionManager = new ConditionManager<>( this );
+        this.conditionManager = new ConditionManager<T>( this );
     }
 
     /**

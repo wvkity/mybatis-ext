@@ -5,6 +5,7 @@ import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.invoke.SerializedLambda;
 import com.wkit.lost.mybatis.lambda.Property;
+import org.apache.ibatis.reflection.property.PropertyNamer;
 
 import java.lang.ref.WeakReference;
 import java.util.Map;
@@ -58,12 +59,7 @@ public final class PropertyMappingForLambda {
         if ( StringUtil.isBlank( methodName ) ) {
             return null;
         }
-        if ( methodName.startsWith( "get" ) ) {
-            return StringUtil.lowerCaseForFirstLetter( methodName.substring( 3 ) );
-        } else if ( methodName.startsWith( "is" ) ) {
-            return StringUtil.lowerCaseForFirstLetter( methodName.substring( 2 ) );
-        }
-        return StringUtil.lowerCaseForFirstLetter( methodName );
+        return PropertyNamer.methodToProperty( methodName );
     }
 
     /**

@@ -148,14 +148,14 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
      * @param <E> 泛型类型
      * @return 条件对象
      */
-    <E> AbstractCriteria<E> getMaster();
+    <E> AbstractQueryCriteria<E> getMaster();
 
     /**
      * 获取顶级主条件对象
      * @param <E> 泛型类型
      * @return 条件对象
      */
-    <E> AbstractCriteria<E> getRootMaster();
+    <E> AbstractQueryCriteria<E> getRootMaster();
 
     /**
      * 搜索{@link ForeignCriteria}对象
@@ -194,18 +194,6 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
      * @return 字段映射对象
      */
     Column searchColumn( String property );
-
-    /**
-     * 获取查询字段片段
-     * @return SQL字符串
-     */
-    String getQuerySegment();
-
-    /**
-     * 获取更新字段片段
-     * @return SQL字符串
-     */
-    String getUpdateSegment();
 
     /**
      * AND连接

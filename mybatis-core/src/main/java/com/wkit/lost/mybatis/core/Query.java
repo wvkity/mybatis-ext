@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.core;
 
+import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.lambda.LambdaResolver;
 
@@ -9,19 +10,22 @@ import java.util.Collection;
  * 查询列接口
  * @param <T>       泛型类型
  * @param <Context> 当前对象
- * @param <R>       Lambda对象
  * @author DT
  */
-public interface Query<T, Context, R> extends LambdaResolver<R> {
+public interface Query<T, Context> {
+
+    /**
+     * 获取查询字段片段
+     * @return SQL字符串
+     */
+    String getQuerySegment();
 
     /**
      * 添加查询列
      * @param property 属性
      * @return 当前对象
      */
-    default Context query( R property ) {
-        return query( lambdaToProperty( property ) );
-    }
+    Context query( Property<T, ?> property );
 
     /**
      * 添加查询列
@@ -36,18 +40,14 @@ public interface Query<T, Context, R> extends LambdaResolver<R> {
      * @return 当前对象
      */
     @SuppressWarnings( "unchecked" )
-    default Context query( R... properties ) {
-        return query( lambdaToProperty( properties ) );
-    }
+    Context query( Property<T, ?>... properties );
 
     /**
      * 添加多个查询列
      * @param properties 属性数组
      * @return 当前对象
      */
-    default Context query( String... properties ) {
-        return query( ArrayUtil.toList( properties ) );
-    }
+    Context query( String... properties );
 
     /**
      * 添加多个查询列
@@ -61,9 +61,7 @@ public interface Query<T, Context, R> extends LambdaResolver<R> {
      * @param property 属性
      * @return 当前对象
      */
-    default Context exclude( R property ) {
-        return exclude( lambdaToProperty( property ) );
-    }
+    Context exclude( Property<T, ?> property );
 
     /**
      * 过滤查询列
@@ -78,9 +76,7 @@ public interface Query<T, Context, R> extends LambdaResolver<R> {
      * @return 当前对象
      */
     @SuppressWarnings( "unchecked" )
-    default Context exclude( R... properties ) {
-        return exclude( lambdaToProperty( properties ) );
-    }
+    Context exclude( Property<T, ?>... properties );
 
     /**
      * 过滤查询列

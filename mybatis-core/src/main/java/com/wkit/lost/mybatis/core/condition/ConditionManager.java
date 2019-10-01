@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.condition;
 
-import com.wkit.lost.mybatis.core.AbstractCriteria;
+import com.wkit.lost.mybatis.core.AbstractQueryCriteria;
 
 /**
  * 条件管理器
@@ -14,12 +14,12 @@ public class ConditionManager<T> extends AbstractConditionManager<T> {
      * 构造方法
      * @param criteria 查询对象
      */
-    public ConditionManager( AbstractCriteria<T> criteria ) {
+    public ConditionManager( AbstractQueryCriteria<T> criteria ) {
         this.criteria = criteria;
     }
     
     @Override
-    protected AbstractConditionManager<T> instance( AbstractCriteria<T> criteria ) {
+    protected AbstractConditionManager<T> instance( AbstractQueryCriteria<T> criteria ) {
         return new ConditionManager<>( criteria );
     }
 }

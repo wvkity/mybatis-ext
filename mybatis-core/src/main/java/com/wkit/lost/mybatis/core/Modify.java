@@ -1,10 +1,10 @@
 package com.wkit.lost.mybatis.core;
 
-import com.wkit.lost.mybatis.lambda.LambdaResolver;
+import com.wkit.lost.mybatis.lambda.Property;
 
 import java.util.Map;
 
-public interface Modifier<T, Context, R> extends LambdaResolver<R> {
+public interface Modify<T, Context> {
 
     /**
      * 添加更新列
@@ -12,9 +12,7 @@ public interface Modifier<T, Context, R> extends LambdaResolver<R> {
      * @param value    值
      * @return 当前对象
      */
-    default Context modify( R property, Object value ) {
-        return modify( lambdaToProperty( property ), value );
-    }
+    Context modify( Property<T, ?> property, Object value );
 
     /**
      * 添加更新列
@@ -30,4 +28,10 @@ public interface Modifier<T, Context, R> extends LambdaResolver<R> {
      * @return 当前对象
      */
     Context modify( Map<String, Object> map );
+
+    /**
+     * 获取更新字段片段
+     * @return SQL字符串
+     */
+    String getUpdateSegment();
 }

@@ -1,45 +1,105 @@
 package com.wkit.lost.mybatis.core;
 
-import com.wkit.lost.mybatis.utils.CollectionUtil;
-import com.wkit.lost.mybatis.utils.Constants;
-import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.function.Aggregation;
 import com.wkit.lost.mybatis.core.meta.Column;
-import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.handler.EntityHandler;
-import lombok.extern.log4j.Log4j2;
+import com.wkit.lost.mybatis.lambda.Property;
+import com.wkit.lost.mybatis.utils.ArrayUtil;
+import com.wkit.lost.mybatis.utils.CollectionUtil;
+import com.wkit.lost.mybatis.utils.StringUtil;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
-/**
- * 抽象Criteria条件类
- * @param <T> 类型
- * @author DT
- */
-@Log4j2
 @SuppressWarnings( "serial" )
-public abstract class AbstractCriteria<T> extends AbstractChainCriteriaWrapper<T, AbstractCriteria<T>> {
+public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrapper<T, AbstractQueryCriteria<T>>
+        implements Query<T, AbstractQueryCriteria<T>> {
 
     /**
      * 查询字段(SQL片段)
      */
-    private String querySegment;
+    protected String querySegment;
 
     /**
-     * 联表SQL片段
+     * 查询列(属性)
      */
-    private String foreignSegment;
+    protected Set<Column> queries = Collections.synchronizedSet( new LinkedHashSet<>() );
 
     /**
-     * 更新字段(SQL片段)集合
+     * 排除列(属性)
      */
-    private Set<String> updateSegment = new LinkedHashSet<>();
+    protected Set<String> excludes = new ConcurrentSkipListSet<>();
+
+    @Override
+    public AbstractQueryCriteria<T> query( Property<T, ?> property ) {
+        return query( lambdaToProperty( property ) );
+    }
+
+    @Override
+    public AbstractQueryCriteria<T> query( String property ) {
+        if ( StringUtil.hasText( property ) ) {
+            this.queries.add( searchColumn( property ) );
+        }
+        return this;
+    }
+
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public AbstractQueryCriteria<T> query( Property<T, ?>... properties ) {
+        return query( lambdaToProperty( properties ) );
+    }
+
+    @Override
+    public AbstractQueryCriteria<T> query( String... properties ) {
+        return query( ArrayUtil.toList( properties ) );
+    }
+
+    @Override
+    public AbstractQueryCriteria<T> query( Collection<String> properties ) {
+        if ( CollectionUtil.hasElement( properties ) ) {
+            this.queries.addAll( properties.stream().filter( StringUtil::hasText ).map( this::searchColumn ).collect( Collectors.toList() ) );
+        }
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteria<T> exclude( Property<T, ?> property ) {
+        return exclude( lambdaToProperty( property ) );
+    }
+
+    @Override
+    public AbstractQueryCriteria<T> exclude( String property ) {
+        if ( StringUtil.hasText( property ) ) {
+            this.excludes.add( property );
+        }
+        return this;
+    }
+
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public AbstractQueryCriteria<T> exclude( Property<T, ?>... properties ) {
+        return exclude( lambdaToProperty( properties ) );
+    }
+
+    @Override
+    public AbstractQueryCriteria<T> exclude( String... properties ) {
+        return exclude( ArrayUtil.toList( properties ) );
+    }
+
+    @Override
+    public AbstractQueryCriteria<T> exclude( Collection<String> properties ) {
+        if ( CollectionUtil.hasElement( properties ) ) {
+            this.excludes.addAll( properties.stream().filter( StringUtil::hasText ).collect( Collectors.toList() ) );
+        }
+        return this;
+    }
 
     /**
      * 获取所有查询列
@@ -66,6 +126,11 @@ public abstract class AbstractCriteria<T> extends AbstractChainCriteriaWrapper<T
     }
 
     @Override
+    protected String getGroupSegment() {
+        return " GROUP BY " + getQuerySegment( false );
+    }
+
+    @Override
     public String getQuerySegment() {
         // 检查是否只查询聚合函数
         if ( onlyFunctionForQuery ) {
@@ -80,11 +145,6 @@ public abstract class AbstractCriteria<T> extends AbstractChainCriteriaWrapper<T
             }
         }
         return getQuerySegment( true );
-    }
-
-    @Override
-    protected String getGroupSegment() {
-        return " GROUP BY " + getQuerySegment( false );
     }
 
     private String getQuerySegment( boolean applyQuery ) {
@@ -119,59 +179,6 @@ public abstract class AbstractCriteria<T> extends AbstractChainCriteriaWrapper<T
     private String getFunctionSegment() {
         if ( !this.aggregations.isEmpty() ) {
             return aggregations.stream().map( Aggregation::toQuerySqlSegment ).collect( Collectors.joining( ", " ) );
-        }
-        return "";
-    }
-
-    /**
-     * 获取联表查询SQL片段
-     * @return SQL片段
-     */
-    public String getForeignSegment() {
-        if ( CollectionUtil.hasElement( foreignCriteriaSet ) ) {
-            return foreignCriteriaSet.stream().map( criteria -> {
-                Criteria<?> master = criteria.getMaster();
-                Foreign linked = criteria.getForeign();
-                Column masterColumn = master.searchColumn( linked.getMaster() );
-                Column assistantColumn = criteria.searchColumn( linked.getForeign() );
-                Table table = EntityHandler.getTable( criteria.getEntity() );
-                String catalog = table.getCatalog();
-                String schema = table.getSchema();
-                String subAlias = criteria.getAlias();
-                // 拼接条件
-                StringBuilder builder = new StringBuilder( 60 );
-                builder.append( linked.getJoinMode().getSqlSegment() );
-                if ( StringUtil.hasText( schema ) ) {
-                    builder.append( schema ).append( "." );
-                } else if ( StringUtil.hasText( catalog ) ) {
-                    builder.append( catalog ).append( "." );
-                }
-                builder.append( table.getName() ).append( " " ).append( subAlias );
-                builder.append( " ON " ).append( subAlias ).append( "." ).append( assistantColumn.getColumn() );
-                builder.append( " = " ).append( master.getAlias() ).append( "." ).append( masterColumn.getColumn() );
-                // 拼接其他条件
-                if ( criteria.isHasCondition() ) {
-                    builder.append( " " ).append( criteria.getSqlSegment() );
-                }
-                return builder.toString();
-            } ).collect( Collectors.joining( " \n" ) );
-        }
-        return "";
-    }
-
-    @Override
-    public String getUpdateSegment() {
-        if ( CollectionUtil.hasElement( this.modifies ) ) {
-            List<String> modifyColumns = new ArrayList<>();
-            for ( Map.Entry<String, Object> entry : modifies.entrySet() ) {
-                String property = entry.getKey();
-                Object value = entry.getValue();
-                Column column = searchColumn( property );
-                if ( column.isUpdatable() ) {
-                    modifyColumns.add( column.convertToCustomArg( defaultPlaceholder( value ), null, Operator.EQ, null ) );
-                }
-            }
-            return String.join( ", ", modifyColumns );
         }
         return "";
     }

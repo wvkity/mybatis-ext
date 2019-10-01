@@ -16,8 +16,8 @@ import java.util.function.Function;
  */
 public interface CriteriaWrapper<T, Context, R> extends Criteria<T>, InstanceClone<Context>,
         Compare<Context, R>, Null<Context, R>, Range<Context, R>, IndistinctMatching<Context, R>,
-        Between<Context, R>, Customize<Context, R>, Nested<Context>, Query<T, Context, R>,
-        Modifier<T, Context, R>, ConditionBuilder<T, AbstractConditionManager<T>, R> {
+        Between<Context, R>, Customize<Context, R>, Nested<Context>,
+        ConditionBuilder<T, AbstractConditionManager<T>, R> {
 
     /**
      * {@link NestedExpression}条件简写形式

@@ -8,12 +8,14 @@ import com.wkit.lost.mybatis.core.function.Aggregation;
 import com.wkit.lost.mybatis.core.function.Aggregations;
 import com.wkit.lost.mybatis.core.function.Comparator;
 import com.wkit.lost.mybatis.core.meta.Column;
+import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
+import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,8 +32,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -57,7 +57,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     /**
      * 参数别名[@Param("xxx")]
      */
-    protected static final String PARAMETER_ALIAS = "criteria";
+    protected static final String PARAMETER_ALIAS = Constants.PARAM_CRITERIA;
 
     /**
      * 占位符
@@ -75,9 +75,9 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     protected final Context context = ( Context ) this;
 
     /**
-     * 主表查询对象
+     * 主表查询条件对象
      */
-    protected AbstractCriteria<?> master;
+    protected AbstractQueryCriteria<?> master;
 
     /**
      * SQL片段
@@ -202,19 +202,9 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     protected boolean onlyFunctionForQuery = false;
 
     /**
-     * 查询列(属性)
+     * 联表SQL片段
      */
-    protected Set<Column> queries = Collections.synchronizedSet( new LinkedHashSet<>() );
-
-    /**
-     * 更新列(属性)
-     */
-    protected Map<String, Object> modifies = new ConcurrentSkipListMap<>();
-
-    /**
-     * 排除列(属性)
-     */
-    protected Set<String> excludes = new ConcurrentSkipListSet<>();
+    protected String foreignSegment;
 
     /**
      * 联表条件对象集合
@@ -242,7 +232,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
 
     @Override
     public <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, Foreign foreign, Collection<Criterion<?>> withClauses ) {
-        return new ForeignCriteria<>( entity, alias, reference, ( AbstractCriteria<?> ) this, foreign, this.parameterSequence, this.paramValueMappings, withClauses );
+        return new ForeignCriteria<>( entity, alias, reference, ( AbstractQueryCriteria<?> ) this, foreign, this.parameterSequence, this.paramValueMappings, withClauses );
     }
 
     @Override
@@ -308,7 +298,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     @Override
     public Context addForeign( ForeignCriteria<?> foreignCriteria ) {
         if ( foreignCriteria != null ) {
-            AbstractCriteria<?> root = getRootMaster();
+            AbstractQueryCriteria<?> root = getRootMaster();
             foreignCriteria.enableAlias( true );
             root.foreignCriteriaSet.add( foreignCriteria );
             root.foreignCriteriaCache.put( foreignCriteria.getAlias(), foreignCriteria );
@@ -330,6 +320,42 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
             foreignCriteriaList.forEach( this::addForeign );
         }
         return this.context;
+    }
+
+    /**
+     * 获取联表查询SQL片段
+     * @return SQL片段
+     */
+    public String getForeignSegment() {
+        if ( CollectionUtil.hasElement( foreignCriteriaSet ) ) {
+            return foreignCriteriaSet.stream().map( criteria -> {
+                Criteria<?> master = criteria.getMaster();
+                Foreign linked = criteria.getForeign();
+                Column masterColumn = master.searchColumn( linked.getMaster() );
+                Column assistantColumn = criteria.searchColumn( linked.getForeign() );
+                Table table = EntityHandler.getTable( criteria.getEntity() );
+                String catalog = table.getCatalog();
+                String schema = table.getSchema();
+                String subAlias = criteria.getAlias();
+                // 拼接条件
+                StringBuilder builder = new StringBuilder( 60 );
+                builder.append( linked.getJoinMode().getSqlSegment() );
+                if ( StringUtil.hasText( schema ) ) {
+                    builder.append( schema ).append( "." );
+                } else if ( StringUtil.hasText( catalog ) ) {
+                    builder.append( catalog ).append( "." );
+                }
+                builder.append( table.getName() ).append( " " ).append( subAlias );
+                builder.append( " ON " ).append( subAlias ).append( "." ).append( assistantColumn.getColumn() );
+                builder.append( " = " ).append( master.getAlias() ).append( "." ).append( masterColumn.getColumn() );
+                // 拼接其他条件
+                if ( criteria.isHasCondition() ) {
+                    builder.append( " " ).append( criteria.getSqlSegment() );
+                }
+                return builder.toString();
+            } ).collect( Collectors.joining( " \n" ) );
+        }
+        return "";
     }
 
     // endregion
@@ -655,65 +681,6 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
         }
         return this.context;
     }
-
-    // endregion
-
-    // region query fields
-
-    @Override
-    public Context query( String property ) {
-        if ( StringUtil.hasText( property ) ) {
-            this.queries.add( searchColumn( property ) );
-        }
-        return this.context;
-    }
-
-    @Override
-    public Context query( Collection<String> properties ) {
-        if ( CollectionUtil.hasElement( properties ) ) {
-            this.queries.addAll( properties.stream().filter( StringUtil::hasText ).map( this::searchColumn ).collect( Collectors.toList() ) );
-        }
-        return this.context;
-    }
-
-    @Override
-    public Context exclude( String property ) {
-        if ( StringUtil.hasText( property ) ) {
-            this.excludes.add( property );
-        }
-        return this.context;
-    }
-
-    @Override
-    public Context exclude( Collection<String> properties ) {
-        if ( CollectionUtil.hasElement( properties ) ) {
-            this.excludes.addAll( properties.stream().filter( StringUtil::hasText ).collect( Collectors.toList() ) );
-        }
-        return this.context;
-    }
-
-    // endregion
-
-    // region modify
-
-    @Override
-    public Context modify( String property, Object value ) {
-        if ( StringUtil.hasText( property ) ) {
-            this.modifies.put( property, value );
-        }
-        return context;
-    }
-
-    @Override
-    public Context modify( Map<String, Object> map ) {
-        if ( CollectionUtil.hasElement( map ) ) {
-            for ( Map.Entry<String, Object> entry : map.entrySet() ) {
-                modify( entry.getKey(), entry.getValue() );
-            }
-        }
-        return context;
-    }
-
 
     // endregion
 
@@ -1447,14 +1414,14 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public <E> AbstractCriteria<E> getMaster() {
-        return this.master != null ? ( AbstractCriteria<E> ) this.master : null;
+    public <E> AbstractQueryCriteria<E> getMaster() {
+        return this.master != null ? ( AbstractQueryCriteria<E> ) this.master : null;
     }
 
     @Override
-    public <E> AbstractCriteria<E> getRootMaster() {
-        AbstractCriteria<E> rootMaster;
-        AbstractCriteria<E> root = ( AbstractCriteria<E> ) this;
+    public <E> AbstractQueryCriteria<E> getRootMaster() {
+        AbstractQueryCriteria<E> rootMaster;
+        AbstractQueryCriteria<E> root = ( AbstractQueryCriteria<E> ) this;
         while ( ( rootMaster = root.getMaster() ) != null ) {
             root = rootMaster;
         }

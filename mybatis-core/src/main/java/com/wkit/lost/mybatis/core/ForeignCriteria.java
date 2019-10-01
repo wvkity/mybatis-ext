@@ -1,12 +1,12 @@
 package com.wkit.lost.mybatis.core;
 
-import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.core.condition.ConditionManager;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
 import com.wkit.lost.mybatis.factory.InstanceCopierFactory;
 import com.wkit.lost.mybatis.handler.EntityHandler;
+import com.wkit.lost.mybatis.utils.CollectionUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author DT
  */
 @Accessors( chain = true )
-public class ForeignCriteria<T> extends AbstractCriteria<T> {
+public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
 
     private static final long serialVersionUID = 6758914691359345877L;
 
@@ -62,7 +62,7 @@ public class ForeignCriteria<T> extends AbstractCriteria<T> {
      * @param parameterSequence      参数序列
      * @param parameterValueMappings 参数值映射
      */
-    public <E> ForeignCriteria( Class<T> entity, String alias, AbstractCriteria<E> master, Foreign foreign, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings ) {
+    public <E> ForeignCriteria( Class<T> entity, String alias, AbstractQueryCriteria<E> master, Foreign foreign, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings ) {
         this( entity, alias, null, master, foreign, parameterSequence, parameterValueMappings, null );
     }
 
@@ -76,7 +76,7 @@ public class ForeignCriteria<T> extends AbstractCriteria<T> {
      * @param parameterSequence      参数序列
      * @param parameterValueMappings 参数值映射
      */
-    public <E> ForeignCriteria( Class<T> entity, String alias, String reference, AbstractCriteria<E> master, Foreign foreign, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings ) {
+    public <E> ForeignCriteria( Class<T> entity, String alias, String reference, AbstractQueryCriteria<E> master, Foreign foreign, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings ) {
         this( entity, alias, reference, master, foreign, parameterSequence, parameterValueMappings, null );
     }
 
@@ -90,7 +90,7 @@ public class ForeignCriteria<T> extends AbstractCriteria<T> {
      * @param parameterValueMappings 参数值映射
      * @param withClauses            条件
      */
-    public <E> ForeignCriteria( Class<T> entity, String alias, AbstractCriteria<E> master, Foreign foreign, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings, Collection<Criterion<?>> withClauses ) {
+    public <E> ForeignCriteria( Class<T> entity, String alias, AbstractQueryCriteria<E> master, Foreign foreign, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings, Collection<Criterion<?>> withClauses ) {
         this( entity, alias, null, master, foreign, parameterSequence, parameterValueMappings, withClauses );
     }
 
@@ -105,7 +105,7 @@ public class ForeignCriteria<T> extends AbstractCriteria<T> {
      * @param parameterValueMappings 参数值映射
      * @param withClauses            条件
      */
-    public <E> ForeignCriteria( Class<T> entity, String alias, String reference, AbstractCriteria<E> master, Foreign foreign, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings, Collection<Criterion<?>> withClauses ) {
+    public <E> ForeignCriteria( Class<T> entity, String alias, String reference, AbstractQueryCriteria<E> master, Foreign foreign, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings, Collection<Criterion<?>> withClauses ) {
         this.entity = entity;
         this.alias = alias;
         this.reference = reference;
@@ -154,7 +154,7 @@ public class ForeignCriteria<T> extends AbstractCriteria<T> {
     }
 
     @Override
-    protected AbstractCriteria<T> instance( AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
+    protected ForeignCriteria<T> instance( AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
         return new ForeignCriteria<>( entity, parameterSequence, parameterValueMappings, new SegmentManager() );
     }
 
@@ -182,7 +182,7 @@ public class ForeignCriteria<T> extends AbstractCriteria<T> {
      * @param master 主查询对象
      * @return 当前对象
      */
-    public ForeignCriteria<T> setMaster( AbstractCriteria<?> master ) {
+    public ForeignCriteria<T> setMaster( AbstractQueryCriteria<?> master ) {
         this.master = master;
         return this;
     }

@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.condition;
 
-import com.wkit.lost.mybatis.core.AbstractCriteria;
+import com.wkit.lost.mybatis.core.AbstractQueryCriteria;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 
 import java.util.List;
@@ -13,11 +13,11 @@ import java.util.List;
 public interface Condition<T> {
     
     /**
-     * 设置查询对象
-     * @param criteria 查询对象
+     * 设置查询条件对象
+     * @param criteria 查询条件对象
      * @return 当前对象
      */
-    Condition<T> setCriteria( AbstractCriteria<T> criteria );
+    Condition<T> setCriteria( AbstractQueryCriteria<T> criteria );
     
     /**
      * 检查是否存在条件
