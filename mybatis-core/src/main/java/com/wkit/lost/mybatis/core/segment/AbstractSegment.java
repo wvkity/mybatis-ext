@@ -3,9 +3,9 @@ package com.wkit.lost.mybatis.core.segment;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 抽象SQL片段类
@@ -18,7 +18,7 @@ public abstract class AbstractSegment implements Segment {
      * SQL片段集合
      */
     @Getter
-    protected List<Segment> segments = new ArrayList<>();
+    protected List<Segment> segments = new CopyOnWriteArrayList<>();
 
     /**
      * 添加SQL片段

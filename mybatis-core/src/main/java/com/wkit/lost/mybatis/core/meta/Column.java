@@ -33,7 +33,7 @@ import java.util.Set;
 @Getter
 @Setter( AccessLevel.PACKAGE )
 @AllArgsConstructor
-public final class Column {
+public class Column {
 
     /**
      * 实体类

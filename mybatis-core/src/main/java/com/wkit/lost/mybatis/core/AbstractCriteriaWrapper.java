@@ -1,9 +1,5 @@
 package com.wkit.lost.mybatis.core;
 
-import com.wkit.lost.mybatis.utils.ArrayUtil;
-import com.wkit.lost.mybatis.utils.Ascii;
-import com.wkit.lost.mybatis.utils.CollectionUtil;
-import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.condition.AbstractConditionManager;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.condition.criterion.Restrictions;
@@ -16,6 +12,9 @@ import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.lambda.Property;
+import com.wkit.lost.mybatis.utils.ArrayUtil;
+import com.wkit.lost.mybatis.utils.CollectionUtil;
+import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -23,15 +22,16 @@ import lombok.experimental.Accessors;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -204,37 +204,37 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     /**
      * 查询列(属性)
      */
-    protected Set<Column> queries = new LinkedHashSet<>();
+    protected Set<Column> queries = Collections.synchronizedSet( new LinkedHashSet<>() );
 
     /**
      * 更新列(属性)
      */
-    protected Map<String, Object> modifies = new LinkedHashMap<>();
+    protected Map<String, Object> modifies = new ConcurrentSkipListMap<>();
 
     /**
      * 排除列(属性)
      */
-    protected Set<String> excludes = new HashSet<>();
+    protected Set<String> excludes = new ConcurrentSkipListSet<>();
 
     /**
      * 联表条件对象集合
      */
-    protected Set<ForeignCriteria<?>> foreignCriteriaSet = new LinkedHashSet<>( 8 );
+    protected Set<ForeignCriteria<?>> foreignCriteriaSet = Collections.synchronizedSet( new LinkedHashSet<>( 8 ) );
 
     /**
      * 联表条件对象缓存
      */
-    protected Map<String, ForeignCriteria<?>> foreignCriteriaCache = new LinkedHashMap<>( 8 );
+    protected Map<String, ForeignCriteria<?>> foreignCriteriaCache = new ConcurrentHashMap<>( 8 );
 
     /**
      * 聚合函数
      */
-    protected Set<Aggregation> aggregations = new LinkedHashSet<>( 8 );
+    protected Set<Aggregation> aggregations = Collections.synchronizedSet( new LinkedHashSet<>( 8 ) );
 
     /**
      * 聚合函数缓存
      */
-    protected Map<String, Aggregation> aggregationCache = new LinkedHashMap<>( 8 );
+    protected Map<String, Aggregation> aggregationCache = new ConcurrentHashMap<>( 8 );
 
     // endregion
 
@@ -707,7 +707,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     @Override
     public Context modify( Map<String, Object> map ) {
         if ( CollectionUtil.hasElement( map ) ) {
-            for( Map.Entry<String, Object> entry: map.entrySet() ) {
+            for ( Map.Entry<String, Object> entry : map.entrySet() ) {
                 modify( entry.getKey(), entry.getValue() );
             }
         }
@@ -1307,7 +1307,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     public Aggregation getFunction( String alias ) {
         return this.aggregationCache.get( alias );
     }
-// endregion
+    // endregion
 
     // endregion
 
@@ -1434,12 +1434,11 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
      */
     protected void init() {
         this.parameterSequence = new AtomicInteger( 0 );
-        this.paramValueMappings = new HashMap<>( 16 );
+        this.paramValueMappings = new ConcurrentHashMap<>( 16 );
         this.segmentManager = new SegmentManager();
         //this.conditionManager = new ConditionManager<>( this );
     }
-
-    // endregion
+// endregion
 
     // region get or set methods
     @Override
