@@ -26,7 +26,7 @@ public class CriteriaImpl<T> extends AbstractModifyCriteria<T> {
         this.entity = entity;
         this.init();
         this.initMappingCache( this.entity.getName(), true );
-        this.conditionManager = new ConditionManager<T>( this );
+        this.conditionManager = new ConditionManager<>( this );
     }
 
     /**
