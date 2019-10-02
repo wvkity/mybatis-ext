@@ -46,6 +46,12 @@ public class CaseFormatApp {
         System.out.println(pattern.matcher( "tDATA" ).matches());
         System.out.println(!pattern.matcher( "ADATA" ).matches());
         System.out.println(!pattern.matcher( "t_DATA" ).matches());
+    }
 
+    @Test
+    public void test3() {
+        System.out.println(CaseFormat.UPPER_UNDERSCORE.to( CaseFormat.LOWER_CAMEL, (CaseFormat.LOWER_CAMEL.to( CaseFormat.UPPER_UNDERSCORE, "zhangSan" ) + "_AVG")));
+        System.out.println(CaseFormat.UPPER_UNDERSCORE.to( CaseFormat.LOWER_CAMEL, (CaseFormat.LOWER_CAMEL.to( CaseFormat.UPPER_UNDERSCORE, "userName" ) + "_AVG")));
+        System.out.println(CaseFormat.UPPER_UNDERSCORE.to( CaseFormat.LOWER_CAMEL, (CaseFormat.LOWER_CAMEL.to( CaseFormat.UPPER_UNDERSCORE, "userAAName" ) + "_AVG")));
     }
 }
