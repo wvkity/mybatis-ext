@@ -9,7 +9,7 @@ import com.wkit.lost.mybatis.core.Operator;
  * @param <T> 泛型类型
  * @author DT
  */
-public class NotNullExpression<T> extends AbstractExpression<T> {
+public class NotNullExpression<T> extends AbstractNullExpression<T> {
 
     private static final long serialVersionUID = 4172306808770157321L;
 
