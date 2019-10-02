@@ -2,8 +2,10 @@ package com.wkit.lost.mybatis.starter.example.junit.service;
 
 import com.alibaba.fastjson.JSON;
 import com.wkit.lost.mybatis.core.CriteriaImpl;
+import com.wkit.lost.mybatis.core.condition.criterion.Restrictions;
 import com.wkit.lost.mybatis.core.function.Aggregations;
 import com.wkit.lost.mybatis.core.function.Avg;
+import com.wkit.lost.mybatis.core.function.FunctionType;
 import com.wkit.lost.mybatis.starter.example.beans.SysUser;
 import com.wkit.lost.mybatis.starter.example.service.SysUserService;
 import com.wkit.lost.mybatis.starter.example.vo.Score;
@@ -13,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import javax.inject.Inject;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 @Log4j2
@@ -36,17 +39,25 @@ public class FunctionApp extends RootTestRunner {
             criteria.useAlias( "t2" )
                     .query( "state", "sex" )
                     .lt( "score", 150 )
+                    .and( ctx -> ctx.notNull( SysUser::getState ).notNull( SysUser::getSex ) )
+                    //.nested( Restrictions.notNull( "state" ), Restrictions.notNull( "sex" ) )
+                    /*.nesting( Restrictions.notNull( "state" ), Restrictions.notNull( "sex" ) )
+                    .flush()*/
                     .groupAll( true )
-                    .count( "*" )
+                    /*.count( "*" )
                     .min( "score" )
                     .max( "score" )
                     .sum( "score" )
                     .avg( "avg", "score", 6 )
-                    .descFunc( "avg" )
+                    .descFunc( "avg" )*/
+                    //.functions( "score", "score", 0, FunctionType.COUNT, FunctionType.MIN, FunctionType.MAX, FunctionType.SUM, FunctionType.AVG )
+                    .functions( "score", "score" )
+                    .descFunc( "scoreAvg" )
                     .asc( "state" ).asc( Aggregations.max( criteria, "score" ) )
                     //.resultType( LinkedHashMap.class );
-                    .resultMap( "scoreResultMap" ).limit( 0, 10 );
-            List<Score> result = sysUserService.listForCustom( criteria );
+                    //.resultMap( "scoreResultMap" )
+                    .limit( 0, 10 );
+            List<Map<String, Object>> result = sysUserService.listForMap( criteria );
             /*Avg avg = Aggregations.avg( criteria, "score", 5 );
             criteria.addFunction( avg ).desc( avg );*/
             //Score score = result.get( 0 );
