@@ -186,7 +186,7 @@ public abstract class AbstractFunction implements Aggregation {
     }
 
     private boolean hasScale() {
-        return scale != null && scale > 0;
+        return scale != null && scale > -1;
     }
 
     @Override

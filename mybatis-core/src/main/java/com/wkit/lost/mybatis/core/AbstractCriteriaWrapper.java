@@ -4,9 +4,11 @@ import com.wkit.lost.mybatis.core.condition.AbstractConditionManager;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.condition.criterion.Restrictions;
 import com.wkit.lost.mybatis.core.condition.expression.NestedExpression;
+import com.wkit.lost.mybatis.core.function.AbstractFunction;
 import com.wkit.lost.mybatis.core.function.Aggregation;
 import com.wkit.lost.mybatis.core.function.Aggregations;
 import com.wkit.lost.mybatis.core.function.Comparator;
+import com.wkit.lost.mybatis.core.function.FunctionType;
 import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.core.segment.Segment;
@@ -14,6 +16,7 @@ import com.wkit.lost.mybatis.core.segment.SegmentManager;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
+import com.wkit.lost.mybatis.utils.CaseFormat;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.StringUtil;
@@ -27,6 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -1187,7 +1191,124 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
     // endregion
 
+    // region quickly create aggregate functions
+
+    @Override
+    public Context functions( String property ) {
+        return functions( property, -1 );
+    }
+
+    @Override
+    public Context functions( String property, int scale ) {
+        return functions( property, false, null, scale );
+    }
+
+    @Override
+    public Context functions( String property, boolean distinct ) {
+        return functions( property, distinct, -1 );
+    }
+
+    @Override
+    public Context functions( String property, boolean distinct, int scale ) {
+        return functions( property, distinct, null, scale );
+    }
+
+    @Override
+    public Context functions( String property, String aliasPrefix ) {
+        return functions( property, aliasPrefix, -1 );
+    }
+
+    @Override
+    public Context functions( String property, String aliasPrefix, int scale ) {
+        return functions( property, false, aliasPrefix, scale );
+    }
+
+    @Override
+    public Context functions( String property, boolean distinct, String aliasPrefix ) {
+        return functions( property, distinct, aliasPrefix, -1 );
+    }
+
+    @Override
+    public Context functions( String property, boolean distinct, String aliasPrefix, int scale ) {
+        count( getFuncAlias( aliasPrefix, FunctionType.COUNT ), property, distinct );
+        sum( getFuncAlias( aliasPrefix, FunctionType.SUM ), property, distinct, scale );
+        avg( getFuncAlias( aliasPrefix, FunctionType.AVG ), property, distinct, scale );
+        max( getFuncAlias( aliasPrefix, FunctionType.MAX ), property, distinct );
+        min( getFuncAlias( aliasPrefix, FunctionType.MIN ), property, distinct );
+        return this.context;
+    }
+
+    @Override
+    public Context functions( String property, FunctionType... functions ) {
+        return functions( property, false, null, functions );
+    }
+
+    @Override
+    public Context functions( String property, int scale, FunctionType... functions ) {
+        return functions( property, false, null, scale, functions );
+    }
+
+    @Override
+    public Context functions( String property, boolean distinct, FunctionType... functions ) {
+        return functions( property, distinct, null, -1, functions );
+    }
+
+    @Override
+    public Context functions( String property, boolean distinct, int scale, FunctionType... functions ) {
+        return functions( property, distinct, null, scale, functions );
+    }
+
+    @Override
+    public Context functions( String property, String aliasPrefix, FunctionType... functions ) {
+        return functions( property, false, aliasPrefix, -1, functions );
+    }
+
+    @Override
+    public Context functions( String property, String aliasPrefix, int scale, FunctionType... functions ) {
+        return functions( property, false, aliasPrefix, scale, functions );
+    }
+
+    @Override
+    public Context functions( String property, boolean distinct, String aliasPrefix, FunctionType... functions ) {
+        return functions( property, distinct, aliasPrefix, -1, functions );
+    }
+
+    @Override
+    public Context functions( String property, boolean distinct, String aliasPrefix, int scale, FunctionType... functions ) {
+        if ( !ArrayUtil.isEmpty( functions ) ) {
+            for ( FunctionType function : functions ) {
+                addFunction( createFunction( getFuncAlias( aliasPrefix, function ), property, scale, distinct, function ) );
+            }
+        }
+        return this.context;
+    }
+
+    private String getFuncAlias( String aliasPrefix, FunctionType function ) {
+        return StringUtil.hasText( aliasPrefix ) ?
+                ( CaseFormat.UPPER_UNDERSCORE.to( CaseFormat.LOWER_CAMEL,
+                        ( CaseFormat.LOWER_CAMEL.to( CaseFormat.UPPER_UNDERSCORE, aliasPrefix ) + "_" + function.getSqlSegment() ) ) )
+                : null;
+    }
+
+    protected AbstractFunction createFunction( String alias, String property, int scale, boolean distinct, FunctionType function ) {
+        switch ( function ) {
+            case COUNT:
+                return Aggregations.count( this, alias, property, distinct );
+            case SUM:
+                return Aggregations.sum( this, alias, property, scale, distinct );
+            case AVG:
+                return Aggregations.avg( this, alias, property, scale, distinct );
+            case MAX:
+                return Aggregations.max( this, alias, property, distinct );
+            case MIN:
+                return Aggregations.min( this, alias, property, distinct );
+        }
+        return null;
+    }
+    // endregion
+
     // region aggregate function assist methods
+
     @Override
     public Context includeFunction( boolean include ) {
         this.includeFunctionForQuery = include;

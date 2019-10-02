@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.core;
 
 import com.wkit.lost.mybatis.core.function.Aggregation;
 import com.wkit.lost.mybatis.core.function.Comparator;
+import com.wkit.lost.mybatis.core.function.FunctionType;
 
 import java.util.Collection;
 
@@ -647,6 +648,155 @@ public interface AggregationFunction<T> {
      * @return 条件对象
      */
     Criteria<T> min( String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values );
+
+    // endregion
+
+    // region quickly create aggregate functions
+
+    /**
+     * 创建多个聚合函数
+     * @param property  属性
+     * @return 条件对象
+     */
+    Criteria<T> functions( String property );
+
+    /**
+     * 创建多个聚合函数
+     * @param property  属性
+     * @param scale     保留小数位数(针对sum,avg聚合函数)
+     * @return 条件对象
+     */
+    Criteria<T> functions( String property, int scale );
+
+    /**
+     * 创建多个聚合函数
+     * @param property  属性
+     * @param distinct  是否去重
+     * @return 条件对象
+     */
+    Criteria<T> functions( String property, boolean distinct );
+
+    /**
+     * 创建多个聚合函数
+     * @param property  属性
+     * @param distinct  是否去重
+     * @param scale     保留小数位数(针对sum,avg聚合函数)
+     * @return 条件对象
+     */
+    Criteria<T> functions( String property, boolean distinct, int scale );
+
+    /**
+     * 创建多个聚合函数
+     * @param property    属性
+     * @param aliasPrefix 别名前缀
+     * @return 条件对象
+     */
+    Criteria<T> functions( String property, String aliasPrefix );
+
+    /**
+     * 创建多个聚合函数
+     * @param property    属性
+     * @param aliasPrefix 别名前缀
+     * @param scale       保留小数位数(针对sum,avg聚合函数)
+     * @return 条件对象
+     */
+    Criteria<T> functions( String property, String aliasPrefix, int scale );
+
+    /**
+     * 创建多个聚合函数
+     * @param property    属性
+     * @param distinct    是否去重
+     * @param aliasPrefix 别名前缀
+     * @return 条件对象
+     */
+    Criteria<T> functions( String property, boolean distinct, String aliasPrefix );
+
+    /**
+     * 创建多个聚合函数
+     * @param property    属性
+     * @param distinct    是否去重
+     * @param aliasPrefix 别名前缀
+     * @param scale       保留小数位数(针对sum,avg聚合函数)
+     * @return 条件对象
+     */
+    Criteria<T> functions( String property, boolean distinct, String aliasPrefix, int scale );
+
+
+    /**
+     * 创建多个聚合函数
+     * @param property  属性
+     * @param functions 函数类型
+     * @return 条件对象
+     */
+    Criteria<T> functions( String property, FunctionType... functions );
+
+    /**
+     * 创建多个聚合函数
+     * @param property  属性
+     * @param scale     保留小数位数(针对sum,avg聚合函数)
+     * @param functions 函数类型
+     * @return 条件对象
+     */
+    Criteria<T> functions( String property, int scale, FunctionType... functions );
+
+    /**
+     * 创建多个聚合函数
+     * @param property  属性
+     * @param distinct  是否去重
+     * @param functions 函数类型
+     * @return 条件对象
+     */
+    Criteria<T> functions( String property, boolean distinct, FunctionType... functions );
+
+    /**
+     * 创建多个聚合函数
+     * @param property  属性
+     * @param distinct  是否去重
+     * @param scale     保留小数位数(针对sum,avg聚合函数)
+     * @param functions 函数类型
+     * @return 条件对象
+     */
+    Criteria<T> functions( String property, boolean distinct, int scale, FunctionType... functions );
+
+    /**
+     * 创建多个聚合函数
+     * @param property    属性
+     * @param aliasPrefix 别名前缀
+     * @param functions   函数类型
+     * @return 条件对象
+     */
+    Criteria<T> functions( String property, String aliasPrefix, FunctionType... functions );
+
+    /**
+     * 创建多个聚合函数
+     * @param property    属性
+     * @param aliasPrefix 别名前缀
+     * @param scale       保留小数位数(针对sum,avg聚合函数)
+     * @param functions   函数类型
+     * @return 条件对象
+     */
+    Criteria<T> functions( String property, String aliasPrefix, int scale, FunctionType... functions );
+
+    /**
+     * 创建多个聚合函数
+     * @param property    属性
+     * @param distinct    是否去重
+     * @param aliasPrefix 别名前缀
+     * @param functions   函数类型
+     * @return 条件对象
+     */
+    Criteria<T> functions( String property, boolean distinct, String aliasPrefix, FunctionType... functions );
+
+    /**
+     * 创建多个聚合函数
+     * @param property    属性
+     * @param distinct    是否去重
+     * @param aliasPrefix 别名前缀
+     * @param scale       保留小数位数(针对sum,avg聚合函数)
+     * @param functions   函数类型
+     * @return 条件对象
+     */
+    Criteria<T> functions( String property, boolean distinct, String aliasPrefix, int scale, FunctionType... functions );
 
     // endregion
 
