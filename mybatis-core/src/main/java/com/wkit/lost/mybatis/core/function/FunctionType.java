@@ -11,51 +11,29 @@ public enum FunctionType implements Segment {
     /**
      * COUNT聚合函数
      */
-    COUNT {
-        @Override
-        public String getSqlSegment() {
-            return "COUNT";
-        }
-    },
+    COUNT,
 
     /**
      * SUM聚合函数
      */
-    SUM {
-        @Override
-        public String getSqlSegment() {
-            return "SUM";
-        }
-    },
+    SUM,
 
     /**
      * AVG聚合函数
      */
-    AVG {
-        @Override
-        public String getSqlSegment() {
-            return "AVG";
-        }
-    },
+    AVG,
 
     /**
      * MAX聚合函数
      */
-    MAX {
-        @Override
-        public String getSqlSegment() {
-            return "MAX";
-        }
-    },
+    MAX,
 
     /**
      * MIN聚合函数
      */
-    MIN {
-        @Override
-        public String getSqlSegment() {
-            return "MIN";
-        }
-    }
+    MIN;
 
+    public String getSqlSegment() {
+        return this.name();
+    }
 }
