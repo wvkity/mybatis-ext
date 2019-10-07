@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.starter.example.vo;
+package com.wkit.lost.mybatis.starter.example.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -19,9 +20,10 @@ import java.time.LocalDateTime;
 @Accessors( chain = true )
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentVo implements Serializable {
+@FieldNameConstants
+public class Student implements Serializable {
+    private static final long serialVersionUID = -5414906538791067259L;
 
-    private static final long serialVersionUID = -3021476350176452866L;
     /**
      * 学生ID(学号)
      */

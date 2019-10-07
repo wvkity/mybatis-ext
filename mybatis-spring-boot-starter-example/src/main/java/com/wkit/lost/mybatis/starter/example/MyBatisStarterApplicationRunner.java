@@ -1,7 +1,6 @@
 package com.wkit.lost.mybatis.starter.example;
 
 import com.wkit.lost.mybatis.snowflake.sequence.Level;
-import com.wkit.lost.mybatis.snowflake.sequence.Mode;
 import com.wkit.lost.mybatis.spring.boot.filling.EnableMetaObjectAutoFilling;
 import com.wkit.lost.mybatis.spring.boot.worker.EnableSnowflakeSequence;
 import org.springframework.boot.CommandLineRunner;
@@ -19,13 +18,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableAsync
 @EnableAspectJAutoProxy( proxyTargetClass = true )
-/*@ComponentScans( {
-        @ComponentScan(
-                basePackages = { "com.wkit.lost.mybatis.starter.example" },
-                excludeFilters = @ComponentScan.Filter( type = FilterType.ANNOTATION, value = { Controller.class, RestController.class } ) ),
-        @ComponentScan( { "com.wkit.lost.mybatis.starter.example.controller" } )
-} )*/
-//@ComponentScan( basePackages = { "com.wkit.lost.mybatis.starter.example" } )
 public class MyBatisStarterApplicationRunner implements CommandLineRunner {
 
     @Override
@@ -34,7 +26,6 @@ public class MyBatisStarterApplicationRunner implements CommandLineRunner {
     }
 
     public static void main( String[] args ) {
-        //new SpringApplicationBuilder( MyBatisStarterApplicationRunner.class ).web( WebApplicationType.SERVLET ).run( args );
         SpringApplication.run( MyBatisStarterApplicationRunner.class, args );
     }
 }

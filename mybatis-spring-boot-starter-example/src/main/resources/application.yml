@@ -9,7 +9,8 @@ spring:
   datasource:
     # MYSQL
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/MS_TEST?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/STUDENT_MANAGEMENT?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    #url: jdbc:mysql://localhost:3306/MS_TEST?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: root
     password: "Love888*+"
     # ORACLE
@@ -29,8 +30,8 @@ spring:
       #connection-test-query: SELECT 1
 lost:
   mybatis:
-    mapper-locations:
-      - classpath:/mybatis/mapper/*.xml
+    #mapper-locations:
+      #- classpath:/mybatis/mapper/*.xml
     configuration:
       call-setters-on-nulls: true
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
