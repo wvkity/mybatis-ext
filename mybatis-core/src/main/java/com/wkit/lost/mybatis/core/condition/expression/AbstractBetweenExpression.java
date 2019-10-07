@@ -40,7 +40,11 @@ public abstract class AbstractBetweenExpression<T> extends AbstractExpression<T>
             if ( isEnable ) {
                 buffer.append( alias ).append( "." );
             }
-            buffer.append( column.getColumn() ).append( " " );
+            if ( column == null ) {
+                buffer.append( this.property ).append( " " );
+            } else {
+                buffer.append( column.getColumn() ).append( " " );
+            }
             if ( not ) {
                 buffer.append( "NOT " );
             }

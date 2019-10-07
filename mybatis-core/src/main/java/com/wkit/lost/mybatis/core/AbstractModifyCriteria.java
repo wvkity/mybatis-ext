@@ -3,6 +3,7 @@ package com.wkit.lost.mybatis.core;
 import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
+import com.wkit.lost.mybatis.utils.ColumnUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T>
                 Object value = entry.getValue();
                 Column column = searchColumn( property );
                 if ( column.isUpdatable() ) {
-                    modifyColumns.add( column.convertToCustomArg( defaultPlaceholder( value ), null, Operator.EQ, null ) );
+                    modifyColumns.add( ColumnUtil.convertToCustomArg( column, defaultPlaceholder( value ), null, Operator.EQ, null ) );
                 }
             }
             return String.join( ", ", modifyColumns );

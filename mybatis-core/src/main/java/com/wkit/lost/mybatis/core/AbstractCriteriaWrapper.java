@@ -16,6 +16,7 @@ import com.wkit.lost.mybatis.core.segment.SegmentManager;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
+import com.wkit.lost.mybatis.utils.Ascii;
 import com.wkit.lost.mybatis.utils.CaseFormat;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.Constants;
@@ -23,6 +24,7 @@ import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +32,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -47,10 +48,11 @@ import java.util.stream.Collectors;
  * @param <Context> 当前对象
  * @author DT
  */
+@Log4j2
 @Accessors( chain = true )
 @SuppressWarnings( value = { "unchecked", "serial" } )
-public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCriteriaWrapper<T, R, Context>> extends AbstractConditionExpressionWrapper<T, R>
-        implements CriteriaWrapper<T, Context, R> {
+public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCriteriaWrapper<T, R, Context>>
+        extends AbstractConditionExpressionWrapper<T, R> implements CriteriaWrapper<T, Context, R> {
 
     // region fields
     /**
@@ -82,6 +84,12 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
      * 主表查询条件对象
      */
     protected AbstractQueryCriteria<?> master;
+
+    /**
+     * 子查询临时表名
+     */
+    @Getter
+    protected String subTempTabAlias;
 
     /**
      * SQL片段
@@ -221,6 +229,16 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     protected Map<String, ForeignCriteria<?>> foreignCriteriaCache = new ConcurrentHashMap<>( 8 );
 
     /**
+     * 子查询条件对象集合
+     */
+    protected Set<SubCriteria<?>> subCriteriaSet = Collections.synchronizedSet( new LinkedHashSet<>( 8 ) );
+
+    /**
+     * 子查询条件对象缓存
+     */
+    protected Map<String, SubCriteria<?>> subCriteriaCache = new ConcurrentHashMap<>( 8 );
+
+    /**
      * 聚合函数
      */
     protected Set<Aggregation> aggregations = Collections.synchronizedSet( new LinkedHashSet<>( 8 ) );
@@ -234,64 +252,36 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
 
     // region foreign criteria
 
+    // region foreign criteria builder
+
     @Override
-    public <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, Foreign foreign, Collection<Criterion<?>> withClauses ) {
-        return new ForeignCriteria<>( entity, alias, reference, ( AbstractQueryCriteria<?> ) this, foreign, this.parameterSequence, this.paramValueMappings, withClauses );
+    public <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, Foreign foreign,
+                                                 Collection<Criterion<?>> withClauses ) {
+        return new ForeignCriteria<>( entity, alias, reference, ( AbstractQueryCriteria<?> ) this, foreign,
+                this.parameterSequence, this.paramValueMappings, withClauses );
     }
 
     @Override
-    public <E> Context addForeign( Class<E> entity, String alias, String master, String foreign, Criterion<?>... withClauses ) {
-        return addForeign( entity, alias, null, master, foreign, withClauses );
+    public <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, Foreign foreign,
+                                                 Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
+        ForeignCriteria<E> foreignCriteria = createForeign( entity, alias, reference, foreign );
+        function.apply( foreignCriteria );
+        return foreignCriteria;
     }
 
     @Override
-    public <E> Context addForeign( Class<E> entity, String alias, String reference, String master, String foreign, Criterion<?>... withClauses ) {
-        return addForeign( entity, alias, reference, master, foreign, JoinMode.INNER, withClauses );
+    public <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, Foreign foreign,
+                                                    Collection<Criterion<?>> withClauses ) {
+        return new ForeignSubCriteria<>( subCriteria, reference, ( AbstractQueryCriteria<?> ) this, foreign,
+                this.parameterSequence, this.paramValueMappings, withClauses );
     }
 
     @Override
-    public <E> Context addForeign( Class<E> entity, String alias, String master, String foreign, JoinMode joinMode, Criterion<?>... withClauses ) {
-        return addForeign( entity, alias, null, master, foreign, joinMode, withClauses );
-    }
-
-    @Override
-    public <E> Context addForeign( Class<E> entity, String alias, String reference, String master, String foreign, JoinMode joinMode, Criterion<?>... withClauses ) {
-        return addForeign( entity, alias, reference, new Foreign( master, foreign, joinMode ), ArrayUtil.toList( withClauses ) );
-    }
-
-    @Override
-    public <E> Context addForeign( Class<E> entity, String alias, String master, String foreign, Collection<Criterion<?>> withClauses ) {
-        return addForeign( entity, alias, null, master, foreign, withClauses );
-    }
-
-    @Override
-    public <E> Context addForeign( Class<E> entity, String alias, String reference, String master, String foreign, Collection<Criterion<?>> withClauses ) {
-        return addForeign( entity, alias, reference, master, foreign, JoinMode.INNER, withClauses );
-    }
-
-    @Override
-    public <E> Context addForeign( Class<E> entity, String alias, String master, String foreign, JoinMode joinMode, Collection<Criterion<?>> withClauses ) {
-        return addForeign( entity, alias, null, master, foreign, joinMode, withClauses );
-    }
-
-    @Override
-    public <E> Context addForeign( Class<E> entity, String alias, String reference, String master, String foreign, JoinMode joinMode, Collection<Criterion<?>> withClauses ) {
-        return addForeign( entity, alias, reference, new Foreign( master, foreign, joinMode ), withClauses );
-    }
-
-    @Override
-    public <E> Context addForeign( Class<E> entity, String alias, Foreign foreign, Criterion<?>... withClauses ) {
-        return addForeign( entity, alias, null, foreign, withClauses );
-    }
-
-    @Override
-    public <E> Context addForeign( Class<E> entity, String alias, String reference, Foreign foreign, Criterion<?>... withClauses ) {
-        return addForeign( entity, alias, reference, foreign, ArrayUtil.toList( withClauses ) );
-    }
-
-    @Override
-    public <E> Context addForeign( Class<E> entity, String alias, Foreign foreign, Collection<Criterion<?>> withClauses ) {
-        return addForeign( entity, alias, null, foreign, withClauses );
+    public <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, Foreign foreign,
+                                                    Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
+        ForeignSubCriteria<E> foreignSubCriteria = createForeign( subCriteria, reference, foreign );
+        function.apply( foreignSubCriteria );
+        return foreignSubCriteria;
     }
 
     @Override
@@ -300,15 +290,35 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
+    public <E> Context addForeign( Class<E> entity, String alias, String reference, Foreign foreign,
+                                   Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
+        return addForeign( createForeign( entity, alias, reference, foreign, function ) );
+    }
+
+    @Override
+    public <E> Context addForeign( SubCriteria<E> subCriteria, String reference, Foreign foreign, Collection<Criterion<?>> withClauses ) {
+        return addForeign( createForeign( subCriteria, reference, foreign, withClauses ) );
+    }
+
+    @Override
+    public <E> Context addForeign( SubCriteria<E> subCriteria, String reference, Foreign foreign,
+                                   Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
+        return addForeign( createForeign( subCriteria, reference, foreign, function ) );
+    }
+
+    @Override
     public Context addForeign( ForeignCriteria<?> foreignCriteria ) {
         if ( foreignCriteria != null ) {
-            AbstractQueryCriteria<?> root = getRootMaster();
-            foreignCriteria.enableAlias( true );
-            root.foreignCriteriaSet.add( foreignCriteria );
-            root.foreignCriteriaCache.put( foreignCriteria.getAlias(), foreignCriteria );
-            if ( !root.isEnableAlias() ) {
-                root.enableAlias( true );
+            if ( Ascii.isNullOrEmpty( foreignCriteria.getAlias() ) ) {
+                foreignCriteria.useAlias( "" );
             }
+            foreignCriteria.enableAlias( true );
+            foreignCriteriaSet.add( foreignCriteria );
+            foreignCriteriaCache.put( foreignCriteria.getAlias(), foreignCriteria );
+            if ( Ascii.isNullOrEmpty( getAlias() ) ) {
+                this.useAlias( "" );
+            }
+            this.enableAlias( true );
         }
         return this.context;
     }
@@ -326,6 +336,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
         return this.context;
     }
 
+    // endregion
+
     /**
      * 获取联表查询SQL片段
      * @return SQL片段
@@ -336,11 +348,21 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
                 Criteria<?> master = criteria.getMaster();
                 Foreign linked = criteria.getForeign();
                 Column masterColumn = master.searchColumn( linked.getMaster() );
-                Column assistantColumn = criteria.searchColumn( linked.getForeign() );
+                // 区分子查询联表条件对象
+                String assistantColumn;
+                if ( criteria instanceof ForeignSubCriteria ) {
+                    assistantColumn = linked.getForeign();
+                    Column column = ( ( ForeignSubCriteria<?> ) criteria ).getSubCriteria().searchColumn( assistantColumn );
+                    if ( column != null ) {
+                        assistantColumn = column.getColumn();
+                    }
+                } else {
+                    assistantColumn = criteria.searchColumn( linked.getForeign() ).getColumn();
+                }
                 Table table = EntityHandler.getTable( criteria.getEntity() );
-                String catalog = table.getCatalog();
-                String schema = table.getSchema();
-                String subAlias = criteria.getAlias();
+                String catalog = Optional.ofNullable( table ).map( Table::getCatalog ).orElse( null );
+                String schema = Optional.ofNullable( table ).map( Table::getSchema ).orElse( null );
+                String foreignAlias = criteria.getAlias();
                 // 拼接条件
                 StringBuilder builder = new StringBuilder( 60 );
                 builder.append( linked.getJoinMode().getSqlSegment() );
@@ -349,8 +371,14 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
                 } else if ( StringUtil.hasText( catalog ) ) {
                     builder.append( catalog ).append( "." );
                 }
-                builder.append( table.getName() ).append( " " ).append( subAlias );
-                builder.append( " ON " ).append( subAlias ).append( "." ).append( assistantColumn.getColumn() );
+                // ForeignSubCriteria对象subTempTabAlias是临时表别名也是alias
+                if ( criteria instanceof ForeignSubCriteria ) {
+                    builder.append( " " ).append( ( ( ForeignSubCriteria ) criteria ).getTableSegment() )
+                            .append( " " ).append( foreignAlias );
+                } else {
+                    builder.append( table.getName() ).append( " " ).append( foreignAlias );
+                }
+                builder.append( " ON " ).append( foreignAlias ).append( "." ).append( assistantColumn );
                 builder.append( " = " ).append( master.getAlias() ).append( "." ).append( masterColumn.getColumn() );
                 // 拼接其他条件
                 if ( criteria.isHasCondition() ) {
@@ -362,9 +390,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
         return "";
     }
 
-    // endregion
-
-    // region search foreign criteria methods
+    // region search foreign criteria
 
     @Override
     public <E> ForeignCriteria<E> searchForeign( String alias ) {
@@ -387,10 +413,12 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     @Override
     public <E> ForeignCriteria<E> searchForeign( String alias, Class<E> entity ) {
         if ( CollectionUtil.hasElement( foreignCriteriaSet ) ) {
-            if ( StringUtil.hasText( alias ) || entity != null ) {
-                if ( StringUtil.hasText( alias ) && entity != null ) {
-                    ForeignCriteria<E> criteria = searchForeign( alias );
-                    if ( criteria != null && entity.equals( criteria.getEntity() ) ) {
+            boolean hasAlias = StringUtil.hasText( alias );
+            boolean hasEntity = entity != null;
+            if ( hasAlias || hasEntity ) {
+                if ( hasAlias && hasEntity ) {
+                    ForeignCriteria<E> criteria = searchForeign( entity );
+                    if ( criteria != null && alias.equals( criteria.getAlias() ) ) {
                         return criteria;
                     }
                 } else if ( StringUtil.hasText( alias ) ) {
@@ -405,7 +433,100 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
 
     // endregion
 
+    // endregion
+
+    // region sub criteria
+
+    // region sub criteria builder
+
+    @Override
+    public <E> SubCriteria<E> createSub( Class<E> entity, String alias, String subTempTabAlias,
+                                         Collection<Criterion<?>> withClauses ) {
+        return new SubCriteria<>( entity, alias, ( AbstractQueryCriteria<?> ) this, subTempTabAlias,
+                parameterSequence, paramValueMappings, withClauses );
+    }
+
+    @Override
+    public <E> SubCriteria<E> createSub( Class<E> entity, String alias, String subTempTabAlias,
+                                         Function<SubCriteria<E>, AbstractQueryCriteria<E>> function ) {
+        SubCriteria<E> subCriteria = createSub( entity, alias, subTempTabAlias );
+        function.apply( subCriteria );
+        return subCriteria;
+    }
+
+    @Override
+    public Context addSubCriteria( SubCriteria<?> subCriteria ) {
+        if ( subCriteria != null ) {
+            this.subCriteriaSet.add( subCriteria );
+            if ( StringUtil.hasText( subCriteria.getSubTempTabAlias() ) ) {
+                this.subCriteriaCache.put( subCriteria.getSubTempTabAlias(), subCriteria );
+            }
+        }
+        return this.context;
+    }
+
+    @Override
+    public Context addSubCriteria( SubCriteria<?>... subCriteriaArray ) {
+        return addSubCriteria( ArrayUtil.toList( subCriteriaArray ) );
+    }
+
+    @Override
+    public Context addSubCriteria( Collection<SubCriteria<?>> subCriteriaList ) {
+        if ( CollectionUtil.hasElement( subCriteriaList ) ) {
+            subCriteriaList.forEach( this::addSubCriteria );
+        }
+        return this.context;
+    }
+
+    // endregion
+
+    // region sub criteria search
+
+    @Override
+    public <E> SubCriteria<E> searchSubCriteria( String subTempTabAlias ) {
+        if ( StringUtil.hasText( subTempTabAlias ) && CollectionUtil.hasElement( subCriteriaSet ) ) {
+            return ( SubCriteria<E> ) Optional.ofNullable( subCriteriaCache.get( subTempTabAlias ) ).orElse( null );
+        }
+        return null;
+    }
+
+    @Override
+    public <E> SubCriteria<E> searchSubCriteria( Class<E> entity ) {
+        if ( entity != null && CollectionUtil.hasElement( subCriteriaSet ) ) {
+            SubCriteria<?> subCriteria = subCriteriaSet.stream().filter( criteria -> entity.equals( criteria.getEntity() ) )
+                    .findFirst().orElse( null );
+            return ( SubCriteria<E> ) Optional.ofNullable( subCriteria ).orElse( null );
+        }
+        return null;
+    }
+
+    @Override
+    public <E> SubCriteria<E> searchSubCriteria( String subTempTabAlias, Class<E> entity ) {
+        if ( CollectionUtil.hasElement( subCriteriaSet ) ) {
+            boolean hasTempAlias = StringUtil.hasText( subTempTabAlias );
+            boolean hasEntity = entity != null;
+            if ( hasTempAlias || hasEntity ) {
+                if ( hasTempAlias && hasEntity ) {
+                    SubCriteria<E> criteria = searchSubCriteria( entity );
+                    if ( criteria != null && subTempTabAlias.equals( criteria.getSubTempTabAlias() ) ) {
+                        return criteria;
+                    }
+                } else if ( hasTempAlias ) {
+                    return searchSubCriteria( subTempTabAlias );
+                } else {
+                    return searchSubCriteria( entity );
+                }
+            }
+        }
+        return null;
+    }
+    // endregion
+
+    // endregion
+
     // region conditions
+
+    // region simple conditions
 
     @Override
     public Context and( Function<Context, Context> function ) {
@@ -450,8 +571,28 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
+    public Context propertyEq( String property, String otherProperty ) {
+        return add( Restrictions.eq( this, property, getMaster(), otherProperty ) );
+    }
+
+    @Override
+    public <E> Context eq( String property, Criteria<E> other, String otherProperty ) {
+        return add( Restrictions.eq( this, property, other, otherProperty ) );
+    }
+
+    @Override
     public Context orEq( String property, Object value ) {
         return add( Restrictions.eq( this, property, value, Logic.OR ) );
+    }
+
+    @Override
+    public Context orPropertyEq( String property, String otherProperty ) {
+        return add( Restrictions.eq( this, property, getMaster(), otherProperty, Logic.OR ) );
+    }
+
+    @Override
+    public <E> Context orEq( String property, Criteria<E> other, String otherProperty ) {
+        return add( Restrictions.eq( this, property, other, otherProperty, Logic.OR ) );
     }
 
     @Override
@@ -685,6 +826,111 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
         }
         return this.context;
     }
+
+    // endregion
+    // region sub query conditions
+
+    @Override
+    public Context idEq( SubCriteria<?> subCriteria ) {
+        return add( Restrictions.idEq( this, subCriteria ) );
+    }
+
+    @Override
+    public Context orIdEq( SubCriteria<?> subCriteria ) {
+        return add( Restrictions.idEq( this, subCriteria, Logic.OR ) );
+    }
+
+    @Override
+    public Context eq( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.eq( this, property, subCriteria ) );
+    }
+
+    @Override
+    public Context orEq( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.eq( this, property, subCriteria, Logic.OR ) );
+    }
+
+    @Override
+    public Context ne( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.ne( this, property, subCriteria ) );
+    }
+
+    @Override
+    public Context orNe( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.ne( this, property, subCriteria, Logic.OR ) );
+    }
+
+    @Override
+    public Context lt( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.lt( this, property, subCriteria ) );
+    }
+
+    @Override
+    public Context orLt( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.lt( this, property, subCriteria, Logic.OR ) );
+    }
+
+    @Override
+    public Context le( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.le( this, property, subCriteria ) );
+    }
+
+    @Override
+    public Context orLe( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.le( this, property, subCriteria, Logic.OR ) );
+    }
+
+    @Override
+    public Context gt( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.gt( this, property, subCriteria ) );
+    }
+
+    @Override
+    public Context orGt( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.gt( this, property, subCriteria, Logic.OR ) );
+    }
+
+    @Override
+    public Context ge( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.ge( this, property, subCriteria ) );
+    }
+
+    @Override
+    public Context orGe( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.ge( this, property, subCriteria, Logic.OR ) );
+    }
+
+    @Override
+    public Context in( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.in( this, property, subCriteria ) );
+    }
+
+    @Override
+    public Context orIn( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.in( this, property, subCriteria, Logic.OR ) );
+    }
+
+    @Override
+    public Context notIn( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.notIn( this, property, subCriteria ) );
+    }
+
+    @Override
+    public Context orNotIn( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.notIn( this, property, subCriteria, Logic.OR ) );
+    }
+
+    @Override
+    public Context exists( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.exists( this, property, subCriteria ) );
+    }
+
+    @Override
+    public Context notExists( String property, SubCriteria<?> subCriteria ) {
+        return add( Restrictions.notExists( this, property, subCriteria ) );
+    }
+
+    // endregion
 
     // endregion
 
@@ -977,7 +1223,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public Context sum( String alias, Integer scale, Comparator comparator, Logic logic, String property, Object... values ) {
+    public Context sum( String alias, Integer scale, Comparator comparator, Logic logic,
+                        String property, Object... values ) {
         return sum( alias, scale, false, comparator, logic, property, values );
     }
 
@@ -987,17 +1234,20 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public Context sum( String alias, Integer scale, boolean distinct, Comparator comparator, String property, Object... values ) {
+    public Context sum( String alias, Integer scale, boolean distinct, Comparator comparator,
+                        String property, Object... values ) {
         return sum( alias, scale, distinct, comparator, Logic.AND, property, values );
     }
 
     @Override
-    public Context sum( String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {
+    public Context sum( String alias, boolean distinct, Comparator comparator, Logic logic,
+                        String property, Object... values ) {
         return addFunction( Aggregations.sum( this, alias, distinct, comparator, logic, property, values ) );
     }
 
     @Override
-    public Context sum( String alias, Integer scale, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {
+    public Context sum( String alias, Integer scale, boolean distinct, Comparator comparator, Logic logic,
+                        String property, Object... values ) {
         return addFunction( Aggregations.sum( this, alias, scale, distinct, comparator, logic, property, values ) );
     }
     // endregion
@@ -1070,7 +1320,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public Context avg( String alias, Integer scale, Comparator comparator, Logic logic, String property, Object... values ) {
+    public Context avg( String alias, Integer scale, Comparator comparator, Logic logic,
+                        String property, Object... values ) {
         return avg( alias, scale, false, comparator, logic, property, values );
     }
 
@@ -1080,17 +1331,20 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public Context avg( String alias, Integer scale, boolean distinct, Comparator comparator, String property, Object... values ) {
+    public Context avg( String alias, Integer scale, boolean distinct, Comparator comparator,
+                        String property, Object... values ) {
         return avg( alias, scale, distinct, comparator, Logic.AND, property, values );
     }
 
     @Override
-    public Context avg( String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {
+    public Context avg( String alias, boolean distinct, Comparator comparator, Logic logic,
+                        String property, Object... values ) {
         return addFunction( Aggregations.avg( this, alias, distinct, comparator, logic, property, values ) );
     }
 
     @Override
-    public Context avg( String alias, Integer scale, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {
+    public Context avg( String alias, Integer scale, boolean distinct, Comparator comparator, Logic logic,
+                        String property, Object... values ) {
         return addFunction( Aggregations.avg( this, alias, scale, distinct, comparator, logic, property, values ) );
     }
     // endregion
@@ -1138,7 +1392,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public Context max( String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {
+    public Context max( String alias, boolean distinct, Comparator comparator, Logic logic,
+                        String property, Object... values ) {
         return addFunction( Aggregations.max( this, alias, distinct, comparator, logic, property, values ) );
     }
     // endregion
@@ -1186,7 +1441,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public Context min( String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values ) {
+    public Context min( String alias, boolean distinct, Comparator comparator, Logic logic,
+                        String property, Object... values ) {
         return addFunction( Aggregations.min( this, alias, distinct, comparator, logic, property, values ) );
     }
     // endregion
@@ -1274,7 +1530,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public Context functions( String property, boolean distinct, String aliasPrefix, int scale, FunctionType... functions ) {
+    public Context functions( String property, boolean distinct, String aliasPrefix, int scale,
+                              FunctionType... functions ) {
         if ( !ArrayUtil.isEmpty( functions ) ) {
             for ( FunctionType function : functions ) {
                 addFunction( createFunction( getFuncAlias( aliasPrefix, function ), property, scale, distinct, function ) );
@@ -1495,7 +1752,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
                     .map( value -> {
                         String paramName = PARAMETER_KEY_PREFIX + parameterSequence.incrementAndGet();
                         this.paramValueMappings.put( paramName, value );
-                        return template.replace( String.format( PARAMETER_PLACEHOLDER, 0 ), String.format( PARAMETER_VALUE_PLACEHOLDER, getParameterAlias(), paramName ) );
+                        return template.replace( String.format( PARAMETER_PLACEHOLDER, 0 ),
+                                String.format( PARAMETER_VALUE_PLACEHOLDER, getParameterAlias(), paramName ) );
                     } ).collect( Collectors.toCollection( ArrayList::new ) );
         }
         return null;
@@ -1510,7 +1768,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
             int size = values.length;
             for ( int i = 0; i < size; i++ ) {
                 String paramName = PARAMETER_KEY_PREFIX + parameterSequence.incrementAndGet();
-                template = template.replace( String.format( PARAMETER_PLACEHOLDER, i ), String.format( PARAMETER_VALUE_PLACEHOLDER, getParameterAlias(), paramName ) );
+                template = template.replace( String.format( PARAMETER_PLACEHOLDER, i ),
+                        String.format( PARAMETER_VALUE_PLACEHOLDER, getParameterAlias(), paramName ) );
                 this.paramValueMappings.put( paramName, values[ i ] );
             }
         }
@@ -1569,7 +1828,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
 
     @Override
     public Context setAlias( String alias ) {
-        if ( StringUtil.hasText( alias ) ) {
+        if ( alias != null ) {
             this.alias = alias;
         } else {
             this.alias = "";
@@ -1612,8 +1871,11 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     // region abstract methods
 
     /**
-     * 获取排序SQL片段
+     * 获取分组SQL片段
+     * <p><i>当groupAll为true时，会调用该方法</i></p>
      * @return SQL片段
+     * @see #getSqlSegment()
+     * @see SegmentManager#getSqlSegment(String)
      */
     protected abstract String getGroupSegment();
 
@@ -1624,7 +1886,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
      * @param segmentManager         SQL片段管理器
      * @return {@code this}
      */
-    protected abstract Context instance( AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings, SegmentManager segmentManager );
+    protected abstract Context instance( AtomicInteger parameterSequence, Map<String, Object>
+            parameterValueMappings, SegmentManager segmentManager );
 
     // endregion
 

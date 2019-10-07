@@ -1,8 +1,9 @@
 package com.wkit.lost.mybatis.factory;
 
-import com.wkit.lost.mybatis.utils.ClassUtil;
 import com.wkit.lost.mybatis.core.CriteriaImpl;
 import com.wkit.lost.mybatis.exception.MyBatisException;
+import com.wkit.lost.mybatis.utils.ClassUtil;
+import com.wkit.lost.mybatis.utils.StringUtil;
 
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,12 +20,12 @@ public class CriteriaCache implements Serializable {
     /**
      * 泛型类缓存
      */
-    private volatile ConcurrentMap<String, Class<?>> actualClassCache = new ConcurrentHashMap<>( 128 );
+    private volatile ConcurrentMap<Class<?>, Class<?>> actualClassCache = new ConcurrentHashMap<>( 128 );
     
     /**
      * {@link com.wkit.lost.mybatis.core.Criteria}实例缓存
      */
-    private volatile ConcurrentMap<String, CriteriaImpl<?>> criteriaCache = new ConcurrentHashMap<>( 128 );
+    private volatile ConcurrentMap<Class<?>, CriteriaImpl<?>> criteriaCache = new ConcurrentHashMap<>( 128 );
     
     /**
      * 构造方法
@@ -70,28 +71,27 @@ public class CriteriaCache implements Serializable {
      */
     @SuppressWarnings( "unchecked" )
     public <T> CriteriaImpl<T> getCriteria( final Class<T> target, final String alias ) {
-        // 类名
-        String className = target.getName();
         // 获取泛型类型
-        Class<?> actualClass = actualClassCache.get( className );
+        Class<?> actualClass = actualClassCache.get( target );
         if ( actualClass == null ) {
             // 解析泛型
             actualClass = ClassUtil.getGenericType( target, 1 );
             if ( actualClass == Object.class ) {
-                throw new MyBatisException( "Cannot get its corresponding generic type according to the specified class `" + className + "`" );
+                throw new MyBatisException( "Cannot get its corresponding generic type according to the specified class `" + target.getName() + "`" );
             }
-            actualClassCache.putIfAbsent( className, actualClass );
-            actualClass = actualClassCache.get( className );
+            actualClassCache.putIfAbsent( target, actualClass );
+            actualClass = actualClassCache.get( target );
         }
         // 获取实例
-        String actualClassName = actualClass.getName();
-        CriteriaImpl<?> instance = criteriaCache.get( actualClassName );
+        CriteriaImpl<?> instance = criteriaCache.get( actualClass );
         if ( instance == null ) {
-            criteriaCache.putIfAbsent( actualClassName, CriteriaInstanceBuilder.build( actualClass ) );
-            instance = criteriaCache.get( actualClassName );
+            criteriaCache.putIfAbsent( actualClass, CriteriaInstanceBuilder.build( actualClass ) );
+            instance = criteriaCache.get( actualClass );
         }
         CriteriaImpl<?> newInstance = instance.deepClone();
-        newInstance.setAlias( alias );
+        if ( StringUtil.hasText( alias ) ) {
+            newInstance.useAlias( alias );
+        }
         return (CriteriaImpl<T>) newInstance;
     }
 }

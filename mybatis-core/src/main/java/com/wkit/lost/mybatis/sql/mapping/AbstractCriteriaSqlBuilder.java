@@ -20,7 +20,7 @@ public abstract class AbstractCriteriaSqlBuilder extends AbstractLogicalDeletion
      */
     protected String getConditionForQuery() {
         return "${criteria.foreignSegment} \n<if test=\"criteria != null and criteria.hasCondition\">\n" +
-                "  ${criteria.sqlSegment}\n" +
+                " <where>\n${criteria.sqlSegment}\n</where>\n" +
                 "</if>\n";
     }
 
@@ -30,7 +30,7 @@ public abstract class AbstractCriteriaSqlBuilder extends AbstractLogicalDeletion
      */
     protected String getConditionForUpdateOrDelete() {
         return "<if test=\"criteria != null and criteria.hasCondition\">\n" +
-                "  ${criteria.sqlSegment}\n" +
+                " <where>\n${criteria.sqlSegment}\n</where>\n" +
                 "</if>\n";
     }
 }

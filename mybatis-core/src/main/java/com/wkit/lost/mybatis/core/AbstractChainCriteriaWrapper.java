@@ -43,6 +43,11 @@ public abstract class AbstractChainCriteriaWrapper<T, Context extends AbstractCh
         return getPropertyNameFromMethodName( PropertyMappingForLambda.resolve( lambda ).getImplMethodName() );
     }
 
+    @Override
+    public String methodToProperty( Property<?, ?> property ) {
+        return getPropertyNameFromMethodName( PropertyMappingForLambda.resolve( property ).getImplMethodName() );
+    }
+
     /**
      * 初始化表映射
      * @param entityName 类名
@@ -84,9 +89,15 @@ public abstract class AbstractChainCriteriaWrapper<T, Context extends AbstractCh
             String entityName = this.entity.getName();
             initMappings( entityName );
         }
-        return Optional.ofNullable( this.columnMappingCache.get( property ) )
+        /*return Optional.ofNullable( this.columnMappingCache.get( property ) )
                 .orElseThrow( () -> new MyBatisException( "The field mapping information for the entity class cannot be found based on the `" + property + "` attribute. " +
-                        "Check to see if the attribute exists or is decorated using the @transient annotation." ) );
+                        "Check to see if the attribute exists or is decorated using the @transient annotation." ) );*/
+        Column column = this.columnMappingCache.get( property );
+        if ( column == null ) {
+            log.warn( "The field mapping information for the entity class cannot be found based on the `" + property + "` attribute. " +
+                    "Check to see if the attribute exists or is decorated using the @transient annotation." );
+        }
+        return column;
     }
 
     /**

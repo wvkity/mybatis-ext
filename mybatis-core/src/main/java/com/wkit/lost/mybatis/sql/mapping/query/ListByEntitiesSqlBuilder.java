@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.sql.mapping.query;
 
 import com.wkit.lost.mybatis.core.Execute;
 import com.wkit.lost.mybatis.sql.mapping.AbstractSqlBuilder;
+import com.wkit.lost.mybatis.utils.ColumnUtil;
 
 import java.util.stream.Collectors;
 
@@ -15,7 +16,7 @@ public class ListByEntitiesSqlBuilder extends AbstractSqlBuilder {
     public String build() {
         String querySegment = table.getColumns()
                 .stream()
-                .map( column -> column.convertToQueryArg( this.alias, null, true ) )
+                .map( column -> ColumnUtil.convertToQueryArg( column, this.alias, null, true ) )
                 .collect( Collectors.joining( ", " ) );
         String condition = "<where>\n" +
                 " <trim prefixOverrides=\"OR \">\n" +

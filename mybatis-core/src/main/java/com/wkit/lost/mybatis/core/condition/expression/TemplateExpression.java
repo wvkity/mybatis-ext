@@ -12,6 +12,7 @@ import lombok.experimental.Accessors;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -145,9 +146,10 @@ public class TemplateExpression<T> extends AbstractExpression<T> {
         if ( StringUtil.hasText( template ) ) {
             StringBuffer buffer = new StringBuffer( 100 );
             Column column = getColumn();
+            String realColumnName = Optional.ofNullable( column ).map( Column::getColumn ).orElse( this.property );
             String alias = criteria.getAlias();
             boolean isEnable = criteria.isEnableAlias();
-            String columnArg = isEnable ? ( alias + "." + column.getColumn() ) : column.getColumn();
+            String columnArg = isEnable ? ( alias + "." + realColumnName ) : realColumnName;
             String valueArg;
             if ( CollectionUtil.hasElement( this.values ) ) {
                 valueArg = values.stream()

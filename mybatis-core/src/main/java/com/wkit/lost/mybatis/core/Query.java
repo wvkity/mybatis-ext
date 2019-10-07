@@ -57,6 +57,67 @@ public interface Query<T, Context> {
     Context query( Collection<String> properties );
 
     /**
+     * 添加查询列
+     * @param property    属性
+     * @param columnAlias 别名
+     * @return 当前对象
+     */
+    Context query( Property<T, ?> property, String columnAlias );
+
+    /**
+     * 添加查询列
+     * @param property    属性
+     * @param columnAlias 别名
+     * @return 当前对象
+     */
+    Context query( String property, String columnAlias );
+
+    /**
+     * 添加子查询列
+     * @param subCriteria 子查询条件对象
+     * @param properties  属性
+     * @return 当前对象
+     */
+    @SuppressWarnings( "unchecked" )
+    <E> Context queryFromSub( SubCriteria<E> subCriteria, Property<E, ?>... properties );
+
+    /**
+     * 添加子查询列
+     * @param subCriteria 子查询条件对象
+     * @param columns     子查询列
+     * @return 当前对象
+     */
+    default Context queryFromSub( SubCriteria<?> subCriteria, String... columns ) {
+        return queryFromSub( subCriteria.getSubTempTabAlias(), columns );
+    }
+
+    /**
+     * 添加子查询列
+     * @param subTempTabAlias 子查询别名
+     * @param columns         子查询列
+     * @return 当前对象
+     */
+    Context queryFromSub( String subTempTabAlias, String... columns );
+
+    /**
+     * 添加子查询列
+     * @param subCriteria 子查询条件对象
+     * @param property  属性
+     * @param columnAlias 别名
+     * @return 当前对象
+     */
+    <E> Context queryFromSub( SubCriteria<E> subCriteria, Property<E, ?> property, String columnAlias );
+
+    /**
+     * 添加子查询列
+     * @param subTempTabAlias 子查询别名
+     * @param column          子查询列
+     * @param alias           别名
+     * @return 当前对象
+     */
+    Context queryFromSub( String subTempTabAlias, String column, String alias );
+
+    /**
      * 过滤查询列
      * @param property 属性
      * @return 当前对象

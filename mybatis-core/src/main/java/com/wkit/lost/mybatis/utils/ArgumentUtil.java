@@ -19,14 +19,16 @@ public abstract class ArgumentUtil {
     public static String fill( Column column, String placeholder ) {
         StringBuffer buffer = new StringBuffer( 60 );
         buffer.append( "#{" ).append( placeholder );
-        // 指定JDBC类型
-        Optional.ofNullable( column.getJdbcType() ).ifPresent( jdbcType -> buffer.append( ", jdbcType=" ).append( jdbcType.toString() ) );
-        // 指定Java类型
-        if ( column.isUseJavaType() && !column.getJavaType().isArray() ) {
-            buffer.append( ", javaType=" ).append( column.getJavaType().getCanonicalName() );
+        if ( column != null ) {
+            // 指定JDBC类型
+            Optional.ofNullable( column.getJdbcType() ).ifPresent( jdbcType -> buffer.append( ", jdbcType=" ).append( jdbcType.toString() ) );
+            // 指定Java类型
+            if ( column.isUseJavaType() && !column.getJavaType().isArray() ) {
+                buffer.append( ", javaType=" ).append( column.getJavaType().getCanonicalName() );
+            }
+            // 指定处理类型
+            Optional.ofNullable( column.getTypeHandler() ).ifPresent( typeHandler -> buffer.append( ", typeHandler=" ).append( typeHandler.getCanonicalName() ) );
         }
-        // 指定处理类型
-        Optional.ofNullable( column.getTypeHandler() ).ifPresent( typeHandler -> buffer.append( ", typeHandler=" ).append( typeHandler.getCanonicalName() ) );
         buffer.append( "}" );
         return buffer.toString();
     }

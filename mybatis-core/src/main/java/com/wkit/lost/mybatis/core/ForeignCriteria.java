@@ -4,19 +4,20 @@ import com.wkit.lost.mybatis.core.condition.ConditionManager;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
-import com.wkit.lost.mybatis.factory.InstanceCopierFactory;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
+import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Criteria联表查询条件类
@@ -36,7 +37,7 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
     private Foreign foreign;
 
     /**
-     * 否关联查询
+     * 是否主动关联查询副表字段(默认: false)
      * <p>
      * <i>当excludes和queries为空时才生效</i>
      * </p>
@@ -62,7 +63,8 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
      * @param parameterSequence      参数序列
      * @param parameterValueMappings 参数值映射
      */
-    public <E> ForeignCriteria( Class<T> entity, String alias, AbstractQueryCriteria<E> master, Foreign foreign, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings ) {
+    public <E> ForeignCriteria( Class<T> entity, String alias, AbstractQueryCriteria<E> master, Foreign foreign,
+                                AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings ) {
         this( entity, alias, null, master, foreign, parameterSequence, parameterValueMappings, null );
     }
 
@@ -76,7 +78,9 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
      * @param parameterSequence      参数序列
      * @param parameterValueMappings 参数值映射
      */
-    public <E> ForeignCriteria( Class<T> entity, String alias, String reference, AbstractQueryCriteria<E> master, Foreign foreign, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings ) {
+    public <E> ForeignCriteria( Class<T> entity, String alias, String reference, AbstractQueryCriteria<E> master,
+                                Foreign foreign, AtomicInteger parameterSequence,
+                                Map<String, Object> parameterValueMappings ) {
         this( entity, alias, reference, master, foreign, parameterSequence, parameterValueMappings, null );
     }
 
@@ -90,7 +94,9 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
      * @param parameterValueMappings 参数值映射
      * @param withClauses            条件
      */
-    public <E> ForeignCriteria( Class<T> entity, String alias, AbstractQueryCriteria<E> master, Foreign foreign, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings, Collection<Criterion<?>> withClauses ) {
+    public <E> ForeignCriteria( Class<T> entity, String alias, AbstractQueryCriteria<E> master, Foreign foreign,
+                                AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings,
+                                Collection<Criterion<?>> withClauses ) {
         this( entity, alias, null, master, foreign, parameterSequence, parameterValueMappings, withClauses );
     }
 
@@ -105,17 +111,23 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
      * @param parameterValueMappings 参数值映射
      * @param withClauses            条件
      */
-    public <E> ForeignCriteria( Class<T> entity, String alias, String reference, AbstractQueryCriteria<E> master, Foreign foreign, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings, Collection<Criterion<?>> withClauses ) {
+    public <E> ForeignCriteria( Class<T> entity, String alias, String reference, AbstractQueryCriteria<E> master,
+                                Foreign foreign, AtomicInteger parameterSequence,
+                                Map<String, Object> parameterValueMappings, Collection<Criterion<?>> withClauses ) {
         this.entity = entity;
-        this.alias = alias;
         this.reference = reference;
         this.master = master;
         this.foreign = foreign;
         this.parameterSequence = parameterSequence;
         this.paramValueMappings = parameterValueMappings;
         this.segmentManager = new SegmentManager();
-        this.initMappingCache( this.entity.getName(), true );
+        if ( this.entity != null ) {
+            this.initMappingCache( this.entity.getName(), true );
+        }
         this.conditionManager = new ConditionManager<>( this );
+        if ( StringUtil.hasText( alias ) ) {
+            this.useAlias( alias );
+        }
         if ( CollectionUtil.hasElement( withClauses ) ) {
             this.add( withClauses );
         }
@@ -128,48 +140,57 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
      * @param parameterValueMappings 参数-值映射
      * @param segmentManager         SQL片段管理器
      */
-    private ForeignCriteria( Class<T> entity, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
+    ForeignCriteria( Class<T> entity, AtomicInteger parameterSequence,
+                             Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
         this.entity = entity;
         this.parameterSequence = parameterSequence;
         this.paramValueMappings = parameterValueMappings;
         this.segmentManager = segmentManager;
-        this.initMappingCache( this.entity.getName(), true );
+        if ( entity != null ) {
+            this.initMappingCache( this.entity.getName(), true );
+        }
         this.conditionManager = new ConditionManager<>( this );
     }
 
     /**
-     * 复制用
-     * <p>请勿使用</p>
+     * 创建实例(用于复制)
      * @param entity 实体类
      * @param <T>    泛型类型
      * @return 实例
      */
-    public static <T> ForeignCriteria<T> newInstanceForClone( Class<T> entity ) {
+    static <T> ForeignCriteria<T> newInstanceForClone( Class<T> entity ) {
         return new ForeignCriteria<>( entity );
     }
 
     @Override
     public ForeignCriteria<T> deepClone() {
-        return InstanceCopierFactory.clone( this );
+        return CriteriaCopierFactory.clone( this );
     }
 
     @Override
-    protected ForeignCriteria<T> instance( AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
+    protected ForeignCriteria<T> instance( AtomicInteger parameterSequence,
+                                           Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
         return new ForeignCriteria<>( entity, parameterSequence, parameterValueMappings, new SegmentManager() );
     }
 
     @Override
-    protected Set<Column> getQueryColumns() {
-        Set<Column> realQueries;
-        if ( CollectionUtil.hasElement( queries ) ) {
+    protected Map<String, Column> getQueryColumns() {
+        Map<String, Column> realQueries;
+        if ( CollectionUtil.hasElement( propertyForQueryCache ) ) {
             // 显式指定查询列
-            realQueries = queries;
+            realQueries = propertyForQueryCache;
         } else {
             if ( relation ) {
                 // 所有列
-                realQueries = new LinkedHashSet<>( EntityHandler.getTable( entity ).getColumns() );
+                realQueries = Collections.synchronizedMap(
+                        EntityHandler.getTable( entity )
+                                .getColumns()
+                                .stream()
+                                .collect( Collectors.toMap( Column::getProperty, Function.identity(),
+                                        ( oldValue, newValue ) -> newValue, LinkedHashMap::new ) )
+                );
             } else {
-                realQueries = new HashSet<>( 0 );
+                realQueries = new LinkedHashMap<>( 0 );
             }
         }
         // 排除

@@ -2,7 +2,6 @@ package com.wkit.lost.mybatis.core;
 
 import com.wkit.lost.mybatis.core.condition.ConditionManager;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
-import com.wkit.lost.mybatis.factory.InstanceCopierFactory;
 import lombok.experimental.Accessors;
 
 import java.util.Map;
@@ -60,7 +59,7 @@ public class CriteriaImpl<T> extends AbstractModifyCriteria<T> {
 
     @Override
     public CriteriaImpl<T> deepClone() {
-        return InstanceCopierFactory.clone( this );
+        return CriteriaCopierFactory.clone( this );
     }
 
     @Override

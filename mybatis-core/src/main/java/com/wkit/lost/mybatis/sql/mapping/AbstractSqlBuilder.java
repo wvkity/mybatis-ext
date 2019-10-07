@@ -8,6 +8,7 @@ import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.sql.SqlTemplate;
 import com.wkit.lost.mybatis.utils.Assert;
+import com.wkit.lost.mybatis.utils.ColumnUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
@@ -157,7 +158,7 @@ public abstract class AbstractSqlBuilder implements SqlBuilder {
      * @param separator 分隔符
      * @param join      连接符
      * @return XML-IF标签字符串
-     * @see Column#convertToArg(Execute, String, String, String, String)
+     * @see ColumnUtil#convertToArg(Column, Execute, String, String, String, String)
      */
     protected String convertToIfTagOfNotNull( final boolean toValue, final Execute execute, final boolean isQuery, final int indent, final String argName, final Column column, final String separator, String join ) {
         boolean hasArgName = StringUtil.hasText( argName );
@@ -185,7 +186,7 @@ public abstract class AbstractSqlBuilder implements SqlBuilder {
         }
         buffer.append( indentOfSpace( indent + 1 ) );
         if ( toValue ) {
-            buffer.append( join ).append( " " ).append( column.convertToArg( execute, argName, isQuery ? this.alias : null, Operator.EQ.getSqlSegment(), separator ) ).append( "\n" );
+            buffer.append( join ).append( " " ).append( ColumnUtil.convertToArg( column, execute, argName, isQuery ? this.alias : null, Operator.EQ.getSqlSegment(), separator ) ).append( "\n" );
         } else {
             buffer.append( column.getColumn() ).append( ", \n" );
         }

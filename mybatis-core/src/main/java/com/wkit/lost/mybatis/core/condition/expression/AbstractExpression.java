@@ -1,12 +1,14 @@
 package com.wkit.lost.mybatis.core.condition.expression;
 
 import com.wkit.lost.mybatis.core.Criteria;
+import com.wkit.lost.mybatis.core.ForeignSubCriteria;
 import com.wkit.lost.mybatis.core.Logic;
 import com.wkit.lost.mybatis.core.Operator;
 import com.wkit.lost.mybatis.core.ParamValuePlaceholderConverter;
 import com.wkit.lost.mybatis.core.condition.Range;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.meta.Column;
+import com.wkit.lost.mybatis.utils.ColumnUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -79,6 +81,14 @@ public abstract class AbstractExpression<T> implements Criterion<T>, ParamValueP
         return this;
     }
 
+    /**
+     * 获取别名
+     * @return 别名
+     */
+    public String getAlias() {
+        return StringUtil.nvl( getCriteria().isEnableAlias(), getCriteria().getAlias(), "" );
+    }
+
     @Override
     public ArrayList<String> placeholders( String template, Collection<Object> values ) {
         return getCriteria().placeholders( template, values );
@@ -91,12 +101,20 @@ public abstract class AbstractExpression<T> implements Criterion<T>, ParamValueP
 
     @Override
     public Column getColumn() {
+        if ( this.criteria instanceof ForeignSubCriteria ) {
+            return ( ( ForeignSubCriteria<?> ) criteria ).getSubCriteria().searchColumn( this.property );
+        }
         return this.criteria.searchColumn( this.property );
     }
 
     @Override
     public String getSqlSegment() {
-        return getColumn().convertToCustomArg( StringUtil.nvl( defaultPlaceholder( this.value ), "" ), StringUtil.nvl( this.criteria.isEnableAlias(), this.criteria.getAlias(), "" ), this.operator, getLogic().getSqlSegment() );
+        String placeholder = StringUtil.nvl( defaultPlaceholder( this.value ), "" );
+        Column column = getColumn();
+        if ( column == null ) {
+            return ColumnUtil.convertToCustomArg( this.property, placeholder, getAlias(), this.operator, getLogic().getSqlSegment() );
+        }
+        return ColumnUtil.convertToCustomArg( getColumn(), placeholder, getAlias(), this.operator, getLogic().getSqlSegment() );
     }
 
 }

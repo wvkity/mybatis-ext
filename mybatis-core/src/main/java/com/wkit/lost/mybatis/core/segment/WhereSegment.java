@@ -1,6 +1,9 @@
 package com.wkit.lost.mybatis.core.segment;
 
-import java.util.stream.Collectors;
+import com.wkit.lost.mybatis.utils.StringUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * WHERE条件SQL片段类
@@ -13,13 +16,15 @@ public class WhereSegment extends AbstractSegment {
     @Override
     public String getSqlSegment() {
         if ( isNotEmpty() ) {
-            String whereSegment = this.segments.stream().map( Segment::getSqlSegment ).collect( Collectors.joining( " " ) ).trim();
-            if ( whereSegment.startsWith( "AND" ) || whereSegment.startsWith( "and" ) ) {
-                return " WHERE " + whereSegment.substring( 3 );
-            } else if ( whereSegment.startsWith( "OR" ) || whereSegment.startsWith( "or" ) ) {
-                return " WHERE " + whereSegment.substring( 2 );
-            } else {
-                return " WHERE " + whereSegment;
+            List<String> list = new ArrayList<>( segments.size() );
+            for ( Segment segment : segments ) {
+                String condition = segment.getSqlSegment();
+                if ( StringUtil.hasText( condition ) ) {
+                    list.add( condition );
+                }
+            }
+            if ( !list.isEmpty() ) {
+                return String.join( " ", list ).trim();
             }
         }
         return "";

@@ -3,12 +3,10 @@ package com.wkit.lost.mybatis.core;
 import com.wkit.lost.mybatis.core.condition.AbstractConditionManager;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.function.Aggregation;
-import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.executor.resultset.ReturnType;
 import com.wkit.lost.mybatis.lambda.Property;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
@@ -18,8 +16,8 @@ import java.util.function.Function;
  * @param <T> 泛型类型
  * @author DT
  */
-public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>, ForeignBuilder<T>,
-        ParamValuePlaceholderConverter, Serializable {
+public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>,
+        Search<T>, ParamValuePlaceholderConverter {
 
     /**
      * 设置自定义resultMap key
@@ -33,6 +31,13 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
      * @return 当前对象
      */
     Criteria<T> resultType( Class<?> resultType );
+
+    /**
+     * 是否开启自动映射列别名(针对查询自动映射属性名)
+     * @param enable 是否开启
+     * @return 当前对象
+     */
+    Criteria<T> autoMappingColumnAlias( boolean enable );
 
     /**
      * 获取实体类
@@ -155,20 +160,6 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
      * @return 条件对象
      */
     <E> AbstractQueryCriteria<E> getRootMaster();
-
-    /**
-     * 搜索字段映射对象
-     * @param property 属性
-     * @return 字段映射对象
-     */
-    Column searchColumn( Property<T, ?> property );
-
-    /**
-     * 根据属性搜索字段映射对象
-     * @param property 属性
-     * @return 字段映射对象
-     */
-    Column searchColumn( String property );
 
     /**
      * AND连接
@@ -423,6 +414,48 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
      * @return 当前对象
      */
     Criteria<T> addGroup( Collection<Group<?>> groups );
+
+    /**
+     * 添加联表条件对象
+     * @param foreignCriteria 联表条件对象
+     * @return 当前对象
+     */
+    Criteria<T> addForeign( ForeignCriteria<?> foreignCriteria );
+
+    /**
+     * 添加联表条件对象
+     * @param foreignCriteriaArray 联表条件对象数组
+     * @return 当前对象
+     */
+    Criteria<T> addForeign( ForeignCriteria<?>... foreignCriteriaArray );
+
+    /**
+     * 添加联表条件对象
+     * @param foreignCriteriaList 联表条件对象集合
+     * @return 当前对象
+     */
+    Criteria<T> addForeign( Collection<ForeignCriteria<?>> foreignCriteriaList );
+
+    /**
+     * 添加子查询条件对象
+     * @param subCriteria 子查询条件对象
+     * @return 当前对象
+     */
+    Criteria<T> addSubCriteria( SubCriteria<?> subCriteria );
+
+    /**
+     * 添加子查询条件对象
+     * @param subCriteriaArray 子查询条件对象数组
+     * @return 当前对象
+     */
+    Criteria<T> addSubCriteria( SubCriteria<?>... subCriteriaArray );
+
+    /**
+     * 添加子查询条件对象
+     * @param subCriteriaList 子查询条件对象集合
+     * @return 当前对象
+     */
+    Criteria<T> addSubCriteria( Collection<SubCriteria<?>> subCriteriaList );
 
     /**
      * 获取聚合函数对象

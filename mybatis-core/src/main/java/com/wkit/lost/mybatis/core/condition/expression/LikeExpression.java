@@ -1,5 +1,7 @@
 package com.wkit.lost.mybatis.core.condition.expression;
 
+import com.wkit.lost.mybatis.core.meta.Column;
+import com.wkit.lost.mybatis.utils.ColumnUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.Logic;
@@ -220,8 +222,13 @@ public class LikeExpression<T> extends AbstractExpression<T> {
     @Override
     public String getSqlSegment() {
         StringBuffer buffer = new StringBuffer( 60 );
-        buffer.append( getColumn().convertToCustomArg( StringUtil.nvl( defaultPlaceholder( matchMode.getSqlSegment( value.toString() ) ), "" ),
-                StringUtil.nvl( getCriteria().isEnableAlias(), getCriteria().getAlias(), "" ), operator, logic.getSqlSegment() ) );
+        String placeholder = StringUtil.nvl( defaultPlaceholder( matchMode.getSqlSegment( value.toString() ) ), "" );
+        Column column = getColumn();
+        if ( column == null ) {
+            buffer.append( ColumnUtil.convertToCustomArg( this.property, placeholder, getAlias(), operator, logic.getSqlSegment() ) );
+        } else {
+            buffer.append( ColumnUtil.convertToCustomArg( getColumn(), placeholder, getAlias(), operator, logic.getSqlSegment() ) );
+        }
         if ( escape != null ) {
             buffer.append( " ESCAPE " ).append( "\'" ).append( escape ).append( "\'" );
         }

@@ -1,10 +1,10 @@
 package com.wkit.lost.mybatis.core.condition.criterion;
 
-import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.Logic;
 import com.wkit.lost.mybatis.core.MatchMode;
 import com.wkit.lost.mybatis.core.Operator;
+import com.wkit.lost.mybatis.core.SubCriteria;
 import com.wkit.lost.mybatis.core.condition.expression.BetweenExpression;
 import com.wkit.lost.mybatis.core.condition.expression.IdentifierExpression;
 import com.wkit.lost.mybatis.core.condition.expression.InExpression;
@@ -15,8 +15,11 @@ import com.wkit.lost.mybatis.core.condition.expression.NotBetweenExpression;
 import com.wkit.lost.mybatis.core.condition.expression.NotInExpression;
 import com.wkit.lost.mybatis.core.condition.expression.NotNullExpression;
 import com.wkit.lost.mybatis.core.condition.expression.NullExpression;
+import com.wkit.lost.mybatis.core.condition.expression.PropertyEqualExpression;
 import com.wkit.lost.mybatis.core.condition.expression.SimpleExpression;
+import com.wkit.lost.mybatis.core.condition.expression.SubQueryExpression;
 import com.wkit.lost.mybatis.core.condition.expression.TemplateExpression;
+import com.wkit.lost.mybatis.utils.ArrayUtil;
 
 import java.util.Collection;
 
@@ -26,7 +29,10 @@ import java.util.Collection;
  */
 public final class Restrictions {
 
-    private Restrictions(){}
+    private Restrictions() {
+    }
+
+    // region simple
 
     /**
      * 主键等于
@@ -51,7 +57,7 @@ public final class Restrictions {
 
     /**
      * 主键等于
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param value    值
      * @param <T>      泛型类型
      * @return 条件对象
@@ -62,7 +68,7 @@ public final class Restrictions {
 
     /**
      * 主键等于
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param value    值
      * @param logic    逻辑操作
      * @param <T>      泛型类型
@@ -97,7 +103,7 @@ public final class Restrictions {
 
     /**
      * 等于
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param value    值
      * @param <T>      泛型类型
@@ -109,7 +115,7 @@ public final class Restrictions {
 
     /**
      * 等于
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param value    值
      * @param logic    逻辑操作
@@ -118,6 +124,58 @@ public final class Restrictions {
      */
     public static <T> SimpleExpression<T> eq( Criteria<T> criteria, String property, Object value, Logic logic ) {
         return new SimpleExpression<>( criteria, property, value, logic );
+    }
+
+    /**
+     * 等于
+     * @param property      属性
+     * @param other         其他查询条件对象
+     * @param otherProperty 其他查询条件对象属性
+     * @param <T>           泛型类型
+     * @return 条件对象
+     */
+    public static <T> PropertyEqualExpression<T> eq( String property, Criteria<?> other, String otherProperty ) {
+        return eq( property, other, otherProperty, Logic.AND );
+    }
+
+    /**
+     * 等于
+     * @param property      属性
+     * @param other         其他查询条件对象
+     * @param otherProperty 其他查询条件对象属性
+     * @param logic         逻辑操作
+     * @param <T>           泛型类型
+     * @return 条件对象
+     */
+    public static <T> PropertyEqualExpression<T> eq( String property, Criteria<?> other, String otherProperty, Logic logic ) {
+        return new PropertyEqualExpression<>( property, other, otherProperty, logic );
+    }
+
+    /**
+     * 等于
+     * @param criteria      查询条件对象
+     * @param property      属性
+     * @param other         其他查询条件对象
+     * @param otherProperty 其他查询条件对象属性
+     * @param <T>           泛型类型
+     * @return 条件对象
+     */
+    public static <T> PropertyEqualExpression<T> eq( Criteria<T> criteria, String property, Criteria<?> other, String otherProperty ) {
+        return eq( criteria, property, other, otherProperty, Logic.AND );
+    }
+
+    /**
+     * 等于
+     * @param criteria      查询条件对象
+     * @param property      属性
+     * @param other         其他查询条件对象
+     * @param otherProperty 其他查询条件对象属性
+     * @param logic         逻辑操作
+     * @param <T>           泛型类型
+     * @return 条件对象
+     */
+    public static <T> PropertyEqualExpression<T> eq( Criteria<T> criteria, String property, Criteria<?> other, String otherProperty, Logic logic ) {
+        return new PropertyEqualExpression<>( criteria, property, other, otherProperty, logic );
     }
 
     /**
@@ -145,7 +203,7 @@ public final class Restrictions {
 
     /**
      * 不等于
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param value    值
      * @param <T>      泛型类型
@@ -157,7 +215,7 @@ public final class Restrictions {
 
     /**
      * 不等于
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param value    值
      * @param logic    连接方式
@@ -241,7 +299,7 @@ public final class Restrictions {
 
     /**
      * 小于等于
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param value    值
      * @param <T>      泛型类型
@@ -253,7 +311,7 @@ public final class Restrictions {
 
     /**
      * 小于等于
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param value    值
      * @param logic    逻辑操作
@@ -289,7 +347,7 @@ public final class Restrictions {
 
     /**
      * 大于
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param value    值
      * @param <T>      泛型类型
@@ -301,7 +359,7 @@ public final class Restrictions {
 
     /**
      * 大于
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param value    值
      * @param logic    逻辑操作
@@ -337,7 +395,7 @@ public final class Restrictions {
 
     /**
      * 大于等于
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param value    值
      * @param <T>      泛型类型
@@ -349,7 +407,7 @@ public final class Restrictions {
 
     /**
      * 大于等于
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param value    值
      * @param logic    逻辑操作
@@ -383,7 +441,7 @@ public final class Restrictions {
 
     /**
      * IS NULL
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param <T>      泛型类型
      * @return 条件对象
@@ -394,7 +452,7 @@ public final class Restrictions {
 
     /**
      * IS NULL
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param logic    逻辑操作
      * @param <T>      泛型类型
@@ -427,7 +485,7 @@ public final class Restrictions {
 
     /**
      * IS NOT NULL
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param <T>      泛型类型
      * @return 条件对象
@@ -438,7 +496,7 @@ public final class Restrictions {
 
     /**
      * IS NOT NULL
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param logic    逻辑操作
      * @param <T>      泛型类型
@@ -496,7 +554,7 @@ public final class Restrictions {
 
     /**
      * IN范围
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param values   值
      * @param <T>      泛型类型
@@ -508,7 +566,7 @@ public final class Restrictions {
 
     /**
      * IN范围
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param values   值
      * @param <T>      泛型类型
@@ -520,7 +578,7 @@ public final class Restrictions {
 
     /**
      * IN范围
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param logic    逻辑操作
      * @param values   值
@@ -533,7 +591,7 @@ public final class Restrictions {
 
     /**
      * IN范围
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param logic    逻辑操作
      * @param values   值
@@ -592,7 +650,7 @@ public final class Restrictions {
 
     /**
      * NOT IN范围
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param values   值
      * @param <T>      泛型类型
@@ -604,7 +662,7 @@ public final class Restrictions {
 
     /**
      * NOT IN范围
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param values   值
      * @param <T>      泛型类型
@@ -616,7 +674,7 @@ public final class Restrictions {
 
     /**
      * NOT IN范围
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param logic    逻辑操作
      * @param values   值
@@ -629,7 +687,7 @@ public final class Restrictions {
 
     /**
      * NOT IN范围
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param logic    逻辑操作
      * @param values   值
@@ -734,7 +792,7 @@ public final class Restrictions {
 
     /**
      * LIKE条件
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param value    值
      * @return 条件对象
@@ -745,7 +803,7 @@ public final class Restrictions {
 
     /**
      * LIKE条件
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param value    值
      * @param logic    连接方式
@@ -757,7 +815,7 @@ public final class Restrictions {
 
     /**
      * LIKE条件
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param value    值
      * @param escape   转移字符
@@ -769,7 +827,7 @@ public final class Restrictions {
 
     /**
      * LIKE条件
-     * @param criteria  查询对象
+     * @param criteria  查询条件对象
      * @param property  属性
      * @param value     值
      * @param matchMode 匹配模式
@@ -781,7 +839,7 @@ public final class Restrictions {
 
     /**
      * LIKE条件
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param value    值
      * @param escape   转移字符
@@ -794,7 +852,7 @@ public final class Restrictions {
 
     /**
      * LIKE条件
-     * @param criteria  查询对象
+     * @param criteria  查询条件对象
      * @param property  属性
      * @param value     值
      * @param matchMode 匹配模式
@@ -807,7 +865,7 @@ public final class Restrictions {
 
     /**
      * LIKE条件
-     * @param criteria  查询对象
+     * @param criteria  查询条件对象
      * @param property  属性
      * @param value     值
      * @param matchMode 匹配模式
@@ -820,7 +878,7 @@ public final class Restrictions {
 
     /**
      * LIKE条件
-     * @param criteria  查询对象
+     * @param criteria  查询条件对象
      * @param property  属性
      * @param value     值
      * @param matchMode 匹配模式
@@ -859,7 +917,7 @@ public final class Restrictions {
 
     /**
      * BETWEEN条件
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param begin    开始值
      * @param end      结束值
@@ -872,7 +930,7 @@ public final class Restrictions {
 
     /**
      * BETWEEN条件
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param begin    开始值
      * @param end      结束值
@@ -911,7 +969,7 @@ public final class Restrictions {
 
     /**
      * BETWEEN条件
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param begin    开始值
      * @param end      结束值
@@ -924,7 +982,7 @@ public final class Restrictions {
 
     /**
      * BETWEEN条件
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param property 属性
      * @param begin    开始值
      * @param end      结束值
@@ -963,7 +1021,7 @@ public final class Restrictions {
 
     /**
      * 自定义模板条件
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param template 模板
      * @param property 属性
      * @param value    值
@@ -976,7 +1034,7 @@ public final class Restrictions {
 
     /**
      * 自定义模板条件
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param template 模板
      * @param property 属性
      * @param value    值
@@ -1040,7 +1098,7 @@ public final class Restrictions {
 
     /**
      * 自定义模板条件
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param template 模板
      * @param property 属性
      * @param values   值
@@ -1053,7 +1111,7 @@ public final class Restrictions {
 
     /**
      * 自定义模板条件
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param template 模板
      * @param logic    逻辑操作
      * @param property 属性
@@ -1067,7 +1125,7 @@ public final class Restrictions {
 
     /**
      * 自定义模板条件
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param template 模板
      * @param property 属性
      * @param values   值
@@ -1080,7 +1138,7 @@ public final class Restrictions {
 
     /**
      * 自定义模板条件
-     * @param criteria 查询对象
+     * @param criteria 查询条件对象
      * @param template 模板
      * @param logic    逻辑操作
      * @param property 属性
@@ -1136,7 +1194,7 @@ public final class Restrictions {
 
     /**
      * 嵌套条件
-     * @param criteria   查询对象
+     * @param criteria   查询条件对象
      * @param conditions 条件对象数组
      * @param <T>        泛型类型
      * @return 条件对象
@@ -1147,7 +1205,7 @@ public final class Restrictions {
 
     /**
      * 嵌套条件
-     * @param criteria   查询对象
+     * @param criteria   查询条件对象
      * @param conditions 条件对象集合
      * @param <T>        泛型类型
      * @return 条件对象
@@ -1158,7 +1216,7 @@ public final class Restrictions {
 
     /**
      * 嵌套条件
-     * @param criteria   查询对象
+     * @param criteria   查询条件对象
      * @param logic      逻辑操作
      * @param conditions 条件对象数组
      * @param <T>        泛型类型
@@ -1170,7 +1228,7 @@ public final class Restrictions {
 
     /**
      * 嵌套条件
-     * @param criteria   查询对象
+     * @param criteria   查询条件对象
      * @param logic      逻辑操作
      * @param conditions 条件对象集合
      * @param <T>        泛型类型
@@ -1189,4 +1247,577 @@ public final class Restrictions {
     public static <T> NativeExpression<T> nativeSql( String sql ) {
         return new NativeExpression<>( sql );
     }
+
+    // endregion
+
+    // region sub query conditions
+
+    /**
+     * 主键等于
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> idEq( SubCriteria<E> subCriteria ) {
+        return idEq( subCriteria, Logic.AND );
+    }
+
+    /**
+     * 主键等于
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> idEq( SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( subCriteria, logic );
+    }
+
+    /**
+     * 主键等于
+     * @param criteria    查询条件对象
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> idEq( Criteria<T> criteria, SubCriteria<E> subCriteria ) {
+        return idEq( criteria, subCriteria, Logic.AND );
+    }
+
+    /**
+     * 主键等于
+     * @param criteria    查询条件对象
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> idEq( Criteria<T> criteria, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( criteria, subCriteria, logic );
+    }
+
+    /**
+     * 等于
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> eq( String property, SubCriteria<E> subCriteria ) {
+        return eq( property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * 等于
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> eq( String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( property, subCriteria, logic );
+    }
+
+    /**
+     * 等于
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> eq( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+        return eq( criteria, property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * 等于
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> eq( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( criteria, property, subCriteria, logic );
+    }
+
+    /**
+     * 等于
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> ne( String property, SubCriteria<E> subCriteria ) {
+        return ne( property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * 等于
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> ne( String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( property, subCriteria, Operator.NE, logic );
+    }
+
+    /**
+     * 等于
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> ne( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+        return ne( criteria, property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * 等于
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> ne( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.NE, logic );
+    }
+
+    /**
+     * 小于
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> lt( String property, SubCriteria<E> subCriteria ) {
+        return lt( property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * 小于
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> lt( String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( property, subCriteria, Operator.LT, logic );
+    }
+
+    /**
+     * 小于
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> lt( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+        return lt( criteria, property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * 小于
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> lt( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.LT, logic );
+    }
+
+    /**
+     * 小于等于
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> le( String property, SubCriteria<E> subCriteria ) {
+        return le( property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * 小于等于
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> le( String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( property, subCriteria, Operator.LE, logic );
+    }
+
+    /**
+     * 小于等于
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> le( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+        return le( criteria, property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * 小于等于
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> le( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.LE, logic );
+    }
+
+    /**
+     * 大于
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> gt( String property, SubCriteria<E> subCriteria ) {
+        return gt( property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * 大于
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> gt( String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( property, subCriteria, Operator.GT, logic );
+    }
+
+    /**
+     * 大于
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> gt( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+        return gt( criteria, property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * 大于
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> gt( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.GT, logic );
+    }
+
+    /**
+     * 大于等于
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> ge( String property, SubCriteria<E> subCriteria ) {
+        return ge( property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * 大于等于
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> ge( String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( property, subCriteria, Operator.GE, logic );
+    }
+
+    /**
+     * 大于等于
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> ge( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+        return ge( criteria, property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * 大于等于
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> ge( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.GE, logic );
+    }
+
+    /**
+     * IN范围
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> in( String property, SubCriteria<E> subCriteria ) {
+        return in( property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * IN范围
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> in( String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( property, subCriteria, Operator.IN, logic );
+    }
+
+    /**
+     * IN范围
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> in( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+        return in( criteria, property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * IN范围
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> in( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.IN, logic );
+    }
+
+    /**
+     * NOT IN范围
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> notIn( String property, SubCriteria<E> subCriteria ) {
+        return notIn( property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * NOT IN范围
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> notIn( String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( property, subCriteria, Operator.NOT_IN, logic );
+    }
+
+    /**
+     * NOT IN范围
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> notIn( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+        return notIn( criteria, property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * NOT IN范围
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> notIn( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.NOT_IN, logic );
+    }
+
+    /**
+     * EXISTS
+     * @param criteria    查询条件对象
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> exists( Criteria<T> criteria, SubCriteria<E> subCriteria ) {
+        return exists( criteria, null, subCriteria, Logic.AND );
+    }
+
+    /**
+     * EXISTS
+     * @param criteria    查询条件对象
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> exists( Criteria<T> criteria, SubCriteria<E> subCriteria, Logic logic ) {
+        return exists( criteria, null, subCriteria, logic );
+    }
+
+    /**
+     * EXISTS
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> exists( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+        return exists( criteria, property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * EXISTS
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> exists( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.EXISTS, logic );
+    }
+
+    /**
+     * NOT EXISTS
+     * @param criteria    查询条件对象
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> notExists( Criteria<T> criteria, SubCriteria<E> subCriteria ) {
+        return notExists( criteria, null, subCriteria, Logic.AND );
+    }
+
+    /**
+     * NOT EXISTS
+     * @param criteria    查询条件对象
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> notExists( Criteria<T> criteria, SubCriteria<E> subCriteria, Logic logic ) {
+        return notExists( criteria, null, subCriteria, logic );
+    }
+
+    /**
+     * NOT EXISTS
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> notExists( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+        return notExists( criteria, property, subCriteria, Logic.AND );
+    }
+
+    /**
+     * NOT EXISTS
+     * @param criteria    查询条件对象
+     * @param property    属性
+     * @param subCriteria 子查询条件对象
+     * @param logic       逻辑操作
+     * @param <T>         泛型类型
+     * @param <E>         子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQueryExpression<T> notExists( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.NOT_EXISTS, logic );
+    }
+    // endregion
 }

@@ -8,14 +8,19 @@ public class AbstractNullExpression<T> extends AbstractExpression<T> {
     @Override
     public String getSqlSegment() {
         StringBuffer buffer = new StringBuffer();
-        Column column = this.criteria.searchColumn( property );
+        Column column = getColumn();
         String alias = criteria.getAlias();
         boolean isEnable = criteria.isEnableAlias();
         buffer.append( logic.getSqlSegment() ).append( " " );
         if ( isEnable ) {
             buffer.append( alias ).append( "." );
         }
-        buffer.append( column.getColumn() ).append( " " ).append( operator.getSqlSegment() );
+        if ( column == null ) {
+            buffer.append( this.property );
+        } else {
+            buffer.append( column.getColumn() );
+        }
+        buffer.append( " " ).append( operator.getSqlSegment() );
         return buffer.toString();
     }
 }

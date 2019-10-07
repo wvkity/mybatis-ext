@@ -4,7 +4,10 @@ import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.Logic;
 import com.wkit.lost.mybatis.core.Operator;
 import com.wkit.lost.mybatis.core.meta.Column;
+import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.handler.EntityHandler;
+
+import java.util.Optional;
 
 /**
  * 主键条件对象
@@ -58,6 +61,6 @@ public class IdentifierExpression<T> extends AbstractExpression<T> {
 
     @Override
     public Column getColumn() {
-        return EntityHandler.getTable( this.criteria.getEntity() ).getPrimaryKey();
+        return Optional.ofNullable( EntityHandler.getTable( this.criteria.getEntity() ) ).map( Table::getPrimaryKey ).orElse( null );
     }
 }

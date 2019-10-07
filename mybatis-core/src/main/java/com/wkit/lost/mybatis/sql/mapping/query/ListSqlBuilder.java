@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.sql.mapping.query;
 
+import com.wkit.lost.mybatis.utils.ColumnUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.sql.mapping.AbstractSqlBuilder;
 
@@ -15,7 +16,7 @@ public class ListSqlBuilder extends AbstractSqlBuilder {
     public String build() {
         String querySegment = table.getColumns()
                 .stream()
-                .map( column -> column.convertToQueryArg( this.alias, null, true ) )
+                .map( column -> ColumnUtil.convertToQueryArg( column, this.alias, null, true ) )
                 .collect( Collectors.joining( ", " ) );
         StringBuffer buffer = new StringBuffer( 50 );
         buffer.append( " WHERE " );

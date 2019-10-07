@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -91,7 +92,8 @@ public class RangeExpression<T> extends AbstractExpression<T> {
             if ( isEnable ) {
                 buffer.append( alias ).append( "." );
             }
-            buffer.append( column.getColumn() ).append( " " ).append( range.getSqlSegment() ).append( " " );
+            buffer.append( Optional.ofNullable( column ).map( Column::getColumn ).orElse( this.property ) )
+                    .append( " " ).append( range.getSqlSegment() ).append( " " );
             String valuePlaceholder = values.stream().filter( Objects::nonNull )
                     .map( value -> ArgumentUtil.fill( column, defaultPlaceholder( value ) ) )
                     .collect( Collectors.joining( ", ", "(", ")" ) );

@@ -65,6 +65,6 @@ public class EntityHandler {
      * @return {@link Table}(表信息)
      */
     public static Table getTable( final Class<?> entity ) {
-        return Optional.ofNullable( TABLE_CACHE.get( entity ) ).orElse( TABLE_CACHE.get( ClassUtil.getRealClass( entity ) ) );
+        return entity == null ? null : Optional.ofNullable( TABLE_CACHE.get( entity ) ).orElse( TABLE_CACHE.get( ClassUtil.getRealClass( entity ) ) );
     }
 }

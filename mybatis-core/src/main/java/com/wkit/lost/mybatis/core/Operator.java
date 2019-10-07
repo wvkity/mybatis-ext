@@ -151,6 +151,16 @@ public enum Operator implements Segment {
             return "EXISTS";
         }
     },
+
+    /**
+     * EXISTS
+     */
+    NOT_EXISTS {
+        @Override
+        public String getSqlSegment() {
+            return "NOT EXISTS";
+        }
+    },
     
     /**
      * AND
