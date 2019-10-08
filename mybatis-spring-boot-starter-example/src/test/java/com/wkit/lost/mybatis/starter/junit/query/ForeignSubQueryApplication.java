@@ -36,7 +36,7 @@ public class ForeignSubQueryApplication extends RootTestRunner {
     private SubjectService subjectService;
 
     /**
-     * 搜索科目成绩大于84分且科目课时大于等于55小时的学生信息、科目信息、成绩
+     * 搜索科目成绩大于84分、科目课时大于等于55小时、班级在S2、Y2的学生信息、科目信息、成绩
      */
     @Test
     @DisplayName( "测试子查询作为联表-1" )
@@ -50,15 +50,16 @@ public class ForeignSubQueryApplication extends RootTestRunner {
         // 关联子查询
         studentCriteria.addForeign( subjectSubCriteria, Student::getGradeId, Subject::getGradeId,
                 ctx -> ctx.setRelation( true ).ge( Subject::getHours, 55 ) );
-        // 关联分数
+        // 关联分数查询
         studentCriteria.addForeign( Result.class, "rs", null, Student::getId, Result::getStudentId,
-                ctx -> ctx.ge( Result::getScore, 84 ).query( Result::getScore, "subjectScore" ) );
+                ctx -> ctx.eq( Result::getSubjectId, subjectSubCriteria, Subject.Fields.id ).ge( Result::getScore, 84 ).query( Result::getScore ));
+        // 结果
         List<StudentVo> result = studentService.list( studentCriteria );
         log.info( "查询学生结果: {}", JSON.toJSONString( result, true ) );
     }
 
     /**
-     * 搜索科目成绩大于84分且科目课时大于等于55小时的学生信息、科目信息、成绩
+     * 搜索科目成绩大于84分、科目课时大于等于55小时、班级在S2、Y2的学生信息、科目信息、成绩
      */
     @Test
     @DisplayName( "测试子查询作为联表-2" )
@@ -77,7 +78,8 @@ public class ForeignSubQueryApplication extends RootTestRunner {
                 .queryFromSub( subjectSubCriteria, Subject::getName, Subject::getHours, Subject::getGradeId );
         // 关联分数
         studentCriteria.addForeign( Result.class, "rs", null, Student::getId, Result::getStudentId,
-                ctx -> ctx.ge( Result::getScore, 84 ).query( Result::getScore, "subjectScore" ) );
+                ctx -> ctx.eq( Result::getSubjectId, subjectSubCriteria, Subject.Fields.id )
+                        .ge( Result::getScore, 84 ).query( Result::getScore ) );
         List<StudentVo> result = studentService.list( studentCriteria );
         log.info( "查询学生结果: {}", JSON.toJSONString( result, true ) );
     }
