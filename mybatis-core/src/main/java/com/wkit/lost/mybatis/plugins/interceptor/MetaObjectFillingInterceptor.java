@@ -1,7 +1,5 @@
 package com.wkit.lost.mybatis.plugins.interceptor;
 
-import com.wkit.lost.mybatis.config.MyBatisConfigCache;
-import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.plugins.executor.MetaObjectFillingExecutor;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
