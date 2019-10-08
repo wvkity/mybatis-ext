@@ -3,6 +3,7 @@ package com.wkit.lost.mybatis.core.condition.expression;
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.Logic;
 import com.wkit.lost.mybatis.core.Operator;
+import com.wkit.lost.mybatis.core.SubCriteria;
 import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.utils.StringUtil;
@@ -104,7 +105,18 @@ public class PropertyEqualExpression<T> extends AbstractExpression<T> {
             }
             buffer.append( realColumn ).append( " " ).append( operator.getSqlSegment() ).append( " " );
             if ( other.isEnableAlias() ) {
-                buffer.append( other.getAlias() ).append( "." );
+                String alias;
+                if ( other instanceof SubCriteria ) {
+                    String tempAlias = ( ( SubCriteria<?> ) other ).getSubTempTabAlias();
+                    if ( StringUtil.isBlank( tempAlias ) ) {
+                        alias = other.getAlias();
+                    } else {
+                        alias = tempAlias;
+                    }
+                } else {
+                    alias = other.getAlias();
+                }
+                buffer.append( alias ).append( "." );
             }
             buffer.append( otherRealColumn );
             return buffer.toString();
