@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -141,7 +142,7 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
      * @param segmentManager         SQL片段管理器
      */
     ForeignCriteria( Class<T> entity, AtomicInteger parameterSequence,
-                             Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
+                     Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
         this.entity = entity;
         this.parameterSequence = parameterSequence;
         this.paramValueMappings = parameterValueMappings;
@@ -208,4 +209,20 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
         return this;
     }
 
+    /**
+     * 将当前对象添加到联表对象容器中
+     * @return 当前对象
+     */
+    public ForeignCriteria<T> appendTo() {
+        AbstractQueryCriteria<?> masterCriteria = getMaster();
+        if ( masterCriteria != null ) {
+            Set<ForeignCriteria<?>> foreignList = masterCriteria.foreignCriteriaSet;
+            if ( foreignList.isEmpty() ) {
+                masterCriteria.addForeign( this );
+            } else if ( !foreignList.contains( this ) ) {
+                masterCriteria.addForeign( this );
+            }
+        }
+        return this;
+    }
 }
