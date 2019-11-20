@@ -45,8 +45,8 @@ public class ForeignSubQueryApplication extends RootTestRunner {
         CriteriaImpl<Student> studentCriteria = studentService.getCriteria( "sd" );
         // 子查询
         SubCriteria<Subject> subjectSubCriteria = studentCriteria.createSub( Subject.class, "sj" );
-        subjectSubCriteria.addForeign( Grade.class, null, Subject::getGradeId, Grade::getId,
-                ctx -> ctx.in( Grade::getName, "S2", "Y2" ) );
+        subjectSubCriteria.createForeign( Grade.class, null, Subject::getGradeId, Grade::getId,
+                ctx -> ctx.in( Grade::getName, "S2", "Y2" ) ).appendTo();
         // 关联子查询
         studentCriteria.addForeign( subjectSubCriteria, Student::getGradeId, Subject::getGradeId,
                 ctx -> ctx.setRelation( true ).ge( Subject::getHours, 55 ) );

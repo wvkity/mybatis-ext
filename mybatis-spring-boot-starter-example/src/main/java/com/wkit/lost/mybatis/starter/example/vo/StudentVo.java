@@ -66,4 +66,9 @@ public class StudentVo implements Serializable {
      * 电子邮件
      */
     private String email;
+
+    /**
+     * 成绩
+     */
+    private Integer score;
 }
