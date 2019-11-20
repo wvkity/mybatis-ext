@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -87,7 +88,8 @@ public class SegmentManager implements Segment {
      */
     public SegmentManager orders( Collection<Order<?>> orders ) {
         if ( CollectionUtil.hasElement( orders ) ) {
-            this.orders.addAll( orders.stream().filter( Objects::nonNull ).collect( Collectors.toCollection( LinkedHashSet::new ) ) );
+            this.orders.addAll( orders.stream().filter( Objects::nonNull )
+                    .collect( Collectors.toCollection( LinkedHashSet::new ) ) );
         }
         return this;
     }
@@ -142,9 +144,13 @@ public class SegmentManager implements Segment {
         return wheres.isNotEmpty() || groups.isNotEmpty() || having.isNotEmpty() || orders.isNotEmpty();
     }
 
+    private String getWhereSqlSegment() {
+        return wheres.getSqlSegment();
+    }
+
     @Override
     public String getSqlSegment() {
-        return this.wheres.getSqlSegment() + this.groups.getSqlSegment() + this.having.getSqlSegment() + this.orders.getSqlSegment();
+        return getWhereSqlSegment() + this.groups.getSqlSegment() + this.having.getSqlSegment() + this.orders.getSqlSegment();
     }
 
     /**
@@ -154,7 +160,7 @@ public class SegmentManager implements Segment {
      */
     public String getSqlSegment( String groupReplace ) {
         return StringUtil.hasText( groupReplace ) ?
-                ( this.wheres.getSqlSegment() + groupReplace + this.having.getSqlSegment() + this.orders.getSqlSegment() )
+                ( getWhereSqlSegment() + groupReplace + this.having.getSqlSegment() + this.orders.getSqlSegment() )
                 : getSqlSegment();
     }
 }

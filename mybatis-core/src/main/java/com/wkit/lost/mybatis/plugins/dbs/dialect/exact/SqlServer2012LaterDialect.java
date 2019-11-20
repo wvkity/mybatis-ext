@@ -1,34 +1,26 @@
 package com.wkit.lost.mybatis.plugins.dbs.dialect.exact;
 
-import com.wkit.lost.mybatis.plugins.dbs.dialect.AbstractPageableDialect;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 
 import java.util.Map;
 
-/**
- * ORACLE数据库方言
- * @author DT
- */
-public class OracleDialect extends AbstractPageableDialect {
-
+public class SqlServer2012LaterDialect extends SqlServerDialect {
+    
     @Override
     public Object processPageableParameter( MappedStatement statement, Map<String, Object> parameter, BoundSql boundSql, CacheKey cacheKey, Long rowStart, Long rowEnd, Long offset ) {
-        parameter.put( OFFSET_PARAMETER, rowEnd );
-        parameter.put( LIMIT_PARAMETER, rowStart );
-        cacheKey.update( rowEnd );
+        parameter.put( OFFSET_PARAMETER, rowStart );
+        parameter.put( LIMIT_PARAMETER, offset );
         cacheKey.update( rowStart );
-        handleParameter( statement, boundSql, rowStart, rowEnd );
+        cacheKey.update( offset );
+        handleParameter( statement, boundSql, rowStart, offset );
         return parameter;
     }
 
     @Override
     public String generateCorrespondPageableSql( String sql, CacheKey cacheKey, Long rowStart, Long rowEnd, Long pageSize ) {
-        return "SELECT * FROM ( " +
-                "SELECT TAB_PAGE.*, ROWNUM ROW_ID FROM ( " +
-                sql +
-                " ) TAB_PAGE ) " +
-                "WHERE ROW_ID <= ? AND ROW_ID > ?";
+        cacheKey.update( pageSize );
+        return sql + " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY ";
     }
 }

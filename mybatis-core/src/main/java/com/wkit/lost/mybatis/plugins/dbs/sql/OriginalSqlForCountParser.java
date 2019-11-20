@@ -32,10 +32,10 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * SQL解析器
+ * 总记录SQL解析器
  * @author DT
  */
-public class OriginalSqlParser {
+public class OriginalSqlForCountParser {
 
     public static final String KEEP_ORDER_BY = "/*keep orderby*/";
     private static final Alias TABLE_ALIAS;
@@ -147,7 +147,7 @@ public class OriginalSqlParser {
     public String transformSimpleRecordSql( final String originalSql, String columnName ) {
         return "SELECT COUNT(" + columnName +
                 ") RECORD FROM (" +
-                originalSql + ") TAB_RECORD";
+                originalSql + ") TMP_TAB_RECORD";
     }
 
     /**

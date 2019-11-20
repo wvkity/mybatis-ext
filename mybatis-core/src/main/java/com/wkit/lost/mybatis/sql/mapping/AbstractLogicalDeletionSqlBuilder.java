@@ -21,7 +21,7 @@ public abstract class AbstractLogicalDeletionSqlBuilder extends AbstractSqlBuild
         }
         Set<Column> deleteFillings = table.getDeleteFillings();
         // 更新字段部分
-        StringBuffer buffer = new StringBuffer( 40 );
+        StringBuilder buffer = new StringBuilder( 40 );
         buffer.append( "<trim prefix=\"SET\" suffixOverrides=\",\">\n" );
         buffer.append( logicalDeletionColumn.getColumn() ).append( " = #{" ).append( Constants.PARAM_LOGIC_DELETED_AUTO_KEY );
         if ( logicalDeletionColumn.getJdbcType() != null ) {

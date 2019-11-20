@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.plugins.dbs.dialect;
 import com.wkit.lost.mybatis.plugins.config.Limit;
 import com.wkit.lost.mybatis.plugins.config.ThreadLocalLimit;
 import com.wkit.lost.mybatis.plugins.config.ThreadLocalPageable;
-import com.wkit.lost.mybatis.plugins.dbs.sql.OriginalSqlParser;
+import com.wkit.lost.mybatis.plugins.dbs.sql.OriginalSqlForCountParser;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.MetaObjectUtil;
 import com.wkit.lost.paging.Pageable;
@@ -31,7 +31,7 @@ public abstract class AbstractDialect implements Dialect {
     /**
      * SQL解析器
      */
-    protected OriginalSqlParser sqlParser = new OriginalSqlParser();
+    protected OriginalSqlForCountParser countSqlParser = new OriginalSqlForCountParser();
 
     @Override
     public boolean filter( MappedStatement statement, Object parameter, RowBounds rowBounds ) {
@@ -40,7 +40,7 @@ public abstract class AbstractDialect implements Dialect {
 
     @Override
     public String generateQueryRecordSql( MappedStatement statement, BoundSql boundSql, Object parameter, RowBounds rowBounds, CacheKey cacheKey ) {
-        return sqlParser.smartTransform( boundSql.getSql() );
+        return countSqlParser.smartTransform( boundSql.getSql() );
     }
 
     @SuppressWarnings( "unchecked" )
@@ -74,8 +74,8 @@ public abstract class AbstractDialect implements Dialect {
                 }
             }
         }
-        Limit limit = ThreadLocalLimit.getLimit();
-        if ( limit != null && limit.isApply() ) {
+        if ( isLimit() ) {
+            Limit limit = ThreadLocalLimit.getLimit();
             return processPageableParameter( statement, paramMap, boundSql, cacheKey, limit.getStart(), limit.getEnd(), limit.getOffset() );
         } else {
             Pageable pageable = ThreadLocalPageable.getPageable();
@@ -87,12 +87,21 @@ public abstract class AbstractDialect implements Dialect {
     public String generatePageableSql( MappedStatement statement, BoundSql boundSql, Object parameter, RowBounds rowBounds, CacheKey cacheKey ) {
         long rowStart = 0;
         long rowEnd = 0;
-        Limit limit = ThreadLocalLimit.getLimit();
-        if ( limit != null && limit.isApply() ) {
+        long pageSize = 0;
+        if ( isLimit() ) {
+            Limit limit = ThreadLocalLimit.getLimit();
             rowStart = limit.getStart();
             rowEnd = limit.getEnd();
+            pageSize = limit.getOffset();
+        } else {
+            Pageable pageable = ThreadLocalPageable.getPageable();
+            if ( pageable != null ) {
+                pageSize = pageable.getSize();
+                rowStart = pageable.offset();
+                rowEnd = rowStart + pageSize;
+            }
         }
-        return generateCorrespondPageableSql( boundSql.getSql(), cacheKey, rowStart, rowEnd );
+        return generateCorrespondPageableSql( boundSql.getSql(), cacheKey, rowStart, rowEnd, pageSize );
     }
 
     @Override
@@ -160,7 +169,7 @@ public abstract class AbstractDialect implements Dialect {
      * @param offset    偏移量
      * @return 参数
      */
-    public abstract Object processPageableParameter( MappedStatement statement, Map<String, Object> parameter, BoundSql boundSql, CacheKey cacheKey, long rowStart, long rowEnd, long offset );
+    public abstract Object processPageableParameter( MappedStatement statement, Map<String, Object> parameter, BoundSql boundSql, CacheKey cacheKey, Long rowStart, Long rowEnd, Long offset );
 
     /**
      * 生成对应数据库分页SQL语句
@@ -168,8 +177,9 @@ public abstract class AbstractDialect implements Dialect {
      * @param cacheKey 缓存Key
      * @param rowStart 分页开始位置
      * @param rowEnd   分页结束位置
+     * @param pageSize 每页显示数目
      * @return 分页SQL
      */
-    public abstract String generateCorrespondPageableSql( String sql, CacheKey cacheKey, long rowStart, long rowEnd );
+    public abstract String generateCorrespondPageableSql( String sql, CacheKey cacheKey, Long rowStart, Long rowEnd, Long pageSize );
 
 }

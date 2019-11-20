@@ -39,6 +39,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -55,6 +56,10 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
         extends AbstractConditionExpressionWrapper<T, R> implements CriteriaWrapper<T, Context, R> {
 
     // region fields
+
+    private static final String AND_OR_REGEX = "^(\\s*AND\\s+|\\s*OR\\s+)(.*)";
+    private static final Pattern AND_OR_PATTERN = Pattern.compile( AND_OR_REGEX );
+
     /**
      * 参数前置
      */
@@ -95,6 +100,11 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
      * SQL片段
      */
     protected String sqlSegment;
+
+    /**
+     * WHERE SQL片段
+     */
+    protected String whereSqlSegment;
 
     /**
      * 是否存在条件
@@ -376,7 +386,9 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
                     builder.append( " " ).append( ( ( ForeignSubCriteria ) criteria ).getTableSegment() )
                             .append( " " ).append( foreignAlias );
                 } else {
-                    builder.append( table.getName() ).append( " " ).append( foreignAlias );
+                    if ( table != null ) {
+                        builder.append( table.getName() ).append( " " ).append( foreignAlias );
+                    }
                 }
                 builder.append( " ON " ).append( foreignAlias ).append( "." ).append( assistantColumn );
                 builder.append( " = " ).append( master.getAlias() ).append( "." ).append( masterColumn.getColumn() );
@@ -1811,6 +1823,18 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     @Override
     public String getSqlSegment() {
         return this.segmentManager.getSqlSegment( isGroupAll() ? getGroupSegment() : null );
+    }
+
+    @Override
+    public String getWhereSqlSegment() {
+        if ( isHasCondition() ) {
+            String condition = getSqlSegment();
+            if ( AND_OR_PATTERN.matcher( condition ).matches() ) {
+                return " WHERE " + condition.replaceFirst( AND_OR_REGEX, "$2" );
+            }
+            return condition;
+        }
+        return "";
     }
 
     /**

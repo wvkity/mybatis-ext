@@ -20,6 +20,12 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
         Search<T>, ParamValuePlaceholderConverter {
 
     /**
+     * 获取WHERE条件SQL片段
+     * @return SQL片段
+     */
+    String getWhereSqlSegment();
+
+    /**
      * 设置自定义resultMap key
      * @param resultMap result key
      * @return 当前对象

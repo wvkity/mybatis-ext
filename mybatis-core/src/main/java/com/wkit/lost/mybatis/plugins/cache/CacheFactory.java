@@ -22,7 +22,7 @@ public abstract class CacheFactory {
      */
     @SuppressWarnings( "unchecked" )
     public static <K, V> Cache<K, V> createCache( String cacheClass, String prefix, Properties properties ) {
-        if ( StringUtil.isBlank( cacheClass ) ) {
+        if ( StringUtil.isBlank( cacheClass ) || "false".equalsIgnoreCase( cacheClass ) ) {
             try {
                 Class.forName( "com.github.benmanes.caffeine.cache.Cache" );
                 return new CaffeineCache<>( properties, prefix );
@@ -32,7 +32,7 @@ public abstract class CacheFactory {
         } else {
             Class<? extends Cache> clazz;
             try {
-                clazz = (Class<? extends Cache>) Class.forName( cacheClass );
+                clazz = ( Class<? extends Cache> ) Class.forName( cacheClass );
                 try {
                     return clazz.getDeclaredConstructor( Properties.class, String.class ).newInstance( properties, prefix );
                 } catch ( Exception e ) {

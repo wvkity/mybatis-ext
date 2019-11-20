@@ -41,11 +41,6 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
     protected String querySegment;
 
     /**
-     * 查询列(属性)
-     */
-    protected Set<Column> queries = Collections.synchronizedSet( new LinkedHashSet<>() );
-
-    /**
      * 查询属性(列)缓存
      */
     protected Map<String, Column> propertyForQueryCache = new ConcurrentSkipListMap<>();

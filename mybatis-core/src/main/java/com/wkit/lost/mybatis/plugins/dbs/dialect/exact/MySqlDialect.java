@@ -15,7 +15,7 @@ public class MySqlDialect extends AbstractPageableDialect {
 
     @Override
     public Object processPageableParameter( MappedStatement statement, Map<String, Object> parameter, BoundSql boundSql,
-                                            CacheKey cacheKey, long rowStart, long rowEnd, long offset ) {
+                                            CacheKey cacheKey, Long rowStart, Long rowEnd, Long offset ) {
         parameter.put( OFFSET_PARAMETER, rowStart );
         parameter.put( LIMIT_PARAMETER, offset );
         cacheKey.update( rowStart );
@@ -25,7 +25,7 @@ public class MySqlDialect extends AbstractPageableDialect {
     }
 
     @Override
-    public String generateCorrespondPageableSql( String sql, CacheKey cacheKey, long rowStart, long rowEnd ) {
+    public String generateCorrespondPageableSql( String sql, CacheKey cacheKey, Long rowStart, Long rowEnd, Long pageSize ) {
         return sql + " LIMIT ?, ? ";
     }
 }

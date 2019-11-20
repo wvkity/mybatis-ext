@@ -7,28 +7,23 @@ import org.apache.ibatis.mapping.MappedStatement;
 
 import java.util.Map;
 
-/**
- * ORACLE数据库方言
- * @author DT
- */
-public class OracleDialect extends AbstractPageableDialect {
-
+public class Db2Dialect extends AbstractPageableDialect {
+    
     @Override
     public Object processPageableParameter( MappedStatement statement, Map<String, Object> parameter, BoundSql boundSql, CacheKey cacheKey, Long rowStart, Long rowEnd, Long offset ) {
-        parameter.put( OFFSET_PARAMETER, rowEnd );
-        parameter.put( LIMIT_PARAMETER, rowStart );
+        parameter.put(OFFSET_PARAMETER, rowStart + 1);
+        parameter.put( LIMIT_PARAMETER, rowEnd );
+        // 处理Key
+        cacheKey.update( rowStart + 1 );
         cacheKey.update( rowEnd );
-        cacheKey.update( rowStart );
+        // 处理参数
         handleParameter( statement, boundSql, rowStart, rowEnd );
-        return parameter;
+        return null;
     }
 
     @Override
     public String generateCorrespondPageableSql( String sql, CacheKey cacheKey, Long rowStart, Long rowEnd, Long pageSize ) {
-        return "SELECT * FROM ( " +
-                "SELECT TAB_PAGE.*, ROWNUM ROW_ID FROM ( " +
-                sql +
-                " ) TAB_PAGE ) " +
-                "WHERE ROW_ID <= ? AND ROW_ID > ?";
+        return "SELECT * FROM (SELECT TMP_INNER_PAGE_TAB.*, ROWNUMBER() OVER() AS ROW_ID FROM ( " + sql 
+                + ") AS TMP_INNER_PAGE_TAB) TMP_OUTER_PAGE_TAB WHERE ROW_ID BETWEEN ? AND ?";
     }
 }

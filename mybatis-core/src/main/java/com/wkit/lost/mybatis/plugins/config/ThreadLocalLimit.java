@@ -1,5 +1,8 @@
 package com.wkit.lost.mybatis.plugins.config;
 
+/**
+ * 本地Limit对象缓存
+ */
 public class ThreadLocalLimit {
 
     private static final ThreadLocal<Limit> LIMIT_THREAD_LOCAL = new ThreadLocal<>();

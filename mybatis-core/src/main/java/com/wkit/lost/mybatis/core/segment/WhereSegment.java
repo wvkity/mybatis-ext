@@ -4,6 +4,7 @@ import com.wkit.lost.mybatis.utils.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * WHERE条件SQL片段类

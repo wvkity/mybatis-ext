@@ -484,7 +484,7 @@ public class DefaultEntityResolver implements EntityResolver {
             table.addPrimaryKeyColumn( column.getColumn() );
         } else if ( "WORKER".equalsIgnoreCase( generator ) ) {
             column.setWorker( true );
-        } else if ( WORKER_KEYS.contains( generator.toUpperCase( Locale.ENGLISH ) ) ) {
+        } else if ( generator != null && WORKER_KEYS.contains( generator.toUpperCase( Locale.ENGLISH ) ) ) {
             column.setWorkerString( true );
         } else {
             if ( isIdentity ) {
@@ -587,31 +587,3 @@ public class DefaultEntityResolver implements EntityResolver {
                 || ( this.configuration.isEnumAsSimpleType() && Enum.class.isAssignableFrom( attribute.getJavaType() ) ) ) );
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

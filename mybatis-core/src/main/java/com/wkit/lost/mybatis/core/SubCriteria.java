@@ -200,11 +200,11 @@ public class SubCriteria<T> extends AbstractQueryCriteria<T> {
     }
 
     public String getSqlSegmentForCondition() {
-        StringBuffer buffer = new StringBuffer( 100 );
+        StringBuilder buffer = new StringBuilder( 100 );
         buffer.append( "(" ).append( "SELECT " ).append( this.getQuerySegment() ).append( " FROM " );
         buffer.append( getTableName() ).append( " " ).append( getForeignSegment() );
         if ( isHasCondition() ) {
-            buffer.append( " WHERE " );
+            /*buffer.append( " WHERE " );
             String condition = getSqlSegment().trim();
             if ( condition.startsWith( "AND" ) ) {
                 buffer.append( condition.substring( 3 ) );
@@ -212,7 +212,8 @@ public class SubCriteria<T> extends AbstractQueryCriteria<T> {
                 buffer.append( condition.substring( 2 ) );
             } else {
                 buffer.append( condition );
-            }
+            }*/
+            buffer.append( getSqlSegment() );
         }
         buffer.append( ")" );
         return buffer.toString();
