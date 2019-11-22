@@ -5,20 +5,25 @@ import com.wkit.lost.mybatis.core.Logic;
 import com.wkit.lost.mybatis.core.MatchMode;
 import com.wkit.lost.mybatis.core.Operator;
 import com.wkit.lost.mybatis.core.SubCriteria;
-import com.wkit.lost.mybatis.core.condition.expression.BetweenExpression;
-import com.wkit.lost.mybatis.core.condition.expression.IdentifierExpression;
-import com.wkit.lost.mybatis.core.condition.expression.InExpression;
-import com.wkit.lost.mybatis.core.condition.expression.LikeExpression;
-import com.wkit.lost.mybatis.core.condition.expression.NativeExpression;
-import com.wkit.lost.mybatis.core.condition.expression.NestedExpression;
-import com.wkit.lost.mybatis.core.condition.expression.NotBetweenExpression;
-import com.wkit.lost.mybatis.core.condition.expression.NotInExpression;
-import com.wkit.lost.mybatis.core.condition.expression.NotNullExpression;
-import com.wkit.lost.mybatis.core.condition.expression.NullExpression;
-import com.wkit.lost.mybatis.core.condition.expression.PropertyEqualExpression;
-import com.wkit.lost.mybatis.core.condition.expression.SimpleExpression;
-import com.wkit.lost.mybatis.core.condition.expression.SubQueryExpression;
-import com.wkit.lost.mybatis.core.condition.expression.TemplateExpression;
+import com.wkit.lost.mybatis.core.condition.expression.Between;
+import com.wkit.lost.mybatis.core.condition.expression.Equal;
+import com.wkit.lost.mybatis.core.condition.expression.GreaterThan;
+import com.wkit.lost.mybatis.core.condition.expression.GreaterThanOrEqual;
+import com.wkit.lost.mybatis.core.condition.expression.IdentifierEqual;
+import com.wkit.lost.mybatis.core.condition.expression.In;
+import com.wkit.lost.mybatis.core.condition.expression.LessThan;
+import com.wkit.lost.mybatis.core.condition.expression.LessThanOrEqual;
+import com.wkit.lost.mybatis.core.condition.expression.Like;
+import com.wkit.lost.mybatis.core.condition.expression.Native;
+import com.wkit.lost.mybatis.core.condition.expression.Nested;
+import com.wkit.lost.mybatis.core.condition.expression.NotBetween;
+import com.wkit.lost.mybatis.core.condition.expression.NotEqual;
+import com.wkit.lost.mybatis.core.condition.expression.NotIn;
+import com.wkit.lost.mybatis.core.condition.expression.NotNull;
+import com.wkit.lost.mybatis.core.condition.expression.Null;
+import com.wkit.lost.mybatis.core.condition.expression.PropertyEqual;
+import com.wkit.lost.mybatis.core.condition.expression.SubQuery;
+import com.wkit.lost.mybatis.core.condition.expression.Template;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 
 import java.util.Collection;
@@ -40,7 +45,7 @@ public final class Restrictions {
      * @param <T>   泛型类型
      * @return 条件对象
      */
-    public static <T> IdentifierExpression<T> idEq( Object value ) {
+    public static <T> IdentifierEqual<T> idEq( Object value ) {
         return idEq( value, Logic.AND );
     }
 
@@ -51,8 +56,8 @@ public final class Restrictions {
      * @param <T>   泛型类型
      * @return 条件对象
      */
-    public static <T> IdentifierExpression<T> idEq( Object value, Logic logic ) {
-        return new IdentifierExpression<>( value, logic );
+    public static <T> IdentifierEqual<T> idEq( Object value, Logic logic ) {
+        return new IdentifierEqual<>( value, logic );
     }
 
     /**
@@ -62,7 +67,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> IdentifierExpression<T> idEq( Criteria<T> criteria, Object value ) {
+    public static <T> IdentifierEqual<T> idEq( Criteria<T> criteria, Object value ) {
         return idEq( criteria, value, Logic.AND );
     }
 
@@ -74,8 +79,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> IdentifierExpression<T> idEq( Criteria<T> criteria, Object value, Logic logic ) {
-        return new IdentifierExpression<>( criteria, value, logic );
+    public static <T> IdentifierEqual<T> idEq( Criteria<T> criteria, Object value, Logic logic ) {
+        return new IdentifierEqual<>( criteria, value, logic );
     }
 
     /**
@@ -85,7 +90,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> eq( String property, Object value ) {
+    public static <T> Equal<T> eq( String property, Object value ) {
         return eq( property, value, Logic.AND );
     }
 
@@ -97,8 +102,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> eq( String property, Object value, Logic logic ) {
-        return new SimpleExpression<>( property, value, logic );
+    public static <T> Equal<T> eq( String property, Object value, Logic logic ) {
+        return new Equal<>( property, value, logic );
     }
 
     /**
@@ -109,7 +114,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> eq( Criteria<T> criteria, String property, Object value ) {
+    public static <T> Equal<T> eq( Criteria<T> criteria, String property, Object value ) {
         return eq( criteria, property, value, Logic.AND );
     }
 
@@ -122,8 +127,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> eq( Criteria<T> criteria, String property, Object value, Logic logic ) {
-        return new SimpleExpression<>( criteria, property, value, logic );
+    public static <T> Equal<T> eq( Criteria<T> criteria, String property, Object value, Logic logic ) {
+        return new Equal<>( criteria, property, value, logic );
     }
 
     /**
@@ -134,7 +139,7 @@ public final class Restrictions {
      * @param <T>           泛型类型
      * @return 条件对象
      */
-    public static <T> PropertyEqualExpression<T> eq( String property, Criteria<?> other, String otherProperty ) {
+    public static <T> PropertyEqual<T> eq( String property, Criteria<?> other, String otherProperty ) {
         return eq( property, other, otherProperty, Logic.AND );
     }
 
@@ -147,8 +152,8 @@ public final class Restrictions {
      * @param <T>           泛型类型
      * @return 条件对象
      */
-    public static <T> PropertyEqualExpression<T> eq( String property, Criteria<?> other, String otherProperty, Logic logic ) {
-        return new PropertyEqualExpression<>( property, other, otherProperty, logic );
+    public static <T> PropertyEqual<T> eq( String property, Criteria<?> other, String otherProperty, Logic logic ) {
+        return new PropertyEqual<>( property, other, otherProperty, logic );
     }
 
     /**
@@ -160,7 +165,7 @@ public final class Restrictions {
      * @param <T>           泛型类型
      * @return 条件对象
      */
-    public static <T> PropertyEqualExpression<T> eq( Criteria<T> criteria, String property, Criteria<?> other, String otherProperty ) {
+    public static <T> PropertyEqual<T> eq( Criteria<T> criteria, String property, Criteria<?> other, String otherProperty ) {
         return eq( criteria, property, other, otherProperty, Logic.AND );
     }
 
@@ -174,8 +179,8 @@ public final class Restrictions {
      * @param <T>           泛型类型
      * @return 条件对象
      */
-    public static <T> PropertyEqualExpression<T> eq( Criteria<T> criteria, String property, Criteria<?> other, String otherProperty, Logic logic ) {
-        return new PropertyEqualExpression<>( criteria, property, other, otherProperty, logic );
+    public static <T> PropertyEqual<T> eq( Criteria<T> criteria, String property, Criteria<?> other, String otherProperty, Logic logic ) {
+        return new PropertyEqual<>( criteria, property, other, otherProperty, logic );
     }
 
     /**
@@ -185,7 +190,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> ne( String property, Object value ) {
+    public static <T> NotEqual<T> ne( String property, Object value ) {
         return ne( property, value, Logic.AND );
     }
 
@@ -197,8 +202,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> ne( String property, Object value, Logic logic ) {
-        return new SimpleExpression<>( property, value, Operator.NE, logic );
+    public static <T> NotEqual<T> ne( String property, Object value, Logic logic ) {
+        return new NotEqual<>( property, value, logic );
     }
 
     /**
@@ -209,7 +214,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> ne( Criteria<T> criteria, String property, Object value ) {
+    public static <T> NotEqual<T> ne( Criteria<T> criteria, String property, Object value ) {
         return ne( criteria, property, value, Logic.AND );
     }
 
@@ -222,8 +227,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> ne( Criteria<T> criteria, String property, Object value, Logic logic ) {
-        return new SimpleExpression<>( criteria, property, value, Operator.NE, logic );
+    public static <T> NotEqual<T> ne( Criteria<T> criteria, String property, Object value, Logic logic ) {
+        return new NotEqual<>( criteria, property, value, logic );
     }
 
     /**
@@ -233,7 +238,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> lt( String property, Object value ) {
+    public static <T> LessThan<T> lt( String property, Object value ) {
         return lt( property, value, Logic.AND );
     }
 
@@ -245,8 +250,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> lt( String property, Object value, Logic logic ) {
-        return new SimpleExpression<>( property, value, Operator.LT, logic );
+    public static <T> LessThan<T> lt( String property, Object value, Logic logic ) {
+        return new LessThan<>( property, value, logic );
     }
 
     /**
@@ -257,7 +262,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> lt( Criteria<T> criteria, String property, Object value ) {
+    public static <T> LessThan<T> lt( Criteria<T> criteria, String property, Object value ) {
         return lt( criteria, property, value, Logic.AND );
     }
 
@@ -270,8 +275,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> lt( Criteria<T> criteria, String property, Object value, Logic logic ) {
-        return new SimpleExpression<>( criteria, property, value, Operator.LT, logic );
+    public static <T> LessThan<T> lt( Criteria<T> criteria, String property, Object value, Logic logic ) {
+        return new LessThan<>( criteria, property, value, logic );
     }
 
     /**
@@ -281,7 +286,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> le( String property, Object value ) {
+    public static <T> LessThanOrEqual<T> le( String property, Object value ) {
         return le( property, value, Logic.AND );
     }
 
@@ -293,8 +298,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> le( String property, Object value, Logic logic ) {
-        return new SimpleExpression<>( property, value, Operator.LE, logic );
+    public static <T> LessThanOrEqual<T> le( String property, Object value, Logic logic ) {
+        return new LessThanOrEqual<>( property, value, logic );
     }
 
     /**
@@ -305,7 +310,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> le( Criteria<T> criteria, String property, Object value ) {
+    public static <T> LessThanOrEqual<T> le( Criteria<T> criteria, String property, Object value ) {
         return le( criteria, property, value, Logic.AND );
     }
 
@@ -318,8 +323,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> le( Criteria<T> criteria, String property, Object value, Logic logic ) {
-        return new SimpleExpression<>( criteria, property, value, Operator.LE, logic );
+    public static <T> LessThanOrEqual<T> le( Criteria<T> criteria, String property, Object value, Logic logic ) {
+        return new LessThanOrEqual<>( criteria, property, value, logic );
     }
 
     /**
@@ -329,7 +334,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> gt( String property, Object value ) {
+    public static <T> GreaterThan<T> gt( String property, Object value ) {
         return gt( property, value, Logic.AND );
     }
 
@@ -341,8 +346,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> gt( String property, Object value, Logic logic ) {
-        return new SimpleExpression<>( property, value, Operator.GT, logic );
+    public static <T> GreaterThan<T> gt( String property, Object value, Logic logic ) {
+        return new GreaterThan<>( property, value, logic );
     }
 
     /**
@@ -353,7 +358,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> gt( Criteria<T> criteria, String property, Object value ) {
+    public static <T> GreaterThan<T> gt( Criteria<T> criteria, String property, Object value ) {
         return gt( criteria, property, value, Logic.AND );
     }
 
@@ -366,8 +371,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> gt( Criteria<T> criteria, String property, Object value, Logic logic ) {
-        return new SimpleExpression<>( criteria, property, value, Operator.GT, logic );
+    public static <T> GreaterThan<T> gt( Criteria<T> criteria, String property, Object value, Logic logic ) {
+        return new GreaterThan<>( criteria, property, value, logic );
     }
 
     /**
@@ -377,7 +382,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> ge( String property, Object value ) {
+    public static <T> GreaterThanOrEqual<T> ge( String property, Object value ) {
         return ge( property, value, Logic.AND );
     }
 
@@ -389,8 +394,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> ge( String property, Object value, Logic logic ) {
-        return new SimpleExpression<>( property, value, Operator.GE, logic );
+    public static <T> GreaterThanOrEqual<T> ge( String property, Object value, Logic logic ) {
+        return new GreaterThanOrEqual<>( property, value, logic );
     }
 
     /**
@@ -401,7 +406,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> ge( Criteria<T> criteria, String property, Object value ) {
+    public static <T> GreaterThanOrEqual<T> ge( Criteria<T> criteria, String property, Object value ) {
         return ge( criteria, property, value, Logic.AND );
     }
 
@@ -414,8 +419,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> SimpleExpression<T> ge( Criteria<T> criteria, String property, Object value, Logic logic ) {
-        return new SimpleExpression<>( criteria, property, value, Operator.GE, logic );
+    public static <T> GreaterThanOrEqual<T> ge( Criteria<T> criteria, String property, Object value, Logic logic ) {
+        return new GreaterThanOrEqual<>( criteria, property, value, logic );
     }
 
     /**
@@ -424,7 +429,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NullExpression<T> isNull( String property ) {
+    public static <T> Null<T> isNull( String property ) {
         return isNull( property, Logic.AND );
     }
 
@@ -435,8 +440,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NullExpression<T> isNull( String property, Logic logic ) {
-        return new NullExpression<>( property, logic );
+    public static <T> Null<T> isNull( String property, Logic logic ) {
+        return new Null<>( property, logic );
     }
 
     /**
@@ -446,7 +451,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NullExpression<T> isNull( Criteria<T> criteria, String property ) {
+    public static <T> Null<T> isNull( Criteria<T> criteria, String property ) {
         return isNull( criteria, property, Logic.AND );
     }
 
@@ -458,8 +463,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NullExpression<T> isNull( Criteria<T> criteria, String property, Logic logic ) {
-        return new NullExpression<>( criteria, property, logic );
+    public static <T> Null<T> isNull( Criteria<T> criteria, String property, Logic logic ) {
+        return new Null<>( criteria, property, logic );
     }
 
     /**
@@ -468,8 +473,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NotNullExpression<T> notNull( String property ) {
-        return new NotNullExpression<>( property, Logic.AND );
+    public static <T> NotNull<T> notNull( String property ) {
+        return new NotNull<>( property, Logic.AND );
     }
 
     /**
@@ -479,8 +484,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NotNullExpression<T> notNull( String property, Logic logic ) {
-        return new NotNullExpression<>( property, logic );
+    public static <T> NotNull<T> notNull( String property, Logic logic ) {
+        return new NotNull<>( property, logic );
     }
 
     /**
@@ -490,7 +495,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NotNullExpression<T> notNull( Criteria<T> criteria, String property ) {
+    public static <T> NotNull<T> notNull( Criteria<T> criteria, String property ) {
         return notNull( criteria, property, Logic.AND );
     }
 
@@ -502,8 +507,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NotNullExpression<T> notNull( Criteria<T> criteria, String property, Logic logic ) {
-        return new NotNullExpression<>( criteria, property, logic );
+    public static <T> NotNull<T> notNull( Criteria<T> criteria, String property, Logic logic ) {
+        return new NotNull<>( criteria, property, logic );
     }
 
     /**
@@ -513,7 +518,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> InExpression<T> in( String property, Object... values ) {
+    public static <T> In<T> in( String property, Object... values ) {
         return in( property, Logic.AND, ArrayUtil.toList( values ) );
     }
 
@@ -524,7 +529,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> InExpression<T> in( String property, Collection<Object> values ) {
+    public static <T> In<T> in( String property, Collection<Object> values ) {
         return in( property, Logic.AND, values );
     }
 
@@ -536,7 +541,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> InExpression<T> in( String property, Logic logic, Object... values ) {
+    public static <T> In<T> in( String property, Logic logic, Object... values ) {
         return in( property, logic, ArrayUtil.toList( values ) );
     }
 
@@ -548,8 +553,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> InExpression<T> in( String property, Logic logic, Collection<Object> values ) {
-        return new InExpression<>( property, values, logic );
+    public static <T> In<T> in( String property, Logic logic, Collection<Object> values ) {
+        return new In<>( property, values, logic );
     }
 
     /**
@@ -560,7 +565,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> InExpression<T> in( Criteria<T> criteria, String property, Object... values ) {
+    public static <T> In<T> in( Criteria<T> criteria, String property, Object... values ) {
         return in( criteria, property, Logic.AND, ArrayUtil.toList( values ) );
     }
 
@@ -572,7 +577,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> InExpression<T> in( Criteria<T> criteria, String property, Collection<Object> values ) {
+    public static <T> In<T> in( Criteria<T> criteria, String property, Collection<Object> values ) {
         return in( criteria, property, Logic.AND, values );
     }
 
@@ -585,7 +590,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> InExpression<T> in( Criteria<T> criteria, String property, Logic logic, Object... values ) {
+    public static <T> In<T> in( Criteria<T> criteria, String property, Logic logic, Object... values ) {
         return in( criteria, property, logic, ArrayUtil.toList( values ) );
     }
 
@@ -598,8 +603,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> InExpression<T> in( Criteria<T> criteria, String property, Logic logic, Collection<Object> values ) {
-        return new InExpression<>( criteria, property, values, logic );
+    public static <T> In<T> in( Criteria<T> criteria, String property, Logic logic, Collection<Object> values ) {
+        return new In<>( criteria, property, values, logic );
     }
 
     /**
@@ -609,7 +614,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NotInExpression<T> notIn( String property, Object... values ) {
+    public static <T> NotIn<T> notIn( String property, Object... values ) {
         return notIn( property, Logic.AND, ArrayUtil.toList( values ) );
     }
 
@@ -620,7 +625,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NotInExpression<T> notIn( String property, Collection<Object> values ) {
+    public static <T> NotIn<T> notIn( String property, Collection<Object> values ) {
         return notIn( property, Logic.AND, values );
     }
 
@@ -632,7 +637,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NotInExpression<T> notIn( String property, Logic logic, Object... values ) {
+    public static <T> NotIn<T> notIn( String property, Logic logic, Object... values ) {
         return notIn( property, logic, ArrayUtil.toList( values ) );
     }
 
@@ -644,8 +649,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NotInExpression<T> notIn( String property, Logic logic, Collection<Object> values ) {
-        return new NotInExpression<>( property, values, logic );
+    public static <T> NotIn<T> notIn( String property, Logic logic, Collection<Object> values ) {
+        return new NotIn<>( property, values, logic );
     }
 
     /**
@@ -656,7 +661,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NotInExpression<T> notIn( Criteria<T> criteria, String property, Object... values ) {
+    public static <T> NotIn<T> notIn( Criteria<T> criteria, String property, Object... values ) {
         return notIn( criteria, property, Logic.AND, ArrayUtil.toList( values ) );
     }
 
@@ -668,7 +673,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NotInExpression<T> notIn( Criteria<T> criteria, String property, Collection<Object> values ) {
+    public static <T> NotIn<T> notIn( Criteria<T> criteria, String property, Collection<Object> values ) {
         return notIn( criteria, property, Logic.AND, values );
     }
 
@@ -681,7 +686,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NotInExpression<T> notIn( Criteria<T> criteria, String property, Logic logic, Object... values ) {
+    public static <T> NotIn<T> notIn( Criteria<T> criteria, String property, Logic logic, Object... values ) {
         return notIn( criteria, property, logic, ArrayUtil.toList( values ) );
     }
 
@@ -694,8 +699,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NotInExpression<T> notIn( Criteria<T> criteria, String property, Logic logic, Collection<Object> values ) {
-        return new NotInExpression<>( criteria, property, values, logic );
+    public static <T> NotIn<T> notIn( Criteria<T> criteria, String property, Logic logic, Collection<Object> values ) {
+        return new NotIn<>( criteria, property, values, logic );
     }
 
     /**
@@ -704,7 +709,7 @@ public final class Restrictions {
      * @param value    值
      * @return 条件对象
      */
-    public static <T> LikeExpression<T> like( String property, String value ) {
+    public static <T> Like<T> like( String property, String value ) {
         return like( property, value, MatchMode.ANYWHERE );
     }
 
@@ -715,7 +720,7 @@ public final class Restrictions {
      * @param logic    连接方式
      * @return 条件对象
      */
-    public static <T> LikeExpression<T> like( String property, String value, Logic logic ) {
+    public static <T> Like<T> like( String property, String value, Logic logic ) {
         return like( property, value, MatchMode.ANYWHERE, logic );
     }
 
@@ -726,7 +731,7 @@ public final class Restrictions {
      * @param escape   转移字符
      * @return 条件对象
      */
-    public static <T> LikeExpression<T> like( String property, String value, Character escape ) {
+    public static <T> Like<T> like( String property, String value, Character escape ) {
         return like( property, value, MatchMode.ANYWHERE, escape );
     }
 
@@ -737,7 +742,7 @@ public final class Restrictions {
      * @param matchMode 匹配模式
      * @return 条件对象
      */
-    public static <T> LikeExpression<T> like( String property, String value, MatchMode matchMode ) {
+    public static <T> Like<T> like( String property, String value, MatchMode matchMode ) {
         return like( property, value, matchMode, null, Logic.AND );
     }
 
@@ -749,7 +754,7 @@ public final class Restrictions {
      * @param logic    连接方式
      * @return 条件对象
      */
-    public static <T> LikeExpression<T> like( String property, String value, Character escape, Logic logic ) {
+    public static <T> Like<T> like( String property, String value, Character escape, Logic logic ) {
         return like( property, value, MatchMode.ANYWHERE, escape, logic );
     }
 
@@ -761,7 +766,7 @@ public final class Restrictions {
      * @param logic     连接方式
      * @return 条件对象
      */
-    public static <T> LikeExpression<T> like( String property, String value, MatchMode matchMode, Logic logic ) {
+    public static <T> Like<T> like( String property, String value, MatchMode matchMode, Logic logic ) {
         return like( property, value, matchMode, null, logic );
     }
 
@@ -773,7 +778,7 @@ public final class Restrictions {
      * @param escape    转移字符
      * @return 条件对象
      */
-    public static <T> LikeExpression<T> like( String property, String value, MatchMode matchMode, Character escape ) {
+    public static <T> Like<T> like( String property, String value, MatchMode matchMode, Character escape ) {
         return like( property, value, matchMode, escape, Logic.AND );
     }
 
@@ -786,8 +791,8 @@ public final class Restrictions {
      * @param logic     连接方式
      * @return 条件对象
      */
-    public static <T> LikeExpression<T> like( String property, String value, MatchMode matchMode, Character escape, Logic logic ) {
-        return new LikeExpression<>( property, value, matchMode, escape, logic );
+    public static <T> Like<T> like( String property, String value, MatchMode matchMode, Character escape, Logic logic ) {
+        return new Like<>( property, value, matchMode, escape, logic );
     }
 
     /**
@@ -797,7 +802,7 @@ public final class Restrictions {
      * @param value    值
      * @return 条件对象
      */
-    public static <T> LikeExpression<T> like( Criteria<T> criteria, String property, String value ) {
+    public static <T> Like<T> like( Criteria<T> criteria, String property, String value ) {
         return like( criteria, property, value, MatchMode.ANYWHERE );
     }
 
@@ -809,7 +814,7 @@ public final class Restrictions {
      * @param logic    连接方式
      * @return 条件对象
      */
-    public static <T> LikeExpression<T> like( Criteria<T> criteria, String property, String value, Logic logic ) {
+    public static <T> Like<T> like( Criteria<T> criteria, String property, String value, Logic logic ) {
         return like( criteria, property, value, MatchMode.ANYWHERE, logic );
     }
 
@@ -821,7 +826,7 @@ public final class Restrictions {
      * @param escape   转移字符
      * @return 条件对象
      */
-    public static <T> LikeExpression<T> like( Criteria<T> criteria, String property, String value, Character escape ) {
+    public static <T> Like<T> like( Criteria<T> criteria, String property, String value, Character escape ) {
         return like( criteria, property, value, MatchMode.ANYWHERE, escape );
     }
 
@@ -833,7 +838,7 @@ public final class Restrictions {
      * @param matchMode 匹配模式
      * @return 条件对象
      */
-    public static <T> LikeExpression<T> like( Criteria<T> criteria, String property, String value, MatchMode matchMode ) {
+    public static <T> Like<T> like( Criteria<T> criteria, String property, String value, MatchMode matchMode ) {
         return like( criteria, property, value, matchMode, null, Logic.AND );
     }
 
@@ -846,7 +851,7 @@ public final class Restrictions {
      * @param logic    连接方式
      * @return 条件对象
      */
-    public static <T> LikeExpression<T> like( Criteria<T> criteria, String property, String value, Character escape, Logic logic ) {
+    public static <T> Like<T> like( Criteria<T> criteria, String property, String value, Character escape, Logic logic ) {
         return like( criteria, property, value, MatchMode.ANYWHERE, escape, logic );
     }
 
@@ -859,7 +864,7 @@ public final class Restrictions {
      * @param logic     连接方式
      * @return 条件对象
      */
-    public static <T> LikeExpression<T> like( Criteria<T> criteria, String property, String value, MatchMode matchMode, Logic logic ) {
+    public static <T> Like<T> like( Criteria<T> criteria, String property, String value, MatchMode matchMode, Logic logic ) {
         return like( criteria, property, value, matchMode, null, logic );
     }
 
@@ -872,7 +877,7 @@ public final class Restrictions {
      * @param escape    转移字符
      * @return 条件对象
      */
-    public static <T> LikeExpression<T> like( Criteria<T> criteria, String property, String value, MatchMode matchMode, Character escape ) {
+    public static <T> Like<T> like( Criteria<T> criteria, String property, String value, MatchMode matchMode, Character escape ) {
         return like( criteria, property, value, matchMode, escape, Logic.AND );
     }
 
@@ -886,8 +891,8 @@ public final class Restrictions {
      * @param logic     连接方式
      * @return 条件对象
      */
-    public static <T> LikeExpression<T> like( Criteria<T> criteria, String property, String value, MatchMode matchMode, Character escape, Logic logic ) {
-        return new LikeExpression<>( criteria, property, value, matchMode, escape, logic );
+    public static <T> Like<T> like( Criteria<T> criteria, String property, String value, MatchMode matchMode, Character escape, Logic logic ) {
+        return new Like<>( criteria, property, value, matchMode, escape, logic );
     }
 
     /**
@@ -898,7 +903,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> BetweenExpression<T> between( String property, Object begin, Object end ) {
+    public static <T> Between<T> between( String property, Object begin, Object end ) {
         return between( property, begin, end, Logic.AND );
     }
 
@@ -911,8 +916,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> BetweenExpression<T> between( String property, Object begin, Object end, Logic logic ) {
-        return new BetweenExpression<>( property, begin, end, logic );
+    public static <T> Between<T> between( String property, Object begin, Object end, Logic logic ) {
+        return new Between<>( property, begin, end, logic );
     }
 
     /**
@@ -924,7 +929,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> BetweenExpression<T> between( Criteria<T> criteria, String property, Object begin, Object end ) {
+    public static <T> Between<T> between( Criteria<T> criteria, String property, Object begin, Object end ) {
         return between( criteria, property, begin, end, Logic.AND );
     }
 
@@ -938,8 +943,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> BetweenExpression<T> between( Criteria<T> criteria, String property, Object begin, Object end, Logic logic ) {
-        return new BetweenExpression<>( criteria, property, begin, end, logic );
+    public static <T> Between<T> between( Criteria<T> criteria, String property, Object begin, Object end, Logic logic ) {
+        return new Between<>( criteria, property, begin, end, logic );
     }
 
     /**
@@ -950,7 +955,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NotBetweenExpression<T> notBetween( String property, Object begin, Object end ) {
+    public static <T> NotBetween<T> notBetween( String property, Object begin, Object end ) {
         return notBetween( property, begin, end, Logic.AND );
     }
 
@@ -963,8 +968,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NotBetweenExpression<T> notBetween( String property, Object begin, Object end, Logic logic ) {
-        return new NotBetweenExpression<>( property, begin, end, logic );
+    public static <T> NotBetween<T> notBetween( String property, Object begin, Object end, Logic logic ) {
+        return new NotBetween<>( property, begin, end, logic );
     }
 
     /**
@@ -976,7 +981,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NotBetweenExpression<T> notBetween( Criteria<T> criteria, String property, Object begin, Object end ) {
+    public static <T> NotBetween<T> notBetween( Criteria<T> criteria, String property, Object begin, Object end ) {
         return notBetween( criteria, property, begin, end, Logic.AND );
     }
 
@@ -990,8 +995,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> NotBetweenExpression<T> notBetween( Criteria<T> criteria, String property, Object begin, Object end, Logic logic ) {
-        return new NotBetweenExpression<>( criteria, property, begin, end, logic );
+    public static <T> NotBetween<T> notBetween( Criteria<T> criteria, String property, Object begin, Object end, Logic logic ) {
+        return new NotBetween<>( criteria, property, begin, end, logic );
     }
 
     /**
@@ -1002,7 +1007,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> TemplateExpression<T> template( String template, String property, Object value ) {
+    public static <T> Template<T> template( String template, String property, Object value ) {
         return template( template, Logic.AND, property, value );
     }
 
@@ -1015,8 +1020,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> TemplateExpression<T> template( String template, Logic logic, String property, Object value ) {
-        return new TemplateExpression<>( template, logic, property, value );
+    public static <T> Template<T> template( String template, Logic logic, String property, Object value ) {
+        return new Template<>( template, logic, property, value );
     }
 
     /**
@@ -1028,7 +1033,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> TemplateExpression<T> template( Criteria<T> criteria, String template, String property, Object value ) {
+    public static <T> Template<T> template( Criteria<T> criteria, String template, String property, Object value ) {
         return template( criteria, template, Logic.AND, property, value );
     }
 
@@ -1042,8 +1047,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> TemplateExpression<T> template( Criteria<T> criteria, Logic logic, String template, String property, Object value ) {
-        return new TemplateExpression<>( criteria, template, logic, property, value );
+    public static <T> Template<T> template( Criteria<T> criteria, Logic logic, String template, String property, Object value ) {
+        return new Template<>( criteria, template, logic, property, value );
     }
 
     /**
@@ -1054,7 +1059,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> TemplateExpression<T> template( String template, String property, Object... values ) {
+    public static <T> Template<T> template( String template, String property, Object... values ) {
         return template( template, Logic.AND, property, ArrayUtil.toList( values ) );
     }
 
@@ -1067,7 +1072,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> TemplateExpression<T> template( String template, Logic logic, String property, Object... values ) {
+    public static <T> Template<T> template( String template, Logic logic, String property, Object... values ) {
         return template( template, logic, property, ArrayUtil.toList( values ) );
     }
 
@@ -1079,7 +1084,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> TemplateExpression<T> template( String template, String property, Collection<Object> values ) {
+    public static <T> Template<T> template( String template, String property, Collection<Object> values ) {
         return template( template, Logic.AND, property, values );
     }
 
@@ -1092,8 +1097,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> TemplateExpression<T> template( String template, Logic logic, String property, Collection<Object> values ) {
-        return new TemplateExpression<>( template, logic, property, values );
+    public static <T> Template<T> template( String template, Logic logic, String property, Collection<Object> values ) {
+        return new Template<>( template, logic, property, values );
     }
 
     /**
@@ -1105,7 +1110,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> TemplateExpression<T> template( Criteria<T> criteria, String template, String property, Object... values ) {
+    public static <T> Template<T> template( Criteria<T> criteria, String template, String property, Object... values ) {
         return template( criteria, template, Logic.AND, property, ArrayUtil.toList( values ) );
     }
 
@@ -1119,7 +1124,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> TemplateExpression<T> template( Criteria<T> criteria, String template, Logic logic, String property, Object... values ) {
+    public static <T> Template<T> template( Criteria<T> criteria, String template, Logic logic, String property, Object... values ) {
         return template( criteria, template, logic, property, ArrayUtil.toList( values ) );
     }
 
@@ -1132,7 +1137,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> TemplateExpression<T> template( Criteria<T> criteria, String template, String property, Collection<Object> values ) {
+    public static <T> Template<T> template( Criteria<T> criteria, String template, String property, Collection<Object> values ) {
         return template( criteria, template, Logic.AND, property, values );
     }
 
@@ -1146,8 +1151,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> TemplateExpression<T> template( Criteria<T> criteria, String template, Logic logic, String property, Collection<Object> values ) {
-        return new TemplateExpression<>( criteria, template, logic, property, values );
+    public static <T> Template<T> template( Criteria<T> criteria, String template, Logic logic, String property, Collection<Object> values ) {
+        return new Template<>( criteria, template, logic, property, values );
     }
 
     /**
@@ -1156,7 +1161,7 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> NestedExpression<T> nested( Criterion<?>... conditions ) {
+    public static <T> Nested<T> nested( Criterion<?>... conditions ) {
         return nested( ArrayUtil.toList( conditions ) );
     }
 
@@ -1166,7 +1171,7 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> NestedExpression<T> nested( Collection<Criterion<?>> conditions ) {
+    public static <T> Nested<T> nested( Collection<Criterion<?>> conditions ) {
         return nested( Logic.AND, conditions );
     }
 
@@ -1177,7 +1182,7 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> NestedExpression<T> nested( Logic logic, Criterion<?>... conditions ) {
+    public static <T> Nested<T> nested( Logic logic, Criterion<?>... conditions ) {
         return nested( logic, ArrayUtil.toList( conditions ) );
     }
 
@@ -1188,8 +1193,8 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> NestedExpression<T> nested( Logic logic, Collection<Criterion<?>> conditions ) {
-        return new NestedExpression<>( logic, conditions );
+    public static <T> Nested<T> nested( Logic logic, Collection<Criterion<?>> conditions ) {
+        return new Nested<>( logic, conditions );
     }
 
     /**
@@ -1199,7 +1204,7 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> NestedExpression<T> nested( Criteria<T> criteria, Criterion<?>... conditions ) {
+    public static <T> Nested<T> nested( Criteria<T> criteria, Criterion<?>... conditions ) {
         return nested( criteria, Logic.AND, ArrayUtil.toList( conditions ) );
     }
 
@@ -1210,7 +1215,7 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> NestedExpression<T> nested( Criteria<T> criteria, Collection<Criterion<?>> conditions ) {
+    public static <T> Nested<T> nested( Criteria<T> criteria, Collection<Criterion<?>> conditions ) {
         return nested( criteria, Logic.AND, conditions );
     }
 
@@ -1222,7 +1227,7 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> NestedExpression<T> nested( Criteria<T> criteria, Logic logic, Criterion<?>... conditions ) {
+    public static <T> Nested<T> nested( Criteria<T> criteria, Logic logic, Criterion<?>... conditions ) {
         return nested( criteria, logic, ArrayUtil.toList( conditions ) );
     }
 
@@ -1234,8 +1239,8 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> NestedExpression<T> nested( Criteria<T> criteria, Logic logic, Collection<Criterion<?>> conditions ) {
-        return new NestedExpression<>( criteria, logic, conditions );
+    public static <T> Nested<T> nested( Criteria<T> criteria, Logic logic, Collection<Criterion<?>> conditions ) {
+        return new Nested<>( criteria, logic, conditions );
     }
 
     /**
@@ -1244,8 +1249,8 @@ public final class Restrictions {
      * @param <T> 泛型类型
      * @return 条件对象
      */
-    public static <T> NativeExpression<T> nativeSql( String sql ) {
-        return new NativeExpression<>( sql );
+    public static <T> Native<T> nativeSql( String sql ) {
+        return new Native<>( sql );
     }
 
     // endregion
@@ -1259,7 +1264,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> idEq( SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> idEq( SubCriteria<E> subCriteria ) {
         return idEq( subCriteria, Logic.AND );
     }
 
@@ -1271,8 +1276,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> idEq( SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( subCriteria, logic );
+    public static <T, E> SubQuery<T> idEq( SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( subCriteria, logic );
     }
 
     /**
@@ -1283,7 +1288,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> idEq( Criteria<T> criteria, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> idEq( Criteria<T> criteria, SubCriteria<E> subCriteria ) {
         return idEq( criteria, subCriteria, Logic.AND );
     }
 
@@ -1296,8 +1301,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> idEq( Criteria<T> criteria, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( criteria, subCriteria, logic );
+    public static <T, E> SubQuery<T> idEq( Criteria<T> criteria, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( criteria, subCriteria, logic );
     }
 
     /**
@@ -1308,7 +1313,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> eq( String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> eq( String property, SubCriteria<E> subCriteria ) {
         return eq( property, subCriteria, Logic.AND );
     }
 
@@ -1321,8 +1326,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> eq( String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( property, subCriteria, logic );
+    public static <T, E> SubQuery<T> eq( String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( property, subCriteria, logic );
     }
 
     /**
@@ -1334,7 +1339,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> eq( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> eq( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
         return eq( criteria, property, subCriteria, Logic.AND );
     }
 
@@ -1348,8 +1353,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> eq( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( criteria, property, subCriteria, logic );
+    public static <T, E> SubQuery<T> eq( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( criteria, property, subCriteria, logic );
     }
 
     /**
@@ -1360,7 +1365,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> ne( String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> ne( String property, SubCriteria<E> subCriteria ) {
         return ne( property, subCriteria, Logic.AND );
     }
 
@@ -1373,8 +1378,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> ne( String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( property, subCriteria, Operator.NE, logic );
+    public static <T, E> SubQuery<T> ne( String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( property, subCriteria, Operator.NE, logic );
     }
 
     /**
@@ -1386,7 +1391,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> ne( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> ne( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
         return ne( criteria, property, subCriteria, Logic.AND );
     }
 
@@ -1400,8 +1405,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> ne( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.NE, logic );
+    public static <T, E> SubQuery<T> ne( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( criteria, property, subCriteria, Operator.NE, logic );
     }
 
     /**
@@ -1412,7 +1417,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> lt( String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> lt( String property, SubCriteria<E> subCriteria ) {
         return lt( property, subCriteria, Logic.AND );
     }
 
@@ -1425,8 +1430,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> lt( String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( property, subCriteria, Operator.LT, logic );
+    public static <T, E> SubQuery<T> lt( String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( property, subCriteria, Operator.LT, logic );
     }
 
     /**
@@ -1438,7 +1443,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> lt( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> lt( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
         return lt( criteria, property, subCriteria, Logic.AND );
     }
 
@@ -1452,8 +1457,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> lt( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.LT, logic );
+    public static <T, E> SubQuery<T> lt( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( criteria, property, subCriteria, Operator.LT, logic );
     }
 
     /**
@@ -1464,7 +1469,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> le( String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> le( String property, SubCriteria<E> subCriteria ) {
         return le( property, subCriteria, Logic.AND );
     }
 
@@ -1477,8 +1482,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> le( String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( property, subCriteria, Operator.LE, logic );
+    public static <T, E> SubQuery<T> le( String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( property, subCriteria, Operator.LE, logic );
     }
 
     /**
@@ -1490,7 +1495,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> le( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> le( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
         return le( criteria, property, subCriteria, Logic.AND );
     }
 
@@ -1504,8 +1509,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> le( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.LE, logic );
+    public static <T, E> SubQuery<T> le( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( criteria, property, subCriteria, Operator.LE, logic );
     }
 
     /**
@@ -1516,7 +1521,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> gt( String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> gt( String property, SubCriteria<E> subCriteria ) {
         return gt( property, subCriteria, Logic.AND );
     }
 
@@ -1529,8 +1534,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> gt( String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( property, subCriteria, Operator.GT, logic );
+    public static <T, E> SubQuery<T> gt( String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( property, subCriteria, Operator.GT, logic );
     }
 
     /**
@@ -1542,7 +1547,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> gt( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> gt( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
         return gt( criteria, property, subCriteria, Logic.AND );
     }
 
@@ -1556,8 +1561,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> gt( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.GT, logic );
+    public static <T, E> SubQuery<T> gt( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( criteria, property, subCriteria, Operator.GT, logic );
     }
 
     /**
@@ -1568,7 +1573,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> ge( String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> ge( String property, SubCriteria<E> subCriteria ) {
         return ge( property, subCriteria, Logic.AND );
     }
 
@@ -1581,8 +1586,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> ge( String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( property, subCriteria, Operator.GE, logic );
+    public static <T, E> SubQuery<T> ge( String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( property, subCriteria, Operator.GE, logic );
     }
 
     /**
@@ -1594,7 +1599,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> ge( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> ge( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
         return ge( criteria, property, subCriteria, Logic.AND );
     }
 
@@ -1608,8 +1613,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> ge( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.GE, logic );
+    public static <T, E> SubQuery<T> ge( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( criteria, property, subCriteria, Operator.GE, logic );
     }
 
     /**
@@ -1620,7 +1625,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> in( String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> in( String property, SubCriteria<E> subCriteria ) {
         return in( property, subCriteria, Logic.AND );
     }
 
@@ -1633,8 +1638,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> in( String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( property, subCriteria, Operator.IN, logic );
+    public static <T, E> SubQuery<T> in( String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( property, subCriteria, Operator.IN, logic );
     }
 
     /**
@@ -1646,7 +1651,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> in( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> in( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
         return in( criteria, property, subCriteria, Logic.AND );
     }
 
@@ -1660,8 +1665,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> in( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.IN, logic );
+    public static <T, E> SubQuery<T> in( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( criteria, property, subCriteria, Operator.IN, logic );
     }
 
     /**
@@ -1672,7 +1677,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> notIn( String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> notIn( String property, SubCriteria<E> subCriteria ) {
         return notIn( property, subCriteria, Logic.AND );
     }
 
@@ -1685,8 +1690,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> notIn( String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( property, subCriteria, Operator.NOT_IN, logic );
+    public static <T, E> SubQuery<T> notIn( String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( property, subCriteria, Operator.NOT_IN, logic );
     }
 
     /**
@@ -1698,7 +1703,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> notIn( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> notIn( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
         return notIn( criteria, property, subCriteria, Logic.AND );
     }
 
@@ -1712,8 +1717,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> notIn( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.NOT_IN, logic );
+    public static <T, E> SubQuery<T> notIn( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( criteria, property, subCriteria, Operator.NOT_IN, logic );
     }
 
     /**
@@ -1724,7 +1729,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> exists( Criteria<T> criteria, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> exists( Criteria<T> criteria, SubCriteria<E> subCriteria ) {
         return exists( criteria, null, subCriteria, Logic.AND );
     }
 
@@ -1737,7 +1742,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> exists( Criteria<T> criteria, SubCriteria<E> subCriteria, Logic logic ) {
+    public static <T, E> SubQuery<T> exists( Criteria<T> criteria, SubCriteria<E> subCriteria, Logic logic ) {
         return exists( criteria, null, subCriteria, logic );
     }
 
@@ -1750,7 +1755,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> exists( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> exists( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
         return exists( criteria, property, subCriteria, Logic.AND );
     }
 
@@ -1764,8 +1769,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> exists( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.EXISTS, logic );
+    public static <T, E> SubQuery<T> exists( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( criteria, property, subCriteria, Operator.EXISTS, logic );
     }
 
     /**
@@ -1776,7 +1781,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> notExists( Criteria<T> criteria, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> notExists( Criteria<T> criteria, SubCriteria<E> subCriteria ) {
         return notExists( criteria, null, subCriteria, Logic.AND );
     }
 
@@ -1789,7 +1794,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> notExists( Criteria<T> criteria, SubCriteria<E> subCriteria, Logic logic ) {
+    public static <T, E> SubQuery<T> notExists( Criteria<T> criteria, SubCriteria<E> subCriteria, Logic logic ) {
         return notExists( criteria, null, subCriteria, logic );
     }
 
@@ -1802,7 +1807,7 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> notExists( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
+    public static <T, E> SubQuery<T> notExists( Criteria<T> criteria, String property, SubCriteria<E> subCriteria ) {
         return notExists( criteria, property, subCriteria, Logic.AND );
     }
 
@@ -1816,8 +1821,8 @@ public final class Restrictions {
      * @param <E>         子查询实体类型
      * @return 条件对象
      */
-    public static <T, E> SubQueryExpression<T> notExists( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
-        return new SubQueryExpression<>( criteria, property, subCriteria, Operator.NOT_EXISTS, logic );
+    public static <T, E> SubQuery<T> notExists( Criteria<T> criteria, String property, SubCriteria<E> subCriteria, Logic logic ) {
+        return new SubQuery<>( criteria, property, subCriteria, Operator.NOT_EXISTS, logic );
     }
     // endregion
 }

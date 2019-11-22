@@ -9,9 +9,9 @@ import com.wkit.lost.mybatis.core.Operator;
  * @param <T> 泛型类型
  * @author DT
  */
-public class NotBetweenExpression<T> extends AbstractBetweenExpression<T> {
+public class Between<T> extends AbstractBetween<T> {
 
-    private static final long serialVersionUID = 6557646922413371323L;
+    private static final long serialVersionUID = 1099869217427380136L;
 
     /**
      * 构造方法
@@ -19,7 +19,7 @@ public class NotBetweenExpression<T> extends AbstractBetweenExpression<T> {
      * @param begin    开始值
      * @param end      结束值
      */
-    public NotBetweenExpression( String property, Object begin, Object end ) {
+    public Between( String property, Object begin, Object end ) {
         this( property, begin, end, Logic.AND );
     }
 
@@ -30,7 +30,7 @@ public class NotBetweenExpression<T> extends AbstractBetweenExpression<T> {
      * @param begin    开始值
      * @param end      结束值
      */
-    public NotBetweenExpression( Criteria<T> criteria, String property, Object begin, Object end ) {
+    public Between( Criteria<T> criteria, String property, Object begin, Object end ) {
         this( criteria, property, begin, end, Logic.AND );
     }
 
@@ -41,12 +41,11 @@ public class NotBetweenExpression<T> extends AbstractBetweenExpression<T> {
      * @param end      结束值
      * @param logic    逻辑操作
      */
-    public NotBetweenExpression( String property, Object begin, Object end, Logic logic ) {
+    public Between( String property, Object begin, Object end, Logic logic ) {
         this.property = property;
         this.begin = begin;
         this.end = end;
         this.logic = logic;
-        this.not = true;
         this.operator = Operator.BETWEEN;
     }
 
@@ -58,13 +57,12 @@ public class NotBetweenExpression<T> extends AbstractBetweenExpression<T> {
      * @param end      结束值
      * @param logic    逻辑操作
      */
-    public NotBetweenExpression( Criteria<T> criteria, String property, Object begin, Object end, Logic logic ) {
+    public Between( Criteria<T> criteria, String property, Object begin, Object end, Logic logic ) {
         this.criteria = criteria;
         this.property = property;
         this.begin = begin;
         this.end = end;
         this.logic = logic;
-        this.not = true;
         this.operator = Operator.BETWEEN;
     }
 

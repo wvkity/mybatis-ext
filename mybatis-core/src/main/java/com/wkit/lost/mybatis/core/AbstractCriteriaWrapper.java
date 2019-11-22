@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.core;
 import com.wkit.lost.mybatis.core.condition.AbstractConditionManager;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.condition.criterion.Restrictions;
-import com.wkit.lost.mybatis.core.condition.expression.NestedExpression;
+import com.wkit.lost.mybatis.core.condition.expression.Nested;
 import com.wkit.lost.mybatis.core.function.AbstractFunction;
 import com.wkit.lost.mybatis.core.function.Aggregation;
 import com.wkit.lost.mybatis.core.function.Aggregations;
@@ -769,7 +769,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
 
     @Override
     public Context nested( Criteria criteria, Collection<Criterion<?>> conditions ) {
-        NestedExpression expression = Restrictions.nested( criteria, conditions );
+        Nested expression = Restrictions.nested( criteria, conditions );
         return add( expression );
     }
 
@@ -780,10 +780,10 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
 
     @Override
     public Context orNested( Criteria criteria, Collection<Criterion<?>> conditions ) {
-        NestedExpression expression = Restrictions.nested( criteria, Logic.OR, conditions );
+        Nested expression = Restrictions.nested( criteria, Logic.OR, conditions );
         return add( expression );
     }
-
+    
     @Override
     public Context add( AbstractConditionManager<T> conditionManager ) {
         if ( conditionManager != null && conditionManager.hasCondition() ) {

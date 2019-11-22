@@ -39,6 +39,12 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
     Criteria<T> resultType( Class<?> resultType );
 
     /**
+     * 开启自动映射列别名(针对查询自动映射属性名)
+     * @return 当前对象
+     */
+    Criteria<T> autoMappingColumnAlias();
+
+    /**
      * 是否开启自动映射列别名(针对查询自动映射属性名)
      * @param enable 是否开启
      * @return 当前对象

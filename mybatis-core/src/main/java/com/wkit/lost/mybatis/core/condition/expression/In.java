@@ -2,7 +2,6 @@ package com.wkit.lost.mybatis.core.condition.expression;
 
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.Logic;
-import com.wkit.lost.mybatis.core.condition.Range;
 
 import java.util.Collection;
 
@@ -11,7 +10,7 @@ import java.util.Collection;
  * @param <T> 泛型类型
  * @author DT
  */
-public class InExpression<T> extends RangeExpression<T> {
+public class In<T> extends Range<T> {
 
     private static final long serialVersionUID = -900860959640244563L;
 
@@ -20,8 +19,8 @@ public class InExpression<T> extends RangeExpression<T> {
      * @param property 属性
      * @param values   值
      */
-    public InExpression( String property, Collection<Object> values ) {
-        super( Range.IN, property, values );
+    public In( String property, Collection<Object> values ) {
+        super( com.wkit.lost.mybatis.core.condition.Range.IN, property, values );
     }
 
     /**
@@ -30,8 +29,8 @@ public class InExpression<T> extends RangeExpression<T> {
      * @param property 属性
      * @param values   值
      */
-    public InExpression( Criteria<T> criteria, String property, Collection<Object> values ) {
-        super( criteria, Range.IN, property, values );
+    public In( Criteria<T> criteria, String property, Collection<Object> values ) {
+        super( criteria, com.wkit.lost.mybatis.core.condition.Range.IN, property, values );
     }
 
     /**
@@ -40,8 +39,8 @@ public class InExpression<T> extends RangeExpression<T> {
      * @param values   值
      * @param logic    逻辑操作
      */
-    public InExpression( String property, Collection<Object> values, Logic logic ) {
-        super( Range.IN, property, values, logic );
+    public In( String property, Collection<Object> values, Logic logic ) {
+        super( com.wkit.lost.mybatis.core.condition.Range.IN, property, values, logic );
     }
 
     /**
@@ -51,7 +50,7 @@ public class InExpression<T> extends RangeExpression<T> {
      * @param values   值
      * @param logic    逻辑操作
      */
-    public InExpression( Criteria<T> criteria, String property, Collection<Object> values, Logic logic ) {
-        super( criteria, Range.IN, property, values, logic );
+    public In( Criteria<T> criteria, String property, Collection<Object> values, Logic logic ) {
+        super( criteria, com.wkit.lost.mybatis.core.condition.Range.IN, property, values, logic );
     }
 }

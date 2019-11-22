@@ -2,16 +2,15 @@ package com.wkit.lost.mybatis.core.condition.expression;
 
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.Logic;
-import com.wkit.lost.mybatis.core.condition.Range;
 
 import java.util.Collection;
 
 /**
- * IN范围条件
+ * NOT IN范围条件
  * @param <T> 泛型类型
  * @author DT
  */
-public class NotInExpression<T> extends RangeExpression<T> {
+public class NotIn<T> extends Range<T> {
 
     private static final long serialVersionUID = -5657463987007050669L;
 
@@ -20,8 +19,8 @@ public class NotInExpression<T> extends RangeExpression<T> {
      * @param property 属性
      * @param values   值
      */
-    public NotInExpression( String property, Collection<Object> values ) {
-        super( Range.NOT_IN, property, values );
+    public NotIn( String property, Collection<Object> values ) {
+        super( com.wkit.lost.mybatis.core.condition.Range.NOT_IN, property, values );
     }
 
     /**
@@ -30,8 +29,8 @@ public class NotInExpression<T> extends RangeExpression<T> {
      * @param property 属性
      * @param values   值
      */
-    public NotInExpression( Criteria<T> criteria, String property, Collection<Object> values ) {
-        super( criteria, Range.NOT_IN, property, values );
+    public NotIn( Criteria<T> criteria, String property, Collection<Object> values ) {
+        super( criteria, com.wkit.lost.mybatis.core.condition.Range.NOT_IN, property, values );
     }
 
     /**
@@ -40,8 +39,8 @@ public class NotInExpression<T> extends RangeExpression<T> {
      * @param values   值
      * @param logic    逻辑操作
      */
-    public NotInExpression( String property, Collection<Object> values, Logic logic ) {
-        super( Range.NOT_IN, property, values, logic );
+    public NotIn( String property, Collection<Object> values, Logic logic ) {
+        super( com.wkit.lost.mybatis.core.condition.Range.NOT_IN, property, values, logic );
     }
 
     /**
@@ -51,7 +50,7 @@ public class NotInExpression<T> extends RangeExpression<T> {
      * @param values   值
      * @param logic    逻辑操作
      */
-    public NotInExpression( Criteria<T> criteria, String property, Collection<Object> values, Logic logic ) {
-        super( criteria, Range.NOT_IN, property, values, logic );
+    public NotIn( Criteria<T> criteria, String property, Collection<Object> values, Logic logic ) {
+        super( criteria, com.wkit.lost.mybatis.core.condition.Range.NOT_IN, property, values, logic );
     }
 }

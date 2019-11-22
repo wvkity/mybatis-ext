@@ -61,6 +61,11 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
     protected Set<String> excludes = new ConcurrentSkipListSet<>();
 
     @Override
+    public AbstractQueryCriteria<T> autoMappingColumnAlias() {
+        return autoMappingColumnAlias( true );
+    }
+
+    @Override
     public AbstractQueryCriteria<T> autoMappingColumnAlias( boolean enable ) {
         this.autoMappingAlias = enable;
         return this;

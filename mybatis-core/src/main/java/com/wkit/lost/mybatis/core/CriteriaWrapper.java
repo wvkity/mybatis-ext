@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.core;
 import com.wkit.lost.mybatis.core.condition.AbstractConditionManager;
 import com.wkit.lost.mybatis.core.condition.ConditionBuilder;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
-import com.wkit.lost.mybatis.core.condition.expression.NestedExpression;
+import com.wkit.lost.mybatis.core.condition.expression.Nested;
 
 import java.util.function.Function;
 
@@ -16,25 +16,25 @@ import java.util.function.Function;
  */
 public interface CriteriaWrapper<T, Context, R> extends Criteria<T>, InstanceClone<Context>,
         Compare<Context, R>, Null<Context, R>, Range<Context, R>, IndistinctMatching<Context, R>,
-        Between<Context, R>, Customize<Context, R>, Nested<Context>, ForeignBuilder<T, Context, R>
+        Between<Context, R>, Customize<Context, R>, com.wkit.lost.mybatis.core.Nested<Context>, ForeignBuilder<T, Context, R>
         , SubCriteriaBuilder<T>, ConditionBuilder<T, AbstractConditionManager<T>, R>,
         SubQueryCondition<T, Context, R> {
 
     /**
-     * {@link NestedExpression}条件简写形式
+     * {@link Nested}条件简写形式
      * <p>AND ( A [OR | AND] B [OR AND] C...)</p>
      * @param function lambda对象
      * @return 当前对象
-     * @see Nested#nested(Criterion[])
+     * @see com.wkit.lost.mybatis.core.Nested#nested(Criterion[])
      */
     Context and( Function<Context, Context> function );
 
     /**
-     * {@link NestedExpression}条件简写形式
+     * {@link Nested}条件简写形式
      * <p>OR ( A [OR | AND] B [OR AND] C...)</p>
      * @param function lambda对象
      * @return 当前对象
-     * @see Nested#orNested(Criterion[])
+     * @see com.wkit.lost.mybatis.core.Nested#orNested(Criterion[])
      */
     Context or( Function<Context, Context> function );
 

@@ -9,7 +9,7 @@ import com.wkit.lost.mybatis.core.Operator;
  * @param <T> 泛型类型
  * @author DT
  */
-public class NotNullExpression<T> extends AbstractNullExpression<T> {
+public class NotNull<T> extends AbstractNull<T> {
 
     private static final long serialVersionUID = 4172306808770157321L;
 
@@ -17,7 +17,7 @@ public class NotNullExpression<T> extends AbstractNullExpression<T> {
      * 构造方法
      * @param property 属性
      */
-    public NotNullExpression( String property ) {
+    public NotNull( String property ) {
         this( property, Logic.AND );
     }
 
@@ -26,7 +26,7 @@ public class NotNullExpression<T> extends AbstractNullExpression<T> {
      * @param property 属性
      * @param logic    逻辑操作
      */
-    public NotNullExpression( String property, Logic logic ) {
+    public NotNull( String property, Logic logic ) {
         this.property = property;
         this.logic = logic;
         this.operator = Operator.NOT_NULL;
@@ -37,7 +37,7 @@ public class NotNullExpression<T> extends AbstractNullExpression<T> {
      * @param criteria 查询对象
      * @param property 属性
      */
-    public NotNullExpression( Criteria<T> criteria, String property ) {
+    public NotNull( Criteria<T> criteria, String property ) {
         this( criteria, property, Logic.AND );
     }
 
@@ -47,7 +47,7 @@ public class NotNullExpression<T> extends AbstractNullExpression<T> {
      * @param property 属性
      * @param logic    逻辑操作
      */
-    public NotNullExpression( Criteria<T> criteria, String property, Logic logic ) {
+    public NotNull( Criteria<T> criteria, String property, Logic logic ) {
         this.criteria = criteria;
         this.property = property;
         this.logic = logic;

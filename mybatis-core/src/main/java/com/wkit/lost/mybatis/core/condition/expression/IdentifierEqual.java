@@ -10,11 +10,11 @@ import com.wkit.lost.mybatis.handler.EntityHandler;
 import java.util.Optional;
 
 /**
- * 主键条件对象
+ * 主键等于条件
  * @param <T> 泛型类型
  * @author DT
  */
-public class IdentifierExpression<T> extends AbstractExpression<T> {
+public class IdentifierEqual<T> extends AbstractExpression<T> {
 
     private static final long serialVersionUID = -363753826395421496L;
 
@@ -22,7 +22,7 @@ public class IdentifierExpression<T> extends AbstractExpression<T> {
      * 构造方法
      * @param value 值
      */
-    public IdentifierExpression( Object value ) {
+    public IdentifierEqual( Object value ) {
         this( value, Logic.AND );
     }
 
@@ -31,7 +31,7 @@ public class IdentifierExpression<T> extends AbstractExpression<T> {
      * @param logic 逻辑操作
      * @param value 值
      */
-    public IdentifierExpression( Object value, Logic logic ) {
+    public IdentifierEqual( Object value, Logic logic ) {
         this.value = value;
         this.logic = logic;
         this.operator = Operator.EQ;
@@ -42,7 +42,7 @@ public class IdentifierExpression<T> extends AbstractExpression<T> {
      * @param criteria 查询对象
      * @param value    值
      */
-    public IdentifierExpression( Criteria<T> criteria, Object value ) {
+    public IdentifierEqual( Criteria<T> criteria, Object value ) {
         this( criteria, value, Logic.AND );
     }
 
@@ -52,7 +52,7 @@ public class IdentifierExpression<T> extends AbstractExpression<T> {
      * @param value    值
      * @param logic    逻辑操作
      */
-    public IdentifierExpression( Criteria<T> criteria, Object value, Logic logic ) {
+    public IdentifierEqual( Criteria<T> criteria, Object value, Logic logic ) {
         this.logic = logic;
         this.value = value;
         this.operator = Operator.EQ;

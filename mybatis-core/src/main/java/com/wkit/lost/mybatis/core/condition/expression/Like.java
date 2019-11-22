@@ -11,11 +11,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * lIKE条件
+ * LIKE条件
  * @param <T> 泛型类型
  * @author DT
  */
-public class LikeExpression<T> extends AbstractExpression<T> {
+public class Like<T> extends AbstractExpression<T> {
 
     private static final long serialVersionUID = -161970413795916260L;
 
@@ -38,7 +38,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
      * @param property 属性
      * @param value    值
      */
-    public LikeExpression( String property, String value ) {
+    public Like( String property, String value ) {
         this( property, value, MatchMode.ANYWHERE, Logic.AND );
     }
 
@@ -47,7 +47,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
      * @param property 属性
      * @param value    值
      */
-    public LikeExpression( String property, String value, Logic logic ) {
+    public Like( String property, String value, Logic logic ) {
         this( property, value, MatchMode.ANYWHERE, logic );
     }
 
@@ -57,7 +57,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
      * @param value    值
      * @param escape   转移字符
      */
-    public LikeExpression( String property, String value, Character escape ) {
+    public Like( String property, String value, Character escape ) {
         this( property, value, MatchMode.ANYWHERE, escape, Logic.AND );
     }
 
@@ -67,7 +67,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
      * @param value     值
      * @param matchMode 匹配模式
      */
-    public LikeExpression( String property, String value, MatchMode matchMode ) {
+    public Like( String property, String value, MatchMode matchMode ) {
         this( property, value, matchMode, Logic.AND );
     }
 
@@ -78,7 +78,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
      * @param escape   转移字符
      * @param logic    逻辑操作
      */
-    public LikeExpression( String property, String value, Character escape, Logic logic ) {
+    public Like( String property, String value, Character escape, Logic logic ) {
         this( property, value, MatchMode.ANYWHERE, escape, logic );
     }
 
@@ -89,7 +89,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
      * @param matchMode 匹配模式
      * @param logic     逻辑操作
      */
-    public LikeExpression( String property, String value, MatchMode matchMode, Logic logic ) {
+    public Like( String property, String value, MatchMode matchMode, Logic logic ) {
         this( property, value, matchMode, null, logic );
     }
 
@@ -100,7 +100,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
      * @param matchMode 匹配模式
      * @param escape    转移字符
      */
-    public LikeExpression( String property, String value, MatchMode matchMode, Character escape ) {
+    public Like( String property, String value, MatchMode matchMode, Character escape ) {
         this( property, value, matchMode, escape, Logic.AND );
     }
 
@@ -111,7 +111,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
      * @param property 属性
      * @param value    值
      */
-    public LikeExpression( Criteria<T> criteria, String property, String value ) {
+    public Like( Criteria<T> criteria, String property, String value ) {
         this( criteria, property, value, MatchMode.ANYWHERE, Logic.AND );
     }
 
@@ -122,7 +122,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
      * @param value    值
      * @param logic    逻辑操作
      */
-    public LikeExpression( Criteria<T> criteria, String property, String value, Logic logic ) {
+    public Like( Criteria<T> criteria, String property, String value, Logic logic ) {
         this( criteria, property, value, MatchMode.ANYWHERE, logic );
     }
 
@@ -133,7 +133,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
      * @param value    值
      * @param escape   转移字符
      */
-    public LikeExpression( Criteria<T> criteria, String property, String value, Character escape ) {
+    public Like( Criteria<T> criteria, String property, String value, Character escape ) {
         this( criteria, property, value, MatchMode.ANYWHERE, escape, Logic.AND );
     }
 
@@ -144,7 +144,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
      * @param value     值
      * @param matchMode 匹配模式
      */
-    public LikeExpression( Criteria<T> criteria, String property, String value, MatchMode matchMode ) {
+    public Like( Criteria<T> criteria, String property, String value, MatchMode matchMode ) {
         this( criteria, property, value, matchMode, Logic.AND );
     }
 
@@ -156,7 +156,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
      * @param escape   转移字符
      * @param logic    逻辑操作
      */
-    public LikeExpression( Criteria<T> criteria, String property, String value, Character escape, Logic logic ) {
+    public Like( Criteria<T> criteria, String property, String value, Character escape, Logic logic ) {
         this( criteria, property, value, MatchMode.ANYWHERE, escape, logic );
     }
 
@@ -167,7 +167,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
      * @param value     值
      * @param matchMode 匹配模式
      */
-    public LikeExpression( Criteria<T> criteria, String property, String value, MatchMode matchMode, Logic logic ) {
+    public Like( Criteria<T> criteria, String property, String value, MatchMode matchMode, Logic logic ) {
         this( criteria, property, value, matchMode, null, logic );
     }
 
@@ -179,7 +179,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
      * @param matchMode 匹配模式
      * @param escape    转移字符
      */
-    public LikeExpression( Criteria<T> criteria, String property, String value, MatchMode matchMode, Character escape ) {
+    public Like( Criteria<T> criteria, String property, String value, MatchMode matchMode, Character escape ) {
         this( criteria, property, value, matchMode, escape, Logic.AND );
     }
 
@@ -191,7 +191,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
      * @param escape    转移字符
      * @param logic     逻辑操作
      */
-    public LikeExpression( String property, String value, MatchMode matchMode, Character escape, Logic logic ) {
+    public Like( String property, String value, MatchMode matchMode, Character escape, Logic logic ) {
         this.property = property;
         this.value = value;
         this.logic = logic;
@@ -209,7 +209,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
      * @param escape    转移字符
      * @param logic     逻辑操作
      */
-    public LikeExpression( Criteria<T> criteria, String property, String value, MatchMode matchMode, Character escape, Logic logic ) {
+    public Like( Criteria<T> criteria, String property, String value, MatchMode matchMode, Character escape, Logic logic ) {
         this.criteria = criteria;
         this.property = property;
         this.value = value;
@@ -221,7 +221,7 @@ public class LikeExpression<T> extends AbstractExpression<T> {
 
     @Override
     public String getSqlSegment() {
-        StringBuffer buffer = new StringBuffer( 60 );
+        StringBuilder buffer = new StringBuilder( 60 );
         String placeholder = StringUtil.nvl( defaultPlaceholder( matchMode.getSqlSegment( value.toString() ) ), "" );
         Column column = getColumn();
         if ( column == null ) {

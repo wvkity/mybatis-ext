@@ -15,7 +15,7 @@ import java.util.Optional;
  * 属性值相等条件类
  * @author DT
  */
-public class PropertyEqualExpression<T> extends AbstractExpression<T> {
+public class PropertyEqual<T> extends AbstractExpression<T> {
 
     private static final long serialVersionUID = -2062164176332255718L;
 
@@ -37,7 +37,7 @@ public class PropertyEqualExpression<T> extends AbstractExpression<T> {
      * @param other         其他条件对象
      * @param otherProperty 其他条件对象属性
      */
-    public PropertyEqualExpression( String property, Criteria<?> other, String otherProperty ) {
+    public PropertyEqual( String property, Criteria<?> other, String otherProperty ) {
         this( property, other, otherProperty, Logic.AND );
     }
 
@@ -48,7 +48,7 @@ public class PropertyEqualExpression<T> extends AbstractExpression<T> {
      * @param otherProperty 其他条件对象属性
      * @param logic         逻辑操作
      */
-    public PropertyEqualExpression( String property, Criteria<?> other, String otherProperty, Logic logic ) {
+    public PropertyEqual( String property, Criteria<?> other, String otherProperty, Logic logic ) {
         this.property = property;
         this.other = other;
         this.otherProperty = otherProperty;
@@ -63,7 +63,7 @@ public class PropertyEqualExpression<T> extends AbstractExpression<T> {
      * @param other         其他条件对象
      * @param otherProperty 其他条件对象属性
      */
-    public PropertyEqualExpression( Criteria<T> criteria, String property, Criteria<?> other, String otherProperty ) {
+    public PropertyEqual( Criteria<T> criteria, String property, Criteria<?> other, String otherProperty ) {
         this( criteria, property, other, otherProperty, Logic.AND );
     }
 
@@ -75,7 +75,7 @@ public class PropertyEqualExpression<T> extends AbstractExpression<T> {
      * @param otherProperty 其他条件对象属性
      * @param logic         逻辑操作
      */
-    public PropertyEqualExpression( Criteria<T> criteria, String property, Criteria<?> other, String otherProperty, Logic logic ) {
+    public PropertyEqual( Criteria<T> criteria, String property, Criteria<?> other, String otherProperty, Logic logic ) {
         this.criteria = criteria;
         this.property = property;
         this.other = other;
@@ -96,7 +96,7 @@ public class PropertyEqualExpression<T> extends AbstractExpression<T> {
         String realColumn = Optional.ofNullable( column ).map( Column::getColumn ).orElse( this.property );
         String otherRealColumn = Optional.ofNullable( otherColumn ).map( Column::getColumn ).orElse( this.otherProperty );
         if ( column != null && otherColumn != null ) {
-            StringBuffer buffer = new StringBuffer( 40 );
+            StringBuilder buffer = new StringBuilder( 40 );
             buffer.append( " " );
             buffer.append( logic.getSqlSegment() );
             buffer.append( " " );

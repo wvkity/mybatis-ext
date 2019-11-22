@@ -9,7 +9,7 @@ import com.wkit.lost.mybatis.core.Operator;
  * @param <T> 泛型类型
  * @author DT
  */
-public class SimpleExpression<T> extends AbstractExpression<T> {
+public class Simple<T> extends AbstractExpression<T> {
 
     private static final long serialVersionUID = 1464702377691845445L;
 
@@ -18,7 +18,7 @@ public class SimpleExpression<T> extends AbstractExpression<T> {
      * @param property 属性
      * @param value    值
      */
-    public SimpleExpression( String property, Object value ) {
+    public Simple( String property, Object value ) {
         this( property, value, Operator.EQ, Logic.AND );
     }
 
@@ -28,7 +28,7 @@ public class SimpleExpression<T> extends AbstractExpression<T> {
      * @param value    值
      * @param logic    逻辑操作
      */
-    public SimpleExpression( String property, Object value, Logic logic ) {
+    public Simple( String property, Object value, Logic logic ) {
         this( property, value, Operator.EQ, logic );
     }
 
@@ -38,7 +38,7 @@ public class SimpleExpression<T> extends AbstractExpression<T> {
      * @param value    值
      * @param operator 操作类型
      */
-    public SimpleExpression( String property, Object value, Operator operator ) {
+    public Simple( String property, Object value, Operator operator ) {
         this( property, value, operator, Logic.AND );
     }
 
@@ -49,7 +49,7 @@ public class SimpleExpression<T> extends AbstractExpression<T> {
      * @param operator 操作类型
      * @param logic    逻辑操作
      */
-    public SimpleExpression( String property, Object value, Operator operator, Logic logic ) {
+    public Simple( String property, Object value, Operator operator, Logic logic ) {
         this.operator = operator;
         this.logic = logic;
         this.property = property;
@@ -62,7 +62,7 @@ public class SimpleExpression<T> extends AbstractExpression<T> {
      * @param property 属性
      * @param value    值
      */
-    public SimpleExpression( Criteria<T> criteria, String property, Object value ) {
+    public Simple( Criteria<T> criteria, String property, Object value ) {
         this( criteria, property, value, Operator.EQ, Logic.AND );
     }
 
@@ -73,7 +73,7 @@ public class SimpleExpression<T> extends AbstractExpression<T> {
      * @param value    值
      * @param logic    逻辑操作
      */
-    public SimpleExpression( Criteria<T> criteria, String property, Object value, Logic logic ) {
+    public Simple( Criteria<T> criteria, String property, Object value, Logic logic ) {
         this( criteria, property, value, Operator.EQ, logic );
     }
 
@@ -84,7 +84,7 @@ public class SimpleExpression<T> extends AbstractExpression<T> {
      * @param value    值
      * @param operator 操作类型
      */
-    public SimpleExpression( Criteria<T> criteria, String property, Object value, Operator operator ) {
+    public Simple( Criteria<T> criteria, String property, Object value, Operator operator ) {
         this( criteria, property, value, operator, Logic.AND );
     }
 
@@ -96,7 +96,7 @@ public class SimpleExpression<T> extends AbstractExpression<T> {
      * @param operator 操作类型
      * @param logic    逻辑操作
      */
-    public SimpleExpression( Criteria<T> criteria, String property, Object value, Operator operator, Logic logic ) {
+    public Simple( Criteria<T> criteria, String property, Object value, Operator operator, Logic logic ) {
         this.operator = operator;
         this.logic = logic;
         this.property = property;

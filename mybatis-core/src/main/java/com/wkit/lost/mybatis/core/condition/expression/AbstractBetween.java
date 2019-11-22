@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
  */
 @Accessors( chain = true )
 @SuppressWarnings( "serial" )
-public abstract class AbstractBetweenExpression<T> extends AbstractExpression<T> {
+public abstract class AbstractBetween<T> extends AbstractExpression<T> {
 
     /**
      * 开始值

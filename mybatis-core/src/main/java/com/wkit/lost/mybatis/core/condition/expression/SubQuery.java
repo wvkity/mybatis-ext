@@ -9,11 +9,11 @@ import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.utils.StringUtil;
 
 /**
- * 子查询条件类
+ * 子查询条件
  * @param <T> 泛型类型
  * @author DT
  */
-public class SubQueryExpression<T> extends AbstractExpression<T> {
+public class SubQuery<T> extends AbstractExpression<T> {
 
     private static final long serialVersionUID = -1824405347671875372L;
 
@@ -26,7 +26,7 @@ public class SubQueryExpression<T> extends AbstractExpression<T> {
      * 构造方法
      * @param subCriteria 子查询对象
      */
-    public SubQueryExpression( SubCriteria<?> subCriteria ) {
+    public SubQuery( SubCriteria<?> subCriteria ) {
         this( null, subCriteria, Operator.EQ, Logic.AND );
     }
 
@@ -35,7 +35,7 @@ public class SubQueryExpression<T> extends AbstractExpression<T> {
      * @param property    属性
      * @param subCriteria 子查询对象
      */
-    public SubQueryExpression( String property, SubCriteria<?> subCriteria ) {
+    public SubQuery( String property, SubCriteria<?> subCriteria ) {
         this( property, subCriteria, Operator.EQ, Logic.AND );
     }
 
@@ -44,7 +44,7 @@ public class SubQueryExpression<T> extends AbstractExpression<T> {
      * @param subCriteria 子查询对象
      * @param logic       逻辑操作
      */
-    public SubQueryExpression( SubCriteria<?> subCriteria, Logic logic ) {
+    public SubQuery( SubCriteria<?> subCriteria, Logic logic ) {
         this( null, subCriteria, Operator.EQ, logic );
     }
 
@@ -54,7 +54,7 @@ public class SubQueryExpression<T> extends AbstractExpression<T> {
      * @param subCriteria 子查询对象
      * @param logic       逻辑操作
      */
-    public SubQueryExpression( String property, SubCriteria<?> subCriteria, Logic logic ) {
+    public SubQuery( String property, SubCriteria<?> subCriteria, Logic logic ) {
         this( property, subCriteria, Operator.EQ, logic );
     }
 
@@ -64,7 +64,7 @@ public class SubQueryExpression<T> extends AbstractExpression<T> {
      * @param subCriteria 子查询对象
      * @param operator    操作类型
      */
-    public SubQueryExpression( String property, SubCriteria<?> subCriteria, Operator operator ) {
+    public SubQuery( String property, SubCriteria<?> subCriteria, Operator operator ) {
         this( property, subCriteria, operator, Logic.AND );
     }
 
@@ -75,7 +75,7 @@ public class SubQueryExpression<T> extends AbstractExpression<T> {
      * @param operator    操作类型
      * @param logic       逻辑操作
      */
-    public SubQueryExpression( String property, SubCriteria<?> subCriteria, Operator operator, Logic logic ) {
+    public SubQuery( String property, SubCriteria<?> subCriteria, Operator operator, Logic logic ) {
         this.operator = operator;
         this.logic = logic;
         this.property = property;
@@ -87,7 +87,7 @@ public class SubQueryExpression<T> extends AbstractExpression<T> {
      * @param criteria    查询对象
      * @param subCriteria 子查询对象
      */
-    public SubQueryExpression( Criteria<T> criteria, SubCriteria<?> subCriteria ) {
+    public SubQuery( Criteria<T> criteria, SubCriteria<?> subCriteria ) {
         this( criteria, null, subCriteria, Operator.EQ, Logic.AND );
     }
 
@@ -97,7 +97,7 @@ public class SubQueryExpression<T> extends AbstractExpression<T> {
      * @param property    属性
      * @param subCriteria 子查询对象
      */
-    public SubQueryExpression( Criteria<T> criteria, String property, SubCriteria<?> subCriteria ) {
+    public SubQuery( Criteria<T> criteria, String property, SubCriteria<?> subCriteria ) {
         this( criteria, property, subCriteria, Operator.EQ, Logic.AND );
     }
 
@@ -107,7 +107,7 @@ public class SubQueryExpression<T> extends AbstractExpression<T> {
      * @param subCriteria 子查询对象
      * @param logic       逻辑操作
      */
-    public SubQueryExpression( Criteria<T> criteria, SubCriteria<?> subCriteria, Logic logic ) {
+    public SubQuery( Criteria<T> criteria, SubCriteria<?> subCriteria, Logic logic ) {
         this( criteria, null, subCriteria, Operator.EQ, logic );
     }
 
@@ -118,7 +118,7 @@ public class SubQueryExpression<T> extends AbstractExpression<T> {
      * @param subCriteria 子查询对象
      * @param logic       逻辑操作
      */
-    public SubQueryExpression( Criteria<T> criteria, String property, SubCriteria<?> subCriteria, Logic logic ) {
+    public SubQuery( Criteria<T> criteria, String property, SubCriteria<?> subCriteria, Logic logic ) {
         this( criteria, property, subCriteria, Operator.EQ, logic );
     }
 
@@ -129,7 +129,7 @@ public class SubQueryExpression<T> extends AbstractExpression<T> {
      * @param subCriteria 子查询对象
      * @param operator    操作类型
      */
-    public SubQueryExpression( Criteria<T> criteria, String property, SubCriteria<?> subCriteria, Operator operator ) {
+    public SubQuery( Criteria<T> criteria, String property, SubCriteria<?> subCriteria, Operator operator ) {
         this( criteria, property, subCriteria, operator, Logic.AND );
     }
 
@@ -141,7 +141,7 @@ public class SubQueryExpression<T> extends AbstractExpression<T> {
      * @param operator    操作类型
      * @param logic       逻辑操作
      */
-    public SubQueryExpression( Criteria<T> criteria, String property, SubCriteria<?> subCriteria, Operator operator, Logic logic ) {
+    public SubQuery( Criteria<T> criteria, String property, SubCriteria<?> subCriteria, Operator operator, Logic logic ) {
         this.operator = operator;
         this.logic = logic;
         this.property = property;
@@ -162,7 +162,7 @@ public class SubQueryExpression<T> extends AbstractExpression<T> {
             column = getColumn();
         }
         if ( column != null || ( operator == Operator.EXISTS || operator == Operator.NOT_EXISTS ) ) {
-            StringBuffer buffer = new StringBuffer( 100 );
+            StringBuilder buffer = new StringBuilder( 100 );
             buffer.append( " " ).append( logic.getSqlSegment() );
             if ( column != null ) {
                 if ( criteria.isEnableAlias() ) {

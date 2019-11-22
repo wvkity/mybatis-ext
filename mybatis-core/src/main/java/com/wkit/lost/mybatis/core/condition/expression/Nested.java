@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * 嵌套条件
  * @param <T> 泛型类型
  */
-public class NestedExpression<T> extends AbstractExpression<T> {
+public class Nested<T> extends AbstractExpression<T> {
 
     private static final long serialVersionUID = -6089868985393017077L;
 
@@ -31,7 +31,7 @@ public class NestedExpression<T> extends AbstractExpression<T> {
      * 构造方法
      * @param conditions 条件集合
      */
-    public NestedExpression( Collection<Criterion<?>> conditions ) {
+    public Nested( Collection<Criterion<?>> conditions ) {
         this( Logic.AND, conditions );
     }
 
@@ -40,7 +40,7 @@ public class NestedExpression<T> extends AbstractExpression<T> {
      * @param conditions 条件集合
      * @param logic      逻辑操作
      */
-    public NestedExpression( Logic logic, Collection<Criterion<?>> conditions ) {
+    public Nested( Logic logic, Collection<Criterion<?>> conditions ) {
         this.logic = logic;
         this.add( conditions );
     }
@@ -50,7 +50,7 @@ public class NestedExpression<T> extends AbstractExpression<T> {
      * @param criteria   查询对象
      * @param conditions 条件
      */
-    public NestedExpression( Criteria<T> criteria, Collection<Criterion<?>> conditions ) {
+    public Nested( Criteria<T> criteria, Collection<Criterion<?>> conditions ) {
         this( criteria, Logic.AND, conditions );
     }
 
@@ -60,7 +60,7 @@ public class NestedExpression<T> extends AbstractExpression<T> {
      * @param logic      逻辑操作
      * @param conditions 条件集合
      */
-    public NestedExpression( Criteria<T> criteria, Logic logic, Collection<Criterion<?>> conditions ) {
+    public Nested( Criteria<T> criteria, Logic logic, Collection<Criterion<?>> conditions ) {
         this.logic = logic;
         this.setCriteria( criteria );
         this.add( conditions );
@@ -72,7 +72,7 @@ public class NestedExpression<T> extends AbstractExpression<T> {
      * @param conditions 条件对象数组
      * @return 当前对象
      */
-    public NestedExpression<T> add( Criterion<?>... conditions ) {
+    public Nested<T> add( Criterion<?>... conditions ) {
         return add( ArrayUtil.toList( conditions ) );
     }
 
@@ -81,7 +81,7 @@ public class NestedExpression<T> extends AbstractExpression<T> {
      * @param conditions 条件对象集合
      * @return 当前对象
      */
-    public NestedExpression<T> add( Collection<Criterion<?>> conditions ) {
+    public Nested<T> add( Collection<Criterion<?>> conditions ) {
         return add( this.criteria, conditions );
     }
 
@@ -91,7 +91,7 @@ public class NestedExpression<T> extends AbstractExpression<T> {
      * @param conditions 条件对象数组
      * @return 当前对象
      */
-    public NestedExpression<T> add( Criteria<T> criteria, Criterion<?>... conditions ) {
+    public Nested<T> add( Criteria<T> criteria, Criterion<?>... conditions ) {
         return add( criteria, Arrays.asList( conditions ) );
     }
 
@@ -101,7 +101,7 @@ public class NestedExpression<T> extends AbstractExpression<T> {
      * @param conditions 条件对象集合
      * @return 当前对象
      */
-    public NestedExpression<T> add( Criteria<T> criteria, Collection<Criterion<?>> conditions ) {
+    public Nested<T> add( Criteria<T> criteria, Collection<Criterion<?>> conditions ) {
         Criteria<T> realCriteria = criteria == null ? getCriteria() : criteria;
         if ( CollectionUtil.hasElement( conditions ) ) {
             this.conditions.addAll(

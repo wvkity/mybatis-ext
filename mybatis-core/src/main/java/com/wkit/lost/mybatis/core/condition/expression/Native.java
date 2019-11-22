@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
  */
 @Accessors( chain = true )
 @NoArgsConstructor
-public class NativeExpression<T> extends AbstractExpression<T> {
+public class Native<T> extends AbstractExpression<T> {
 
     private static final long serialVersionUID = 6499182721850306850L;
 
@@ -28,7 +28,7 @@ public class NativeExpression<T> extends AbstractExpression<T> {
      * 构造方法
      * @param sql SQL片段
      */
-    public NativeExpression( String sql ) {
+    public Native( String sql ) {
         this.sql = sql;
     }
 

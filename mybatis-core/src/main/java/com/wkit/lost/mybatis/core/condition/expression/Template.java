@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * @author DT
  */
 @Accessors( chain = true )
-public class TemplateExpression<T> extends AbstractExpression<T> {
+public class Template<T> extends AbstractExpression<T> {
 
     private static final long serialVersionUID = 178077267075555472L;
 
@@ -45,7 +45,7 @@ public class TemplateExpression<T> extends AbstractExpression<T> {
      * @param property 属性
      * @param value    值
      */
-    public TemplateExpression( String template, String property, Object value ) {
+    public Template( String template, String property, Object value ) {
         this( template, Logic.AND, property, value );
     }
 
@@ -56,7 +56,7 @@ public class TemplateExpression<T> extends AbstractExpression<T> {
      * @param property 属性
      * @param value    值
      */
-    public TemplateExpression( Criteria<T> criteria, String template, String property, Object value ) {
+    public Template( Criteria<T> criteria, String template, String property, Object value ) {
         this( criteria, template, Logic.AND, property, value );
     }
 
@@ -66,7 +66,7 @@ public class TemplateExpression<T> extends AbstractExpression<T> {
      * @param property 属性
      * @param values   值
      */
-    public TemplateExpression( String template, String property, Collection<Object> values ) {
+    public Template( String template, String property, Collection<Object> values ) {
         this( template, Logic.AND, property, values );
     }
 
@@ -77,7 +77,7 @@ public class TemplateExpression<T> extends AbstractExpression<T> {
      * @param property 属性
      * @param values   值
      */
-    public TemplateExpression( Criteria<T> criteria, String template, String property, Collection<Object> values ) {
+    public Template( Criteria<T> criteria, String template, String property, Collection<Object> values ) {
         this( criteria, template, Logic.AND, property, values );
     }
 
@@ -88,7 +88,7 @@ public class TemplateExpression<T> extends AbstractExpression<T> {
      * @param property 属性
      * @param value    值
      */
-    public TemplateExpression( String template, Logic logic, String property, Object value ) {
+    public Template( String template, Logic logic, String property, Object value ) {
         this.property = property;
         this.value = value;
         this.template = template;
@@ -103,7 +103,7 @@ public class TemplateExpression<T> extends AbstractExpression<T> {
      * @param property 属性
      * @param value    值
      */
-    public TemplateExpression( Criteria<T> criteria, String template, Logic logic, String property, Object value ) {
+    public Template( Criteria<T> criteria, String template, Logic logic, String property, Object value ) {
         this.criteria = criteria;
         this.property = property;
         this.value = value;
@@ -118,7 +118,7 @@ public class TemplateExpression<T> extends AbstractExpression<T> {
      * @param property 属性
      * @param values   值
      */
-    public TemplateExpression( String template, Logic logic, String property, Collection<Object> values ) {
+    public Template( String template, Logic logic, String property, Collection<Object> values ) {
         this.property = property;
         this.values = values;
         this.template = template;
@@ -133,7 +133,7 @@ public class TemplateExpression<T> extends AbstractExpression<T> {
      * @param property 属性
      * @param values   值
      */
-    public TemplateExpression( Criteria<T> criteria, String template, Logic logic, String property, Collection<Object> values ) {
+    public Template( Criteria<T> criteria, String template, Logic logic, String property, Collection<Object> values ) {
         this.criteria = criteria;
         this.property = property;
         this.values = values;
@@ -144,7 +144,7 @@ public class TemplateExpression<T> extends AbstractExpression<T> {
     @Override
     public String getSqlSegment() {
         if ( StringUtil.hasText( template ) ) {
-            StringBuffer buffer = new StringBuffer( 100 );
+            StringBuilder buffer = new StringBuilder( 100 );
             Column column = getColumn();
             String realColumnName = Optional.ofNullable( column ).map( Column::getColumn ).orElse( this.property );
             String alias = criteria.getAlias();
@@ -168,7 +168,7 @@ public class TemplateExpression<T> extends AbstractExpression<T> {
     }
 
     @Override
-    public TemplateExpression<T> setLogic( Logic logic ) {
+    public Template<T> setLogic( Logic logic ) {
         // 针对exactTemplate方法
         if ( this.logic != Logic.NORMAL ) {
             this.logic = logic;
