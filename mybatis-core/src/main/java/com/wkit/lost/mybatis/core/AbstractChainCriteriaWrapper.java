@@ -94,8 +94,8 @@ public abstract class AbstractChainCriteriaWrapper<T, Context extends AbstractCh
                         "Check to see if the attribute exists or is decorated using the @transient annotation." ) );*/
         Column column = this.columnMappingCache.get( property );
         if ( column == null ) {
-            log.warn( "The field mapping information for the entity class cannot be found based on the `" + property + "` attribute. " +
-                    "Check to see if the attribute exists or is decorated using the @transient annotation." );
+            log.warn( "The field mapping information for the entity class({}) cannot be found based on the `{}` attribute. " +
+                    "Check to see if the attribute exists or is decorated using the @transient annotation.", this.entity.getCanonicalName(), property );
         }
         return column;
     }

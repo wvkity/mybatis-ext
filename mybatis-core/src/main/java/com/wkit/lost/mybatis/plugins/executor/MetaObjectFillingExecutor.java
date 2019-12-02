@@ -58,7 +58,8 @@ public class MetaObjectFillingExecutor {
      */
     private boolean filter( MappedStatement statement, Object parameterObject ) {
         SqlCommandType exec = statement.getSqlCommandType();
-        return ( exec == SqlCommandType.INSERT || exec == SqlCommandType.UPDATE ) && parameterObject != null && !( PrimitiveRegistry.isPrimitiveOrWrapper( parameterObject ) || parameterObject.getClass() == String.class );
+        return ( exec == SqlCommandType.INSERT || exec == SqlCommandType.UPDATE ) && parameterObject != null 
+                && !( PrimitiveRegistry.isPrimitiveOrWrapper( parameterObject ) || parameterObject.getClass() == String.class );
     }
 
     /**
@@ -125,7 +126,8 @@ public class MetaObjectFillingExecutor {
 
         MetaObject metaObject = statement.getConfiguration().newMetaObject( parameter );
         // 保存操作填充主键值
-        MyBatisCustomConfiguration customConfiguration = MyBatisConfigCache.getCustomConfiguration( statement.getConfiguration() );
+        MyBatisCustomConfiguration customConfiguration = 
+                MyBatisConfigCache.getCustomConfiguration( statement.getConfiguration() );
         if ( isInsert && table.getPrimaryKey() != null ) {
             MetaObject realMetaObject = null;
             Column primaryKey = table.getPrimaryKey();
@@ -164,7 +166,8 @@ public class MetaObjectFillingExecutor {
             // 如果是逻辑删除操作,将逻辑删除标识值填充到元对象中
             Column logicalDeletionColumn = table.getLogicalDeletionColumn();
             if ( logicalDeletionColumn == null ) {
-                throw new MyBatisException( "The `" + table.getEntity().getName() + "` entity class currently does not have a logical deletion property" );
+                throw new MyBatisException( "The `" + table.getEntity().getName() + "` entity class currently does not " +
+                        "have a logical deletion property" );
             }
             Class<?> javaType = logicalDeletionColumn.getJavaType();
             Object logicDeleteValue = convert( javaType, logicalDeletionColumn.getLogicDeleteValue() );
@@ -212,7 +215,8 @@ public class MetaObjectFillingExecutor {
                         criteriaInstance.add( Restrictions.eq( property, logicNotDeleteValue ) );
                         metaObject.setValue( Constants.PARAM_ENTITY, table.getEntity().getDeclaredConstructor().newInstance() );
                     } catch ( Exception e ) {
-                        throw new MyBatisException( "Failed to create an instance based on the `" + table.getEntity().getName() + "` class", e );
+                        throw new MyBatisException( "Failed to create an instance based on the `" 
+                                + table.getEntity().getName() + "` class", e );
                     }
                 }
             }

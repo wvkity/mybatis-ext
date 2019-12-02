@@ -5,12 +5,14 @@ import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.ColumnUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+@Log4j2
 @SuppressWarnings( "serial" )
 public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T> implements Modify<T, AbstractModifyCriteria<T>> {
 
@@ -55,8 +57,12 @@ public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T>
                 String property = entry.getKey();
                 Object value = entry.getValue();
                 Column column = searchColumn( property );
-                if ( column.isUpdatable() ) {
-                    modifyColumns.add( ColumnUtil.convertToCustomArg( column, defaultPlaceholder( value ), null, Operator.EQ, null ) );
+                if ( column != null && column.isUpdatable() ) {
+                    modifyColumns.add( ColumnUtil.convertToCustomArg( column, defaultPlaceholder( value ), 
+                            null, Operator.EQ, null ) );
+                } else {
+                    log.warn( "The corresponding table field information could not be found based on the `{}` " +
+                            "property, which was automatically ignored.", property );
                 }
             }
             return String.join( ", ", modifyColumns );

@@ -23,7 +23,6 @@ import net.sf.jsqlparser.statement.select.SubSelect;
 import net.sf.jsqlparser.statement.select.WithItem;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -43,20 +42,54 @@ public class OriginalSqlForCountParser {
     /**
      * 忽略聚合函数
      */
-    private final Set<String> IGNORE_FUNCTION_CACHE = Collections.synchronizedSet( new HashSet<>() );
+    private final Set<String> IGNORE_FUNCTION_CACHE = new HashSet<>();
     /**
      * 不通过聚合函数
      */
-    private final Set<String> NOT_THROUGH_FUNCTION_CACHE = Collections.synchronizedSet( new HashSet<>() );
+    private final Set<String> NOT_THROUGH_FUNCTION_CACHE = new HashSet<>();
 
     /**
      * 聚合函数缓存
      */
-    private final Set<String> AGGREGATE_FUNCTION_CACHE = Collections.synchronizedSet( new HashSet<>() );
+    private static final Set<String> AGGREGATE_FUNCTION_CACHE = new HashSet<>();
 
     static {
         TABLE_ALIAS = new Alias( "TABLE_RECORD" );
         TABLE_ALIAS.setUseAs( false );
+        // 聚合函数列表
+        AGGREGATE_FUNCTION_CACHE.add( "APPROX_COUNT_DISTINCT" );
+        AGGREGATE_FUNCTION_CACHE.add( "ARRAY_AGG" );
+        AGGREGATE_FUNCTION_CACHE.add( "AVG" );
+        AGGREGATE_FUNCTION_CACHE.add( "BIT_" );
+        AGGREGATE_FUNCTION_CACHE.add( "BOOL_" );
+        AGGREGATE_FUNCTION_CACHE.add( "CHECKSUM_AGG" );
+        AGGREGATE_FUNCTION_CACHE.add( "COLLECT" );
+        AGGREGATE_FUNCTION_CACHE.add( "CORR" );
+        AGGREGATE_FUNCTION_CACHE.add( "COUNT" );
+        AGGREGATE_FUNCTION_CACHE.add( "COVAR" );
+        AGGREGATE_FUNCTION_CACHE.add( "CUME_DIST" );
+        AGGREGATE_FUNCTION_CACHE.add( "DENSE_RANK" );
+        AGGREGATE_FUNCTION_CACHE.add( "EVERY" );
+        AGGREGATE_FUNCTION_CACHE.add( "FIRST" );
+        AGGREGATE_FUNCTION_CACHE.add( "GROUP" );
+        AGGREGATE_FUNCTION_CACHE.add( "JSON_" );
+        AGGREGATE_FUNCTION_CACHE.add( "LAST" );
+        AGGREGATE_FUNCTION_CACHE.add( "LISTAGG" );
+        AGGREGATE_FUNCTION_CACHE.add( "MAX" );
+        AGGREGATE_FUNCTION_CACHE.add( "MEDIAN" );
+        AGGREGATE_FUNCTION_CACHE.add( "MIN" );
+        AGGREGATE_FUNCTION_CACHE.add( "PERCENT_" );
+        AGGREGATE_FUNCTION_CACHE.add( "RANK" );
+        AGGREGATE_FUNCTION_CACHE.add( "REGR_" );
+        AGGREGATE_FUNCTION_CACHE.add( "SELECTIVITY" );
+        AGGREGATE_FUNCTION_CACHE.add( "STATS_" );
+        AGGREGATE_FUNCTION_CACHE.add( "STD" );
+        AGGREGATE_FUNCTION_CACHE.add( "STRING_AGG" );
+        AGGREGATE_FUNCTION_CACHE.add( "SUM" );
+        AGGREGATE_FUNCTION_CACHE.add( "SYS_OP_ZONE_ID" );
+        AGGREGATE_FUNCTION_CACHE.add( "SYS_XMLAGG" );
+        AGGREGATE_FUNCTION_CACHE.add( "VAR" );
+        AGGREGATE_FUNCTION_CACHE.add( "XMLAGG" );
     }
 
     /**
