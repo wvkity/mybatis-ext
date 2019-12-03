@@ -31,7 +31,7 @@ public interface Nested<Context> extends Segment, Serializable {
      * @param conditions 条件数组
      * @return 当前对象
      */
-    default Context nested( Criteria criteria, Criterion<?>... conditions ) {
+    default Context nested( Criteria<?> criteria, Criterion<?>... conditions ) {
         return nested( criteria, ArrayUtil.toList( conditions ) );
     }
     
@@ -50,7 +50,7 @@ public interface Nested<Context> extends Segment, Serializable {
      * @param conditions 条件集合
      * @return 当前对象
      */
-    Context nested( Criteria criteria, Collection<Criterion<?>> conditions );
+    Context nested( Criteria<?> criteria, Collection<Criterion<?>> conditions );
     
     /**
      * 嵌套条件
@@ -69,7 +69,7 @@ public interface Nested<Context> extends Segment, Serializable {
      * @param conditions 条件数组
      * @return 当前对象
      */
-    default Context orNested( Criteria criteria, Criterion<?>... conditions ) {
+    default Context orNested( Criteria<?> criteria, Criterion<?>... conditions ) {
         return orNested( criteria, ArrayUtil.toList( conditions ) );
     }
     
@@ -88,5 +88,5 @@ public interface Nested<Context> extends Segment, Serializable {
      * @param conditions 条件集合
      * @return 当前对象
      */
-    Context orNested( Criteria criteria, Collection<Criterion<?>> conditions );
+    Context orNested( Criteria<?> criteria, Collection<Criterion<?>> conditions );
 }

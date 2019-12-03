@@ -1,12 +1,13 @@
 package com.wkit.lost.mybatis.core;
 
-import com.wkit.lost.mybatis.utils.ArrayUtil;
-import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.core.function.Aggregation;
 import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.lambda.Property;
+import com.wkit.lost.mybatis.utils.ArrayUtil;
+import com.wkit.lost.mybatis.utils.CollectionUtil;
+import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 
 import java.util.Collection;
@@ -27,7 +28,6 @@ public class Order<T> implements Segment {
     /**
      * 查询对象
      */
-    @Getter
     private Criteria<T> criteria;
 
     /**
@@ -37,15 +37,23 @@ public class Order<T> implements Segment {
     private boolean func;
 
     /**
+     * 表别名
+     */
+    private String alias;
+
+    /**
      * 排序字段
      */
-    @Getter
     private Set<Column> columns = new LinkedHashSet<>( 8 );
+
+    /**
+     * 排序属性(字段)
+     */
+    private Set<String> properties = new LinkedHashSet<>( 8 );
 
     /**
      * 排序聚合函数
      */
-    @Getter
     private Set<Aggregation> aggregations = new LinkedHashSet<>( 8 );
 
     /**
@@ -61,6 +69,32 @@ public class Order<T> implements Segment {
     private Order( boolean ascending, boolean func ) {
         this.ascending = ascending;
         this.func = func;
+    }
+
+    /**
+     * 构造方法
+     * @param ascending  排序方式
+     * @param properties 属性集合
+     */
+    private Order( boolean ascending, List<String> properties ) {
+        this( ascending, false );
+        if ( CollectionUtil.hasElement( properties ) ) {
+            this.properties.addAll( properties.stream().filter( StringUtil::hasText ).collect( Collectors.toList() ) );
+        }
+    }
+
+    /**
+     * 构造方法
+     * @param alias      表别名
+     * @param ascending  排序方式
+     * @param properties 属性集合
+     */
+    private Order( String alias, boolean ascending, List<String> properties ) {
+        this( ascending, false );
+        this.alias = alias;
+        if ( CollectionUtil.hasElement( properties ) ) {
+            this.properties.addAll( properties.stream().filter( StringUtil::hasText ).collect( Collectors.toList() ) );
+        }
     }
 
     /**
@@ -99,7 +133,7 @@ public class Order<T> implements Segment {
      * @param <T>      泛型类型
      * @return 排序对象
      */
-    public static <T> Order ascFunc( Criteria<T> criteria, String... aliases ) {
+    public static <T> Order<T> ascFunc( Criteria<T> criteria, String... aliases ) {
         return ascFunc( criteria, ArrayUtil.toList( aliases ) );
     }
 
@@ -110,7 +144,7 @@ public class Order<T> implements Segment {
      * @param <T>      泛型类型
      * @return 排序对象
      */
-    public static <T> Order ascFunc( Criteria<T> criteria, List<String> aliases ) {
+    public static <T> Order<T> ascFunc( Criteria<T> criteria, List<String> aliases ) {
         if ( CollectionUtil.hasElement( aliases ) ) {
             return asc( aliases.stream().map( criteria::getFunction ).collect( Collectors.toList() ) );
         }
@@ -123,7 +157,7 @@ public class Order<T> implements Segment {
      * @param <T>          泛型类型
      * @return 排序对象
      */
-    public static <T> Order asc( Aggregation... aggregations ) {
+    public static <T> Order<T> asc( Aggregation... aggregations ) {
         return asc( ArrayUtil.toList( aggregations ) );
     }
 
@@ -133,7 +167,7 @@ public class Order<T> implements Segment {
      * @param <T>          泛型类型
      * @return 排序对象
      */
-    public static <T> Order asc( List<Aggregation> aggregations ) {
+    public static <T> Order<T> asc( List<Aggregation> aggregations ) {
         return new Order<>( true, aggregations );
     }
 
@@ -144,7 +178,7 @@ public class Order<T> implements Segment {
      * @return 排序对象
      */
     @SafeVarargs
-    public static <T> Order asc( Criteria<T> criteria, Property<T, ?>... properties ) {
+    public static <T> Order<T> asc( Criteria<T> criteria, Property<T, ?>... properties ) {
         return new Order<>( criteria, true, CriteriaUtil.transform( ArrayUtil.toList( properties ), criteria ) );
     }
 
@@ -154,7 +188,7 @@ public class Order<T> implements Segment {
      * @param properties 属性
      * @return 排序对象
      */
-    public static <T> Order asc( Criteria<T> criteria, String... properties ) {
+    public static <T> Order<T> asc( Criteria<T> criteria, String... properties ) {
         return asc( criteria, ArrayUtil.toList( properties ) );
     }
 
@@ -164,7 +198,7 @@ public class Order<T> implements Segment {
      * @param properties 属性
      * @return 排序对象
      */
-    public static <T> Order asc( Criteria<T> criteria, List<String> properties ) {
+    public static <T> Order<T> asc( Criteria<T> criteria, List<String> properties ) {
         return new Order<>( criteria, true, CriteriaUtil.transform( criteria, properties ) );
     }
 
@@ -175,7 +209,7 @@ public class Order<T> implements Segment {
      * @param <T>      泛型类型
      * @return 排序对象
      */
-    public static <T> Order descFunc( Criteria<T> criteria, String... aliases ) {
+    public static <T> Order<T> descFunc( Criteria<T> criteria, String... aliases ) {
         return descFunc( criteria, ArrayUtil.toList( aliases ) );
     }
 
@@ -186,7 +220,7 @@ public class Order<T> implements Segment {
      * @param <T>      泛型类型
      * @return 排序对象
      */
-    public static <T> Order descFunc( Criteria<T> criteria, List<String> aliases ) {
+    public static <T> Order<T> descFunc( Criteria<T> criteria, List<String> aliases ) {
         if ( CollectionUtil.hasElement( aliases ) ) {
             return desc( aliases.stream().map( criteria::getFunction ).collect( Collectors.toList() ) );
         }
@@ -199,7 +233,7 @@ public class Order<T> implements Segment {
      * @param <T>          泛型类型
      * @return 排序对象
      */
-    public static <T> Order desc( Aggregation... aggregations ) {
+    public static <T> Order<T> desc( Aggregation... aggregations ) {
         return desc( ArrayUtil.toList( aggregations ) );
     }
 
@@ -209,7 +243,7 @@ public class Order<T> implements Segment {
      * @param <T>          泛型类型
      * @return 排序对象
      */
-    public static <T> Order desc( List<Aggregation> aggregations ) {
+    public static <T> Order<T> desc( List<Aggregation> aggregations ) {
         return new Order<>( false, aggregations );
     }
 
@@ -220,7 +254,7 @@ public class Order<T> implements Segment {
      * @return 排序对象
      */
     @SafeVarargs
-    public static <T> Order desc( Criteria<T> criteria, Property<T, ?>... properties ) {
+    public static <T> Order<T> desc( Criteria<T> criteria, Property<T, ?>... properties ) {
         return new Order<>( criteria, false, CriteriaUtil.transform( ArrayUtil.toList( properties ), criteria ) );
     }
 
@@ -230,7 +264,7 @@ public class Order<T> implements Segment {
      * @param properties 属性
      * @return 排序对象
      */
-    public static <T> Order desc( Criteria<T> criteria, String... properties ) {
+    public static <T> Order<T> desc( Criteria<T> criteria, String... properties ) {
         return desc( criteria, ArrayUtil.toList( properties ) );
     }
 
@@ -240,7 +274,7 @@ public class Order<T> implements Segment {
      * @param properties 属性
      * @return 排序对象
      */
-    public static <T> Order desc( Criteria<T> criteria, List<String> properties ) {
+    public static <T> Order<T> desc( Criteria<T> criteria, List<String> properties ) {
         return new Order<>( criteria, false, CriteriaUtil.transform( criteria, properties ) );
     }
 
@@ -251,7 +285,7 @@ public class Order<T> implements Segment {
      * @param properties 属性
      * @return 排序对象
      */
-    public static <T> Order asc( String alias, Criteria<T> master, String... properties ) {
+    public static <T> Order<T> asc( String alias, Criteria<T> master, String... properties ) {
         return asc( master.searchForeign( alias ), ArrayUtil.toList( properties ) );
     }
 
@@ -263,7 +297,7 @@ public class Order<T> implements Segment {
      * @return 排序对象
      */
     @SafeVarargs
-    public static <T, E> Order asc( String alias, Criteria<T> master, Property<E, ?>... properties ) {
+    public static <T, E> Order<E> asc( String alias, Criteria<T> master, Property<E, ?>... properties ) {
         Criteria<E> criteria = master.searchForeign( alias );
         return new Order<>( criteria, true, CriteriaUtil.transform( ArrayUtil.toList( properties ), criteria ) );
     }
@@ -275,7 +309,7 @@ public class Order<T> implements Segment {
      * @param properties 属性
      * @return 排序对象
      */
-    public static <T> Order asc( String alias, Criteria<T> master, List<String> properties ) {
+    public static <T> Order<T> asc( String alias, Criteria<T> master, List<String> properties ) {
         return asc( master.searchForeign( alias ), properties );
     }
 
@@ -287,7 +321,7 @@ public class Order<T> implements Segment {
      * @return 排序对象
      */
     @SafeVarargs
-    public static <T, E> Order desc( String alias, Criteria<T> master, Property<E, ?>... properties ) {
+    public static <T, E> Order<E> desc( String alias, Criteria<T> master, Property<E, ?>... properties ) {
         Criteria<E> criteria = master.searchForeign( alias );
         return new Order<>( criteria, false, CriteriaUtil.transform( ArrayUtil.toList( properties ), criteria ) );
     }
@@ -299,7 +333,7 @@ public class Order<T> implements Segment {
      * @param properties 属性
      * @return 排序对象
      */
-    public static <T> Order desc( String alias, Criteria<T> master, String... properties ) {
+    public static <T> Order<T> desc( String alias, Criteria<T> master, String... properties ) {
         return desc( master.searchForeign( alias ), properties );
     }
 
@@ -310,12 +344,67 @@ public class Order<T> implements Segment {
      * @param properties 属性
      * @return 排序对象
      */
-    public static <T> Order desc( String alias, Criteria<T> master, List<String> properties ) {
+    public static <T> Order<T> desc( String alias, Criteria<T> master, List<String> properties ) {
         return desc( master.searchForeign( alias ), properties );
+    }
+
+    /**
+     * ASC排序
+     * @param properties 属性(字段)
+     * @param <T>        泛型类型
+     * @return 排序对象
+     */
+    public static <T> Order<T> asc( String... properties ) {
+        return new Order<>( true, ArrayUtil.toList( properties ) );
+    }
+
+    /**
+     * ASC排序
+     * @param alias      表别名
+     * @param properties 属性(字段)
+     * @param <T>        泛型类型
+     * @return 排序对象
+     */
+    public static <T> Order<T> aliasAsc( String alias, String... properties ) {
+        return new Order<>( alias, true, ArrayUtil.toList( properties ) );
+    }
+
+    /**
+     * DESC排序
+     * @param properties 属性(字段)
+     * @param <T>        泛型类型
+     * @return 排序对象
+     */
+    public static <T> Order<T> desc( String... properties ) {
+        return new Order<>( false, ArrayUtil.toList( properties ) );
+    }
+
+    /**
+     * DESC排序
+     * @param alias      表别名
+     * @param properties 属性(字段)
+     * @param <T>        泛型类型
+     * @return 排序对象
+     */
+    public static <T> Order<T> aliasDesc( String alias, String... properties ) {
+        return new Order<>( alias, false, ArrayUtil.toList( properties ) );
     }
 
     @Override
     public String getSqlSegment() {
+        String orderMode = ascending ? " ASC" : " DESC";
+        if ( this.isFunc() && CollectionUtil.hasElement( this.aggregations ) ) {
+            return this.aggregations.stream().map( function -> function.toOrderSqlSegment() + orderMode )
+                    .collect( Collectors.joining( ", " ) );
+        } else if ( CollectionUtil.hasElement( this.columns ) ) {
+            String realAlias = this.criteria != null && criteria.isEnableAlias() ? ( criteria.getAlias() + "." ) : "";
+            return this.columns.stream().map( column -> realAlias + column.getColumn() + orderMode )
+                    .collect( Collectors.joining( ", " ) );
+        } else if ( CollectionUtil.hasElement( this.properties ) ) {
+            String realAlias = StringUtil.hasText( this.alias ) ? ( this.alias + "." ) : "";
+            return this.properties.stream().map( column -> realAlias + column + orderMode )
+                    .collect( Collectors.joining( ", " ) );
+        }
         return "";
     }
 }

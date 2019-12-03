@@ -477,7 +477,7 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
     Aggregation getFunction( String alias );
 
     /**
-     * 检查是否存在条件
+     * 检查是否存在条件(包含WHERE/GROUP BY/HAVING/ORDER BY)
      * @return true: 是 , false: 否
      */
     boolean isHasCondition();

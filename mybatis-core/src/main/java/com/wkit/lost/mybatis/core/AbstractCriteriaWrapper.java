@@ -383,7 +383,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
                 }
                 // ForeignSubCriteria对象subTempTabAlias是临时表别名也是alias
                 if ( criteria instanceof ForeignSubCriteria ) {
-                    builder.append( " " ).append( ( ( ForeignSubCriteria ) criteria ).getTableSegment() )
+                    builder.append( " " ).append( ( ( ForeignSubCriteria<?> ) criteria ).getTableSegment() )
                             .append( " " ).append( foreignAlias );
                 } else {
                     if ( table != null ) {
@@ -768,8 +768,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public Context nested( Criteria criteria, Collection<Criterion<?>> conditions ) {
-        Nested expression = Restrictions.nested( criteria, conditions );
+    public Context nested( Criteria<?> criteria, Collection<Criterion<?>> conditions ) {
+        Nested<?> expression = Restrictions.nested( criteria, conditions );
         return add( expression );
     }
 
@@ -779,8 +779,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public Context orNested( Criteria criteria, Collection<Criterion<?>> conditions ) {
-        Nested expression = Restrictions.nested( criteria, Logic.OR, conditions );
+    public Context orNested( Criteria<?> criteria, Collection<Criterion<?>> conditions ) {
+        Nested<?> expression = Restrictions.nested( criteria, Logic.OR, conditions );
         return add( expression );
     }
     
@@ -1748,7 +1748,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
             for ( Segment segment : segments ) {
                 // 判断是否为条件对象
                 if ( segment instanceof Criterion ) {
-                    list.add( ( Criterion ) segment );
+                    list.add( ( Criterion<?> ) segment );
                 }
             }
             return list;

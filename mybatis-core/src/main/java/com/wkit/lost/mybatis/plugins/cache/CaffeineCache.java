@@ -7,7 +7,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Guava缓存
+ * Caffeine缓存
  * @author DT
  */
 public class CaffeineCache<K, V> implements Cache<K, V> {
