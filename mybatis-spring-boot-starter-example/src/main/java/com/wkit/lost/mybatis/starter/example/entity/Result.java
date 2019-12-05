@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.starter.example.entity;
 
+import com.wkit.lost.mybatis.annotation.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 /**
  * 成绩信息
  */
+@Table(catalog = "STUDENT_MANAGEMENT")
 @Data
 @EqualsAndHashCode
 @ToString

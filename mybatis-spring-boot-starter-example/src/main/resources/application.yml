@@ -8,11 +8,11 @@ server:
 spring:
   datasource:
     # MYSQL
-    #driver-class-name: com.mysql.cj.jdbc.Driver
-    #url: jdbc:mysql://localhost:3306/STUDENT_MANAGEMENT?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/STUDENT_MANAGEMENT?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     #url: jdbc:mysql://localhost:3306/MS_TEST?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-    #username: root
-    #password: "Love888*+"
+    username: root
+    password: "Love888*+"
     # ORACLE
     #driver-class-name: oracle.jdbc.OracleDriver
     #url: jdbc:oracle:thin:@192.168.61.111:1521:orcl
@@ -24,10 +24,10 @@ spring:
     #username: sa
     #password: "Love888*+"
     # postgres
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/MySchool
-    username: postgres
-    password: "Love888*+"
+    #driver-class-name: org.postgresql.Driver
+    #url: jdbc:postgresql://localhost:5432/MySchool
+    #username: postgres
+    #password: "Love888*+"
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       minimum-idle: 8

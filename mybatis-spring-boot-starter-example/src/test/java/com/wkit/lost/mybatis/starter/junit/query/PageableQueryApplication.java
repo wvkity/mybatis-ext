@@ -101,4 +101,13 @@ public class PageableQueryApplication extends RootTestRunner {
         List<StudentVo> result = studentService.list( studentCriteria );
         log.info( "查询结果：{}", result );
     }
+
+    @Test
+    @DisplayName( "测试分页查询2--常规分页" )
+    public void test2() {
+        List<StudentVo> result = studentService.list(
+                new Pager( 1, 10 ),
+                new CriteriaImpl<>(Student.class).desc( "id" ) );
+        log.info( "查询结果：{}", result );
+    }
 }

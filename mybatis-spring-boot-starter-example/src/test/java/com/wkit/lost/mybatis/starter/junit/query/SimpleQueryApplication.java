@@ -1,6 +1,7 @@
 package com.wkit.lost.mybatis.starter.junit.query;
 
 import com.wkit.lost.mybatis.core.CriteriaImpl;
+import com.wkit.lost.mybatis.core.Order;
 import com.wkit.lost.mybatis.starter.example.entity.Result;
 import com.wkit.lost.mybatis.starter.example.service.ResultService;
 import com.wkit.lost.mybatis.starter.example.vo.ResultVo;
@@ -19,23 +20,23 @@ public class SimpleQueryApplication extends RootTestRunner {
 
     @Test
     public void eqTest() {
-        CriteriaImpl<Result> resultCriteria = resultService.getCriteria("RS");
+        CriteriaImpl<Result> resultCriteria = resultService.getCriteria( "RS" );
         resultCriteria.eq( Result::getScore, 89 ).asc( "id" ).autoMappingColumnAlias();
         List<ResultVo> results = resultService.list( resultCriteria );
         log.info( "查询结果：{}", results );
     }
-    
+
     @Test
     public void neTest() {
-        CriteriaImpl<Result> resultCriteria = resultService.getCriteria("RS");
+        CriteriaImpl<Result> resultCriteria = resultService.getCriteria( "RS" );
         resultCriteria.ne( Result::getScore, 89 ).asc( "id" );
         List<ResultVo> results = resultService.list( resultCriteria.limit( 0, 10 ) );
         log.info( "查询结果：{}", results );
     }
-    
+
     @Test
     public void ltTest() {
-        CriteriaImpl<Result> resultCriteria = resultService.getCriteria("RS");
+        CriteriaImpl<Result> resultCriteria = resultService.getCriteria( "RS" );
         resultCriteria.lt( Result::getScore, 89 ).asc( "id" );
         List<ResultVo> results = resultService.list( resultCriteria.limit( 0, 10 ) );
         log.info( "查询结果：{}", results );
@@ -43,7 +44,7 @@ public class SimpleQueryApplication extends RootTestRunner {
 
     @Test
     public void leTest() {
-        CriteriaImpl<Result> resultCriteria = resultService.getCriteria("RS");
+        CriteriaImpl<Result> resultCriteria = resultService.getCriteria( "RS" );
         resultCriteria.le( Result::getScore, 89 ).asc( "id" );
         List<ResultVo> results = resultService.list( resultCriteria.limit( 0, 10 ) );
         log.info( "查询结果：{}", results );
@@ -51,7 +52,7 @@ public class SimpleQueryApplication extends RootTestRunner {
 
     @Test
     public void gtTest() {
-        CriteriaImpl<Result> resultCriteria = resultService.getCriteria("RS");
+        CriteriaImpl<Result> resultCriteria = resultService.getCriteria( "RS" );
         resultCriteria.gt( Result::getScore, 89 ).asc( "id" );
         List<ResultVo> results = resultService.list( resultCriteria.limit( 0, 10 ) );
         log.info( "查询结果：{}", results );
@@ -59,8 +60,12 @@ public class SimpleQueryApplication extends RootTestRunner {
 
     @Test
     public void geTest() {
-        CriteriaImpl<Result> resultCriteria = resultService.getCriteria("RS");
-        resultCriteria.ge( Result::getScore, 89 ).asc( "id" );
+        CriteriaImpl<Result> resultCriteria = resultService.getCriteria( "RS" );
+        resultCriteria.ge( Result::getScore, 89 )
+                .asc( "id" )
+                .desc( "score", "subjectId" )
+                .asc( "examDate" )
+                .addOrder( Order.aliasAsc( "RS", "STUDENT_ID" ) );
         List<ResultVo> results = resultService.list( resultCriteria.limit( 0, 10 ) );
         log.info( "查询结果：{}", results );
     }
