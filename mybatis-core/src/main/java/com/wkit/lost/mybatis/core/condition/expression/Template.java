@@ -154,7 +154,8 @@ public class Template<T> extends AbstractExpression<T> {
             if ( CollectionUtil.hasElement( this.values ) ) {
                 valueArg = values.stream()
                         .filter( Objects::nonNull )
-                        .map( value -> ArgumentUtil.fill( column, defaultPlaceholder( value ) ) ).collect( Collectors.joining( ", " ) );
+                        .map( value -> ArgumentUtil.fill( column, defaultPlaceholder( value ) ) )
+                        .collect( Collectors.joining( ", " ) );
             } else {
                 valueArg = ArgumentUtil.fill( column, defaultPlaceholder( value ) );
             }

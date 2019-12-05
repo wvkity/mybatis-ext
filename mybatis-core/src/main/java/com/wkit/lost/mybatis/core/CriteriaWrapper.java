@@ -16,8 +16,8 @@ import java.util.function.Function;
  */
 public interface CriteriaWrapper<T, Context, R> extends Criteria<T>, InstanceClone<Context>,
         Compare<Context, R>, Null<Context, R>, Range<Context, R>, IndistinctMatching<Context, R>,
-        Between<Context, R>, Customize<Context, R>, com.wkit.lost.mybatis.core.Nested<Context>, ForeignBuilder<T, Context, R>
-        , SubCriteriaBuilder<T>, ConditionBuilder<T, AbstractConditionManager<T>, R>,
+        Between<Context, R>, Customize<Context, R>, com.wkit.lost.mybatis.core.Nested<Context>, 
+        ForeignBuilder<T, Context, R>, SubCriteriaBuilder<T>, ConditionBuilder<T, AbstractConditionManager<T>, R>, 
         SubQueryCondition<T, Context, R> {
 
     /**
