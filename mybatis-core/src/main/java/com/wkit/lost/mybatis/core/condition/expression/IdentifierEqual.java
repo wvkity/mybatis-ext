@@ -61,6 +61,6 @@ public class IdentifierEqual<T> extends AbstractExpression<T> {
 
     @Override
     public Column getColumn() {
-        return Optional.ofNullable( EntityHandler.getTable( this.criteria.getEntity() ) ).map( Table::getPrimaryKey ).orElse( null );
+        return Optional.ofNullable( EntityHandler.getTable( this.criteria.getEntityClass() ) ).map( Table::getPrimaryKey ).orElse( null );
     }
 }

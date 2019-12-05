@@ -28,61 +28,49 @@ public class ForeignSubCriteria<T> extends ForeignCriteria<T> {
 
     /**
      * 构造方法
-     * @param subCriteria            子查询条件对象
-     * @param master                 主表查询对象
-     * @param foreign                连接方式
-     * @param parameterSequence      参数序列
-     * @param parameterValueMappings 参数值映射
+     * @param subCriteria 子查询条件对象
+     * @param master      主表查询对象
+     * @param foreign     连接方式
      */
-    public <E> ForeignSubCriteria( SubCriteria<T> subCriteria, AbstractQueryCriteria<E> master, Foreign foreign,
-                                   AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings ) {
-        this( subCriteria, null, master, foreign, parameterSequence, parameterValueMappings, null );
+    public <E> ForeignSubCriteria( SubCriteria<T> subCriteria, AbstractQueryCriteria<E> master, Foreign foreign ) {
+        this( subCriteria, null, master, foreign, null );
     }
 
     /**
      * 构造方法
-     * @param subCriteria            子查询条件对象
-     * @param reference              引用属性
-     * @param master                 主表查询对象
-     * @param foreign                连接方式
-     * @param parameterSequence      参数序列
-     * @param parameterValueMappings 参数值映射
+     * @param subCriteria 子查询条件对象
+     * @param reference   引用属性
+     * @param master      主表查询对象
+     * @param foreign     连接方式
      */
     public <E> ForeignSubCriteria( SubCriteria<T> subCriteria, String reference, AbstractQueryCriteria<E> master,
-                                   Foreign foreign, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings ) {
-        this( subCriteria, reference, master, foreign, parameterSequence, parameterValueMappings, null );
+                                   Foreign foreign ) {
+        this( subCriteria, reference, master, foreign, null );
     }
 
     /**
      * 构造方法
-     * @param subCriteria            子查询条件对象
-     * @param master                 主表查询对象
-     * @param foreign                连接方式
-     * @param parameterSequence      参数序列
-     * @param parameterValueMappings 参数值映射
-     * @param withClauses            条件
+     * @param subCriteria 子查询条件对象
+     * @param master      主表查询对象
+     * @param foreign     连接方式
+     * @param withClauses 条件
      */
     public <E> ForeignSubCriteria( SubCriteria<T> subCriteria, AbstractQueryCriteria<E> master, Foreign foreign,
-                                   AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings,
                                    Collection<Criterion<?>> withClauses ) {
-        this( subCriteria, null, master, foreign, parameterSequence, parameterValueMappings, withClauses );
+        this( subCriteria, null, master, foreign, withClauses );
     }
 
     /**
      * 构造方法
-     * @param subCriteria            子查询条件对象
-     * @param reference              引用属性
-     * @param master                 主表查询对象
-     * @param foreign                连接方式
-     * @param parameterSequence      参数序列
-     * @param parameterValueMappings 参数值映射
-     * @param withClauses            条件
+     * @param subCriteria 子查询条件对象
+     * @param reference   引用属性
+     * @param master      主表查询对象
+     * @param foreign     连接方式
+     * @param withClauses 条件
      */
     public <E> ForeignSubCriteria( SubCriteria<T> subCriteria, String reference, AbstractQueryCriteria<E> master,
-                                   Foreign foreign, AtomicInteger parameterSequence,
-                                   Map<String, Object> parameterValueMappings, Collection<Criterion<?>> withClauses ) {
-        super( null, subCriteria.getSubTempTabAlias(), reference, master, foreign,
-                parameterSequence, parameterValueMappings, withClauses );
+                                   Foreign foreign, Collection<Criterion<?>> withClauses ) {
+        super( null, subCriteria.getSubTempTabAlias(), reference, master, foreign, withClauses );
         this.subCriteria = subCriteria;
     }
 

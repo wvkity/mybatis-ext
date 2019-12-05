@@ -24,11 +24,10 @@ public abstract class CriteriaUtil {
      * @return 字段集合
      */
     public static <T> List<Column> transform( Criteria<T> criteria, Collection<String> properties ) {
-        return CollectionUtil.hasElement( properties ) ?
-                properties.stream()
-                        .filter( StringUtil::hasText )
-                        .map( criteria::searchColumn )
-                        .collect( Collectors.toList() ) : new ArrayList<>();
+        return CollectionUtil.hasElement( properties ) ? properties.stream()
+                .filter( StringUtil::hasText )
+                .map( criteria::searchColumn )
+                .collect( Collectors.toList() ) : new ArrayList<>();
     }
 
     /**
@@ -39,10 +38,9 @@ public abstract class CriteriaUtil {
      * @return 字段集合
      */
     public static <T> List<Column> transform( Collection<Property<T, ?>> properties, Criteria<T> criteria ) {
-        return CollectionUtil.hasElement( properties ) ?
-                properties.stream()
-                        .filter( Objects::nonNull )
-                        .map( criteria::searchColumn )
-                        .collect( Collectors.toList() ) : new ArrayList<>();
+        return CollectionUtil.hasElement( properties ) ? properties.stream()
+                .filter( Objects::nonNull )
+                .map( criteria::searchColumn )
+                .collect( Collectors.toList() ) : new ArrayList<>();
     }
 }

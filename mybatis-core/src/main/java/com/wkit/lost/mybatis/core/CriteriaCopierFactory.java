@@ -1,8 +1,5 @@
 package com.wkit.lost.mybatis.core;
 
-import com.wkit.lost.mybatis.core.CriteriaImpl;
-import com.wkit.lost.mybatis.core.ForeignCriteria;
-import com.wkit.lost.mybatis.core.SubCriteria;
 import net.sf.cglib.beans.BeanCopier;
 
 /**
@@ -33,7 +30,7 @@ public final class CriteriaCopierFactory {
      * @return 新实例
      */
     public static <T> CriteriaImpl<T> clone( CriteriaImpl<T> source ) {
-        CriteriaImpl<T> instance = new CriteriaImpl<>( source.getEntity() );
+        CriteriaImpl<T> instance = new CriteriaImpl<>( source.getEntityClass() );
         CRITERIA_IMPL_INSTANCE_COPIER.copy( source, instance, null );
         return instance;
     }
@@ -45,7 +42,7 @@ public final class CriteriaCopierFactory {
      * @return 新实例
      */
     public static <T> ForeignCriteria<T> clone( ForeignCriteria<T> source ) {
-        ForeignCriteria<T> instance = ForeignCriteria.newInstanceForClone( source.getEntity() );
+        ForeignCriteria<T> instance = ForeignCriteria.newInstanceForClone( source.getEntityClass() );
         FOREIGN_CRITERIA_IMPL_INSTANCE_COPIER.copy( source, instance, null );
         return instance;
     }
@@ -57,7 +54,7 @@ public final class CriteriaCopierFactory {
      * @return 新实例
      */
     public static <T> SubCriteria<T> clone( SubCriteria<T> source ) {
-        SubCriteria<T> instance = SubCriteria.newInstanceForClone( source.getEntity() );
+        SubCriteria<T> instance = SubCriteria.newInstanceForClone( source.getEntityClass() );
         SUB_CRITERIA_IMPL_INSTANCE_COPIER.copy( source, instance, null );
         return instance;
     }

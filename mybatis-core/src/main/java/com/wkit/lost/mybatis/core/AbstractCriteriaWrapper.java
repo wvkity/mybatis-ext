@@ -61,6 +61,11 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     private static final Pattern AND_OR_PATTERN = Pattern.compile( AND_OR_REGEX );
 
     /**
+     * 表名缓存
+     */
+    protected static final Map<Table, String> TABLE_NAME_CACHE = new ConcurrentHashMap<>( 128 );
+
+    /**
      * 参数前置
      */
     protected static final String PARAMETER_KEY_PREFIX = "v_idx_";
@@ -131,7 +136,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     /**
      * 实体类型
      */
-    protected Class<T> entity;
+    protected Class<T> entityClass;
 
     /**
      * 表名
@@ -267,8 +272,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     @Override
     public <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, Foreign foreign,
                                                  Collection<Criterion<?>> withClauses ) {
-        return new ForeignCriteria<>( entity, alias, reference, ( AbstractQueryCriteria<?> ) this, foreign,
-                this.parameterSequence, this.paramValueMappings, withClauses );
+        return new ForeignCriteria<>( entity, alias, reference, ( AbstractQueryCriteria<?> ) this,
+                foreign, withClauses );
     }
 
     @Override
@@ -282,8 +287,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     @Override
     public <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, Foreign foreign,
                                                     Collection<Criterion<?>> withClauses ) {
-        return new ForeignSubCriteria<>( subCriteria, reference, ( AbstractQueryCriteria<?> ) this, foreign,
-                this.parameterSequence, this.paramValueMappings, withClauses );
+        return new ForeignSubCriteria<>( subCriteria, reference, ( AbstractQueryCriteria<?> ) this,
+                foreign, withClauses );
     }
 
     @Override
@@ -295,7 +300,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public <E> Context addForeign( Class<E> entity, String alias, String reference, Foreign foreign, Collection<Criterion<?>> withClauses ) {
+    public <E> Context addForeign( Class<E> entity, String alias, String reference, Foreign foreign,
+                                   Collection<Criterion<?>> withClauses ) {
         return this.addForeign( createForeign( entity, alias, reference, foreign, withClauses ) );
     }
 
@@ -306,7 +312,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public <E> Context addForeign( SubCriteria<E> subCriteria, String reference, Foreign foreign, Collection<Criterion<?>> withClauses ) {
+    public <E> Context addForeign( SubCriteria<E> subCriteria, String reference, Foreign foreign,
+                                   Collection<Criterion<?>> withClauses ) {
         return addForeign( createForeign( subCriteria, reference, foreign, withClauses ) );
     }
 
@@ -369,7 +376,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
                 } else {
                     assistantColumn = criteria.searchColumn( linked.getForeign() ).getColumn();
                 }
-                Table table = EntityHandler.getTable( criteria.getEntity() );
+                Table table = EntityHandler.getTable( criteria.getEntityClass() );
                 String catalog = Optional.ofNullable( table ).map( Table::getCatalog ).orElse( null );
                 String schema = Optional.ofNullable( table ).map( Table::getSchema ).orElse( null );
                 String foreignAlias = criteria.getAlias();
@@ -416,7 +423,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     public <E> ForeignCriteria<E> searchForeign( Class<E> entity ) {
         if ( entity != null && CollectionUtil.hasElement( foreignCriteriaSet ) ) {
             ForeignCriteria<?> criteria = foreignCriteriaSet.stream()
-                    .filter( subCriteria -> entity.equals( subCriteria.getEntity() ) ).findFirst().orElse( null );
+                    .filter( subCriteria -> entity.equals( subCriteria.getEntityClass() ) ).findFirst().orElse( null );
             return ( ForeignCriteria<E> ) Optional.ofNullable( criteria ).orElse( null );
         }
         return null;
@@ -454,8 +461,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     @Override
     public <E> SubCriteria<E> createSub( Class<E> entity, String alias, String subTempTabAlias,
                                          Collection<Criterion<?>> withClauses ) {
-        return new SubCriteria<>( entity, alias, ( AbstractQueryCriteria<?> ) this, subTempTabAlias,
-                parameterSequence, paramValueMappings, withClauses );
+        return new SubCriteria<>( entity, alias, ( AbstractQueryCriteria<?> ) this, subTempTabAlias, withClauses );
     }
 
     @Override
@@ -505,7 +511,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     @Override
     public <E> SubCriteria<E> searchSubCriteria( Class<E> entity ) {
         if ( entity != null && CollectionUtil.hasElement( subCriteriaSet ) ) {
-            SubCriteria<?> subCriteria = subCriteriaSet.stream().filter( criteria -> entity.equals( criteria.getEntity() ) )
+            SubCriteria<?> subCriteria = subCriteriaSet.stream().filter( criteria -> entity.equals( criteria.getEntityClass() ) )
                     .findFirst().orElse( null );
             return ( SubCriteria<E> ) Optional.ofNullable( subCriteria ).orElse( null );
         }
@@ -783,7 +789,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
         Nested<?> expression = Restrictions.nested( criteria, Logic.OR, conditions );
         return add( expression );
     }
-    
+
     @Override
     public Context add( AbstractConditionManager<T> conditionManager ) {
         if ( conditionManager != null && conditionManager.hasCondition() ) {
@@ -826,6 +832,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
             List<Criterion<?>> list = conditions.stream()
                     .filter( Objects::nonNull )
                     .peek( condition -> {
+                        // 检查条件表达式是否包含Criteria对象，没有则设置当前对象
                         if ( condition.getCriteria() == null ) {
                             condition.setCriteria( this );
                         }
@@ -1623,7 +1630,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
             getRootMaster().aggregations.addAll( aggregationList );
             // 存在别名的直接缓存起来
             if ( !aggregationList.isEmpty() ) {
-                Map<String, Aggregation> map = aggregationList.stream().filter( function -> StringUtil.hasText( function.getAlias() ) )
+                Map<String, Aggregation> map = aggregationList.stream()
+                        .filter( function -> StringUtil.hasText( function.getAlias() ) )
                         .collect( Collectors.toMap( Aggregation::getAlias, Function.identity() ) );
                 if ( !map.isEmpty() ) {
                     getRootMaster().aggregationCache.putAll( map );
@@ -1641,7 +1649,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     @Override
     public Context having( Collection<String> aliases ) {
         if ( CollectionUtil.hasElement( aliases ) ) {
-            addHaving( aliases.stream().filter( Objects::nonNull ).map( aggregationCache::get ).collect( Collectors.toList() ) );
+            addHaving( aliases.stream().filter( Objects::nonNull )
+                    .map( aggregationCache::get ).collect( Collectors.toList() ) );
         }
         return this.context;
     }
@@ -1800,9 +1809,10 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
 // endregion
 
     // region get or set methods
+
     @Override
-    public Class<T> getEntity() {
-        return this.entity;
+    public Class<T> getEntityClass() {
+        return this.entityClass;
     }
 
     @Override
@@ -1842,12 +1852,28 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
      * @return 表名字符串
      */
     public String getTableName() {
-        if ( this.enableAlias ) {
-            this.tableName = EntityHandler.getTable( this.entity ).getName() + " " + getAlias();
-        } else {
-            this.tableName = EntityHandler.getTable( this.entity ).getName();
-        }
+        String realTableName = this.getTableNameFromCache();
+        this.tableName = this.isEnableAlias() ? ( realTableName + " " + this.alias ) : realTableName;
         return this.tableName;
+    }
+
+    private String getTableNameFromCache() {
+        Table table = EntityHandler.getTable( this.entityClass );
+        String cacheTableName = TABLE_NAME_CACHE.get( table );
+        if ( StringUtil.hasText( cacheTableName ) ) {
+            return cacheTableName;
+        } else {
+            String tempTableName = table.getName();
+            String schema = StringUtil.hasText( table.getSchema() ) ? table.getSchema() :
+                    StringUtil.hasText( table.getCatalog() ) ? table.getCatalog() : "";
+            String realTableName = StringUtil.hasText( schema ) ? ( schema + "." + tempTableName ) : tempTableName;
+            if ( !TABLE_NAME_CACHE.containsKey( table ) ) {
+                TABLE_NAME_CACHE.putIfAbsent( table, realTableName );
+                return realTableName;
+            } else {
+                return TABLE_NAME_CACHE.get( table );
+            }
+        }
     }
 
     @Override
@@ -1875,7 +1901,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     @Override
     public String getAlias() {
         if ( StringUtil.isBlank( this.alias ) ) {
-            this.alias = AliasCache.getAlias( this.entity );
+            this.alias = AliasCache.getAlias( this.entityClass );
         }
         return this.alias;
     }

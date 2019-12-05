@@ -154,7 +154,7 @@ public class SubQuery<T> extends AbstractExpression<T> {
         Column column;
         if ( StringUtil.isBlank( property ) ) {
             if ( operator != Operator.EXISTS && operator != Operator.NOT_EXISTS ) {
-                column = EntityHandler.getTable( criteria.getEntity() ).getPrimaryKey();
+                column = EntityHandler.getTable( criteria.getEntityClass() ).getPrimaryKey();
             } else {
                 column = null;
             }

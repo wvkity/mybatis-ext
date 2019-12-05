@@ -55,7 +55,7 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
      * 获取实体类
      * @return 实体类
      */
-    Class<T> getEntity();
+    Class<T> getEntityClass();
 
     /**
      * 获取表别名

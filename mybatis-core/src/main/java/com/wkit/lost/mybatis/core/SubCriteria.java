@@ -23,144 +23,122 @@ public class SubCriteria<T> extends AbstractQueryCriteria<T> {
 
     /**
      * 构造方法
-     * @param entity 实体类
+     * @param entityClass 实体类
      */
-    private SubCriteria( Class<T> entity ) {
-        this.entity = entity;
+    private SubCriteria( Class<T> entityClass ) {
+        this.entityClass = entityClass;
     }
 
     /**
      * 创建实例(用于复制)
-     * @param entity 实体类
-     * @param <T>    泛型类型
+     * @param entityClass 实体类
+     * @param <T>         泛型类型
      * @return 实例
      */
-    static <T> SubCriteria<T> newInstanceForClone( Class<T> entity ) {
-        return new SubCriteria<>( entity );
+    static <T> SubCriteria<T> newInstanceForClone( Class<T> entityClass ) {
+        return new SubCriteria<>( entityClass );
     }
 
     /**
      * 构造方法
-     * @param entity                 实体类
-     * @param master                 主表
-     * @param parameterSequence      参数序列
-     * @param parameterValueMappings 参数值映射
-     * @param <E>                    泛型类型
+     * @param entityClass 实体类
+     * @param master      主表
+     * @param <E>         泛型类型
      */
-    public <E> SubCriteria( Class<T> entity, AbstractQueryCriteria<E> master, AtomicInteger parameterSequence,
-                            Map<String, Object> parameterValueMappings ) {
-        this( entity, null, master, null, parameterSequence, parameterValueMappings, null );
+    public <E> SubCriteria( Class<T> entityClass, AbstractQueryCriteria<E> master ) {
+        this( entityClass, null, master, null, null );
     }
 
     /**
      * 构造方法
-     * @param entity                 实体类
-     * @param alias                  别名
-     * @param master                 主表
-     * @param parameterSequence      参数序列
-     * @param parameterValueMappings 参数值映射
-     * @param <E>                    泛型类型
+     * @param entityClass 实体类
+     * @param alias       别名
+     * @param master      主表
+     * @param <E>         泛型类型
      */
-    public <E> SubCriteria( Class<T> entity, String alias, AbstractQueryCriteria<E> master, AtomicInteger parameterSequence,
-                            Map<String, Object> parameterValueMappings ) {
-        this( entity, alias, master, null, parameterSequence, parameterValueMappings, null );
+    public <E> SubCriteria( Class<T> entityClass, String alias, AbstractQueryCriteria<E> master ) {
+        this( entityClass, alias, master, null, null );
     }
 
     /**
      * 构造方法
-     * @param entity                 实体类
-     * @param master                 主表
-     * @param subTempTabAlias        临时表别名
-     * @param parameterSequence      参数序列
-     * @param parameterValueMappings 参数值映射
-     * @param <E>                    泛型类型
+     * @param entityClass     实体类
+     * @param master          主表
+     * @param subTempTabAlias 临时表别名
+     * @param <E>             泛型类型
      */
-    public <E> SubCriteria( Class<T> entity, AbstractQueryCriteria<E> master, String subTempTabAlias,
-                            AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings ) {
-        this( entity, null, master, subTempTabAlias, parameterSequence, parameterValueMappings, null );
+    public <E> SubCriteria( Class<T> entityClass, AbstractQueryCriteria<E> master, String subTempTabAlias ) {
+        this( entityClass, null, master, subTempTabAlias, null );
     }
 
     /**
      * 构造方法
-     * @param entity                 实体类
-     * @param alias                  别名
-     * @param master                 主表
-     * @param subTempTabAlias        临时表别名
-     * @param parameterSequence      参数序列
-     * @param parameterValueMappings 参数值映射
-     * @param <E>                    泛型类型
+     * @param entityClass     实体类
+     * @param alias           别名
+     * @param master          主表
+     * @param subTempTabAlias 临时表别名
+     * @param <E>             泛型类型
      */
-    public <E> SubCriteria( Class<T> entity, String alias, AbstractQueryCriteria<E> master, String subTempTabAlias,
-                            AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings ) {
-        this( entity, alias, master, subTempTabAlias, parameterSequence, parameterValueMappings, null );
+    public <E> SubCriteria( Class<T> entityClass, String alias, AbstractQueryCriteria<E> master,
+                            String subTempTabAlias ) {
+        this( entityClass, alias, master, subTempTabAlias, null );
     }
 
     /**
      * 构造方法
-     * @param entity                 实体类
-     * @param master                 主表
-     * @param parameterSequence      参数序列
-     * @param parameterValueMappings 参数值映射
-     * @param withClauses            条件
-     * @param <E>                    泛型类型
+     * @param entityClass 实体类
+     * @param master      主表
+     * @param withClauses 条件
+     * @param <E>         泛型类型
      */
-    public <E> SubCriteria( Class<T> entity, AbstractQueryCriteria<E> master, AtomicInteger parameterSequence,
-                            Map<String, Object> parameterValueMappings, Collection<Criterion<?>> withClauses ) {
-        this( entity, null, master, null, parameterSequence, parameterValueMappings, withClauses );
+    public <E> SubCriteria( Class<T> entityClass, AbstractQueryCriteria<E> master, Collection<Criterion<?>> withClauses ) {
+        this( entityClass, null, master, null, withClauses );
     }
 
     /**
      * 构造方法
-     * @param entity                 实体类
-     * @param alias                  别名
-     * @param master                 主表
-     * @param parameterSequence      参数序列
-     * @param parameterValueMappings 参数值映射
-     * @param withClauses            条件
-     * @param <E>                    泛型类型
+     * @param entityClass 实体类
+     * @param alias       别名
+     * @param master      主表
+     * @param withClauses 条件
+     * @param <E>         泛型类型
      */
-    public <E> SubCriteria( Class<T> entity, String alias, AbstractQueryCriteria<E> master, AtomicInteger parameterSequence,
-                            Map<String, Object> parameterValueMappings, Collection<Criterion<?>> withClauses ) {
-        this( entity, alias, master, null, parameterSequence, parameterValueMappings, withClauses );
-    }
-
-    /**
-     * 构造方法
-     * @param entity                 实体类
-     * @param master                 主表
-     * @param subTempTabAlias        临时表别名
-     * @param parameterSequence      参数序列
-     * @param parameterValueMappings 参数值映射
-     * @param withClauses            条件
-     * @param <E>                    泛型类型
-     */
-    public <E> SubCriteria( Class<T> entity, AbstractQueryCriteria<E> master, String subTempTabAlias,
-                            AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings,
+    public <E> SubCriteria( Class<T> entityClass, String alias, AbstractQueryCriteria<E> master,
                             Collection<Criterion<?>> withClauses ) {
-        this( entity, null, master, subTempTabAlias, parameterSequence, parameterValueMappings, withClauses );
+        this( entityClass, alias, master, null, withClauses );
     }
 
     /**
      * 构造方法
-     * @param entity                 实体类
-     * @param alias                  别名
-     * @param master                 主表
-     * @param subTempTabAlias        临时表别名
-     * @param parameterSequence      参数序列
-     * @param parameterValueMappings 参数值映射
-     * @param withClauses            条件
-     * @param <E>                    泛型类型
+     * @param entityClass     实体类
+     * @param master          主表
+     * @param subTempTabAlias 临时表别名
+     * @param withClauses     条件
+     * @param <E>             泛型类型
      */
-    public <E> SubCriteria( Class<T> entity, String alias, AbstractQueryCriteria<E> master, String subTempTabAlias,
-                            AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings,
+    public <E> SubCriteria( Class<T> entityClass, AbstractQueryCriteria<E> master, String subTempTabAlias,
                             Collection<Criterion<?>> withClauses ) {
-        this.entity = entity;
+        this( entityClass, null, master, subTempTabAlias, withClauses );
+    }
+
+    /**
+     * 构造方法
+     * @param entityClass     实体类
+     * @param alias           别名
+     * @param master          主表
+     * @param subTempTabAlias 临时表别名
+     * @param withClauses     条件
+     * @param <E>             泛型类型
+     */
+    public <E> SubCriteria( Class<T> entityClass, String alias, AbstractQueryCriteria<E> master, String subTempTabAlias,
+                            Collection<Criterion<?>> withClauses ) {
+        this.entityClass = entityClass;
         this.master = master;
         this.subTempTabAlias = subTempTabAlias;
-        this.parameterSequence = parameterSequence;
-        this.paramValueMappings = parameterValueMappings;
+        this.parameterSequence = master.parameterSequence;
+        this.paramValueMappings = master.paramValueMappings;
         this.segmentManager = new SegmentManager();
-        this.initMappingCache( this.entity.getName(), true );
+        this.initMappingCache( this.entityClass.getName(), true );
         this.conditionManager = new ConditionManager<>( this );
         if ( StringUtil.hasText( alias ) ) {
             this.useAlias( alias );
@@ -172,18 +150,18 @@ public class SubCriteria<T> extends AbstractQueryCriteria<T> {
 
     /**
      * 构造方法
-     * @param entity                 实体类
+     * @param entityClass            实体类
      * @param parameterSequence      参数序列
      * @param parameterValueMappings 参数值映射
      * @param segmentManager         SQL片段管理器
      */
-    private SubCriteria( Class<T> entity, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings,
+    private SubCriteria( Class<T> entityClass, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings,
                          SegmentManager segmentManager ) {
-        this.entity = entity;
+        this.entityClass = entityClass;
         this.parameterSequence = parameterSequence;
         this.paramValueMappings = parameterValueMappings;
         this.segmentManager = segmentManager;
-        this.initMappingCache( this.entity.getName(), true );
+        this.initMappingCache( this.entityClass.getName(), true );
         this.conditionManager = new ConditionManager<>( this );
     }
 
@@ -191,7 +169,7 @@ public class SubCriteria<T> extends AbstractQueryCriteria<T> {
     protected AbstractQueryCriteria<T> instance( AtomicInteger parameterSequence,
                                                  Map<String, Object> parameterValueMappings,
                                                  SegmentManager segmentManager ) {
-        return new SubCriteria<>( entity, parameterSequence, parameterValueMappings, new SegmentManager() );
+        return new SubCriteria<>( entityClass, parameterSequence, parameterValueMappings, new SegmentManager() );
     }
 
     @Override
@@ -204,16 +182,7 @@ public class SubCriteria<T> extends AbstractQueryCriteria<T> {
         buffer.append( "(" ).append( "SELECT " ).append( this.getQuerySegment() ).append( " FROM " );
         buffer.append( getTableName() ).append( " " ).append( getForeignSegment() );
         if ( isHasCondition() ) {
-            /*buffer.append( " WHERE " );
-            String condition = getSqlSegment().trim();
-            if ( condition.startsWith( "AND" ) ) {
-                buffer.append( condition.substring( 3 ) );
-            } else if ( condition.startsWith( "OR" ) ) {
-                buffer.append( condition.substring( 2 ) );
-            } else {
-                buffer.append( condition );
-            }*/
-            buffer.append( getSqlSegment() );
+            buffer.append( getWhereSqlSegment() );
         }
         buffer.append( ")" );
         return buffer.toString();

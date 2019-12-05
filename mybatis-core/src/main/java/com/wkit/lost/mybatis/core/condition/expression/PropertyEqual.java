@@ -88,7 +88,7 @@ public class PropertyEqual<T> extends AbstractExpression<T> {
     public String getSqlSegment() {
         Column column;
         if ( StringUtil.isBlank( property ) ) {
-            column = EntityHandler.getTable( criteria.getEntity() ).getPrimaryKey();
+            column = EntityHandler.getTable( criteria.getEntityClass() ).getPrimaryKey();
         } else {
             column = getColumn();
         }

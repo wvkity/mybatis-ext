@@ -230,7 +230,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         return collapseSingleResultList( multipleResults );
     }
 
-    private MyBatisResultSetWrapper resultSet( MyBatisResultSetWrapper rsw, ResultMap resultMap, List<Object> multipleResults, Statement stmt ) throws SQLException {
+    private MyBatisResultSetWrapper resultSet( MyBatisResultSetWrapper rsw, ResultMap resultMap,
+                                               List<Object> multipleResults, Statement stmt ) throws SQLException {
         handleResultSet( rsw, resultMap, multipleResults, null );
         MyBatisResultSetWrapper nextRsw = getNextResultSet( stmt );
         cleanUpAfterHandlingResultSet();
@@ -313,7 +314,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         }
     }
 
-    private void handleResultSet( MyBatisResultSetWrapper rsw, ResultMap resultMap, List<Object> multipleResults, ResultMapping parentMapping ) throws SQLException {
+    private void handleResultSet( MyBatisResultSetWrapper rsw, ResultMap resultMap, List<Object> multipleResults,
+                                  ResultMapping parentMapping ) throws SQLException {
         try {
             if ( parentMapping != null ) {
                 handleRowValues( rsw, resultMap, null, RowBounds.DEFAULT, parentMapping );
@@ -340,7 +342,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
     // HANDLE ROWS FOR SIMPLE RESULT MAP
     //
 
-    public void handleRowValues( MyBatisResultSetWrapper rsw, ResultMap resultMap, ResultHandler<?> resultHandler, RowBounds rowBounds, ResultMapping parentMapping ) throws SQLException {
+    public void handleRowValues( MyBatisResultSetWrapper rsw, ResultMap resultMap, ResultHandler<?> resultHandler,
+                                 RowBounds rowBounds, ResultMapping parentMapping ) throws SQLException {
         if ( resultMap.hasNestedResultMaps() ) {
             ensureNoRowBounds();
             checkResultHandler();
@@ -351,7 +354,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
     }
 
     private void ensureNoRowBounds() {
-        if ( configuration.isSafeRowBoundsEnabled() && rowBounds != null && ( rowBounds.getLimit() < RowBounds.NO_ROW_LIMIT || rowBounds.getOffset() > RowBounds.NO_ROW_OFFSET ) ) {
+        if ( configuration.isSafeRowBoundsEnabled() && rowBounds != null &&
+                ( rowBounds.getLimit() < RowBounds.NO_ROW_LIMIT || rowBounds.getOffset() > RowBounds.NO_ROW_OFFSET ) ) {
             throw new ExecutorException( "Mapped Statements with nested result mappings cannot be safely constrained by RowBounds. "
                     + "Use safeRowBoundsEnabled=false setting to bypass this check." );
         }
@@ -365,7 +369,9 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         }
     }
 
-    private void handleRowValuesForSimpleResultMap( MyBatisResultSetWrapper rsw, ResultMap resultMap, ResultHandler<?> resultHandler, RowBounds rowBounds, ResultMapping parentMapping )
+    private void handleRowValuesForSimpleResultMap( MyBatisResultSetWrapper rsw, ResultMap resultMap,
+                                                    ResultHandler<?> resultHandler, RowBounds rowBounds,
+                                                    ResultMapping parentMapping )
             throws SQLException {
         DefaultResultContext<Object> resultContext = new DefaultResultContext<>();
         ResultSet resultSet = rsw.getResultSet();
@@ -377,7 +383,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         }
     }
 
-    private void storeObject( ResultHandler<?> resultHandler, DefaultResultContext<Object> resultContext, Object rowValue, ResultMapping parentMapping, ResultSet rs ) throws SQLException {
+    private void storeObject( ResultHandler<?> resultHandler, DefaultResultContext<Object> resultContext,
+                              Object rowValue, ResultMapping parentMapping, ResultSet rs ) throws SQLException {
         if ( parentMapping != null ) {
             linkToParents( rs, parentMapping, rowValue );
         } else {
@@ -445,7 +452,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
     // PROPERTY MAPPINGS
     //
 
-    private boolean applyPropertyMappings( MyBatisResultSetWrapper rsw, ResultMap resultMap, MetaObject metaObject, ResultLoaderMap lazyLoader, String columnPrefix )
+    private boolean applyPropertyMappings( MyBatisResultSetWrapper rsw, ResultMap resultMap, MetaObject metaObject,
+                                           ResultLoaderMap lazyLoader, String columnPrefix )
             throws SQLException {
         final List<String> mappedColumnNames = rsw.getMappedColumnNames( resultMap, columnPrefix );
         boolean foundValues = false;
@@ -465,7 +473,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
                 ResultSet resultSet = rsw.getResultSet();
                 // Object value = getPropertyMappingValue( resultSet , metaObject, propertyMapping, lazyLoader, columnPrefix );
                 // 使用该方式获取值
-                Object value = getPropertyMappingValue( resultSet, metaObject, propertyMapping, lazyLoader, columnPrefix, originalMappedColumns );
+                Object value = getPropertyMappingValue( resultSet, metaObject, propertyMapping, lazyLoader,
+                        columnPrefix, originalMappedColumns );
                 // issue #541 make property optional
                 final String property = propertyMapping.getProperty();
                 if ( property == null ) {
@@ -486,7 +495,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         return foundValues;
     }
 
-    private Object getPropertyMappingValue( ResultSet rs, MetaObject metaResultObject, ResultMapping propertyMapping, ResultLoaderMap lazyLoader, String columnPrefix )
+    private Object getPropertyMappingValue( ResultSet rs, MetaObject metaResultObject, ResultMapping propertyMapping,
+                                            ResultLoaderMap lazyLoader, String columnPrefix )
             throws SQLException {
         if ( propertyMapping.getNestedQueryId() != null ) {
             return getNestedQueryMappingValue( rs, metaResultObject, propertyMapping, lazyLoader, columnPrefix );
@@ -500,7 +510,9 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         }
     }
 
-    private Object getPropertyMappingValue( ResultSet rs, MetaObject metaResultObject, ResultMapping propertyMapping, ResultLoaderMap lazyLoader, String columnPrefix, Map<String, String> originalMappedColumns )
+    private Object getPropertyMappingValue( ResultSet rs, MetaObject metaResultObject, ResultMapping propertyMapping,
+                                            ResultLoaderMap lazyLoader, String columnPrefix,
+                                            Map<String, String> originalMappedColumns )
             throws SQLException {
         if ( propertyMapping.getNestedQueryId() != null ) {
             return getNestedQueryMappingValue( rs, metaResultObject, propertyMapping, lazyLoader, columnPrefix );
@@ -520,7 +532,9 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         }
     }
 
-    private List<MyBatisResultSetHandler.UnMappedColumnAutoMapping> createAutomaticMappings( MyBatisResultSetWrapper rsw, ResultMap resultMap, MetaObject metaObject, String columnPrefix ) throws SQLException {
+    private List<MyBatisResultSetHandler.UnMappedColumnAutoMapping>
+    createAutomaticMappings( MyBatisResultSetWrapper rsw, ResultMap resultMap,
+                             MetaObject metaObject, String columnPrefix ) throws SQLException {
 
         final String mapKey = resultMap.getId() + ":" + columnPrefix;
         List<MyBatisResultSetHandler.UnMappedColumnAutoMapping> autoMapping = autoMappingsCache.get( mapKey );
@@ -541,7 +555,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
                         continue;
                     }
                 }
-                final String property = metaObject.findProperty( simplePropertyName == null ? propertyName : simplePropertyName, configuration.isMapUnderscoreToCamelCase() );
+                final String property = metaObject.findProperty( simplePropertyName == null ? propertyName :
+                        simplePropertyName, configuration.isMapUnderscoreToCamelCase() );
                 if ( property != null && metaObject.hasSetter( property ) ) {
                     if ( resultMap.getMappedProperties().contains( property ) ) {
                         continue;
@@ -549,7 +564,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
                     final Class<?> propertyType = metaObject.getSetterType( property );
                     if ( typeHandlerRegistry.hasTypeHandler( propertyType, rsw.getJdbcType( columnName ) ) ) {
                         final TypeHandler<?> typeHandler = rsw.getTypeHandler( propertyType, columnName );
-                        autoMapping.add( new MyBatisResultSetHandler.UnMappedColumnAutoMapping( columnName, property, typeHandler, propertyType.isPrimitive() ) );
+                        autoMapping.add( new MyBatisResultSetHandler.UnMappedColumnAutoMapping( columnName, property,
+                                typeHandler, propertyType.isPrimitive() ) );
                     } else {
                         configuration.getAutoMappingUnknownColumnBehavior()
                                 .doAction( mappedStatement, columnName, property, propertyType );
@@ -564,8 +580,10 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         return autoMapping;
     }
 
-    private boolean applyAutomaticMappings( MyBatisResultSetWrapper rsw, ResultMap resultMap, MetaObject metaObject, String columnPrefix ) throws SQLException {
-        List<MyBatisResultSetHandler.UnMappedColumnAutoMapping> autoMapping = createAutomaticMappings( rsw, resultMap, metaObject, columnPrefix );
+    private boolean applyAutomaticMappings( MyBatisResultSetWrapper rsw, ResultMap resultMap, MetaObject metaObject,
+                                            String columnPrefix ) throws SQLException {
+        List<MyBatisResultSetHandler.UnMappedColumnAutoMapping> autoMapping =
+                createAutomaticMappings( rsw, resultMap, metaObject, columnPrefix );
         boolean foundValues = false;
         if ( !autoMapping.isEmpty() ) {
             for ( MyBatisResultSetHandler.UnMappedColumnAutoMapping mapping : autoMapping ) {
@@ -635,7 +653,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
     // INSTANTIATION & CONSTRUCTOR MAPPING
     //
 
-    private Object createResultObject( MyBatisResultSetWrapper rsw, ResultMap resultMap, ResultLoaderMap lazyLoader, String columnPrefix ) throws SQLException {
+    private Object createResultObject( MyBatisResultSetWrapper rsw, ResultMap resultMap,
+                                       ResultLoaderMap lazyLoader, String columnPrefix ) throws SQLException {
         this.useConstructorMappings = false; // reset previous mapping result
         final List<Class<?>> constructorArgTypes = new ArrayList<>();
         final List<Object> constructorArgs = new ArrayList<>();
@@ -645,7 +664,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
             for ( ResultMapping propertyMapping : propertyMappings ) {
                 // issue gcode #109 && issue #149
                 if ( propertyMapping.getNestedQueryId() != null && propertyMapping.isLazy() ) {
-                    resultObject = configuration.getProxyFactory().createProxy( resultObject, lazyLoader, configuration, objectFactory, constructorArgTypes, constructorArgs );
+                    resultObject = configuration.getProxyFactory().createProxy( resultObject, lazyLoader, configuration,
+                            objectFactory, constructorArgTypes, constructorArgs );
                     break;
                 }
             }
@@ -654,7 +674,9 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         return resultObject;
     }
 
-    private Object createResultObject( MyBatisResultSetWrapper rsw, ResultMap resultMap, List<Class<?>> constructorArgTypes, List<Object> constructorArgs, String columnPrefix )
+    private Object createResultObject( MyBatisResultSetWrapper rsw, ResultMap resultMap,
+                                       List<Class<?>> constructorArgTypes, List<Object> constructorArgs,
+                                       String columnPrefix )
             throws SQLException {
         final Class<?> resultType;
         Class<?> tempResultType = resultMap.getType();
@@ -668,7 +690,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         if ( hasTypeHandlerForResultObject( rsw, resultType ) ) {
             return createPrimitiveResultObject( rsw, resultMap, columnPrefix );
         } else if ( !constructorMappings.isEmpty() ) {
-            return createParameterizedResultObject( rsw, resultType, constructorMappings, constructorArgTypes, constructorArgs, columnPrefix );
+            return createParameterizedResultObject( rsw, resultType, constructorMappings, constructorArgTypes,
+                    constructorArgs, columnPrefix );
         } else if ( resultType.isInterface() || metaType.hasDefaultConstructor() ) {
             return objectFactory.create( resultType );
         } else if ( shouldApplyAutomaticMappings( resultMap, false ) ) {
@@ -677,8 +700,9 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         throw new ExecutorException( "Do not know how to create an instance of " + resultType );
     }
 
-    Object createParameterizedResultObject( MyBatisResultSetWrapper rsw, Class<?> resultType, List<ResultMapping> constructorMappings,
-                                            List<Class<?>> constructorArgTypes, List<Object> constructorArgs, String columnPrefix ) {
+    Object createParameterizedResultObject( MyBatisResultSetWrapper rsw, Class<?> resultType,
+                                            List<ResultMapping> constructorMappings, List<Class<?>> constructorArgTypes,
+                                            List<Object> constructorArgs, String columnPrefix ) {
         boolean foundValues = false;
         for ( ResultMapping constructorMapping : constructorMappings ) {
             final Class<?> parameterType = constructorMapping.getJavaType();
@@ -704,7 +728,9 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         return foundValues ? objectFactory.create( resultType, constructorArgTypes, constructorArgs ) : null;
     }
 
-    private Object createByConstructorSignature( MyBatisResultSetWrapper rsw, Class<?> resultType, List<Class<?>> constructorArgTypes, List<Object> constructorArgs ) throws SQLException {
+    private Object createByConstructorSignature( MyBatisResultSetWrapper rsw, Class<?> resultType,
+                                                 List<Class<?>> constructorArgTypes,
+                                                 List<Object> constructorArgs ) throws SQLException {
         final Constructor<?>[] constructors;
         if ( resultType.isArray() ) {
             constructors = resultType.getComponentType().getDeclaredConstructors();
@@ -724,7 +750,9 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         throw new ExecutorException( "No constructor found in " + resultType.getName() + " matching " + rsw.getClassNames() );
     }
 
-    private Object createUsingConstructor( MyBatisResultSetWrapper rsw, Class<?> resultType, List<Class<?>> constructorArgTypes, List<Object> constructorArgs, Constructor<?> constructor ) throws SQLException {
+    private Object createUsingConstructor( MyBatisResultSetWrapper rsw, Class<?> resultType,
+                                           List<Class<?>> constructorArgTypes, List<Object> constructorArgs,
+                                           Constructor<?> constructor ) throws SQLException {
         boolean foundValues = false;
         for ( int i = 0; i < constructor.getParameterTypes().length; i++ ) {
             Class<?> parameterType = constructor.getParameterTypes()[ i ];
@@ -764,7 +792,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         return true;
     }
 
-    private Object createPrimitiveResultObject( MyBatisResultSetWrapper rsw, ResultMap resultMap, String columnPrefix ) throws SQLException {
+    private Object createPrimitiveResultObject( MyBatisResultSetWrapper rsw,
+                                                ResultMap resultMap, String columnPrefix ) throws SQLException {
         final Class<?> resultType = resultMap.getType();
         final String columnName;
         if ( !resultMap.getResultMappings().isEmpty() ) {
@@ -796,39 +825,48 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
     // NESTED QUERY
     //
 
-    private Object getNestedQueryConstructorValue( ResultSet rs, ResultMapping constructorMapping, String columnPrefix ) throws SQLException {
+    private Object getNestedQueryConstructorValue( ResultSet rs, ResultMapping constructorMapping,
+                                                   String columnPrefix ) throws SQLException {
         final String nestedQueryId = constructorMapping.getNestedQueryId();
         final MappedStatement nestedQuery = configuration.getMappedStatement( nestedQueryId );
         final Class<?> nestedQueryParameterType = nestedQuery.getParameterMap().getType();
-        final Object nestedQueryParameterObject = prepareParameterForNestedQuery( rs, constructorMapping, nestedQueryParameterType, columnPrefix );
+        final Object nestedQueryParameterObject = prepareParameterForNestedQuery( rs, constructorMapping,
+                nestedQueryParameterType, columnPrefix );
         Object value = null;
         if ( nestedQueryParameterObject != null ) {
             final BoundSql nestedBoundSql = nestedQuery.getBoundSql( nestedQueryParameterObject );
-            final CacheKey key = executor.createCacheKey( nestedQuery, nestedQueryParameterObject, RowBounds.DEFAULT, nestedBoundSql );
+            final CacheKey key = executor.createCacheKey( nestedQuery, nestedQueryParameterObject, 
+                    RowBounds.DEFAULT, nestedBoundSql );
             final Class<?> targetType = constructorMapping.getJavaType();
-            final ResultLoader resultLoader = new ResultLoader( configuration, executor, nestedQuery, nestedQueryParameterObject, targetType, key, nestedBoundSql );
+            final ResultLoader resultLoader = new ResultLoader( configuration, executor, nestedQuery,
+                    nestedQueryParameterObject, targetType, key, nestedBoundSql );
             value = resultLoader.loadResult();
         }
         return value;
     }
 
-    private Object getNestedQueryMappingValue( ResultSet rs, MetaObject metaResultObject, ResultMapping propertyMapping, ResultLoaderMap lazyLoader, String columnPrefix )
+    private Object getNestedQueryMappingValue( ResultSet rs, MetaObject metaResultObject,
+                                               ResultMapping propertyMapping,
+                                               ResultLoaderMap lazyLoader, String columnPrefix )
             throws SQLException {
         final String nestedQueryId = propertyMapping.getNestedQueryId();
         final String property = propertyMapping.getProperty();
         final MappedStatement nestedQuery = configuration.getMappedStatement( nestedQueryId );
         final Class<?> nestedQueryParameterType = nestedQuery.getParameterMap().getType();
-        final Object nestedQueryParameterObject = prepareParameterForNestedQuery( rs, propertyMapping, nestedQueryParameterType, columnPrefix );
+        final Object nestedQueryParameterObject = prepareParameterForNestedQuery( rs, propertyMapping,
+                nestedQueryParameterType, columnPrefix );
         Object value = null;
         if ( nestedQueryParameterObject != null ) {
             final BoundSql nestedBoundSql = nestedQuery.getBoundSql( nestedQueryParameterObject );
-            final CacheKey key = executor.createCacheKey( nestedQuery, nestedQueryParameterObject, RowBounds.DEFAULT, nestedBoundSql );
+            final CacheKey key = executor.createCacheKey( nestedQuery, nestedQueryParameterObject,
+                    RowBounds.DEFAULT, nestedBoundSql );
             final Class<?> targetType = propertyMapping.getJavaType();
             if ( executor.isCached( nestedQuery, key ) ) {
                 executor.deferLoad( nestedQuery, metaResultObject, property, key, targetType );
                 value = DEFERRED;
             } else {
-                final ResultLoader resultLoader = new ResultLoader( configuration, executor, nestedQuery, nestedQueryParameterObject, targetType, key, nestedBoundSql );
+                final ResultLoader resultLoader = new ResultLoader( configuration, executor, nestedQuery,
+                        nestedQueryParameterObject, targetType, key, nestedBoundSql );
                 if ( propertyMapping.isLazy() ) {
                     lazyLoader.addLoader( property, metaResultObject, resultLoader );
                     value = DEFERRED;
@@ -840,7 +878,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         return value;
     }
 
-    private Object prepareParameterForNestedQuery( ResultSet rs, ResultMapping resultMapping, Class<?> parameterType, String columnPrefix ) throws SQLException {
+    private Object prepareParameterForNestedQuery( ResultSet rs, ResultMapping resultMapping, Class<?> parameterType,
+                                                   String columnPrefix ) throws SQLException {
         if ( resultMapping.isCompositeResult() ) {
             return prepareCompositeKeyParameter( rs, resultMapping, parameterType, columnPrefix );
         } else {
@@ -848,7 +887,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         }
     }
 
-    private Object prepareSimpleKeyParameter( ResultSet rs, ResultMapping resultMapping, Class<?> parameterType, String columnPrefix ) throws SQLException {
+    private Object prepareSimpleKeyParameter( ResultSet rs, ResultMapping resultMapping, Class<?> parameterType,
+                                              String columnPrefix ) throws SQLException {
         final TypeHandler<?> typeHandler;
         if ( typeHandlerRegistry.hasTypeHandler( parameterType ) ) {
             typeHandler = typeHandlerRegistry.getTypeHandler( parameterType );
@@ -858,7 +898,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         return typeHandler.getResult( rs, prependPrefix( resultMapping.getColumn(), columnPrefix ) );
     }
 
-    private Object prepareCompositeKeyParameter( ResultSet rs, ResultMapping resultMapping, Class<?> parameterType, String columnPrefix ) throws SQLException {
+    private Object prepareCompositeKeyParameter( ResultSet rs, ResultMapping resultMapping, Class<?> parameterType,
+                                                 String columnPrefix ) throws SQLException {
         final Object parameterObject = instantiateParameterObject( parameterType );
         final MetaObject metaObject = configuration.newMetaObject( parameterObject );
         boolean foundValues = false;
@@ -889,7 +930,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
     // DISCRIMINATOR
     //
 
-    public ResultMap resolveDiscriminatedResultMap( ResultSet rs, ResultMap resultMap, String columnPrefix ) throws SQLException {
+    public ResultMap resolveDiscriminatedResultMap( ResultSet rs, ResultMap resultMap, 
+                                                    String columnPrefix ) throws SQLException {
         Set<String> pastDiscriminators = new HashSet<>();
         Discriminator discriminator = resultMap.getDiscriminator();
         while ( discriminator != null ) {
@@ -926,7 +968,9 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
     // HANDLE NESTED RESULT MAPS
     //
 
-    private void handleRowValuesForNestedResultMap( MyBatisResultSetWrapper rsw, ResultMap resultMap, ResultHandler<?> resultHandler, RowBounds rowBounds, ResultMapping parentMapping ) throws SQLException {
+    private void handleRowValuesForNestedResultMap( MyBatisResultSetWrapper rsw, ResultMap resultMap,
+                                                    ResultHandler<?> resultHandler, RowBounds rowBounds,
+                                                    ResultMapping parentMapping ) throws SQLException {
         final DefaultResultContext<Object> resultContext = new DefaultResultContext<>();
         ResultSet resultSet = rsw.getResultSet();
         skipRows( resultSet, rowBounds );
@@ -961,7 +1005,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
     // GET VALUE FROM ROW FOR NESTED RESULT MAP
     //
 
-    private Object getRowValue( MyBatisResultSetWrapper rsw, ResultMap resultMap, CacheKey combinedKey, String columnPrefix, Object partialObject ) throws SQLException {
+    private Object getRowValue( MyBatisResultSetWrapper rsw, ResultMap resultMap, CacheKey combinedKey,
+                                String columnPrefix, Object partialObject ) throws SQLException {
         final String resultMapId = resultMap.getId();
         Object rowValue = partialObject;
         if ( rowValue != null ) {
@@ -980,7 +1025,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
                 }
                 foundValues = applyPropertyMappings( rsw, resultMap, metaObject, lazyLoader, columnPrefix ) || foundValues;
                 putAncestor( rowValue, resultMapId );
-                foundValues = applyNestedResultMappings( rsw, resultMap, metaObject, columnPrefix, combinedKey, true ) || foundValues;
+                foundValues = applyNestedResultMappings( rsw, resultMap, metaObject, columnPrefix,
+                        combinedKey, true ) || foundValues;
                 ancestorObjects.remove( resultMapId );
                 foundValues = lazyLoader.size() > 0 || foundValues;
                 rowValue = foundValues || configuration.isReturnInstanceForEmptyRow() ? rowValue : null;
@@ -1000,7 +1046,9 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
     // NESTED RESULT MAP (JOIN MAPPING)
     //
 
-    private boolean applyNestedResultMappings( MyBatisResultSetWrapper rsw, ResultMap resultMap, MetaObject metaObject, String parentPrefix, CacheKey parentRowKey, boolean newObject ) {
+    private boolean applyNestedResultMappings( MyBatisResultSetWrapper rsw, ResultMap resultMap,
+                                               MetaObject metaObject, String parentPrefix,
+                                               CacheKey parentRowKey, boolean newObject ) {
         boolean foundValues = false;
         for ( ResultMapping resultMapping : resultMap.getPropertyResultMappings() ) {
             final String nestedResultMapId = resultMapping.getNestedResultMapId();
@@ -1032,7 +1080,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
                         }
                     }
                 } catch ( SQLException e ) {
-                    throw new ExecutorException( "Error getting nested result map values for '" + resultMapping.getProperty() + "'.  Cause: " + e, e );
+                    throw new ExecutorException( "Error getting nested result map values for '" +
+                            resultMapping.getProperty() + "'.  Cause: " + e, e );
                 }
             }
         }
@@ -1050,7 +1099,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         return columnPrefixBuilder.length() == 0 ? null : columnPrefixBuilder.toString().toUpperCase( Locale.ENGLISH );
     }
 
-    private boolean anyNotNullColumnHasValue( ResultMapping resultMapping, String columnPrefix, MyBatisResultSetWrapper rsw ) throws SQLException {
+    private boolean anyNotNullColumnHasValue( ResultMapping resultMapping,
+                                              String columnPrefix, MyBatisResultSetWrapper rsw ) throws SQLException {
         Set<String> notNullColumns = resultMapping.getNotNullColumns();
         if ( notNullColumns != null && !notNullColumns.isEmpty() ) {
             ResultSet rs = rsw.getResultSet();
@@ -1122,7 +1172,9 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         return resultMappings;
     }
 
-    private void createRowKeyForMappedProperties( ResultMap resultMap, MyBatisResultSetWrapper rsw, CacheKey cacheKey, List<ResultMapping> resultMappings, String columnPrefix ) throws SQLException {
+    private void createRowKeyForMappedProperties( ResultMap resultMap, MyBatisResultSetWrapper rsw,
+                                                  CacheKey cacheKey, List<ResultMapping> resultMappings,
+                                                  String columnPrefix ) throws SQLException {
         for ( ResultMapping resultMapping : resultMappings ) {
             if ( resultMapping.getNestedResultMapId() != null && resultMapping.getResultSet() == null ) {
                 // Issue #392
@@ -1145,7 +1197,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         }
     }
 
-    private void createRowKeyForUnmappedProperties( ResultMap resultMap, MyBatisResultSetWrapper rsw, CacheKey cacheKey, String columnPrefix ) throws SQLException {
+    private void createRowKeyForUnmappedProperties( ResultMap resultMap, MyBatisResultSetWrapper rsw,
+                                                    CacheKey cacheKey, String columnPrefix ) throws SQLException {
         final MetaClass metaType = MetaClass.forClass( resultMap.getType(), reflectorFactory );
         List<String> unmappedColumnNames = rsw.getUnmappedColumnNames( resultMap, columnPrefix );
         for ( String column : unmappedColumnNames ) {
@@ -1204,7 +1257,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
                     return propertyValue;
                 }
             } catch ( Exception e ) {
-                throw new ExecutorException( "Error instantiating collection property for result '" + resultMapping.getProperty() + "'.  Cause: " + e, e );
+                throw new ExecutorException( "Error instantiating collection property for result '" +
+                        resultMapping.getProperty() + "'.  Cause: " + e, e );
             }
         } else if ( objectFactory.isCollection( propertyValue.getClass() ) ) {
             return propertyValue;

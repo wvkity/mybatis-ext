@@ -120,7 +120,7 @@ public abstract class AbstractFunction implements Aggregation {
      */
     private String transform( boolean isQuery ) {
         if ( StringUtil.hasText( this.property ) ) {
-            StringBuffer buffer = new StringBuffer( 50 );
+            StringBuilder buffer = new StringBuilder( 50 );
             if ( !isQuery ) {
                 buffer.append( this.logic.getSqlSegment() ).append( " " );
             }
@@ -161,7 +161,7 @@ public abstract class AbstractFunction implements Aggregation {
     }
 
     private String getFunctionBody() {
-        StringBuffer buffer = new StringBuffer( 30 );
+        StringBuilder buffer = new StringBuilder( 30 );
         boolean hasScale = hasScale();
         if ( hasScale ) {
             buffer.append( "CAST(" );

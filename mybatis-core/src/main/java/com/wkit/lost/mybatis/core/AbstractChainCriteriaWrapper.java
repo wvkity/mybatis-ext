@@ -9,9 +9,7 @@ import com.wkit.lost.mybatis.lambda.Property;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
-import java.io.Serializable;
 import java.util.Map;
-import java.util.Optional;
 
 @SuppressWarnings( "serial" )
 @Log4j2
@@ -86,7 +84,7 @@ public abstract class AbstractChainCriteriaWrapper<T, Context extends AbstractCh
      */
     private Column getColumn( String property ) {
         if ( !this.initialized ) {
-            String entityName = this.entity.getName();
+            String entityName = this.entityClass.getName();
             initMappings( entityName );
         }
         /*return Optional.ofNullable( this.columnMappingCache.get( property ) )
@@ -95,7 +93,7 @@ public abstract class AbstractChainCriteriaWrapper<T, Context extends AbstractCh
         Column column = this.columnMappingCache.get( property );
         if ( column == null ) {
             log.warn( "The field mapping information for the entity class({}) cannot be found based on the `{}` attribute. " +
-                    "Check to see if the attribute exists or is decorated using the @transient annotation.", this.entity.getCanonicalName(), property );
+                    "Check to see if the attribute exists or is decorated using the @transient annotation.", this.entityClass.getCanonicalName(), property );
         }
         return column;
     }
