@@ -18,7 +18,7 @@ public interface FieldResolver {
     List<Attribute> getAllAttributes( final Class<?> entity );
 
     /**
-     * 从beaninfo获取所有属性信息
+     * 从BeanInfo获取所有属性信息
      * @param entity 实体类
      * @return 属性映射集合
      */
