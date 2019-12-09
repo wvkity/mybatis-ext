@@ -97,7 +97,7 @@ buildScan {
 }
 
 allprojects {
-    group 'com.wkit'
+    group 'com.wvkity'
     version '1.0.0-SNAPSHOT'
 }
 
