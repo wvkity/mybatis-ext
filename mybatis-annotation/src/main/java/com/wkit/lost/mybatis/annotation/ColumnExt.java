@@ -64,6 +64,7 @@ public @interface ColumnExt {
 
     /**
      * 类型处理器
+     * @return 类型处理器
      */
     Class<? extends TypeHandler<?>> typeHandler() default UnknownTypeHandler.class;
 }
