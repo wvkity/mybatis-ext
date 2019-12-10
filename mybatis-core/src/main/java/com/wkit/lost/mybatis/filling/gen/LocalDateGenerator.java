@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 /**
  * {@link LocalDate}生成器
- * @author DT
+ * @author wvkity
  */
 public class LocalDateGenerator extends AbstractGenerator {
 

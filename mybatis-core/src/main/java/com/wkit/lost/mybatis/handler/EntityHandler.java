@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 实体-表映射处理器
- * @author DT
+ * @author wvkity
  */
 @Log4j2
 public class EntityHandler {

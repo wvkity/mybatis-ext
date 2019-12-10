@@ -9,7 +9,7 @@ import java.io.*;
 
 /**
  * {@link java.lang.invoke.SerializedLambda}
- * @author DT
+ * @author wvkity
  */
 @Getter
 public class SerializedLambda implements Serializable {

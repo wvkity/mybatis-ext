@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 /**
  * Lambda对象解析类
  * @param <R> Lambda对象
- * @author DT
+ * @author wvkity
  */
 @FunctionalInterface
 public interface LambdaResolver<R> extends Serializable {

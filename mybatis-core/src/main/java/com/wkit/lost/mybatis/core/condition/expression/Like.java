@@ -13,7 +13,7 @@ import lombok.Setter;
 /**
  * LIKE条件
  * @param <T> 泛型类型
- * @author DT
+ * @author wvkity
  */
 public class Like<T> extends AbstractExpression<T> {
 

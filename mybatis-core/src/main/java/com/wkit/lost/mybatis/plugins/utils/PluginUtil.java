@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * 插件工具类
- * @author DT
+ * @author wvkity
  */
 public abstract class PluginUtil {
 

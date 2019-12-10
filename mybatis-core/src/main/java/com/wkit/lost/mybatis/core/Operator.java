@@ -8,7 +8,7 @@ import java.util.Set;
 
 /**
  * 操作符
- * @author DT
+ * @author wvkity
  */
 public enum Operator implements Segment {
     

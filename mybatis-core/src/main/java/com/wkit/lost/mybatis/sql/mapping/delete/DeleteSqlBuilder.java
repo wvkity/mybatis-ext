@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 /**
  * 根据指定对象删除记录SQL构建器
- * @author DT
+ * @author wvkity
  */
 public class DeleteSqlBuilder extends AbstractSqlBuilder {
 

@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.core.meta.Table;
 
 /**
  * SQL语句构建器
- * @author DT
+ * @author wvkity
  */
 @FunctionalInterface
 public interface SqlBuilder {

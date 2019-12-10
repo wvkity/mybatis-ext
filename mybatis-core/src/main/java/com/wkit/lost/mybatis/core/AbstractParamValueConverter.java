@@ -5,7 +5,7 @@ import java.util.Collection;
 
 /**
  * 抽象参数值转占位符转换器
- * @author DT
+ * @author wvkity
  */
 public abstract class AbstractParamValueConverter implements ParamValuePlaceholderConverter {
     

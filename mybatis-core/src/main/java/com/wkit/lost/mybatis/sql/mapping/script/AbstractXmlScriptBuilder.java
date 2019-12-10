@@ -6,7 +6,7 @@ import lombok.Getter;
 
 /**
  * 抽象XML-SQL脚本构建器
- * @author DT
+ * @author wvkity
  */
 @AllArgsConstructor
 public abstract class AbstractXmlScriptBuilder {

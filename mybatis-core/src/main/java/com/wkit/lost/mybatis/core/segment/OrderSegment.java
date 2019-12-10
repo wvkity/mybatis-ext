@@ -4,7 +4,7 @@ import java.util.stream.Collectors;
 
 /**
  * 排序SQL分段类
- * @author DT
+ * @author wvkity
  */
 public class OrderSegment extends AbstractSegment {
 

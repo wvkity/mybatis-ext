@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 /**
  * Criteria联表查询条件类
  * @param <T> 类型
- * @author DT
+ * @author wvkity
  */
 @Accessors( chain = true )
 public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {

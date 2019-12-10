@@ -24,7 +24,7 @@ import java.util.Properties;
 
 /**
  * 抽象数据库方言
- * @author DT
+ * @author wvkity
  */
 public abstract class AbstractDialect implements Dialect {
 

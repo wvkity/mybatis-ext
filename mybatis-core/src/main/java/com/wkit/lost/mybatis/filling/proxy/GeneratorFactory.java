@@ -7,7 +7,7 @@ import java.util.Optional;
 
 /**
  * 生成器工厂类
- * @author DT
+ * @author wvkity
  */
 public class GeneratorFactory {
 

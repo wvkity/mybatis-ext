@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * 属性缓存(用于lambda)
- * @author DT
+ * @author wvkity
  */
 public final class PropertyMappingForLambda {
 

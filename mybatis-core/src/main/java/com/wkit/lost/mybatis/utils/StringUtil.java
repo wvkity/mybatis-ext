@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 /**
  * 字符串工具类
- * @author DT
+ * @author wvkity
  */
 public abstract class StringUtil {
 

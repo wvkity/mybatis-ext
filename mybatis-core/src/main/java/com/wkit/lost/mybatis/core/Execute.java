@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.core;
 
 /**
  * 执行处理枚举类
- * @author DT
+ * @author wvkity
  */
 public enum Execute {
 

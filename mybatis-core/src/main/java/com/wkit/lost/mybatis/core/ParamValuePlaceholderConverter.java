@@ -6,7 +6,7 @@ import java.util.Collection;
 
 /**
  * 参数值占位符转换接口
- * @author DT
+ * @author wvkity
  */
 public interface ParamValuePlaceholderConverter {
     

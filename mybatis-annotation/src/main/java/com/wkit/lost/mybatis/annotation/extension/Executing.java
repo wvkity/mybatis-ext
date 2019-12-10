@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.annotation.extension;
 
 /**
  * SQL执行时机
- * @author DT
+ * @author wvkity
  */
 public enum Executing {
 

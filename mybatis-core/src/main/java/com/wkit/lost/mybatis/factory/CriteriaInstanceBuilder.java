@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.core.CriteriaImpl;
 
 /**
  * Criteria实例构建器
- * @author DT
+ * @author wvkity
  */
 public class CriteriaInstanceBuilder {
     

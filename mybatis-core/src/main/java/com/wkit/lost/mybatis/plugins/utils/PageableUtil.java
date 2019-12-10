@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * 分页工具类
- * @author DT
+ * @author wvkity
  */
 public class PageableUtil {
 

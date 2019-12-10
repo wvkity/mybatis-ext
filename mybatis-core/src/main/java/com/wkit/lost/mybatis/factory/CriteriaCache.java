@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * {@link com.wkit.lost.mybatis.core.Criteria}实例缓存类
- * @author DT
+ * @author wvkity
  */
 public class CriteriaCache implements Serializable {
     

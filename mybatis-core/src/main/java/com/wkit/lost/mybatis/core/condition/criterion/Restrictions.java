@@ -30,7 +30,7 @@ import java.util.Collection;
 
 /**
  * 条件工具类
- * @author DT
+ * @author wvkity
  */
 public final class Restrictions {
 

@@ -36,33 +36,63 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 元对象字段自动填充值默认处理器
- * @author DT
+ * @author wvkity
  */
 @EqualsAndHashCode
 @ToString
 public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler {
 
+    /**
+     * 日期类型生成器
+     */
     private static final Map<Class<?>, Class<? extends AbstractGenerator>> DATE_TYPE_FILLING_CACHE = new ConcurrentHashMap<>( 10 );
+    /**
+     * 创建时间属性列表
+     */
     private static final Set<String> INSERT_TIME_FILLING_PROPERTIES = new HashSet<>( 8 );
+    /**
+     * 更新时间属性列表
+     */
     private static final Set<String> UPDATE_TIME_FILLING_PROPERTIES = new HashSet<>( 8 );
+    /**
+     * 删除时间属性列表
+     */
     private static final Set<String> DELETE_TIME_FILLING_PROPERTIES = new HashSet<>( 8 );
+    /**
+     * 创建人属性列表
+     */
     private static final Set<String> CREATOR_FILLING_PROPERTIES = new HashSet<>( 8 );
+    /**
+     * 创建人ID属性列表
+     */
     private static final Set<String> CREATOR_ID_FILLING_PROPERTIES = new HashSet<>( 8 );
+    /**
+     * 更新人属性列表
+     */
     private static final Set<String> MODIFIER_FILLING_PROPERTIES = new HashSet<>( 8 );
+    /**
+     * 更新人ID属性列表
+     */
     private static final Set<String> MODIFIER_ID_FILLING_PROPERTIES = new HashSet<>( 8 );
+    /**
+     * 删除人属性列表
+     */
     private static final Set<String> DELETED_FILLING_PROPERTIES = new HashSet<>( 8 );
+    /**
+     * 删除人ID属性列表
+     */
     private static final Set<String> DELETED_ID_FILLING_PROPERTIES = new HashSet<>( 8 );
 
     static {
         INSERT_TIME_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "gmtCreate", "createTime", "createDate", "createdTime", "createdDate" ) );
         UPDATE_TIME_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "gmtModify", "gmtModified", "modifyTime", "modifiedTime", "updateTime", "updatedTime" ) );
-        DELETE_TIME_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "gmtDelete", "gmtDeleted", "gmtDel", "deleteTime", "deletedTime", "delTime" ) );
-        CREATOR_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "creator", "createBy", "createUser", "createUserName", "createdBy", "createdUser", "updatedUserName" ) );
+        DELETE_TIME_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "gmtDelete", "gmtDel", "deleteTime", "deletedTime", "delTime" ) );
+        CREATOR_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "creator", "createBy", "createUser", "createUserName", "createdBy", "createdUser" ) );
         CREATOR_ID_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "creatorId", "createId", "createUserId", "createdId", "createdUserId" ) );
-        MODIFIER_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "modifier", "modifyBy", "modifiedBy", "modifyUser", "modifyUserName", "updateBy", "updateUser" ) );
-        MODIFIER_ID_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "modifierId", "modifiedId", "modifyId", "modifyUserId", "modifiedUserId", "updateId", "updateUserId" ) );
-        DELETED_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "deleteUser", "deleteUserName", "deletedUser", "deletedUserName", "delUser", "delUserName", "delBy", "deleteBy", "deletedBy" ) );
-        DELETED_ID_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "delUserId", "delUserId", "deleteUserId", "deletedUserId" ) );
+        MODIFIER_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "modifier", "modifyUser", "modifyUserName", "updateUser", "updatedUserName" ) );
+        MODIFIER_ID_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "modifierId", "modifiedId", "modifyUserId", "modifiedUserId", "updateUserId" ) );
+        DELETED_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "deleteUser", "deleteUserName", "deletedUser", "deletedUserName", "delUser", "delUserName" ) );
+        DELETED_ID_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "deleteUserId", "deletedUserId" ) );
         DATE_TYPE_FILLING_CACHE.put( Date.class, DateGenerator.class );
         DATE_TYPE_FILLING_CACHE.put( java.sql.Date.class, SqlDateGenerator.class );
         DATE_TYPE_FILLING_CACHE.put( Timestamp.class, TimestampGenerator.class );
@@ -96,7 +126,7 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
     /**
      * 填充依赖
      */
-    private MetaObjectFillingDependency dependency;
+    private MetaObjectFillAuxiliary auxiliary;
 
     /**
      * 构造方法
@@ -104,15 +134,15 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
      * @param disableUpdate       是否禁用更新操作自动填充
      * @param disableDelete       是否禁用逻辑删除操作自动填充
      * @param disableAutoMatching 是否禁用自动匹配
-     * @param dependency          填充依赖
+     * @param auxiliary           填充辅助
      */
     public DefaultMetaObjectFillingHandler( boolean disableInsert, boolean disableUpdate, boolean disableDelete,
-                                            boolean disableAutoMatching, MetaObjectFillingDependency dependency ) {
+                                            boolean disableAutoMatching, MetaObjectFillAuxiliary auxiliary ) {
         this.disableInsert = disableInsert;
         this.disableUpdate = disableUpdate;
         this.disableDelete = disableDelete;
         this.disableAutoMatching = disableAutoMatching;
-        this.dependency = dependency;
+        this.auxiliary = auxiliary;
     }
 
     @Override
@@ -159,7 +189,7 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
 
     private void requireFilling( MetaObject metaObject, Set<Column> columns ) {
         if ( metaObject != null && columns != null ) {
-            if ( columns != null && !columns.isEmpty() ) {
+            if ( !columns.isEmpty() ) {
                 for ( Column column : columns ) {
                     Class<? extends AbstractGenerator> target = DATE_TYPE_FILLING_CACHE.get( column.getJavaType() );
                     if ( target != null ) {
@@ -171,8 +201,8 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
     }
 
     private void autoFilling( MetaObject metaObject, Table table, Set<String> properties, boolean isUserName ) {
-        if ( enableAutoMatching() && table != null && dependency != null && properties != null ) {
-            Object value = isUserName ? dependency.currentUserName() : dependency.currentUserId();
+        if ( enableAutoMatching() && table != null && auxiliary != null && properties != null ) {
+            Object value = isUserName ? auxiliary.operator() : auxiliary.operationUserId();
             if ( value != null ) {
                 for ( String property : properties ) {
                     Optional<Column> optional = table.search( property );

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 /**
  * 抽象分页方言
- * @author DT
+ * @author wvkity
  */
 public abstract class AbstractPageableDialect extends AbstractDialect implements PageableDialect {
 

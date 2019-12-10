@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.sql.mapping.AbstractCriteriaSqlBuilder;
 
 /**
  * 根据指定查询对象查询记录是否存在SQL构建器
- * @author DT
+ * @author wvkity
  */
 public class ExistsSqlBuilder extends AbstractCriteriaSqlBuilder {
 

@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 /**
  * 分组SQL片段类
- * @author DT
+ * @author wvkity
  */
 public class GroupSegment extends AbstractSegment {
 

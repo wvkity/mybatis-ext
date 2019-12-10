@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 /**
  * 注解工具类
- * @author DT
+ * @author wvkity
  */
 @Log4j2
 public abstract class AnnotationUtil {

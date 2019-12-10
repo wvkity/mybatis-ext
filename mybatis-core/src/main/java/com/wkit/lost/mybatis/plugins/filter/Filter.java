@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.plugins.executor.Argument;
 
 /**
  * 过滤器
- * @author DT
+ * @author wvkity
  */
 @FunctionalInterface
 public interface Filter {

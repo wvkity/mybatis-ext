@@ -15,7 +15,7 @@ import lombok.extern.log4j.Log4j2;
 
 /**
  * 抽象SQL构建器
- * @author DT
+ * @author wvkity
  */
 @Log4j2
 public abstract class AbstractSqlBuilder implements SqlBuilder {

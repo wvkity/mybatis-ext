@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 条件接口
  * @param <T> 泛型类型
- * @author DT
+ * @author wvkity
  */
 public interface Condition<T> {
     

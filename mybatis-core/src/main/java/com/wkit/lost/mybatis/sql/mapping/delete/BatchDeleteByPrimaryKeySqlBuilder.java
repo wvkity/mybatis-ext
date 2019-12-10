@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.sql.mapping.AbstractSqlBuilder;
 
 /**
  * 根据主键批量删除记录SQL构建器
- * @author DT
+ * @author wvkity
  */
 public class BatchDeleteByPrimaryKeySqlBuilder extends AbstractSqlBuilder {
 

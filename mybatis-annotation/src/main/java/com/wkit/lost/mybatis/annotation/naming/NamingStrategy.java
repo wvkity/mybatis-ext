@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.annotation.naming;
 
 /**
  * 命名策略方式
- * @author DT
+ * @author wvkity
  */
 public enum NamingStrategy {
 

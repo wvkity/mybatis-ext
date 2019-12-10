@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 
 /**
  * 字段扩展注解
- * @author DT
+ * @author wvkity
  */
 @Target( ElementType.FIELD )
 @Retention( RetentionPolicy.RUNTIME )

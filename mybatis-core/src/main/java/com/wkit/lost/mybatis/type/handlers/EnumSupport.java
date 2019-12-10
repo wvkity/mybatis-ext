@@ -4,7 +4,7 @@ package com.wkit.lost.mybatis.type.handlers;
  * 自定义枚举接口
  * @param <E> 枚举类
  * @param <T> 枚举值类型
- * @author DT
+ * @author wvkity
  */
 public interface EnumSupport<E extends Enum<E>, T> {
 

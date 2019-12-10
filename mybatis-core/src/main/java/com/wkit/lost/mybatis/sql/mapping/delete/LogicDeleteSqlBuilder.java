@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 /**
  * 根据指定对象进行逻辑删除记录SQL构建器
- * @author DT
+ * @author wvkity
  */
 public class LogicDeleteSqlBuilder extends AbstractLogicalDeletionSqlBuilder {
 

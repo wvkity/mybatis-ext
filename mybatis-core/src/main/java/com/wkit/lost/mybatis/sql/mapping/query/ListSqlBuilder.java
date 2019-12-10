@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 /**
  * 根据多个主键查询记录SQL构建器
- * @author DT
+ * @author wvkity
  */
 public class ListSqlBuilder extends AbstractSqlBuilder {
 

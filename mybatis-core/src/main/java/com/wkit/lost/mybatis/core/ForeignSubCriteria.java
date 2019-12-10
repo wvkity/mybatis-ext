@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * 子查询联表条件类
  * @param <T> 泛型类型
- * @author DT
+ * @author wvkity
  */
 public class ForeignSubCriteria<T> extends ForeignCriteria<T> {
 

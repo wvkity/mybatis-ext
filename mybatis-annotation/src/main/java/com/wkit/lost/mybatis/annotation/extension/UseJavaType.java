@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.annotation.extension;
 
 /**
  * 使用Java类型
- * @author DT
+ * @author wvkity
  */
 public enum UseJavaType {
 

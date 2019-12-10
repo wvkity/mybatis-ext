@@ -11,7 +11,7 @@ import java.util.Collection;
  * 范围条件接口
  * @param <Context> 当前对象
  * @param <R>       lambda属性对象
- * @author DT
+ * @author wvkity
  */
 public interface Range<Context, R> extends LambdaResolver<R>, Segment, Serializable {
 

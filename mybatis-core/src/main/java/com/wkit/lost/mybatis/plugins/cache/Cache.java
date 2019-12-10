@@ -4,7 +4,7 @@ package com.wkit.lost.mybatis.plugins.cache;
  * 缓存接口
  * @param <K> 键
  * @param <V> 值
- * @author DT
+ * @author wvkity
  */
 public interface Cache<K, V> {
 

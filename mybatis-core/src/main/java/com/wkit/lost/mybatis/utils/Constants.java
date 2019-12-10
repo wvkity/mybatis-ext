@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.utils;
 
 /**
  * 常量
- * @author DT
+ * @author wvkity
  */
 public interface Constants {
 

@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 /**
  * 自定义模板条件
  * @param <T> 泛型类型
- * @author DT
+ * @author wvkity
  */
 @Accessors( chain = true )
 public class Template<T> extends AbstractExpression<T> {

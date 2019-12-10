@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * 列名下划线转驼峰
- * @author DT
+ * @author wvkity
  */
 public class MyBatisMapWrapper extends MapWrapper {
 

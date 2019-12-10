@@ -11,7 +11,7 @@ import java.util.Properties;
 /**
  * 简单缓存
  * <p>采用MyBatis缓存实现</p>
- * @author DT
+ * @author wvkity
  */
 public class SimpleCache<K, V> implements Cache<K, V> {
 

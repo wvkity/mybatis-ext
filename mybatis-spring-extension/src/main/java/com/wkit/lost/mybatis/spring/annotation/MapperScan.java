@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 
 /**
  * MyBatis接口扫描注解
- * @author DT
+ * @author wvkity
  */
 @Target( ElementType.TYPE )
 @Retention( RetentionPolicy.RUNTIME )

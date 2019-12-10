@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 
 /**
  * 联表方式
- * @author DT
+ * @author wvkity
  */
 @Accessors( chain = true )
 public class Foreign {

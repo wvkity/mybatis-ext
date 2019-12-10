@@ -7,7 +7,7 @@ import com.wkit.lost.mybatis.core.Operator;
 /**
  * NOT NULL
  * @param <T> 泛型类型
- * @author DT
+ * @author wvkity
  */
 public class NotNull<T> extends AbstractNull<T> {
 

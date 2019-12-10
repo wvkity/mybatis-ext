@@ -10,7 +10,7 @@ import java.util.Properties;
 
 /**
  * 数据库方言
- * @author DT
+ * @author wvkity
  */
 public interface Dialect {
 

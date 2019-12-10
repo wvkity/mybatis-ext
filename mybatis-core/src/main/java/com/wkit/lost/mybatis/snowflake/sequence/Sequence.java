@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.snowflake.sequence;
 
 /**
  * ID序列
- * @author DT
+ * @author wvkity
  */
 public interface Sequence {
 

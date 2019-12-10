@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 /**
  * 保存记录SQL构建器
- * @author DT
+ * @author wvkity
  */
 public class InsertSqlBuilder extends AbstractSqlBuilder {
 

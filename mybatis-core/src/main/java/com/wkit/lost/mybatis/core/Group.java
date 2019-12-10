@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 /**
  * 分组
  * @param <T> 泛型类型
- * @author DT
+ * @author wvkity
  */
 public class Group<T> implements Segment {
 

@@ -32,7 +32,7 @@ import java.util.Set;
 
 /**
  * 自动填充值执行器
- * @author DT
+ * @author wvkity
  * @see com.wkit.lost.mybatis.scripting.defaults.MyBatisDefaultParameterHandler
  */
 @Log4j2
@@ -52,19 +52,19 @@ public class MetaObjectFillingExecutor {
 
     /**
      * 拦截
-     * @param statement {@link MappedStatement}对象
+     * @param statement       {@link MappedStatement}对象
      * @param parameterObject 参数
      * @return true: 进行填充 false: 跳过
      */
     private boolean filter( MappedStatement statement, Object parameterObject ) {
         SqlCommandType exec = statement.getSqlCommandType();
-        return ( exec == SqlCommandType.INSERT || exec == SqlCommandType.UPDATE ) && parameterObject != null 
+        return ( exec == SqlCommandType.INSERT || exec == SqlCommandType.UPDATE ) && parameterObject != null
                 && !( PrimitiveRegistry.isPrimitiveOrWrapper( parameterObject ) || parameterObject.getClass() == String.class );
     }
 
     /**
      * 处理自动填充
-     * @param statement {@link MappedStatement}对象
+     * @param statement       {@link MappedStatement}对象
      * @param parameterObject 参数
      * @return 处理后的参数
      */
@@ -126,7 +126,7 @@ public class MetaObjectFillingExecutor {
 
         MetaObject metaObject = statement.getConfiguration().newMetaObject( parameter );
         // 保存操作填充主键值
-        MyBatisCustomConfiguration customConfiguration = 
+        MyBatisCustomConfiguration customConfiguration =
                 MyBatisConfigCache.getCustomConfiguration( statement.getConfiguration() );
         if ( isInsert && table.getPrimaryKey() != null ) {
             MetaObject realMetaObject = null;
@@ -143,18 +143,20 @@ public class MetaObjectFillingExecutor {
                     }
                 }
             }
-            Object value = realMetaObject.getValue( property );
-            if ( isNullOrEmpty( value ) ) {
-                Sequence sequence = customConfiguration.getSequence();
-                if ( primaryKey.isUuid() ) {
-                    // guid
-                    realMetaObject.setValue( property, customConfiguration.getKeyGenerator().value() );
-                } else if ( primaryKey.isWorker() ) {
-                    // 雪花算法主键(如果不开启注入Sequence对象，则默认使用mac地址分配的Sequence对象)
-                    realMetaObject.setValue( property, Optional.ofNullable( sequence ).map( Sequence::nextId ).orElse( SequenceWorker.nextId() ) );
-                } else if ( primaryKey.isWorkerString() ) {
-                    // 雪花算法字符串主键(如果不开启注入Sequence对象，则默认使用mac地址分配的Sequence对象)
-                    realMetaObject.setValue( property, Optional.ofNullable( sequence ).map( Sequence::nextStringId ).orElse( SequenceWorker.nextStringId() ) );
+            if ( realMetaObject != null ) {
+                Object value = realMetaObject.getValue( property );
+                if ( isNullOrEmpty( value ) ) {
+                    Sequence sequence = customConfiguration.getSequence();
+                    if ( primaryKey.isUuid() ) {
+                        // guid
+                        realMetaObject.setValue( property, customConfiguration.getKeyGenerator().value() );
+                    } else if ( primaryKey.isWorker() ) {
+                        // 雪花算法主键(如果不开启注入Sequence对象，则默认使用mac地址分配的Sequence对象)
+                        realMetaObject.setValue( property, Optional.ofNullable( sequence ).map( Sequence::nextId ).orElse( SequenceWorker.nextId() ) );
+                    } else if ( primaryKey.isWorkerString() ) {
+                        // 雪花算法字符串主键(如果不开启注入Sequence对象，则默认使用mac地址分配的Sequence对象)
+                        realMetaObject.setValue( property, Optional.ofNullable( sequence ).map( Sequence::nextStringId ).orElse( SequenceWorker.nextStringId() ) );
+                    }
                 }
             }
         }
@@ -215,7 +217,7 @@ public class MetaObjectFillingExecutor {
                         criteriaInstance.add( Restrictions.eq( property, logicNotDeleteValue ) );
                         metaObject.setValue( Constants.PARAM_ENTITY, table.getEntity().getDeclaredConstructor().newInstance() );
                     } catch ( Exception e ) {
-                        throw new MyBatisException( "Failed to create an instance based on the `" 
+                        throw new MyBatisException( "Failed to create an instance based on the `"
                                 + table.getEntity().getName() + "` class", e );
                     }
                 }

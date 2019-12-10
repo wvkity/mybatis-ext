@@ -2,7 +2,7 @@ package com.wkit.lost.paging;
 
 /**
  * 分页类
- * @author DT
+ * @author wvkity
  */
 public class Pager extends AbstractPager {
 

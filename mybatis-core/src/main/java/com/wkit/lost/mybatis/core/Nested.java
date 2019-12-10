@@ -10,7 +10,7 @@ import java.util.Collection;
 /**
  * 嵌套条件接口
  * @param <Context> 当前对象
- * @author DT
+ * @author wvkity
  */
 public interface Nested<Context> extends Segment, Serializable {
     

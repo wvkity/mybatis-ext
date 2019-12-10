@@ -8,7 +8,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 
 /**
  * 根据多个主键查询记录
- * @author DT
+ * @author wvkity
  */
 public class List extends AbstractMethod {
     

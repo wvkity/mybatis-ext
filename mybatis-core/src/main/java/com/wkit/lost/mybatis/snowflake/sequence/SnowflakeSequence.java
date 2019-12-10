@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 基于雪花算法生成64位ID
- * @author DT
+ * @author wvkity
  */
 public class SnowflakeSequence implements Sequence {
 

@@ -5,7 +5,7 @@ import com.wkit.lost.mybatis.core.CriteriaImpl;
 /**
  * 抽象查询对象构建器工厂类
  * @param <T> 类型
- * @author DT
+ * @author wvkity
  */
 public abstract class AbstractCriteriaBuilderFactory<T> {
     

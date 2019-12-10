@@ -8,7 +8,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 
 /**
  * 根据多个对象查询记录
- * @author DT
+ * @author wvkity
  */
 public class ListByEntities extends AbstractMethod {
     

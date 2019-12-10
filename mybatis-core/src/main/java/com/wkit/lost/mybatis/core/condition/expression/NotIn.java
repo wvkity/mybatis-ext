@@ -8,7 +8,7 @@ import java.util.Collection;
 /**
  * NOT IN范围条件
  * @param <T> 泛型类型
- * @author DT
+ * @author wvkity
  */
 public class NotIn<T> extends Range<T> {
 

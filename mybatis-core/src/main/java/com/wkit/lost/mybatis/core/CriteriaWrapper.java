@@ -12,7 +12,7 @@ import java.util.function.Function;
  * @param <T>       泛型类型
  * @param <Context> 当前对象
  * @param <R>       Lambda对象
- * @author DT
+ * @author wvkity
  */
 public interface CriteriaWrapper<T, Context, R> extends Criteria<T>, InstanceClone<Context>,
         Compare<Context, R>, Null<Context, R>, Range<Context, R>, IndistinctMatching<Context, R>,

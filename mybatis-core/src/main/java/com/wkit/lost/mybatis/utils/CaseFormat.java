@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 /**
  * 字符串格式化
- * @author DT
+ * @author wvkity
  */
 public enum CaseFormat {
 

@@ -11,7 +11,7 @@ import java.util.Set;
 
 /**
  * 简单类型注册器
- * @author DT
+ * @author wvkity
  */
 public class SimpleTypeRegistry {
 

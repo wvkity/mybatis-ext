@@ -13,7 +13,7 @@ import java.util.Optional;
 
 /**
  * 属性值相等条件类
- * @author DT
+ * @author wvkity
  */
 public class PropertyEqual<T> extends AbstractExpression<T> {
 

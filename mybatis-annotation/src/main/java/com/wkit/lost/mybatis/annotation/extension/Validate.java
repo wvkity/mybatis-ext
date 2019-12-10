@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.annotation.extension;
 
 /**
  * 字符串空值校验
- * @author DT
+ * @author wvkity
  */
 public enum Validate {
     

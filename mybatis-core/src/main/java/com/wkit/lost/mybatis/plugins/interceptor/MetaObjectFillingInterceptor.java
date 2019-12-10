@@ -13,7 +13,7 @@ import java.util.Properties;
 
 /**
  * 自动填充值拦截器
- * @author DT
+ * @author wvkity
  * @see MetaObjectFillingExecutor
  */
 @Intercepts( {
@@ -38,6 +38,5 @@ public class MetaObjectFillingInterceptor implements Interceptor {
 
     @Override
     public void setProperties( Properties properties ) {
-
     }
 }

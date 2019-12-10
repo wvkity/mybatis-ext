@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.utils;
 
 /**
  * 断言工具类
- * @author DT
+ * @author wvkity
  */
 public abstract class Assert {
 

@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 /**
  * 根据指定对象查询记录是否存在SQL构建器
- * @author DT
+ * @author wvkity
  */
 public class ExistsSqlBuilder extends AbstractSqlBuilder {
 

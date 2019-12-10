@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.core;
 
 /**
  * 条件对象搜索接口
- * @author DT
+ * @author wvkity
  */
 public interface CriteriaSearch {
 

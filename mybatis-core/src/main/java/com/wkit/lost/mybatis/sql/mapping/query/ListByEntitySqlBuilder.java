@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 /**
  * 根据指定对象查询记录
- * @author DT
+ * @author wvkity
  */
 public class ListByEntitySqlBuilder extends AbstractSqlBuilder {
 

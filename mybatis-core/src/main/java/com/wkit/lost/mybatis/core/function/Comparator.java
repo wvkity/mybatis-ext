@@ -5,7 +5,7 @@ import com.wkit.lost.mybatis.core.segment.Segment;
 
 /**
  * 比较运算
- * @author DT
+ * @author wvkity
  */
 public enum Comparator implements Segment {
 

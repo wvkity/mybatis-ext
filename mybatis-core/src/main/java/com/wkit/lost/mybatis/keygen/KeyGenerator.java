@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.keygen;
 
 /**
  * 主键生成器接口
- * @author DT
+ * @author wvkity
  */
 @FunctionalInterface
 public interface KeyGenerator {

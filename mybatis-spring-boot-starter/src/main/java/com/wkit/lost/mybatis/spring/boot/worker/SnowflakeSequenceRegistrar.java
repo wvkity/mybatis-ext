@@ -34,7 +34,7 @@ import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_SING
  *         <li>注册到Bean容器的实例名称为sequence，同时还给该实例起了一个snowflakeSequence别名</li>
  *     </ul>
  * </p>
- * @author DT
+ * @author wvkity
  */
 class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, ImportBeanDefinitionRegistrar {
 

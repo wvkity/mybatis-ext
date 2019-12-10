@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * MappedStatement工具
- * @author DT
+ * @author wvkity
  */
 public abstract class MappedStatementUtil {
 

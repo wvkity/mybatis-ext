@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * MAX聚合函数
- * @author DT
+ * @author wvkity
  */
 @Accessors( chain = true )
 public class Max extends AbstractFunction {

@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.exception;
 
 /**
  * Mapper异常
- * @author DT
+ * @author wvkity
  */
 public class MapperException extends RuntimeException {
 

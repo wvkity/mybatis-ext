@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 
 /**
  * 包含多个{@link MapperScan}注解的容器注解
- * @author DT
+ * @author wvkity
  */
 @Target( ElementType.TYPE )
 @Retention( RetentionPolicy.RUNTIME )

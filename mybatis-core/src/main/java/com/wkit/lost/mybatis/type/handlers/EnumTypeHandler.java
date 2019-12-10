@@ -12,7 +12,7 @@ import java.sql.SQLException;
 /**
  * 自定义枚举属性处理器
  * @param <E> 枚举类
- * @author DT
+ * @author wvkity
  */
 @Log4j2
 public class EnumTypeHandler<E extends Enum<E> & EnumSupport> extends BaseTypeHandler<EnumSupport> {

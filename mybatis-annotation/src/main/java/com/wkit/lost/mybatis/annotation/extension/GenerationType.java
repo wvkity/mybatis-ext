@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.annotation.extension;
 
 /**
  * 主键生成方式
- * @author DT
+ * @author wvkity
  */
 public enum GenerationType {
 

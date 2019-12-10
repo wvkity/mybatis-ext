@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * 主键等于条件
  * @param <T> 泛型类型
- * @author DT
+ * @author wvkity
  */
 public class IdentifierEqual<T> extends AbstractExpression<T> {
 

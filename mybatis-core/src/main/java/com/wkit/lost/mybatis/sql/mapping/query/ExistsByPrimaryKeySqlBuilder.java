@@ -6,7 +6,7 @@ import com.wkit.lost.mybatis.utils.ColumnUtil;
 
 /**
  * 根据主键查询记录是否存在SQL构建器
- * @author DT
+ * @author wvkity
  */
 public class ExistsByPrimaryKeySqlBuilder extends AbstractSqlBuilder {
 

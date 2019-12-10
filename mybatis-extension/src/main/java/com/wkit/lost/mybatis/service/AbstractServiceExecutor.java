@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * 泛型接口
  * @param <T> 实体类
  * @param <R> 返回值类型
- * @author DT
+ * @author wvkity
  */
 public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T, R>, T, R> extends AbstractCriteriaBuilderFactory<T>
         implements ServiceExecutor<T, R> {
@@ -158,7 +158,9 @@ public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T,
         if ( CollectionUtil.isEmpty( idList ) ) {
             throw new MyBatisException( "Primary key set parameters cannot be empty" );
         }
-        List<? extends Serializable> list = idList.stream().filter( Objects::nonNull ).collect( Collectors.toCollection( ArrayList::new ) );
+        List<? extends Serializable> list = idList.stream()
+                .filter( Objects::nonNull ) 
+                .collect( Collectors.toCollection( ArrayList::new ) );
         if ( CollectionUtil.isEmpty( list ) ) {
             throw new MyBatisException( "Primary key set parameters cannot be empty" );
         }

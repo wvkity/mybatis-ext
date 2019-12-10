@@ -9,7 +9,7 @@ import java.lang.reflect.Proxy;
 
 /**
  * 生成器JDK动态代理类
- * @author DT
+ * @author wvkity
  */
 public class GeneratorJdkProxy implements InvocationHandler {
 

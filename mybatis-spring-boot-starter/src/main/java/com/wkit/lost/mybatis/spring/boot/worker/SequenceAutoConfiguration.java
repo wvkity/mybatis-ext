@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * WorkerSequence配置类
- * @author DT
+ * @author wvkity
  */
 @Data
 @Accessors( chain = true )

@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.core.segment.Segment;
 
 /**
  * 范围
- * @author DT
+ * @author wvkity
  */
 public enum Range implements Segment {
     

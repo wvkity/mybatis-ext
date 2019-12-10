@@ -35,7 +35,7 @@ import java.util.stream.Stream;
 
 /**
  * 默认SQL注入器
- * @author DT
+ * @author wvkity
  */
 public class DefaultSqlInjector extends AbstractSqlInjector {
 

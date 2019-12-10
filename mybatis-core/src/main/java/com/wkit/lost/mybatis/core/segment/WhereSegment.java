@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 /**
  * WHERE条件SQL片段类
- * @author DT
+ * @author wvkity
  */
 public class WhereSegment extends AbstractSegment {
 

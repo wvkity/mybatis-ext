@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.core.meta.Table;
 
 /**
  * 实体解析器
- * @author DT
+ * @author wvkity
  */
 @FunctionalInterface
 public interface EntityResolver {

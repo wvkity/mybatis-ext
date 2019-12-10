@@ -6,14 +6,14 @@ import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.utils.Ascii;
 import com.wkit.lost.mybatis.utils.Constants;
+import com.wkit.lost.mybatis.utils.MetaObjectUtil;
 import org.apache.ibatis.reflection.MetaObject;
-import org.apache.ibatis.reflection.SystemMetaObject;
 
 import java.util.Optional;
 
 /**
  * 元对象字段自动填充值处理接口
- * @author DT
+ * @author wvkity
  */
 public interface MetaObjectFillingHandler {
 
@@ -69,7 +69,8 @@ public interface MetaObjectFillingHandler {
             } else if ( metaObject.hasGetter( Constants.PARAM_ENTITY ) ) {
                 Object entity = metaObject.getValue( Constants.PARAM_ENTITY );
                 if ( entity != null ) {
-                    return fillingValue( SystemMetaObject.forObject( entity ), property, value );
+                    // SystemMetaObject.forObject( entity )
+                    return fillingValue( MetaObjectUtil.forObject( entity ), property, value );
                 }
             }
         }
@@ -94,7 +95,8 @@ public interface MetaObjectFillingHandler {
             } else if ( metaObject.hasGetter( Constants.PARAM_ENTITY ) ) {
                 Object entity = metaObject.getValue( Constants.PARAM_ENTITY );
                 if ( entity != null ) {
-                    return fillingValue( SystemMetaObject.forObject( entity ), property, value, rule );
+                    // SystemMetaObject.forObject( entity )
+                    return fillingValue( MetaObjectUtil.forObject( entity ), property, value, rule );
                 }
             }
         }
@@ -129,7 +131,8 @@ public interface MetaObjectFillingHandler {
             Optional<Column> first = table.search( property );
             if ( first.isPresent() ) {
                 Column column = first.get();
-                return ( column.isInsertable() || column.isUpdatable() ) && column.getJavaType().isAssignableFrom( value.getClass() );
+                return ( column.isInsertable() || column.isUpdatable() ) 
+                        && column.getJavaType().isAssignableFrom( value.getClass() );
             }
         }
         return false;
@@ -167,7 +170,8 @@ public interface MetaObjectFillingHandler {
             if ( table == null && metaObject.hasGetter( Constants.PARAM_ENTITY ) ) {
                 Object entity = metaObject.getValue( Constants.PARAM_ENTITY );
                 if ( entity != null ) {
-                    return getTable( SystemMetaObject.forObject( entity ) );
+                    // SystemMetaObject.forObject( entity )
+                    return getTable( MetaObjectUtil.forObject( entity ) );
                 }
             }
         }

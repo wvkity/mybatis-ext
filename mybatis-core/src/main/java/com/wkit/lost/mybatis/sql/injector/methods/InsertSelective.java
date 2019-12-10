@@ -7,7 +7,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 
 /**
  * 保存记录
- * @author DT
+ * @author wvkity
  */
 public class InsertSelective extends AbstractInsertMethod {
 

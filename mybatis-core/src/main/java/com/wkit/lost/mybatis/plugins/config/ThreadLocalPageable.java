@@ -4,7 +4,7 @@ import com.wkit.lost.paging.Pageable;
 
 /**
  * 本地分页对象缓存
- * @author DT
+ * @author wvkity
  */
 public class ThreadLocalPageable {
 

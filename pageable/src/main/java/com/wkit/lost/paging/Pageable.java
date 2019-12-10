@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 分页接口
- * @author DT
+ * @author wvkity
  */
 public interface Pageable extends Serializable {
 

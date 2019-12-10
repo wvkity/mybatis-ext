@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 /**
  * 序列SQL枚举类
- * @author DT
+ * @author wvkity
  */
 public enum SequenceKeyGenerator {
 

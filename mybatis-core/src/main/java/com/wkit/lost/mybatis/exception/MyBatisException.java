@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.exception;
 
 /**
  * MyBatis异常
- * @author DT
+ * @author wvkity
  */
 public class MyBatisException extends RuntimeException {
 

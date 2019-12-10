@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 /**
  * 默认属性解析器
- * @author DT
+ * @author wvkity
  */
 public class DefaultFieldResolver implements FieldResolver {
 

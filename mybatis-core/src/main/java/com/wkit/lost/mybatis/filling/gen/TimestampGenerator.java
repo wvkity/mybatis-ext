@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 /**
  * {@link Timestamp}生成器
- * @author DT
+ * @author wvkity
  */
 public class TimestampGenerator extends AbstractGenerator {
 

@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * 重写{@link org.apache.ibatis.binding.MapperProxy}
  * @param <T> 类型
- * @author DT
+ * @author wvkity
  */
 public class MyBatisMapperProxy<T> implements InvocationHandler, Serializable {
 

@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.plugins.exception;
 
 /**
  * 分页异常
- * @author DT
+ * @author wvkity
  */
 public class MyBatisPluginException extends RuntimeException {
     

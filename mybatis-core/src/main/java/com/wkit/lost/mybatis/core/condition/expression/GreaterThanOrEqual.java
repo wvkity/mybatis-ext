@@ -7,7 +7,7 @@ import com.wkit.lost.mybatis.core.Operator;
 /**
  * 大于或等于
  * @param <T> 泛型类型
- * @author DT
+ * @author wvkity
  */
 public class GreaterThanOrEqual<T> extends Simple<T> {
 

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 空条件
  * @param <Context> 当前对象
  * @param <R>       Lambda对象
- * @author DT
+ * @author wvkity
  */
 public interface Null<Context, R> extends LambdaResolver<R>, Segment, Serializable {
 

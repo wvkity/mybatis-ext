@@ -17,7 +17,7 @@ import java.util.Properties;
 
 /**
  * 分页拦截器
- * @author DT
+ * @author wvkity
  */
 @Intercepts( {
         @Signature( type = Executor.class, method = "query", args = { MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class } ),

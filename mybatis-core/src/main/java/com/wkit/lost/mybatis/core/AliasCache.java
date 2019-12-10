@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 别名缓存类
- * @author DT
+ * @author wvkity
  */
 public abstract class AliasCache {
 

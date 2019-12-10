@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 /**
  * SQL片段管理器
- * @author DT
+ * @author wvkity
  */
 public class SegmentManager implements Segment {
 

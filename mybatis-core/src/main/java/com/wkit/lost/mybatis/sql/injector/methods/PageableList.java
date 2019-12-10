@@ -8,7 +8,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 
 /**
  * 分页查询记录
- * @author DT
+ * @author wvkity
  */
 public class PageableList extends AbstractMethod {
 

@@ -7,7 +7,7 @@ import com.wkit.lost.mybatis.core.segment.Segment;
 
 /**
  * 条件接口
- * @author DT
+ * @author wvkity
  */
 public interface Criterion<T> extends Segment {
 

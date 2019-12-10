@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 /**
  * 启用元对象自动填充值
  * <p>交由拦截器处理</p>
- * @author DT
+ * @author wvkity
  * @see MateObjectAutoFillingRegistrar
  * @see com.wkit.lost.mybatis.plugins.interceptor.MetaObjectFillingInterceptor
  */

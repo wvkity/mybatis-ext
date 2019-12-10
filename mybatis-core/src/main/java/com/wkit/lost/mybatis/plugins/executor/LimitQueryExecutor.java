@@ -17,7 +17,7 @@ import java.util.Properties;
 
 /**
  * LIMIT查询执行器
- * @author DT
+ * @author wvkity
  */
 @Log4j2
 public class LimitQueryExecutor extends AbstractQueryExecutor {

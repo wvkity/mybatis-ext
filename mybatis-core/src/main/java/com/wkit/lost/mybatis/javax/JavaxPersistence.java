@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.javax;
 
 /**
  * javax.persistence-api相关注解类名
- * @author DT
+ * @author wvkity
  */
 public abstract class JavaxPersistence {
 

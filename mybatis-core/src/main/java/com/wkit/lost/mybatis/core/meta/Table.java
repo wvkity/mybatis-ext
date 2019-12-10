@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 /**
  * 数据库表映射信息
- * @author DT
+ * @author wvkity
  */
 @Accessors( chain = true )
 @NoArgsConstructor
@@ -219,7 +219,9 @@ public class Table {
      * @return 字段集合
      */
     public Set<Column> getUpdatableColumns() {
-        return this.columns.stream().filter( Column::isUpdatable ).collect( Collectors.toCollection( LinkedHashSet::new ) );
+        return this.columns.stream()
+                .filter( Column::isUpdatable )
+                .collect( Collectors.toCollection( LinkedHashSet::new ) );
     }
 
     /**
@@ -227,7 +229,9 @@ public class Table {
      * @return 字段集合
      */
     public Set<Column> getInsertableColumns() {
-        return this.columns.stream().filter( Column::isInsertable ).collect( Collectors.toCollection( LinkedHashSet::new ) );
+        return this.columns.stream()
+                .filter( Column::isInsertable )
+                .collect( Collectors.toCollection( LinkedHashSet::new ) );
     }
 
     /**
@@ -235,7 +239,9 @@ public class Table {
      * @return 字段集合
      */
     public Set<Column> getInsertFillings() {
-        return this.columns.stream().filter( Column::enableInsertFilling ).collect( Collectors.toCollection( LinkedHashSet::new ) );
+        return this.columns.stream()
+                .filter( Column::enableInsertFilling )
+                .collect( Collectors.toCollection( LinkedHashSet::new ) );
     }
 
     /**
@@ -243,7 +249,9 @@ public class Table {
      * @return 字段集合
      */
     public Set<Column> getUpdateFillings() {
-        return this.columns.stream().filter( Column::enableUpdateFilling ).collect( Collectors.toCollection( LinkedHashSet::new ) );
+        return this.columns.stream()
+                .filter( Column::enableUpdateFilling )
+                .collect( Collectors.toCollection( LinkedHashSet::new ) );
     }
 
     /**
@@ -251,7 +259,9 @@ public class Table {
      * @return 字段集合
      */
     public Set<Column> getDeleteFillings() {
-        return this.columns.stream().filter( Column::enableDeleteFilling ).collect( Collectors.toCollection( LinkedHashSet::new ) );
+        return this.columns.stream()
+                .filter( Column::enableDeleteFilling )
+                .collect( Collectors.toCollection( LinkedHashSet::new ) );
     }
 
     /**
@@ -270,7 +280,8 @@ public class Table {
      */
     void initDefinition() {
         if ( CollectionUtil.hasElement( this.columns ) && definitions.isEmpty() ) {
-            this.definitions.putAll( this.columns.stream().collect( Collectors.toMap( Column::getProperty, Function.identity() ) ) );
+            this.definitions.putAll( this.columns.stream()
+                    .collect( Collectors.toMap( Column::getProperty, Function.identity() ) ) );
         }
     }
 

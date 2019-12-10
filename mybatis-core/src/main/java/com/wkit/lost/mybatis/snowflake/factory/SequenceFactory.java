@@ -5,7 +5,7 @@ import com.wkit.lost.mybatis.snowflake.worker.WorkerAssigner;
 
 /**
  * ID序列工厂接口
- * @author DT
+ * @author wvkity
  */
 public interface SequenceFactory {
 

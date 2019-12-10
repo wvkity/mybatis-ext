@@ -10,7 +10,7 @@ import java.util.Set;
 
 /**
  * 根据指定对象更新记录SQL构建器
- * @author DT
+ * @author wvkity
  */
 public class UpdateSelectiveSqlBuilder extends AbstractSqlBuilder {
 

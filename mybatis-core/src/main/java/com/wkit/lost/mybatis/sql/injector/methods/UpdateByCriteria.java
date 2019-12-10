@@ -8,7 +8,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 
 /**
  * 根据Criteria条件对象更新记录
- * @author DT
+ * @author wvkity
  */
 public class UpdateByCriteria extends AbstractCriteriaMethod {
 

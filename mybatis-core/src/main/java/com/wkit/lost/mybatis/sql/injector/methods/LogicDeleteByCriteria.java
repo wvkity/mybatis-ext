@@ -8,7 +8,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 
 /**
  * 根据指定条件对象进行逻辑删除记录
- * @author DT
+ * @author wvkity
  */
 public class LogicDeleteByCriteria extends AbstractMethod {
 

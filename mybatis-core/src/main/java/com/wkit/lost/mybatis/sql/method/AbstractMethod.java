@@ -24,7 +24,7 @@ import java.lang.reflect.WildcardType;
 
 /**
  * 抽象注入方法模板
- * @author DT
+ * @author wvkity
  */
 @Log4j2
 public abstract class AbstractMethod implements Method {

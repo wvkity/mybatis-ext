@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.core.segment.Segment;
 
 /**
  * LIKE匹配模式枚举类
- * @author DT
+ * @author wvkity
  */
 public enum MatchMode implements Segment {
     

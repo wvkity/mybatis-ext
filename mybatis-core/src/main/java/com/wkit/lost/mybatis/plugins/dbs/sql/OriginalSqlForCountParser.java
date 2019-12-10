@@ -32,7 +32,7 @@ import java.util.Set;
 
 /**
  * 总记录SQL解析器
- * @author DT
+ * @author wvkity
  */
 public class OriginalSqlForCountParser {
 

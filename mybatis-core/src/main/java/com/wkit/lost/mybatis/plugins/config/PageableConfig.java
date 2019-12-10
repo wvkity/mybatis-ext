@@ -13,7 +13,7 @@ import java.util.Properties;
 
 /**
  * 分页配置
- * @author DT
+ * @author wvkity
  */
 public class PageableConfig {
 

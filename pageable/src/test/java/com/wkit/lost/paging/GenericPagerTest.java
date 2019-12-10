@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import org.junit.jupiter.api.Test;
 
 /**
- * @author DT
+ * @author wvkity
  */
 public class GenericPagerTest {
 

@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.snowflake.sequence;
 
 /**
  * MyBatis异常
- * @author DT
+ * @author wvkity
  */
 public class SnowflakeException extends RuntimeException {
 

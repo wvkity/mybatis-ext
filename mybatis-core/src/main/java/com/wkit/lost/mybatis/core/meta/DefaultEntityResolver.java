@@ -9,6 +9,7 @@ import com.wkit.lost.mybatis.annotation.MetaFilling;
 import com.wkit.lost.mybatis.annotation.OrderBy;
 import com.wkit.lost.mybatis.annotation.SequenceGenerator;
 import com.wkit.lost.mybatis.annotation.Transient;
+import com.wkit.lost.mybatis.annotation.Version;
 import com.wkit.lost.mybatis.annotation.Worker;
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.annotation.extension.Executing;
@@ -49,7 +50,7 @@ import java.util.Set;
 
 /**
  * 默认实体-表映射解析器
- * @author DT
+ * @author wvkity
  */
 @Log4j2
 public class DefaultEntityResolver implements EntityResolver {
@@ -57,7 +58,7 @@ public class DefaultEntityResolver implements EntityResolver {
     /**
      * 雪花算法字符串主键
      */
-    private static final Set<String> WORKER_KEYS = new HashSet<>( Arrays.asList( "WORKERSTRING", "WORKER_STRING", "WORKERSTR", "WORKER_STR" ) );
+    private static final Set<String> WORKER_KEYS = new HashSet<>( Arrays.asList( "WORKERSTRING", "WORKER_STRING" ) );
 
     /**
      * 自定义配置
@@ -329,6 +330,8 @@ public class DefaultEntityResolver implements EntityResolver {
         column.setBlob( blob ).setCheckNotEmpty( checkNotEmpty );
         column.setJdbcType( jdbcType ).setTypeHandler( typeHandler );
         column.setJavaType( attribute.getJavaType() ).setUseJavaType( useJavaType );
+        // 乐观锁
+        column.setVersion( attribute.isAnnotationPresent( Version.class ) );
         // 使用基本类型警告
         if ( column.getJavaType().isPrimitive() ) {
             log.warn( "Warning: The `{}` attribute in the `{}` entity is defined as a primitive type. " +
@@ -502,7 +505,7 @@ public class DefaultEntityResolver implements EntityResolver {
                         "@GeneratedValue(generator = \"UUID\")",
                         "@GeneratedValue(generator = \"JDBC\")",
                         "@GeneratedValue(generator = \"WORKER\")",
-                        "@GeneratedValue(generator = \"WORKER_STR\")",
+                        "@GeneratedValue(generator = \"WORKER_STRING\")",
                         "@GeneratedValue(strategy = GenerationType.IDENTITY, [ generator = \"[ MySql, SQLServer... ]\" ])" ) );
             }
         }

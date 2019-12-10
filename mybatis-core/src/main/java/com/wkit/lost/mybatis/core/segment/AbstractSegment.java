@@ -9,7 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 抽象SQL片段类
- * @author DT
+ * @author wvkity
  */
 @SuppressWarnings( "serial" )
 public abstract class AbstractSegment implements Segment {

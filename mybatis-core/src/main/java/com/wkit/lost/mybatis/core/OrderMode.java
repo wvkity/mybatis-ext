@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.core.segment.Segment;
 
 /**
  * 排序模式
- * @author DT
+ * @author wvkity
  */
 public enum OrderMode implements Segment {
     

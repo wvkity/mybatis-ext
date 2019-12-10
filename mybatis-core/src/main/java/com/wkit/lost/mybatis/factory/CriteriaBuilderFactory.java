@@ -5,7 +5,7 @@ import com.wkit.lost.mybatis.core.CriteriaImpl;
 /**
  * 查询对象构建工厂接口
  * @param <T> 类型
- * @author DT
+ * @author wvkity
  */
 public interface CriteriaBuilderFactory<T> {
     

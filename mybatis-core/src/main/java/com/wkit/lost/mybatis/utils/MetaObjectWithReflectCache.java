@@ -11,7 +11,7 @@ import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 
 /**
  * 带缓存MetaObject反射工具
- * @author DT
+ * @author wvkity
  */
 public abstract class MetaObjectWithReflectCache {
     
@@ -21,7 +21,8 @@ public abstract class MetaObjectWithReflectCache {
     
     public static MetaObject forObject( Object object ) {
         try {
-            return MetaObject.forObject( object, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY );
+            return MetaObject.forObject( object, DEFAULT_OBJECT_FACTORY, 
+                    DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY );
         } catch ( Exception e ) {
             throw new MyBatisPluginException( e );
         }

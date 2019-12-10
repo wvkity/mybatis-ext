@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 实例复制接口
  * @param <Context> 当前对象
- * @author DT
+ * @author wvkity
  */
 @FunctionalInterface
 public interface InstanceClone<Context> extends Serializable {

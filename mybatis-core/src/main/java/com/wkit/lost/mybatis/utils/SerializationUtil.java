@@ -16,7 +16,7 @@ import java.util.Map;
 
 /**
  * 序列化工具
- * @author DT
+ * @author wvkity
  */
 public class SerializationUtil {
 

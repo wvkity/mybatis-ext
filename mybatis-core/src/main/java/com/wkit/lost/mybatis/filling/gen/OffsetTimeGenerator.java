@@ -4,7 +4,7 @@ import java.time.OffsetTime;
 
 /**
  * {@link OffsetTime}生成器
- * @author DT
+ * @author wvkity
  */
 public class OffsetTimeGenerator extends AbstractGenerator {
 

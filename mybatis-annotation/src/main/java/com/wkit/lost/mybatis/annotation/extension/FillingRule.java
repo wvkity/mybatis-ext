@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.annotation.extension;
 
 /**
  * 填充规则
- * @author DT
+ * @author wvkity
  */
 public enum FillingRule {
     NORMAL,

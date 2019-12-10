@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.snowflake.sequence;
 
 /**
  * 级别
- * @author DT
+ * @author wvkity
  */
 public enum Level {
 

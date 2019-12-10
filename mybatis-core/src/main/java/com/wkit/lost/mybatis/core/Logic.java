@@ -6,7 +6,7 @@ import java.util.Locale;
 
 /**
  * 逻辑操作符
- * @author DT
+ * @author wvkity
  */
 public enum Logic implements Segment {
 

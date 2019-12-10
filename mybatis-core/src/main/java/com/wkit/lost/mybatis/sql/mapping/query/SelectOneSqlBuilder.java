@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 /**
  * 根据主键查询记录SQL构建器
- * @author DT
+ * @author wvkity
  */
 public class SelectOneSqlBuilder extends AbstractSqlBuilder {
 

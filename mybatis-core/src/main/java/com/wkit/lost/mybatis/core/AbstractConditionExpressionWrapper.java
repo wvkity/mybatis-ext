@@ -12,7 +12,7 @@ import java.util.function.Function;
  * 条件构建容器
  * @param <T> 泛型类型
  * @param <R> Lambda对象
- * @author DT
+ * @author wvkity
  */
 @SuppressWarnings( "serial" )
 public abstract class AbstractConditionExpressionWrapper<T, R> extends AbstractParamValueConverter

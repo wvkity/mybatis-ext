@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
 
 /**
  * 实体映射属性信息
- * @author DT
+ * @author wvkity
  */
 @Accessors( chain = true )
 @ToString

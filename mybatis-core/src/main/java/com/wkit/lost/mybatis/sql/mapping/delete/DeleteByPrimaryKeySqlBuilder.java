@@ -6,7 +6,7 @@ import com.wkit.lost.mybatis.utils.ColumnUtil;
 
 /**
  * 根据主键删除记录SQL构建器
- * @author DT
+ * @author wvkity
  */
 public class DeleteByPrimaryKeySqlBuilder extends AbstractSqlBuilder {
 

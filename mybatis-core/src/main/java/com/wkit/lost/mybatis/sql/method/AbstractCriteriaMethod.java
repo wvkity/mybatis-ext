@@ -7,7 +7,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 
 /**
  * 抽象注入方法模板
- * @author DT
+ * @author wvkity
  */
 public abstract class AbstractCriteriaMethod extends AbstractMethod {
 

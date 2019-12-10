@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * JDBC类型映射注册器
- * @author DT
+ * @author wvkity
  */
 public abstract class JdbcTypeMappingRegister {
 

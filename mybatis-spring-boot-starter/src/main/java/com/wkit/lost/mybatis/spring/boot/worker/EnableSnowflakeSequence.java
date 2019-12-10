@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 
 /**
  * 启用雪花算法ID序列
- * @author DT
+ * @author wvkity
  * @see SnowflakeSequenceRegistrar
  */
 @Target( ElementType.TYPE )

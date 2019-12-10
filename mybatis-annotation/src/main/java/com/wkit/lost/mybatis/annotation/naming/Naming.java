@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 /**
  * 命名方式注解类
  * <p>默认采用驼峰转下划线大写</p>
- * @author DT
+ * @author wvkity
  */
 @Target( { ElementType.TYPE } )
 @Retention( RetentionPolicy.RUNTIME )

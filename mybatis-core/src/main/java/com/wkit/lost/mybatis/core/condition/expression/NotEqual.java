@@ -7,7 +7,7 @@ import com.wkit.lost.mybatis.core.Operator;
 /**
  * 不等于
  * @param <T> 泛型类型
- * @author DT
+ * @author wvkity
  */
 public class NotEqual<T> extends Simple<T> {
 

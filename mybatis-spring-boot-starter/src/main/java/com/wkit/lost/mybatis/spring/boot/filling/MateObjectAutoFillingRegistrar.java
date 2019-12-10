@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.spring.boot.filling;
 
 import com.wkit.lost.mybatis.filling.DefaultMetaObjectFillingHandler;
-import com.wkit.lost.mybatis.filling.MetaObjectFillingDependency;
+import com.wkit.lost.mybatis.filling.MetaObjectFillAuxiliary;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -21,7 +21,7 @@ import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_SING
 
 /**
  * 注册自动填充值对象
- * @author DT
+ * @author wvkity
  */
 public class MateObjectAutoFillingRegistrar implements BeanFactoryAware, ImportBeanDefinitionRegistrar {
 
@@ -29,14 +29,21 @@ public class MateObjectAutoFillingRegistrar implements BeanFactoryAware, ImportB
 
     @Override
     public void registerBeanDefinitions( AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry ) {
-        AnnotationAttributes attributes = AnnotationAttributes.fromMap( importingClassMetadata.getAnnotationAttributes( EnableMetaObjectAutoFilling.class.getName() ) );
-        boolean primary = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "primary" ) ).orElse( false );
-        boolean disableAutoMatching = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "disableAutoMatching" ) ).orElse( false );
-        boolean disableInsert = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "disableInsert" ) ).orElse( false );
-        boolean disableUpdate = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "disableUpdate" ) ).orElse( false );
-        boolean disableDelete = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "disableDelete" ) ).orElse( false );
+        AnnotationAttributes attributes = AnnotationAttributes.fromMap( 
+                importingClassMetadata.getAnnotationAttributes( EnableMetaObjectAutoFilling.class.getName() ) );
+        boolean primary = Optional.ofNullable( attributes ).map( attr -> 
+                attr.getBoolean( "primary" ) ).orElse( false );
+        boolean disableAutoMatching = Optional.ofNullable( attributes ).map( attr -> 
+                attr.getBoolean( "disableAutoMatching" ) ).orElse( false );
+        boolean disableInsert = Optional.ofNullable( attributes ).map( attr -> 
+                attr.getBoolean( "disableInsert" ) ).orElse( false );
+        boolean disableUpdate = Optional.ofNullable( attributes ).map( attr -> 
+                attr.getBoolean( "disableUpdate" ) ).orElse( false );
+        boolean disableDelete = Optional.ofNullable( attributes ).map( attr -> 
+                attr.getBoolean( "disableDelete" ) ).orElse( false );
         // 创建bean定义信息
-        BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.genericBeanDefinition( DefaultMetaObjectFillingHandler.class );
+        BeanDefinitionBuilder definitionBuilder = 
+                BeanDefinitionBuilder.genericBeanDefinition( DefaultMetaObjectFillingHandler.class );
         GenericBeanDefinition definition = ( GenericBeanDefinition ) definitionBuilder.getRawBeanDefinition();
         definition.setBeanClass( DefaultMetaObjectFillingHandler.class );
         definition.setSynthetic( true );
@@ -55,21 +62,22 @@ public class MateObjectAutoFillingRegistrar implements BeanFactoryAware, ImportB
         registry.registerBeanDefinition( "metaObjectFillingHandler", definition );
     }
 
-    private MetaObjectFillingDependency getDependency() {
-        MetaObjectFillingDependency dependency = null;
-        if ( beanFactory.getBeanNamesForType( MetaObjectFillingDependency.class, false, false ).length > 0 ) {
-            if ( beanFactory.containsBeanDefinition( "metaObjectFillingDependency" ) ) {
+    private MetaObjectFillAuxiliary getDependency() {
+        MetaObjectFillAuxiliary auxiliary = null;
+        if ( beanFactory.getBeanNamesForType( MetaObjectFillAuxiliary.class, 
+                false, false ).length > 0 ) {
+            if ( beanFactory.containsBeanDefinition( "metaObjectFillAuxiliary" ) ) {
                 try {
-                    dependency = beanFactory.getBean( "metaObjectFillingDependency", MetaObjectFillingDependency.class );
+                    auxiliary = beanFactory.getBean( "metaObjectFillAuxiliary", MetaObjectFillAuxiliary.class );
                 } catch ( Exception e ) {
                     // ignore
                 }
             }
-            if ( dependency == null ) {
-                dependency = beanFactory.getBean( MetaObjectFillingDependency.class );
+            if ( auxiliary == null ) {
+                auxiliary = beanFactory.getBean( MetaObjectFillAuxiliary.class );
             }
         }
-        return dependency;
+        return auxiliary;
     }
 
     @Override

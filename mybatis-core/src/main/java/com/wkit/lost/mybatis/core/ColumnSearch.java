@@ -6,7 +6,7 @@ import com.wkit.lost.mybatis.lambda.Property;
 /**
  * 字段搜索接口
  * @param <T> 实体类型
- * @author DT
+ * @author wvkity
  */
 public interface ColumnSearch<T> {
 

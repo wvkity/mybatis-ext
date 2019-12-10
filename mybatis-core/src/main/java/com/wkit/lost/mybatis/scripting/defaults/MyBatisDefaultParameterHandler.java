@@ -25,7 +25,7 @@ import java.util.List;
  *         如果保存、更新操作时是selective情况下就算填充值也无效，最终还是修改成交由拦截处理.</li>
  *     </ul>
  * </p>
- * @author DT
+ * @author wvkity
  * @see com.wkit.lost.mybatis.plugins.interceptor.MetaObjectFillingInterceptor
  */
 public class MyBatisDefaultParameterHandler extends DefaultParameterHandler {

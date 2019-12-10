@@ -13,7 +13,7 @@ import java.util.function.Function;
 /**
  * 条件构建器
  * @param <R> Lambda类型
- * @author DT
+ * @author wvkity
  */
 public interface ConditionBuilder<T, Context, R> extends LambdaResolver<R> {
 

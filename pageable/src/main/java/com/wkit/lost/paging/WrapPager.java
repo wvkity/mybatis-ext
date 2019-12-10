@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * 泛型分页
- * @author DT
+ * @author wvkity
  */
 public class WrapPager<E> extends Pager {
 

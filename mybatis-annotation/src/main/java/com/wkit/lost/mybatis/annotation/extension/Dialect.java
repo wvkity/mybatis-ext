@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 主键生成方言
- * @author DT
+ * @author wvkity
  */
 public enum Dialect {
 

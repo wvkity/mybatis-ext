@@ -29,7 +29,7 @@ import java.util.Optional;
 /**
  * 映射方法类
  * <p>重写{@link org.apache.ibatis.binding.MapperMethod}</p>
- * @author DT
+ * @author wvkity
  */
 public class MyBatisMapperMethod {
 

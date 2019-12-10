@@ -15,7 +15,7 @@ import com.wkit.lost.mybatis.lambda.LambdaResolver;
  * @param <T>       泛型类型
  * @param <Context> 当前对象
  * @param <R>       lambda对象
- * @author DT
+ * @author wvkity
  */
 public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, LambdaResolver<R> {
 

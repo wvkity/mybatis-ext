@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * MIN聚合函数
- * @author DT
+ * @author wvkity
  */
 @Accessors( chain = true )
 public class Min extends AbstractFunction {

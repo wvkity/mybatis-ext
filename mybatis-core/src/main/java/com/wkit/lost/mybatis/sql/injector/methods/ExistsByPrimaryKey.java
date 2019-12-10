@@ -8,7 +8,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 
 /**
  * 根据主键查询记录是否存在
- * @author DT
+ * @author wvkity
  */
 public class ExistsByPrimaryKey extends AbstractMethod {
 

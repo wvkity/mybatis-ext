@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.executor.resultset;
 
 /**
  * 返回类型
- * @author DT
+ * @author wvkity
  */
 public interface ReturnType {
 

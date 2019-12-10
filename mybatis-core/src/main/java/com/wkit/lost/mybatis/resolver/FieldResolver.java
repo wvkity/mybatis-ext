@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * 属性解析接口
- * @author DT
+ * @author wvkity
  */
 public interface FieldResolver {
 

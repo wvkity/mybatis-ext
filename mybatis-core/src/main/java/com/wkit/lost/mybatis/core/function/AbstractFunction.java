@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 /**
  * 抽象聚合函数
- * @author DT
+ * @author wvkity
  */
 @Accessors( chain = true )
 @SuppressWarnings( "serial" )

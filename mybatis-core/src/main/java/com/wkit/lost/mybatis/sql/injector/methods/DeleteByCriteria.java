@@ -8,7 +8,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 
 /**
  * 根据主键删除记录
- * @author DT
+ * @author wvkity
  */
 public class DeleteByCriteria extends AbstractMethod {
 

@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * 注解元数据
- * @author DT
+ * @author wvkity
  */
 @AllArgsConstructor
 public class AnnotationMetaObject {
@@ -255,11 +255,11 @@ public class AnnotationMetaObject {
      * @param defaultValue 默认值
      * @return 值
      */
-    public Enum<? extends Enum> enumValue( String property, Enum<? extends Enum> defaultValue ) {
+    public Enum<? extends Enum<?>> enumValue( String property, Enum<? extends Enum<?>> defaultValue ) {
         if ( values.containsKey( property ) ) {
             Object value = values.get( property );
-            if ( value.getClass() == int.class ) {
-                return ( Enum<? extends Enum> ) value;
+            if ( value instanceof Enum ) {
+                return ( Enum<? extends Enum<?>> ) value;
             }
         }
         return defaultValue;

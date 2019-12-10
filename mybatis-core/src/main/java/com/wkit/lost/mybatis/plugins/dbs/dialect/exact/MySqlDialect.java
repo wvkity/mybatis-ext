@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * MySql数据库方言
- * @author DT
+ * @author wvkity
  */
 public class MySqlDialect extends AbstractPageableDialect {
 

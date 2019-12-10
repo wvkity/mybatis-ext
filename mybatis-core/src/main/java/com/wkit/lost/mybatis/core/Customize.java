@@ -9,7 +9,7 @@ import java.util.Collection;
  * 自定义条件接口
  * @param <Context> 当前对象
  * @param <R>       Lambda对象
- * @author DT
+ * @author wvkity
  */
 public interface Customize<Context, R> extends LambdaResolver<R> {
 

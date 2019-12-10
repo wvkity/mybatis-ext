@@ -4,7 +4,7 @@ import java.time.Instant;
 
 /**
  * {@link Instant}生成器
- * @author DT
+ * @author wvkity
  */
 public class InstantGenerator extends AbstractGenerator {
 

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 /**
  * 分页查询记录SQL构建器
- * @author DT
+ * @author wvkity
  */
 public class PageableListSqlBuilder extends AbstractSqlBuilder {
 

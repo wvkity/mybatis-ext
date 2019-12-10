@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 /**
  * 排序类
- * @author DT
+ * @author wvkity
  */
 public class Order<T> implements Segment {
 

@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.snowflake.worker;
 
 /**
  * 默认WorkerId分配器
- * @author DT
+ * @author wvkity
  */
 public class DefaultWorkerAssigner implements WorkerAssigner {
 

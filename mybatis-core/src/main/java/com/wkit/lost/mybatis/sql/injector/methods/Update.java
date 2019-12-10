@@ -8,7 +8,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 
 /**
  * 根据指定对象更新记录(属性全部更新[updatable=true])
- * @author DT
+ * @author wvkity
  */
 public class Update extends AbstractMethod {
 

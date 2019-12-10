@@ -4,7 +4,7 @@ import lombok.Getter;
 
 /**
  * 64位唯一ID分配器
- * @author DT
+ * @author wvkity
  */
 public class BitsAllocator {
 

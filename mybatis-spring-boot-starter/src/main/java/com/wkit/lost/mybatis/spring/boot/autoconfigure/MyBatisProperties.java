@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 /**
  * mybatis配置
- * @author DT
+ * @author wvkity
  */
 @Data
 @Accessors( chain = true )

@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Criteria子查询条件类
  * @param <T> 泛型类型
- * @author DT
+ * @author wvkity
  */
 @Accessors( chain = true )
 public class SubCriteria<T> extends AbstractQueryCriteria<T> {

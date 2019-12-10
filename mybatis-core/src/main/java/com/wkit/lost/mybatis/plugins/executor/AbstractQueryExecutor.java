@@ -20,7 +20,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 抽象查询执行器
- * @author DT
+ * @author wvkity
  */
 public abstract class AbstractQueryExecutor implements Filter {
 

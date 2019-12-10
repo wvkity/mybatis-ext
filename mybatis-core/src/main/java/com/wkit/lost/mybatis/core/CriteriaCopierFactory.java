@@ -4,7 +4,7 @@ import net.sf.cglib.beans.BeanCopier;
 
 /**
  * Bean实例复制器工厂类
- * @author DT
+ * @author wvkity
  */
 public final class CriteriaCopierFactory {
 

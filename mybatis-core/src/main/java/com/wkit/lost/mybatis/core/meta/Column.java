@@ -15,7 +15,7 @@ import org.apache.ibatis.type.TypeHandler;
 
 /**
  * 数据库表字段映射信息
- * @author DT
+ * @author wvkity
  */
 @Accessors( chain = true )
 @EqualsAndHashCode
@@ -139,7 +139,7 @@ public class Column {
      * 值
      */
     private Object value;
-
+    
     /**
      * 保存操作是否自动填充值
      */

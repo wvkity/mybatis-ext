@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * 聚合函数接口
- * @author DT
+ * @author wvkity
  */
 public interface Aggregation extends Segment {
 

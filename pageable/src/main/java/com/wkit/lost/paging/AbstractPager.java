@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 /**
  * 抽象分页类
- * @author DT
+ * @author wvkity
  */
 @SuppressWarnings( "serial" )
 public abstract class AbstractPager implements Pageable {

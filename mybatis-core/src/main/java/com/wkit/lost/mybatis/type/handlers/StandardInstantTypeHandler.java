@@ -14,7 +14,7 @@ import java.util.Optional;
 
 /**
  * {@link Instant}处理器
- * @author DT
+ * @author wvkity
  */
 @MappedTypes( Instant.class )
 public class StandardInstantTypeHandler extends BaseTypeHandler<Instant> {

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 /**
  * 表字段映射处理器
- * @author DT
+ * @author wvkity
  */
 public class ColumnHandler {
 

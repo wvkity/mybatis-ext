@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.service;
 /**
  * 更细操作接口
  * @param <T>  泛型类型
- * @author DT
+ * @author wvkity
  */
 public interface UpdateService<T> {
 

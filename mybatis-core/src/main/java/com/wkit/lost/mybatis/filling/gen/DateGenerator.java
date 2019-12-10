@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  * {@link Date}生成器
- * @author DT
+ * @author wvkity
  */
 public class DateGenerator extends AbstractGenerator {
 

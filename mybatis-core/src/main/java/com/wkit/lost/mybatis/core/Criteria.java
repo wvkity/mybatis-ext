@@ -14,7 +14,7 @@ import java.util.function.Function;
 /**
  * Criteria接口
  * @param <T> 泛型类型
- * @author DT
+ * @author wvkity
  */
 public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>,
         Search<T>, ParamValuePlaceholderConverter {

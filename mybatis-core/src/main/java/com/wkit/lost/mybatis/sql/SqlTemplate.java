@@ -5,7 +5,7 @@ import com.wkit.lost.mybatis.core.meta.Table;
 
 /**
  * SQL模板
- * @author DT
+ * @author wvkity
  */
 public enum SqlTemplate {
 

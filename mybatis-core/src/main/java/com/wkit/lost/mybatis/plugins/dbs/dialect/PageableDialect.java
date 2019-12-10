@@ -7,7 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 
 /**
  * 分页方言
- * @author DT
+ * @author wvkity
  */
 public interface PageableDialect extends Dialect {
 

@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 
 /**
  * 自增策略
- * @author DT
+ * @author wvkity
  */
 @Target( ElementType.FIELD )
 @Retention( RetentionPolicy.RUNTIME )

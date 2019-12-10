@@ -10,7 +10,7 @@ import java.util.Collection;
  * 查询列接口
  * @param <T>       泛型类型
  * @param <Context> 当前对象
- * @author DT
+ * @author wvkity
  */
 public interface Query<T, Context> {
 

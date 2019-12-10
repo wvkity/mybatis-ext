@@ -21,7 +21,7 @@ import java.io.Serializable;
 
 /**
  * MyBatis自定义配置
- * @author DT
+ * @author wvkity
  */
 @Data
 @Accessors( chain = true )

@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.sql.mapping.AbstractCriteriaSqlBuilder;
 
 /**
  * 根据指定条件对象删除记录SQL构建器
- * @author DT
+ * @author wvkity
  */
 public class DeleteSqlBuilder extends AbstractCriteriaSqlBuilder {
 

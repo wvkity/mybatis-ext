@@ -21,7 +21,7 @@ import java.util.Optional;
 
 /**
  * 抽象Insert方法模板
- * @author DT
+ * @author wvkity
  */
 public abstract class AbstractInsertMethod extends AbstractMethod {
 

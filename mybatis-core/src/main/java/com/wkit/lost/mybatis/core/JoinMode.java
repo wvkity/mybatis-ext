@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.core.segment.Segment;
 
 /**
  * 连接模式
- * @author DT
+ * @author wvkity
  */
 public enum JoinMode implements Segment {
 

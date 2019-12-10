@@ -7,7 +7,7 @@ import com.wkit.lost.mybatis.core.Operator;
 /**
  * BETWEEN范围条件
  * @param <T> 泛型类型
- * @author DT
+ * @author wvkity
  */
 public class Between<T> extends AbstractBetween<T> {
 

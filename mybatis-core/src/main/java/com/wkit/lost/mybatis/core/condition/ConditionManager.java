@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.core.AbstractQueryCriteria;
 
 /**
  * 条件管理器
- * @author DT
+ * @author wvkity
  */
 public class ConditionManager<T> extends AbstractConditionManager<T> {
     

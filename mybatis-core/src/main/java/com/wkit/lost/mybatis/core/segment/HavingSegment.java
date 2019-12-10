@@ -4,7 +4,7 @@ import java.util.stream.Collectors;
 
 /**
  * 分组筛选SQL片段类
- * @author DT
+ * @author wvkity
  */
 public class HavingSegment extends AbstractSegment {
     

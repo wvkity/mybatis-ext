@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 /**
  * 纯SQL条件
  * @param <T> 泛型类型
- * @author DT
+ * @author wvkity
  */
 @Accessors( chain = true )
 @NoArgsConstructor

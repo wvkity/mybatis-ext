@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
 
 /**
  * 命名策略接口
- * @author DT
+ * @author wvkity
  */
 public interface PhysicalNamingStrategy {
 

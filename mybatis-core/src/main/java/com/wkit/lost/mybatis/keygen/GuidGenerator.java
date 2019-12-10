@@ -4,7 +4,7 @@ import java.util.UUID;
 
 /**
  * 默认GUID生成器
- * @author DT
+ * @author wvkity
  */
 public class GuidGenerator implements KeyGenerator {
 

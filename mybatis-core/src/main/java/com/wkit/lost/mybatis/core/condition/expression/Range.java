@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * 范围条件
  * @param <T> 泛型类型
- * @author DT
+ * @author wvkity
  */
 public class Range<T> extends AbstractExpression<T> {
 

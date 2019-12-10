@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * MyBatis自定义配置缓存
- * @author DT
+ * @author wvkity
  */
 @Log4j2
 public class MyBatisConfigCache {

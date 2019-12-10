@@ -6,7 +6,7 @@ import com.wkit.lost.mybatis.core.Logic;
 
 /**
  * 聚合函数工具类
- * @author DT
+ * @author wvkity
  */
 public abstract class Aggregations {
 

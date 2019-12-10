@@ -15,7 +15,7 @@ import java.util.Optional;
 
 /**
  * {@link JapaneseDate}处理器
- * @author DT
+ * @author wvkity
  */
 @MappedTypes( JapaneseDate.class )
 public class StandardJapaneseDateTypeHandler extends BaseTypeHandler<JapaneseDate> {

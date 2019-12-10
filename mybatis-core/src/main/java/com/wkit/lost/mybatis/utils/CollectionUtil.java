@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * 集合工具类
- * @author DT
+ * @author wvkity
  */
 public abstract class CollectionUtil {
 

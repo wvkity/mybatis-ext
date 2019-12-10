@@ -11,7 +11,7 @@ import com.wkit.lost.mybatis.utils.StringUtil;
 /**
  * 子查询条件
  * @param <T> 泛型类型
- * @author DT
+ * @author wvkity
  */
 public class SubQuery<T> extends AbstractExpression<T> {
 

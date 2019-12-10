@@ -8,7 +8,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 
 /**
  * 根据指定对象查询记录是否存在
- * @author DT
+ * @author wvkity
  */
 public class Exists extends AbstractMethod {
 

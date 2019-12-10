@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.core;
 
 /**
  * limit查询方式
- * @author DT
+ * @author wvkity
  */
 public enum LimitMode {
 

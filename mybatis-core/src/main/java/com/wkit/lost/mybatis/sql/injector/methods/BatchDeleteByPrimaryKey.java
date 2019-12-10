@@ -8,7 +8,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 
 /**
  * 根据主键批量删除记录
- * @author DT
+ * @author wvkity
  */
 public class BatchDeleteByPrimaryKey extends AbstractMethod {
 

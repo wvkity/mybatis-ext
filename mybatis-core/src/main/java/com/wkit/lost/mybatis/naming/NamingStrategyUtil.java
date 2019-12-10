@@ -7,7 +7,7 @@ import java.util.Locale;
 
 /**
  * 命名策略工具
- * @author DT
+ * @author wvkity
  */
 public class NamingStrategyUtil {
 

@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * ORACLE数据库方言
- * @author DT
+ * @author wvkity
  */
 public class OracleDialect extends AbstractPageableDialect {
 

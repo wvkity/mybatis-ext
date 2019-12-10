@@ -7,7 +7,7 @@ import java.util.Properties;
 
 /**
  * 缓存工厂类
- * @author DT
+ * @author wvkity
  */
 public abstract class CacheFactory {
 
