@@ -18,8 +18,8 @@ public class CriteriaUpdate extends RootTestRunner {
     @Test
     public void updateTest1() {
         CriteriaImpl<Student> criteria = studentService.getCriteria();
-        criteria.modify( Student::getAddress, "广东省广州市天河区岗顶xxx路xxx单元5号" )
-                .modify( "userName", 5 );
+        criteria.update( Student::getAddress, "广东省广州市天河区岗顶xxx路xxx单元5号" )
+                .update( "userName", 5 );
         criteria.idEq( "S1101001" );
         int result = studentService.update( criteria );
         log.info( "执行结果：{}", result );

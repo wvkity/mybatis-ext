@@ -1,6 +1,7 @@
 package com.wkit.lost.mybatis.starter.example.config;
 
-import com.wkit.lost.mybatis.filling.MetaObjectFillingDependency;
+import com.wkit.lost.mybatis.filling.MetaObjectFillAuxiliary;
+import com.wkit.lost.mybatis.plugins.interceptor.OptimisticLockerInterceptor;
 import com.wkit.lost.mybatis.spring.boot.worker.SequenceAutoConfiguration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
@@ -16,9 +17,13 @@ public class MyBatisConfigurer {
         configuration.setWorkerId( 1L ).setDataCenterId( 3L );
         return configuration;
     }
+    
+    public OptimisticLockerInterceptor optimisticLockerInterceptor() {
+        return new OptimisticLockerInterceptor();
+    }
 
     @Bean
-    public MetaObjectFillingDependency dependency() {
+    public MetaObjectFillAuxiliary dependency() {
         return new FillingDependency();
     }
 }

@@ -51,5 +51,4 @@ lost:
       worker: true
       #dialect: mysql
       jdbc-type-auto-mapping: true
-      dialect: postgresql
-
+      dialect: mysql
