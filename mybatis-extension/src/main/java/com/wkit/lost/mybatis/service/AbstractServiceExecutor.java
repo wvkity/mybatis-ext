@@ -83,6 +83,24 @@ public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T,
 
     @Transactional( rollbackFor = Exception.class )
     @Override
+    public int updateOfNoLock( T entity ) {
+        if ( entity == null ) {
+            throw new MyBatisException( "The specified object parameter cannot be null" );
+        }
+        return executor.updateOfNoLock( entity );
+    }
+
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int updateSelectiveOfNoLock( T entity ) {
+        if ( entity == null ) {
+            throw new MyBatisException( "The specified object parameter cannot be null" );
+        }
+        return executor.updateSelectiveOfNoLock( entity );
+    }
+
+    @Transactional( rollbackFor = Exception.class )
+    @Override
     public int delete( T entity ) {
         if ( entity == null ) {
             throw new MyBatisException( "The specified object parameter cannot be null" );

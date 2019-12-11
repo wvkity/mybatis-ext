@@ -16,14 +16,28 @@ public class UpdateSqlBuilder extends AbstractSqlBuilder {
 
     @Override
     public String build() {
-        Set<Column> columns = table.getUpdatableColumns();
-        StringBuffer buffer = new StringBuffer( 200 );
-        buffer.append( "\n<trim prefix=\"SET\" suffixOverrides=\",\">\n" );
+        Set<Column> columns = table.getUpdatableColumnsExcludeLocker();
+        Column lockerColumn = table.getOptimisticLockerColumn();
+        StringBuilder builder = new StringBuilder( 200 );
+        builder.append( "\n<trim prefix=\"SET\" suffixOverrides=\",\">\n" );
         for ( Column column : columns ) {
-            buffer.append( " " ).append( ColumnUtil.convertToArg( column, Execute.REPLACE, Constants.PARAM_ENTITY ) ).append( "," );
+            builder.append( " " ).append( ColumnUtil.convertToArg( column, Execute.REPLACE, Constants.PARAM_ENTITY ) ).append( "," );
         }
-        buffer.append( "\n</trim>\n" );
-        String condition = "WHERE " + ColumnUtil.convertToArg( table.getPrimaryKey(), Execute.REPLACE, Constants.PARAM_ENTITY );
-        return update( buffer.toString(), condition );
+        if ( lockerColumn != null ) {
+            builder.append( this.convertIfTagForLocker( true, Constants.PARAM_OPTIMISTIC_LOCK_KEY,
+                    lockerColumn, ",", 1 ) );
+        }
+        builder.append( "\n</trim>\n" );
+        StringBuilder conditionBuilder = new StringBuilder( 80 );
+        conditionBuilder.append( "<trim prefix=\"WHERE\" prefixOverrides=\"AND |OR \">\n" );
+        conditionBuilder.append( " " ).append( ColumnUtil.convertToArg( table.getPrimaryKey(),
+                Execute.REPLACE, Constants.PARAM_ENTITY ) );
+        if ( lockerColumn != null ) {
+            conditionBuilder.append( "\n" ).append( this.convertToIfTagOfNotNull( true, Execute.REPLACE,
+                    false, 1, Constants.PARAM_ENTITY, lockerColumn, "", AND ) );
+        }
+        conditionBuilder.append( "</trim>" );
+        //String condition = "WHERE " + ColumnUtil.convertToArg( table.getPrimaryKey(), Execute.REPLACE, Constants.PARAM_ENTITY );
+        return update( builder.toString(), conditionBuilder.toString() );
     }
 }

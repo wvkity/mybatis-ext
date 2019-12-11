@@ -234,5 +234,7 @@ public abstract class AbstractMethod implements Method {
      * 映射对应方法
      * @return 方法名
      */
-    public abstract String mappedMethod();
+    public String mappedMethod() {
+        return null;
+    }
 }

@@ -92,6 +92,13 @@ public class Table {
     private Column primaryKey;
 
     /**
+     * 乐观锁字段
+     */
+    @Getter
+    @Setter( AccessLevel.PACKAGE )
+    private Column optimisticLockerColumn;
+
+    /**
      * 标识是否启用逻辑删除
      */
     @Getter
@@ -284,15 +291,6 @@ public class Table {
                 .filter( column -> !column.enableDeleteFilling() )
                 .collect( Collectors.toCollection( LinkedHashSet::new ) );
     }
-
-    /**
-     * 获取乐观锁字段
-     * @return 字段信息
-     */
-    public Column getOptimisticLockerColumn() {
-        return this.columns.stream().filter( Column::isVersion ).findFirst().orElse( null );
-    }
-
 
     /**
      * 初始化定义信息

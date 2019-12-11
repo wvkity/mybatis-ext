@@ -255,6 +255,18 @@ public class DefaultEntityResolver implements EntityResolver {
             // 全局配置-ID值生成方式
             processCustomKeyGenerator( table, column );
         }
+        // 乐观锁
+        if ( field.isAnnotationPresent( Version.class, JavaxPersistence.VERSION ) ) {
+            if ( table.getOptimisticLockerColumn() == null ) {
+                column.setVersion( true );
+                table.setOptimisticLockerColumn( column );
+            } else {
+                log.warn( "The current Entity class({}) already has a `{}` for the @version tag. " +
+                                "The framework only supports one optimistic lock. The system will ignore other " +
+                                "@version tag properties ({}).", table.getEntity().getCanonicalName(),
+                        table.getOptimisticLockerColumn().getProperty(), column.getProperty() );
+            }
+        }
         table.addColumn( column );
     }
 
@@ -330,8 +342,6 @@ public class DefaultEntityResolver implements EntityResolver {
         column.setBlob( blob ).setCheckNotEmpty( checkNotEmpty );
         column.setJdbcType( jdbcType ).setTypeHandler( typeHandler );
         column.setJavaType( field.getJavaType() ).setUseJavaType( useJavaType );
-        // 乐观锁
-        column.setVersion( field.isAnnotationPresent( Version.class, JavaxPersistence.VERSION ) );
         // 使用基本类型警告
         if ( column.getJavaType().isPrimitive() ) {
             log.warn( "Warning: The `{}` attribute in the `{}` entity is defined as a primitive type. " +
@@ -352,13 +362,15 @@ public class DefaultEntityResolver implements EntityResolver {
         if ( field.isAnnotationPresent( LogicalDeletion.class ) ) {
             if ( table.isEnableLogicDelete() ) {
                 throw new MapperResolverException( "There are already `" + table.getLogicalDeletionColumn()
-                        .getProperty() + "` attributes in `" + table.getEntity().getName() 
+                        .getProperty() + "` attributes in `" + table.getEntity().getName()
                         + "` entity class identified as logical deleted. Only one deleted attribute " +
                         "can exist in an entity class. Please check the entity class attributes." );
             }
             LogicalDeletion logicalDeletion = field.getAnnotation( LogicalDeletion.class );
-            String deletedValue = StringUtil.isBlank( logicalDeletion.value() ) ? configuration.getLogicDeleted() : logicalDeletion.value();
-            String notDeletedValue = StringUtil.isBlank( logicalDeletion.not() ) ? configuration.getLogicNotDeleted() : logicalDeletion.not();
+            String deletedValue = StringUtil.isBlank( logicalDeletion.value() ) ?
+                    configuration.getLogicDeleted() : logicalDeletion.value();
+            String notDeletedValue = StringUtil.isBlank( logicalDeletion.not() ) ?
+                    configuration.getLogicNotDeleted() : logicalDeletion.not();
             column.setLogicDelete( true ).setLogicDeleteValue( deletedValue ).setLogicNotDeleteValue( notDeletedValue );
             table.setEnableLogicDelete( true );
             table.setLogicalDeletionColumn( column );
@@ -425,7 +437,9 @@ public class DefaultEntityResolver implements EntityResolver {
             column.setIdentity( true ).setExecuting( Executing.AFTER ).setGenerator( identity.dialect().getKeyGenerator() );
         } else {
             if ( StringUtil.isBlank( identity.identitySql() ) ) {
-                throw new MapperResolverException( StringUtil.format( "The @identity annotation on the '{}' class's attribute '{}' is invalid", column.getEntity().getCanonicalName(), column.getProperty() ) );
+                throw new MapperResolverException( StringUtil.format( "The @identity annotation on the '{}' " +
+                                "class's attribute '{}' is invalid",
+                        column.getEntity().getCanonicalName(), column.getProperty() ) );
             }
             column.setIdentity( true ).setExecuting( identity.execution() ).setGenerator( identity.identitySql() );
         }
@@ -455,7 +469,8 @@ public class DefaultEntityResolver implements EntityResolver {
             }
         }
         if ( StringUtil.isBlank( sequenceName ) ) {
-            throw new MapperResolverException( StringUtil.format( "The @SequenceGenerator on the `{}` attribute of the `{}` class does not specify the sequenceName value.",
+            throw new MapperResolverException( StringUtil.format( "The @SequenceGenerator on the `{}` " +
+                            "attribute of the `{}` class does not specify the sequenceName value.",
                     column.getProperty(), column.getEntity().getCanonicalName() ) );
         }
         column.setSequenceName( sequenceName );

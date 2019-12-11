@@ -23,6 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 乐观锁执行器
+ * @author wvkity
  */
 public class OptimisticLockerExecutor extends AbstractUpdateExecutor {
 
@@ -69,8 +70,9 @@ public class OptimisticLockerExecutor extends AbstractUpdateExecutor {
                                     paramMap.put( Constants.PARAM_OPTIMISTIC_LOCK_KEY, newValue );
                                     Object result = invocation.proceed();
                                     if ( result instanceof Integer ) {
+                                        // 更新成功
                                         if ( ( Integer ) result != 0 ) {
-                                            // 将值更新至实体中
+                                            // 将值更新至实体对象中
                                             overwriteOriginalValue( entity, field, newValue );
                                         }
                                     }
@@ -95,7 +97,7 @@ public class OptimisticLockerExecutor extends AbstractUpdateExecutor {
                                             if ( result instanceof Integer ) {
                                                 // 更新失败
                                                 if ( ( Integer ) result == 0 ) {
-                                                    // 将值还原
+                                                    // 将值还原至实体对象中
                                                     overwriteOriginalValue( entity, field, entityValue );
                                                 }
                                             }

@@ -40,15 +40,14 @@ public class UpdateSelectiveSqlBuilder extends AbstractSqlBuilder {
         builder.append( "</trim>" );
         StringBuilder conditionBuilder = new StringBuilder( 80 );
         conditionBuilder.append( "<trim prefix=\"WHERE\" prefixOverrides=\"AND |OR \">\n" );
-        conditionBuilder.append( " " ).append( ColumnUtil.convertToArg( table.getPrimaryKey(), Execute.REPLACE, Constants.PARAM_ENTITY ) );
+        conditionBuilder.append( " " ).append( ColumnUtil.convertToArg( table.getPrimaryKey(), 
+                Execute.REPLACE, Constants.PARAM_ENTITY ) );
         //conditionBuilder.append( "\n" ).append( this.convertToIfTagOfNotNull( true, Execute.REPLACE, false, 1, Constants.PARAM_ENTITY, table.getPrimaryKey(), "", AND ) );
         if ( lockerColumn != null ) {
             conditionBuilder.append( "\n" ).append( this.convertToIfTagOfNotNull( true, Execute.REPLACE,
                     false, 1, Constants.PARAM_ENTITY, lockerColumn, "", AND ) );
         }
         conditionBuilder.append( "</trim>" );
-        System.out.println("============================");
-        System.out.println(conditionBuilder.toString());
         return update( builder.toString(), conditionBuilder.toString() );
     }
 

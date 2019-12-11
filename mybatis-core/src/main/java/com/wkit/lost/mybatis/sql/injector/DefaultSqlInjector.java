@@ -26,7 +26,9 @@ import com.wkit.lost.mybatis.sql.injector.methods.PageableListByCriteria;
 import com.wkit.lost.mybatis.sql.injector.methods.SelectOne;
 import com.wkit.lost.mybatis.sql.injector.methods.Update;
 import com.wkit.lost.mybatis.sql.injector.methods.UpdateByCriteria;
+import com.wkit.lost.mybatis.sql.injector.methods.UpdateOfNoLock;
 import com.wkit.lost.mybatis.sql.injector.methods.UpdateSelective;
+import com.wkit.lost.mybatis.sql.injector.methods.UpdateSelectiveOfNoLock;
 import com.wkit.lost.mybatis.sql.method.Method;
 
 import java.util.Collection;
@@ -65,6 +67,8 @@ public class DefaultSqlInjector extends AbstractSqlInjector {
                 new UpdateSelective(),
                 new MixinUpdateSelective(),
                 new UpdateByCriteria(),
+                new UpdateOfNoLock(),
+                new UpdateSelectiveOfNoLock(),
                 // 删除
                 new Delete(),
                 new DeleteByPrimaryKey(),
