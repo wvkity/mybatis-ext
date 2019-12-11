@@ -56,7 +56,7 @@ public abstract class JdbcTypeMappingRegister {
         MAPPING_CACHE.put( byte[].class, JdbcType.BLOB );
         MAPPING_CACHE.put( Byte[].class, JdbcType.BLOB );
         // TIME
-        MAPPING_CACHE.put( Date.class, JdbcType.DATE );
+        MAPPING_CACHE.put( Date.class, JdbcType.TIMESTAMP );
         MAPPING_CACHE.put( java.sql.Date.class, JdbcType.TIMESTAMP );
         MAPPING_CACHE.put( Calendar.class, JdbcType.TIMESTAMP );
         MAPPING_CACHE.put( Timestamp.class, JdbcType.TIMESTAMP );

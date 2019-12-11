@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.handler;
 
+import com.wkit.lost.mybatis.core.meta.Field;
 import com.wkit.lost.mybatis.utils.StringUtil;
-import com.wkit.lost.mybatis.core.meta.Attribute;
 import com.wkit.lost.mybatis.core.meta.DefaultFieldResolver;
 import com.wkit.lost.mybatis.resolver.FieldResolver;
 
@@ -25,7 +25,7 @@ public class ColumnHandler {
      * @param resolver 属性解析器
      * @return 属性集合
      */
-    public static List<Attribute> getAllAttributes( final Class<?> entity, FieldResolver resolver ) {
+    public static List<Field> getAllAttributes( final Class<?> entity, FieldResolver resolver ) {
         if ( resolver == null ) {
             resolver = DEFAULT_RESOLVER;
         }
@@ -38,7 +38,7 @@ public class ColumnHandler {
      * @param resolver 属性解析器
      * @return 属性集合
      */
-    public static List<Attribute> getAttributesFromBeanInfo( final Class<?> entity, FieldResolver resolver ) {
+    public static List<Field> getAttributesFromBeanInfo( final Class<?> entity, FieldResolver resolver ) {
         if ( resolver == null ) {
     resolver = DEFAULT_RESOLVER;
     }
@@ -51,19 +51,19 @@ public class ColumnHandler {
      * @param resolver 属性解析器
      * @return 属性集合
      */
-    public static List<Attribute> merge( final Class<?> entity, FieldResolver resolver ) {
-        List<Attribute> fromFieldAttrs = getAllAttributes( entity, resolver );
-        List<Attribute> fromBeanInfoAttrs = getAttributesFromBeanInfo( entity, resolver );
-        Set<Attribute> usedAttrs = new HashSet<>();
-        Set<Attribute> allAttrs = fromFieldAttrs.stream()
+    public static List<Field> merge( final Class<?> entity, FieldResolver resolver ) {
+        List<Field> fromFieldAttrs = getAllAttributes( entity, resolver );
+        List<Field> fromBeanInfoAttrs = getAttributesFromBeanInfo( entity, resolver );
+        Set<Field> usedAttrs = new HashSet<>();
+        Set<Field> allAttrs = fromFieldAttrs.stream()
                 .peek( fieldAttr -> {
-                    Attribute attribute = fromBeanInfoAttrs.stream()
+                    Field field = fromBeanInfoAttrs.stream()
                             .filter( beanInfoAttr -> !usedAttrs.contains( beanInfoAttr ) && StringUtil.equals( beanInfoAttr.getName(), fieldAttr.getName() ) )
                             .findFirst()
                             .orElse( null );
-                    if ( attribute != null ) {
-                        fieldAttr.copyFromOther( attribute );
-                        usedAttrs.add( attribute );
+                    if ( field != null ) {
+                        fieldAttr.copyFromOther( field );
+                        usedAttrs.add( field );
                     }
                 } ).collect( Collectors.toCollection( LinkedHashSet::new ) );
         if ( !fromBeanInfoAttrs.isEmpty() ) {

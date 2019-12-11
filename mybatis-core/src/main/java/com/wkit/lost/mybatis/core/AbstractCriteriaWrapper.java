@@ -664,6 +664,17 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
+    public Context version( Object version ) {
+        if ( version != null ) {
+            Column column = getOptimisticLockerColumn();
+            if ( column != null ) {
+                return add( Restrictions.eq( this, column.getProperty(), version ) );
+            }
+        }
+        return this.context;
+    }
+
+    @Override
     public Context in( String property, Collection<Object> values ) {
         return add( Restrictions.in( this, property, values ) );
     }
@@ -1806,7 +1817,21 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
         this.segmentManager = new SegmentManager();
         //this.conditionManager = new ConditionManager<>( this );
     }
-// endregion
+    
+    Column getOptimisticLockerColumn() {
+        return EntityHandler.getTable( this.entityClass ).getOptimisticLockerColumn();
+    }
+
+    @Override
+    public Object getConditionVersionValue() {
+        Column column = getOptimisticLockerColumn();
+        if (column != null) {
+            return this.segmentManager.getConditionValue( column.getProperty() );
+        }
+        return null;
+    }
+
+    // endregion
 
     // region get or set methods
 

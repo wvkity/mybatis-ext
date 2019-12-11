@@ -23,18 +23,19 @@ import java.util.Properties;
 public class LimitQueryExecutor extends AbstractQueryExecutor {
 
     @Override
-    protected Mode getTarget() {
-        return Mode.LIMIT;
+    protected QueryMode getTarget() {
+        return QueryMode.LIMIT;
     }
 
     @Override
-    protected Object doIntercept( Executor executor, MappedStatement statement, Object parameter, RowBounds rowBounds,
-                                  ResultHandler resultHandler, CacheKey cacheKey, BoundSql boundSql ) throws Exception {
+    protected Object doIntercept( Executor executor, MappedStatement statement, Object parameter, 
+                                  RowBounds rowBounds, ResultHandler<?> resultHandler, CacheKey cacheKey, 
+                                  BoundSql boundSql ) throws Exception {
         try {
             // 检查代理对象是否存在
             validateDialectExists();
             // 检查是否需要执行
-            List result;
+            List<?> result;
             if ( this.factory.filter( statement, parameter, rowBounds ) ) {
                 // 执行分段查询
                 result = Executors.executeQueryPageableOfCustom( this.factory, executor, statement, parameter, rowBounds, resultHandler, boundSql, cacheKey );

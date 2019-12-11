@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.resolver;
 
-import com.wkit.lost.mybatis.core.meta.Attribute;
+import com.wkit.lost.mybatis.core.meta.Field;
 
 import java.util.List;
 
@@ -15,12 +15,12 @@ public interface FieldResolver {
      * @param entity 实体类
      * @return 属性映射集合
      */
-    List<Attribute> getAllAttributes( final Class<?> entity );
+    List<Field> getAllAttributes( final Class<?> entity );
 
     /**
      * 从BeanInfo获取所有属性信息
      * @param entity 实体类
      * @return 属性映射集合
      */
-    List<Attribute> getAttributeFromBeanInfo( final Class<?> entity );
+    List<Field> getAttributeFromBeanInfo( final Class<?> entity );
 }

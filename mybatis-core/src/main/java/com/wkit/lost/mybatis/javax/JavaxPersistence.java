@@ -45,4 +45,9 @@ public abstract class JavaxPersistence {
      * javax.persistence-api中的{@code @GeneratedValue}注解
      */
     public static final String GENERATED_VALUE = "javax.persistence.GeneratedValue";
+
+    /**
+     * javax.persistence-api中的{@code @Version}注解
+     */
+    public static final String VERSION = "javax.persistence.Version";
 }

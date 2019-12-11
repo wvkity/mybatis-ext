@@ -1,33 +1,34 @@
 package com.wkit.lost.mybatis.core.meta;
 
-import com.wkit.lost.mybatis.annotation.Worker;
-import com.wkit.lost.mybatis.utils.AnnotationUtil;
 import com.wkit.lost.mybatis.annotation.Id;
+import com.wkit.lost.mybatis.annotation.Worker;
 import com.wkit.lost.mybatis.javax.JavaxPersistence;
+import com.wkit.lost.mybatis.utils.AnnotationUtil;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
  * 实体映射属性信息
  * @author wvkity
  */
+@NoArgsConstructor
 @Accessors( chain = true )
 @ToString
-public class Attribute {
+public class Field {
 
     /**
      * 属性
      */
     @Getter
     @Setter
-    private Field field;
+    private java.lang.reflect.Field field;
 
     /**
      * 属性名
@@ -61,7 +62,7 @@ public class Attribute {
      * 构造方法
      * @param field 属性
      */
-    public Attribute( Field field ) {
+    public Field( java.lang.reflect.Field field ) {
         this( field, null );
     }
 
@@ -70,7 +71,7 @@ public class Attribute {
      * @param field      属性
      * @param descriptor 属性描述
      */
-    public Attribute( Field field, PropertyDescriptor descriptor ) {
+    public Field( java.lang.reflect.Field field, PropertyDescriptor descriptor ) {
         if ( field != null ) {
             this.name = field.getName();
             this.javaType = field.getType();
@@ -88,7 +89,7 @@ public class Attribute {
      * 复制属性值
      * @param other 其他属性对象
      */
-    public void copyFromOther( Attribute other ) {
+    public void copyFromOther( Field other ) {
         if ( other != null ) {
             this.name = other.getName();
             this.javaType = other.getJavaType();
@@ -176,7 +177,7 @@ public class Attribute {
         if ( obj == null || getClass() != obj.getClass() ) {
             return false;
         }
-        Attribute that = ( Attribute ) obj;
+        Field that = ( Field ) obj;
         return !( name != null ? name.equals( that.getName() ) : that.name != null );
     }
     

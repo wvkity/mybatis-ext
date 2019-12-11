@@ -163,7 +163,7 @@ public abstract class AbstractSqlBuilder implements SqlBuilder {
     protected String convertToIfTagOfNotNull( final boolean toValue, final Execute execute, final boolean isQuery, final int indent, final String argName, final Column column, final String separator, String join ) {
         boolean hasArgName = StringUtil.hasText( argName );
         String property = column.getProperty();
-        StringBuffer buffer = new StringBuffer( 60 );
+        StringBuilder buffer = new StringBuilder( 60 );
         buffer.append( indentOfSpace( indent ) ).append( "<if test=\"" );
         // 参数名称
         if ( hasArgName ) {
@@ -191,6 +191,27 @@ public abstract class AbstractSqlBuilder implements SqlBuilder {
             buffer.append( column.getColumn() ).append( ", \n" );
         }
         buffer.append( indentOfSpace( indent ) ).append( "</if>\n" );
+        return buffer.toString();
+    }
+    
+    protected String convertIfTagForLocker(final boolean toValue, final String argName, final Column column, final String separator, final int indent ) {
+        String property = column.getProperty();
+        StringBuilder buffer = new StringBuilder( 60 );
+        buffer.append( indentOfSpace( indent ) ).append( "<if test=\"" ).append( argName ).append( " != null" );
+        if ( column.isCheckNotEmpty() && column.getJavaType().equals( String.class ) ) {
+            buffer.append( " and " ).append( argName ).append( " != ''" );
+        }
+        // 闭合标签
+        buffer.append( "\">\n" );
+        buffer.append( indentOfSpace( indent + 1 ) );
+        if ( toValue ) {
+            buffer.append( " " ).append( column.getColumn() ).append( " = #{" )
+                    .append( argName ).append( "}" ).append( separator ).append( "\n" );
+        } else {
+            buffer.append( column.getColumn() ).append( ", \n" );
+        }
+        buffer.append( indentOfSpace( indent ) ).append( "</if>\n" );
+
         return buffer.toString();
     }
 

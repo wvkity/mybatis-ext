@@ -5,5 +5,5 @@ package com.wkit.lost.mybatis.service;
  * @param <T> 实体、返回值类型
  * @author wvkity
  */
-public interface UniformityServiceExecutor<T> extends ServiceExecutor<T, T> {
+public interface UnifyServiceExecutor<T> extends ServiceExecutor<T, T> {
 }

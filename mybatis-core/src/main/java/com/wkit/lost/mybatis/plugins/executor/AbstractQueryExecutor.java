@@ -13,7 +13,6 @@ import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
-import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -59,7 +58,7 @@ public abstract class AbstractQueryExecutor implements Filter {
         MappedStatement statement = ( MappedStatement ) args[ 0 ];
         Object parameter = args[ 1 ];
         RowBounds rowBounds = ( RowBounds ) args[ 2 ];
-        ResultHandler resultHandler = ( ResultHandler ) args[ 3 ];
+        ResultHandler<?> resultHandler = ( ResultHandler<?> ) args[ 3 ];
         Executor executor = ( Executor ) invocation.getTarget();
         CacheKey cacheKey;
         BoundSql boundSql;
@@ -125,7 +124,7 @@ public abstract class AbstractQueryExecutor implements Filter {
      * 获取拦截器类型
      * @return 模式
      */
-    protected abstract Mode getTarget();
+    protected abstract QueryMode getTarget();
 
     /**
      * 获取默认方言
@@ -145,6 +144,8 @@ public abstract class AbstractQueryExecutor implements Filter {
      * @return 结果
      * @throws Exception 异常信息
      */
-    protected abstract Object doIntercept( Executor executor, MappedStatement statement, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey cacheKey, BoundSql boundSql ) throws Exception;
+    protected abstract Object doIntercept( Executor executor, MappedStatement statement, Object parameter, 
+                                           RowBounds rowBounds, ResultHandler<?> resultHandler, 
+                                           CacheKey cacheKey, BoundSql boundSql ) throws Exception;
 
 }

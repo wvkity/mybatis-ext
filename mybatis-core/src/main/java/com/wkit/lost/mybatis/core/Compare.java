@@ -3,14 +3,12 @@ package com.wkit.lost.mybatis.core;
 import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.lambda.LambdaResolver;
 
-import java.io.Serializable;
-
 /**
  * 值比较条件封装
  * @param <Context> 当前对象
  * @param <R>       lambda属性对象
  */
-public interface Compare<Context, R> extends LambdaResolver<R>, Segment, Serializable {
+public interface Compare<Context, R> extends LambdaResolver<R>, Segment {
 
     /**
      * 主键等于
@@ -322,4 +320,10 @@ public interface Compare<Context, R> extends LambdaResolver<R>, Segment, Seriali
      */
     Context orGe( String property, Object value );
 
+    /**
+     * 乐观锁
+     * @param version 版本号
+     * @return 当前对象
+     */
+    Context version( Object version );
 }

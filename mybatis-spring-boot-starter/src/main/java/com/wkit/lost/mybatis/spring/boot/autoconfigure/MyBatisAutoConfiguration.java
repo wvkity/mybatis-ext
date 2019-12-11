@@ -55,6 +55,7 @@ import org.springframework.util.StringUtils;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Log4j2
 @org.springframework.context.annotation.Configuration
@@ -152,17 +153,11 @@ public class MyBatisAutoConfiguration implements InitializingBean {
             }
         }
         // SQL注入器
-        if ( hasBeanFromContext( SqlInjector.class ) ) {
-            customConfig.setInjector( getBean( SqlInjector.class ) );
-        }
+        ifPresent( SqlInjector.class, customConfig::setInjector );
         // 实体解析器
-        if ( hasBeanFromContext( EntityResolver.class ) ) {
-            customConfig.setEntityResolver( getBean( EntityResolver.class ) );
-        }
+        ifPresent( EntityResolver.class, customConfig::setEntityResolver );
         // 属性解析器
-        if ( hasBeanFromContext( FieldResolver.class ) ) {
-            customConfig.setFieldResolver( getBean( FieldResolver.class ) );
-        }
+        ifPresent( FieldResolver.class, customConfig::setFieldResolver );
         // 主键生成器
         if ( hasBeanFromContext( KeyGenerator.class ) ) {
             customConfig.setKeyGenerator( getBean( KeyGenerator.class ) );
@@ -170,13 +165,9 @@ public class MyBatisAutoConfiguration implements InitializingBean {
             customConfig.setKeyGenerator( new GuidGenerator() );
         }
         // 雪花算法主键生成器
-        if ( hasBeanFromContext( Sequence.class ) ) {
-            customConfig.setSequence( getBean( Sequence.class ) );
-        }
+        ifPresent( Sequence.class, customConfig::setSequence );
         // 自动填充值
-        if ( hasBeanFromContext( MetaObjectFillingHandler.class ) ) {
-            customConfig.setMetaObjectFillingHandler( getBean( MetaObjectFillingHandler.class ) );
-        }
+        ifPresent( MetaObjectFillingHandler.class, customConfig::setMetaObjectFillingHandler );
         factory.setCustomConfiguration( customConfig );
         return factory.getObject();
     }
@@ -197,6 +188,12 @@ public class MyBatisAutoConfiguration implements InitializingBean {
             configuration.setDefaultScriptingLanguage( MyBatisXMLLanguageDriver.class );
         }
         factory.setConfiguration( configuration );
+    }
+    
+    private <T> void ifPresent(Class<T> clazz, Consumer<T> consumer ) {
+        if (hasBeanFromContext( clazz )) {
+            consumer.accept( getBean( clazz ) );
+        }
     }
 
     private boolean hasBeanFromContext( final Class<?> target ) {

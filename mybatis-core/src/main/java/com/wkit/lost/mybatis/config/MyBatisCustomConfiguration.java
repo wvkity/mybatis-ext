@@ -161,14 +161,24 @@ public class MyBatisCustomConfiguration implements Serializable {
     private boolean enableMethodAnnotation = false;
 
     /**
+     * 是否使用默认的自动填充值插件
+     */
+    private boolean useMetaObjectFillPlugin = false;
+
+    /**
      * 是否使用默认分页插件
      */
-    private boolean usePageablePlugin = true;
+    private boolean usePageablePlugin = false;
 
     /**
      * 是否使用默认的limit查询插件
      */
-    private boolean useLimitPlugin = true;
+    private boolean useLimitPlugin = false;
+
+    /**
+     * 是否使用默认的乐观锁插件
+     */
+    private boolean useOptimisticLockerPlugin = false;
 
     /**
      * 标识已删除

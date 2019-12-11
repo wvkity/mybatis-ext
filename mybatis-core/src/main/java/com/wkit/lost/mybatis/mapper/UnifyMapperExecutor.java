@@ -5,5 +5,5 @@ package com.wkit.lost.mybatis.mapper;
  * @param <T> 实体、返回值类型
  * @author wvkity
  */
-public interface UniformityMapperExecutor<T> extends MapperExecutor<T, T> {
+public interface UnifyMapperExecutor<T> extends MapperExecutor<T, T> {
 }

@@ -177,6 +177,11 @@ public class SubCriteria<T> extends AbstractQueryCriteria<T> {
         return CriteriaCopierFactory.clone( this );
     }
 
+    @Override
+    public Object getModifyVersionValue() {
+        return null;
+    }
+
     public String getSqlSegmentForCondition() {
         StringBuilder buffer = new StringBuilder( 100 );
         buffer.append( "(" ).append( "SELECT " ).append( this.getQuerySegment() ).append( " FROM " );

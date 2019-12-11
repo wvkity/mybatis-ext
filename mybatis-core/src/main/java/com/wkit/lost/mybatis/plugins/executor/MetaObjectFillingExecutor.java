@@ -36,7 +36,7 @@ import java.util.Set;
  * @see com.wkit.lost.mybatis.scripting.defaults.MyBatisDefaultParameterHandler
  */
 @Log4j2
-public class MetaObjectFillingExecutor {
+public class MetaObjectFillingExecutor extends AbstractUpdateExecutor {
 
     private static final Set<String> LOGICAL_DELETION_METHODS = new HashSet<>( Arrays.asList( "logicDelete", "logicDeleteByCriteria" ) );
 
@@ -45,21 +45,9 @@ public class MetaObjectFillingExecutor {
         Object parameterObject = invocation.getArgs()[ 1 ];
         if ( filter( statement, parameterObject ) ) {
             Object newParameter = processFillValue( statement, parameterObject );
-            invocation.getArgs()[ 1 ] = parameterObject;
+            invocation.getArgs()[ 1 ] = newParameter;
         }
         return invocation.proceed();
-    }
-
-    /**
-     * 拦截
-     * @param statement       {@link MappedStatement}对象
-     * @param parameterObject 参数
-     * @return true: 进行填充 false: 跳过
-     */
-    private boolean filter( MappedStatement statement, Object parameterObject ) {
-        SqlCommandType exec = statement.getSqlCommandType();
-        return ( exec == SqlCommandType.INSERT || exec == SqlCommandType.UPDATE ) && parameterObject != null
-                && !( PrimitiveRegistry.isPrimitiveOrWrapper( parameterObject ) || parameterObject.getClass() == String.class );
     }
 
     /**

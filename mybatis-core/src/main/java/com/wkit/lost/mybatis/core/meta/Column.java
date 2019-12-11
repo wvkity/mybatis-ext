@@ -33,7 +33,7 @@ public class Column {
     /**
      * 属性对象
      */
-    private Attribute attribute;
+    private Field field;
 
     /**
      * 属性

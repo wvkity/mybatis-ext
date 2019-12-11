@@ -35,4 +35,9 @@ public interface Constants {
      * 逻辑删除填充值键
      */
     String PARAM_LOGIC_DELETED_AUTO_KEY = "LOGIC_DELETED_AUTO_FV";
+
+    /**
+     * 乐观锁填充值键
+     */
+    String PARAM_OPTIMISTIC_LOCK_KEY = "OPTIMISTIC_LOCK_FV";
 }

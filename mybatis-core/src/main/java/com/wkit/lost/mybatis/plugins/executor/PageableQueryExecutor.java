@@ -28,8 +28,8 @@ public class PageableQueryExecutor extends AbstractQueryExecutor {
     protected Cache<String, MappedStatement> recordMsCache = null;
 
     @Override
-    protected Mode getTarget() {
-        return Mode.PAGEABLE;
+    protected QueryMode getTarget() {
+        return QueryMode.PAGEABLE;
     }
 
     @Override

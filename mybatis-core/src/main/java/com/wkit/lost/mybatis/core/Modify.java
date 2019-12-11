@@ -12,7 +12,7 @@ public interface Modify<T, Context> {
      * @param value    值
      * @return 当前对象
      */
-    Context modify( Property<T, ?> property, Object value );
+    Context update( Property<T, ?> property, Object value );
 
     /**
      * 添加更新列
@@ -20,14 +20,21 @@ public interface Modify<T, Context> {
      * @param value    值
      * @return 当前对象
      */
-    Context modify( String property, Object value );
+    Context update( String property, Object value );
 
     /**
      * 添加多个更新列
      * @param map 列集合
      * @return 当前对象
      */
-    Context modify( Map<String, Object> map );
+    Context update( Map<String, Object> map );
+
+    /**
+     * 修改版本
+     * @param version 版本号
+     * @return 当前对象
+     */
+    Context updateVersion( Object version );
 
     /**
      * 获取更新字段片段

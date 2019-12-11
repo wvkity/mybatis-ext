@@ -225,6 +225,17 @@ public class Table {
     }
 
     /**
+     * 获取可更新字段信息(排除乐观锁字段)
+     * @return 字段集合
+     */
+    public Set<Column> getUpdatableColumnsExcludeLocker() {
+        return this.columns.stream()
+                .filter( Column::isUpdatable )
+                .filter( column -> !column.isVersion() )
+                .collect( Collectors.toCollection( LinkedHashSet::new ) );
+    }
+
+    /**
      * 获取所有可保存字段信息
      * @return 字段集合
      */
@@ -272,6 +283,14 @@ public class Table {
         return this.columns.stream()
                 .filter( column -> !column.enableDeleteFilling() )
                 .collect( Collectors.toCollection( LinkedHashSet::new ) );
+    }
+
+    /**
+     * 获取乐观锁字段
+     * @return 字段信息
+     */
+    public Column getOptimisticLockerColumn() {
+        return this.columns.stream().filter( Column::isVersion ).findFirst().orElse( null );
     }
 
 

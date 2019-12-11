@@ -16,14 +16,46 @@ public class UpdateSelectiveSqlBuilder extends AbstractSqlBuilder {
 
     @Override
     public String build() {
-        StringBuffer buffer = new StringBuffer( 300 );
-        Set<Column> columns = table.getUpdatableColumns();
-        buffer.append( "<trim prefix=\"SET\" suffixOverrides=\",\">\n" );
-        for ( Column column : columns ) {
-            buffer.append( this.convertToIfTagOfNotNull( true, Execute.REPLACE, false, 0, Constants.PARAM_ENTITY, column, ",", "" ) );
+        StringBuilder builder = new StringBuilder( 300 );
+        Set<Column> columns;
+        // 乐观锁
+        Column lockerColumn = table.getOptimisticLockerColumn();
+        builder.append( "<trim prefix=\"SET\" suffixOverrides=\",\">\n" );
+        // 检查乐观锁是否存在且值不能为空
+        if ( lockerColumn == null ) {
+            appendSqlSegment( table.getUpdatableColumns(), builder );
+        } else {
+            builder.append( " <choose>\n" );
+            builder.append( "  <when test=\"" ).append( ColumnUtil.convertToTestCondition( lockerColumn,
+                    Constants.PARAM_ENTITY ) ).append( "\">\n" );
+            appendSqlSegment( table.getUpdatableColumnsExcludeLocker(), builder );
+            builder.append( this.convertIfTagForLocker( true, Constants.PARAM_OPTIMISTIC_LOCK_KEY,
+                    lockerColumn, ",", 3 ) );
+            builder.append( "  </when>\n" );
+            builder.append( "  <otherwise>\n" );
+            appendSqlSegment( table.getUpdatableColumns(), builder );
+            builder.append( "  </otherwise>\n" );
+            builder.append( " </choose>\n" );
         }
-        buffer.append( "</trim>" );
-        String condition = "WHERE " + ColumnUtil.convertToArg( table.getPrimaryKey(), Execute.REPLACE, Constants.PARAM_ENTITY );
-        return update( buffer.toString(), condition );
+        builder.append( "</trim>" );
+        StringBuilder conditionBuilder = new StringBuilder( 80 );
+        conditionBuilder.append( "<trim prefix=\"WHERE\" prefixOverrides=\"AND |OR \">\n" );
+        conditionBuilder.append( " " ).append( ColumnUtil.convertToArg( table.getPrimaryKey(), Execute.REPLACE, Constants.PARAM_ENTITY ) );
+        //conditionBuilder.append( "\n" ).append( this.convertToIfTagOfNotNull( true, Execute.REPLACE, false, 1, Constants.PARAM_ENTITY, table.getPrimaryKey(), "", AND ) );
+        if ( lockerColumn != null ) {
+            conditionBuilder.append( "\n" ).append( this.convertToIfTagOfNotNull( true, Execute.REPLACE,
+                    false, 1, Constants.PARAM_ENTITY, lockerColumn, "", AND ) );
+        }
+        conditionBuilder.append( "</trim>" );
+        System.out.println("============================");
+        System.out.println(conditionBuilder.toString());
+        return update( builder.toString(), conditionBuilder.toString() );
+    }
+
+    private void appendSqlSegment( Set<Column> columns, StringBuilder builder ) {
+        for ( Column column : columns ) {
+            builder.append( this.convertToIfTagOfNotNull( true, Execute.REPLACE, false, 3,
+                    Constants.PARAM_ENTITY, column, ",", "" ) );
+        }
     }
 }

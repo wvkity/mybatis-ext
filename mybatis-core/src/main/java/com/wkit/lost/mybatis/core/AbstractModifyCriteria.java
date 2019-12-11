@@ -27,12 +27,12 @@ public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T>
     protected Map<String, Object> modifies = new ConcurrentSkipListMap<>();
 
     @Override
-    public AbstractModifyCriteria<T> modify( Property<T, ?> property, Object value ) {
-        return modify( lambdaToProperty( property ), value );
+    public AbstractModifyCriteria<T> update( Property<T, ?> property, Object value ) {
+        return update( lambdaToProperty( property ), value );
     }
 
     @Override
-    public AbstractModifyCriteria<T> modify( String property, Object value ) {
+    public AbstractModifyCriteria<T> update( String property, Object value ) {
         if ( StringUtil.hasText( property ) ) {
             this.modifies.put( property, value );
         }
@@ -40,13 +40,31 @@ public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T>
     }
 
     @Override
-    public AbstractModifyCriteria<T> modify( Map<String, Object> map ) {
+    public AbstractModifyCriteria<T> update( Map<String, Object> map ) {
         if ( CollectionUtil.hasElement( map ) ) {
             for ( Map.Entry<String, Object> entry : map.entrySet() ) {
-                modify( entry.getKey(), entry.getValue() );
+                update( entry.getKey(), entry.getValue() );
             }
         }
         return this;
+    }
+
+    @Override
+    public AbstractModifyCriteria<T> updateVersion( Object version ) {
+        Column column = getOptimisticLockerColumn();
+        if ( column != null ) {
+            update( column.getProperty(), version );
+        }
+        return this;
+    }
+
+    @Override
+    public Object getModifyVersionValue() {
+        Column column = this.getOptimisticLockerColumn();
+        if ( column != null ) {
+            return this.modifies.get( column.getProperty() );
+        }
+        return null;
     }
 
     @Override
@@ -58,7 +76,7 @@ public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T>
                 Object value = entry.getValue();
                 Column column = searchColumn( property );
                 if ( column != null && column.isUpdatable() ) {
-                    modifyColumns.add( ColumnUtil.convertToCustomArg( column, defaultPlaceholder( value ), 
+                    modifyColumns.add( ColumnUtil.convertToCustomArg( column, defaultPlaceholder( value ),
                             null, Operator.EQ, null ) );
                 } else {
                     log.warn( "The corresponding table field information could not be found based on the `{}` " +

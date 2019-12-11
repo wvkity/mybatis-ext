@@ -144,6 +144,16 @@ public class SegmentManager implements Segment {
         return wheres.isNotEmpty() || groups.isNotEmpty() || having.isNotEmpty() || orders.isNotEmpty();
     }
 
+    /**
+     * 根据属性名称获取值
+     * @param property 属性名
+     * @return 属性值
+     * @see WhereSegment#getConditionValue(String) 
+     */
+    public Object getConditionValue( final String property ) {
+        return this.wheres.getConditionValue( property );
+    }
+
     private String getWhereSqlSegment() {
         return wheres.getSqlSegment();
     }

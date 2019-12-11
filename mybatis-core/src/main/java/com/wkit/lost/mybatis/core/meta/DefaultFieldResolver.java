@@ -6,7 +6,6 @@ import com.wkit.lost.mybatis.utils.AnnotationUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.annotation.Entity;
 import com.wkit.lost.mybatis.annotation.Transient;
-import com.wkit.lost.mybatis.core.meta.Attribute;
 import com.wkit.lost.mybatis.exception.MapperResolverException;
 import com.wkit.lost.mybatis.javax.JavaxPersistence;
 
@@ -14,7 +13,6 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,23 +25,23 @@ import java.util.stream.Stream;
 public class DefaultFieldResolver implements FieldResolver {
 
     @Override
-    public List<Attribute> getAllAttributes( Class<?> entity ) {
-        List<Attribute> fromFieldAttrs = getAttributesFromFieldOfRecursively( entity, new ArrayList<>(), 0 );
-        List<Attribute> fromBeanInfoAttrs = getAttributeFromBeanInfo( entity );
-        Set<Attribute> usedAttrs = new HashSet<>();
+    public List<Field> getAllAttributes( Class<?> entity ) {
+        List<Field> fromFieldAttrs = getAttributesFromFieldOfRecursively( entity, new ArrayList<>(), 0 );
+        List<Field> fromBeanInfoAttrs = getAttributeFromBeanInfo( entity );
+        Set<Field> usedAttrs = new HashSet<>();
         return fromFieldAttrs.isEmpty() ? fromFieldAttrs : new ArrayList<>( fromFieldAttrs.stream().peek( fieldAttr -> {
-            Attribute attribute = fromBeanInfoAttrs.stream()
+            Field field = fromBeanInfoAttrs.stream()
                     .filter( beanInfoAttr -> !usedAttrs.contains( beanInfoAttr ) && StringUtil.equals( beanInfoAttr.getName(), fieldAttr.getName() ) )
                     .findFirst().orElse( null );
-            if ( attribute != null ) {
-                usedAttrs.add( attribute );
-                fieldAttr.setJavaType( attribute.getJavaType() );
+            if ( field != null ) {
+                usedAttrs.add( field );
+                fieldAttr.setJavaType( field.getJavaType() );
             }
         } ).collect( Collectors.toCollection( LinkedHashSet::new ) ) );
     }
 
     @Override
-    public List<Attribute> getAttributeFromBeanInfo( Class<?> entity ) {
+    public List<Field> getAttributeFromBeanInfo( Class<?> entity ) {
         BeanInfo beanInfo;
         try {
             beanInfo = Introspector.getBeanInfo( entity );
@@ -64,10 +62,10 @@ public class DefaultFieldResolver implements FieldResolver {
      * @param level      是否为父级(1+: true)
      * @return 属性集合
      */
-    protected List<Attribute> getAttributesFromFieldOfRecursively( final Class<?> entity, List<Attribute> attributes, int level ) {
-        Field[] fields = entity.getDeclaredFields();
+    protected List<Field> getAttributesFromFieldOfRecursively( final Class<?> entity, List<Field> attributes, int level ) {
+        java.lang.reflect.Field[] fields = entity.getDeclaredFields();
         if ( !ArrayUtil.isEmpty( fields ) ) {
-            List<Field> attrs = Stream.of( fields )
+            List<java.lang.reflect.Field> attrs = Stream.of( fields )
                     .filter( field -> !Modifier.isStatic( field.getModifiers() ) && !Modifier.isTransient( field.getModifiers() ) )
                     .filter( this::filter )
                     .collect( Collectors.toCollection( ArrayList::new ) );
@@ -88,18 +86,18 @@ public class DefaultFieldResolver implements FieldResolver {
 
     /**
      * 给指定属性集合添加属性信息
-     * @param attributes 指定属性集合
+     * @param fields 指定属性集合
      * @param field      属性
      * @param level      级别
      * @param index      索引
      */
-    protected void addTo( List<Attribute> attributes, final Field field, int level, int index ) {
+    protected void addTo( List<Field> fields, final java.lang.reflect.Field field, int level, int index ) {
         if ( level == 0 ) {
             // self
-            attributes.add( transform( field ) );
+            fields.add( transform( field ) );
         } else {
             // super
-            attributes.add( index, transform( field ) );
+            fields.add( index, transform( field ) );
         }
     }
 
@@ -108,7 +106,7 @@ public class DefaultFieldResolver implements FieldResolver {
      * @param field 属性对象
      * @return true | false
      */
-    protected boolean filter( final Field field ) {
+    protected boolean filter( final java.lang.reflect.Field field ) {
         return field != null && !AnnotationUtil.isAnnotationPresent( field, Transient.class, JavaxPersistence.TRANSIENT );
     }
 
@@ -122,20 +120,20 @@ public class DefaultFieldResolver implements FieldResolver {
     }
 
     /**
-     * {@link PropertyDescriptor}转{@link Attribute}对象
+     * {@link PropertyDescriptor}转{@link Field}对象
      * @param descriptor 属性描述
-     * @return {@link Attribute}(属性信息)
+     * @return {@link Field}(属性信息)
      */
-    protected Attribute valueOf( final PropertyDescriptor descriptor ) {
-        return new Attribute( null, descriptor );
+    protected Field valueOf( final PropertyDescriptor descriptor ) {
+        return new Field( null, descriptor );
     }
 
     /**
-     * {@link Field}转{@link Attribute}对象
-     * @param field {@link Field}(属性对象)
-     * @return {@link Attribute}对象
+     * {@link java.lang.reflect.Field}转{@link Field}对象
+     * @param field {@link java.lang.reflect.Field}(属性对象)
+     * @return {@link Field}对象
      */
-    protected Attribute transform( final Field field ) {
-        return new Attribute( field );
+    protected Field transform( final java.lang.reflect.Field field ) {
+        return new Field( field );
     }
 }

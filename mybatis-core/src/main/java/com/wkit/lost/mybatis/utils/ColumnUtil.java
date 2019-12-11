@@ -15,6 +15,28 @@ public final class ColumnUtil {
     }
 
     /**
+     * 转换成条件参数
+     * @param column 字段信息
+     * @param argName 参数
+     * @return 条件字符串
+     */
+    public static String convertToTestCondition( final Column column, final String argName ) {
+        StringBuilder builder = new StringBuilder();
+        if ( Ascii.hasText( argName ) ) {
+            builder.append( argName ).append( "." );
+        }
+        builder.append( column.getProperty() ).append( " != null" );
+        if ( column.getJavaType() == String.class ) {
+            builder.append( " and " );
+            if ( Ascii.hasText( argName ) ) {
+                builder.append( argName ).append( "." );
+            }
+            builder.append( column.getProperty() ).append( " != ''" );
+        }
+        return builder.toString();
+    }
+
+    /**
      * 转换成INSERT参数字符串
      * @param column 字段映射对象
      * @return 字符串
@@ -80,17 +102,17 @@ public final class ColumnUtil {
      * 别名：{@code A} <br>
      * 字段名：{@code USER_NAME} <br>
      * 对应属性: {@code userName} <br>
-     * 参数名：{@code record} <br>
+     * 参数名：{@code entity} <br>
      * eg:<br>
      * 条件: <br>
-     * &nbsp;&nbsp;A.USER_NAME = #{record.userName} <br>
-     * &nbsp;&nbsp;A.USER_NAME = #{record.userName, javaType="java.lang.String", jdbcType="VARCHAR", typeHandler="com.wkit.lost.mybatis.type.handlers.StandardInstantTypeHandler"} <br><br>
+     * &nbsp;&nbsp;A.USER_NAME = #{entity.userName} <br>
+     * &nbsp;&nbsp;A.USER_NAME = #{entity.userName, javaType="java.lang.String", jdbcType="VARCHAR", typeHandler="com.wkit.lost.mybatis.type.handlers.StandardInstantTypeHandler"} <br><br>
      * 保存操作: <br>
-     * &nbsp;&nbsp;#{record.userName} <br>
-     * &nbsp;&nbsp;#{record.userName, javaType="java.lang.String", jdbcType="VARCHAR", typeHandler="com.wkit.lost.mybatis.type.handlers.StandardInstantTypeHandler"} <br><br>
+     * &nbsp;&nbsp;#{entity.userName} <br>
+     * &nbsp;&nbsp;#{entity.userName, javaType="java.lang.String", jdbcType="VARCHAR", typeHandler="com.wkit.lost.mybatis.type.handlers.StandardInstantTypeHandler"} <br><br>
      * 更新操作: <br>
-     * &nbsp;&nbsp;USER_NAME = #{record.userName} <br>
-     * &nbsp;&nbsp;USER_NAME = #{record.userName, javaType="java.lang.String", jdbcType="VARCHAR", typeHandler="com.wkit.lost.mybatis.type.handlers.StandardInstantTypeHandler"} <br>
+     * &nbsp;&nbsp;USER_NAME = #{entity.userName} <br>
+     * &nbsp;&nbsp;USER_NAME = #{entity.userName, javaType="java.lang.String", jdbcType="VARCHAR", typeHandler="com.wkit.lost.mybatis.type.handlers.StandardInstantTypeHandler"} <br>
      * </p>
      * @param column    字段映射对象
      * @param execute   执行操作类型
@@ -141,7 +163,7 @@ public final class ColumnUtil {
      * @return 字符串
      */
     public static String convertToQueryArg( final Column column, final String alias, final String reference, final boolean apply ) {
-        StringBuffer buffer = new StringBuffer( 60 );
+        StringBuilder buffer = new StringBuilder( 60 );
         if ( StringUtil.hasText( alias ) ) {
             buffer.append( alias ).append( "." );
         }
@@ -165,7 +187,7 @@ public final class ColumnUtil {
      * @return 字符串
      */
     public static String convertToQueryArg( final String column, final String columnAlias, final String alias ) {
-        StringBuffer buffer = new StringBuffer( 40 );
+        StringBuilder buffer = new StringBuilder( 40 );
         if ( StringUtil.hasText( alias ) ) {
             buffer.append( alias ).append( "." );
         }
@@ -225,7 +247,7 @@ public final class ColumnUtil {
      * @return SQL字符串
      */
     public static String convertToCustomArg( final String column, final String paramValuePlaceHolder, final String alias, Operator operator, String join ) {
-        StringBuffer buffer = new StringBuffer( 40 );
+        StringBuilder buffer = new StringBuilder( 40 );
         if ( StringUtil.hasText( join ) ) {
             buffer.append( join ).append( " " );
         }

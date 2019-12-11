@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * 参数
@@ -49,7 +48,7 @@ public class Argument {
      * 结果处理器
      */
     @Getter
-    private ResultHandler resultHandler;
+    private ResultHandler<?> resultHandler;
 
     /**
      * 缓存key
@@ -81,7 +80,7 @@ public class Argument {
     private int size;
 
     public Argument( Object[] args, MappedStatement statement, Executor executor, RowBounds rowBounds,
-                     ResultHandler resultHandler, CacheKey cacheKey, BoundSql boundSql, Object parameter, int size ) {
+                     ResultHandler<?> resultHandler, CacheKey cacheKey, BoundSql boundSql, Object parameter, int size ) {
         this.args = args;
         this.statement = statement;
         this.executor = executor;

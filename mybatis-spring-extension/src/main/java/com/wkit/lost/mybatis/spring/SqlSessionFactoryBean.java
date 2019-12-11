@@ -5,12 +5,14 @@ import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.plugins.interceptor.LimitInterceptor;
 import com.wkit.lost.mybatis.plugins.interceptor.MetaObjectFillingInterceptor;
+import com.wkit.lost.mybatis.plugins.interceptor.OptimisticLockerInterceptor;
 import com.wkit.lost.mybatis.plugins.interceptor.PageableInterceptor;
 import com.wkit.lost.mybatis.session.MyBatisConfiguration;
 import com.wkit.lost.mybatis.session.MyBatisSqlSessionFactoryBuilder;
 import com.wkit.lost.mybatis.type.handlers.EnumSupport;
 import com.wkit.lost.mybatis.type.handlers.EnumTypeHandler;
 import com.wkit.lost.mybatis.type.handlers.StandardOffsetDateTimeTypeHandler;
+import com.wkit.lost.mybatis.utils.ArrayUtil;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.cache.Cache;
@@ -22,6 +24,7 @@ import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
@@ -154,7 +157,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
                 TypeHandlerRegistry typeHandlerRegistry = this.configuration.getTypeHandlerRegistry();
                 String customClassName = EnumTypeHandler.class.getCanonicalName();
                 String originalClassName = EnumOrdinalTypeHandler.class.getCanonicalName();
-                for ( Class clazz : typeEnumsClasses ) {
+                for ( Class<?> clazz : typeEnumsClasses ) {
                     if ( clazz.isEnum() ) {
                         if ( EnumSupport.class.isAssignableFrom( clazz ) ) {
                             // 自定义EnumTypeHandler注册
@@ -175,36 +178,12 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
             } );
         }
 
-        // 默认拦截器LimitPlugin > PageablePlugin，存在多个插件，由于内部使用代理(代理类又被代理)，越是在外面优先级越高，故LimitPlugin需要注册在后面
-
-        // 注册自动填充值拦截器
-        MetaObjectFillingInterceptor fillingInterceptor = new MetaObjectFillingInterceptor();
-        if (this.configurationProperties != null ) {
-            fillingInterceptor.setProperties( configurationProperties );
-        }
-        targetConfiguration.addInterceptor( fillingInterceptor );
-
         if ( this.customConfiguration == null ) {
             this.customConfiguration = MyBatisConfigCache.defaults();
         }
-
-        // 注册分页拦截器
-        if ( customConfiguration.isUsePageablePlugin() ) {
-            PageableInterceptor interceptor = new PageableInterceptor();
-            if ( this.configurationProperties != null ) {
-                interceptor.setProperties( this.configurationProperties );
-            }
-            targetConfiguration.addInterceptor( interceptor );
-        }
-
-        // 注册limit查询拦截器
-        if ( customConfiguration.isUseLimitPlugin() ) {
-            LimitInterceptor interceptor = new LimitInterceptor();
-            if ( this.configurationProperties != null ) {
-                interceptor.setProperties( configurationProperties );
-            }
-            targetConfiguration.addInterceptor( interceptor );
-        }
+        
+        // 插件
+        registerPlugin( targetConfiguration );
 
         if ( !isEmpty( this.plugins ) ) {
             Stream.of( this.plugins ).forEach( plugin -> {
@@ -291,6 +270,65 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
         SqlSessionFactory factory = this.sqlSessionFactoryBuilder.build( targetConfiguration );
         customConfiguration.setSqlSessionFactory( factory );
         return factory;
+    }
+
+    private void registerPlugin( Configuration configuration ) {
+        // 默认拦截器LimitPlugin > PageablePlugin，存在多个插件，由于内部使用代理(代理类又被代理)，越是在外面优先级越高，故LimitPlugin需要注册在后面
+
+        // 注册自动填充值拦截器
+        if ( pluginRegistrable( MetaObjectFillingInterceptor.class )
+                && this.customConfiguration.isUseMetaObjectFillPlugin() ) {
+            MetaObjectFillingInterceptor fillingInterceptor = new MetaObjectFillingInterceptor();
+            if ( this.configurationProperties != null ) {
+                fillingInterceptor.setProperties( configurationProperties );
+            }
+            configuration.addInterceptor( fillingInterceptor );
+        }
+
+        // 乐观锁拦截器
+        if ( pluginRegistrable( OptimisticLockerInterceptor.class )
+                && customConfiguration.isUseOptimisticLockerPlugin() ) {
+            OptimisticLockerInterceptor versionInterceptor = new OptimisticLockerInterceptor();
+            if ( this.configurationProperties != null ) {
+                versionInterceptor.setProperties( this.configurationProperties );
+            }
+            configuration.addInterceptor( versionInterceptor );
+        }
+
+        // 注册分页拦截器
+        if ( pluginRegistrable( PageableInterceptor.class ) && customConfiguration.isUsePageablePlugin() ) {
+            PageableInterceptor interceptor = new PageableInterceptor();
+            if ( this.configurationProperties != null ) {
+                interceptor.setProperties( this.configurationProperties );
+            }
+            configuration.addInterceptor( interceptor );
+        }
+
+        // 注册limit查询拦截器
+        if ( pluginRegistrable( LimitInterceptor.class ) && customConfiguration.isUseLimitPlugin() ) {
+            LimitInterceptor interceptor = new LimitInterceptor();
+            if ( this.configurationProperties != null ) {
+                interceptor.setProperties( configurationProperties );
+            }
+            configuration.addInterceptor( interceptor );
+        }
+    }
+
+    /**
+     * 检查插件是否可注册
+     * @param clazz 具体插件类
+     * @param <T>   类型
+     * @return true: 是 false: 否
+     */
+    private <T extends Interceptor> boolean pluginRegistrable( Class<T> clazz ) {
+        if ( !ArrayUtil.isEmpty( this.plugins ) ) {
+            for ( Interceptor plugin : this.plugins ) {
+                if ( clazz.isAssignableFrom( plugin.getClass() ) ) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**

@@ -3,36 +3,15 @@ package com.wkit.lost.mybatis.filling;
 import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.filling.gen.AbstractGenerator;
-import com.wkit.lost.mybatis.filling.gen.DateGenerator;
-import com.wkit.lost.mybatis.filling.gen.InstantGenerator;
-import com.wkit.lost.mybatis.filling.gen.LocalDateGenerator;
-import com.wkit.lost.mybatis.filling.gen.LocalDateTimeGenerator;
-import com.wkit.lost.mybatis.filling.gen.LocalTimeGenerator;
-import com.wkit.lost.mybatis.filling.gen.OffsetDateTimeGenerator;
-import com.wkit.lost.mybatis.filling.gen.OffsetTimeGenerator;
-import com.wkit.lost.mybatis.filling.gen.SqlDateGenerator;
-import com.wkit.lost.mybatis.filling.gen.TimestampGenerator;
-import com.wkit.lost.mybatis.filling.gen.ZonedDateTimeGenerator;
 import com.wkit.lost.mybatis.filling.proxy.GeneratorFactory;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.ibatis.reflection.MetaObject;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.OffsetTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 元对象字段自动填充值默认处理器
@@ -42,10 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ToString
 public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler {
 
-    /**
-     * 日期类型生成器
-     */
-    private static final Map<Class<?>, Class<? extends AbstractGenerator>> DATE_TYPE_FILLING_CACHE = new ConcurrentHashMap<>( 10 );
+    
     /**
      * 创建时间属性列表
      */
@@ -93,16 +69,7 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
         MODIFIER_ID_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "modifierId", "modifiedId", "modifyUserId", "modifiedUserId", "updateUserId" ) );
         DELETED_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "deleteUser", "deleteUserName", "deletedUser", "deletedUserName", "delUser", "delUserName" ) );
         DELETED_ID_FILLING_PROPERTIES.addAll( ArrayUtil.toList( "deleteUserId", "deletedUserId" ) );
-        DATE_TYPE_FILLING_CACHE.put( Date.class, DateGenerator.class );
-        DATE_TYPE_FILLING_CACHE.put( java.sql.Date.class, SqlDateGenerator.class );
-        DATE_TYPE_FILLING_CACHE.put( Timestamp.class, TimestampGenerator.class );
-        DATE_TYPE_FILLING_CACHE.put( LocalTime.class, LocalTimeGenerator.class );
-        DATE_TYPE_FILLING_CACHE.put( LocalDate.class, LocalDateGenerator.class );
-        DATE_TYPE_FILLING_CACHE.put( LocalDateTime.class, LocalDateTimeGenerator.class );
-        DATE_TYPE_FILLING_CACHE.put( OffsetTime.class, OffsetTimeGenerator.class );
-        DATE_TYPE_FILLING_CACHE.put( OffsetDateTime.class, OffsetDateTimeGenerator.class );
-        DATE_TYPE_FILLING_CACHE.put( Instant.class, InstantGenerator.class );
-        DATE_TYPE_FILLING_CACHE.put( ZonedDateTime.class, ZonedDateTimeGenerator.class );
+        
     }
 
     /**
@@ -191,7 +158,7 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
         if ( metaObject != null && columns != null ) {
             if ( !columns.isEmpty() ) {
                 for ( Column column : columns ) {
-                    Class<? extends AbstractGenerator> target = DATE_TYPE_FILLING_CACHE.get( column.getJavaType() );
+                    Class<? extends AbstractGenerator> target = GeneratorFactory.getTimeGenerator( column.getJavaType() );
                     if ( target != null ) {
                         fillingValue( metaObject, column.getProperty(), GeneratorFactory.build( target ) );
                     }
@@ -221,7 +188,7 @@ public class DefaultMetaObjectFillingHandler implements MetaObjectFillingHandler
                 Optional<Column> optional = table.search( property );
                 if ( optional.isPresent() ) {
                     Column column = optional.get();
-                    Class<? extends AbstractGenerator> target = DATE_TYPE_FILLING_CACHE.get( column.getJavaType() );
+                    Class<? extends AbstractGenerator> target = GeneratorFactory.getTimeGenerator( column.getJavaType() );
                     if ( target != null ) {
                         fillingValue( metaObject, property, GeneratorFactory.build( target ) );
                         break;

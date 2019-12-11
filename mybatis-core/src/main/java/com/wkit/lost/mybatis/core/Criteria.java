@@ -481,4 +481,16 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
      * @return true: 是 , false: 否
      */
     boolean isHasCondition();
+
+    /**
+     * 获取乐观锁更新值
+     * @return 乐观锁值
+     */
+    Object getModifyVersionValue();
+
+    /**
+     * 获取乐观锁条件值
+     * @return 乐观锁值
+     */
+    Object getConditionVersionValue();
 }

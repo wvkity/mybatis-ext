@@ -124,14 +124,14 @@ public class DefaultEntityResolver implements EntityResolver {
         // 解析@Table注解(处理表映射信息)
         Table table = processTableMappingFromEntity( entity );
         // 处理字段映射信息
-        List<Attribute> attributes;
+        List<Field> fields;
         if ( configuration.isEnableMethodAnnotation() ) {
-            attributes = ColumnHandler.merge( entity, fieldResolver );
+            fields = ColumnHandler.merge( entity, fieldResolver );
         } else {
-            attributes = ColumnHandler.getAllAttributes( entity, fieldResolver );
+            fields = ColumnHandler.getAllAttributes( entity, fieldResolver );
         }
         boolean enableAutoJdbcMapping = this.configuration.isJdbcTypeAutoMapping();
-        attributes.stream().filter( this::attributeFilter )
+        fields.stream().filter( this::attributeFilter )
                 .forEach( attribute -> processAttribute( table, attribute, enableAutoJdbcMapping ) );
         // 初始化定义信息
         table.initDefinition();
@@ -213,19 +213,19 @@ public class DefaultEntityResolver implements EntityResolver {
     /**
      * 处理属性
      * @param table                 表映射对象
-     * @param attribute             属性对象
+     * @param field                 属性对象
      * @param enableAutoJdbcMapping 是否开启自动映射JDBC类型
      */
-    private void processAttribute( final Table table, final Attribute attribute, final boolean enableAutoJdbcMapping ) {
-        if ( attribute.isAnnotationPresent( Transient.class, JavaxPersistence.TRANSIENT ) ) {
+    private void processAttribute( final Table table, final Field field, final boolean enableAutoJdbcMapping ) {
+        if ( field.isAnnotationPresent( Transient.class, JavaxPersistence.TRANSIENT ) ) {
             return;
         }
         // 处理@Column注解
-        Column column = processColumnAnnotation( table.getEntity(), attribute, enableAutoJdbcMapping );
+        Column column = processColumnAnnotation( table.getEntity(), field, enableAutoJdbcMapping );
         //var column = new Column( table.getEntity() );
-        column.setAttribute( attribute );
+        column.setField( field );
         // 检查是否存在@Id或@Worker注解
-        if ( attribute.isAnnotationPresentOfId() ) {
+        if ( field.isAnnotationPresentOfId() ) {
             // 检查是否存在主键
             if ( table.hasPrimaryKey() ) {
                 // 组合主键需要清空主键
@@ -237,17 +237,17 @@ public class DefaultEntityResolver implements EntityResolver {
             }
         }
         // 处理@LogicDelete注解
-        processLogicDeleteAnnotation( table, column, attribute );
+        processLogicDeleteAnnotation( table, column, field );
         // 处理排序
-        processOrderByAnnotation( table, column, attribute );
+        processOrderByAnnotation( table, column, field );
         // 处理主键策略
-        processKeyGenerator( table, column, attribute );
+        processKeyGenerator( table, column, field );
         // 非主动标识主键则根据全局配置自动识别主键
         if ( !column.isPrimaryKey() ) {
-            processAutoDiscernPrimaryKey( table, column, attribute );
+            processAutoDiscernPrimaryKey( table, column, field );
         }
         // 处理自动填充注解
-        processFillingAnnotation( table, column, attribute );
+        processFillingAnnotation( table, column, field );
         // 检查是否为主键
         if ( column.isPrimaryKey() ) {
             column.setUpdatable( false );
@@ -261,10 +261,10 @@ public class DefaultEntityResolver implements EntityResolver {
     /**
      * 处理属性上的{@code @Column}注解
      * @param entity                实体类
-     * @param attribute             属性对象
+     * @param field                 属性对象
      * @param enableAutoJdbcMapping 是否开启自动映射JDBC类型
      */
-    private Column processColumnAnnotation( final Class<?> entity, final Attribute attribute, final boolean enableAutoJdbcMapping ) {
+    private Column processColumnAnnotation( final Class<?> entity, final Field field, final boolean enableAutoJdbcMapping ) {
         String columnName = null;
         boolean insertable = true;
         boolean updatable = true;
@@ -273,22 +273,22 @@ public class DefaultEntityResolver implements EntityResolver {
         boolean checkNotEmpty = this.configuration.isCheckNotEmpty();
         boolean useJavaType = this.configuration.isUseJavaType();
         boolean blob = false;
-        if ( attribute.isAnnotationPresent( com.wkit.lost.mybatis.annotation.Column.class ) ) {
+        if ( field.isAnnotationPresent( com.wkit.lost.mybatis.annotation.Column.class ) ) {
             // 自定义@Column注解
-            com.wkit.lost.mybatis.annotation.Column columnAnnotation = attribute.getAnnotation( com.wkit.lost.mybatis.annotation.Column.class );
+            com.wkit.lost.mybatis.annotation.Column columnAnnotation = field.getAnnotation( com.wkit.lost.mybatis.annotation.Column.class );
             insertable = columnAnnotation.insertable();
             updatable = columnAnnotation.updatable();
             columnName = columnAnnotation.name();
-        } else if ( attribute.isAnnotationPresent( JavaxPersistence.COLUMN ) ) {
-            AnnotationMetaObject metaObject = AnnotationMetaObject.forObject( attribute.getField(), JavaxPersistence.COLUMN );
+        } else if ( field.isAnnotationPresent( JavaxPersistence.COLUMN ) ) {
+            AnnotationMetaObject metaObject = AnnotationMetaObject.forObject( field.getField(), JavaxPersistence.COLUMN );
             // JPA @Column注解
             insertable = metaObject.booleanValue( "insertable", true );
             updatable = metaObject.booleanValue( "updatable", true );
             columnName = metaObject.stringValue( "name" );
         }
         // 处理扩展注解
-        if ( attribute.isAnnotationPresent( ColumnExt.class ) ) {
-            ColumnExt columnExt = attribute.getAnnotation( ColumnExt.class );
+        if ( field.isAnnotationPresent( ColumnExt.class ) ) {
+            ColumnExt columnExt = field.getAnnotation( ColumnExt.class );
             blob = columnExt.blob();
             if ( StringUtil.isBlank( columnName ) && StringUtil.hasText( columnExt.column() ) ) {
                 columnName = columnExt.column();
@@ -313,10 +313,10 @@ public class DefaultEntityResolver implements EntityResolver {
         }
         if ( jdbcType == null && enableAutoJdbcMapping ) {
             // 开启自动映射
-            jdbcType = JdbcTypeMappingRegister.getJdbcType( attribute.getJavaType() );
+            jdbcType = JdbcTypeMappingRegister.getJdbcType( field.getJavaType() );
         }
         if ( StringUtil.isBlank( columnName ) ) {
-            columnName = attribute.getName();
+            columnName = field.getName();
         }
         // 字段名策略处理
         columnName = transformStrategy( false, columnName, this.configuration );
@@ -325,35 +325,38 @@ public class DefaultEntityResolver implements EntityResolver {
         if ( StringUtil.hasText( wrapKeyWord ) && SqlKeyWords.containsWord( columnName ) ) {
             columnName = MessageFormat.format( wrapKeyWord, columnName );
         }
-        Column column = new Column( entity, attribute.getName(), columnName );
+        Column column = new Column( entity, field.getName(), columnName );
         column.setInsertable( insertable ).setUpdatable( updatable );
         column.setBlob( blob ).setCheckNotEmpty( checkNotEmpty );
         column.setJdbcType( jdbcType ).setTypeHandler( typeHandler );
-        column.setJavaType( attribute.getJavaType() ).setUseJavaType( useJavaType );
+        column.setJavaType( field.getJavaType() ).setUseJavaType( useJavaType );
         // 乐观锁
-        column.setVersion( attribute.isAnnotationPresent( Version.class ) );
+        column.setVersion( field.isAnnotationPresent( Version.class, JavaxPersistence.VERSION ) );
         // 使用基本类型警告
         if ( column.getJavaType().isPrimitive() ) {
             log.warn( "Warning: The `{}` attribute in the `{}` entity is defined as a primitive type. " +
-                    "The primitive type is not null at any time in dynamic SQL because it has a default value. It is " +
-                    "recommended to modify the primitive type to the corresponding wrapper type!", column.getProperty(), column.getEntity().getCanonicalName() );
+                            "The primitive type is not null at any time in dynamic SQL because it has a default value. It is " +
+                            "recommended to modify the primitive type to the corresponding wrapper type!", column.getProperty(),
+                    column.getEntity().getCanonicalName() );
         }
         return column;
     }
 
     /**
      * 解析逻辑删除注解
-     * @param table     实体类
-     * @param column    字段映射对象
-     * @param attribute 属性对象
+     * @param table  实体类
+     * @param column 字段映射对象
+     * @param field  属性对象
      */
-    private void processLogicDeleteAnnotation( Table table, Column column, Attribute attribute ) {
-        if ( attribute.isAnnotationPresent( LogicalDeletion.class ) ) {
+    private void processLogicDeleteAnnotation( Table table, Column column, Field field ) {
+        if ( field.isAnnotationPresent( LogicalDeletion.class ) ) {
             if ( table.isEnableLogicDelete() ) {
-                throw new MapperResolverException( "There are already `" + table.getLogicalDeletionColumn().getProperty() + "` attributes in `" + table.getEntity().getName() + "` entity class identified as logical deleted. " +
-                        "Only one deleted attribute can exist in an entity class. Please check the entity class attributes." );
+                throw new MapperResolverException( "There are already `" + table.getLogicalDeletionColumn()
+                        .getProperty() + "` attributes in `" + table.getEntity().getName() 
+                        + "` entity class identified as logical deleted. Only one deleted attribute " +
+                        "can exist in an entity class. Please check the entity class attributes." );
             }
-            LogicalDeletion logicalDeletion = attribute.getAnnotation( LogicalDeletion.class );
+            LogicalDeletion logicalDeletion = field.getAnnotation( LogicalDeletion.class );
             String deletedValue = StringUtil.isBlank( logicalDeletion.value() ) ? configuration.getLogicDeleted() : logicalDeletion.value();
             String notDeletedValue = StringUtil.isBlank( logicalDeletion.not() ) ? configuration.getLogicNotDeleted() : logicalDeletion.not();
             column.setLogicDelete( true ).setLogicDeleteValue( deletedValue ).setLogicNotDeleteValue( notDeletedValue );
@@ -364,16 +367,16 @@ public class DefaultEntityResolver implements EntityResolver {
 
     /**
      * 处理属性上的{@code @OrderBy}注解
-     * @param table     表映射信息对象
-     * @param column    字段映射对象
-     * @param attribute 属性信息对象
+     * @param table  表映射信息对象
+     * @param column 字段映射对象
+     * @param field  属性信息对象
      */
-    private void processOrderByAnnotation( final Table table, final Column column, final Attribute attribute ) {
+    private void processOrderByAnnotation( final Table table, final Column column, final Field field ) {
         String orderValue = null;
-        if ( attribute.isAnnotationPresent( OrderBy.class ) ) {
-            orderValue = attribute.getAnnotation( OrderBy.class ).value();
-        } else if ( attribute.isAnnotationPresent( JavaxPersistence.ORDER_BY ) ) {
-            orderValue = AnnotationMetaObject.forObject( attribute.getField(), JavaxPersistence.ORDER_BY ).stringValue();
+        if ( field.isAnnotationPresent( OrderBy.class ) ) {
+            orderValue = field.getAnnotation( OrderBy.class ).value();
+        } else if ( field.isAnnotationPresent( JavaxPersistence.ORDER_BY ) ) {
+            orderValue = AnnotationMetaObject.forObject( field.getField(), JavaxPersistence.ORDER_BY ).stringValue();
         }
         if ( orderValue != null ) {
             orderValue = "".equals( StringUtil.strip( orderValue ) ) ? "ASC" : orderValue;
@@ -383,22 +386,22 @@ public class DefaultEntityResolver implements EntityResolver {
 
     /**
      * 处理主键生成策略
-     * @param table     表映射信息对象
-     * @param column    字段映射对象
-     * @param attribute 属性信息对象
+     * @param table  表映射信息对象
+     * @param column 字段映射对象
+     * @param field  属性信息对象
      */
-    private void processKeyGenerator( final Table table, final Column column, final Attribute attribute ) {
-        if ( attribute.isAnnotationPresent( Identity.class ) ) {
+    private void processKeyGenerator( final Table table, final Column column, final Field field ) {
+        if ( field.isAnnotationPresent( Identity.class ) ) {
             // @Identity优先级最高
-            processIdentityAnnotation( table, column, attribute );
-        } else if ( attribute.isAnnotationPresent( SequenceGenerator.class, JavaxPersistence.SEQUENCE_GENERATOR ) ) {
+            processIdentityAnnotation( table, column, field );
+        } else if ( field.isAnnotationPresent( SequenceGenerator.class, JavaxPersistence.SEQUENCE_GENERATOR ) ) {
             // @SequenceGenerator序列
-            processSequenceGeneratorAnnotation( table, column, attribute );
-        } else if ( attribute.isAnnotationPresent( GeneratedValue.class, JavaxPersistence.GENERATED_VALUE ) ) {
+            processSequenceGeneratorAnnotation( table, column, field );
+        } else if ( field.isAnnotationPresent( GeneratedValue.class, JavaxPersistence.GENERATED_VALUE ) ) {
             // @GeneratedValue
-            processGeneratedValueAnnotation( table, column, attribute );
-        } else if ( attribute.isAnnotationPresent( Worker.class ) ) {
-            Worker worker = attribute.getAnnotation( Worker.class );
+            processGeneratedValueAnnotation( table, column, field );
+        } else if ( field.isAnnotationPresent( Worker.class ) ) {
+            Worker worker = field.getAnnotation( Worker.class );
             if ( worker.value() ) {
                 column.setWorkerString( true );
             } else {
@@ -409,12 +412,12 @@ public class DefaultEntityResolver implements EntityResolver {
 
     /**
      * 处理{@code @Identity}注解
-     * @param table     表映射信息对象
-     * @param column    字段映射对象
-     * @param attribute 属性信息对象
+     * @param table  表映射信息对象
+     * @param column 字段映射对象
+     * @param field  属性信息对象
      */
-    private void processIdentityAnnotation( final Table table, final Column column, final Attribute attribute ) {
-        Identity identity = attribute.getAnnotation( Identity.class );
+    private void processIdentityAnnotation( final Table table, final Column column, final Field field ) {
+        Identity identity = field.getAnnotation( Identity.class );
         if ( identity.useJdbcGenerated() ) {
             column.setIdentity( true ).setGenerator( "JDBC" );
             table.addPrimaryKeyProperty( column.getProperty() );
@@ -430,22 +433,22 @@ public class DefaultEntityResolver implements EntityResolver {
 
     /**
      * 处理{@code @SequenceGenerator}注解
-     * @param table     表映射信息对象
-     * @param column    字段映射对象
-     * @param attribute 属性信息对象
+     * @param table  表映射信息对象
+     * @param column 字段映射对象
+     * @param field  属性信息对象
      */
-    private void processSequenceGeneratorAnnotation( final Table table, final Column column, final Attribute attribute ) {
+    private void processSequenceGeneratorAnnotation( final Table table, final Column column, final Field field ) {
         String sequenceName = null;
-        if ( attribute.isAnnotationPresent( SequenceGenerator.class ) ) {
+        if ( field.isAnnotationPresent( SequenceGenerator.class ) ) {
             // 自定义@SequenceGenerator注解
-            SequenceGenerator sequenceAnnotation = attribute.getAnnotation( SequenceGenerator.class );
+            SequenceGenerator sequenceAnnotation = field.getAnnotation( SequenceGenerator.class );
             sequenceName = sequenceAnnotation.name();
             if ( StringUtil.isBlank( sequenceName ) ) {
                 sequenceName = sequenceAnnotation.sequenceName();
             }
-        } else if ( attribute.isAnnotationPresent( JavaxPersistence.SEQUENCE_GENERATOR ) ) {
+        } else if ( field.isAnnotationPresent( JavaxPersistence.SEQUENCE_GENERATOR ) ) {
             // JPA @SequenceGenerator注解
-            AnnotationMetaObject metaObject = AnnotationMetaObject.forObject( attribute.getField(), JavaxPersistence.SEQUENCE_GENERATOR );
+            AnnotationMetaObject metaObject = AnnotationMetaObject.forObject( field.getField(), JavaxPersistence.SEQUENCE_GENERATOR );
             sequenceName = metaObject.stringValue( "name" );
             if ( StringUtil.isBlank( sequenceName ) ) {
                 sequenceName = metaObject.stringValue( "sequenceName" );
@@ -460,21 +463,21 @@ public class DefaultEntityResolver implements EntityResolver {
 
     /**
      * 处理{@code @GeneratedValue}注解
-     * @param table     表映射信息对象
-     * @param column    字段映射对象
-     * @param attribute 属性信息对象
+     * @param table  表映射信息对象
+     * @param column 字段映射对象
+     * @param field  属性信息对象
      */
-    private void processGeneratedValueAnnotation( final Table table, final Column column, final Attribute attribute ) {
+    private void processGeneratedValueAnnotation( final Table table, final Column column, final Field field ) {
         boolean isIdentity = false;
         String generator = null;
-        if ( attribute.isAnnotationPresent( GeneratedValue.class ) ) {
+        if ( field.isAnnotationPresent( GeneratedValue.class ) ) {
             // 自定义@GeneratedValue
-            GeneratedValue generatedValueAnnotation = attribute.getAnnotation( GeneratedValue.class );
+            GeneratedValue generatedValueAnnotation = field.getAnnotation( GeneratedValue.class );
             generator = generatedValueAnnotation.generator();
             isIdentity = generatedValueAnnotation.strategy() == GenerationType.IDENTITY;
-        } else if ( attribute.isAnnotationPresent( JavaxPersistence.GENERATED_VALUE ) ) {
+        } else if ( field.isAnnotationPresent( JavaxPersistence.GENERATED_VALUE ) ) {
             // JPA @GeneratedValue
-            AnnotationMetaObject metaObject = AnnotationMetaObject.forObject( attribute.getField(), JavaxPersistence.GENERATED_VALUE );
+            AnnotationMetaObject metaObject = AnnotationMetaObject.forObject( field.getField(), JavaxPersistence.GENERATED_VALUE );
             generator = metaObject.stringValue( "generator" );
             Enum<?> enumValue = metaObject.enumValue( "strategy", null );
             isIdentity = enumValue != null && "IDENTITY".equals( enumValue.name() );
@@ -513,11 +516,11 @@ public class DefaultEntityResolver implements EntityResolver {
 
     /**
      * 处理自动识别主键
-     * @param table     表映射信息对象
-     * @param column    字段映射对象
-     * @param attribute 属性信息对象
+     * @param table  表映射信息对象
+     * @param column 字段映射对象
+     * @param field  属性信息对象
      */
-    private void processAutoDiscernPrimaryKey( final Table table, final Column column, final Attribute attribute ) {
+    private void processAutoDiscernPrimaryKey( final Table table, final Column column, final Field field ) {
         if ( this.configuration.isAutoDiscernPrimaryKey() ) {
             String property = column.getProperty();
             String[] array = this.configuration.getPrimaryKeys();
@@ -531,17 +534,17 @@ public class DefaultEntityResolver implements EntityResolver {
 
     /**
      * 处理自动填充值注解
-     * @param table     表映射信息对象
-     * @param column    字段映射对象
-     * @param attribute 属性信息对象
+     * @param table  表映射信息对象
+     * @param column 字段映射对象
+     * @param field  属性信息对象
      */
-    private void processFillingAnnotation( Table table, Column column, Attribute attribute ) {
-        if ( attribute.isAnnotationPresent( ColumnExt.class ) ) {
-            FillingRule rule = attribute.getAnnotation( ColumnExt.class ).fill();
+    private void processFillingAnnotation( Table table, Column column, Field field ) {
+        if ( field.isAnnotationPresent( ColumnExt.class ) ) {
+            FillingRule rule = field.getAnnotation( ColumnExt.class ).fill();
             column.setFilling( rule, true );
         }
-        if ( attribute.isAnnotationPresent( MetaFilling.class ) && column.canFilling() ) {
-            MetaFilling filling = attribute.getAnnotation( MetaFilling.class );
+        if ( field.isAnnotationPresent( MetaFilling.class ) && column.canFilling() ) {
+            MetaFilling filling = field.getAnnotation( MetaFilling.class );
             column.setFilling( FillingRule.INSERT, filling.insert() );
             column.setFilling( FillingRule.UPDATE, filling.update() );
             column.setFilling( FillingRule.DELETE, filling.delete() );
@@ -579,14 +582,14 @@ public class DefaultEntityResolver implements EntityResolver {
 
     /**
      * 过滤属性
-     * @param attribute 属性信息
+     * @param field 属性信息
      * @return boolean
      */
-    private boolean attributeFilter( final Attribute attribute ) {
+    private boolean attributeFilter( final Field field ) {
         return !( !configuration.isUseSimpleType()
-                && attribute.isAnnotationPresent( com.wkit.lost.mybatis.annotation.Column.class, JavaxPersistence.COLUMN )
-                && attribute.isAnnotationPresent( ColumnExt.class )
-                && ( SimpleTypeRegistry.isSimpleType( attribute.getJavaType() )
-                || ( this.configuration.isEnumAsSimpleType() && Enum.class.isAssignableFrom( attribute.getJavaType() ) ) ) );
+                && field.isAnnotationPresent( com.wkit.lost.mybatis.annotation.Column.class, JavaxPersistence.COLUMN )
+                && field.isAnnotationPresent( ColumnExt.class )
+                && ( SimpleTypeRegistry.isSimpleType( field.getJavaType() )
+                || ( this.configuration.isEnumAsSimpleType() && Enum.class.isAssignableFrom( field.getJavaType() ) ) ) );
     }
 }

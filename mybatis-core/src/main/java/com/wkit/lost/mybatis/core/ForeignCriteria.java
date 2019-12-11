@@ -187,6 +187,11 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
         return realQueries;
     }
 
+    @Override
+    public Object getModifyVersionValue() {
+        return null;
+    }
+
     /**
      * 设置master对象
      * @param master 主查询对象

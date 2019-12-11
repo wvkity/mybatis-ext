@@ -31,6 +31,18 @@ public interface Criterion<T> extends Segment {
     Column getColumn();
 
     /**
+     * 获取属性名
+     * @return 属性名
+     */
+    String getProperty();
+
+    /**
+     * 获取属性值
+     * @return 属性值
+     */
+    Object getValue();
+
+    /**
      * 设置连接类型
      * @param logic 操作连接类型
      * @return {@code this}

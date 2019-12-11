@@ -1,5 +1,7 @@
 package com.wkit.lost.mybatis.core.segment;
 
+import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
+import com.wkit.lost.mybatis.utils.Ascii;
 import com.wkit.lost.mybatis.utils.StringUtil;
 
 import java.util.ArrayList;
@@ -29,5 +31,22 @@ public class WhereSegment extends AbstractSegment {
             }
         }
         return "";
+    }
+
+    /**
+     * 根据属性名称获取值
+     * @param property 属性名
+     * @return 属性值
+     */
+    public Object getConditionValue( final String property ) {
+        if ( Ascii.hasText( property ) && isNotEmpty() ) {
+            for ( Segment segment : segments ) {
+                Criterion<?> expression = ( Criterion<?> ) segment;
+                if ( property.equals( expression.getProperty() ) ) {
+                    return expression.getValue();
+                }
+            }
+        }
+        return null;
     }
 }

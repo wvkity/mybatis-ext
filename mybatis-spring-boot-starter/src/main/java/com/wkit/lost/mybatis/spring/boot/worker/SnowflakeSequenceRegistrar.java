@@ -45,10 +45,14 @@ class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, 
     @Override
     public void registerBeanDefinitions( AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry ) {
         checkConfiguration();
-        AnnotationAttributes attributes = AnnotationAttributes.fromMap( importingClassMetadata.getAnnotationAttributes( EnableSnowflakeSequence.class.getName() ) );
-        Level level = ( Level ) Optional.ofNullable( attributes ).map( attr -> attr.getEnum( "level" ) ).orElse( Level.MILLISECOND );
-        Mode mode = ( Mode ) Optional.ofNullable( attributes ).map( attr -> attr.getEnum( "mode" ) ).orElse( Mode.SPECIFIED );
-        boolean primary = Optional.ofNullable( attributes ).map( attr -> attr.getBoolean( "primary" ) ).orElse( false );
+        AnnotationAttributes attributes = AnnotationAttributes.fromMap( 
+                importingClassMetadata.getAnnotationAttributes( EnableSnowflakeSequence.class.getName() ) );
+        Level level = ( Level ) Optional.ofNullable( attributes ).map( attr -> 
+                attr.getEnum( "level" ) ).orElse( Level.MILLISECOND );
+        Mode mode = ( Mode ) Optional.ofNullable( attributes ).map( attr -> 
+                attr.getEnum( "mode" ) ).orElse( Mode.SPECIFIED );
+        boolean primary = Optional.ofNullable( attributes ).map( attr -> 
+                attr.getBoolean( "primary" ) ).orElse( false );
         registerBean( registry, level, mode, primary );
     }
 

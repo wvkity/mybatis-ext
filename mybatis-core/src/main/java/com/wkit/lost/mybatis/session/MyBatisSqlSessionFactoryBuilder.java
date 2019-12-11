@@ -12,6 +12,7 @@ import java.io.Reader;
 import java.util.Properties;
 
 public class MyBatisSqlSessionFactoryBuilder extends SqlSessionFactoryBuilder {
+    
     @Override
     public SqlSessionFactory build( Reader reader, String environment, Properties properties ) {
         try {
