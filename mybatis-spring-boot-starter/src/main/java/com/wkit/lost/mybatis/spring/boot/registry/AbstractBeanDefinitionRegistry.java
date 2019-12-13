@@ -123,7 +123,7 @@ public abstract class AbstractBeanDefinitionRegistry implements BeanFactoryAware
         if ( beanFactory != null && beanFactory.getBeanNamesForType( beanClass, false, 
                 false ).length > 0 ) {
             // 从指定的名称获取bean
-            if ( beanFactory.containsBeanDefinition( beanName ) ) {
+            if ( Ascii.hasText( beanName ) && beanFactory.containsBeanDefinition( beanName ) ) {
                 try {
                     return beanFactory.getBean( beanName, beanClass );
                 } catch ( Exception e ) {
