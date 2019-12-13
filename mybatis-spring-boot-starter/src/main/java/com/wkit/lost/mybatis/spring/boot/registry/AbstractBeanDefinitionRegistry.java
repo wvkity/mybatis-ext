@@ -56,10 +56,10 @@ public abstract class AbstractBeanDefinitionRegistry implements BeanFactoryAware
         beanDefinition.setPrimary( primary );
         beanDefinition.setSynthetic( true );
         beanDefinition.setAutowireCandidate( true );
-        String realBeanName = getBeanName( beanName, beanDefinition, registry );
         Optional.ofNullable( constructorArg ).ifPresent( beanDefinition::setConstructorArgumentValues );
         AnnotationConfigUtils.processCommonDefinitionAnnotations( beanDefinition );
-        BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder( beanDefinition, realBeanName );
+        BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder( beanDefinition, 
+                getBeanName( beanName, beanDefinition, registry ) );
         BeanDefinitionReaderUtils.registerBeanDefinition( definitionHolder, registry );
     }
 
