@@ -31,7 +31,7 @@ public class OptimisticLockerExecutor extends AbstractUpdateExecutor {
     private static final String METHOD_UPDATE_SELECTIVE = "updateSelective";
     private static final String METHOD_UPDATE_BY_CRITERIA = "updateByCriteria";
     private static final String METHOD_MIXIN_UPDATE_SELECTIVE = "mixinUpdateSelective";
-    private static final Map<Class<?>, Column> OPTIMISTIC_LOCKER_FIELD_CACHE = new ConcurrentHashMap<>( 128 );
+    private static final Map<Class<?>, Column> OPTIMISTIC_LOCKER_FIELD_CACHE = new ConcurrentHashMap<>( 32 );
 
     /**
      * 拦截方法集合
