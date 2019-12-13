@@ -120,11 +120,12 @@ public abstract class AbstractBeanDefinitionRegistry implements BeanFactoryAware
      */
     protected <T> T getBean( Class<T> beanClass, String beanName ) {
         // 检查Bean容器中是否存在配置实例
-        if ( beanFactory.getBeanNamesForType( beanClass, false, false ).length > 0 ) {
+        if ( beanFactory != null && beanFactory.getBeanNamesForType( beanClass, false, 
+                false ).length > 0 ) {
             // 从指定的名称获取bean
             if ( beanFactory.containsBeanDefinition( beanName ) ) {
                 try {
-                    return beanFactory.getBean( "aaa", beanClass );
+                    return beanFactory.getBean( beanName, beanClass );
                 } catch ( Exception e ) {
                     // ignore
                     e.printStackTrace();
