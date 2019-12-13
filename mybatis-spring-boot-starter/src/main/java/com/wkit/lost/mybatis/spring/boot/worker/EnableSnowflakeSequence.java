@@ -25,6 +25,12 @@ import java.lang.annotation.Target;
 public @interface EnableSnowflakeSequence {
 
     /**
+     * 注册的beanName
+     * @return bean名称
+     */
+    String name() default "";
+
+    /**
      * 是否开启@Primary(默认为false)
      * @return true: 是 false: 否
      */
