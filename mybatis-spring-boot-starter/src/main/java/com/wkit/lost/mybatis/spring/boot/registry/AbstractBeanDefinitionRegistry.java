@@ -128,7 +128,6 @@ public abstract class AbstractBeanDefinitionRegistry implements BeanFactoryAware
                     return beanFactory.getBean( beanName, beanClass );
                 } catch ( Exception e ) {
                     // ignore
-                    e.printStackTrace();
                 }
             }
             // 从指定类型获取bean
