@@ -14,5 +14,10 @@ public enum Mode {
     /**
      * 指定机器码-数据中心
      */
-    SPECIFIED
+    SPECIFIED,
+
+    /**
+     * 未知(采用默认: {@link #SPECIFIED})
+     */
+    UNKNOWN
 }

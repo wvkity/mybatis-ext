@@ -14,15 +14,15 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @Accessors( chain = true )
 @Configuration
-@ConfigurationProperties( prefix = "sequence", ignoreInvalidFields = true )
+@ConfigurationProperties( prefix = "lost.sequence", ignoreInvalidFields = true )
 public class SequenceAutoConfiguration {
     /**
-     * 开始时间(默认为2019-01-01)
+     * 开始时间(默认为2019-12-12 12:12:12)
      */
     private long epochTimestamp = -1L;
 
     /**
-     * workerId
+     * 机器ID
      */
     private long workerId = 0L;
 
@@ -34,10 +34,10 @@ public class SequenceAutoConfiguration {
     /**
      * 级别
      */
-    private Level level = Level.MILLISECOND;
+    private Level level = Level.UNKNOWN;
 
     /**
      * 模式
      */
-    private Mode mode = Mode.SPECIFIED;
+    private Mode mode = Mode.UNKNOWN;
 }

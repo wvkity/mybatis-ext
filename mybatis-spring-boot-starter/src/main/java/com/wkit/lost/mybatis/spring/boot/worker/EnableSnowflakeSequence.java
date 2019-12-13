@@ -40,15 +40,15 @@ public @interface EnableSnowflakeSequence {
     boolean primary() default false;
 
     /**
-     * 启用级别(默认毫秒级)
+     * 启用级别
      * @return 级别
      */
-    Level level() default Level.MILLISECOND;
+    Level level() default Level.UNKNOWN;
 
     /**
-     * 模式(默认指定机器码、数据中心模式)
+     * 模式
      * @return 模式
      */
-    Mode mode() default Mode.SPECIFIED;
+    Mode mode() default Mode.UNKNOWN;
 
 }

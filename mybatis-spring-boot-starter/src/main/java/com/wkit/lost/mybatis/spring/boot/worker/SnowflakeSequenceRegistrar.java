@@ -44,19 +44,19 @@ class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, 
 
     @Override
     public void registerBeanDefinitions( AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry ) {
-        checkConfiguration();
-        AnnotationAttributes attributes = AnnotationAttributes.fromMap( 
+        AnnotationAttributes attributes = AnnotationAttributes.fromMap(
                 importingClassMetadata.getAnnotationAttributes( EnableSnowflakeSequence.class.getName() ) );
-        Level level = ( Level ) Optional.ofNullable( attributes ).map( attr -> 
+        Level level = ( Level ) Optional.ofNullable( attributes ).map( attr ->
                 attr.getEnum( "level" ) ).orElse( Level.MILLISECOND );
-        Mode mode = ( Mode ) Optional.ofNullable( attributes ).map( attr -> 
+        Mode mode = ( Mode ) Optional.ofNullable( attributes ).map( attr ->
                 attr.getEnum( "mode" ) ).orElse( Mode.SPECIFIED );
-        boolean primary = Optional.ofNullable( attributes ).map( attr -> 
+        boolean primary = Optional.ofNullable( attributes ).map( attr ->
                 attr.getBoolean( "primary" ) ).orElse( false );
-        registerBean( registry, level, mode, primary );
+        checkConfiguration( level, mode );
+        registerBean( registry, primary );
     }
 
-    private void checkConfiguration() {
+    private void checkConfiguration( Level level, Mode mode ) {
         if ( this.configuration == null ) {
             // 检查Bean容器中是否存在配置实例
             if ( beanFactory.getBeanNamesForType( SequenceAutoConfiguration.class, false, false ).length > 0 ) {
@@ -80,9 +80,15 @@ class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, 
                 }
             }
         }
+        if ( this.configuration.getLevel() == Level.UNKNOWN && level != Level.UNKNOWN ) {
+            this.configuration.setLevel( level );
+        }
+        if ( this.configuration.getMode() == Mode.UNKNOWN && mode != Mode.UNKNOWN ) {
+            this.configuration.setMode( mode );
+        }
     }
 
-    private void registerBean( BeanDefinitionRegistry registry, Level level, Mode mode, boolean primary ) {
+    private void registerBean( BeanDefinitionRegistry registry, boolean primary ) {
         BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.genericBeanDefinition( SnowflakeSequence.class );
         GenericBeanDefinition definition = ( GenericBeanDefinition ) definitionBuilder.getRawBeanDefinition();
         definition.setBeanClass( SnowflakeSequence.class );
@@ -94,14 +100,14 @@ class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, 
         // 采用构造方法注入
         ConstructorArgumentValues argumentValues = new ConstructorArgumentValues();
         // 启用秒级
-        if ( configuration.getLevel() == Level.SECOND || level == Level.SECOND ) {
+        if ( configuration.getLevel() == Level.SECOND ) {
             argumentValues.addIndexedArgumentValue( 0, TimeUnit.SECONDS );
         } else {
             argumentValues.addIndexedArgumentValue( 0, TimeUnit.MILLISECONDS );
         }
         argumentValues.addIndexedArgumentValue( 1, configuration.getEpochTimestamp() );
         // 启用mac地址动态获取
-        if ( configuration.getMode() == Mode.MAC || mode == Mode.MAC ) {
+        if ( configuration.getMode() == Mode.MAC ) {
             argumentValues.addIndexedArgumentValue( 2, SequenceUtil.getDefaultWorkerId( 5, 5 ) );
             argumentValues.addIndexedArgumentValue( 3, SequenceUtil.getDefaultDataCenterId( 5 ) );
         } else {
@@ -126,7 +132,7 @@ class SnowflakeSequenceRegistrar implements BeanFactoryAware, EnvironmentAware, 
     private SequenceAutoConfiguration getConfiguration() {
         try {
             Binder binder = Binder.get( environment );
-            return binder.bind( "sequence", SequenceAutoConfiguration.class ).get();
+            return binder.bind( "lost.sequence", SequenceAutoConfiguration.class ).get();
         } catch ( Exception e ) {
             // ignore
             return null;
