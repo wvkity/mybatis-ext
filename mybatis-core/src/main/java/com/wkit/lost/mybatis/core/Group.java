@@ -57,7 +57,7 @@ public class Group<T> implements Segment {
      * @param <T>        泛型类型
      * @return 分组对象
      */
-    public static <T> Group group( Criteria<T> criteria, String... properties ) {
+    public static <T> Group<T> group( Criteria<T> criteria, String... properties ) {
         return group( criteria, ArrayUtil.toList( properties ) );
     }
 
@@ -69,7 +69,7 @@ public class Group<T> implements Segment {
      * @return 分组对象
      */
     @SafeVarargs
-    public static <T> Group group( Criteria<T> criteria, Property<T, ?>... properties ) {
+    public static <T> Group<T> group( Criteria<T> criteria, Property<T, ?>... properties ) {
         return new Group<>( criteria, CriteriaUtil.transform( ArrayUtil.toList( properties ), criteria ) );
     }
 
@@ -80,7 +80,7 @@ public class Group<T> implements Segment {
      * @param <T>        泛型类型
      * @return 分组对象
      */
-    public static <T> Group group( Criteria<T> criteria, Collection<String> properties ) {
+    public static <T> Group<T> group( Criteria<T> criteria, Collection<String> properties ) {
         return new Group<>( criteria, CriteriaUtil.transform( criteria, properties ) );
     }
 
@@ -92,7 +92,7 @@ public class Group<T> implements Segment {
      * @param <T>        泛型类型
      * @return 分组对象
      */
-    public static <T, E> Group group( String alias, Criteria<T> master, String... properties ) {
+    public static <T, E> Group<E> group( String alias, Criteria<T> master, String... properties ) {
         return group( alias, master, ArrayUtil.toList( properties ) );
     }
 
@@ -105,7 +105,7 @@ public class Group<T> implements Segment {
      * @return 分组对象
      */
     @SafeVarargs
-    public static <T, E> Group group( String alias, Criteria<T> master, Property<E, ?>... properties ) {
+    public static <T, E> Group<E> group( String alias, Criteria<T> master, Property<E, ?>... properties ) {
         Criteria<E> criteria = master.searchForeign( alias );
         return new Group<>( criteria, CriteriaUtil.transform( ArrayUtil.toList( properties ), criteria ) );
     }
@@ -118,7 +118,7 @@ public class Group<T> implements Segment {
      * @param <T>        泛型类型
      * @return 分组对象
      */
-    public static <T, E> Group group( String alias, Criteria<T> master, Collection<String> properties ) {
+    public static <T, E> Group<E> group( String alias, Criteria<T> master, Collection<String> properties ) {
         Criteria<E> criteria = master.searchForeign( alias );
         return new Group<>( criteria, CriteriaUtil.transform( criteria, properties ) );
     }
