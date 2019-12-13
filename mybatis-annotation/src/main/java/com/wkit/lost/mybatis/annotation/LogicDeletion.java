@@ -8,14 +8,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 逻辑删除注解
+ * 逻辑删除
  * @author wvkity
  */
 @Target( ElementType.FIELD )
 @Retention( RetentionPolicy.RUNTIME )
 @Documented
 @Inherited
-public @interface LogicalDeletion {
+public @interface LogicDeletion {
 
     /**
      * 是

@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.annotation.ColumnExt;
 import com.wkit.lost.mybatis.annotation.Entity;
 import com.wkit.lost.mybatis.annotation.GeneratedValue;
 import com.wkit.lost.mybatis.annotation.Identity;
-import com.wkit.lost.mybatis.annotation.LogicalDeletion;
+import com.wkit.lost.mybatis.annotation.LogicDeletion;
 import com.wkit.lost.mybatis.annotation.MetaFilling;
 import com.wkit.lost.mybatis.annotation.OrderBy;
 import com.wkit.lost.mybatis.annotation.SequenceGenerator;
@@ -131,7 +131,7 @@ public class DefaultEntityResolver implements EntityResolver {
             fields = ColumnHandler.getAllAttributes( entity, fieldResolver );
         }
         boolean enableAutoJdbcMapping = this.configuration.isJdbcTypeAutoMapping();
-        fields.stream().filter( this::attributeFilter )
+        fields.stream().filter( this::filter )
                 .forEach( attribute -> processAttribute( table, attribute, enableAutoJdbcMapping ) );
         // 初始化定义信息
         table.initDefinition();
@@ -190,7 +190,8 @@ public class DefaultEntityResolver implements EntityResolver {
         String refer = this.strategy.name().toUpperCase( Locale.ENGLISH );
         int mode = refer.contains( "LOWERCASE" ) ? 0 : refer.contains( "UPPERCASE" ) ? 1 : 2;
         // 表名前缀
-        prefix = Optional.ofNullable( prefix ).map( value -> mode == 0 ? value.toLowerCase( Locale.ENGLISH ) : mode == 1 ? value.toUpperCase( Locale.ENGLISH ) : value ).orElse( "" );
+        prefix = Optional.ofNullable( prefix ).map( value -> mode == 0 ? value.toLowerCase( Locale.ENGLISH ) :
+                mode == 1 ? value.toUpperCase( Locale.ENGLISH ) : value ).orElse( "" );
         Table table = new Table( ( prefix + tableName ), catalog, schema );
         table.setEntity( entity ).setPrefix( prefix );
         return table;
@@ -237,7 +238,7 @@ public class DefaultEntityResolver implements EntityResolver {
             }
         }
         // 处理@LogicDelete注解
-        processLogicDeleteAnnotation( table, column, field );
+        processLogicDeleteAnnotation( table, column, field, configuration.getLogicDeletedProperty() );
         // 处理排序
         processOrderByAnnotation( table, column, field );
         // 处理主键策略
@@ -354,23 +355,35 @@ public class DefaultEntityResolver implements EntityResolver {
 
     /**
      * 解析逻辑删除注解
-     * @param table  实体类
-     * @param column 字段映射对象
-     * @param field  属性对象
+     * <p>{@link LogicDeletion}注解优先级高于全局配置</p>
+     * @param table               实体类
+     * @param column              字段映射对象
+     * @param field               属性对象
+     * @param logicDeleteProperty 全局逻辑删除属性
      */
-    private void processLogicDeleteAnnotation( Table table, Column column, Field field ) {
-        if ( field.isAnnotationPresent( LogicalDeletion.class ) ) {
+    private void processLogicDeleteAnnotation( Table table, Column column, Field field, String logicDeleteProperty ) {
+        if ( field.isAnnotationPresent( LogicDeletion.class )
+                || column.getProperty().equals( logicDeleteProperty ) ) {
             if ( table.isEnableLogicDelete() ) {
                 throw new MapperResolverException( "There are already `" + table.getLogicalDeletionColumn()
                         .getProperty() + "` attributes in `" + table.getEntity().getName()
                         + "` entity class identified as logical deleted. Only one deleted attribute " +
                         "can exist in an entity class. Please check the entity class attributes." );
             }
-            LogicalDeletion logicalDeletion = field.getAnnotation( LogicalDeletion.class );
-            String deletedValue = StringUtil.isBlank( logicalDeletion.value() ) ?
-                    configuration.getLogicDeleted() : logicalDeletion.value();
-            String notDeletedValue = StringUtil.isBlank( logicalDeletion.not() ) ?
-                    configuration.getLogicNotDeleted() : logicalDeletion.not();
+            // @LogicDeletion优先级大于全局配置
+            LogicDeletion logicDeletion = field.getAnnotation( LogicDeletion.class );
+            String deletedValue, notDeletedValue;
+            if (logicDeletion != null ) {
+                deletedValue = Optional.of( logicDeletion.value() )
+                        .filter( StringUtil::hasText )
+                        .orElseGet( configuration::getLogicDeleted );
+                notDeletedValue = Optional.of( logicDeletion.not() )
+                        .filter( StringUtil::hasText )
+                        .orElseGet( configuration::getLogicNotDeleted );
+            } else {
+                deletedValue = configuration.getLogicDeleted();
+                notDeletedValue = configuration.getLogicNotDeleted();
+            }
             column.setLogicDelete( true ).setLogicDeleteValue( deletedValue ).setLogicNotDeleteValue( notDeletedValue );
             table.setEnableLogicDelete( true );
             table.setLogicalDeletionColumn( column );
@@ -600,7 +613,7 @@ public class DefaultEntityResolver implements EntityResolver {
      * @param field 属性信息
      * @return boolean
      */
-    private boolean attributeFilter( final Field field ) {
+    private boolean filter( final Field field ) {
         return !( !configuration.isUseSimpleType()
                 && field.isAnnotationPresent( com.wkit.lost.mybatis.annotation.Column.class, JavaxPersistence.COLUMN )
                 && field.isAnnotationPresent( ColumnExt.class )

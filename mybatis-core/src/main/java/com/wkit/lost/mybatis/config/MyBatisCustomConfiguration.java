@@ -181,6 +181,11 @@ public class MyBatisCustomConfiguration implements Serializable {
     private boolean useOptimisticLockerPlugin = false;
 
     /**
+     * 逻辑删除字段
+     */
+    private String logicDeletedProperty;
+
+    /**
      * 标识已删除
      */
     private String logicDeleted = "1";
