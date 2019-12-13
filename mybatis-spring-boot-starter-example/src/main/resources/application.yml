@@ -52,3 +52,8 @@ lost:
       #dialect: mysql
       jdbc-type-auto-mapping: true
       dialect: mysql
+  sequence:
+    data-center-id: 2
+    worker-id: 1
+    level: unknown
+    mode: unknown

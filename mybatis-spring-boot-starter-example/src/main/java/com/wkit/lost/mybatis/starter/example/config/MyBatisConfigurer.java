@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @MapperScan( basePackages = { "com.wkit.lost.mybatis.starter.example.mapper" } )
 public class MyBatisConfigurer {
 
-    @Bean
+    //@Bean
     public SequenceAutoConfiguration sequenceConfiguration() {
         SequenceAutoConfiguration configuration = new SequenceAutoConfiguration();
         configuration.setWorkerId( 1L ).setDataCenterId( 3L );
@@ -22,7 +22,7 @@ public class MyBatisConfigurer {
         return new OptimisticLockerInterceptor();
     }
 
-    @Bean
+    @Bean( "metaObjectFillAuxiliary" )
     public MetaObjectFillAuxiliary dependency() {
         return new FillingDependency();
     }
