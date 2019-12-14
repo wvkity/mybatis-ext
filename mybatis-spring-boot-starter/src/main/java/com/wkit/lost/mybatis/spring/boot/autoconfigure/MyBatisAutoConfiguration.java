@@ -3,9 +3,11 @@ package com.wkit.lost.mybatis.spring.boot.autoconfigure;
 
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
+import com.wkit.lost.mybatis.config.Plugin;
 import com.wkit.lost.mybatis.filling.MetaObjectFillingHandler;
 import com.wkit.lost.mybatis.keygen.GuidGenerator;
 import com.wkit.lost.mybatis.keygen.KeyGenerator;
+import com.wkit.lost.mybatis.plugins.config.PluginConvert;
 import com.wkit.lost.mybatis.resolver.EntityResolver;
 import com.wkit.lost.mybatis.resolver.FieldResolver;
 import com.wkit.lost.mybatis.scripting.xmltags.MyBatisXMLLanguageDriver;
@@ -13,6 +15,7 @@ import com.wkit.lost.mybatis.session.MyBatisConfiguration;
 import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
 import com.wkit.lost.mybatis.spring.SqlSessionFactoryBean;
 import com.wkit.lost.mybatis.sql.injector.SqlInjector;
+import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.annotations.Mapper;
@@ -28,7 +31,9 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -42,6 +47,7 @@ import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
@@ -54,7 +60,10 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 @Log4j2
@@ -73,6 +82,8 @@ public class MyBatisAutoConfiguration implements InitializingBean {
     private final List<ConfigurationCustomizer> configurationCustomizers;
     private final List<PropertiesCustomizer> propertiesCustomizers;
     private final ApplicationContext applicationContext;
+    private final DefaultListableBeanFactory beanFactory;
+    private final AutowireCapableBeanFactory autowireBeanFactory;
 
     public MyBatisAutoConfiguration( MyBatisProperties properties,
                                      ObjectProvider<Interceptor[]> interceptorsProvider,
@@ -81,6 +92,7 @@ public class MyBatisAutoConfiguration implements InitializingBean {
                                      ObjectProvider<List<ConfigurationCustomizer>> configurationCustomizersProvider,
                                      ObjectProvider<List<PropertiesCustomizer>> propertiesCustomizersProvider,
                                      ApplicationContext applicationContext ) {
+        AutowireCapableBeanFactory autowireCapableBeanFactory = null;
         this.properties = properties;
         this.interceptors = interceptorsProvider.getIfAvailable();
         this.resourceLoader = resourceLoader;
@@ -88,6 +100,18 @@ public class MyBatisAutoConfiguration implements InitializingBean {
         this.configurationCustomizers = configurationCustomizersProvider.getIfAvailable();
         this.propertiesCustomizers = propertiesCustomizersProvider.getIfAvailable();
         this.applicationContext = applicationContext;
+        if ( applicationContext instanceof GenericApplicationContext ) {
+            GenericApplicationContext context = ( ( GenericApplicationContext ) applicationContext );
+            this.beanFactory = context.getDefaultListableBeanFactory();
+            try {
+                autowireCapableBeanFactory = context.getAutowireCapableBeanFactory();
+            } catch ( Exception e ) {
+                // ignore
+            }
+        } else {
+            this.beanFactory = null;
+        }
+        this.autowireBeanFactory = autowireCapableBeanFactory;
     }
 
     @Override
@@ -108,6 +132,19 @@ public class MyBatisAutoConfiguration implements InitializingBean {
     @Bean
     @ConditionalOnMissingBean
     public SqlSessionFactory sqlSessionFactory( DataSource dataSource ) throws Exception {
+        // 全局配置
+        MyBatisCustomConfiguration customConfig;
+        if ( !ObjectUtils.isEmpty( this.properties.getCustomConfiguration() ) ) {
+            customConfig = this.properties.getCustomConfiguration();
+        } else {
+            // 优先从容器中获取
+            if ( hasBeanFromContext( MyBatisCustomConfiguration.class ) ) {
+                customConfig = getBean( MyBatisCustomConfiguration.class );
+            } else {
+                // 直接创建
+                customConfig = MyBatisConfigCache.defaults();
+            }
+        }
         SqlSessionFactoryBean factory = new SqlSessionFactoryBean();
         factory.setDataSource( dataSource );
         factory.setVfs( SpringBootVFS.class );
@@ -118,8 +155,11 @@ public class MyBatisAutoConfiguration implements InitializingBean {
         if ( this.properties.getConfigurationProperties() != null ) {
             factory.setConfigurationProperties( this.properties.getConfigurationProperties() );
         }
-        if ( !ObjectUtils.isEmpty( this.interceptors ) ) {
-            factory.setPlugins( this.interceptors );
+        // 注册内置的插件
+        List<Interceptor> interceptorList = new ArrayList<>( ArrayUtil.toList( this.interceptors ) );
+        registerPlugin( customConfig, interceptorList );
+        if ( !CollectionUtils.isEmpty( interceptorList ) ) {
+            factory.setPlugins( interceptorList.toArray( new Interceptor[ 0 ] ) );
         }
         if ( this.databaseIdProvider != null ) {
             factory.setDatabaseIdProvider( this.databaseIdProvider );
@@ -138,19 +178,6 @@ public class MyBatisAutoConfiguration implements InitializingBean {
         }
         if ( !ObjectUtils.isEmpty( this.properties.resolveMapperLocations() ) ) {
             factory.setMapperLocations( this.properties.resolveMapperLocations() );
-        }
-        // 全局配置
-        MyBatisCustomConfiguration customConfig;
-        if ( !ObjectUtils.isEmpty( this.properties.getCustomConfiguration() ) ) {
-            customConfig = this.properties.getCustomConfiguration();
-        } else {
-            // 优先从容器中获取
-            if ( hasBeanFromContext( MyBatisCustomConfiguration.class ) ) {
-                customConfig = getBean( MyBatisCustomConfiguration.class );
-            } else {
-                // 直接创建
-                customConfig = MyBatisConfigCache.defaults();
-            }
         }
         // SQL注入器
         ifPresent( SqlInjector.class, customConfig::setInjector );
@@ -172,6 +199,61 @@ public class MyBatisAutoConfiguration implements InitializingBean {
         return factory.getObject();
     }
 
+    /**
+     * 注册默认提供的插件
+     * @param customConfiguration mybatis自定义配置
+     * @param interceptorList     插件(拦截器)集合
+     */
+    private void registerPlugin( MyBatisCustomConfiguration customConfiguration, List<Interceptor> interceptorList ) {
+        // 默认拦截器LimitPlugin > PageablePlugin，存在多个插件，由于内部使用代理(代理类又被代理)，越是在外面优先级越高，故LimitPlugin需要注册在后面
+        List<Plugin> plugins = customConfiguration.getPlugins();
+        if ( !CollectionUtils.isEmpty( plugins ) ) {
+            for ( Plugin plugin : new LinkedHashSet<>( plugins ) ) {
+                Class<? extends Interceptor> interceptorClass = PluginConvert.getInterceptorClass( plugin );
+                if ( interceptorClass != null && pluginRegistrable( interceptorClass ) ) {
+                    Optional.ofNullable( PluginConvert.newInstance( interceptorClass ) )
+                            .ifPresent( interceptor -> {
+                                interceptorList.add( interceptor );
+                                registerInterceptorBean( interceptor );
+                            } );
+                }
+            }
+        }
+    }
+
+    /**
+     * 检查插件是否可注册
+     * @param clazz 具体插件类
+     * @param <T>   类型
+     * @return true: 是 false: 否
+     */
+    private <T extends Interceptor> boolean pluginRegistrable( Class<T> clazz ) {
+        if ( !ArrayUtil.isEmpty( this.interceptors ) ) {
+            for ( Interceptor plugin : this.interceptors ) {
+                if ( clazz.isAssignableFrom( plugin.getClass() ) ) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 将{@link MyBatisCustomConfiguration#plugins}配置的插件注入到Spring容器中
+     * @param interceptor 插件(拦截器)
+     */
+    public void registerInterceptorBean( Interceptor interceptor ) {
+        if ( this.beanFactory != null && interceptor != null ) {
+            // 注入到Spring容器中
+            String beanName = interceptor.getClass().getSimpleName();
+            this.beanFactory.registerSingleton( ( Character.toLowerCase( beanName.charAt( 0 ) ) + beanName.substring( 1 ) ), interceptor );
+            // 注入依赖
+            if ( this.autowireBeanFactory != null ) {
+                this.autowireBeanFactory.autowireBean( interceptor );
+            }
+        }
+    }
+
     private void applyConfiguration( SqlSessionFactoryBean factory ) {
         MyBatisConfiguration configuration = this.properties.getConfiguration();
         if ( configuration == null && !StringUtils.hasText( this.properties.getConfigLocation() ) ) {
@@ -189,9 +271,9 @@ public class MyBatisAutoConfiguration implements InitializingBean {
         }
         factory.setConfiguration( configuration );
     }
-    
-    private <T> void ifPresent(Class<T> clazz, Consumer<T> consumer ) {
-        if (hasBeanFromContext( clazz )) {
+
+    private <T> void ifPresent( Class<T> clazz, Consumer<T> consumer ) {
+        if ( hasBeanFromContext( clazz ) ) {
             consumer.accept( getBean( clazz ) );
         }
     }

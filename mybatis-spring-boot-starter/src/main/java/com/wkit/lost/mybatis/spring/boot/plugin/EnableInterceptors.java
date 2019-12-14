@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.spring.boot.plugin;
 
+import com.wkit.lost.mybatis.config.Plugin;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 
@@ -37,26 +38,16 @@ public @interface EnableInterceptors {
     boolean primary() default false;
 
     /**
-     * 是否启用自动填充值插件
-     * @return true: 是 false: 否
+     * 待注册插件列表
+     * @return 插件列表
      */
-    boolean filling() default true;
+    Plugin[] include() default { Plugin.META_OBJECT_FILLING, Plugin.OPTIMISTIC_LOCKER,
+            Plugin.PAGEABLE, Plugin.LIMIT };
 
     /**
-     * 是否启用分页插件
-     * @return true: 是 false: 否
+     * 过滤无需注册的插件
+     * @return 插件列表
      */
-    boolean pageable() default true;
-
-    /**
-     * 是否启用Limit分页插件
-     * @return true: 是 false: 否
-     */
-    boolean limit() default true;
-
-    /**
-     * 是否启用乐观锁插件
-     * @return true: 是 false: 否
-     */
-    boolean locker() default true;
+    Plugin[] exclude() default {};
+    
 }

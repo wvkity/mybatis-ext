@@ -18,6 +18,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * MyBatis自定义配置
@@ -161,24 +162,12 @@ public class MyBatisCustomConfiguration implements Serializable {
     private boolean enableMethodAnnotation = false;
 
     /**
-     * 是否使用默认的自动填充值插件
+     * 启用内置插件
+     * <p>建议注册顺序：{@link Plugin#META_OBJECT_FILLING} > {@link Plugin#OPTIMISTIC_LOCKER} >
+     * {@link Plugin#PAGEABLE} > {@link Plugin#LIMIT}</p>
+     * @see Plugin
      */
-    private boolean useMetaObjectFillPlugin = false;
-
-    /**
-     * 是否使用默认分页插件
-     */
-    private boolean usePageablePlugin = false;
-
-    /**
-     * 是否使用默认的limit查询插件
-     */
-    private boolean useLimitPlugin = false;
-
-    /**
-     * 是否使用默认的乐观锁插件
-     */
-    private boolean useOptimisticLockerPlugin = false;
+    private List<Plugin> plugins;
 
     /**
      * 逻辑删除字段
