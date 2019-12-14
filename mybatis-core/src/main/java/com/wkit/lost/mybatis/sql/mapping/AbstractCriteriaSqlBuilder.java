@@ -4,7 +4,7 @@ package com.wkit.lost.mybatis.sql.mapping;
  * Criteria抽象SQL构建器
  * @author wvkity
  */
-public abstract class AbstractCriteriaSqlBuilder extends AbstractLogicalDeletionSqlBuilder {
+public abstract class AbstractCriteriaSqlBuilder extends AbstractLogicDeletionSqlBuilder {
 
     /**
      * 获取查询列
