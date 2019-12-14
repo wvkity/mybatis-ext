@@ -155,7 +155,7 @@ public class OriginalSqlForCountParser {
 
     /**
      * 处理{@link PlainSelect}类型的{@link SelectBody}对象
-     * @param plainSelect @link PlainSelect}
+     * @param plainSelect {@link PlainSelect}
      */
     public void processPlainSelectForRemoveOrderBy( PlainSelect plainSelect ) {
         if ( notHasOrderByParameters( plainSelect.getOrderByElements() ) ) {
