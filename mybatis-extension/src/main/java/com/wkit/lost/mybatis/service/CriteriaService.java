@@ -11,7 +11,7 @@ import java.util.Map;
  * @param <T> 泛型类
  * @param <R> 返回值类
  */
-public interface CriteriaService<T, R> {
+interface CriteriaService<T, R> {
 
     /**
      * 根据Criteria对象查询记录是否存在

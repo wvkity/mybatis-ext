@@ -8,5 +8,5 @@ import com.wkit.lost.mybatis.annotation.EnableMapper;
  * @param <R>  返回值类
  */
 @EnableMapper
-public interface ReaderMapper<T, R> extends QueryMapper<T, R>, CriteriaMapper<T, R> {
+interface ReaderMapper<T, R> extends QueryMapper<T, R>, CriteriaMapper<T, R> {
 }

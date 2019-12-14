@@ -4,7 +4,7 @@ package com.wkit.lost.mybatis.service;
  * 保存操作接口
  * @param <T> 泛型类型
  */
-public interface InsertService<T> {
+interface InsertService<T> {
 
     /**
      * 保存记录

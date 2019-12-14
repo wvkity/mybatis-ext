@@ -7,7 +7,7 @@ import java.util.Collection;
  * 删除操作接口
  * @param <T> 泛型类
  */
-public interface DeleteService<T> {
+interface DeleteService<T> {
 
     /**
      * 根据指定对象删除记录

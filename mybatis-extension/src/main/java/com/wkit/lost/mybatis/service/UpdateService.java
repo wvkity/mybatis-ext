@@ -5,7 +5,7 @@ package com.wkit.lost.mybatis.service;
  * @param <T> 泛型类型
  * @author wvkity
  */
-public interface UpdateService<T> {
+interface UpdateService<T> {
 
     /**
      * 根据指定对象更新记录

@@ -16,7 +16,7 @@ import java.util.Optional;
  * @param <R> 返回值类
  */
 @EnableMapper
-public interface QueryMapper<T, R> {
+interface QueryMapper<T, R> {
 
     /**
      * 根据指定对象查询记录是否存在

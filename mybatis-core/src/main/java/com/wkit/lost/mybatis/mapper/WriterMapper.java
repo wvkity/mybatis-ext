@@ -7,6 +7,6 @@ import com.wkit.lost.mybatis.annotation.EnableMapper;
  * @param <T> 泛型类
  */
 @EnableMapper
-public interface WriterMapper<T> extends InsertMapper<T>,
+interface WriterMapper<T> extends InsertMapper<T>,
         UpdateMapper<T>, DeleteMapper<T> {
 }

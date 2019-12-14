@@ -13,7 +13,7 @@ import java.util.List;
  * @param <T> 泛型类
  */
 @EnableMapper
-public interface DeleteMapper<T> {
+interface DeleteMapper<T> {
 
     /**
      * 根据指定对象删除记录

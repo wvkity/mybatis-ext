@@ -13,7 +13,7 @@ import java.util.Map;
  * @param <T> 泛型类
  * @param <R> 返回值类型
  */
-public interface CriteriaMapper<T, R> {
+interface CriteriaMapper<T, R> {
 
     /**
      * 根据指定条件对象更新记录

@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Param;
  * @param <T> 泛型类
  */
 @EnableMapper
-public interface InsertMapper<T> {
+interface InsertMapper<T> {
 
     /**
      * 保存记录

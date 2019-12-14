@@ -5,5 +5,5 @@ package com.wkit.lost.mybatis.service;
  * @param <T> 泛型类
  * @param <R> 返回值类型
  */
-public interface ReaderService<T, R> extends QueryService<T, R>, CriteriaService<T, R> {
+interface ReaderService<T, R> extends QueryService<T, R>, CriteriaService<T, R> {
 }

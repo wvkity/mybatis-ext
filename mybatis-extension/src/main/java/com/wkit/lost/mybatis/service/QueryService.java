@@ -11,7 +11,7 @@ import java.util.Optional;
  * 查询操作接口
  * @param <T>  泛型类
  */
-public interface QueryService<T, R> {
+interface QueryService<T, R> {
 
     /**
      * 根据指定对象查询记录是否存在

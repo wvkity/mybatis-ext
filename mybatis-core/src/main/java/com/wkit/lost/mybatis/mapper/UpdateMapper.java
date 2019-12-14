@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Param;
  * @param <T> 泛型类
  */
 @EnableMapper
-public interface UpdateMapper<T> {
+interface UpdateMapper<T> {
 
     /**
      * 根据指定对象更新记录(主键为条件，更新所有字段[updatable=true])
