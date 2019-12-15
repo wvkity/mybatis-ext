@@ -176,4 +176,23 @@ public class Template<T> extends AbstractExpression<T> {
         }
         return this;
     }
+
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) return true;
+        if ( !( o instanceof Template ) ) return false;
+        if ( !super.equals( o ) ) return false;
+        Template<?> template1 = ( Template<?> ) o;
+        return Objects.equals( template, template1.template );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash( super.hashCode(), template );
+    }
+
+    @Override
+    protected String toJsonString() {
+        return toJsonString( "template", template );
+    }
 }

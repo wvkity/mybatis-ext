@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.Objects;
+
 /**
  * 纯SQL条件
  * @param <T> 泛型类型
@@ -35,5 +37,24 @@ public class Native<T> extends AbstractExpression<T> {
     @Override
     public String getSqlSegment() {
         return StringUtil.isBlank( this.sql ) ? "" : this.sql;
+    }
+
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) return true;
+        if ( !( o instanceof Native ) ) return false;
+        if ( !super.equals( o ) ) return false;
+        Native<?> aNative = ( Native<?> ) o;
+        return Objects.equals( sql, aNative.sql );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash( super.hashCode(), sql );
+    }
+
+    @Override
+    protected String toJsonString() {
+        return toJsonString( "sql", sql );
     }
 }

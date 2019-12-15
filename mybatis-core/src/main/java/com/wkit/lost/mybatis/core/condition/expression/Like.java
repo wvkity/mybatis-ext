@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core.condition.expression;
 
 import com.wkit.lost.mybatis.core.meta.Column;
-import com.wkit.lost.mybatis.utils.ColumnUtil;
+import com.wkit.lost.mybatis.utils.ColumnConvertor;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.Logic;
@@ -9,6 +9,8 @@ import com.wkit.lost.mybatis.core.MatchMode;
 import com.wkit.lost.mybatis.core.Operator;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Objects;
 
 /**
  * LIKE条件
@@ -221,17 +223,37 @@ public class Like<T> extends AbstractExpression<T> {
 
     @Override
     public String getSqlSegment() {
-        StringBuilder buffer = new StringBuilder( 60 );
+        StringBuilder builder = new StringBuilder( 60 );
         String placeholder = StringUtil.nvl( defaultPlaceholder( matchMode.getSqlSegment( value.toString() ) ), "" );
         Column column = getColumn();
         if ( column == null ) {
-            buffer.append( ColumnUtil.convertToCustomArg( this.property, placeholder, getAlias(), operator, logic.getSqlSegment() ) );
+            builder.append( ColumnConvertor.convertToCustomArg( this.property, placeholder, getAlias(), operator, logic.getSqlSegment() ) );
         } else {
-            buffer.append( ColumnUtil.convertToCustomArg( getColumn(), placeholder, getAlias(), operator, logic.getSqlSegment() ) );
+            builder.append( ColumnConvertor.convertToCustomArg( getColumn(), placeholder, getAlias(), operator, logic.getSqlSegment() ) );
         }
         if ( escape != null ) {
-            buffer.append( " ESCAPE " ).append( "\'" ).append( escape ).append( "\'" );
+            builder.append( " ESCAPE " ).append( "'" ).append( escape ).append( "'" );
         }
-        return buffer.toString();
+        return builder.toString();
+    }
+
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) return true;
+        if ( !( o instanceof Like ) ) return false;
+        if ( !super.equals( o ) ) return false;
+        Like<?> like = ( Like<?> ) o;
+        return matchMode == like.matchMode &&
+                Objects.equals( escape, like.escape );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash( super.hashCode(), matchMode, escape );
+    }
+
+    @Override
+    protected String toJsonString() {
+        return toJsonString( "matchMode", matchMode ) + toJsonString( "escape", escape );
     }
 }

@@ -7,20 +7,20 @@ public class AbstractNull<T> extends AbstractExpression<T> {
 
     @Override
     public String getSqlSegment() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder builder = new StringBuilder();
         Column column = getColumn();
         String alias = criteria.getAlias();
         boolean isEnable = criteria.isEnableAlias();
-        buffer.append( logic.getSqlSegment() ).append( " " );
+        builder.append( logic.getSqlSegment() ).append( " " );
         if ( isEnable ) {
-            buffer.append( alias ).append( "." );
+            builder.append( alias ).append( "." );
         }
         if ( column == null ) {
-            buffer.append( this.property );
+            builder.append( this.property );
         } else {
-            buffer.append( column.getColumn() );
+            builder.append( column.getColumn() );
         }
-        buffer.append( " " ).append( operator.getSqlSegment() );
-        return buffer.toString();
+        builder.append( " " ).append( operator.getSqlSegment() );
+        return builder.toString();
     }
 }

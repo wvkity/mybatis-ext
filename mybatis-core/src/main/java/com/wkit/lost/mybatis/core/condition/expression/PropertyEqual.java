@@ -9,6 +9,7 @@ import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -122,5 +123,26 @@ public class PropertyEqual<T> extends AbstractExpression<T> {
             return buffer.toString();
         }
         return "";
+    }
+
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) return true;
+        if ( !( o instanceof PropertyEqual ) ) return false;
+        if ( !super.equals( o ) ) return false;
+        PropertyEqual<?> that = ( PropertyEqual<?> ) o;
+        return Objects.equals( other, that.other ) &&
+                Objects.equals( otherProperty, that.otherProperty );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash( super.hashCode(), other, otherProperty );
+    }
+
+    @Override
+    protected String toJsonString() {
+        return toJsonString( "other", other ) +
+                toJsonString( "otherProperty", otherProperty );
     }
 }

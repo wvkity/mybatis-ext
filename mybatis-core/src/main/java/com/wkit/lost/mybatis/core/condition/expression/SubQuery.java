@@ -7,6 +7,7 @@ import com.wkit.lost.mybatis.core.SubCriteria;
 import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.utils.StringUtil;
+import lombok.Getter;
 
 /**
  * 子查询条件
@@ -20,6 +21,7 @@ public class SubQuery<T> extends AbstractExpression<T> {
     /**
      * 子查询对象
      */
+    @Getter
     protected SubCriteria<?> subCriteria;
 
     /**
@@ -176,5 +178,10 @@ public class SubQuery<T> extends AbstractExpression<T> {
             return buffer.toString();
         }
         return "";
+    }
+
+    @Override
+    protected String toJsonString() {
+        return toJsonString( "subCriteria", getSubCriteria() );
     }
 }
