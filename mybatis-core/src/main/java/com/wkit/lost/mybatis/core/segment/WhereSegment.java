@@ -5,8 +5,8 @@ import com.wkit.lost.mybatis.utils.Ascii;
 import com.wkit.lost.mybatis.utils.StringUtil;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * WHERE条件SQL片段类
@@ -17,10 +17,15 @@ public class WhereSegment extends AbstractSegment {
     private static final long serialVersionUID = -1005264914827625587L;
 
     @Override
+    public List<Segment> getSegments() {
+        return new ArrayList<>( new LinkedHashSet<>( super.getSegments() ) );
+    }
+
+    @Override
     public String getSqlSegment() {
         if ( isNotEmpty() ) {
             List<String> list = new ArrayList<>( segments.size() );
-            for ( Segment segment : segments ) {
+            for ( Segment segment : getSegments() ) {
                 String condition = segment.getSqlSegment();
                 if ( StringUtil.hasText( condition ) ) {
                     list.add( condition );
