@@ -52,6 +52,11 @@ lost:
       #dialect: mysql
       jdbc-type-auto-mapping: true
       dialect: mysql
+      #plugins: 
+        #- meta_object_filling
+        #- optimistic_locker
+        #- pageable
+        #- limit
   sequence:
     data-center-id: 2
     worker-id: 1

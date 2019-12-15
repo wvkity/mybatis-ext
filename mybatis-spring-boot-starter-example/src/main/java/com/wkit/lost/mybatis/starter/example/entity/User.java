@@ -38,5 +38,5 @@ public class User implements Serializable {
     @Version
     private Integer integerVersion;
     private Date timeVersion;
-
+    
 }
