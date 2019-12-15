@@ -125,7 +125,8 @@ public class MyBatisAutoConfiguration implements InitializingBean {
     private void checkConfigFileExists() {
         if ( this.properties.isCheckConfigLocation() && StringUtils.hasText( this.properties.getConfigLocation() ) ) {
             Resource resource = this.resourceLoader.getResource( this.properties.getConfigLocation() );
-            Assert.state( resource.exists(), "Cannot find config location: " + resource + " (please add config file or check your MyBatis configuration)" );
+            Assert.state( resource.exists(), "Cannot find config location: " + resource 
+                    + " (please add config file or check your MyBatis configuration)" );
         }
     }
 
@@ -157,7 +158,7 @@ public class MyBatisAutoConfiguration implements InitializingBean {
         }
         // 注册内置的插件
         List<Interceptor> interceptorList = new ArrayList<>( ArrayUtil.toList( this.interceptors ) );
-        registerPlugin( customConfig, interceptorList );
+        registerPlugins( customConfig, interceptorList );
         if ( !CollectionUtils.isEmpty( interceptorList ) ) {
             factory.setPlugins( interceptorList.toArray( new Interceptor[ 0 ] ) );
         }
@@ -204,7 +205,7 @@ public class MyBatisAutoConfiguration implements InitializingBean {
      * @param customConfiguration mybatis自定义配置
      * @param interceptorList     插件(拦截器)集合
      */
-    private void registerPlugin( MyBatisCustomConfiguration customConfiguration, List<Interceptor> interceptorList ) {
+    private void registerPlugins( MyBatisCustomConfiguration customConfiguration, List<Interceptor> interceptorList ) {
         // 默认拦截器LimitPlugin > PageablePlugin，存在多个插件，由于内部使用代理(代理类又被代理)，越是在外面优先级越高，故LimitPlugin需要注册在后面
         List<Plugin> plugins = customConfiguration.getPlugins();
         if ( !CollectionUtils.isEmpty( plugins ) ) {
@@ -214,7 +215,7 @@ public class MyBatisAutoConfiguration implements InitializingBean {
                     Optional.ofNullable( PluginConvert.newInstance( interceptorClass ) )
                             .ifPresent( interceptor -> {
                                 interceptorList.add( interceptor );
-                                registerInterceptorBean( interceptor );
+                                registerExistingInterceptorBean( interceptor );
                             } );
                 }
             }
@@ -240,16 +241,21 @@ public class MyBatisAutoConfiguration implements InitializingBean {
 
     /**
      * 将{@link MyBatisCustomConfiguration#plugins}配置的插件注入到Spring容器中
-     * @param interceptor 插件(拦截器)
+     * @param existingInterceptor 插件(拦截器)
      */
-    public void registerInterceptorBean( Interceptor interceptor ) {
-        if ( this.beanFactory != null && interceptor != null ) {
-            // 注入到Spring容器中
-            String beanName = interceptor.getClass().getSimpleName();
-            this.beanFactory.registerSingleton( ( Character.toLowerCase( beanName.charAt( 0 ) ) + beanName.substring( 1 ) ), interceptor );
-            // 注入依赖
-            if ( this.autowireBeanFactory != null ) {
-                this.autowireBeanFactory.autowireBean( interceptor );
+    private void registerExistingInterceptorBean( Interceptor existingInterceptor ) {
+        if ( this.beanFactory != null && existingInterceptor != null ) {
+            try {
+                // 注入到Spring容器中
+                String beanName = existingInterceptor.getClass().getSimpleName();
+                this.beanFactory.registerSingleton( ( Character.toLowerCase( beanName.charAt( 0 ) ) + 
+                        beanName.substring( 1 ) ), existingInterceptor );
+                // 注入依赖
+                if ( this.autowireBeanFactory != null ) {
+                    this.autowireBeanFactory.autowireBean( existingInterceptor );
+                }
+            } catch ( Exception e ) {
+                // ignore
             }
         }
     }
@@ -317,7 +323,8 @@ public class MyBatisAutoConfiguration implements InitializingBean {
         private ResourceLoader resourceLoader;
 
         @Override
-        public void registerBeanDefinitions( @Nullable AnnotationMetadata importingClassMetadata, @NonNull BeanDefinitionRegistry registry ) {
+        public void registerBeanDefinitions( @Nullable AnnotationMetadata importingClassMetadata, 
+                                             @NonNull BeanDefinitionRegistry registry ) {
             log.debug( "Searching for mappers annotated with @Mapper" );
             ClassPathMapperScanner scanner = new ClassPathMapperScanner( registry );
             try {
