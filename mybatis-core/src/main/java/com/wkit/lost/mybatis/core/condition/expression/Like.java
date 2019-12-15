@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core.condition.expression;
 
 import com.wkit.lost.mybatis.core.meta.Column;
-import com.wkit.lost.mybatis.utils.ColumnConvertor;
+import com.wkit.lost.mybatis.utils.ColumnConvert;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.Logic;
@@ -227,9 +227,9 @@ public class Like<T> extends AbstractExpression<T> {
         String placeholder = StringUtil.nvl( defaultPlaceholder( matchMode.getSqlSegment( value.toString() ) ), "" );
         Column column = getColumn();
         if ( column == null ) {
-            builder.append( ColumnConvertor.convertToCustomArg( this.property, placeholder, getAlias(), operator, logic.getSqlSegment() ) );
+            builder.append( ColumnConvert.convertToCustomArg( this.property, placeholder, getAlias(), operator, logic.getSqlSegment() ) );
         } else {
-            builder.append( ColumnConvertor.convertToCustomArg( getColumn(), placeholder, getAlias(), operator, logic.getSqlSegment() ) );
+            builder.append( ColumnConvert.convertToCustomArg( getColumn(), placeholder, getAlias(), operator, logic.getSqlSegment() ) );
         }
         if ( escape != null ) {
             builder.append( " ESCAPE " ).append( "'" ).append( escape ).append( "'" );

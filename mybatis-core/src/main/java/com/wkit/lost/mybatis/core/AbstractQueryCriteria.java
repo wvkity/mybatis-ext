@@ -6,7 +6,7 @@ import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
-import com.wkit.lost.mybatis.utils.ColumnUtil;
+import com.wkit.lost.mybatis.utils.ColumnConvert;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 
@@ -288,9 +288,11 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
                 String property = column.getProperty();
                 String realColumnAlias = propertyForQueryAliasCache.get( property );
                 if ( realColumnAlias == null ) {
-                    queryColumns.add( ColumnUtil.convertToQueryArg( column, this.enableAlias ? getAlias() : null, applyQuery ? this.reference : null, applyQuery && this.autoMappingAlias ) );
+                    queryColumns.add( ColumnConvert.convertToQueryArg( column, this.enableAlias ? getAlias() : null, 
+                            applyQuery ? this.reference : null, applyQuery && this.autoMappingAlias ) );
                 } else {
-                    queryColumns.add( ColumnUtil.convertToQueryArg( column.getColumn(), realColumnAlias, this.enableAlias ? getAlias() : null ) );
+                    queryColumns.add( ColumnConvert.convertToQueryArg( column.getColumn(), realColumnAlias, 
+                            this.enableAlias ? getAlias() : null ) );
                 }
             }
         }
@@ -309,9 +311,12 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
                                 String property = column.getProperty();
                                 String realColumnAlias = queryAliasCache.get( property );
                                 if ( realColumnAlias == null ) {
-                                    queryColumns.add( ColumnUtil.convertToQueryArg( column, foreignCriteria.getAlias(), applyQuery ? foreignCriteria.getReference() : null, applyQuery && foreignCriteria.isAutoMappingAlias() ) );
+                                    queryColumns.add( ColumnConvert.convertToQueryArg( column, 
+                                            foreignCriteria.getAlias(), applyQuery ? foreignCriteria.getReference() : null, 
+                                            applyQuery && foreignCriteria.isAutoMappingAlias() ) );
                                 } else {
-                                    queryColumns.add( ColumnUtil.convertToQueryArg( column.getColumn(), realColumnAlias, foreignCriteria.getAlias() ) );
+                                    queryColumns.add( ColumnConvert.convertToQueryArg( column.getColumn(), 
+                                            realColumnAlias, foreignCriteria.getAlias() ) );
                                 }
                             }
                         }
@@ -334,7 +339,7 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
                     for ( Map.Entry<String, String> columnEntry : columns.entrySet() ) {
                         String column = columnEntry.getKey();
                         String alias = columnEntry.getValue();
-                        columnWrapper.add( ColumnUtil.convertToQueryArg( column, alias, tempTabAlias ) );
+                        columnWrapper.add( ColumnConvert.convertToQueryArg( column, alias, tempTabAlias ) );
                     }
                 }
             }

@@ -6,7 +6,7 @@ import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.sql.mapping.SqlBuilder;
 import com.wkit.lost.mybatis.sql.mapping.script.AbstractXmlScriptBuilder;
 import com.wkit.lost.mybatis.sql.mapping.script.DefaultXmlScriptBuilder;
-import com.wkit.lost.mybatis.utils.ColumnUtil;
+import com.wkit.lost.mybatis.utils.ColumnConvert;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import org.apache.ibatis.executor.keygen.Jdbc3KeyGenerator;
 import org.apache.ibatis.executor.keygen.KeyGenerator;
@@ -47,7 +47,7 @@ public abstract class AbstractInsertMethod extends AbstractMethod {
                 StatementType statementType = StatementType.PREPARED;
                 String keyProperty = primaryKey.getProperty();
                 String keyColumn = primaryKey.getColumn();
-                SqlSource sqlSource = languageDriver.createSqlSource( this.configuration, ColumnUtil.getSequenceScript( this.configuration, primaryKey ), null );
+                SqlSource sqlSource = languageDriver.createSqlSource( this.configuration, ColumnConvert.getSequenceScript( this.configuration, primaryKey ), null );
                 this.assistant.addMappedStatement( id, sqlSource, statementType, SqlCommandType.SELECT, null, null, null,
                         null, null, primaryKey.getJavaType(), null, false, false, false,
                         new NoKeyGenerator(), keyProperty, keyColumn, null, this.languageDriver, null );

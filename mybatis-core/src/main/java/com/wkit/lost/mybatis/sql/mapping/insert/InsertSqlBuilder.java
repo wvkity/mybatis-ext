@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.sql.mapping.insert;
 import com.wkit.lost.mybatis.core.Execute;
 import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.sql.mapping.AbstractSqlBuilder;
-import com.wkit.lost.mybatis.utils.ColumnUtil;
+import com.wkit.lost.mybatis.utils.ColumnConvert;
 import com.wkit.lost.mybatis.utils.Constants;
 
 import java.util.Set;
@@ -24,7 +24,7 @@ public class InsertSqlBuilder extends AbstractSqlBuilder {
                 columns.stream().map( Column::getColumn ).collect( Collectors.joining( ", " ) ) + ")";
         // 值部分
         String valueSegment = "(" +
-                columns.stream().map( column -> ColumnUtil.convertToArg( column, Execute.INSERT, Constants.PARAM_ENTITY ) ).collect( Collectors.joining( ", " ) ) + ")";
+                columns.stream().map( column -> ColumnConvert.convertToArg( column, Execute.INSERT, Constants.PARAM_ENTITY ) ).collect( Collectors.joining( ", " ) ) + ")";
         return insert( columnSegment, valueSegment );
     }
 }

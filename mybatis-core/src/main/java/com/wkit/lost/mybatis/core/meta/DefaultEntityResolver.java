@@ -355,7 +355,7 @@ public class DefaultEntityResolver implements EntityResolver {
 
     /**
      * 解析逻辑删除注解
-     * <p>{@link LogicDeletion}注解优先级高于全局配置</p>
+     * <p>{@link LogicDeletion @LogicDeletion}优先级高于全局配置</p>
      * @param table               实体类
      * @param column              字段映射对象
      * @param field               属性对象
@@ -385,8 +385,7 @@ public class DefaultEntityResolver implements EntityResolver {
                 notDeletedValue = configuration.getLogicNotDeleted();
             }
             column.setLogicDelete( true ).setLogicDeleteValue( deletedValue ).setLogicNotDeleteValue( notDeletedValue );
-            table.setEnableLogicDelete( true );
-            table.setLogicalDeletionColumn( column );
+            table.setEnableLogicDelete( true ).setLogicalDeletionColumn( column );
         }
     }
 

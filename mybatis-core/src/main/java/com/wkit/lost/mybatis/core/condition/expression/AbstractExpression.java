@@ -9,7 +9,7 @@ import com.wkit.lost.mybatis.core.condition.Range;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.utils.Ascii;
-import com.wkit.lost.mybatis.utils.ColumnConvertor;
+import com.wkit.lost.mybatis.utils.ColumnConvert;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -117,9 +117,9 @@ public abstract class AbstractExpression<T> implements Criterion<T>, ParamValueP
         String placeholder = StringUtil.nvl( defaultPlaceholder( this.value ), "" );
         Column column = getColumn();
         if ( column == null ) {
-            return ColumnConvertor.convertToCustomArg( this.property, placeholder, getAlias(), this.operator, getLogic().getSqlSegment() );
+            return ColumnConvert.convertToCustomArg( this.property, placeholder, getAlias(), this.operator, getLogic().getSqlSegment() );
         }
-        return ColumnConvertor.convertToCustomArg( getColumn(), placeholder, getAlias(), this.operator, getLogic().getSqlSegment() );
+        return ColumnConvert.convertToCustomArg( getColumn(), placeholder, getAlias(), this.operator, getLogic().getSqlSegment() );
     }
 
     @Override

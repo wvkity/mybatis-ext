@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.sql.mapping.update;
 import com.wkit.lost.mybatis.core.Execute;
 import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.sql.mapping.AbstractSqlBuilder;
-import com.wkit.lost.mybatis.utils.ColumnUtil;
+import com.wkit.lost.mybatis.utils.ColumnConvert;
 import com.wkit.lost.mybatis.utils.Constants;
 
 import java.util.Set;
@@ -26,7 +26,7 @@ public class UpdateSelectiveSqlBuilder extends AbstractSqlBuilder {
             appendSqlSegment( table.getUpdatableColumns(), builder );
         } else {
             builder.append( " <choose>\n" );
-            builder.append( "  <when test=\"" ).append( ColumnUtil.convertToTestCondition( lockerColumn,
+            builder.append( "  <when test=\"" ).append( ColumnConvert.convertToTestCondition( lockerColumn,
                     Constants.PARAM_ENTITY ) ).append( "\">\n" );
             appendSqlSegment( table.getUpdatableColumnsExcludeLocker(), builder );
             builder.append( this.convertIfTagForLocker( true, Constants.PARAM_OPTIMISTIC_LOCK_KEY,
@@ -40,7 +40,7 @@ public class UpdateSelectiveSqlBuilder extends AbstractSqlBuilder {
         builder.append( "</trim>" );
         StringBuilder conditionBuilder = new StringBuilder( 80 );
         conditionBuilder.append( "<trim prefix=\"WHERE\" prefixOverrides=\"AND |OR \">\n" );
-        conditionBuilder.append( " " ).append( ColumnUtil.convertToArg( table.getPrimaryKey(), 
+        conditionBuilder.append( " " ).append( ColumnConvert.convertToArg( table.getPrimaryKey(), 
                 Execute.REPLACE, Constants.PARAM_ENTITY ) );
         //conditionBuilder.append( "\n" ).append( this.convertToIfTagOfNotNull( true, Execute.REPLACE, false, 1, Constants.PARAM_ENTITY, table.getPrimaryKey(), "", AND ) );
         if ( lockerColumn != null ) {

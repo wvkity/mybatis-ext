@@ -227,11 +227,9 @@ public abstract class AnnotationUtil {
     public static AnnotationMetaObject getAnnotationMetaObject( Annotation annotation ) {
         if ( annotation != null ) {
             MetaObject metaObject = SystemMetaObject.forObject( annotation );
-            if ( metaObject != null ) {
-                Object value = metaObject.getValue( "h.memberValues" );
-                if ( value instanceof Map ) {
-                    return new AnnotationMetaObject( ( Map<String, Object> ) value );
-                }
+            Object value = metaObject.getValue( "h.memberValues" );
+            if ( value instanceof Map ) {
+                return new AnnotationMetaObject( ( Map<String, Object> ) value );
             }
         }
         return new AnnotationMetaObject( new HashMap<>( 0 ) );

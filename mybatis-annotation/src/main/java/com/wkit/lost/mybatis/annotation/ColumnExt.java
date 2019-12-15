@@ -44,7 +44,7 @@ public @interface ColumnExt {
 
     /**
      * 填充规则
-     * <p>优先级比@MetaFilling低</p>
+     * <p>优先级比{@link MetaFilling @MetaFilling}低</p>
      * @return 规则列表
      * @see MetaFilling
      */

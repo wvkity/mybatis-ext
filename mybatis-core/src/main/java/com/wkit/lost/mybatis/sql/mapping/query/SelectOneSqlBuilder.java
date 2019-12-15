@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.sql.mapping.query;
 import com.wkit.lost.mybatis.core.Execute;
 import com.wkit.lost.mybatis.sql.SqlTemplate;
 import com.wkit.lost.mybatis.sql.mapping.AbstractSqlBuilder;
-import com.wkit.lost.mybatis.utils.ColumnUtil;
+import com.wkit.lost.mybatis.utils.ColumnConvert;
 
 import java.util.stream.Collectors;
 
@@ -18,9 +18,9 @@ public class SelectOneSqlBuilder extends AbstractSqlBuilder {
         // selectOne不需要别名及属性名
         String querySegment = table.getColumns()
                 .stream()
-                .map( column -> ColumnUtil.convertToQueryArg( column, null, null, false ) )
+                .map( column -> ColumnConvert.convertToQueryArg( column, null, null, false ) )
                 .collect( Collectors.joining( ", " ) );
-        return select( querySegment, "WHERE " + ColumnUtil.convertToArg( table.getPrimaryKey(), Execute.NONE, null, null ) );
+        return select( querySegment, "WHERE " + ColumnConvert.convertToArg( table.getPrimaryKey(), Execute.NONE, null, null ) );
     }
 
     @Override

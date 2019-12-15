@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.core;
 import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
-import com.wkit.lost.mybatis.utils.ColumnUtil;
+import com.wkit.lost.mybatis.utils.ColumnConvert;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.extern.log4j.Log4j2;
 
@@ -14,7 +14,8 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 @Log4j2
 @SuppressWarnings( "serial" )
-public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T> implements Modify<T, AbstractModifyCriteria<T>> {
+public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T> implements 
+        Modify<T, AbstractModifyCriteria<T>> {
 
     /**
      * 更新代码片段
@@ -76,7 +77,7 @@ public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T>
                 Object value = entry.getValue();
                 Column column = searchColumn( property );
                 if ( column != null && column.isUpdatable() ) {
-                    modifyColumns.add( ColumnUtil.convertToCustomArg( column, defaultPlaceholder( value ),
+                    modifyColumns.add( ColumnConvert.convertToCustomArg( column, defaultPlaceholder( value ),
                             null, Operator.EQ, null ) );
                 } else {
                     log.warn( "The corresponding table field information could not be found based on the `{}` " +

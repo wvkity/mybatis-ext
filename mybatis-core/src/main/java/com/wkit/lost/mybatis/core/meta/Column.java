@@ -225,7 +225,8 @@ public class Column {
      * @return true: 是 false: 否
      */
     public boolean canFilling( FillingRule rule ) {
-        return rule == FillingRule.INSERT && insertFilling || rule == FillingRule.UPDATE && updateFilling || rule == FillingRule.DELETE && deleteFilling;
+        return rule == FillingRule.INSERT && insertFilling || rule == FillingRule.UPDATE && updateFilling 
+                || rule == FillingRule.DELETE && deleteFilling;
     }
 
     /**
