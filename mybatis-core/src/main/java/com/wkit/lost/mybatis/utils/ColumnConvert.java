@@ -9,9 +9,9 @@ import com.wkit.lost.mybatis.incrementer.SequenceKeyGenerator;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.JdbcType;
 
-public final class ColumnUtil {
+public final class ColumnConvert {
 
-    private ColumnUtil() {
+    private ColumnConvert() {
     }
 
     /**
