@@ -98,7 +98,8 @@ buildScan {
 
 allprojects {
     group 'com.wvkity'
-    version '1.0.0-SNAPSHOT'
+    version '1.0.0'
+    apply from: rootDir.canonicalPath + '/.gradle/publish.gradle'
 }
 
 subprojects {
@@ -171,7 +172,7 @@ subprojects {
 
     tasks.whenTaskAdded { task ->
         if (task.name.contains('signMavenJavaPublication')) {
-            task.enabled = new File('${signing.secretKeyRingFil}' as String).isFile()
+            task.enabled = new File(project.property('signing.secretKeyRingFile') as String).isFile()
         }
     }
 
@@ -222,11 +223,10 @@ subprojects {
 
     publishing {
         repositories {
+            mavenLocal()
             maven {
-                //def userName = project.getProperty("oss.userName")
-                //def passWord = project.getProperty("oss.password")
-                def userName = '${oss.userName}'
-                def passWord = '${oss.password}'
+                def userName = ossUserName
+                def passWord = ossPassword
                 def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
                 def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
                 url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
@@ -240,6 +240,9 @@ subprojects {
         publications {
 
             mavenJava(MavenPublication) {
+                groupId = project.group
+                artifactId = project.name
+                version = project.version
                 from components.java
 
                 artifact sourcesJar

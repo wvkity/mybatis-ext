@@ -8,5 +8,5 @@ dependencies {
     api "${lib.cglib}"
     //api "${lib.guava}"
     api "${lib.caffeine}"
-    api "${lib.persistence}"
+    compileOnly "${lib.persistence}"
 }
