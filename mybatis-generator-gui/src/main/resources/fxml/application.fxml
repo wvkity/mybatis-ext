@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="780.0" prefWidth="980.0" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wkit.lost.mybatis.generator.ui.ApplicationController">
+    <!-- Top panel S -->
+    <top>
+        <VBox>
+            <ToolBar minHeight="70.0" prefHeight="81.0" prefWidth="-Infinity" BorderPane.alignment="CENTER">
+                <!-- Database connection label S -->
+                <Label fx:id="connectionLabel" contentDisplay="TOP" text="数据库连接" textAlignment="CENTER">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                    <padding>
+                        <Insets left="10.0" right="10.0" />
+                    </padding>
+                </Label>
+                <!-- Table entity mapping configuration label S -->
+                <Label fx:id="mappingConfigLabel" contentDisplay="TOP" text="配置">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <padding>
+                        <Insets left="10.0" right="10.0" />
+                    </padding>
+                </Label>
+            </ToolBar>
+        </VBox>
+    </top>
+    <!-- Center panel S -->
+    <center>
+        <SplitPane dividerPositions="0.15">
+            <!-- Database connection panel S -->
+            <AnchorPane maxWidth="500.0" minWidth="100.0" prefHeight="645.0" prefWidth="200.0">
+                <TreeView fx:id="databaseItemView" layoutX="-14.0" maxWidth="0.0" prefHeight="570.0" prefWidth="126.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            </AnchorPane>
+            <!-- Table entity mapping configuration panel S -->
+            <AnchorPane minWidth="400.0">
+                <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <GridPane prefHeight="680.0" prefWidth="780.0">
+                        <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="170.0" minWidth="70.0" prefWidth="135.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="700.0" minWidth="10.0" prefWidth="98.0" />
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="700.0" minWidth="70.0" prefWidth="183.0" />
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="700.0" minWidth="10.0" prefWidth="101.0" />
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="700.0" minWidth="10.0" prefWidth="165.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="688.0" minWidth="10.0" prefWidth="140.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="105.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <Label text="项目名称(选填):" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.valignment="CENTER">
+                            <TextField fx:id="projectName" prefHeight="27.0" prefWidth="235.0" promptText="The project name, such as example" GridPane.columnIndex="1">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="项目所在目录:" GridPane.rowIndex="1" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                            <TextField fx:id="projectFolder" prefHeight="27.0" prefWidth="480.0" promptText="D:\eclipse\workspace\example" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                                <HBox.margin>
+                                    <Insets right="5.0" />
+                                </HBox.margin>
+                            </TextField>
+                            <Button mnemonicParsing="false" onAction="#chooseProjectFolder" prefHeight="25.0" prefWidth="55.0" text="选择" />
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="数据库表名:" GridPane.rowIndex="2" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                            <TextField fx:id="tableName" disable="true" editable="false" prefHeight="27.0" prefWidth="480.0" promptText="Double-click the database table name on the left to load" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="表名前缀(选填):" GridPane.rowIndex="3" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                            <TextField fx:id="tableNamePrefix" prefHeight="27.0" prefWidth="235.0" promptText="The name of the table prefix" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="主键(选填):" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                            <TextField fx:id="primaryKey" prefHeight="27.0" prefWidth="235.0" promptText="Primary key, such as id" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="配置文件目录:" GridPane.rowIndex="4" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                            <TextField fx:id="resourcesTargetFolder" prefHeight="27.0" prefWidth="235.0" promptText="src/main/resources" text="src/main/resources" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="源码文件目录:" GridPane.rowIndex="5" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                            <TextField fx:id="sourceCodeTargetFolder" prefHeight="27.0" prefWidth="235.0" promptText="src/main/java" text="src/main/java" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="Test源码文件目录:" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                            <TextField fx:id="testCodeTargetFolder" prefHeight="27.0" prefWidth="235.0" promptText="src/test/java" text="src/test/java" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="Base包名(选填):" GridPane.rowIndex="6" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                            <TextField fx:id="rootTargetPackage" prefHeight="27.0" prefWidth="480.0" promptText="com.{projectName}, such as com.example" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="实体类包名:" GridPane.rowIndex="7" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                            <TextField fx:id="entityTargetPackage" prefHeight="27.0" prefWidth="235.0" promptText="{BasePackage}.entity" text="{BasePackage}.entity" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label alignment="CENTER_RIGHT" text="实体类名:" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                            <TextField fx:id="entityClassName" prefHeight="27.0" prefWidth="235.0" promptText="{c}" text="{c}" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="DTO类包名(选填):" GridPane.rowIndex="8" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+                            <TextField fx:id="dtoEntityClassName" prefHeight="27.0" prefWidth="235.0" promptText="{BasePackage}.dto" text="{BasePackage}.dto" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label alignment="CENTER_RIGHT" text="DTO类名(选填):" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+                            <TextField fx:id="dtoEntityTargetPackage" prefHeight="27.0" prefWidth="235.0" promptText="{c}DTO" text="{c}DTO" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="Mapper包名:" GridPane.rowIndex="9" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                            <TextField fx:id="mapperTargetPackage" prefHeight="27.0" prefWidth="235.0" promptText="com.example.mapper" text="{BasePackage}.mapper" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label alignment="CENTER_RIGHT" text="Mapper类名:" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                            <TextField fx:id="mapperClassName" prefHeight="27.0" prefWidth="235.0" promptText="{c}Mapper" text="{c}Mapper" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="映射XML文件目录:" GridPane.rowIndex="10" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="10" GridPane.valignment="CENTER">
+                            <TextField fx:id="mappingTargetFolder" prefHeight="27.0" prefWidth="235.0" promptText="src/main/resources/mybatis/mappers" text="src/main/resources/mybatis/mappers" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="映射文件名:" GridPane.columnIndex="3" GridPane.rowIndex="10" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="10" GridPane.valignment="CENTER">
+                            <TextField fx:id="mappingFileName" prefHeight="27.0" prefWidth="235.0" promptText="{c}Mapper.xml" text="{c}Mapper.xml" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="Service包名:" GridPane.rowIndex="11" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="11" GridPane.valignment="CENTER">
+                            <TextField fx:id="serviceTargetPackage" prefHeight="27.0" prefWidth="235.0" promptText="{BasePackage}.service" text="{BasePackage}.service" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label alignment="CENTER_RIGHT" text="Service类名:" GridPane.columnIndex="3" GridPane.rowIndex="11" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="11" GridPane.valignment="CENTER">
+                            <TextField fx:id="serviceClassName" prefHeight="27.0" prefWidth="235.0" promptText="{c}Service" text="{c}Service" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="ServiceImpl包名:" GridPane.rowIndex="12" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="12" GridPane.valignment="CENTER">
+                            <TextField fx:id="serviceImplTargetPackage" prefHeight="27.0" prefWidth="235.0" promptText="{BasePackage}.service.impl" text="{BasePackage}.service.impl" GridPane.columnIndex="1" GridPane.rowIndex="12">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label alignment="CENTER_RIGHT" text="ServiceImpl类名:" GridPane.columnIndex="3" GridPane.rowIndex="12" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="12" GridPane.valignment="CENTER">
+                            <TextField fx:id="serviceImplClassName" prefHeight="27.0" prefWidth="235.0" promptText="Default{c}Service" text="Default{c}Service" GridPane.columnIndex="1" GridPane.rowIndex="12">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="Controller包名:" GridPane.rowIndex="13" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="13" GridPane.valignment="CENTER">
+                            <TextField fx:id="controllerTargetPackage" prefHeight="27.0" prefWidth="235.0" promptText="{BasePackage}.controller" text="{BasePackage}.controller" GridPane.columnIndex="1" GridPane.rowIndex="13">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label alignment="CENTER_RIGHT" text="Controller类名:" GridPane.columnIndex="3" GridPane.rowIndex="13" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="13" GridPane.valignment="CENTER">
+                            <TextField fx:id="controllerClassName" prefHeight="27.0" prefWidth="235.0" promptText="{c}Controller" text="{c}Controller" GridPane.columnIndex="1" GridPane.rowIndex="13">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="Test包名:" GridPane.rowIndex="14" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="14" GridPane.valignment="CENTER">
+                            <TextField fx:id="testTargetPackage" prefHeight="27.0" prefWidth="235.0" promptText="{BasePackage}.test" text="{BasePackage}.test" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label alignment="CENTER_RIGHT" text="Test类名:" GridPane.columnIndex="3" GridPane.rowIndex="14" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="14" GridPane.valignment="CENTER">
+                            <TextField fx:id="testClassName" prefHeight="27.0" prefWidth="235.0" promptText="{c}Test" text="{c}Test" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="JPA注解:" GridPane.rowIndex="15" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="15" GridPane.valignment="CENTER">
+                            <ComboBox fx:id="jpaAnnotationChoice" prefHeight="27.0" prefWidth="140.0">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="内置注解" />
+                                        <String fx:value="JAVAX_JPA注解" />
+                                    </FXCollections>
+                                </items>
+                                <value>
+                                    <String fx:value="内置注解" />
+                                </value>
+                            </ComboBox>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label alignment="CENTER_RIGHT" text="文件编码格式:" GridPane.columnIndex="3" GridPane.rowIndex="15" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="15" GridPane.valignment="CENTER">
+                            <ComboBox fx:id="fileEncodingChoice" prefHeight="27.0" prefWidth="140.0">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="UTF-8" />
+                                        <String fx:value="GBK" />
+                                        <String fx:value="GB2312" />
+                                    </FXCollections>
+                                </items>
+                                <value>
+                                    <String fx:value="UTF-8" />
+                                </value>
+                            </ComboBox>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <VBox prefHeight="105.0" prefWidth="645.0" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="16">
+                            <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="16">
+                                <CheckBox fx:id="useSchemaPrefix" mnemonicParsing="false" prefWidth="170.0" selected="true" text="使用Schema前缀" />
+                                <Label prefWidth="194" />
+                                <CheckBox fx:id="replaceWithTablePrefix" mnemonicParsing="false" selected="true" text="表名前缀匹配时, 实体类名自动去除前缀" />
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="16">
+                                <CheckBox fx:id="overrideXml" mnemonicParsing="false" prefWidth="170.0" selected="true" text="覆盖原XML文件" />
+                                <Label prefWidth="194" />
+                                <CheckBox fx:id="needComment" mnemonicParsing="false" selected="true" text="生成实体注释(来自表注释)" />
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="16">
+                                <CheckBox fx:id="useLombokPlugin" mnemonicParsing="false" prefWidth="170.0" selected="true" text="使用Lombok插件" />
+                                <Label prefWidth="194" />
+                                <CheckBox fx:id="needToStringHashCodeEquals" mnemonicParsing="false" selected="true" text="生成toString/hashCode/equals方法" />
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="16">
+                                <CheckBox fx:id="useRepositoryAnnotation" mnemonicParsing="false" prefWidth="190.0" selected="true" text="DAO使用@Repository注解" />
+                                <Label prefWidth="174" />
+                                <CheckBox fx:id="useDtoAsReturnValue" mnemonicParsing="false" selected="true" text="DTO类作为查询返回值(泛型)" />
+                            </HBox>
+                            <GridPane.margin>
+                                <Insets left="5.0" top="5.0" />
+                            </GridPane.margin>
+                        </VBox>
+                        <HBox alignment="CENTER" prefHeight="34.0" spacing="10.0" GridPane.columnIndex="0" GridPane.columnSpan="6" GridPane.rowIndex="17">
+                            <Button mnemonicParsing="false" text="生成代码">
+                                <styleClass>
+                                    <String fx:value="button" />
+                                    <String fx:value="theme_success" />
+                                </styleClass>
+                            </Button>
+                            <Button mnemonicParsing="false" text="创建Maven项目">
+                                <styleClass>
+                                    <String fx:value="button" />
+                                    <String fx:value="theme_primary" />
+                                </styleClass>
+                            </Button>
+                            <Button mnemonicParsing="false" text="创建Gradle项目">
+                                <styleClass>
+                                    <String fx:value="button" />
+                                    <String fx:value="theme_warn" />
+                                </styleClass>
+                            </Button>
+                            <Button mnemonicParsing="false" text="更新配置">
+                                <styleClass>
+                                    <String fx:value="button" />
+                                    <String fx:value="theme_default" />
+                                </styleClass>
+                            </Button>
+                            <Button mnemonicParsing="false" text="保存配置">
+                                <styleClass>
+                                    <String fx:value="button" />
+                                    <String fx:value="theme_default" />
+                                </styleClass>
+                            </Button>
+                            <Button mnemonicParsing="false" text="其他选项" onMouseClicked="#openOtherOptionsPanel">
+                                <styleClass>
+                                    <String fx:value="button" />
+                                    <String fx:value="theme_default" />
+                                </styleClass>
+                            </Button>
+                            <Button mnemonicParsing="false" text="打开生成文件所在目录">
+                                <styleClass>
+                                    <String fx:value="button" />
+                                    <String fx:value="theme_default" />
+                                </styleClass>
+                            </Button>
+                            <GridPane.margin>
+                                <Insets left="5.0" top="10.0" />
+                            </GridPane.margin>
+                        </HBox>
+                    </GridPane>
+                </VBox>
+                <!-- Other options panel S -->
+                <VBox fx:id="otherOptionsPanel" prefHeight="160.0" prefWidth="788.0" visible="false" managed="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                      style="-fx-border-width: 1px 1px 0 1px;-fx-border-color: #3bb4f2;-fx-border-insets: 0;-fx-background-insets: 0;-fx-background-color: #f3f4f6;-fx-translate-y: 165px;">
+                    <BorderPane>
+                        <top>
+                            <AnchorPane prefHeight="30.0" prefWidth="788.0" style="-fx-background-color: #3bb4f2;-fx-border-color: #3bb4f2;-fx-border-width: 0 0 1px 0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                <Label text="配置其他选项" style="-fx-text-fill: #fff;">
+                                    <padding>
+                                        <Insets bottom="8.0" left="10.0" top="8.0" />
+                                    </padding>
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="closeOtherOptionsLabel" text="关闭" textAlignment="CENTER" style="-fx-text-fill: #fff;" AnchorPane.rightAnchor="0.0">
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <padding>
+                                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                    </padding>
+                                    <font>
+                                        <Font size="13.0" />
+                                    </font>
+                                </Label>
+                            </AnchorPane>
+                        </top>
+                        <bottom>
+                            <GridPane prefHeight="130.0" prefWidth="788.0">
+                                <columnConstraints>
+                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="170.0" minWidth="70.0" prefWidth="135.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="700.0" minWidth="10.0" prefWidth="98.0" />
+                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="700.0" minWidth="70.0" prefWidth="183.0" />
+                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="700.0" minWidth="10.0" prefWidth="101.0" />
+                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="700.0" minWidth="10.0" prefWidth="165.0" />
+                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="688.0" minWidth="10.0" prefWidth="140.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                            </GridPane>
+                        </bottom>
+                    </BorderPane>
+                </VBox>
+            </AnchorPane>
+        </SplitPane>
+    </center>
+</BorderPane>

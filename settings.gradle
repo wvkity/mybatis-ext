@@ -17,5 +17,6 @@ include 'mybatis-core'
 include 'mybatis-extension'
 include 'mybatis-spring-extension'
 include 'mybatis-spring-boot-starter'
-//include 'mybatis-spring-boot-starter-example'
+include 'mybatis-generator-gui'
+include 'mybatis-spring-boot-starter-example'
 

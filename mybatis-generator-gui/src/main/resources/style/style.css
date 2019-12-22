@@ -1,0 +1,70 @@
+* {
+    -fx-font-size: 12px;
+}
+
+.button {
+    -fx-font-size: 14px;
+    -fx-border-width: 1px;
+    -fx-border-color: transparent;
+    -fx-border-radius: 3px;
+}
+
+.combo-box, .text-field, .password-field {
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-border-color: #c3c4c5;
+    -fx-border-radius: 3px;
+}
+
+.combo-box:focused, .combo-box.error:focused,
+.text-field:focused, .text-field.error:focused,
+.password-field:focused, .password-field.error:focused {
+    -fx-border-color: #239df0;
+}
+
+.error, .text-field.error, .combo-box.error, .password-field.error {
+    -fx-border-color: #ed4014;
+}
+
+.theme_default {
+    -fx-text-fill: #333;
+    -fx-background-color: #fff;
+    -fx-border-color: #ccc;
+}
+
+.theme_default:hover {
+    -fx-background-color: #e6e6e6;
+    -fx-border-color: #adadad;
+}
+
+.theme_success {
+    -fx-text-fill: #fff;
+    -fx-background-color: #5cb85c;
+    -fx-border-color: #4cae4c;
+}
+
+.theme_success:hover {
+    -fx-text-fill: #fff;
+    -fx-background-color: #449d44;
+    -fx-border-color: #398439;
+}
+
+.theme_primary {
+    -fx-background-color: #378bfa;
+    -fx-text-fill: white;
+}
+
+.theme_primary:hover {
+    -fx-background-color: #579efa;
+}
+
+.theme_warn {
+    -fx-text-fill: #fff;
+    -fx-background-color: #f59c1a;
+    -fx-border-color: #f59c1a;
+}
+
+.theme_warn:hover {
+    -fx-background-color: #db8a14;
+    -fx-border-color: #db8a14;
+}
