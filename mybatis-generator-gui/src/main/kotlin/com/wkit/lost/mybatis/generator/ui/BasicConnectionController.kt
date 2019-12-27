@@ -111,7 +111,8 @@ open class BasicConnectionController : AbstractController() {
                 val result = LocalDataSource.save(connection)
                 if (result > 0) {
                     this.application.close()
-                    // TODO 加载数据库连接配置
+                    // 重新加载
+                    this.application.loadDatabaseConnectionTree()
                 }
             }
         } catch (e: Exception) {
@@ -121,10 +122,15 @@ open class BasicConnectionController : AbstractController() {
 
     open fun dataValidate(): Boolean {
         var result = validate(this.connectionHost)
-        result = validate(this.connectionPort)
-        result = validate(this.userName)
-        result = validate(this.password)
-        result = validate(this.schema)
+        if (!validate(this.connectionPort)) {
+            result = false
+        }
+        if (!validate(this.userName)) {
+            result = false
+        }
+        if (!validate(this.password)) {
+            result = false
+        }
         return result
     }
 
@@ -144,7 +150,11 @@ open class BasicConnectionController : AbstractController() {
         config.port = port
         config.userName = username
         config.password = passwordValue
-        config.dbType = dbType
+        dbType.takeIf { 
+            !dbType.isNullOrBlank()
+        } ?.run { 
+            config.dbType = this.toUpperCase()
+        }
         config.encoding = encodingValue
         config.url = url
         config.schema = schemaValue

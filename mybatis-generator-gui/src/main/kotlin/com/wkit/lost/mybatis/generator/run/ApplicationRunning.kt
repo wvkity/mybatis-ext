@@ -23,7 +23,7 @@ class ApplicationRunning : Application() {
         val controller = fxmlLoader.getController<ApplicationController>()
         controller.primaryStage = stage
     }
-
 }
+
 fun main(args: Array<String>) = Application.launch(ApplicationRunning::class.java, *args)
 

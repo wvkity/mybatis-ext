@@ -9,16 +9,21 @@
     -fx-border-radius: 3px;
 }
 
-.combo-box, .text-field, .password-field {
+.combo-box, .text-field, .password-field, .check-box > .box {
     -fx-background-insets: 0;
     -fx-border-insets: 0;
     -fx-border-color: #c3c4c5;
     -fx-border-radius: 3px;
 }
 
+.check-box > .box {
+    -fx-background-color: transparent;
+}
+
 .combo-box:focused, .combo-box.error:focused,
 .text-field:focused, .text-field.error:focused,
-.password-field:focused, .password-field.error:focused {
+.password-field:focused, .password-field.error:focused, 
+.check-box:selected > .box, .check-box:selected > .box > .mark {
     -fx-border-color: #239df0;
 }
 
@@ -68,3 +73,13 @@
     -fx-background-color: #db8a14;
     -fx-border-color: #db8a14;
 }
+
+.tree-view {
+    -fx-border-color: #0d293e;
+}
+
+.tree-view .tree-cell:selected {
+    -fx-background-color: #949494;
+    -fx-text-fill: #fff;
+}
+

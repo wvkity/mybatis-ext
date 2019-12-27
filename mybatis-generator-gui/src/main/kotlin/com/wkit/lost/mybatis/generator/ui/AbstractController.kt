@@ -10,6 +10,7 @@ import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.Control
 import javafx.scene.control.TextField
+import javafx.scene.control.TreeItem
 import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.util.Duration
@@ -89,10 +90,15 @@ abstract class AbstractController : Parent(), Initializable {
             this.close()
         }
     }
-
+    
+    
     fun hasErrorSelector(node: Node?): Boolean {
+        return hasClassSelector(node, SELECTOR_ERROR)
+    }
+    
+    fun hasClassSelector(node: Node?, selector: String): Boolean {
         node?.run {
-            node.styleClass.contains(SELECTOR_ERROR)
+            node.styleClass.contains(selector)
         }
         return false
     }
@@ -102,13 +108,16 @@ abstract class AbstractController : Parent(), Initializable {
      * @param node 节点对象
      */
     fun error(node: Node?) {
+        addClass(node, SELECTOR_ERROR)
+    }
+    
+    fun addClass(node: Node?, selector: String) {
         node?.run {
             val styleClass = node.styleClass
-            if (!styleClass.contains(SELECTOR_ERROR)) {
-                styleClass.add(SELECTOR_ERROR)
+            if (!styleClass.contains(selector)) {
+                styleClass.add(selector)
             }
         }
-
     }
 
     /**
@@ -116,8 +125,12 @@ abstract class AbstractController : Parent(), Initializable {
      * @param node 节点对象
      */
     fun removeError(node: Node?) {
+        removeClass(node, SELECTOR_ERROR)
+    }
+    
+    fun removeClass(node: Node?, selector: String) {
         node?.run {
-            node.styleClass.remove(SELECTOR_ERROR)
+            node.styleClass.remove(selector)
         }
     }
 
@@ -182,7 +195,7 @@ abstract class AbstractController : Parent(), Initializable {
      * 动画切换
      */
     protected open fun toggle(node: Node) {
-        val transition = TranslateTransition(Duration.millis(400.0), node)
+        val transition = TranslateTransition(Duration.millis(300.0), node)
         node.takeIf {
             it.isVisible
         } ?.run {

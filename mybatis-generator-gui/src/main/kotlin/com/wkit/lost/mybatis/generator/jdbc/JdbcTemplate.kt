@@ -23,7 +23,7 @@ class JdbcTemplate {
          * @param sql SQL语句
          * @param args 参数
          */
-        fun query(connection: Connection, sql: String, vararg args: Any?): MutableMap<String, Any>? {
+        fun query(connection: Connection, sql: String, vararg args: Any?): MutableMap<String, Any?>? {
             val result = select(connection, sql, args)
             return if (result.isEmpty()) {
                 null
@@ -41,7 +41,7 @@ class JdbcTemplate {
          * @param <T> 泛型类型
          */
         fun <T> query(clazz: Class<T>, connection: Connection, sql: String, vararg args: Any?): T? {
-            val result = query(connection, sql, args)
+            val result = query(connection, sql, *args)
             result?.run {
                 if (this.isNotEmpty()) {
                     return JSON.parseObject(JSON.toJSONString(this), clazz)
@@ -58,8 +58,8 @@ class JdbcTemplate {
          * @param args 参数
          * @param <T> 泛型类型
          */
-        fun <T> queryList(clazz: Class<T>, connection: Connection, sql: String, vararg args: Any): MutableList<T>? {
-            val result = queryList(connection, sql, args)
+        fun <T> queryList(clazz: Class<T>, connection: Connection, sql: String, vararg args: Any): MutableList<T?>? {
+            val result = queryList(connection, sql, *args)
             if (result.isNotEmpty()) {
                 return JSON.parseArray(JSON.toJSONString(result), clazz)
             }
@@ -72,14 +72,15 @@ class JdbcTemplate {
          * @param sql SQL语句
          * @param args 参数
          */
-        fun queryList(connection: Connection, sql: String, vararg args: Any?): MutableList<MutableMap<String, Any>> {
-            return select(connection, sql, args)
+        fun queryList(connection: Connection, sql: String, vararg args: Any?): MutableList<MutableMap<String, Any?>> {
+            return select(connection, sql, *args)
         }
 
-        private fun select(connection: Connection, sql: String, vararg args: Any?): MutableList<MutableMap<String, Any>> {
+        private fun select(connection: Connection, sql: String, vararg args: Any?): MutableList<MutableMap<String, Any?>> {
             var statement: PreparedStatement? = null
             var resultSet: ResultSet? = null
-            val result = ArrayList<MutableMap<String, Any>>()
+            val result = ArrayList<MutableMap<String, Any?>>()
+            LOG.info("The SQL statement executed: $sql")
             try {
                 statement = connection.prepareStatement(sql)
                 if (args.isNotEmpty()) {
@@ -89,9 +90,9 @@ class JdbcTemplate {
                 }
                 resultSet = statement.executeQuery();
                 while (resultSet.next()) {
-                    val map = HashMap<String, Any>()
+                    val map = HashMap<String, Any?>()
                     val metadata = resultSet.metaData
-                    for (i in 0..metadata.columnCount) {
+                    for (i in 1..metadata.columnCount) {
                         val columnName = metadata.getColumnName(i)
                         map[columnName] = resultSet.getObject(columnName)
                     }
@@ -116,6 +117,7 @@ class JdbcTemplate {
          */
         fun update(connection: Connection, sql: String, vararg args: Any?): Int {
             var statement: PreparedStatement? = null
+            LOG.info("The SQL statement executed: $sql")
             try {
                 statement = connection.prepareStatement(sql)
                 return if (args.isEmpty()) {

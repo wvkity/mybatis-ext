@@ -13,7 +13,7 @@ enum class DatabaseType( val driverClass: String, val connectionUrlPattern: Stri
     /**
      * MySQL8+
      */
-    MYSQL_8("com.mysql.cj.jdbc.Driver", "jdbc:mysql://%s:%s/%s?serverTimezone=UTC&useUnicode=true&useSSL=false&characterEncoding=%s"),
+    MYSQL_8("com.mysql.cj.jdbc.Driver", "jdbc:mysql://%s:%s/%s?serverTimezone=UTC&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=%s"),
 
     /**
      * Oracle
