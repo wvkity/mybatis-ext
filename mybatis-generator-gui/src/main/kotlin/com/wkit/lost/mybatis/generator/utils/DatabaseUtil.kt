@@ -3,6 +3,8 @@ package com.wkit.lost.mybatis.generator.utils
 import com.wkit.lost.mybatis.generator.bean.Column
 import com.wkit.lost.mybatis.generator.bean.ConnectionConfig
 import com.wkit.lost.mybatis.generator.constants.DatabaseType
+import com.wkit.lost.mybatis.generator.mapping.JdbcJavaTypeRegistrar
+import com.wvkit.lost.mybatis.generator.utils.CaseFormat
 import java.sql.Connection
 import java.sql.ResultSet
 import java.util.*
@@ -12,19 +14,15 @@ import kotlin.collections.HashSet
 class DatabaseUtil {
 
     companion object {
+        
+        private const val IS_PREFIX = "IS_"
 
         /**
          * 获取所有数据库
          * @param config 配置信息
          */
         fun getSchemaList(config: ConnectionConfig): List<String> {
-            return config.schema.takeIf {
-                it.isNullOrBlank()
-            }?.run {
-                getSchemaList(DataSourceUtil.getConnection(config))
-            } ?: run {
-                listOf(config.schema!!)
-            }
+            return getSchemaList(DataSourceUtil.getConnection(config))
         }
 
         /**
@@ -120,18 +118,28 @@ class DatabaseUtil {
                 }
                 val rs = metadata.getColumns(realSchema, null, tableName, null)
                 while (rs.next()) {
+                    // 获取表字段信息
                     val columnName = rs.getString("COLUMN_NAME")
                     val jdbcType = rs.getString("TYPE_NAME")
                     val comment = rs.getString("REMARKS")
                     val size = rs.getString("COLUMN_SIZE")
                     val index = rs.getString("ORDINAL_POSITION")
+                    val javaType = JdbcJavaTypeRegistrar.javaTypeString(jdbcType.toLowerCase(Locale.ENGLISH), "")
+                    // 封装
                     val column = Column()
                     column.setColumnName(columnName)
                     column.setJdbcType(jdbcType)
                     column.setColumnLength(size)
-                    column.setComment(comment)
+                    comment.takeIf { 
+                        !comment.isNullOrBlank()
+                    } ?.run {
+                        column.setComment(comment)
+                    }
                     column.setIndex(index)
                     column.setPrimary(primaryKeys.contains(columnName))
+                    column.setPropertyName(transformProperty(columnName))
+                    column.setJavaType(javaType)
+                    column.setImportJavaType(JdbcJavaTypeRegistrar.javaType(javaType, ""))
                     columns.add(column)
                 }
                 columns.takeIf { column ->
@@ -146,6 +154,21 @@ class DatabaseUtil {
                     })
                 }
                 columns
+            }
+        }
+        
+        private fun startWithIsPrefix(value: String): Boolean {
+            return value.toUpperCase(Locale.ENGLISH).startsWith(IS_PREFIX)
+        }
+        
+        private fun transformProperty(columnName: String): String {
+            return columnName.takeIf { 
+                startWithIsPrefix(it)
+            } ?.run { 
+                val newColumnName = columnName.substring(3).toUpperCase(Locale.ENGLISH)
+                CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, newColumnName)
+            } ?: run {
+                CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, columnName)
             }
         }
     }

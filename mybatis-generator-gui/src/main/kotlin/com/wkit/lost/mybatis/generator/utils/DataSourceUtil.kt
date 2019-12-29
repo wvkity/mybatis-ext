@@ -66,8 +66,16 @@ class DataSourceUtil {
             }
             jdbcUrl = jdbcUrl.format(*args.toArray())
             val props = Properties()
-            userName?.run { props.setProperty("user", userName) }
-            password?.run { props.setProperty("password", password) }
+            userName.takeIf { 
+                !(it.isNullOrBlank())
+            } ?.run {
+                props.setProperty("user", userName)
+            }
+            password.takeIf { 
+                !(it.isNullOrBlank())
+            } ?.run {
+                props.setProperty("password", password)
+            }
             DriverManager.setLoginTimeout(5)
             return DRIVER_CACHE[databaseType]!!.connect(jdbcUrl, props)
         }

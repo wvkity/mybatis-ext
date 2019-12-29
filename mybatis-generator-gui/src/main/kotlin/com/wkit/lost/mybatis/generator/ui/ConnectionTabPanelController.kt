@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.generator.ui
 
+import com.wkit.lost.mybatis.generator.bean.ConnectionConfig
 import javafx.fxml.FXML
 import javafx.scene.control.TabPane
 import javafx.scene.layout.AnchorPane
@@ -18,7 +19,7 @@ class ConnectionTabPanelController : AbstractController() {
      */
     @FXML
     lateinit var tabPanel: TabPane
-    
+
     @FXML
     lateinit var basicConnection: AnchorPane
 
@@ -27,7 +28,7 @@ class ConnectionTabPanelController : AbstractController() {
 
     @FXML
     lateinit var sshConnection: AnchorPane
-    
+
     @FXML
     lateinit var sshConnectionController: SshConnectionController
 
@@ -36,7 +37,7 @@ class ConnectionTabPanelController : AbstractController() {
      */
     lateinit var application: ApplicationController
 
-    private var isSshConnection = false;
+    private var isSshConnection = false
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         this.tabPanel.selectionModel.selectedItemProperty().addListener { observable, _, _ ->
@@ -53,7 +54,19 @@ class ConnectionTabPanelController : AbstractController() {
         this.basicConnectionController.application = application
         this.sshConnectionController.application = application
     }
-    
+
+    fun setConnectionConfig(config: ConnectionConfig?) {
+        config?.run {
+            config.takeIf {
+                it.useSsh != null && it.useSsh!!
+            }?.run {
+                sshConnectionController.setConnectionConfig(this)
+            } ?: run {
+                basicConnectionController.setConnectionConfig(this)
+            }
+        }
+    }
+
     @FXML
     fun saveConnectionConfig() {
         if (isSshConnection) {
@@ -70,5 +83,5 @@ class ConnectionTabPanelController : AbstractController() {
     fun cancel() {
         this.layer.close()
     }
-    
+
 }

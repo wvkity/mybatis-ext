@@ -10,7 +10,6 @@ import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.Control
 import javafx.scene.control.TextField
-import javafx.scene.control.TreeItem
 import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.util.Duration
@@ -90,12 +89,12 @@ abstract class AbstractController : Parent(), Initializable {
             this.close()
         }
     }
-    
-    
+
+
     fun hasErrorSelector(node: Node?): Boolean {
         return hasClassSelector(node, SELECTOR_ERROR)
     }
-    
+
     fun hasClassSelector(node: Node?, selector: String): Boolean {
         node?.run {
             node.styleClass.contains(selector)
@@ -110,7 +109,7 @@ abstract class AbstractController : Parent(), Initializable {
     fun error(node: Node?) {
         addClass(node, SELECTOR_ERROR)
     }
-    
+
     fun addClass(node: Node?, selector: String) {
         node?.run {
             val styleClass = node.styleClass
@@ -127,10 +126,27 @@ abstract class AbstractController : Parent(), Initializable {
     fun removeError(node: Node?) {
         removeClass(node, SELECTOR_ERROR)
     }
-    
+
     fun removeClass(node: Node?, selector: String) {
         node?.run {
             node.styleClass.remove(selector)
+        }
+    }
+    
+    fun validate(vararg nodes: Control?): Boolean {
+        return nodes.takeIf { 
+            nodes.isNotEmpty()
+        } ?.run { 
+            var result = true
+            nodes.forEach { 
+                val vs = validate(it)
+                if (!vs && result) {
+                    result = false
+                }
+            }
+            result
+        } ?: run {
+            return true
         }
     }
 
@@ -139,9 +155,9 @@ abstract class AbstractController : Parent(), Initializable {
      * @param node 节点对象
      */
     fun validate(node: Control?): Boolean {
-        return node.takeIf { 
+        return node.takeIf {
             it != null
-        } ?.run {
+        }?.run {
             if (this is TextField) {
                 return validate(this, this.text)
             }
@@ -162,13 +178,23 @@ abstract class AbstractController : Parent(), Initializable {
             true
         }
     }
+    
+    fun valueChangedListeners(vararg nodes: TextField?) {
+        nodes.takeIf { 
+            it.isNotEmpty()
+        } ?.run { 
+            this.forEach { 
+                valueChangedListener(it)
+            }
+        }
+    }
 
     /**
      * 文本输入框值改变监听
      * @param node TextField对象
      */
-    fun changedEventListener(node: TextField?) {
-        changedEventListener(node, null)
+    fun valueChangedListener(node: TextField?) {
+        valueChangedListener(node, null)
     }
 
     /**
@@ -176,7 +202,8 @@ abstract class AbstractController : Parent(), Initializable {
      * @param node TextField对象
      * @param callback 回调函数
      */
-    fun changedEventListener(node: TextField?, callback: ((observable: ObservableValue<out String>, oldValue: String, newValue: String) -> Unit)?) {
+    fun valueChangedListener(node: TextField?, callback: ((observable: ObservableValue<out String>, 
+                                                           oldValue: String, newValue: String) -> Unit)?) {
         node?.run {
             val that = this
             callback?.run {
@@ -191,17 +218,38 @@ abstract class AbstractController : Parent(), Initializable {
         }
     }
 
+    fun focusedClearErrorListener(vararg nodes: TextField?, filter: ((observable: ObservableValue<out Boolean>, 
+                                                                      oldPropertyValue: Boolean, newPropertyValue: Boolean) -> Boolean)) {
+        nodes.takeIf { 
+            it.isNotEmpty()
+        } ?.run {
+            nodes.forEach { 
+                it?.run {
+                    this.focusedProperty().addListener { observable, oldPropertyValue, newPropertyValue ->
+                        if (filter(observable, oldPropertyValue, newPropertyValue)) {
+                            removeError(this)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * 动画切换
      */
     protected open fun toggle(node: Node) {
         val transition = TranslateTransition(Duration.millis(300.0), node)
+        var fixHeight = node.layoutBounds.height
+        if (fixHeight == 0.0) {
+            fixHeight = node.prefHeight(0.0)
+        }
         node.takeIf {
             it.isVisible
-        } ?.run {
+        }?.run {
             // 隐藏
             transition.fromY = 0.0
-            transition.toY = 165.0
+            transition.toY = fixHeight
             transition.setOnFinished {
                 run {
                     this.isVisible = false
@@ -212,7 +260,7 @@ abstract class AbstractController : Parent(), Initializable {
             // 显示
             node.isVisible = true
             node.isManaged = true
-            transition.fromY = 165.0
+            transition.fromY = fixHeight
             transition.toY = 0.0
         }
         transition.play()

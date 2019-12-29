@@ -2,9 +2,9 @@
 <configuration status="off">
     <properties>
         <!-- 日志根目录 -->
-        <Property name="LOG_HOME" value="logs"/>
+        <Property name="LOG_HOME" value="${sys:user.home}/.MybatisGenerator/logs"/>
         <!-- 日志文件名 -->
-        <Property name="LOG_FILE_NAME" value="mybatis-generator-gui"/>
+        <Property name="LOG_FILE_NAME" value="error"/>
         <!-- 日志路径 -->
         <Property name="LOG_DIR" value="${LOG_HOME}/${LOG_FILE_NAME}/${date:yyyy-MM}"/>
         <!-- 日志格式 -->

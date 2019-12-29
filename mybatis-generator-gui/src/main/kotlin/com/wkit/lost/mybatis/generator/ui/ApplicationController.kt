@@ -1,6 +1,8 @@
 package com.wkit.lost.mybatis.generator.ui
 
+import com.alibaba.fastjson.JSON
 import com.wkit.lost.mybatis.generator.bean.ConnectionConfig
+import com.wkit.lost.mybatis.generator.constants.DatabaseType
 import com.wkit.lost.mybatis.generator.constants.Page
 import com.wkit.lost.mybatis.generator.jdbc.LocalDataSource
 import com.wkit.lost.mybatis.generator.utils.DatabaseUtil
@@ -33,10 +35,11 @@ class ApplicationController : AbstractController() {
         private const val ICON_SQL_SERVER_CLOSE = "icons/sqlserver_close.png"
         private const val ICON_POSTGRESQL = "icons/postgresql.png"
         private const val ICON_POSTGRESQL_CLOSE = "icons/postgresql_close.png"
+        private const val ICON_SQLITE = "icons/sqlite.png"
+        private const val ICON_SQLITE_CLOSE = "icons/sqlite_close.png"
         private const val ICON_DB = "icons/db.png"
         private const val ICON_DB_CLOSE = "icons/db_close.png"
         private const val ICON_TABLE = "icons/table.png"
-        private const val ICON_TABLE_CLOSE = "icons/table_close.png"
         private const val ICON_COLUMN = "icons/column.png"
         private const val ICON_PRIMARY = "icons/primary.png"
         private const val TREE_ITEM_KEY_CONFIG = "config"
@@ -52,6 +55,8 @@ class ApplicationController : AbstractController() {
         private const val CONTEXT_MENU_TEXT_CONNECT_REMOVE = "删除连接"
         private const val CONTEXT_MENU_TEXT_DATABASE_OPEN = "打开数据库"
         private const val CONTEXT_MENU_TEXT_DATABASE_CLOSE = "关闭数据库"
+        private const val CONTEXT_MENU_TEXT_DATABASE_RELOAD = "重新加载"
+        private const val CONTEXT_MENU_TEXT_REFRESH = "刷新"
         private const val MOUSE_EVENT_DOUBLE_CLICK = 2
 
     }
@@ -273,10 +278,21 @@ class ApplicationController : AbstractController() {
     lateinit var needServiceInterface: CheckBox
 
     /**
+     * 生成Controller类
+     */
+    @FXML
+    lateinit var needController: CheckBox
+
+    /**
      * 实现序列化接口
      */
     @FXML
-    lateinit var needImplSerializable: CheckBox
+    lateinit var entityImplSerializable: CheckBox
+
+    /**
+     * DTO类实现序列化接口
+     */
+    lateinit var dtoImplSerializable: CheckBox
 
     /**
      * 使用Schema前缀
@@ -335,6 +351,18 @@ class ApplicationController : AbstractController() {
      */
     @FXML
     lateinit var closeOtherOptionsLabel: Label
+
+    /**
+     * 类属性映射自动移除IS前缀
+     */
+    @FXML
+    lateinit var propertyMappingRemoveIsPrefix: CheckBox
+
+    /**
+     * 实体类使用JPA注解
+     */
+    @FXML
+    lateinit var entityUseJpaAnnotation: CheckBox
 
     /**
      * 数据库连接列表
@@ -396,6 +424,7 @@ class ApplicationController : AbstractController() {
     /**
      * 数据库连接初始化
      */
+    @Suppress("UNCHECKED_CAST")
     private fun databaseConnectionViewInit() {
         this.databaseItemView.isShowRoot = false
         this.databaseItemView.root = TreeItem()
@@ -417,7 +446,7 @@ class ApplicationController : AbstractController() {
                         addContextMenu(treeCell, treeItem, level)
                         // 判断是否为双击事件
                         if (event.button == MouseButton.PRIMARY && event.clickCount == MOUSE_EVENT_DOUBLE_CLICK
-                                && !treeItemIsExpanded(treeItem)) {
+                                && !treeItemIsActive(treeItem)) {
                             // 不同节点，加载不同数据
                             when (level) {
                                 TREE_ITEM_NODE_LEVEL_CONNECT -> loadSchemaTree(treeItem)
@@ -483,7 +512,14 @@ class ApplicationController : AbstractController() {
             val imageView = treeItem.graphic as ImageView
             val connectionConfig = getConfig(treeItem)
             connectionConfig?.run {
-                val schemaList = DatabaseUtil.getSchemaList(connectionConfig)
+                var schemaList: List<String> = ArrayList()
+                connectionConfig.dbType.takeIf {
+                    !(it.isNullOrBlank()) && DatabaseType.valueOf(it) == DatabaseType.SQLITE
+                }?.run {
+                    schemaList = listOf("sqlite_master")
+                } ?: run {
+                    schemaList = DatabaseUtil.getSchemaList(connectionConfig)
+                }
                 // 构建数据库节点
                 buildTreeItemChild(treeItem, schemaList, ICON_DB_CLOSE, TREE_ITEM_NODE_LEVEL_SCHEMA)
                 imageView.image = buildImageIconNode(connectionConfig.dbType, false)
@@ -515,9 +551,11 @@ class ApplicationController : AbstractController() {
     private fun loadColumnTree(treeItem: TreeItem<String>?, config: ConnectionConfig, defaultSchema: String?, tableName: String) {
         treeItem?.run {
             val columns = DatabaseUtil.getColumns(config, defaultSchema, tableName)
-            columns.takeIf { 
+            columns.takeIf {
                 it.isNotEmpty()
-            } ?.run {
+            }?.run {
+                treeItem.children.clear()
+                LOG.info("table column info: {}", JSON.toJSONString(columns, true))
                 columns.forEach {
                     val value = "${it.getColumnName()} (${it.getJdbcType().toLowerCase()})"
                     val treeItemChild = TreeItem(value)
@@ -530,6 +568,7 @@ class ApplicationController : AbstractController() {
                     data[TREE_ITEM_KEY_COLUMN] = it
                     data[TREE_ITEM_KEY_ACTIVE] = true
                     smallIcon.userData = data
+                    //val tooltip = Tooltip(it.getComment())
                     treeItemChild.graphic = smallIcon
                     treeItem.children.add(treeItemChild)
                     treeItem.isExpanded = false
@@ -578,7 +617,7 @@ class ApplicationController : AbstractController() {
             it.isNullOrEmpty()
         } ?: run {
             // 数据库连接节点
-            val isExpanded = treeItemIsExpanded(treeItem)
+            val isExpanded = treeItemIsActive(treeItem)
             menuItems?.forEach { menu ->
                 menu.takeIf {
                     (menu.userData as Int) == level
@@ -589,13 +628,12 @@ class ApplicationController : AbstractController() {
                         // 数据库连接节点下的菜单
                         if (text == CONTEXT_MENU_TEXT_CONNECT_CLOSE) {
                             menu.isDisable = !isExpanded
-                        }
-                        if (text == CONTEXT_MENU_TEXT_CONNECT_OPEN) {
+                        } else {
                             menu.isDisable = isExpanded
                         }
                     } else if (level == TREE_ITEM_NODE_LEVEL_SCHEMA) {
                         // 数据库节点下的菜单
-                        if (text == CONTEXT_MENU_TEXT_DATABASE_CLOSE) {
+                        if (text == CONTEXT_MENU_TEXT_DATABASE_CLOSE || text == CONTEXT_MENU_TEXT_DATABASE_RELOAD) {
                             menu.isDisable = !isExpanded
                         } else {
                             menu.isDisable = isExpanded
@@ -617,6 +655,19 @@ class ApplicationController : AbstractController() {
             val contextMenu = ContextMenu()
             contextMenu.items.addAll(addContextMenuForConnect(treeItem, TREE_ITEM_NODE_LEVEL_CONNECT))
             contextMenu.items.addAll(addContextMenuForSchema(treeItem, TREE_ITEM_NODE_LEVEL_SCHEMA))
+            val refreshMenu = MenuItem(CONTEXT_MENU_TEXT_REFRESH)
+            refreshMenu.isVisible = false
+            refreshMenu.userData = TREE_ITEM_NODE_LEVEL_TABLE
+            refreshMenu.setOnAction {
+                try {
+                    val isExpanded = treeItem.isExpanded
+                    loadColumnTree(treeItem)
+                    treeItem.isExpanded = isExpanded
+                } catch (e: Exception) {
+                    // ignore
+                }
+            }
+            contextMenu.items.add(refreshMenu)
             treeCell.contextMenu = contextMenu
         }
     }
@@ -652,7 +703,29 @@ class ApplicationController : AbstractController() {
         val editMenuItem = MenuItem(CONTEXT_MENU_TEXT_CONNECT_EDIT)
         editMenuItem.userData = level
         editMenuItem.isVisible = false
-        editMenuItem.setOnAction { }
+        val self = this
+        editMenuItem.setOnAction {
+            try {
+                val config = getConfig(treeItem)
+                val tabPanel = loadWindow(Page.CONNECTION_TAB, "修改数据库连接", false)
+                tabPanel?.run {
+                    val controller = (this as ConnectionTabPanelController)
+                    controller.application(self)
+                    controller.setConnectionConfig(config)
+                    // 判断是否使用SSH
+                    config?.run {
+                        if (config.useSsh!!) {
+                            controller.tabPanel.selectionModel.select(1)
+                        } else {
+                            controller.tabPanel.selectionModel.select(0)
+                        }
+                    }
+                    this.show()
+                }
+            } catch (e: Exception) {
+                // ignore
+            }
+        }
         // 删除连接
         val removeMenuItem = MenuItem(CONTEXT_MENU_TEXT_CONNECT_REMOVE)
         removeMenuItem.userData = level
@@ -695,13 +768,25 @@ class ApplicationController : AbstractController() {
                 // ignore
             }
         }
-        return ArrayList(listOf(openMenuItem, closeMenuItem))
+
+        // 重新加载数据库
+        val reloadMenuItem = MenuItem(CONTEXT_MENU_TEXT_DATABASE_RELOAD)
+        reloadMenuItem.userData = level
+        reloadMenuItem.isVisible = false
+        reloadMenuItem.isDisable = true
+        reloadMenuItem.setOnAction {
+            loadTableTree(treeItem)
+            // 避免右键菜单无效
+            treeItemExpandedToggle(treeItem)
+        }
+        return ArrayList(listOf(openMenuItem, closeMenuItem, reloadMenuItem))
     }
 
     /**
      * 获取treeItem上的缓存数据
      * @param treeItem TreeItem对象
      */
+    @Suppress("UNCHECKED_CAST")
     private fun userData(treeItem: TreeItem<String>?): MutableMap<String, Any?> {
         return treeItem?.run {
             val imageView = treeItem.graphic as ImageView
@@ -758,7 +843,7 @@ class ApplicationController : AbstractController() {
      * 检查TreeItem是否展开
      * @param treeItem TreeItem对象
      */
-    private fun treeItemIsExpanded(treeItem: TreeItem<String>?): Boolean {
+    private fun treeItemIsActive(treeItem: TreeItem<String>?): Boolean {
         val userData = userData(treeItem)
         return userData[TREE_ITEM_KEY_ACTIVE]?.run {
             this as Boolean
@@ -811,6 +896,7 @@ class ApplicationController : AbstractController() {
                     "MYSQL_8" -> ICON_MYSQL_CLOSE
                     "ORACLE" -> ICON_ORACLE_CLOSE
                     "POSTGRESQL" -> ICON_POSTGRESQL_CLOSE
+                    "SQLITE" -> ICON_SQLITE_CLOSE
                     "SQL_SERVER" -> ICON_SQL_SERVER_CLOSE
                     else -> ICON_DB_CLOSE
                 }
@@ -820,6 +906,7 @@ class ApplicationController : AbstractController() {
                     "MYSQL_8" -> ICON_MYSQL
                     "ORACLE" -> ICON_ORACLE
                     "POSTGRESQL" -> ICON_POSTGRESQL
+                    "SQLITE" -> ICON_SQLITE
                     "SQL_SERVER" -> ICON_SQL_SERVER
                     else -> ICON_DB
                 }

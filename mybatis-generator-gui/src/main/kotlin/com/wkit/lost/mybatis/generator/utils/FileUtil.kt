@@ -21,6 +21,16 @@ class FileUtil {
          */
         val SLASH: String = File.separator
 
+        fun exists(filePath: String?): Boolean {
+            return filePath.takeIf {
+                it.isNullOrBlank()
+            }?.run {
+                false
+            } ?: run {
+                File(filePath!!).exists()
+            }
+        }
+
         /**
          * 创建文件夹
          * @param dir 文件夹路径

@@ -1,18 +1,19 @@
 package com.wkit.lost.mybatis.generator.bean;
 
 import javafx.beans.property.SimpleBooleanProperty
-import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
 
 class Column {
-    var columnName = SimpleStringProperty()
-    var columnLength = SimpleStringProperty()
-    var jdbcType = SimpleStringProperty()
-    var javaType = SimpleStringProperty()
-    var propertyName = SimpleStringProperty()
-    var comment = SimpleStringProperty()
+    var columnName = SimpleStringProperty("")
+    var columnLength = SimpleStringProperty("")
+    var jdbcType = SimpleStringProperty("")
+    var javaType = SimpleStringProperty("")
+    var propertyName = SimpleStringProperty("")
+    var comment = SimpleStringProperty("")
     var primary = SimpleBooleanProperty(false)
-    var index = SimpleStringProperty()
+    var index = SimpleStringProperty("")
+    var importJavaType = SimpleStringProperty("")
+    var typeHandler = SimpleStringProperty("")
     
     fun getColumnName(): String {
         return this.columnName.get()
@@ -76,5 +77,21 @@ class Column {
     
     fun setIndex(index: String) {
         this.index.set(index)
+    }
+    
+    fun getImportJavaType(): String {
+        return this.importJavaType.get()
+    }
+
+    fun setImportJavaType(importJavaType: String) {
+        this.importJavaType.set(importJavaType)
+    }
+    
+    fun getTypeHandler(): String {
+        return this.typeHandler.get()
+    }
+    
+    fun setTypeHandler(typeHandler: String) {
+        this.typeHandler.set(typeHandler)
     }
 }

@@ -20,4 +20,5 @@ class ConnectionConfig {
     var sshPassword: String? = null
     var localPort: String? = null
     var targetPort: String? = null
+    var useSsh: Boolean? = false
 }

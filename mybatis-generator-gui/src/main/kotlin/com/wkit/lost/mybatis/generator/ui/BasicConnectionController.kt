@@ -1,8 +1,9 @@
-package com.wkit.lost.mybatis.generator.ui;
+package com.wkit.lost.mybatis.generator.ui
 
 import com.alibaba.fastjson.JSON
 import com.wkit.lost.mybatis.generator.bean.ConnectionConfig
 import com.wkit.lost.mybatis.generator.bean.ConnectionConfigInfo
+import com.wkit.lost.mybatis.generator.constants.DatabaseType
 import com.wkit.lost.mybatis.generator.jdbc.LocalDataSource
 import javafx.fxml.FXML
 import javafx.scene.control.ComboBox
@@ -82,20 +83,63 @@ open class BasicConnectionController : AbstractController() {
      */
     lateinit var application: ApplicationController
 
+    /**
+     * 检查是否为更新操作
+     */
+    protected var executeUpdate = false
+    protected var primaryKey = -1
+    
+    protected fun isNotSqlite(): Boolean {
+        return databaseType.takeIf { 
+            databaseType.value != null
+        } ?.run {
+            DatabaseType.valueOf(databaseType.value.toUpperCase(Locale.ENGLISH)) != DatabaseType.SQLITE
+        } ?: run {
+            true
+        }
+    }
+    
+    open protected fun needRequired(node: TextField?, value: String?) {
+        if (isNotSqlite()) {
+            validate(node, value)
+        } else {
+            removeError(node)
+        }
+    }
+
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         try {
             // 事件监听
-            changedEventListener(this.connectionHost)
-            changedEventListener(this.connectionPort)
-            changedEventListener(this.userName)
-            changedEventListener(this.password)
+            valueChangedListener(this.connectionHost)
+            valueChangedListener(this.connectionPort) { _, _, value -> needRequired(connectionPort, value)}
+            valueChangedListener(this.userName) { _, _, value -> needRequired(userName, value)}
+            valueChangedListener(this.password) { _, _, value -> needRequired(password, value)}
+            // 获取焦点时清除错误
+            focusedClearErrorListener(connectionPort, userName, password) {_, _, _ -> !isNotSqlite() }
         } catch (e: Exception) {
-            // ignore
+            LOG.error("The database connection window failed to open: {}", e.message, e)
         }
     }
 
     open fun saveConnectionConfigBefore(): Boolean {
         return dataValidate()
+    }
+
+    open fun setConnectionConfig(config: ConnectionConfig?) {
+        val that = this
+        config?.run {
+            executeUpdate = true
+            primaryKey = config.id
+            that.databaseType.value = config.dbType
+            connectionName.text = config.name
+            connectionHost.text = config.host
+            connectionPort.text = config.port
+            that.userName.text = config.userName
+            that.password.text = config.password
+            that.encoding.value = config.encoding
+            that.schema.text = config.schema
+            that.connectionDriver.text = config.url
+        }
     }
 
     @FXML
@@ -108,7 +152,13 @@ open class BasicConnectionController : AbstractController() {
                 connection.connectName = config.name
                 connection.gmtCreate = OffsetDateTime.now()
                 connection.connectValue = JSON.toJSONString(config)
-                val result = LocalDataSource.save(connection)
+                val result: Int
+                if (config.id > 0) {
+                    connection.id = config.id
+                    result = LocalDataSource.update(connection)
+                } else {
+                    result = LocalDataSource.save(connection)
+                }
                 if (result > 0) {
                     this.application.close()
                     // 重新加载
@@ -122,18 +172,24 @@ open class BasicConnectionController : AbstractController() {
 
     open fun dataValidate(): Boolean {
         var result = validate(this.connectionHost)
-        if (!validate(this.connectionPort)) {
+        if (isNotSqlite() && !validate(this.connectionPort)) {
             result = false
+        } else {
+            removeError(connectionPort)
         }
-        if (!validate(this.userName)) {
+        if (isNotSqlite() && !validate(this.userName)) {
             result = false
+        } else {
+            removeError(this.userName)
         }
-        if (!validate(this.password)) {
+        if (isNotSqlite() && !validate(this.password)) {
             result = false
+        } else {
+            removeError(password)
         }
         return result
     }
-
+    
     open fun extractConnectionConfig(): ConnectionConfig {
         val name = connectionName.text
         val host = connectionHost.text
@@ -145,19 +201,23 @@ open class BasicConnectionController : AbstractController() {
         val schemaValue = schema.text
         val url = connectionDriver.text
         val config = ConnectionConfig()
+        config.useSsh = false
         config.name = name
         config.host = host
         config.port = port
         config.userName = username
         config.password = passwordValue
-        dbType.takeIf { 
+        dbType.takeIf {
             !dbType.isNullOrBlank()
-        } ?.run { 
+        }?.run {
             config.dbType = this.toUpperCase()
         }
         config.encoding = encodingValue
         config.url = url
         config.schema = schemaValue
+        if (executeUpdate) {
+            config.id = primaryKey
+        }
         return config
     }
 }

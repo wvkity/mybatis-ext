@@ -14,5 +14,9 @@ class SystemUtil {
         fun userHome(): String {
             return System.getProperties().getProperty("user.home")
         }
+        
+        fun userDir(): String {
+            return System.getProperties().getProperty("user.dir")
+        }
     }
 }

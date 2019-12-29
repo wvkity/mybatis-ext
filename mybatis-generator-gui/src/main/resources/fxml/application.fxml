@@ -42,7 +42,7 @@
         <SplitPane dividerPositions="0.215">
             <!-- Database connection panel S -->
             <AnchorPane maxWidth="540.0" minWidth="200.0" prefHeight="600.0" prefWidth="240.0">
-                <TreeView fx:id="databaseItemView" layoutX="-14.0" maxWidth="0.0" prefHeight="600.0" prefWidth="245.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                <TreeView fx:id="databaseItemView" layoutX="-14.0" maxWidth="0.0" prefHeight="600.0" prefWidth="245.0" style="-fx-font-size: 14px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             </AnchorPane>
             <!-- Table entity mapping configuration panel S -->
             <AnchorPane minWidth="400.0" prefHeight="600.0">
@@ -89,7 +89,7 @@
                                 <Insets left="5.0" right="5.0" />
                             </GridPane.margin>
                         </HBox>
-                        <Label text="项目所在目录:" GridPane.rowIndex="1" />
+                        <Label text="项目所在目录(选填):" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                             <TextField fx:id="projectFolder" prefHeight="27.0" prefWidth="480.0" promptText="D:\eclipse\workspace\example" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                 <GridPane.margin>
@@ -117,7 +117,7 @@
                         </HBox>
                         <Label text="表名前缀(选填):" GridPane.rowIndex="3" />
                         <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-                            <TextField fx:id="tableNamePrefix" prefHeight="27.0" prefWidth="260.0" promptText="The name of the table prefix" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                            <TextField fx:id="tableNamePrefix" prefHeight="27.0" prefWidth="260.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                 <GridPane.margin>
                                     <Insets left="5.0" />
                                 </GridPane.margin>
@@ -126,9 +126,9 @@
                                 <Insets left="5.0" right="5.0" />
                             </GridPane.margin>
                         </HBox>
-                        <Label text="主键(选填):" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                        <Label text="源码文件目录:" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                         <HBox alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-                            <TextField fx:id="primaryKey" prefHeight="27.0" prefWidth="260.0" promptText="Primary key, such as id" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                            <TextField fx:id="sourceCodeTargetFolder" prefHeight="27.0" prefWidth="260.0"  promptText="src/main/java" text="src/main/java" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                 <GridPane.margin>
                                     <Insets left="5.0" />
                                 </GridPane.margin>
@@ -137,9 +137,9 @@
                                 <Insets left="5.0" right="5.0" />
                             </GridPane.margin>
                         </HBox>
-                        <Label text="源码文件目录:" GridPane.rowIndex="4" />
+                        <Label text="主键字段(选填):" GridPane.rowIndex="4" />
                         <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-                            <TextField fx:id="sourceCodeTargetFolder" prefHeight="27.0" prefWidth="260.0" promptText="src/main/java" text="src/main/java" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                            <TextField fx:id="primaryKey" prefHeight="27.0" prefWidth="260.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                 <GridPane.margin>
                                     <Insets left="5.0" />
                                 </GridPane.margin>
@@ -148,12 +148,23 @@
                                 <Insets left="5.0" right="5.0" />
                             </GridPane.margin>
                         </HBox>
-                        <Label alignment="CENTER_RIGHT" text="主键生成方式:" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                        <Label alignment="CENTER_RIGHT" text="Test源码文件目录:" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                         <HBox alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-                            <ComboBox fx:id="needPrimaryKeyType" prefHeight="27.0" prefWidth="232.0">
+                            <TextField fx:id="testCodeTargetFolder" prefHeight="27.0" prefWidth="260.0" promptText="src/test/java" text="src/test/java" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                <GridPane.margin>
+                                    <Insets left="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </HBox>
+                        <Label text="主键生成方式:" GridPane.rowIndex="5" />
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                            <ComboBox fx:id="needPrimaryKeyType" prefHeight="27.0" prefWidth="260.0">
                                 <items>
                                     <FXCollections fx:factory="observableArrayList">
-                                        <String fx:value="UNDEFINED" />
+                                        <String fx:value="UNKNOWN" />
                                         <String fx:value="JDBC" />
                                         <String fx:value="UUID" />
                                         <String fx:value="IDENTITY" />
@@ -163,20 +174,9 @@
                                     </FXCollections>
                                 </items>
                                 <value>
-                                    <String fx:value="UNDEFINED" />
+                                    <String fx:value="UNKNOWN" />
                                 </value>
                             </ComboBox>
-                            <GridPane.margin>
-                                <Insets left="5.0" right="5.0" />
-                            </GridPane.margin>
-                        </HBox>
-                        <Label text="Test源码文件目录:" GridPane.rowIndex="5" />
-                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" GridPane.valignment="CENTER">
-                            <TextField fx:id="testCodeTargetFolder" prefHeight="27.0" prefWidth="260.0" promptText="src/test/java" text="src/test/java" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                <GridPane.margin>
-                                    <Insets left="5.0" />
-                                </GridPane.margin>
-                            </TextField>
                             <GridPane.margin>
                                 <Insets left="5.0" right="5.0" />
                             </GridPane.margin>
@@ -414,15 +414,16 @@
                         </HBox>
                         <Label text="JPA注解:" GridPane.rowIndex="16" />
                         <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="16" GridPane.valignment="CENTER">
-                            <ComboBox fx:id="jpaAnnotationChoice" prefHeight="27.0" prefWidth="140.0">
+                            <ComboBox fx:id="jpaAnnotationChoice" prefHeight="27.0" prefWidth="260.0">
                                 <items>
                                     <FXCollections fx:factory="observableArrayList">
-                                        <String fx:value="内置注解" />
-                                        <String fx:value="JAVAX_JPA注解" />
+                                        <String fx:value="NOT_USED" />
+                                        <String fx:value="BUILTIN_JPA" />
+                                        <String fx:value="JAVAX_JPA" />
                                     </FXCollections>
                                 </items>
                                 <value>
-                                    <String fx:value="内置注解" />
+                                    <String fx:value="BUILTIN_JPA" />
                                 </value>
                             </ComboBox>
                             <GridPane.margin>
@@ -431,7 +432,7 @@
                         </HBox>
                         <Label alignment="CENTER_RIGHT" text="文件编码格式:" GridPane.columnIndex="3" GridPane.rowIndex="16" />
                         <HBox alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="16" GridPane.valignment="CENTER">
-                            <ComboBox fx:id="fileEncodingChoice" prefHeight="27.0" prefWidth="140.0">
+                            <ComboBox fx:id="fileEncodingChoice" prefHeight="27.0" prefWidth="260.0">
                                 <items>
                                     <FXCollections fx:factory="observableArrayList">
                                         <String fx:value="UTF-8" />
@@ -497,7 +498,7 @@
                     </GridPane>
                 </VBox>
                 <!-- Other options panel S -->
-                <VBox fx:id="otherOptionsPanel" visible="false"  managed="false" prefHeight="160.0" prefWidth="Infinity" style="-fx-border-width: 1px 1px 0 1px;-fx-border-color: #3bb4f2;-fx-border-insets: 0;-fx-background-insets: 0;-fx-background-color: #f3f4f6;-fx-translate-y: 165px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                <VBox fx:id="otherOptionsPanel" visible="false"  managed="false" prefHeight="160.0" prefWidth="Infinity" style="-fx-border-width: 1px 1px 1px 1px;-fx-border-color: #3bb4f2;-fx-border-insets: 0;-fx-background-insets: 0;-fx-background-color: #f3f4f6;-fx-translate-y: 165px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <BorderPane>
                         <top>
                             <AnchorPane prefHeight="30.0" prefWidth="Infinity" style="-fx-background-color: #3bb4f2;-fx-border-color: #3bb4f2;-fx-border-width: 0 0 1px 0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
@@ -539,23 +540,31 @@
                                             <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                         </rowConstraints>
                                         <!-- ROW 1-->
                                         <CheckBox fx:id="needDtoEntity" mnemonicParsing="false" selected="true" text="生成DTO类" GridPane.columnIndex="1" />
-                                        <CheckBox fx:id="useSchemaPrefix" mnemonicParsing="false" selected="true" text="使用Schema前缀" GridPane.columnIndex="2" GridPane.columnSpan="2" />
+                                        <CheckBox fx:id="useSchemaPrefix" mnemonicParsing="false" text="使用Schema前缀" GridPane.columnIndex="2" GridPane.columnSpan="2" />
                                         <CheckBox fx:id="replaceWithTablePrefix" mnemonicParsing="false" selected="true" text="表名前缀匹配时, 实体类名自动去除前缀" GridPane.columnIndex="4" GridPane.columnSpan="2" />
                                         <!-- ROW 2-->
                                         <CheckBox fx:id="needDaoInterface" mnemonicParsing="false" selected="true" text="生成DAO接口" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                         <CheckBox fx:id="overrideXml" mnemonicParsing="false" selected="true" text="覆盖原XML文件" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-                                        <CheckBox fx:id="needComment" mnemonicParsing="false" selected="true" text="生成实体类注释(来自表注释)" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                                        <CheckBox fx:id="propertyMappingRemoveIsPrefix" mnemonicParsing="false" selected="true" text="列名以is前缀开头，类属性映射自动去除前缀" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                                         <!-- ROW 3-->
                                         <CheckBox fx:id="needServiceInterface" mnemonicParsing="false" selected="true" text="生成Service接口" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                         <CheckBox fx:id="useLombokPlugin" mnemonicParsing="false" selected="true" text="使用Lombok插件" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-                                        <CheckBox fx:id="needToStringHashCodeEquals" mnemonicParsing="false" selected="true" text="生成toString/hashCode/equals方法" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                                        <CheckBox fx:id="needComment" mnemonicParsing="false" selected="true" text="生成实体类注释(来自表注释)" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="2" />
                                         <!-- ROW 4-->
-                                        <CheckBox fx:id="needImplSerializable" mnemonicParsing="false" selected="true" text="实体类实现Serializable接口" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                        <CheckBox fx:id="needController" mnemonicParsing="false" selected="true" text="生成Controller类" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                         <CheckBox fx:id="useRepositoryAnnotation" mnemonicParsing="false" selected="true" text="DAO使用@Repository注解" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                                        <CheckBox fx:id="useDtoAsReturnValue" mnemonicParsing="false" selected="true" text="DTO类作为查询返回值(泛型)" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                                        <CheckBox fx:id="needToStringHashCodeEquals" mnemonicParsing="false" selected="true" text="生成toString/hashCode/equals方法" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                                        <!-- ROW 5-->
+                                        <CheckBox fx:id="entityImplSerializable" mnemonicParsing="false" selected="true" text="Entity实现Serializable接口" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                        <CheckBox fx:id="entityUseJpaAnnotation" mnemonicParsing="false" selected="true" text="Entity使用JPA注解" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                                        <CheckBox fx:id="useDtoAsReturnValue" mnemonicParsing="false" selected="true" text="DTO作为查询返回值(泛型)" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                                        <!-- ROW 6-->
+                                        <CheckBox fx:id="dtoImplSerializable" mnemonicParsing="false" selected="true" text="DTO实现Serializable接口" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                     </GridPane>
                                 </VBox>
                             </AnchorPane>
