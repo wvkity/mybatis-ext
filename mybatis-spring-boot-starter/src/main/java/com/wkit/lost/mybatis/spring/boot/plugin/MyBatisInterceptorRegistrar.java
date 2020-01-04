@@ -34,7 +34,7 @@ public class MyBatisInterceptorRegistrar extends AbstractBeanDefinitionRegistry
     public void registerBeanDefinitions( AnnotationMetadata metadata, BeanDefinitionRegistry registry ) {
         AnnotationAttributes attributes = AnnotationAttributes.fromMap(
                 metadata.getAnnotationAttributes( EnableInterceptors.class.getName() ) );
-        boolean primary = getValue( attributes, "primary", true );
+        boolean primary = getValue( attributes, "primary", false );
         Plugin[] includes = getValue( attributes, "include", new Plugin[ 0 ] );
         Plugin[] excludes = getValue( attributes, "exclude", new Plugin[ 0 ] );
         if ( !ArrayUtil.isEmpty( includes ) ) {
