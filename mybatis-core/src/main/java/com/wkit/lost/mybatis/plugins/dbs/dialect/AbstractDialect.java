@@ -109,12 +109,12 @@ public abstract class AbstractDialect implements Dialect {
         return true;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings( { "unchecked" } )
     @Override
-    public Object executePagingOnAfter( List result, Object parameter, RowBounds rowBounds ) {
+    public <E> Object executePagingOnAfter( List<E> result, Object parameter, RowBounds rowBounds ) {
         Pageable pageable = ThreadLocalPageable.getPageable();
         if ( pageable instanceof WrapPager ) {
-            WrapPager pager = ( WrapPager ) pageable;
+            WrapPager<E> pager = ( WrapPager<E> ) pageable;
             if ( pager.autoFill() ) {
                 pager.setElements( result );
             }

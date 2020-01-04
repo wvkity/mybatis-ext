@@ -51,7 +51,7 @@ public class LimitDecorator implements Dialect {
     }
 
     @Override
-    public Object executePagingOnAfter( List result, Object parameter, RowBounds rowBounds ) {
+    public <E> Object executePagingOnAfter( List<E> result, Object parameter, RowBounds rowBounds ) {
         return Optional.ofNullable( proxy.getDelegate() )
                 .map( delegate -> delegate.executePagingOnAfter( result, parameter, rowBounds ) )
                 .orElse( result );

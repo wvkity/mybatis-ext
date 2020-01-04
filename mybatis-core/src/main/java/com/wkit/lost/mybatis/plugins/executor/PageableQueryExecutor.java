@@ -39,8 +39,8 @@ public class PageableQueryExecutor extends AbstractQueryExecutor {
 
     @Override
     protected Object doIntercept( Executor executor, MappedStatement statement, Object parameter, RowBounds rowBounds,
-                                  ResultHandler resultHandler, CacheKey cacheKey, BoundSql boundSql ) throws Exception {
-        List result;
+                                  ResultHandler<?> resultHandler, CacheKey cacheKey, BoundSql boundSql ) throws Exception {
+        List<?> result;
         try {
             // 检查分页方言是否存在
             validateDialectExists();
@@ -85,7 +85,9 @@ public class PageableQueryExecutor extends AbstractQueryExecutor {
      * @return 总记录数
      * @throws SQLException 异常信息
      */
-    private Long executeQueryRecord( Executor executor, MappedStatement statement, Object parameter, RowBounds rowBounds, BoundSql boundSql, ResultHandler resultHandler ) throws SQLException {
+    private Long executeQueryRecord( Executor executor, MappedStatement statement, Object parameter, 
+                                     RowBounds rowBounds, BoundSql boundSql, 
+                                     ResultHandler<?> resultHandler ) throws SQLException {
         String msId = statement.getId() + Dialect.PAGEABLE_RECORD_SUFFIX;
         // 检查是否存在总记录查询(MappedStatement对象)
         MappedStatement recordMs = MappedStatementUtil.getExistsMappedStatement( statement.getConfiguration(), msId );
@@ -100,7 +102,8 @@ public class PageableQueryExecutor extends AbstractQueryExecutor {
                 recordMs = MappedStatementUtil.newQueryRecordMappedStatement( statement, msId );
                 recordMsCache.put( msId, recordMs );
             }
-            return Executors.executeQueryRecordOfCustom( this.factory, executor, recordMs, parameter, boundSql, rowBounds, resultHandler );
+            return Executors.executeQueryRecordOfCustom( this.factory, executor, recordMs, parameter, 
+                    boundSql, rowBounds, resultHandler );
         }
     }
 
@@ -112,6 +115,7 @@ public class PageableQueryExecutor extends AbstractQueryExecutor {
     @Override
     public void setProperties( Properties properties ) {
         super.setProperties( properties );
-        this.recordMsCache = CacheFactory.createCache( properties.getProperty( "recordMsCache" ), "recordMs", properties );
+        this.recordMsCache = CacheFactory.createCache( properties.getProperty( "recordMsCache" ), 
+                "recordMs", properties );
     }
 }

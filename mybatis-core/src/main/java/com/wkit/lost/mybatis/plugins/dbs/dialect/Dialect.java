@@ -82,7 +82,7 @@ public interface Dialect {
      * @param rowBounds 分页参数
      * @return 结果
      */
-    Object executePagingOnAfter( List result, Object parameter, RowBounds rowBounds );
+    <E> Object executePagingOnAfter( List<E> result, Object parameter, RowBounds rowBounds );
 
     /**
      * 所有查询执行完成后
