@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.generator.utils
 
 import com.wkit.lost.mybatis.generator.bean.Column
 import com.wkit.lost.mybatis.generator.bean.ConnectionConfig
+import com.wkit.lost.mybatis.generator.bean.Table
 import com.wkit.lost.mybatis.generator.constants.DatabaseType
 import com.wkit.lost.mybatis.generator.mapping.JdbcJavaTypeRegistrar
 import com.wvkit.lost.mybatis.generator.utils.CaseFormat
@@ -42,10 +43,10 @@ class DatabaseUtil {
             }
         }
 
-        fun getTables(config: ConnectionConfig, defaultSchema: String?): MutableList<String> {
+        fun getTables(config: ConnectionConfig, defaultSchema: String?): MutableList<Table> {
             val connection = DataSourceUtil.getConnection(config, defaultSchema)
             return connection.use {
-                val tables = ArrayList<String>()
+                val tables = ArrayList<Table>()
                 val metadata = it.metaData
                 val dbType = DatabaseType.valueOf(config.dbType!!)
                 val rs: ResultSet
@@ -54,7 +55,7 @@ class DatabaseUtil {
                     rs = connection.createStatement().executeQuery(sql)
                     rs.use {
                         while (rs.next()) {
-                            tables.add(rs.getString("name"))
+                            tables.add(Table(rs.getString("name")))
                         }
                     }
                 } else if (dbType == DatabaseType.SQLITE) {
@@ -62,7 +63,7 @@ class DatabaseUtil {
                     rs = connection.createStatement().executeQuery(sql)
                     rs.use {
                         while (rs.next()) {
-                            tables.add(rs.getString("name"))
+                            tables.add(Table(rs.getString("name")))
                         }
                     }
                 } else {
@@ -82,7 +83,14 @@ class DatabaseUtil {
                                 "%", arrayOf("TABLE", "VIEW"))
                         rs.use {
                             while (rs.next()) {
-                                tables.add(rs.getString(3))
+                                val table = Table(rs.getString(3))
+                                val comment = rs.getString("REMARKS")
+                                comment.takeIf { 
+                                    !comment.isNullOrBlank()
+                                } ?.run { 
+                                    table.setComment(comment)
+                                }
+                                tables.add(table)
                             }
                         }
                     }
@@ -90,13 +98,15 @@ class DatabaseUtil {
                 tables.takeIf {
                     tables.isNotEmpty()
                 }?.run {
-                    tables.sort()
+                    tables.sortWith(Comparator { t1, t2 ->
+                        t1.getName().compareTo(t2.getName())
+                    })
                 }
                 tables
             }
         }
 
-        fun getColumns(config: ConnectionConfig, defaultSchema: String?, tableName: String): MutableList<Column> {
+        fun getColumns(config: ConnectionConfig, defaultSchema: String?, tableName: String): ArrayList<Column> {
             val connection = DataSourceUtil.getConnection(config, defaultSchema)
             return connection.use {
                 val columns = ArrayList<Column>()
@@ -124,11 +134,11 @@ class DatabaseUtil {
                     val comment = rs.getString("REMARKS")
                     val size = rs.getString("COLUMN_SIZE")
                     val index = rs.getString("ORDINAL_POSITION")
-                    val javaType = JdbcJavaTypeRegistrar.javaTypeString(jdbcType.toLowerCase(Locale.ENGLISH), "")
+                    // val javaType = JdbcJavaTypeRegistrar.javaTypeString(jdbcType.toLowerCase(Locale.ENGLISH), "")
                     // 封装
-                    val column = Column()
-                    column.setColumnName(columnName)
-                    column.setJdbcType(jdbcType)
+                    val column = Column(columnName, jdbcType)
+                    // column.setColumnName(columnName)
+                    // column.setJdbcType(jdbcType)
                     column.setColumnLength(size)
                     comment.takeIf { 
                         !comment.isNullOrBlank()
@@ -138,8 +148,8 @@ class DatabaseUtil {
                     column.setIndex(index)
                     column.setPrimary(primaryKeys.contains(columnName))
                     column.setPropertyName(transformProperty(columnName))
-                    column.setJavaType(javaType)
-                    column.setImportJavaType(JdbcJavaTypeRegistrar.javaType(javaType, ""))
+                    // column.setJavaType(javaType)
+                    // column.setImportJavaType(JdbcJavaTypeRegistrar.javaType(javaType, ""))
                     columns.add(column)
                 }
                 columns.takeIf { column ->
@@ -150,7 +160,7 @@ class DatabaseUtil {
                         if (o1.isPrimary().compareTo(o2.isPrimary()) == 0) {
                             o1.getColumnName().compareTo(o2.getColumnName())
                         } 
-                        o1.getIndex().compareTo(o2.getIndex())
+                        o1.getIndex().toInt(10).compareTo(o2.getIndex().toInt(10))
                     })
                 }
                 columns

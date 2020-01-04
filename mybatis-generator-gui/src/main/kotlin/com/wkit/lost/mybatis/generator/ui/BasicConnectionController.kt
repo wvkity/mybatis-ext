@@ -115,7 +115,7 @@ open class BasicConnectionController : AbstractController() {
             valueChangedListener(this.userName) { _, _, value -> needRequired(userName, value)}
             valueChangedListener(this.password) { _, _, value -> needRequired(password, value)}
             // 获取焦点时清除错误
-            focusedClearErrorListener(connectionPort, userName, password) {_, _, _ -> !isNotSqlite() }
+            focusedClearErrorListeners(connectionPort, userName, password) { _, _, _ -> !isNotSqlite() }
         } catch (e: Exception) {
             LOG.error("The database connection window failed to open: {}", e.message, e)
         }

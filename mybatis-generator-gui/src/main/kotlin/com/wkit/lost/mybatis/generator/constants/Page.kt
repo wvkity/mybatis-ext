@@ -6,7 +6,7 @@ package com.wkit.lost.mybatis.generator.constants
  */
 enum class Page(private val url: String) {
     CONNECTION_TAB("fxml/connection_tab.fxml"),
-    SELECT_TABLE_COLUMN("select_table_column.fxml"),
+    SELECT_TABLE_COLUMN("fxml/select_table_column.fxml"),
     GENERATOR_CONFIG("fxml/generator_config.fxml");
 
     /**

@@ -15,7 +15,7 @@
                 <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="477.0" minWidth="101.0" prefWidth="147.0" />
                 <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="100.0" minWidth="16.0" prefWidth="82.0" />
                 <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="300.0" minWidth="16.0" prefWidth="272.0" />
-            <ColumnConstraints />
+                <ColumnConstraints />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints maxHeight="34.0" prefHeight="34.0" />

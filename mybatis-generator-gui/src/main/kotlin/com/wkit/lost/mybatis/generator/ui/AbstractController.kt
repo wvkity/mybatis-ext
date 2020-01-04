@@ -43,9 +43,9 @@ abstract class AbstractController : Parent(), Initializable {
      */
     fun loadWindow(page: Page, title: String, cache: Boolean): AbstractController? {
         val windowParentNodeRef = WINDOW_NODE_CACHE[page]
-        if (cache) {
-            windowParentNodeRef ?: run {
-                return this
+        if (cache && windowParentNodeRef != null) {
+            windowParentNodeRef.get()?.run {
+                this
             }
         }
         val location = Thread.currentThread().contextClassLoader.getResource(page.getLocation())
@@ -115,6 +115,16 @@ abstract class AbstractController : Parent(), Initializable {
             val styleClass = node.styleClass
             if (!styleClass.contains(selector)) {
                 styleClass.add(selector)
+            }
+        }
+    }
+    
+    fun removeErrors(vararg nodes: Node) {
+        nodes.takeIf { 
+            it.isNotEmpty()
+        } ?.run {
+            nodes.forEach { 
+                removeError(it)
             }
         }
     }
@@ -218,8 +228,8 @@ abstract class AbstractController : Parent(), Initializable {
         }
     }
 
-    fun focusedClearErrorListener(vararg nodes: TextField?, filter: ((observable: ObservableValue<out Boolean>, 
-                                                                      oldPropertyValue: Boolean, newPropertyValue: Boolean) -> Boolean)) {
+    fun focusedClearErrorListeners(vararg nodes: TextField?, filter: ((observable: ObservableValue<out Boolean>,
+                                                                       oldPropertyValue: Boolean, newPropertyValue: Boolean) -> Boolean)) {
         nodes.takeIf { 
             it.isNotEmpty()
         } ?.run {

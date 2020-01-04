@@ -83,3 +83,33 @@
     -fx-text-fill: #fff;
 }
 
+.table-view .table-column {
+    -fx-alignment: center;
+}
+
+.table-view .check-box:selected > .box,
+.table-view .check-box:selected > .box > .mark {
+    -fx-border-color: #666;
+}
+.table-view .table-row-cell{
+    -fx-pref-height: 28;
+}
+
+
+/*.table-view {
+    -fx-table-cell-border-color:transparent;
+    -fx-border-color: white;
+}
+
+.table-view .table-row-cell {
+    -fx-background-insets: 0;
+}
+
+.table-view .table-row-cell:empty .table-cell {
+    -fx-border-width: 0px;
+}
+
+.table-row:selected {
+    -fx-background-color: #f1f3f2;
+}*/
+
