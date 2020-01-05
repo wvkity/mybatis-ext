@@ -15,8 +15,6 @@ import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.RowConstraints
 import javafx.scene.layout.VBox
-import javafx.util.Callback
-import javafx.util.converter.DefaultStringConverter
 import org.apache.logging.log4j.LogManager
 import java.net.URL
 import java.util.*
@@ -25,16 +23,16 @@ class CustomMadeSelectTableController : AbstractController() {
 
     companion object {
         private val LOG = LogManager.getLogger(CustomMadeSelectTableController)
-        private const val TABLE_NAME_LABEL_TEXT = "表名:"
-        private const val TABLE_MAPPING_ENTITY_LABEL_TEXT = "类名:"
-        private const val TABLE_COMMENT_LABEL_TEXT = "类文档注释:"
+        private const val TABLE_NAME_LABEL_TEXT = "表名: "
+        private const val TABLE_MAPPING_ENTITY_LABEL_TEXT = "实体类名: "
+        private const val TABLE_COMMENT_LABEL_TEXT = "类文档注释: "
         private const val TABLE_COLUMN_TEXT_CHECKED = "是否选择"
         private const val TABLE_COLUMN_TEXT_NAME = "列名"
         private const val TABLE_COLUMN_TEXT_JDBC_TYPE = "JDBC类型"
         private const val TABLE_COLUMN_TEXT_PROPERTY_NAME = "属性名"
         private const val TABLE_COLUMN_TEXT_JAVA_TYPE = "Java类型"
         private const val TABLE_COLUMN_TEXT_IMPORT_JAVA_TYPE = "导入Java类型"
-        private const val TABLE_COLUMN_TEXT_TYPE_HANDLE = "类型处理"
+        private const val TABLE_COLUMN_TEXT_TYPE_HANDLE = "类型处理器"
         private const val TABLE_COLUMN_PROP_CHECKED = "checked"
         private const val TABLE_COLUMN_PROP_NAME = "columnName"
         private const val TABLE_COLUMN_PROP_JDBC_TYPE = "jdbcType"
@@ -54,9 +52,6 @@ class CustomMadeSelectTableController : AbstractController() {
      * table
      */
     lateinit var tableData: ListProperty<Table>
-
-    @FXML
-    lateinit var columnListView: TableView<Column>
 
     /**
      * 主程序控制器
@@ -100,6 +95,7 @@ class CustomMadeSelectTableController : AbstractController() {
         vBox.children.add(buildGridPanel(table))
         vBox.children.add(buildTableView(table))
         tabNode.content = vBox
+        tabNode.userData = table
         return tabNode
     }
 
@@ -117,7 +113,7 @@ class CustomMadeSelectTableController : AbstractController() {
         textColumn.prefWidth = 60.0
         val secondColumn = ColumnConstraints()
         secondColumn.halignment = HPos.LEFT
-        secondColumn.prefWidth = 100.0
+        secondColumn.prefWidth = 140.0
         val fourColumn = ColumnConstraints()
         fourColumn.halignment = HPos.LEFT
         fourColumn.prefWidth = 130.0
@@ -142,7 +138,17 @@ class CustomMadeSelectTableController : AbstractController() {
         val entityNameInput = TextField()
         entityNameInput.prefWidth = 128.0
         entityNameInput.prefHeight = 28.0
-        entityNameInput.text = table.getDefaultClassName()
+        entityNameInput.text = table.getClassName()
+        // 添加监听事件
+        entityNameInput.textProperty().addListener { _, _, newValue ->
+            table.setClassName(newValue)
+        }
+        entityNameInput.focusedProperty().addListener { _, _, isFocused ->
+            // 失去焦点时
+            if (!isFocused && !isNotEmpty(table.getClassName())) {
+                entityNameInput.text = table.getClassNameValue()
+            }
+        }
         gridPanel.add(entityNameInput, 3, 0)
         GridPane.setMargin(entityNameInput, insets)
         val commentLabel = Label(TABLE_COMMENT_LABEL_TEXT)
@@ -152,10 +158,12 @@ class CustomMadeSelectTableController : AbstractController() {
         commentInput.prefWidth = 210.0
         commentInput.prefHeight = 28.0
         commentInput.text = table.getComment()
+        commentInput.textProperty().addListener { _, _, newComment -> 
+            table.setComment(newComment)
+        }
         gridPanel.add(commentInput, 5, 0)
         GridPane.setMargin(commentInput, insets)
         gridPanel.vgap = 10.0
-        gridPanel.hgap = 10.0
         return gridPanel
     }
 
@@ -188,32 +196,17 @@ class CustomMadeSelectTableController : AbstractController() {
         propertyNameColumn.isSortable = false
         propertyNameColumn.cellValueFactory = PropertyValueFactory<Column, String>(TABLE_COLUMN_PROP_PROPERTY_NAME)
         propertyNameColumn.cellFactory = TextFieldTableCell.forTableColumn()
-        propertyNameColumn.setOnEditStart { 
-            val column = it.tableView.items[it.tablePosition.row]
-            if (isNotEmpty(column.propertyNameOverride) && isNotEmpty(column.getPropertyName()) 
-                    && column.propertyNameOverride != column.getPropertyName()) {
-                column.propertyNameProperty().set(column.propertyNameOverride)
-            }
-        }
         propertyNameColumn.setOnEditCommit {
-            if (isNotEmpty(it)) {
-                it.tableView.items[it.tablePosition.row].propertyNameOverride = it.newValue
-            } else {
-                tableView.refresh()
-            }
+            it.tableView.items[it.tablePosition.row].propertyNameProperty().set(it.newValue.trim())
         }
         // Java类型
         val javaTypeColumn = TableColumn<Column, String>(TABLE_COLUMN_TEXT_JAVA_TYPE)
         javaTypeColumn.prefWidth = 110.0
         javaTypeColumn.isSortable = false
         javaTypeColumn.cellValueFactory = PropertyValueFactory<Column, String>(TABLE_COLUMN_PROP_JAVA_TYPE)
-        javaTypeColumn.cellFactory = TextFieldTableCell.forTableColumn() 
+        javaTypeColumn.cellFactory = TextFieldTableCell.forTableColumn()
         javaTypeColumn.setOnEditCommit {
-            if (isNotEmpty(it)) {
-                it.tableView.items[it.tablePosition.row].javaTypeOverride = it.newValue
-            } else {
-                it.tableView.items[it.tablePosition.row].setJavaType(it.oldValue)
-            }
+            it.tableView.items[it.tablePosition.row].javaTypeProperty().set(it.newValue.trim())
         }
         // 导入Java类型
         val importJavaTypeColumn = TableColumn<Column, String>(TABLE_COLUMN_TEXT_IMPORT_JAVA_TYPE)
@@ -222,7 +215,7 @@ class CustomMadeSelectTableController : AbstractController() {
         importJavaTypeColumn.cellValueFactory = PropertyValueFactory<Column, String>(TABLE_COLUMN_PROP_IMPORT_JAVA_TYPE)
         importJavaTypeColumn.cellFactory = TextFieldTableCell.forTableColumn()
         importJavaTypeColumn.setOnEditCommit {
-            it.tableView.items[it.tablePosition.row].importJavaTypeOverride = getValue(it)
+            it.tableView.items[it.tablePosition.row].importJavaTypeProperty().set(it.newValue.trim())
         }
         // 类型处理
         val typeHandleColumn = TableColumn<Column, String>(TABLE_COLUMN_TEXT_TYPE_HANDLE)
@@ -231,7 +224,7 @@ class CustomMadeSelectTableController : AbstractController() {
         typeHandleColumn.cellValueFactory = PropertyValueFactory<Column, String>(TABLE_COLUMN_PROP_TYPE_HANDLE)
         typeHandleColumn.cellFactory = TextFieldTableCell.forTableColumn()
         typeHandleColumn.setOnEditCommit {
-            it.tableView.items[it.tablePosition.row].typeHandleOverride = it.newValue
+            it.tableView.items[it.tablePosition.row].typeHandleProperty().set(it.newValue.trim())
         }
         // 添加到表格中
         tableView.columns.addAll(checkedColumn, columnNameColumn, jdbcTypeColumn, propertyNameColumn, javaTypeColumn,
@@ -241,15 +234,36 @@ class CustomMadeSelectTableController : AbstractController() {
         return tableView
     }
 
-    private fun getValue(it: TableColumn.CellEditEvent<Column, String>): String {
-        if (it.newValue.isNullOrBlank()) {
-            return it.oldValue
+    /**
+     * 取消修改
+     */
+    @FXML
+    fun cancelChanged() {
+        tableTabPanel.tabs.forEach { 
+            val userData = it.userData
+            userData.takeIf { tableBean ->
+                tableBean != null
+            } ?.run { 
+                (userData as Table).rollback()
+            }
         }
-        return it.newValue
+        close()
     }
 
-    private fun isNotEmpty(it: TableColumn.CellEditEvent<Column, String>): Boolean {
-        return isNotEmpty(it.newValue)
+    /**
+     * 确认修改
+     */
+    @FXML
+    fun confirmChanged() {
+        tableTabPanel.tabs.forEach {
+            val userData = it.userData
+            userData.takeIf { tableBean ->
+                tableBean != null
+            } ?.run {
+                (userData as Table).confirmChange()
+            }
+        }
+        close()
     }
 
     private fun isNotEmpty(value: String?): Boolean {

@@ -8,6 +8,7 @@ import com.wkit.lost.mybatis.generator.constants.*
 import com.wkit.lost.mybatis.generator.jdbc.LocalDataSource
 import com.wkit.lost.mybatis.generator.utils.DatabaseUtil
 import javafx.beans.property.SimpleListProperty
+import javafx.beans.property.SimpleStringProperty
 import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
@@ -374,6 +375,10 @@ class ApplicationController : AbstractController() {
     @FXML
     lateinit var databaseItemView: TreeView<String>
 
+    /////////
+    private var tableNamePrefixTempVariable = SimpleStringProperty("")
+    ////////
+
     /**
      * 选中表缓存
      */
@@ -386,6 +391,7 @@ class ApplicationController : AbstractController() {
             this.otherOptionsInit()
             this.databaseConnectionViewInit()
             this.addValueChangeListener()
+            this.addFocusEventListener()
             this.addFocusRemoveErrorListener()
             this.buttonBindEventListener()
             // 选择表添加事件监听
@@ -557,6 +563,10 @@ class ApplicationController : AbstractController() {
                 val tables = DatabaseUtil.getTables(connectionConfig, treeItem.value)
                 buildTreeItemChild(treeItem, tables, TreeItemIcon.TABLE.icon, TreeItemNodeLevel.TABLE.value)
                 imageView.image = buildSmallIcon(TreeItemIcon.DB.icon)
+                // 添加监听
+                tables.forEach { 
+                    tableNamePrefixTempVariable.bindBidirectional(it.getTablePrefixBridgeProperty())
+                }
                 treeItemExpandedToggle(treeItem)
             }
         }
@@ -1096,14 +1106,18 @@ class ApplicationController : AbstractController() {
     }
 
     ////////// button event bind ///////////
-    
+
+    private fun isNotEmpty(value: String?): Boolean {
+        return !value.isNullOrBlank()
+    }
+
     private fun buttonBindEventListener() {
         try {
             // 自定义定制实体类
-            this.customMade.setOnAction { 
-                tableName.text.takeIf { 
+            this.customMade.setOnAction {
+                tableName.text.takeIf {
                     it.isNullOrBlank()
-                } ?.run { 
+                }?.run {
                     error(tableName)
                 } ?: run {
                     removeError(tableName)
@@ -1111,8 +1125,9 @@ class ApplicationController : AbstractController() {
                     customController.initData(this, selectTableCache)
                     customController.show()
                     // 关闭窗口回调
-                    this.layer.setOnCloseRequest { 
-                        LOG.info("订制实体类信息窗口关闭了...")
+                    this.layer.setOnCloseRequest {
+                        // 取消修改
+                        selectTableCache.forEach { it.rollback() }
                     }
                 }
             }
@@ -1210,10 +1225,10 @@ class ApplicationController : AbstractController() {
 
     private fun addValueChangeListener() {
         try {
-            valueChangedListener(this.tableName) {_, _, newValue -> 
-                newValue.takeIf { 
+            valueChangedListener(this.tableName) { _, _, newValue ->
+                newValue.takeIf {
                     it.isBlank()
-                } ?.run { 
+                }?.run {
                     error(tableName)
                     customMade.isVisible = false
                 } ?: run {
@@ -1262,6 +1277,22 @@ class ApplicationController : AbstractController() {
             nodes.forEach {
                 super.validate(it)
             }
+        }
+    }
+
+    private fun addFocusEventListener() {
+        try {
+            this.tableNamePrefix.focusedProperty().addListener { _, _, isFocused ->
+                if (!isFocused) {
+                    val tablePrefixValue = tableNamePrefix.text
+                    // 比较临时变量值是否一致
+                    if (tableNamePrefixTempVariable.get() != tablePrefixValue) {
+                        tableNamePrefixTempVariable.set(tablePrefixValue)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            // ignore
         }
     }
 

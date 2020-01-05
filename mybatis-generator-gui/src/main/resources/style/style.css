@@ -22,7 +22,7 @@
 
 .combo-box:focused, .combo-box.error:focused,
 .text-field:focused, .text-field.error:focused,
-.password-field:focused, .password-field.error:focused, 
+.password-field:focused, .password-field.error:focused,
 .check-box:selected > .box, .check-box:selected > .box > .mark {
     -fx-border-color: #239df0;
 }
@@ -75,7 +75,12 @@
 }
 
 .tree-view {
-    -fx-border-color: #0d293e;
+    -fx-border-color: transparent;
+}
+
+.tree-view:selected {
+    -fx-border-color: transparent;
+    -fx-border-insets: 0px;
 }
 
 .tree-view .tree-cell:selected {
@@ -91,10 +96,14 @@
 .table-view .check-box:selected > .box > .mark {
     -fx-border-color: #666;
 }
-.table-view .table-row-cell{
+
+.table-view .table-row-cell {
     -fx-pref-height: 28;
 }
 
+.text {
+    -fx-text-fill: #666;
+}
 
 /*.table-view {
     -fx-table-cell-border-color:transparent;

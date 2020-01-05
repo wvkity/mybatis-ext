@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.wkit.lost.mybatis.generator.ui.CustomMadeSelectTableController"
-            prefHeight="-Infinity" prefWidth="-Infinity" maxWidth="-Infinity" maxHeight="-Infinity" stylesheets="@../style/style.css">
-    <TabPane fx:id="tableTabPanel" tabClosingPolicy="UNAVAILABLE" prefHeight="500.0" prefWidth="962.0">
-    </TabPane>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="-Infinity" prefWidth="-Infinity" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wkit.lost.mybatis.generator.ui.CustomMadeSelectTableController">
+    <VBox prefHeight="580.0" prefWidth="962.0">
+        <AnchorPane prefHeight="85.0" prefWidth="960.0">
+            <Text fill="#333333" layoutX="10.0" layoutY="25.0" lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 13px;" text="1. 如果不想生成某一列，请取消勾选对应的列" />
+            <Text fill="#333333" layoutX="10.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 13px;" text="2. 如果要定制列的Java数据类型，编辑属性名、Java类型、导入Java类型或者类型处理器。注意Java类型为基本数据类型时，导入Java类型为空" />
+            <Text fill="#333333" layoutX="10.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 13px;" text="3. 相关列编辑好之后按Enter键保存，然后再点击确认方可生效" />
+        </AnchorPane>
+        <TabPane fx:id="tableTabPanel" prefHeight="475.0" prefWidth="962.0" tabClosingPolicy="UNAVAILABLE">
+        </TabPane>
+        <HBox alignment="CENTER_RIGHT" prefHeight="50.0" spacing="30.0">
+            <Button mnemonicParsing="false" onAction="#cancelChanged" prefWidth="80.0" text="取消">
+                <styleClass>
+                    <String fx:value="button" />
+                    <String fx:value="theme_default" />
+                </styleClass>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#confirmChanged" prefWidth="80.0" text="确定">
+                <styleClass>
+                    <String fx:value="button" />
+                    <String fx:value="theme_success" />
+                </styleClass>
+                <HBox.margin>
+                    <Insets right="30.0" />
+                </HBox.margin>
+            </Button>
+        </HBox>
+    </VBox>
 </AnchorPane>
