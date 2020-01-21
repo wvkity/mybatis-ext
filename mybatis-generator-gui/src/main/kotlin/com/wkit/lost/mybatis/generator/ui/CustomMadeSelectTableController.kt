@@ -32,6 +32,7 @@ class CustomMadeSelectTableController : AbstractController() {
         private const val TABLE_COLUMN_TEXT_PROPERTY_NAME = "属性名"
         private const val TABLE_COLUMN_TEXT_JAVA_TYPE = "Java类型"
         private const val TABLE_COLUMN_TEXT_IMPORT_JAVA_TYPE = "导入Java类型"
+        private const val TABLE_COLUMN_TEXT_COMMENT = "注释"
         private const val TABLE_COLUMN_TEXT_TYPE_HANDLE = "类型处理器"
         private const val TABLE_COLUMN_PROP_CHECKED = "checked"
         private const val TABLE_COLUMN_PROP_NAME = "columnName"
@@ -39,6 +40,7 @@ class CustomMadeSelectTableController : AbstractController() {
         private const val TABLE_COLUMN_PROP_PROPERTY_NAME = "propertyName"
         private const val TABLE_COLUMN_PROP_JAVA_TYPE = "javaType"
         private const val TABLE_COLUMN_PROP_IMPORT_JAVA_TYPE = "importJavaType"
+        private const val TABLE_COLUMN_PROP_COMMENT = "comment"
         private const val TABLE_COLUMN_PROP_TYPE_HANDLE = "typeHandle"
     }
 
@@ -217,6 +219,15 @@ class CustomMadeSelectTableController : AbstractController() {
         importJavaTypeColumn.setOnEditCommit {
             it.tableView.items[it.tablePosition.row].importJavaTypeProperty().set(it.newValue.trim())
         }
+        // 注释
+        val commentColumn = TableColumn<Column, String>(TABLE_COLUMN_TEXT_COMMENT)
+        commentColumn.prefWidth = 180.0
+        commentColumn.isSortable = false
+        commentColumn.cellValueFactory = PropertyValueFactory<Column, String>(TABLE_COLUMN_PROP_COMMENT)
+        commentColumn.cellFactory = TextFieldTableCell.forTableColumn()
+        commentColumn.setOnEditCommit { 
+            it.tableView.items[it.tablePosition.row].commentProperty().set(it.newValue)
+        }
         // 类型处理
         val typeHandleColumn = TableColumn<Column, String>(TABLE_COLUMN_TEXT_TYPE_HANDLE)
         typeHandleColumn.prefWidth = 200.0
@@ -228,7 +239,7 @@ class CustomMadeSelectTableController : AbstractController() {
         }
         // 添加到表格中
         tableView.columns.addAll(checkedColumn, columnNameColumn, jdbcTypeColumn, propertyNameColumn, javaTypeColumn,
-                importJavaTypeColumn, typeHandleColumn)
+                importJavaTypeColumn, commentColumn, typeHandleColumn)
         val columns = FXCollections.observableArrayList(table.columns)
         tableView.items = columns
         return tableView

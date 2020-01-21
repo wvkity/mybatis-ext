@@ -20,6 +20,16 @@ class FileUtil {
          * 斜杠
          */
         val SLASH: String = File.separator
+        
+        fun isDir(filePath: String): Boolean {
+            return File(filePath).takeIf { 
+                it.exists()
+            } ?.run { 
+                this.isDirectory
+            } ?: run {
+                false
+            }
+        }
 
         fun exists(filePath: String?): Boolean {
             return filePath.takeIf {

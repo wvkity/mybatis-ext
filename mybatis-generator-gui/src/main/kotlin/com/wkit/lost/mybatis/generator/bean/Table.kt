@@ -6,10 +6,19 @@ import org.apache.logging.log4j.LogManager
 import java.util.*
 import kotlin.collections.ArrayList
 
-class Table constructor(name: String) {
+/**
+ * 表信息
+ * @param originalTableName 表名
+ * @param originalComment 表注释
+ * @param tablePrefix 表名前缀(忽略大小写，多个使用英文逗号隔开)
+ * @author wvkity
+ */
+class Table constructor(originalTableName: String, originalComment: String, tablePrefix: String, private var originalSchema: String) {
     companion object {
         private val LOG = LogManager.getLogger(Table)
     }
+    
+    private val schema = originalSchema
 
     /**
      * 表名(禁止修改)
@@ -18,7 +27,7 @@ class Table constructor(name: String) {
     /**
      * 表名前缀
      */
-    var prefix = SimpleStringProperty("")
+    private val prefix = SimpleStringProperty("")
     /**
      * 默认类名(禁止修改)
      */
@@ -26,15 +35,15 @@ class Table constructor(name: String) {
     /**
      * 类名
      */
-    var className = SimpleStringProperty("")
+    private val className = SimpleStringProperty("")
     /**
      * 注释
      */
-    var comment = SimpleStringProperty("")
+    private val comment = SimpleStringProperty("")
     /**
      * 作者
      */
-    var author = SimpleStringProperty("")
+    private val author = SimpleStringProperty("")
     /**
      * 列
      */
@@ -49,13 +58,10 @@ class Table constructor(name: String) {
     //////////////
 
     init {
-        // TODO 把表前缀传进来 -- bug -- 2020-01-06 fix
-        this.name.set(name)
-        val initClassName = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, name)
-        this.defaultClassName.set(initClassName)
-        this.classNameOverride = initClassName
-        this.setClassName(initClassName)
-        this.commentOverride = this.getComment()
+        this.name.set(originalTableName)
+        processTablePrefix(originalTableName, tablePrefix)
+        this.commentOverride = originalComment
+        this.comment.set(originalComment)
         this.className.addListener { _, _, newClassName ->
             this.needImportJpa = (newClassName != getDefaultClassName())
         }
@@ -64,10 +70,10 @@ class Table constructor(name: String) {
             // 检查是否为空
             val tableName = getName()
             val realClassName = if (prefixValue.isNullOrBlank()) {
-                CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName)
+                CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName.toLowerCase(Locale.ENGLISH))
             } else {
-                CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL,
-                        tableName.substring(prefixValue.length))
+                CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL,
+                        tableName.substring(prefixValue.length).toLowerCase(Locale.ENGLISH))
             }
             this.defaultClassName.set(realClassName)
             // 对比是否有修改过类名
@@ -78,20 +84,50 @@ class Table constructor(name: String) {
         }
 
         this.tablePrefixBridgeProperty.addListener { _, _, newTablePrefix ->
-            val list = newTablePrefix.split(Regex(",\\s*"))
+            val list = newTablePrefix.trim().split(Regex(",\\s*"))
             if (list.isNotEmpty()) {
                 // 忽略大小写比较表前缀
                 val realTableName = getName().toLowerCase(Locale.ENGLISH)
+                var isMatch = false
                 for (prefixValue in list) {
                     if (realTableName.startsWith(prefixValue.toLowerCase(Locale.ENGLISH))) {
                         this.prefix.set(prefixValue)
+                        isMatch = true
                         break
                     }
+                }
+                // 检查是否匹配，不匹配且有前缀则进行还原
+                if (!isMatch && getPrefix().isNotBlank()) {
+                    this.prefix.set("")
                 }
             } else {
                 this.prefix.set("")
             }
         }
+    }
+
+    private fun processTablePrefix(originalTableName: String, tablePrefix: String) {
+        val array = tablePrefix.trim().split(Regex(",\\s*"))
+        val tableName = array.takeIf { 
+            it.isNotEmpty()
+        } ?.run { 
+            val tableNameTemp = originalTableName.toUpperCase(Locale.ENGLISH)
+            var realTableName = originalTableName
+            for(prefixValue in array) {
+                if (tableNameTemp.startsWith(prefixValue.toUpperCase(Locale.ENGLISH))) {
+                    realTableName = originalTableName.substring(prefixValue.length)
+                    prefix.set(prefixValue)
+                    break
+                }
+            }
+            realTableName
+        } ?: run {
+            originalTableName
+        }
+        val initClassName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName.toLowerCase(Locale.ENGLISH))
+        this.defaultClassName.set(initClassName)
+        this.classNameOverride = initClassName
+        this.setClassName(initClassName)
     }
 
     /**
@@ -162,6 +198,10 @@ class Table constructor(name: String) {
 
     fun setAuthor(author: String) {
         this.author.set(author)
+    }
+    
+    fun getSchema(): String {
+        return this.schema
     }
 
     fun getClassNameValue(): String {

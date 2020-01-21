@@ -21,6 +21,7 @@ class ApplicationRunning : Application() {
         private val LOG = LogManager.getLogger(ApplicationRunning)
         private const val SYS_CONFIG_FILE_NAME = "mybatis_generator.properties"
         private const val SYS_CONFIG_DIR = ".MybatisGenerator/config"
+        private val SYS_CONFIGURATION_CACHE = HashMap<String, String>()
     }
 
     override fun start(stage: Stage) {
@@ -36,14 +37,13 @@ class ApplicationRunning : Application() {
         val controller = fxmlLoader.getController<ApplicationController>()
         controller.primaryStage = stage
         try {
-            val sysConfigurationCache = HashMap<String, String>()
             // 加载系统全局配置
             val classLoader = Thread.currentThread().contextClassLoader
             val sysConfig = PropertiesUtil.loadProperties(classLoader.getResourceAsStream(SYS_CONFIG_FILE_NAME))
             sysConfig.takeIf {
                 it.isNotEmpty()
             }?.run {
-                sysConfigurationCache.putAll(sysConfig)
+                SYS_CONFIGURATION_CACHE.putAll(sysConfig)
             }
             // 加载用户全局配置(用户主目录下)
             val globalFilePath = SystemUtil.userHome() + FileUtil.SLASH + SYS_CONFIG_DIR + FileUtil.SLASH + SYS_CONFIG_FILE_NAME
@@ -54,7 +54,7 @@ class ApplicationRunning : Application() {
                 userGlobalConfig.takeIf {
                     it.isNotEmpty()
                 }?.run {
-                    sysConfigurationCache.putAll(userGlobalConfig)
+                    SYS_CONFIGURATION_CACHE.putAll(userGlobalConfig)
                 }
             }
             // 加载当前jar同级目录下的配置文件
@@ -66,18 +66,20 @@ class ApplicationRunning : Application() {
                 userCustomConfig.takeIf {
                     it.isNotEmpty()
                 }?.run {
-                    sysConfigurationCache.putAll(userCustomConfig)
+                    SYS_CONFIGURATION_CACHE.putAll(userCustomConfig)
                 }
             }
             // 缓存到JdbcJavaTypeMapping类中
-            sysConfigurationCache.takeIf {
+            SYS_CONFIGURATION_CACHE.takeIf {
                 it.isNotEmpty()
             }?.run {
-                for ((jdbcType, javaType) in sysConfigurationCache) {
-                    JdbcJavaTypeRegistrar.register(jdbcType, javaType)
+                for ((key, value) in SYS_CONFIGURATION_CACHE) {
+                    if (!key.contains(".")) {
+                        JdbcJavaTypeRegistrar.register(key, value)
+                    }
                 }
-                this.forEach { (jdbcType, javaType) -> JdbcJavaTypeRegistrar.register(jdbcType, javaType)  }
             }
+            controller.initSysConfig(SYS_CONFIGURATION_CACHE)
         } catch (e: Exception) {
             LOG.error("The load system configuration failed: {}", e.message, e)
         }

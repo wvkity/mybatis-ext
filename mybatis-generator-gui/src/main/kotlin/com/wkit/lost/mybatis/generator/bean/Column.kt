@@ -8,7 +8,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import java.util.*
 
-class Column constructor(var originalColumnName: String, var originalJdbcType: String) {
+class Column constructor(originalColumnName: String, originalJdbcType: String, originalComment: String) {
 
     /**
      * 是否选择
@@ -61,6 +61,7 @@ class Column constructor(var originalColumnName: String, var originalJdbcType: S
     private val defaultJavaType: String
     private val defaultImportJavaType: String
     private val defaultTypeHandle: String = ""
+    private val defaultComment: String
     ///////////////
 
     /////// overrides ///////
@@ -69,6 +70,7 @@ class Column constructor(var originalColumnName: String, var originalJdbcType: S
     private var propertyNameOverride = ""
     private var importJavaTypeOverride = ""
     private var typeHandleOverride = ""
+    private var commentOverride = ""
     ////////////////////////
 
     init {
@@ -83,6 +85,9 @@ class Column constructor(var originalColumnName: String, var originalJdbcType: S
         val propName = transformProperty(originalColumnName)
         defaultPropertyName = propName
         this.propertyName.set(propName)
+        this.setComment(originalComment)
+        this.defaultComment = originalComment
+        this.commentOverride = originalComment
         // 监听值变化处理非必填项，使用旧的值(propertyName, javaType, importJavaType)
         javaType.addListener { _, oldValue, newValue ->
             if (isNotEmpty(newValue)) {
@@ -129,6 +134,7 @@ class Column constructor(var originalColumnName: String, var originalJdbcType: S
         this.javaTypeOverride = getJavaType()
         this.importJavaTypeOverride = getImportJavaType()
         this.typeHandleOverride = getTypeHandle()
+        this.commentOverride = getComment()
     }
 
     /**
@@ -140,6 +146,7 @@ class Column constructor(var originalColumnName: String, var originalJdbcType: S
         this.propertyNameRollback()
         this.importJavaTypeRollback()
         this.typeHandleRollback()
+        this.commentRollback()
     }
 
     private fun checkedRollback() {
@@ -161,10 +168,14 @@ class Column constructor(var originalColumnName: String, var originalJdbcType: S
     private fun typeHandleRollback() {
         this.typeHandle.set(getTypeHandleValue())
     }
+    
+    private fun commentRollback() {
+        this.comment.set(getCommentValue())
+    }
 
     private fun getCheckedValue(): Boolean {
         return this.checkedOverride.takeIf {
-            it.isBlank()
+            it.isEmpty()
         }?.run {
             defaultChecked
         } ?: run {
@@ -211,6 +222,16 @@ class Column constructor(var originalColumnName: String, var originalJdbcType: S
             typeHandleOverride
         }
     }
+    
+    private fun getCommentValue(): String {
+        return this.commentOverride.takeIf { 
+            it.isBlank()
+        } ?.run {
+            defaultComment
+        } ?: run {
+            commentOverride
+        }
+    }
 
     fun getDefaultPropertyName(): String {
         return this.defaultPropertyName
@@ -231,6 +252,11 @@ class Column constructor(var originalColumnName: String, var originalJdbcType: S
     fun getDefaultTypeHandle(): String {
         return this.defaultTypeHandle
     }
+    
+    fun getDefaultComment(): String {
+        return this.defaultComment
+    }
+    
 
     fun getChecked(): Boolean {
         return this.checked.get()

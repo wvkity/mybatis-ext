@@ -81,7 +81,7 @@
                         </rowConstraints>
                         <Label text="项目所在目录(选填):" />
                         <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.valignment="CENTER">
-                            <TextField fx:id="projectFolder" prefHeight="27.0" prefWidth="668.0" promptText="D:\eclipse\workspace\example" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <TextField fx:id="projectFolder" prefHeight="27.0" prefWidth="668.0" promptText="D:\eclipse\workspace\example" text="/datas/workspaces/temp_project" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                 <GridPane.margin>
                                     <Insets left="5.0" />
                                 </GridPane.margin>
@@ -109,7 +109,7 @@
                                     <Insets right="5.0" />
                                 </HBox.margin>
                             </TextField>
-                            <Button fx:id="customMade" visible="false" mnemonicParsing="false" prefHeight="25.0" prefWidth="55.0" text="定制">
+                            <Button fx:id="customMade" mnemonicParsing="false" prefHeight="25.0" prefWidth="55.0" text="定制" visible="false">
                                 <styleClass>
                                     <String fx:value="button" />
                                     <String fx:value="theme_default" />
@@ -190,17 +190,17 @@
                             <ComboBox fx:id="needPrimaryKeyType" prefHeight="27.0" prefWidth="279.0">
                                 <items>
                                     <FXCollections fx:factory="observableArrayList">
-                                        <String fx:value="UNKNOWN" />
+                                        <String fx:value="NONE" />
                                         <String fx:value="JDBC" />
                                         <String fx:value="UUID" />
                                         <String fx:value="IDENTITY" />
                                         <String fx:value="SEQUENCE" />
-                                        <String fx:value="SNOWFLAKE_SEQUENCE" />
-                                        <String fx:value="SNOWFLAKE_SEQUENCE_STRING" />
+                                        <String fx:value="WORKER_SEQUENCE" />
+                                        <String fx:value="WORKER_SEQUENCE_STRING" />
                                     </FXCollections>
                                 </items>
                                 <value>
-                                    <String fx:value="UNKNOWN" />
+                                    <String fx:value="NONE" />
                                 </value>
                             </ComboBox>
                             <GridPane.margin>
@@ -220,7 +220,7 @@
                         </HBox>
                         <Label text="Base包名(选填):" GridPane.rowIndex="6" />
                         <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="6" GridPane.valignment="CENTER">
-                            <TextField fx:id="rootTargetPackage" prefHeight="27.0" prefWidth="279.0" promptText="com.{moduleName}" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                            <TextField fx:id="rootTargetPackage" prefHeight="27.0" prefWidth="279.0" promptText="com.{ModuleName}" text="com.{ModuleName}" GridPane.columnIndex="1" GridPane.rowIndex="6">
                                 <GridPane.margin>
                                     <Insets left="5.0" />
                                 </GridPane.margin>
@@ -297,7 +297,7 @@
                         </HBox>
                         <Label text="DTO类包名(选填):" GridPane.rowIndex="10" />
                         <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="10" GridPane.valignment="CENTER">
-                            <TextField fx:id="dtoEntityClassName" prefHeight="27.0" prefWidth="279.0" promptText="{BasePackage}.dto" text="{BasePackage}.dto" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                            <TextField fx:id="dtoEntityTargetPackage" prefHeight="27.0" prefWidth="279.0" promptText="{BasePackage}.dto" text="{BasePackage}.dto" GridPane.columnIndex="1" GridPane.rowIndex="10">
                                 <GridPane.margin>
                                     <Insets left="5.0" />
                                 </GridPane.margin>
@@ -308,7 +308,7 @@
                         </HBox>
                         <Label alignment="CENTER_RIGHT" text="DTO类名(选填):" GridPane.columnIndex="3" GridPane.rowIndex="10" />
                         <HBox alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="10" GridPane.valignment="CENTER">
-                            <TextField fx:id="dtoEntityTargetPackage" prefHeight="27.0" prefWidth="279.0" promptText="{Entity}DTO" text="{Entity}DTO" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                            <TextField fx:id="dtoEntityClassName" prefHeight="27.0" prefWidth="279.0" promptText="{Entity}DTO" text="{Entity}DTO" GridPane.columnIndex="1" GridPane.rowIndex="10">
                                 <GridPane.margin>
                                     <Insets left="5.0" />
                                 </GridPane.margin>
@@ -454,12 +454,14 @@
                             <ComboBox fx:id="jpaAnnotationChoice" prefHeight="27.0" prefWidth="279.0">
                                 <items>
                                     <FXCollections fx:factory="observableArrayList">
-                                        <String fx:value="内置" />
-                                        <String fx:value="其他(JAVAX)" />
+                                        <String fx:value="BuiltIn" />
+                                        <String fx:value="MybatisPlus" />
+                                        <String fx:value="Persistence" />
+                                        <String fx:value="NONE" />
                                     </FXCollections>
                                 </items>
                                 <value>
-                                    <String fx:value="内置" />
+                                    <String fx:value="BuiltIn" />
                                 </value>
                             </ComboBox>
                             <GridPane.margin>
@@ -534,7 +536,7 @@
                     </GridPane>
                 </VBox>
                 <!-- Other options panel S -->
-                <VBox fx:id="otherOptionsPanel" managed="false" prefHeight="160.0" prefWidth="Infinity" style="-fx-border-width: 1px 1px 1px 1px;-fx-border-color: #3bb4f2;-fx-border-insets: 0;-fx-background-insets: 0;-fx-background-color: #f3f4f6;-fx-translate-y: 165px;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                <VBox fx:id="otherOptionsPanel" visible="false" managed="false" prefHeight="160.0" prefWidth="Infinity" style="-fx-border-width: 1px 1px 1px 1px;-fx-border-color: #3bb4f2;-fx-border-insets: 0;-fx-background-insets: 0;-fx-background-color: #f3f4f6;-fx-translate-y: 200px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <BorderPane>
                         <top>
                             <AnchorPane prefHeight="30.0" prefWidth="Infinity" style="-fx-background-color: #3bb4f2;-fx-border-color: #3bb4f2;-fx-border-width: 0 0 1px 0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
@@ -560,18 +562,19 @@
                             </AnchorPane>
                         </top>
                         <bottom>
-                            <AnchorPane prefHeight="130.0" prefWidth="788.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                            <AnchorPane prefHeight="130.0" prefWidth="Infinity" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                 <VBox>
-                                    <GridPane>
+                                    <GridPane prefHeight="163.0" prefWidth="890.0">
                                         <columnConstraints>
-                                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="170.0" minWidth="56.0" prefWidth="87.0" />
-                                            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="700.0" minWidth="10.0" prefWidth="218.0" />
-                                            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="700.0" minWidth="70.0" prefWidth="111.0" />
-                                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="700.0" minWidth="10.0" prefWidth="108.0" />
-                                            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="700.0" minWidth="10.0" prefWidth="158.0" />
+                                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="170.0" minWidth="56.0" prefWidth="68.0" />
+                                            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="700.0" minWidth="10.0" prefWidth="227.0" />
+                                            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="700.0" minWidth="70.0" prefWidth="152.0" />
+                                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="700.0" minWidth="10.0" prefWidth="101.0" />
+                                            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="700.0" minWidth="10.0" prefWidth="201.0" />
                                             <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="688.0" minWidth="10.0" prefWidth="140.0" />
                                         </columnConstraints>
                                         <rowConstraints>
+                                            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -586,7 +589,7 @@
                                         <!-- ROW 2-->
                                         <CheckBox fx:id="needDaoInterface" mnemonicParsing="false" selected="true" text="生成DAO接口" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                         <CheckBox fx:id="overrideXml" mnemonicParsing="false" selected="true" text="覆盖原XML文件" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-                                        <CheckBox fx:id="propertyMappingRemoveIsPrefix" mnemonicParsing="false" selected="true" text="列名以is前缀开头，类属性映射自动去除前缀" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                                        <CheckBox fx:id="propertyMappingRemoveIsPrefix" mnemonicParsing="false" selected="true" text="列名以is前缀开头，Boolean类型属性自动去除前缀" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                                         <!-- ROW 3-->
                                         <CheckBox fx:id="needServiceInterface" mnemonicParsing="false" selected="true" text="生成Service接口" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                         <CheckBox fx:id="useLombokPlugin" mnemonicParsing="false" selected="true" text="使用Lombok插件" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
@@ -597,12 +600,15 @@
                                         <CheckBox fx:id="needToStringHashCodeEquals" mnemonicParsing="false" selected="true" text="生成toString/hashCode/equals方法" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="3" />
                                         <!-- ROW 5-->
                                         <CheckBox fx:id="entityUseSwaggerAnnotation" mnemonicParsing="false" text="Entity添加Swagger注解" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                        <CheckBox fx:id="entityUseJpaAnnotation" mnemonicParsing="false" selected="true" text="Entity使用JPA注解" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                                        <CheckBox fx:id="dtoUseSwaggerAnnotation" mnemonicParsing="false" selected="true" text="DTO添加Swagger注解" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4" />
                                         <CheckBox fx:id="useDtoAsReturnValue" mnemonicParsing="false" selected="true" text="DTO作为查询返回值(泛型)" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="4" />
                                         <!-- ROW 6-->
-                                        <CheckBox fx:id="dtoUseSwaggerAnnotation" mnemonicParsing="false" selected="true" text="DTO添加Swagger注解" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                        <CheckBox fx:id="entityUseJpaAnnotation" mnemonicParsing="false" selected="true" text="Entity使用JPA注解" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
                                         <CheckBox fx:id="entityImplSerializable" mnemonicParsing="false" selected="true" text="Entity实现Serializable接口" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="5" />
                                         <CheckBox fx:id="dtoImplSerializable" mnemonicParsing="false" selected="true" text="DTO实现Serializable接口" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+                                        <!-- ROW 7-->
+                                        <CheckBox fx:id="needStaticPropVariable" mnemonicParsing="false" text="Entity生成静态属性名常量" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+                                        <CheckBox fx:id="dynamicCreateSerialUID" mnemonicParsing="false" selected="true" text="动态创建serialVersionUID" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="6" />
                                     </GridPane>
                                 </VBox>
                             </AnchorPane>

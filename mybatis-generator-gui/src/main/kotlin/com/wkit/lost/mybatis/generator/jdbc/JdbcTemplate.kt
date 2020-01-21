@@ -17,6 +17,16 @@ class JdbcTemplate {
     companion object {
         private val LOG = LogManager.getLogger(JdbcTemplate)
 
+        fun resultSet(connection: Connection, sql: String, vararg args: Any?): ResultSet {
+            val sm = connection.prepareStatement(sql)
+            if (args.isNotEmpty()) {
+                for ((i, v) in args.withIndex()) {
+                    sm.setObject((i + 1), v)
+                }
+            }
+            return sm.executeQuery()
+        }
+
         /**
          * 查询操作
          * @param connection 数据库连接对象
@@ -24,7 +34,7 @@ class JdbcTemplate {
          * @param args 参数
          */
         fun query(connection: Connection, sql: String, vararg args: Any?): MutableMap<String, Any?>? {
-            val result = select(connection, sql, args)
+            val result = select(connection, sql, *args)
             return if (result.isEmpty()) {
                 null
             } else {
@@ -80,7 +90,6 @@ class JdbcTemplate {
             var statement: PreparedStatement? = null
             var resultSet: ResultSet? = null
             val result = ArrayList<MutableMap<String, Any?>>()
-            LOG.info("The SQL statement executed: $sql")
             try {
                 statement = connection.prepareStatement(sql)
                 if (args.isNotEmpty()) {
@@ -117,7 +126,6 @@ class JdbcTemplate {
          */
         fun update(connection: Connection, sql: String, vararg args: Any?): Int {
             var statement: PreparedStatement? = null
-            LOG.info("The SQL statement executed: $sql")
             try {
                 statement = connection.prepareStatement(sql)
                 return if (args.isEmpty()) {

@@ -4,9 +4,13 @@ import com.alibaba.fastjson.JSON
 import com.wkit.lost.mybatis.generator.bean.ConnectionConfig
 import com.wkit.lost.mybatis.generator.bean.GeneratorConfig
 import com.wkit.lost.mybatis.generator.bean.Table
+import com.wkit.lost.mybatis.generator.code.CodeGenerator
+import com.wkit.lost.mybatis.generator.code.bean.Column
 import com.wkit.lost.mybatis.generator.constants.*
 import com.wkit.lost.mybatis.generator.jdbc.LocalDataSource
 import com.wkit.lost.mybatis.generator.utils.DatabaseUtil
+import com.wkit.lost.mybatis.generator.utils.FileUtil
+import com.wkit.lost.mybatis.generator.utils.SystemUtil
 import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.value.ObservableValue
@@ -34,6 +38,8 @@ class ApplicationController : AbstractController() {
         private val LOG = LogManager.getLogger(ApplicationController)
         private const val MOUSE_EVENT_DOUBLE_CLICK = 2
         private val tableObservable = FXCollections.observableArrayList<Table>()
+        private val SYS_CONFIG_CACHE = HashMap<String, String>()
+        private val NEW_LINE = System.getProperty("line.separator")
     }
 
     /**
@@ -370,6 +376,18 @@ class ApplicationController : AbstractController() {
     lateinit var dtoUseSwaggerAnnotation: CheckBox
 
     /**
+     * 实体类生成静态常量属性
+     */
+    @FXML
+    lateinit var needStaticPropVariable: CheckBox
+
+    /**
+     * 动态创建SerialVersionUID
+     */
+    @FXML
+    lateinit var dynamicCreateSerialUID: CheckBox
+
+    /**
      * 数据库连接列表
      */
     @FXML
@@ -383,6 +401,37 @@ class ApplicationController : AbstractController() {
      * 选中表缓存
      */
     private val selectTableCache = SimpleListProperty<Table>(tableObservable)
+
+    fun initSysConfig(configCache: MutableMap<String, String>) {
+        if (SYS_CONFIG_CACHE.isEmpty()) {
+            SYS_CONFIG_CACHE.putAll(configCache)
+        }
+    }
+
+    /**
+     * 获取生成class文件目录
+     */
+    fun getCompileDir(): String {
+        val dir = getConfigValue("java.binDir")
+        return if (dir.isNullOrBlank()) {
+            SystemUtil.userHome() + FileUtil.SLASH + ".MybatisGenerator" + FileUtil.SLASH + "compile" + FileUtil.SLASH
+        } else {
+            dir
+        }
+    }
+
+    fun getExtDir(): String {
+        val dir = getConfigValue("java.extDirs")
+        if (dir.isNullOrBlank()) {
+            return System.getProperty("java.class.path") + FileUtil.SLASH
+        } else {
+            return dir
+        }
+    }
+
+    fun getConfigValue(key: String): String? {
+        return SYS_CONFIG_CACHE[key]
+    }
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         try {
@@ -558,13 +607,12 @@ class ApplicationController : AbstractController() {
         treeItem?.run {
             val imageView = treeItem.graphic as ImageView
             val connectionConfig = getConfig(treeItem)
-            // 获取数据库名称
             connectionConfig?.run {
-                val tables = DatabaseUtil.getTables(connectionConfig, treeItem.value)
+                val tables = DatabaseUtil.getTables(connectionConfig, treeItem.value, tableNamePrefix.text)
                 buildTreeItemChild(treeItem, tables, TreeItemIcon.TABLE.icon, TreeItemNodeLevel.TABLE.value)
                 imageView.image = buildSmallIcon(TreeItemIcon.DB.icon)
                 // 添加监听
-                tables.forEach { 
+                tables.forEach {
                     tableNamePrefixTempVariable.bindBidirectional(it.getTablePrefixBridgeProperty())
                 }
                 treeItemExpandedToggle(treeItem)
@@ -604,7 +652,6 @@ class ApplicationController : AbstractController() {
                     treeItem.isExpanded = false
                 }
                 table.columns = columns
-                LOG.info("table column info: {}", JSON.toJSONString(table, true))
             }
         }
     }
@@ -847,6 +894,22 @@ class ApplicationController : AbstractController() {
         closeMenuItem.isVisible = false
         closeMenuItem.setOnAction {
             try {
+                val children = treeItem.children
+                children.takeIf {
+                    it.isNotEmpty()
+                }?.run {
+                    this.forEach {
+                        val userData = userData(it)
+                        if (userData.isNotEmpty()) {
+                            userData[TreeItemCacheKey.TABLE.key].takeIf { tableBean ->
+                                tableBean != null && tableBean is Table
+                            }?.run {
+                                // 解除双向绑定
+                                tableNamePrefixTempVariable.unbindBidirectional((this as Table).getTablePrefixBridgeProperty())
+                            }
+                        }
+                    }
+                }
                 treeItem.children.clear()
                 (treeItem.graphic as ImageView).image = buildSmallIcon(TreeItemIcon.DB_CLOSE.icon)
                 treeItemExpandedToggle(treeItem)
@@ -1329,12 +1392,76 @@ class ApplicationController : AbstractController() {
             val validateResult = validateGenerateConfig()
             if (validateResult) {
                 val config = extractGeneratorConfig()
-                LOG.info("{}", JSON.toJSONString(config))
-                LOG.info("Table info => {}", JSON.toJSONString(this.selectTableCache, true))
+                // 检查是否为文件夹
+                val isEmpty = config.projectFolder.isBlank()
+                if (isEmpty || FileUtil.isDir(config.projectFolder)) {
+                    removeError(this.projectFolder)
+                    // 判断路径是否为空
+                    if (isEmpty) {
+                        // 获取当前路径
+                        config.projectFolder = SystemUtil.userDir()
+                    }
+                    config.binDir = getCompileDir()
+                    config.extDirs = getExtDir()
+                    val generator = CodeGenerator(config, dataTransform(selectTableCache, config))
+                    // 生成代码
+                    generator.generateCode()
+                    LOG.info("Code generator info => {}", JSON.toJSONString(config, true))
+                    println("==========================")
+                    LOG.info("Table info => {}", JSON.toJSONString(this.selectTableCache, true))
+                } else {
+                    error(this.projectFolder)
+                }
             }
         } catch (e: Exception) {
             LOG.error("Source code generation failed: {}", e.message, e)
         }
+    }
+
+    private fun dataTransform(selectTables: List<Table>, config: GeneratorConfig): List<com.wkit.lost.mybatis.generator.code.bean.Table> {
+        val tables = ArrayList<com.wkit.lost.mybatis.generator.code.bean.Table>()
+        selectTables.forEach {
+            val table = com.wkit.lost.mybatis.generator.code.bean.Table(it.getClassName(), it.getName(),
+                    it.getAuthor(), it.getComment())
+            table.schema = it.getSchema()
+            val columns = ArrayList<Column>()
+            it.columns.forEach { col ->
+                if (col.getChecked()) {
+                    val column = Column(col.getColumnName(), col.getPropertyName(), col.getDefaultPropertyName(),
+                            col.getJdbcType(), col.getJavaType(), col.getImportJavaType(),
+                            col.isPrimary(), col.getComment(), col.getTypeHandle())
+                    if (col.isPrimary()) {
+                        column.primaryKey = config.primaryKey
+                        table.hasPrimaryKey = true
+                    }
+                    table.addImportJavaType(col.getImportJavaType())
+                    if (col.getTypeHandle().isNotBlank()) {
+                        column.typeHandlerClass = col.getTypeHandle() + ".class"
+                    }
+                    if (config.entityUseJpaAnnotation) {
+                        if (config.useSystemJpa()) {
+                            if (col.getPropertyName() != col.getDefaultPropertyName()) {
+                                table.addAnnotationJavaType("com.wkit.lost.mybatis.annotation.Column")
+                            }
+                            if (col.getTypeHandle().isNotBlank()) {
+                                table.addAnnotationJavaType("com.wkit.lost.mybatis.annotation.ColumnExt")
+                            }
+                        } else if (config.usePersistenceJpa()) {
+                            if (col.getPropertyName() != col.getDefaultPropertyName()) {
+                                table.addAnnotationJavaType("javax.persistence.Column")
+                            }
+                            if (col.getTypeHandle().isNotBlank()) {
+                                table.addAnnotationJavaType("com.wkit.lost.mybatis.annotation.ColumnExt")
+                            }
+                        }
+                    }
+                    columns.add(column)
+                }
+            }
+            table.columns = columns
+            tables.add(table)
+        }
+        return tables
     }
 
     private fun extractGeneratorConfig(): GeneratorConfig {
@@ -1349,6 +1476,7 @@ class ApplicationController : AbstractController() {
         config.testCodeTargetFolder = testCodeTargetFolder.text
         config.resourcesTargetFolder = resourcesTargetFolder.text
         config.rootTargetPackage = rootTargetPackage.text
+        config.baseEntity = baseEntity.text
         config.baseDaoInterface = baseDaoInterface.text
         config.baseServiceInterface = baseServiceInterface.text
         config.baseServiceImpl = baseServiceImpl.text
@@ -1388,6 +1516,8 @@ class ApplicationController : AbstractController() {
         config.entityUseJpaAnnotation = entityUseJpaAnnotation.isSelected
         config.entityUseSwaggerAnnotation = entityUseSwaggerAnnotation.isSelected
         config.dtoUseSwaggerAnnotation = dtoUseSwaggerAnnotation.isSelected
+        config.needStaticPropVariable = needStaticPropVariable.isSelected
+        config.dynamicCreateSerialUID = dynamicCreateSerialUID.isSelected
         return config
     }
     ///////////////////////////////////////
