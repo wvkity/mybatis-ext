@@ -48,16 +48,6 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
     }
 
     /**
-     * 获取执行方法
-     * @param ms {@link MappedStatement}
-     * @return 方法名
-     */
-    protected String execMethod( MappedStatement ms ) {
-        String msId = ms.getId();
-        return msId.substring( msId.lastIndexOf( "." ) + 1 );
-    }
-
-    /**
      * 获取表映射信息对象
      * @param parameter 参数
      * @return 表对象

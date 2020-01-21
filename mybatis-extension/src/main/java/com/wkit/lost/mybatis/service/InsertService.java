@@ -18,5 +18,5 @@ interface InsertService<T> {
      * @param entity 待保存对象
      * @return 受影响行数
      */
-    int saveSelective( final T entity );
+    int insertNotWithNull( final T entity );
 }

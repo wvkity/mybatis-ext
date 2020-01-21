@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.config;
 
 import com.wkit.lost.mybatis.plugins.data.auditing.MetadataAuditingInterceptor;
-import com.wkit.lost.mybatis.plugins.locker.OptimisticLockerInterceptor;
+import com.wkit.lost.mybatis.plugins.locking.OptimisticLockingInterceptor;
 import com.wkit.lost.mybatis.plugins.paging.LimitInterceptor;
 import com.wkit.lost.mybatis.plugins.paging.PageableInterceptor;
 
@@ -12,9 +12,9 @@ import com.wkit.lost.mybatis.plugins.paging.PageableInterceptor;
  *     <li>{@link Plugin#PAGEABLE}: {@link PageableInterceptor}</li>
  *     <li>{@link Plugin#LIMIT}: {@link LimitInterceptor}</li>
  *     <li>{@link Plugin#META_DATA_AUDIT}: {@link MetadataAuditingInterceptor}</li>
- *     <li>{@link Plugin#OPTIMISTIC_LOCKER}: {@link OptimisticLockerInterceptor}</li>
+ *     <li>{@link Plugin#OPTIMISTIC_LOCKING}: {@link OptimisticLockingInterceptor}</li>
  * </ul>
- * <p>建议注册顺序：{@link Plugin#META_DATA_AUDIT} > {@link Plugin#OPTIMISTIC_LOCKER} >
+ * <p>建议注册顺序：{@link Plugin#META_DATA_AUDIT} > {@link Plugin#OPTIMISTIC_LOCKING} >
  * {@link Plugin#PAGEABLE} > {@link Plugin#LIMIT}</p>
  * @author wvkity
  */
@@ -38,5 +38,5 @@ public enum Plugin {
     /**
      * 乐观锁插件
      */
-    OPTIMISTIC_LOCKER
+    OPTIMISTIC_LOCKING
 }

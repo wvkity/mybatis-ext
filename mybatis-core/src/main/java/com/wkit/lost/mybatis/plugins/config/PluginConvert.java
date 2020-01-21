@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.plugins.config;
 import com.wkit.lost.mybatis.config.Plugin;
 import com.wkit.lost.mybatis.plugins.data.auditing.MetadataAuditingInterceptor;
 import com.wkit.lost.mybatis.plugins.paging.LimitInterceptor;
-import com.wkit.lost.mybatis.plugins.locker.OptimisticLockerInterceptor;
+import com.wkit.lost.mybatis.plugins.locking.OptimisticLockingInterceptor;
 import com.wkit.lost.mybatis.plugins.paging.PageableInterceptor;
 import org.apache.ibatis.plugin.Interceptor;
 
@@ -27,7 +27,7 @@ public final class PluginConvert {
         PLUGIN_MAPPING_CACHE.put( Plugin.PAGEABLE, PageableInterceptor.class );
         PLUGIN_MAPPING_CACHE.put( Plugin.LIMIT, LimitInterceptor.class );
         PLUGIN_MAPPING_CACHE.put( Plugin.META_DATA_AUDIT, MetadataAuditingInterceptor.class );
-        PLUGIN_MAPPING_CACHE.put( Plugin.OPTIMISTIC_LOCKER, OptimisticLockerInterceptor.class );
+        PLUGIN_MAPPING_CACHE.put( Plugin.OPTIMISTIC_LOCKING, OptimisticLockingInterceptor.class );
     }
 
     /**

@@ -10,25 +10,25 @@ import com.wkit.lost.mybatis.sql.injector.methods.Exists;
 import com.wkit.lost.mybatis.sql.injector.methods.ExistsByCriteria;
 import com.wkit.lost.mybatis.sql.injector.methods.ExistsByPrimaryKey;
 import com.wkit.lost.mybatis.sql.injector.methods.Insert;
-import com.wkit.lost.mybatis.sql.injector.methods.InsertSelective;
+import com.wkit.lost.mybatis.sql.injector.methods.InsertNotWithNull;
 import com.wkit.lost.mybatis.sql.injector.methods.List;
 import com.wkit.lost.mybatis.sql.injector.methods.ListByCriteria;
 import com.wkit.lost.mybatis.sql.injector.methods.ListByEntities;
 import com.wkit.lost.mybatis.sql.injector.methods.ListByEntity;
-import com.wkit.lost.mybatis.sql.injector.methods.ListForArray;
-import com.wkit.lost.mybatis.sql.injector.methods.ListForMap;
-import com.wkit.lost.mybatis.sql.injector.methods.ListForObject;
+import com.wkit.lost.mybatis.sql.injector.methods.ArrayList;
+import com.wkit.lost.mybatis.sql.injector.methods.MapList;
+import com.wkit.lost.mybatis.sql.injector.methods.ObjectList;
 import com.wkit.lost.mybatis.sql.injector.methods.LogicDelete;
 import com.wkit.lost.mybatis.sql.injector.methods.LogicDeleteByCriteria;
-import com.wkit.lost.mybatis.sql.injector.methods.MixinUpdateSelective;
+import com.wkit.lost.mybatis.sql.injector.methods.MixinUpdateNotWithNull;
 import com.wkit.lost.mybatis.sql.injector.methods.PageableList;
 import com.wkit.lost.mybatis.sql.injector.methods.PageableListByCriteria;
 import com.wkit.lost.mybatis.sql.injector.methods.SelectOne;
 import com.wkit.lost.mybatis.sql.injector.methods.Update;
 import com.wkit.lost.mybatis.sql.injector.methods.UpdateByCriteria;
-import com.wkit.lost.mybatis.sql.injector.methods.UpdateOfNoLock;
-import com.wkit.lost.mybatis.sql.injector.methods.UpdateSelective;
-import com.wkit.lost.mybatis.sql.injector.methods.UpdateSelectiveOfNoLock;
+import com.wkit.lost.mybatis.sql.injector.methods.UpdateNotWithLocking;
+import com.wkit.lost.mybatis.sql.injector.methods.UpdateNotWithNull;
+import com.wkit.lost.mybatis.sql.injector.methods.UpdateNotWithNullAndLocking;
 import com.wkit.lost.mybatis.sql.method.Method;
 
 import java.util.Collection;
@@ -54,21 +54,21 @@ public class DefaultSqlInjector extends AbstractSqlInjector {
                 new ListByEntity(),
                 new ListByEntities(),
                 new ListByCriteria(),
-                new ListForObject(),
-                new ListForArray(),
-                new ListForMap(),
+                new ObjectList(),
+                new ArrayList(),
+                new MapList(),
                 new PageableList(),
                 new PageableListByCriteria(),
                 // 保存
                 new Insert(),
-                new InsertSelective(),
+                new InsertNotWithNull(),
                 // 修改
                 new Update(),
-                new UpdateSelective(),
-                new MixinUpdateSelective(),
+                new UpdateNotWithNull(),
+                new MixinUpdateNotWithNull(),
                 new UpdateByCriteria(),
-                new UpdateOfNoLock(),
-                new UpdateSelectiveOfNoLock(),
+                new UpdateNotWithLocking(),
+                new UpdateNotWithNullAndLocking(),
                 // 删除
                 new Delete(),
                 new DeleteByPrimaryKey(),

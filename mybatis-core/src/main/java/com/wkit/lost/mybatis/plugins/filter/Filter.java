@@ -7,7 +7,6 @@ import org.apache.ibatis.mapping.MappedStatement;
  * 过滤器
  * @author wvkity
  */
-@FunctionalInterface
 public interface Filter {
 
     /**
@@ -15,7 +14,9 @@ public interface Filter {
      * @param arg 参数对象
      * @return boolean
      */
-    boolean filter( Argument arg );
+    default boolean filter( Argument arg ) {
+        return false;
+    }
 
     /**
      * 过滤

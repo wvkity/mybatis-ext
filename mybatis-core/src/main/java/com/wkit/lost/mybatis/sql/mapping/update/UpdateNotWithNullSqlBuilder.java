@@ -12,7 +12,7 @@ import java.util.Set;
  * 根据指定对象更新记录SQL构建器
  * @author wvkity
  */
-public class UpdateSelectiveSqlBuilder extends AbstractSqlBuilder {
+public class UpdateNotWithNullSqlBuilder extends AbstractSqlBuilder {
 
     @Override
     public String build() {

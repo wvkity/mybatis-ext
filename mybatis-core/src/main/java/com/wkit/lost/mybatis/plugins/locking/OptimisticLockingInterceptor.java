@@ -1,6 +1,6 @@
-package com.wkit.lost.mybatis.plugins.locker;
+package com.wkit.lost.mybatis.plugins.locking;
 
-import com.wkit.lost.mybatis.plugins.executor.OptimisticLockerExecutor;
+import com.wkit.lost.mybatis.plugins.processor.Processor;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.Interceptor;
@@ -18,13 +18,13 @@ import java.util.Properties;
 @Intercepts( {
         @Signature( type = Executor.class, method = "update", args = { MappedStatement.class, Object.class } )
 } )
-public class OptimisticLockerInterceptor implements Interceptor {
+public class OptimisticLockingInterceptor implements Interceptor {
     
-    private final OptimisticLockerExecutor executor = new OptimisticLockerExecutor();
+    private final Processor processor = new OptimisticLockingProcessor();
 
     @Override
     public Object intercept( Invocation invocation ) throws Throwable {
-        return executor.intercept( invocation );
+        return processor.intercept( invocation );
     }
 
     @Override
@@ -34,6 +34,6 @@ public class OptimisticLockerInterceptor implements Interceptor {
 
     @Override
     public void setProperties( Properties properties ) {
-        // ignore
+        processor.setProperties( properties );
     }
 }

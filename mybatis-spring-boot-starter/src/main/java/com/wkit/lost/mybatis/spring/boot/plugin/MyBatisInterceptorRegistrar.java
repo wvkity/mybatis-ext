@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.spring.boot.plugin;
 import com.wkit.lost.mybatis.config.Plugin;
 import com.wkit.lost.mybatis.plugins.config.PluginConvert;
 import com.wkit.lost.mybatis.plugins.paging.LimitInterceptor;
-import com.wkit.lost.mybatis.plugins.locker.OptimisticLockerInterceptor;
+import com.wkit.lost.mybatis.plugins.locking.OptimisticLockingInterceptor;
 import com.wkit.lost.mybatis.plugins.paging.PageableInterceptor;
 import com.wkit.lost.mybatis.spring.boot.registry.AbstractBeanDefinitionRegistry;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
@@ -21,7 +21,7 @@ import java.util.Set;
  * 注册系统提供的插件
  * <ul>
  *     <li>自动填充值插件: {@link MetaObjectFillingInterceptor}</li>
- *     <li>乐观锁插件: {@link OptimisticLockerInterceptor}</li>
+ *     <li>乐观锁插件: {@link OptimisticLockingInterceptor}</li>
  *     <li>常规分页插件: {@link PageableInterceptor}</li>
  *     <li>范围查询插件: {@link LimitInterceptor}</li>
  * </ul>

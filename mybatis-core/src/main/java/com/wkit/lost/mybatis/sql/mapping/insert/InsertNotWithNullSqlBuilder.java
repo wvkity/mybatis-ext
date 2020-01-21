@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * 保存记录SQL构建器
  * @author wvkity
  */
-public class InsertSelectiveSqlBuilder extends AbstractSqlBuilder {
+public class InsertNotWithNullSqlBuilder extends AbstractSqlBuilder {
 
     @Override
     public String build() {

@@ -41,8 +41,8 @@ public abstract class AbstractServiceExecutorCallable<Executor extends MapperExe
 
     @Transactional( rollbackFor = Exception.class )
     @Override
-    public int saveSelective( T entity ) {
-        return this.executor.insertSelective( entity );
+    public int insertNotWithNull( T entity ) {
+        return this.executor.insertNotWithNull( entity );
     }
 
     @Transactional( rollbackFor = Exception.class )
@@ -65,38 +65,38 @@ public abstract class AbstractServiceExecutorCallable<Executor extends MapperExe
 
     @Transactional( rollbackFor = Exception.class )
     @Override
-    public int updateSelective( T entity ) {
+    public int updateNotWithNull( T entity ) {
         if ( entity == null ) {
             throw new MyBatisException( "The specified object parameter cannot be null" );
         }
-        return executor.updateSelective( entity );
+        return executor.updateNotWithNull( entity );
     }
 
     @Transactional( rollbackFor = Exception.class )
     @Override
-    public int updateSelective( T entity, Criteria<T> criteria ) {
+    public int updateNotWithNull( T entity, Criteria<T> criteria ) {
         if ( entity == null ) {
             throw new MyBatisException( "The specified object parameter cannot be null" );
         }
-        return executor.mixinUpdateSelective( entity, criteria.enableAlias( false ) );
+        return executor.mixinUpdateNotWithNull( entity, criteria.enableAlias( false ) );
     }
 
     @Transactional( rollbackFor = Exception.class )
     @Override
-    public int updateOfNoLock( T entity ) {
+    public int updateNotWithLocking( T entity ) {
         if ( entity == null ) {
             throw new MyBatisException( "The specified object parameter cannot be null" );
         }
-        return executor.updateOfNoLock( entity );
+        return executor.updateNotWithLocking( entity );
     }
 
     @Transactional( rollbackFor = Exception.class )
     @Override
-    public int updateSelectiveOfNoLock( T entity ) {
+    public int updateNotWithNullAndLocking( T entity ) {
         if ( entity == null ) {
             throw new MyBatisException( "The specified object parameter cannot be null" );
         }
-        return executor.updateSelectiveOfNoLock( entity );
+        return executor.updateNotWithNullAndLocking( entity );
     }
 
     @Transactional( rollbackFor = Exception.class )
@@ -252,27 +252,27 @@ public abstract class AbstractServiceExecutorCallable<Executor extends MapperExe
 
     @SuppressWarnings( "unchecked" )
     @Override
-    public <E> List<E> listForCustom( Criteria<T> criteria ) {
+    public <E> List<E> custom( Criteria<T> criteria ) {
         if ( criteria != null && ( criteria.getResultType() != null || StringUtil.hasText( criteria.getResultMap() ) ) ) {
-            List<Object> result = executor.listForObject( criteria );
+            List<Object> result = executor.objectList( criteria );
             return Optional.ofNullable( result ).map( value -> ( List<E> ) value ).orElse( new ArrayList<>() );
         }
         return new ArrayList<>();
     }
 
     @Override
-    public List<Object> listForObject( Criteria<T> criteria ) {
-        return executor.listForObject( criteria.resultMap( null ).resultType( null ) );
+    public List<Object> objects( Criteria<T> criteria ) {
+        return executor.objectList( criteria.resultMap( null ).resultType( null ) );
     }
 
     @Override
-    public List<Object[]> listForArray( Criteria<T> criteria ) {
-        return executor.listForArray( criteria.resultMap( null ).resultType( null ) );
+    public List<Object[]> array( Criteria<T> criteria ) {
+        return executor.arrayList( criteria.resultMap( null ).resultType( null ) );
     }
 
     @Override
-    public List<Map<String, Object>> listForMap( Criteria<T> criteria ) {
-        return executor.listForMap( criteria.resultMap( null ).resultType( null ) );
+    public List<Map<String, Object>> map( Criteria<T> criteria ) {
+        return executor.mapList( criteria.resultMap( null ).resultType( null ) );
     }
 
     @Override

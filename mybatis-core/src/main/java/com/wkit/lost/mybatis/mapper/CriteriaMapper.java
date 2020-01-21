@@ -28,7 +28,8 @@ interface CriteriaMapper<T, R> {
      * @param criteria 条件对象(条件部分)
      * @return 受影响行数
      */
-    int mixinUpdateSelective( @Param( Constants.PARAM_ENTITY ) T entity, @Param( Constants.PARAM_CRITERIA ) Criteria<T> criteria );
+    int mixinUpdateNotWithNull( @Param( Constants.PARAM_ENTITY ) T entity,
+                                @Param( Constants.PARAM_CRITERIA ) Criteria<T> criteria );
 
     /**
      * 根据条件对象删除记录
@@ -63,21 +64,21 @@ interface CriteriaMapper<T, R> {
      * @param criteria 条件对象
      * @return Object集合
      */
-    List<Object> listForObject( @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria );
+    List<Object> objectList( @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria );
 
     /**
      * 查询数据
      * @param criteria 条件对象
      * @return Object集合
      */
-    List<Object[]> listForArray( @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria );
+    List<Object[]> arrayList( @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria );
 
     /**
      * 查询数据
      * @param criteria 条件对象
      * @return Map
      */
-    List<Map<String, Object>> listForMap( @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria );
+    List<Map<String, Object>> mapList( @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria );
 
     /**
      * 分页查询列表
@@ -85,5 +86,6 @@ interface CriteriaMapper<T, R> {
      * @param criteria 条件对象
      * @return 列表
      */
-    List<R> pageableListByCriteria( @Param( Constants.PARAM_PAGEABLE ) final Pageable pageable, @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria );
+    List<R> pageableListByCriteria( @Param( Constants.PARAM_PAGEABLE ) final Pageable pageable, 
+                                    @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria );
 }

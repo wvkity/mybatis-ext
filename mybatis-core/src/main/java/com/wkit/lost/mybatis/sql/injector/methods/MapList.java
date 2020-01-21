@@ -2,15 +2,17 @@ package com.wkit.lost.mybatis.sql.injector.methods;
 
 import com.wkit.lost.mybatis.sql.method.AbstractCriteriaMethod;
 
-public class ListForArray extends AbstractCriteriaMethod {
+import java.util.LinkedHashMap;
+
+public class MapList extends AbstractCriteriaMethod {
 
     @Override
     public String mappedMethod() {
-        return "listForArray";
+        return "mapList";
     }
 
     @Override
     public Class<?> getResultType() {
-        return Object[].class;
+        return LinkedHashMap.class;
     }
 }

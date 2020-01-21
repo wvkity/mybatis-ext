@@ -14,9 +14,11 @@ public abstract class AbstractCriteriaMethod extends AbstractMethod {
     @Override
     public MappedStatement injectMappedStatement( Class<?> mapperInterface, Class<?> resultType, Table table ) {
         Class<?> entity = table.getEntity();
-        DefaultXmlScriptBuilder scriptBuilder = new DefaultXmlScriptBuilder( entity, table.getAlias(), table, new CriteriaQuerySqlBuilder() );
+        DefaultXmlScriptBuilder scriptBuilder = new DefaultXmlScriptBuilder( entity, table.getAlias(), table,
+                new CriteriaQuerySqlBuilder() );
         Class<?> returnType = getResultType();
-        return addSelectMappedStatement( mapperInterface, returnType == null ? resultType : returnType, mappedMethod(), createSqlSource( scriptBuilder, entity ), table );
+        return addSelectMappedStatement( mapperInterface, returnType == null ? resultType : returnType,
+                mappedMethod(), createSqlSource( scriptBuilder, entity ), table );
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.plugins.executor;
+package com.wkit.lost.mybatis.plugins.locking;
 
 import com.wkit.lost.mybatis.core.AbstractModifyCriteria;
 import com.wkit.lost.mybatis.core.Criteria;
@@ -7,10 +7,9 @@ import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.data.auditing.date.provider.DateTimeProvider;
 import com.wkit.lost.mybatis.data.auditing.date.proxy.DateTimeProviderFactory;
 import com.wkit.lost.mybatis.handler.EntityHandler;
+import com.wkit.lost.mybatis.plugins.processor.UpdateProcessorSupport;
 import com.wkit.lost.mybatis.utils.Constants;
-import com.wkit.lost.mybatis.utils.PrimitiveRegistry;
 import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.Invocation;
 
 import java.lang.reflect.Field;
@@ -21,34 +20,27 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * 乐观锁执行器
- * @author wvkity
- */
-public class OptimisticLockerExecutor extends AbstractUpdateExecutor {
+public class OptimisticLockingProcessor extends UpdateProcessorSupport {
 
     private static final String METHOD_UPDATE = "update";
-    private static final String METHOD_UPDATE_SELECTIVE = "updateSelective";
+    private static final String METHOD_UPDATE_NOT_WITH_NULL = "updateNotWithNull";
     private static final String METHOD_UPDATE_BY_CRITERIA = "updateByCriteria";
-    private static final String METHOD_MIXIN_UPDATE_SELECTIVE = "mixinUpdateSelective";
+    private static final String METHOD_MIXIN_UPDATE_NOT_WITH_NULL = "mixinUpdateNotWithNull";
     private static final Map<Class<?>, Column> OPTIMISTIC_LOCKER_FIELD_CACHE = new ConcurrentHashMap<>( 32 );
 
     /**
      * 拦截方法集合
      */
     private static final Set<String> LOCK_METHODS_CACHE = new HashSet<>( Arrays.asList( METHOD_UPDATE,
-            METHOD_UPDATE_SELECTIVE, METHOD_UPDATE_BY_CRITERIA, METHOD_MIXIN_UPDATE_SELECTIVE ) );
+            METHOD_UPDATE_NOT_WITH_NULL, METHOD_UPDATE_BY_CRITERIA, METHOD_MIXIN_UPDATE_NOT_WITH_NULL ) );
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings( {"unchecked"} )
     @Override
-    public Object intercept( Invocation invocation ) throws Throwable {
-        MappedStatement statement = ( MappedStatement ) invocation.getArgs()[ 0 ];
-        Object parameter = invocation.getArgs()[ 1 ];
-        if ( filter( statement, parameter ) ) {
+    protected Object doProceed( Invocation invocation, MappedStatement ms, Object parameter ) throws Throwable {
+        if ( filter( ms, parameter ) ) {
             // 方法名
-            String msId = statement.getId();
-            String methodName = msId.substring( msId.lastIndexOf( "." ) + 1 );
-            if ( LOCK_METHODS_CACHE.contains( methodName ) && parameter instanceof Map ) {
+            String execMethod = execMethod( ms );
+            if ( LOCK_METHODS_CACHE.contains( execMethod ) && parameter instanceof Map ) {
                 Map<String, Object> paramMap = ( Map<String, Object> ) parameter;
                 Object entity = paramMap.getOrDefault( Constants.PARAM_ENTITY, null );
                 Object criteriaObject = paramMap.getOrDefault( Constants.PARAM_CRITERIA, null );
@@ -63,10 +55,10 @@ public class OptimisticLockerExecutor extends AbstractUpdateExecutor {
                             // 填充值
                             Column column = optional.get();
                             Field field = column.getField().getField();
-                            if ( METHOD_UPDATE.equals( methodName ) || METHOD_UPDATE_SELECTIVE.equals( methodName ) ) {
-                                Object originalValue = getOriginalValue( entity, field );
+                            if ( METHOD_UPDATE.equals( execMethod ) || METHOD_UPDATE_NOT_WITH_NULL.equals( execMethod ) ) {
+                                Object originalValue = originalValue( entity, field );
                                 if ( originalValue != null ) {
-                                    Object newValue = getNewValue( originalValue, column.getJavaType() );
+                                    Object newValue = newValue( originalValue, column.getJavaType() );
                                     paramMap.put( Constants.PARAM_OPTIMISTIC_LOCK_KEY, newValue );
                                     Object result = invocation.proceed();
                                     if ( result instanceof Integer ) {
@@ -82,16 +74,16 @@ public class OptimisticLockerExecutor extends AbstractUpdateExecutor {
                                 Criteria<?> criteria = ( Criteria<?> ) criteriaObject;
                                 Object originalValue = criteria.getConditionVersionValue();
                                 if ( originalValue != null ) {
-                                    if ( METHOD_UPDATE_BY_CRITERIA.equals( methodName ) ) {
+                                    if ( METHOD_UPDATE_BY_CRITERIA.equals( execMethod ) ) {
                                         Object modifyValue = criteria.getModifyVersionValue();
                                         if ( modifyValue == null ) {
                                             ( ( AbstractModifyCriteria<?> ) criteriaObject ).updateVersion(
-                                                    getNewValue( originalValue, column.getJavaType() ) );
+                                                    newValue( originalValue, column.getJavaType() ) );
                                         }
                                     } else {
-                                        Object entityValue = getOriginalValue( entity, field );
+                                        Object entityValue = originalValue( entity, field );
                                         if ( entity != null && ( entityValue == null || "0".equals( String.valueOf( entityValue ) ) ) ) {
-                                            Object newValue = getNewValue( originalValue, column.getJavaType() );
+                                            Object newValue = newValue( originalValue, column.getJavaType() );
                                             overwriteOriginalValue( entity, field, newValue );
                                             Object result = invocation.proceed();
                                             if ( result instanceof Integer ) {
@@ -130,7 +122,7 @@ public class OptimisticLockerExecutor extends AbstractUpdateExecutor {
         return null;
     }
 
-    private Object getOriginalValue( Object entity, Field field ) {
+    private Object originalValue( Object entity, Field field ) {
         if ( entity != null && field != null ) {
             try {
                 field.setAccessible( true );
@@ -153,7 +145,7 @@ public class OptimisticLockerExecutor extends AbstractUpdateExecutor {
         }
     }
 
-    private Object getNewValue( Object originalValue, Class<?> javaType ) {
+    private Object newValue( Object originalValue, Class<?> javaType ) {
         if ( long.class.equals( javaType ) || Long.class.equals( javaType ) ) {
             return ( long ) originalValue + 1;
         } else if ( int.class.equals( javaType ) || Integer.class.equals( javaType ) ) {
@@ -168,12 +160,4 @@ public class OptimisticLockerExecutor extends AbstractUpdateExecutor {
         return originalValue;
     }
 
-
-    @Override
-    protected boolean filter( MappedStatement statement, Object parameterObject ) {
-        SqlCommandType exec = statement.getSqlCommandType();
-        return exec == SqlCommandType.UPDATE && parameterObject != null
-                && !( PrimitiveRegistry.isPrimitiveOrWrapper( parameterObject )
-                || parameterObject.getClass() == String.class );
-    }
 }

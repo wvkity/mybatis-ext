@@ -7,7 +7,7 @@ import com.wkit.lost.mybatis.utils.Constants;
 
 import java.util.Set;
 
-public class MixinUpdateSqlBuilder extends AbstractCriteriaSqlBuilder {
+public class MixinUpdateNotWithNullSqlBuilder extends AbstractCriteriaSqlBuilder {
 
     @Override
     public String build() {

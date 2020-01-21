@@ -33,7 +33,7 @@ interface CriteriaService<T, R> {
      * @param criteria 条件对象(条件部分)
      * @return 受影响行数
      */
-    int updateSelective( T entity, Criteria<T> criteria );
+    int updateNotWithNull( T entity, Criteria<T> criteria );
 
     /**
      * 根据条件对象删除记录
@@ -62,28 +62,28 @@ interface CriteriaService<T, R> {
      * @param <E>      返回值泛型
      * @return 列表
      */
-    <E> List<E> listForCustom( Criteria<T> criteria );
+    <E> List<E> custom( Criteria<T> criteria );
 
     /**
      * 查询数据
      * @param criteria 条件对象
      * @return Object集合
      */
-    List<Object> listForObject( Criteria<T> criteria );
+    List<Object> objects( Criteria<T> criteria );
 
     /**
      * 查询数据
      * @param criteria 条件对象
      * @return Object集合
      */
-    List<Object[]> listForArray( Criteria<T> criteria );
+    List<Object[]> array( Criteria<T> criteria );
 
     /**
      * 查询数据
      * @param criteria 条件对象
      * @return Map
      */
-    List<Map<String, Object>> listForMap( Criteria<T> criteria );
+    List<Map<String, Object>> map( Criteria<T> criteria );
 
     /**
      * 分页查询列表

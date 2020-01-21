@@ -8,7 +8,7 @@ import com.wkit.lost.mybatis.utils.Constants;
 
 import java.util.Set;
 
-public class UpdateOfNoLockSqlBuilder extends AbstractSqlBuilder {
+public class UpdateNotWithLockingSqlBuilder extends AbstractSqlBuilder {
     
     @Override
     public String build() {
