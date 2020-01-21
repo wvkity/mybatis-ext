@@ -9,15 +9,15 @@ public enum Level {
     /**
      * 秒级
      */
-    SECOND,
+    SECONDS,
 
     /**
      * 毫秒级
      */
-    MILLISECOND,
+    MILLISECONDS,
 
     /**
-     * 未知(采用默认: {@link #MILLISECOND})
+     * 未知(采用默认: {@link #MILLISECONDS})
      */
     UNKNOWN
 }

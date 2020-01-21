@@ -4,10 +4,11 @@ package com.wkit.lost.mybatis.spring.boot.autoconfigure;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.config.Plugin;
-import com.wkit.lost.mybatis.filling.MetaObjectFillingHandler;
+import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.keygen.GuidGenerator;
 import com.wkit.lost.mybatis.keygen.KeyGenerator;
 import com.wkit.lost.mybatis.plugins.config.PluginConvert;
+import com.wkit.lost.mybatis.plugins.data.auditing.DefaultBuiltinAuditingInterceptor;
 import com.wkit.lost.mybatis.resolver.EntityResolver;
 import com.wkit.lost.mybatis.resolver.FieldResolver;
 import com.wkit.lost.mybatis.scripting.xmltags.MyBatisXMLLanguageDriver;
@@ -125,7 +126,7 @@ public class MyBatisAutoConfiguration implements InitializingBean {
     private void checkConfigFileExists() {
         if ( this.properties.isCheckConfigLocation() && StringUtils.hasText( this.properties.getConfigLocation() ) ) {
             Resource resource = this.resourceLoader.getResource( this.properties.getConfigLocation() );
-            Assert.state( resource.exists(), "Cannot find config location: " + resource 
+            Assert.state( resource.exists(), "Cannot find config location: " + resource
                     + " (please add config file or check your MyBatis configuration)" );
         }
     }
@@ -194,8 +195,8 @@ public class MyBatisAutoConfiguration implements InitializingBean {
         }
         // 雪花算法主键生成器
         ifPresent( Sequence.class, customConfig::setSequence );
-        // 自动填充值
-        ifPresent( MetaObjectFillingHandler.class, customConfig::setMetaObjectFillingHandler );
+        // 元数据审计
+        ifPresent( MetadataAuditable.class, customConfig::setMetadataAuditable );
         factory.setCustomConfiguration( customConfig );
         return factory.getObject();
     }
@@ -220,6 +221,11 @@ public class MyBatisAutoConfiguration implements InitializingBean {
                 }
             }
         }
+        if ( pluginRegistrable( DefaultBuiltinAuditingInterceptor.class ) ) {
+            Interceptor interceptor = new DefaultBuiltinAuditingInterceptor();
+            interceptorList.add( interceptor );
+            registerExistingInterceptorBean( interceptor );
+        }
     }
 
     /**
@@ -231,7 +237,7 @@ public class MyBatisAutoConfiguration implements InitializingBean {
     private <T extends Interceptor> boolean pluginRegistrable( Class<T> clazz ) {
         if ( !ArrayUtil.isEmpty( this.interceptors ) ) {
             for ( Interceptor plugin : this.interceptors ) {
-                if ( clazz.isAssignableFrom( plugin.getClass() ) ) {
+                if ( plugin.getClass().isAssignableFrom( clazz ) ) {
                     return false;
                 }
             }
@@ -248,7 +254,7 @@ public class MyBatisAutoConfiguration implements InitializingBean {
             try {
                 // 注入到Spring容器中
                 String beanName = existingInterceptor.getClass().getSimpleName();
-                this.beanFactory.registerSingleton( ( Character.toLowerCase( beanName.charAt( 0 ) ) + 
+                this.beanFactory.registerSingleton( ( Character.toLowerCase( beanName.charAt( 0 ) ) +
                         beanName.substring( 1 ) ), existingInterceptor );
                 // 注入依赖
                 if ( this.autowireBeanFactory != null ) {
@@ -323,7 +329,7 @@ public class MyBatisAutoConfiguration implements InitializingBean {
         private ResourceLoader resourceLoader;
 
         @Override
-        public void registerBeanDefinitions( @Nullable AnnotationMetadata importingClassMetadata, 
+        public void registerBeanDefinitions( @Nullable AnnotationMetadata importingClassMetadata,
                                              @NonNull BeanDefinitionRegistry registry ) {
             log.debug( "Searching for mappers annotated with @Mapper" );
             ClassPathMapperScanner scanner = new ClassPathMapperScanner( registry );

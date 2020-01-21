@@ -1,6 +1,5 @@
 package com.wkit.lost.mybatis.annotation;
 
-import com.wkit.lost.mybatis.annotation.extension.FillingRule;
 import com.wkit.lost.mybatis.annotation.extension.UseJavaType;
 import com.wkit.lost.mybatis.annotation.extension.Validate;
 import org.apache.ibatis.type.JdbcType;
@@ -41,14 +40,6 @@ public @interface ColumnExt {
      * @return JDBC类型
      */
     JdbcType jdbcType() default JdbcType.UNDEFINED;
-
-    /**
-     * 填充规则
-     * <p>优先级比{@link MetaFilling @MetaFilling}低</p>
-     * @return 规则列表
-     * @see MetaFilling
-     */
-    FillingRule fill() default FillingRule.NORMAL;
 
     /**
      * 字符串空值校验

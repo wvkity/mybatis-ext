@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.config;
 
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
-import com.wkit.lost.mybatis.filling.MetaObjectFillingHandler;
+import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.keygen.KeyGenerator;
 import com.wkit.lost.mybatis.naming.DefaultPhysicalNamingStrategy;
 import com.wkit.lost.mybatis.naming.PhysicalNamingStrategy;
@@ -163,7 +163,7 @@ public class MyBatisCustomConfiguration implements Serializable {
 
     /**
      * 启用内置插件
-     * <p>建议注册顺序：{@link Plugin#META_OBJECT_FILLING} > {@link Plugin#OPTIMISTIC_LOCKER} >
+     * <p>建议注册顺序：{@link Plugin#META_DATA_AUDIT} > {@link Plugin#OPTIMISTIC_LOCKER} >
      * {@link Plugin#PAGEABLE} > {@link Plugin#LIMIT}</p>
      * @see Plugin
      */
@@ -175,24 +175,24 @@ public class MyBatisCustomConfiguration implements Serializable {
     private String logicDeletedProperty;
 
     /**
-     * 标识已删除
+     * 逻辑删除真值
      */
-    private String logicDeleted = "1";
+    private String logicDeletedTrueValue = "1";
 
     /**
-     * 标识未删除
+     * 逻辑删除假值
      */
-    private String logicNotDeleted = "0";
+    private String logicDeletedFalseValue = "0";
 
     /**
      * 主键序列(雪花算法)
      */
     private Sequence sequence;
-
+    
     /**
-     * 自动填充值处理器
+     * 元数据审计
      */
-    private MetaObjectFillingHandler metaObjectFillingHandler;
+    private MetadataAuditable metadataAuditable;
 
     /**
      * 缓存当前对象

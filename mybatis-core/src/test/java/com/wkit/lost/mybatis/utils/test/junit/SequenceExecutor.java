@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.utils.test.junit;
 
-import com.wkit.lost.mybatis.snowflake.factory.MillisSequenceFactory;
+import com.wkit.lost.mybatis.snowflake.factory.MillisecondsSequenceFactory;
 import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class SequenceExecutor implements Runnable {
     static final int MAX = 4000;
     static final CountDownLatch LATCH = new CountDownLatch( MAX );
     static final SequenceExecutor EXECUTOR = new SequenceExecutor();
-    static final Sequence SEQUENCE = new MillisSequenceFactory().build( 2L, 0L );
+    static final Sequence SEQUENCE = new MillisecondsSequenceFactory().build( 2L, 0L );
     static final Set<Long> SEQUENCE_CACHE = new LinkedHashSet<>( MAX );
     static final List<String> REPEAT_SEQUENCE_CACHE = new ArrayList<>();
     static final AtomicInteger INDEX = new AtomicInteger();
@@ -27,7 +27,7 @@ public class SequenceExecutor implements Runnable {
         try {
             Thread.sleep( 1000 );
             System.out.println( "当前执行数：" + INDEX.incrementAndGet() );
-            long id = SEQUENCE.nextId();
+            long id = SEQUENCE.nextValue();
             if ( SEQUENCE_CACHE.contains( id ) ) {
                 REPEAT_SEQUENCE_CACHE.add( SEQUENCE.parse( id ) );
             }

@@ -18,9 +18,9 @@
       "type": "com.wkit.lost.mybatis.config.MyBatisCustomConfiguration"
     },
     {
-      "sourceType": "com.wkit.lost.mybatis.spring.boot.worker.SequenceAutoConfiguration",
-      "name": "sequence",
-      "type": "com.wkit.lost.mybatis.spring.boot.worker.SequenceAutoConfiguration"
+      "sourceType": "com.wkit.lost.mybatis.spring.boot.sequence.SequenceProperties",
+      "name": "lost.sequence",
+      "type": "com.wkit.lost.mybatis.spring.boot.sequence.SequenceProperties"
     }
   ]
 }

@@ -15,16 +15,16 @@ public abstract class AbstractLogicDeletionSqlBuilder extends AbstractSqlBuilder
      * @return SQL字符串片段
      */
     protected String logicDelete( String condition ) {
-        Column logicalDeletionColumn = table.getLogicalDeletionColumn();
+        Column logicalDeletionColumn = table.getLogicDeletionColumn();
         if ( logicalDeletionColumn == null ) {
             return "";
         }
-        Set<Column> deleteFillings = table.getDeleteFillings();
+        Set<Column> deleteFillings = table.getDeletedAuditable();
         // 更新字段部分
         StringBuilder builder = new StringBuilder( 40 );
         builder.append( "<trim prefix=\"SET\" suffixOverrides=\",\">\n" );
         builder.append( logicalDeletionColumn.getColumn() ).append( " = #{" )
-                .append( Constants.PARAM_LOGIC_DELETED_AUTO_KEY );
+                .append( Constants.PARAM_LOGIC_DELETED_AUDITING_KEY );
         if ( logicalDeletionColumn.getJdbcType() != null ) {
             builder.append( ", jdbcType=" ).append( logicalDeletionColumn.getJdbcType().getClass().getName() );
         }
@@ -37,9 +37,9 @@ public abstract class AbstractLogicDeletionSqlBuilder extends AbstractSqlBuilder
         builder.append( "}, " );
         // 自动填充部分
         if ( !deleteFillings.isEmpty() ) {
-            builder.append( deleteFillings.stream().map( column -> convertToIfTagOfNotNull( true, 
+            builder.append( deleteFillings.stream().map( it -> convertToIfTagOfNotNull( true, 
                     Execute.REPLACE, false, 1, Constants.PARAM_ENTITY, 
-                    column, ",", "" ) )
+                    it, ",", "" ) )
                     .collect( Collectors.joining( "", "\n", "\n" ) ) );
         }
         builder.append( "</trim>" );

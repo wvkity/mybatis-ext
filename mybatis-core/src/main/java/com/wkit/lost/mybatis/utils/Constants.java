@@ -12,6 +12,11 @@ public interface Constants {
     String PARAM_ENTITY = "entity";
 
     /**
+     * 实体类
+     */
+    String PARAM_ENTITY_CLASS = "entityClass";
+
+    /**
      * 实体参数对象
      */
     String PARAM_ENTITIES = "entities";
@@ -34,7 +39,7 @@ public interface Constants {
     /**
      * 逻辑删除填充值键
      */
-    String PARAM_LOGIC_DELETED_AUTO_KEY = "LOGIC_DELETED_AUTO_FV";
+    String PARAM_LOGIC_DELETED_AUDITING_KEY = "LOGIC_DELETED_AUDITING_VALUE";
 
     /**
      * 乐观锁填充值键

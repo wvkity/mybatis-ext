@@ -72,11 +72,13 @@ ext {
             "spring-context"                    : "org.springframework:spring-context:$spring",
             "spring-beans"                      : "org.springframework:spring-beans:$spring",
             "spring-tx"                         : "org.springframework:spring-tx:$spring",
+            "spring-aspects"                    : "org.springframework:spring-aspects:$spring",
             "spring-web"                        : "org.springframework:spring-web:$spring",
             // endregion
             // region springboot依赖
             "springboot-dependencies"           : "org.springframework.boot:spring-boot-dependencies:$springBoot",
             "springboot-jdbc"                   : "org.springframework.boot:spring-boot-starter-jdbc",
+            "springboot-aop"                   : "org.springframework.boot:spring-boot-starter-aop",
             "springboot-autoconfigure"          : "org.springframework.boot:spring-boot-autoconfigure",
             "springboot-configuration-processor": "org.springframework.boot:spring-boot-configuration-processor",
             "springboot-autoconfigure-processor": "org.springframework.boot:spring-boot-autoconfigure-processor",

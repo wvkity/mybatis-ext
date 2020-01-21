@@ -2,10 +2,9 @@ package com.wkit.lost.mybatis.spring.boot.plugin;
 
 import com.wkit.lost.mybatis.config.Plugin;
 import com.wkit.lost.mybatis.plugins.config.PluginConvert;
-import com.wkit.lost.mybatis.plugins.interceptor.LimitInterceptor;
-import com.wkit.lost.mybatis.plugins.interceptor.MetaObjectFillingInterceptor;
-import com.wkit.lost.mybatis.plugins.interceptor.OptimisticLockerInterceptor;
-import com.wkit.lost.mybatis.plugins.interceptor.PageableInterceptor;
+import com.wkit.lost.mybatis.plugins.paging.LimitInterceptor;
+import com.wkit.lost.mybatis.plugins.locker.OptimisticLockerInterceptor;
+import com.wkit.lost.mybatis.plugins.paging.PageableInterceptor;
 import com.wkit.lost.mybatis.spring.boot.registry.AbstractBeanDefinitionRegistry;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import org.springframework.beans.factory.BeanFactoryAware;

@@ -4,8 +4,8 @@ import com.wkit.lost.mybatis.core.AbstractModifyCriteria;
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.core.meta.Table;
-import com.wkit.lost.mybatis.filling.gen.AbstractGenerator;
-import com.wkit.lost.mybatis.filling.proxy.GeneratorFactory;
+import com.wkit.lost.mybatis.data.auditing.date.provider.DateTimeProvider;
+import com.wkit.lost.mybatis.data.auditing.date.proxy.DateTimeProviderFactory;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.PrimitiveRegistry;
@@ -159,9 +159,10 @@ public class OptimisticLockerExecutor extends AbstractUpdateExecutor {
         } else if ( int.class.equals( javaType ) || Integer.class.equals( javaType ) ) {
             return ( int ) originalValue + 1;
         } else {
-            Class<? extends AbstractGenerator> generator = GeneratorFactory.getTimeGenerator( javaType );
-            if ( generator != null ) {
-                return GeneratorFactory.build( generator );
+            Optional<DateTimeProvider> provider = Optional.ofNullable( DateTimeProviderFactory.ProviderBuilder
+                    .create().target( javaType ).build() );
+            if ( provider.isPresent() ) {
+                return provider.get().getNow();
             }
         }
         return originalValue;

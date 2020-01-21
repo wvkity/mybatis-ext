@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.plugins.executor;
 
 import com.wkit.lost.mybatis.plugins.dbs.dialect.Dialect;
 import com.wkit.lost.mybatis.plugins.filter.Filter;
+import com.wkit.lost.mybatis.plugins.paging.PageMode;
 import com.wkit.lost.mybatis.utils.Ascii;
 import com.wkit.lost.mybatis.utils.ClassUtil;
 import lombok.Getter;
@@ -83,7 +84,7 @@ public abstract class AbstractQueryExecutor implements Filter {
      * @param properties 属性信息
      */
     public void setProperties( Properties properties ) {
-        switch ( getTarget() ) {
+        switch ( getMode() ) {
             case LIMIT:
                 this.dialectClass = properties.getProperty( "limitDelegate" );
                 break;
@@ -124,7 +125,7 @@ public abstract class AbstractQueryExecutor implements Filter {
      * 获取拦截器类型
      * @return 模式
      */
-    protected abstract QueryMode getTarget();
+    protected abstract PageMode getMode();
 
     /**
      * 获取默认方言

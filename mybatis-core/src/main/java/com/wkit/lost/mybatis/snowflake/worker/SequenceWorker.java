@@ -1,28 +1,28 @@
 package com.wkit.lost.mybatis.snowflake.worker;
 
-import com.wkit.lost.mybatis.snowflake.factory.MillisSequenceFactory;
+import com.wkit.lost.mybatis.snowflake.factory.MillisecondsSequenceFactory;
 import com.wkit.lost.mybatis.snowflake.factory.SequenceFactory;
 import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
 
-public class SequenceWorker {
+public final class SequenceWorker {
 
-    private static final SequenceFactory SEQUENCE_FACTORY = new MillisSequenceFactory();
+    private static final SequenceFactory SEQUENCE_FACTORY = new MillisecondsSequenceFactory();
     private static final Sequence SEQUENCE = SEQUENCE_FACTORY.build();
 
     /**
      * 生成唯一ID
      * @return 唯一ID
      */
-    public static long nextId() {
-        return SEQUENCE.nextId();
+    public static long nextValue() {
+        return SEQUENCE.nextValue();
     }
 
     /**
      * 生成唯一ID
      * @return 唯一ID
      */
-    public static String nextStringId() {
-        return String.valueOf( nextId() );
+    public static String nextString() {
+        return String.valueOf( nextValue() );
     }
 
     /**

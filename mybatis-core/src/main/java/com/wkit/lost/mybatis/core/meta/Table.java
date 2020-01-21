@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.core.meta;
 
+import com.wkit.lost.mybatis.data.auditing.AuditMatching;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.AccessLevel;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -103,14 +105,14 @@ public class Table {
      */
     @Getter
     @Setter( AccessLevel.PACKAGE )
-    private boolean enableLogicDelete;
+    private boolean enableLogicDeletion;
 
     /**
      * 逻辑删除标识字段
      */
     @Getter
     @Setter( AccessLevel.PACKAGE )
-    private Column logicalDeletionColumn;
+    private Column logicDeletionColumn;
 
     /**
      * 所有字段
@@ -209,8 +211,8 @@ public class Table {
      * @return 字段信息
      */
     public Optional<Column> search( String property ) {
-        return Optional.ofNullable( property ).flatMap( value -> this.columns.parallelStream()
-                .filter( column -> column.getProperty().equals( property ) ).findAny() );
+        return Optional.ofNullable( property ).flatMap( __ -> this.columns.parallelStream()
+                .filter( it -> it.getProperty().equals( property ) ).findAny() );
     }
 
     /**
@@ -253,42 +255,41 @@ public class Table {
     }
 
     /**
-     * 获取所有保存操作时可自动插入值字段
+     * 获取保存操作审计的字段
      * @return 字段集合
      */
-    public Set<Column> getInsertFillings() {
-        return this.columns.stream()
-                .filter( Column::enableInsertFilling )
-                .collect( Collectors.toCollection( LinkedHashSet::new ) );
+    public Set<Column> getInsertedAuditable() {
+        return auditableColumns( it -> it.isAuditable( AuditMatching.INSERTED ) );
     }
 
     /**
-     * 获取所有更新操作时可自动插入值字段
+     * 获取更新操作审计的字段
      * @return 字段集合
      */
-    public Set<Column> getUpdateFillings() {
-        return this.columns.stream()
-                .filter( Column::enableUpdateFilling )
-                .collect( Collectors.toCollection( LinkedHashSet::new ) );
+    public Set<Column> getModifiedAuditable() {
+        return auditableColumns( it -> it.isAuditable( AuditMatching.MODIFIED ) );
     }
 
     /**
-     * 获取所有逻辑删除操作时可自动插入值字段
+     * 获取删除操作审计的字段
      * @return 字段集合
      */
-    public Set<Column> getDeleteFillings() {
-        return this.columns.stream()
-                .filter( Column::enableDeleteFilling )
-                .collect( Collectors.toCollection( LinkedHashSet::new ) );
+    public Set<Column> getDeletedAuditable() {
+        return auditableColumns( it -> it.isAuditable( AuditMatching.DELETED ) );
     }
+    
+    private Set<Column> auditableColumns( Predicate<Column> filter ) {
+        return this.columns.stream().filter( filter ).collect( Collectors.toCollection( LinkedHashSet::new ) );
+    }
+    
 
     /**
-     * 获取非逻辑删除填充字段
+     * 获取非删除审计字段
      * @return 字段列表
      */
-    public Set<Column> getIgnoreDeleteFillingsColumns() {
+    public Set<Column> getIgnoreDeletedAuditableColumns() {
         return this.columns.stream()
-                .filter( column -> !column.enableDeleteFilling() )
+                .filter( column -> !column.enableDeletedAuditable() )
                 .collect( Collectors.toCollection( LinkedHashSet::new ) );
     }
 
@@ -310,6 +311,15 @@ public class Table {
         return this;
     }
 
+    /**
+     * 创建实例
+     * @return 实例对象
+     * @throws Exception 异常信息
+     */
+    public Object newInstance() throws Exception {
+        return this.getEntity().getDeclaredConstructor().newInstance();
+    }
+    
 }
 
 

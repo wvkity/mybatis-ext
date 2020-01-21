@@ -4,6 +4,7 @@ import com.wkit.lost.mybatis.plugins.cache.Cache;
 import com.wkit.lost.mybatis.plugins.cache.CacheFactory;
 import com.wkit.lost.mybatis.plugins.dbs.dialect.Dialect;
 import com.wkit.lost.mybatis.plugins.dbs.dialect.PageableDialect;
+import com.wkit.lost.mybatis.plugins.paging.PageMode;
 import com.wkit.lost.mybatis.utils.MappedStatementUtil;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.cache.CacheKey;
@@ -28,8 +29,8 @@ public class PageableQueryExecutor extends AbstractQueryExecutor {
     protected Cache<String, MappedStatement> recordMsCache = null;
 
     @Override
-    protected QueryMode getTarget() {
-        return QueryMode.PAGEABLE;
+    protected PageMode getMode() {
+        return PageMode.PAGEABLE;
     }
 
     @Override

@@ -1,11 +1,19 @@
 package com.wkit.lost.mybatis.core.meta;
 
 import com.wkit.lost.mybatis.annotation.ColumnExt;
+import com.wkit.lost.mybatis.annotation.auditing.CreatedDate;
+import com.wkit.lost.mybatis.annotation.auditing.CreatedUser;
+import com.wkit.lost.mybatis.annotation.auditing.CreatedUserName;
+import com.wkit.lost.mybatis.annotation.auditing.DeletedDate;
+import com.wkit.lost.mybatis.annotation.auditing.DeletedUser;
+import com.wkit.lost.mybatis.annotation.auditing.DeletedUserName;
 import com.wkit.lost.mybatis.annotation.Entity;
 import com.wkit.lost.mybatis.annotation.GeneratedValue;
 import com.wkit.lost.mybatis.annotation.Identity;
+import com.wkit.lost.mybatis.annotation.auditing.LastModifiedDate;
+import com.wkit.lost.mybatis.annotation.auditing.LastModifiedUser;
+import com.wkit.lost.mybatis.annotation.auditing.LastModifiedUserName;
 import com.wkit.lost.mybatis.annotation.LogicDeletion;
-import com.wkit.lost.mybatis.annotation.MetaFilling;
 import com.wkit.lost.mybatis.annotation.OrderBy;
 import com.wkit.lost.mybatis.annotation.SequenceGenerator;
 import com.wkit.lost.mybatis.annotation.Transient;
@@ -13,7 +21,6 @@ import com.wkit.lost.mybatis.annotation.Version;
 import com.wkit.lost.mybatis.annotation.Worker;
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.annotation.extension.Executing;
-import com.wkit.lost.mybatis.annotation.extension.FillingRule;
 import com.wkit.lost.mybatis.annotation.extension.GenerationType;
 import com.wkit.lost.mybatis.annotation.extension.UseJavaType;
 import com.wkit.lost.mybatis.annotation.extension.Validate;
@@ -58,7 +65,7 @@ public class DefaultEntityResolver implements EntityResolver {
     /**
      * 雪花算法字符串主键
      */
-    private static final Set<String> WORKER_KEYS = new HashSet<>( Arrays.asList( "WORKERSTRING", "WORKER_STRING" ) );
+    private static final Set<String> WORKER_KEYS = new HashSet<>( Arrays.asList( "WORKER_SEQUENCE", "WORKER_SEQUENCE_STRING" ) );
 
     /**
      * 自定义配置
@@ -154,7 +161,8 @@ public class DefaultEntityResolver implements EntityResolver {
         if ( AnnotationUtil.hasAnnotation( entity ) ) {
             // 自定义@Table注解
             if ( entity.isAnnotationPresent( com.wkit.lost.mybatis.annotation.Table.class ) ) {
-                com.wkit.lost.mybatis.annotation.Table tableAnnotation = entity.getDeclaredAnnotation( com.wkit.lost.mybatis.annotation.Table.class );
+                com.wkit.lost.mybatis.annotation.Table tableAnnotation = 
+                        entity.getDeclaredAnnotation( com.wkit.lost.mybatis.annotation.Table.class );
                 tableName = tableAnnotation.name();
                 catalog = tableAnnotation.catalog();
                 schema = tableAnnotation.schema();
@@ -190,8 +198,8 @@ public class DefaultEntityResolver implements EntityResolver {
         String refer = this.strategy.name().toUpperCase( Locale.ENGLISH );
         int mode = refer.contains( "LOWERCASE" ) ? 0 : refer.contains( "UPPERCASE" ) ? 1 : 2;
         // 表名前缀
-        prefix = Optional.ofNullable( prefix ).map( value -> mode == 0 ? value.toLowerCase( Locale.ENGLISH ) :
-                mode == 1 ? value.toUpperCase( Locale.ENGLISH ) : value ).orElse( "" );
+        prefix = Optional.ofNullable( prefix ).map( it -> mode == 0 ? it.toLowerCase( Locale.ENGLISH ) :
+                mode == 1 ? it.toUpperCase( Locale.ENGLISH ) : it ).orElse( "" );
         Table table = new Table( ( prefix + tableName ), catalog, schema );
         table.setEntity( entity ).setPrefix( prefix );
         return table;
@@ -247,8 +255,8 @@ public class DefaultEntityResolver implements EntityResolver {
         if ( !column.isPrimaryKey() ) {
             processAutoDiscernPrimaryKey( table, column, field );
         }
-        // 处理自动填充注解
-        processFillingAnnotation( table, column, field );
+        // 处理审计注解
+        processAuditAnnotation( column, field );
         // 检查是否为主键
         if ( column.isPrimaryKey() ) {
             column.setUpdatable( false );
@@ -364,8 +372,8 @@ public class DefaultEntityResolver implements EntityResolver {
     private void processLogicDeleteAnnotation( Table table, Column column, Field field, String logicDeleteProperty ) {
         if ( field.isAnnotationPresent( LogicDeletion.class )
                 || column.getProperty().equals( logicDeleteProperty ) ) {
-            if ( table.isEnableLogicDelete() ) {
-                throw new MapperResolverException( "There are already `" + table.getLogicalDeletionColumn()
+            if ( table.isEnableLogicDeletion() ) {
+                throw new MapperResolverException( "There are already `" + table.getLogicDeletionColumn()
                         .getProperty() + "` attributes in `" + table.getEntity().getName()
                         + "` entity class identified as logical deleted. Only one deleted attribute " +
                         "can exist in an entity class. Please check the entity class attributes." );
@@ -373,19 +381,20 @@ public class DefaultEntityResolver implements EntityResolver {
             // @LogicDeletion优先级大于全局配置
             LogicDeletion logicDeletion = field.getAnnotation( LogicDeletion.class );
             String deletedValue, notDeletedValue;
-            if (logicDeletion != null ) {
-                deletedValue = Optional.of( logicDeletion.value() )
+            if ( logicDeletion != null ) {
+                deletedValue = Optional.of( logicDeletion.trueValue() )
                         .filter( StringUtil::hasText )
-                        .orElseGet( configuration::getLogicDeleted );
-                notDeletedValue = Optional.of( logicDeletion.not() )
+                        .orElseGet( configuration::getLogicDeletedTrueValue );
+                notDeletedValue = Optional.of( logicDeletion.falseValue() )
                         .filter( StringUtil::hasText )
-                        .orElseGet( configuration::getLogicNotDeleted );
+                        .orElseGet( configuration::getLogicDeletedFalseValue );
             } else {
-                deletedValue = configuration.getLogicDeleted();
-                notDeletedValue = configuration.getLogicNotDeleted();
+                deletedValue = configuration.getLogicDeletedTrueValue();
+                notDeletedValue = configuration.getLogicDeletedFalseValue();
             }
-            column.setLogicDelete( true ).setLogicDeleteValue( deletedValue ).setLogicNotDeleteValue( notDeletedValue );
-            table.setEnableLogicDelete( true ).setLogicalDeletionColumn( column );
+            column.setLogicDelete( true ).setLogicDeletedTrueValue( deletedValue )
+                    .setLogicDeletedFalseValue( notDeletedValue );
+            table.setEnableLogicDeletion( true ).setLogicDeletionColumn( column );
         }
     }
 
@@ -512,7 +521,7 @@ public class DefaultEntityResolver implements EntityResolver {
         if ( "UUID".equalsIgnoreCase( generator ) ) {
             column.setUuid( true );
         } else if ( "JDBC".equalsIgnoreCase( generator ) ) {
-            column.setIdentity( true ).setGenerator( generator.toUpperCase( Locale.ROOT ) );
+            column.setIdentity( true ).setGenerator( generator.toUpperCase( Locale.ENGLISH ) );
             table.addPrimaryKeyProperty( column.getProperty() );
             table.addPrimaryKeyColumn( column.getColumn() );
         } else if ( "WORKER".equalsIgnoreCase( generator ) ) {
@@ -534,8 +543,8 @@ public class DefaultEntityResolver implements EntityResolver {
                         column.getEntity().getCanonicalName(), column.getProperty(),
                         "@GeneratedValue(generator = \"UUID\")",
                         "@GeneratedValue(generator = \"JDBC\")",
-                        "@GeneratedValue(generator = \"WORKER\")",
-                        "@GeneratedValue(generator = \"WORKER_STRING\")",
+                        "@GeneratedValue(generator = \"WORKER_SEQUENCE\")",
+                        "@GeneratedValue(generator = \"WORKER_SEQUENCE_STRING\")",
                         "@GeneratedValue(strategy = GenerationType.IDENTITY, [ generator = \"[ MySql, SQLServer... ]\" ])" ) );
             }
         }
@@ -560,22 +569,21 @@ public class DefaultEntityResolver implements EntityResolver {
     }
 
     /**
-     * 处理自动填充值注解
-     * @param table  表映射信息对象
+     * 处理审计注解
      * @param column 字段映射对象
      * @param field  属性信息对象
      */
-    private void processFillingAnnotation( Table table, Column column, Field field ) {
-        if ( field.isAnnotationPresent( ColumnExt.class ) ) {
-            FillingRule rule = field.getAnnotation( ColumnExt.class ).fill();
-            column.setFilling( rule, true );
-        }
-        if ( field.isAnnotationPresent( MetaFilling.class ) && column.canFilling() ) {
-            MetaFilling filling = field.getAnnotation( MetaFilling.class );
-            column.setFilling( FillingRule.INSERT, filling.insert() );
-            column.setFilling( FillingRule.UPDATE, filling.update() );
-            column.setFilling( FillingRule.DELETE, filling.delete() );
-        }
+    private void processAuditAnnotation( Column column, Field field ) {
+        boolean canModified = !column.isLogicDelete() && column.isUpdatable();
+        column.setCreatedDate( field.isAnnotationPresent( CreatedDate.class ) )
+                .setCreatedUser( field.isAnnotationPresent( CreatedUser.class ) )
+                .setCreatedUserName( field.isAnnotationPresent( CreatedUserName.class ) );
+        column.setDeletedDate( canModified && field.isAnnotationPresent( DeletedDate.class ) )
+                .setDeletedUser( canModified && field.isAnnotationPresent( DeletedUser.class ) )
+                .setDeletedUserName( canModified && field.isAnnotationPresent( DeletedUserName.class ) );
+        column.setLastModifiedDate( canModified && field.isAnnotationPresent( LastModifiedDate.class ) )
+                .setLastModifiedUser( canModified && field.isAnnotationPresent( LastModifiedUser.class ) )
+                .setLastModifiedUserName( canModified && field.isAnnotationPresent( LastModifiedUserName.class ) );
     }
 
     private void processCustomKeyGenerator( final Table table, final Column column ) {

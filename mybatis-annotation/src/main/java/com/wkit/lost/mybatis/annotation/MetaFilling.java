@@ -14,6 +14,7 @@ import java.lang.annotation.Target;
  * @see ColumnExt
  * @see ColumnExt#fill()
  */
+@Deprecated
 @Target( ElementType.FIELD )
 @Retention( RetentionPolicy.RUNTIME )
 @Documented

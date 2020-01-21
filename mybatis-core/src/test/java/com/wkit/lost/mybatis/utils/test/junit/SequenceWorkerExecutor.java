@@ -1,7 +1,5 @@
 package com.wkit.lost.mybatis.utils.test.junit;
 
-import com.wkit.lost.mybatis.snowflake.factory.MillisSequenceFactory;
-import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
 import com.wkit.lost.mybatis.snowflake.worker.SequenceWorker;
 
 import java.util.ArrayList;
@@ -28,7 +26,7 @@ public class SequenceWorkerExecutor implements Runnable {
         try {
             Thread.sleep( 1000 );
             System.out.println( "当前执行数：" + INDEX.incrementAndGet() );
-            long id = SequenceWorker.nextId();
+            long id = SequenceWorker.nextValue();
             if ( SEQUENCE_CACHE.contains( id ) ) {
                 REPEAT_SEQUENCE_CACHE.add( SequenceWorker.parse( id ) );
             }

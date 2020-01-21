@@ -1,15 +1,20 @@
 package com.wkit.lost.mybatis.config;
 
+import com.wkit.lost.mybatis.plugins.data.auditing.MetadataAuditingInterceptor;
+import com.wkit.lost.mybatis.plugins.locker.OptimisticLockerInterceptor;
+import com.wkit.lost.mybatis.plugins.paging.LimitInterceptor;
+import com.wkit.lost.mybatis.plugins.paging.PageableInterceptor;
+
 /**
  * 内置插件
  * <p>枚举类对应的拦截器如下: </p>
  * <ul>
- *     <li>{@link Plugin#PAGEABLE}: {@link com.wkit.lost.mybatis.plugins.interceptor.PageableInterceptor}</li>
- *     <li>{@link Plugin#LIMIT}: {@link com.wkit.lost.mybatis.plugins.interceptor.LimitInterceptor}</li>
- *     <li>{@link Plugin#META_OBJECT_FILLING}: {@link com.wkit.lost.mybatis.plugins.interceptor.MetaObjectFillingInterceptor}</li>
- *     <li>{@link Plugin#OPTIMISTIC_LOCKER}: {@link com.wkit.lost.mybatis.plugins.interceptor.OptimisticLockerInterceptor}</li>
+ *     <li>{@link Plugin#PAGEABLE}: {@link PageableInterceptor}</li>
+ *     <li>{@link Plugin#LIMIT}: {@link LimitInterceptor}</li>
+ *     <li>{@link Plugin#META_DATA_AUDIT}: {@link MetadataAuditingInterceptor}</li>
+ *     <li>{@link Plugin#OPTIMISTIC_LOCKER}: {@link OptimisticLockerInterceptor}</li>
  * </ul>
- * <p>建议注册顺序：{@link Plugin#META_OBJECT_FILLING} > {@link Plugin#OPTIMISTIC_LOCKER} >
+ * <p>建议注册顺序：{@link Plugin#META_DATA_AUDIT} > {@link Plugin#OPTIMISTIC_LOCKER} >
  * {@link Plugin#PAGEABLE} > {@link Plugin#LIMIT}</p>
  * @author wvkity
  */
@@ -26,9 +31,9 @@ public enum Plugin {
     LIMIT,
 
     /**
-     * 自动填充值插件
+     * 元数据审计
      */
-    META_OBJECT_FILLING,
+    META_DATA_AUDIT,
 
     /**
      * 乐观锁插件

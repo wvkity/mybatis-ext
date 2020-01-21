@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core.meta;
 
 import com.wkit.lost.mybatis.annotation.extension.Executing;
-import com.wkit.lost.mybatis.annotation.extension.FillingRule;
+import com.wkit.lost.mybatis.data.auditing.AuditMatching;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -139,21 +139,52 @@ public class Column {
      * 值
      */
     private Object value;
-    
+
+    // 审计
     /**
-     * 保存操作是否自动填充值
+     * 标识保存操作时间是否自动填充
      */
-    private boolean insertFilling;
+    private boolean createdDate;
 
     /**
-     * 保存操作是否自动填充值
+     * 标识保存操作用户标识是否自动填充
      */
-    private boolean updateFilling;
+    private boolean createdUser;
 
     /**
-     * 保存操作是否自动填充值
+     * 标识保存操作用户名是否自动填充
      */
-    private boolean deleteFilling;
+    private boolean createdUserName;
+
+    /**
+     * 标识删除操作时间是否自动填充
+     */
+    private boolean deletedDate;
+
+    /**
+     * 标识删除操作用户标识是否自动填充
+     */
+    private boolean deletedUser;
+
+    /**
+     * 标识删除操作用户名是否自动填充
+     */
+    private boolean deletedUserName;
+
+    /**
+     * 标识更新操作时间是否自动填充
+     */
+    private boolean lastModifiedDate;
+
+    /**
+     * 标识更新操作用户标识是否自动填充
+     */
+    private boolean lastModifiedUser;
+
+    /**
+     * 标识更新操作用户名是否自动填充
+     */
+    private boolean lastModifiedUserName;
 
     /**
      * 是否为逻辑删除属性
@@ -161,14 +192,14 @@ public class Column {
     private boolean logicDelete;
 
     /**
-     * 标识为已删除值
+     * 逻辑删除真值
      */
-    private String logicDeleteValue;
+    private String logicDeletedTrueValue;
 
     /**
-     * 标识为未删除值
+     * 逻辑删除假值
      */
-    private String logicNotDeleteValue;
+    private String logicDeletedFalseValue;
 
     /**
      * 构造方法
@@ -189,77 +220,44 @@ public class Column {
     public Table getTable() {
         return EntityHandler.getTable( this.entity );
     }
-
+    
     /**
-     * 设置是否自动填充值
-     * @param rule  填充规则
-     * @param value 值
-     * @return 当前对象
+     * 检查当前字段是否可自动审计
+     * @return true: 是, false: 否
      */
-    Column setFilling( FillingRule rule, boolean value ) {
-        if ( rule != null ) {
-            if ( rule != FillingRule.NORMAL ) {
-                if ( rule == FillingRule.INSERT ) {
-                    this.insertFilling = value && insertable && !primaryKey;
-                } else if ( rule == FillingRule.UPDATE ) {
-                    this.updateFilling = value && updatable;
-                } else {
-                    this.deleteFilling = value && updatable && !logicDelete;
-                }
-            }
-        }
-        return this;
-    }
-
-    /**
-     * 检查当前字段是否支持自动填充值
-     * @return true: 是 false: 否
-     */
-    public boolean canFilling() {
+    public boolean isAuditable() {
         return ( this.insertable || this.updatable ) && !primaryKey && !logicDelete;
     }
 
     /**
-     * 检查当前字段是否支持指定填充规则
-     * @param rule 指定填充规则
-     * @return true: 是 false: 否
+     * 检查当前字段是否可自动审计
+     * @param matching 规则
+     * @return true: 是, false: 否
      */
-    public boolean canFilling( FillingRule rule ) {
-        return rule == FillingRule.INSERT && insertFilling || rule == FillingRule.UPDATE && updateFilling 
-                || rule == FillingRule.DELETE && deleteFilling;
+    public boolean isAuditable( AuditMatching matching ) {
+        switch ( matching ) {
+            case INSERTED:
+                return enableInsertedAuditable() && this.insertable;
+            case MODIFIED:
+                return enableModifiedAuditable() && this.updatable && !primaryKey;
+            case DELETED:
+                return enableDeletedAuditable() && !logicDelete;
+            default:
+                return false;
+        }
     }
-
-    /**
-     * 检查当前字段是否存在自动填充规则
-     * @return true: 是 false: 否
-     */
-    public boolean hasFillingRule() {
-        return enableInsertFilling() || enableUpdateFilling() || enableDeleteFilling();
+    
+    public boolean enableInsertedAuditable() {
+        return this.createdDate || this.createdUser || this.createdUserName;
     }
-
-    /**
-     * 检查是否启用保存操作自动填充值
-     * @return true: 是 false: 否
-     */
-    public boolean enableInsertFilling() {
-        return insertFilling;
+    
+    public boolean enableModifiedAuditable() {
+        return this.lastModifiedDate || this.lastModifiedUser || this.lastModifiedUserName;
     }
-
-    /**
-     * 检查是否启用更新操作自动填充值
-     * @return true: 是 false: 否
-     */
-    public boolean enableUpdateFilling() {
-        return updateFilling;
+    
+    public boolean enableDeletedAuditable() {
+        return this.deletedDate || this.deletedUser || this.deletedUserName;
     }
-
-    /**
-     * 检查是否启用逻辑删除操作自动填充值
-     * @return true: 是 false: 否
-     */
-    public boolean enableDeleteFilling() {
-        return deleteFilling;
-    }
-
+    
 }
 

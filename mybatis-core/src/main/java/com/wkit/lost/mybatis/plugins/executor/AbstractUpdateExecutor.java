@@ -20,4 +20,6 @@ public abstract class AbstractUpdateExecutor {
         return ( exec == SqlCommandType.INSERT || exec == SqlCommandType.UPDATE ) && parameterObject != null
                 && !( PrimitiveRegistry.isPrimitiveOrWrapper( parameterObject ) || parameterObject.getClass() == String.class );
     }
+    
+    
 }

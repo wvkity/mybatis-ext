@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.utils.test.junit;
 
 import com.wkit.lost.mybatis.snowflake.factory.ElasticSequenceFactory;
-import com.wkit.lost.mybatis.snowflake.factory.MillisSequenceFactory;
+import com.wkit.lost.mybatis.snowflake.factory.MillisecondsSequenceFactory;
 import com.wkit.lost.mybatis.snowflake.factory.SecondsSequenceFactory;
 import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
 import com.wkit.lost.mybatis.snowflake.worker.DefaultWorkerAssigner;
@@ -16,7 +16,7 @@ public class SequenceTest {
 
         Sequence secondsIdSequence = IdSequenceHolder.secondsIdSequence;
         for ( int i = 0; i < 10; i++ ) {
-            long uid = secondsIdSequence.nextId();
+            long uid = secondsIdSequence.nextValue();
             String jsonText = secondsIdSequence.parse( uid );
             System.out.println( jsonText );
         }
@@ -24,7 +24,7 @@ public class SequenceTest {
 
         Sequence millisIdSequence = IdSequenceHolder.millisIdSequence;
         for ( int i = 0; i < 10; i++ ) {
-            long uid = millisIdSequence.nextId();
+            long uid = millisIdSequence.nextValue();
             String jsonText = millisIdSequence.parse( uid );
             System.out.println( jsonText );
         }
@@ -41,7 +41,7 @@ public class SequenceTest {
 
         static {
             secondsIdSequence = new SecondsSequenceFactory().build( 2L, 0L );
-            millisIdSequence = new MillisSequenceFactory().build( 2L, 0L );
+            millisIdSequence = new MillisecondsSequenceFactory().build( 2L, 0L );
 
             ElasticSequenceFactory elasticFactory = new ElasticSequenceFactory();
 

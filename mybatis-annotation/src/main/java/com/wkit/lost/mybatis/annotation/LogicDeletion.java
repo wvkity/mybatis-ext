@@ -21,11 +21,11 @@ public @interface LogicDeletion {
      * 是
      * @return 标识已删除值
      */
-    String value() default "";
+    String trueValue() default "";
 
     /**
      * 否
      * @return 标识未删除值
      */
-    String not() default "";
+    String falseValue() default "";
 }

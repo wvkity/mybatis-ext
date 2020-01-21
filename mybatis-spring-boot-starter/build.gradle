@@ -1,6 +1,7 @@
 dependencies {
     api project(":mybatis-spring-extension")
     api project(":mybatis-extension")
+    api "${lib["spring-aspects"]}"
     api "${lib["springboot-jdbc"]}"
     api "${lib["springboot-autoconfigure"]}"
     api(enforcedPlatform("${lib["springboot-dependencies"]}" as String))

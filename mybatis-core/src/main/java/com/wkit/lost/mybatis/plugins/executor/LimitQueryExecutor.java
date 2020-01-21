@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.plugins.executor;
 
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.plugins.dbs.dialect.Dialect;
+import com.wkit.lost.mybatis.plugins.paging.PageMode;
 import com.wkit.lost.paging.Pageable;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.cache.CacheKey;
@@ -23,8 +24,8 @@ import java.util.Properties;
 public class LimitQueryExecutor extends AbstractQueryExecutor {
 
     @Override
-    protected QueryMode getTarget() {
-        return QueryMode.LIMIT;
+    protected PageMode getMode() {
+        return PageMode.LIMIT;
     }
 
     @Override

@@ -1,4 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.wkit.lost.mybatis.spring.boot.worker.SequenceAutoConfiguration, \
-  com.wkit.lost.mybatis.spring.boot.autoconfigure.MyBatisAutoConfiguration
+  com.wkit.lost.mybatis.spring.boot.autoconfigure.MyBatisAutoConfiguration, \
+  com.wkit.lost.mybatis.spring.boot.sequence.SequenceAutoConfiguration

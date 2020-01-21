@@ -24,7 +24,7 @@ public class SnowflakeSequence implements Sequence {
     private long sequence = 0L;
     private long lastTimestamp = -1L;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss.SSS" );
-    private static final String TEMPLATE = "{\"id\":\"%d\",\"timestamp\":\"%s\",\"workerId\":\"%d\", \"dataCenterId\":\"%d\",\"sequence\":\"%d\"}";
+    private static final String TEMPLATE = "{\"id\": \"%d\", \"timestamp\": \"%s\", \"workerId\": \"%d\", \"dataCenterId\": \"%d\", \"sequence\": \"%d\"}";
 
     public SnowflakeSequence( int timestampBits, int workerIdBits, int dataCenterIdBits, int sequenceBits, long epochTimestamp, long workerId, long dataCenterId ) {
         bitsAllocator = new BitsAllocator( timestampBits, workerIdBits, dataCenterIdBits, sequenceBits );
@@ -85,7 +85,7 @@ public class SnowflakeSequence implements Sequence {
     }
 
     @Override
-    public synchronized long nextId() {
+    public synchronized long nextValue() {
         long currentTime = getTimestamp();
         if ( currentTime < lastTimestamp ) {
             throw new SnowflakeException( "Clock moved backwards. Refusing for %s timeStamp", lastTimestamp - currentTime );

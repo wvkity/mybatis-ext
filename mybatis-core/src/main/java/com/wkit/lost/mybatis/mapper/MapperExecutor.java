@@ -1,9 +1,9 @@
 package com.wkit.lost.mybatis.mapper;
 
 /**
- * MyBatis泛型Mapper接口
- * @param <T>  实体类型
- * @param <R>  返回值类型
+ * 实体、返回值一样Mapper通用接口
+ * @param <T> 实体、返回值类型
+ * @author wvkity
  */
-public interface MapperExecutor<T, R> extends WriterMapper<T>, ReaderMapper<T, R> {
+public interface MapperExecutor<T> extends MapperExecutorCallable<T, T> {
 }

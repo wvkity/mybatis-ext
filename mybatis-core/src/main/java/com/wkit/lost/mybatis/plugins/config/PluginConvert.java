@@ -1,10 +1,10 @@
 package com.wkit.lost.mybatis.plugins.config;
 
 import com.wkit.lost.mybatis.config.Plugin;
-import com.wkit.lost.mybatis.plugins.interceptor.LimitInterceptor;
-import com.wkit.lost.mybatis.plugins.interceptor.MetaObjectFillingInterceptor;
-import com.wkit.lost.mybatis.plugins.interceptor.OptimisticLockerInterceptor;
-import com.wkit.lost.mybatis.plugins.interceptor.PageableInterceptor;
+import com.wkit.lost.mybatis.plugins.data.auditing.MetadataAuditingInterceptor;
+import com.wkit.lost.mybatis.plugins.paging.LimitInterceptor;
+import com.wkit.lost.mybatis.plugins.locker.OptimisticLockerInterceptor;
+import com.wkit.lost.mybatis.plugins.paging.PageableInterceptor;
 import org.apache.ibatis.plugin.Interceptor;
 
 import java.util.Map;
@@ -26,7 +26,7 @@ public final class PluginConvert {
     static {
         PLUGIN_MAPPING_CACHE.put( Plugin.PAGEABLE, PageableInterceptor.class );
         PLUGIN_MAPPING_CACHE.put( Plugin.LIMIT, LimitInterceptor.class );
-        PLUGIN_MAPPING_CACHE.put( Plugin.META_OBJECT_FILLING, MetaObjectFillingInterceptor.class );
+        PLUGIN_MAPPING_CACHE.put( Plugin.META_DATA_AUDIT, MetadataAuditingInterceptor.class );
         PLUGIN_MAPPING_CACHE.put( Plugin.OPTIMISTIC_LOCKER, OptimisticLockerInterceptor.class );
     }
 
