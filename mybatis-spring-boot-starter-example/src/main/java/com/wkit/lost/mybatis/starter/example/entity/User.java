@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.starter.example.entity;
 
+import com.wkit.lost.mybatis.annotation.auditing.CreatedUserName;
 import com.wkit.lost.mybatis.annotation.Table;
 import com.wkit.lost.mybatis.annotation.Version;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class User implements Serializable {
     private String userName;
     private String password;
     private Integer state;
+    @CreatedUserName
     private String createUser;
     private String modifyUser;
     private LocalDateTime gmtCreate;

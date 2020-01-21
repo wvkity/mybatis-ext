@@ -1,8 +1,9 @@
 package com.wkit.lost.mybatis.starter.example.config;
 
-import com.wkit.lost.mybatis.filling.MetaObjectFillAuxiliary;
-import com.wkit.lost.mybatis.plugins.interceptor.OptimisticLockerInterceptor;
-import com.wkit.lost.mybatis.spring.boot.worker.SequenceAutoConfiguration;
+import com.wkit.lost.mybatis.data.auditing.AuditorAware;
+import com.wkit.lost.mybatis.plugins.data.auditing.MetadataAuditingInterceptor;
+import com.wkit.lost.mybatis.plugins.locker.OptimisticLockerInterceptor;
+import com.wkit.lost.mybatis.spring.boot.sequence.SequenceProperties;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
 public class MyBatisConfigurer {
 
     //@Bean
-    public SequenceAutoConfiguration sequenceConfiguration() {
-        SequenceAutoConfiguration configuration = new SequenceAutoConfiguration();
+    public SequenceProperties sequenceConfiguration() {
+        SequenceProperties configuration = new SequenceProperties();
         configuration.setWorkerId( 1L ).setDataCenterId( 3L );
         return configuration;
     }
@@ -21,9 +22,14 @@ public class MyBatisConfigurer {
     public OptimisticLockerInterceptor optimisticLockerInterceptor() {
         return new OptimisticLockerInterceptor();
     }
-
-    @Bean( "metaObjectFillAuxiliary" )
-    public MetaObjectFillAuxiliary dependency() {
-        return new FillingDependency();
+    
+    @Bean
+    public AuditorAware getAuditorAware() {
+        return new DefaultAuditorAware();
+    }
+    
+    @Bean
+    public MetadataAuditingInterceptor auditingInterceptor() {
+        return new MetadataAuditingInterceptor();
     }
 }

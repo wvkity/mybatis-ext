@@ -4,7 +4,9 @@ import com.wkit.lost.mybatis.annotation.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
@@ -15,7 +17,7 @@ import java.time.LocalDateTime;
 /**
  * 成绩信息
  */
-@Table(catalog = "STUDENT_MANAGEMENT")
+@Table( catalog = "STUDENT_MANAGEMENT" )
 @Data
 @EqualsAndHashCode
 @ToString
@@ -23,6 +25,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants
+@Getter
+@Setter
 public class Result implements Serializable {
     private static final long serialVersionUID = -127005466439690613L;
 

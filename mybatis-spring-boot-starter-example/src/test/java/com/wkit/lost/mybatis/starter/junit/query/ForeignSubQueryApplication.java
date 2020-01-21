@@ -80,7 +80,8 @@ public class ForeignSubQueryApplication extends RootTestRunner {
         studentCriteria.addForeign( Result.class, "rs", null, Student::getId, Result::getStudentId,
                 ctx -> ctx.eq( Result::getSubjectId, subjectSubCriteria, Subject.Fields.id )
                         .ge( Result::getScore, 84 ).query( Result::getScore ) );
-        List<StudentVo> result = studentService.list( studentCriteria );
-        log.info( "查询学生结果: {}", JSON.toJSONString( result, true ) );
+        // List<StudentVo> result = studentService.list( studentCriteria );
+        List<Student> list = studentService.listForCustom( studentCriteria.resultType( Student.class ) );
+        log.info( "查询学生结果: {}", JSON.toJSONString( list, true ) );
     }
 }

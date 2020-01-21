@@ -60,5 +60,3 @@ lost:
   sequence:
     data-center-id: 2
     worker-id: 1
-    level: unknown
-    mode: unknown

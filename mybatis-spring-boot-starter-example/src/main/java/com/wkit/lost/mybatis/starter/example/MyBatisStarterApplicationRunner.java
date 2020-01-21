@@ -1,10 +1,8 @@
 package com.wkit.lost.mybatis.starter.example;
 
-import com.wkit.lost.mybatis.snowflake.sequence.Level;
-import com.wkit.lost.mybatis.snowflake.sequence.Mode;
-import com.wkit.lost.mybatis.spring.boot.filling.EnableMetaObjectAutoFilling;
+import com.wkit.lost.mybatis.config.Plugin;
+import com.wkit.lost.mybatis.spring.boot.data.auditing.EnableMetadataAuditing;
 import com.wkit.lost.mybatis.spring.boot.plugin.EnableInterceptors;
-import com.wkit.lost.mybatis.spring.boot.worker.EnableSnowflakeSequence;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,10 +11,9 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+@EnableMetadataAuditing( automatic = true )
 @EnableTransactionManagement
-@EnableSnowflakeSequence( level = Level.SECOND, mode = Mode.MAC )
-@EnableMetaObjectAutoFilling( value = true, disableAutoMatching = true )
-@EnableInterceptors
+@EnableInterceptors( exclude = { Plugin.META_DATA_AUDIT } )
 @EnableConfigurationProperties
 @SpringBootApplication
 @EnableAsync

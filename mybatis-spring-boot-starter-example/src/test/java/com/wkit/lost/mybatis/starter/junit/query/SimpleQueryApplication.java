@@ -1,10 +1,14 @@
 package com.wkit.lost.mybatis.starter.junit.query;
 
+import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.CriteriaImpl;
 import com.wkit.lost.mybatis.core.Order;
 import com.wkit.lost.mybatis.starter.example.entity.Result;
+import com.wkit.lost.mybatis.starter.example.entity.Student;
 import com.wkit.lost.mybatis.starter.example.service.ResultService;
+import com.wkit.lost.mybatis.starter.example.service.StudentService;
 import com.wkit.lost.mybatis.starter.example.vo.ResultVo;
+import com.wkit.lost.mybatis.starter.example.vo.StudentVo;
 import com.wkit.lost.mybatis.starter.junit.RootTestRunner;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -17,6 +21,9 @@ public class SimpleQueryApplication extends RootTestRunner {
 
     @Inject
     ResultService resultService;
+    
+    @Inject
+    StudentService studentService;
 
     @Test
     public void eqTest() {
@@ -65,8 +72,19 @@ public class SimpleQueryApplication extends RootTestRunner {
                 .asc( "id" )
                 .desc( "score", "subjectId" )
                 .asc( "examDate" )
-                .addOrder( Order.aliasAsc( "RS", "STUDENT_ID" ) );
+                .asc( "studentId" );
+                //.addOrder( Order.aliasAsc( "RS", "STUDENT_ID" ) );
         List<ResultVo> results = resultService.list( resultCriteria.limit( 0, 10 ) );
         log.info( "查询结果：{}", results );
+    }
+    
+    @Test
+    public void templateTest() {
+        CriteriaImpl<Student> criteria = studentService.getCriteria();
+        String template = "DATE_FORMAT({}, '%Y-%m-%d') = {}";
+        criteria.template( template, Student::getBirthday, "1994-12-05" )
+                .orTemplate( template, "birthday", "1995-09-10" );
+        List<StudentVo> result = studentService.list( criteria );
+        log.info( "查询结果：{}", result );
     }
 }
