@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.starter.example.config;
 
 import com.wkit.lost.mybatis.data.auditing.AuditorAware;
 import com.wkit.lost.mybatis.plugins.data.auditing.MetadataAuditingInterceptor;
-import com.wkit.lost.mybatis.plugins.locker.OptimisticLockerInterceptor;
+import com.wkit.lost.mybatis.plugins.locking.OptimisticLockingInterceptor;
 import com.wkit.lost.mybatis.spring.boot.sequence.SequenceProperties;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
@@ -19,8 +19,8 @@ public class MyBatisConfigurer {
         return configuration;
     }
     
-    public OptimisticLockerInterceptor optimisticLockerInterceptor() {
-        return new OptimisticLockerInterceptor();
+    public OptimisticLockingInterceptor optimisticLockerInterceptor() {
+        return new OptimisticLockingInterceptor();
     }
     
     @Bean

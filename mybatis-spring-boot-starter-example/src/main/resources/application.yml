@@ -43,7 +43,6 @@ lost:
     #mapper-locations:
       #- classpath:/mybatis/mapper/*.xml
     configuration:
-      call-setters-on-nulls: true
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
       #map-underscore-to-camel-case: false
     custom-configuration:
@@ -52,11 +51,9 @@ lost:
       #dialect: mysql
       jdbc-type-auto-mapping: true
       dialect: mysql
-      #plugins: 
-        #- meta_object_filling
-        #- optimistic_locker
-        #- pageable
-        #- limit
+      plugins: 
+        - optimistic_locking
+    executor-type: simple
   sequence:
     data-center-id: 2
     worker-id: 1

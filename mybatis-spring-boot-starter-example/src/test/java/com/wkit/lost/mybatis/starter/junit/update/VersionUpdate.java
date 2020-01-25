@@ -25,7 +25,7 @@ public class VersionUpdate extends RootTestRunner {
     public void integerVersionTest() {
         User user = new User();
         user.setId( 4L ).setIntegerVersion( 4 ).setUserName( "测试修改" );
-        int result = userService.updateSelective( user );
+        int result = userService.updateNotWithNull( user );
         log.info( "执行结果: {}", result );
         log.info( "执行后的entity信息：{}", user );
     }
@@ -34,7 +34,7 @@ public class VersionUpdate extends RootTestRunner {
     public void integerVersionNoLockTest() {
         User user = new User();
         user.setId( 14L ).setIntegerVersion( 4 ).setUserName( "测试无锁更新..." );
-        int result = userService.updateSelectiveOfNoLock( user );
+        int result = userService.updateNotWithNullAndLocking( user );
         log.info( "执行结果: {}", result );
         log.info( "执行后的entity信息：{}", user );
     }
@@ -58,7 +58,7 @@ public class VersionUpdate extends RootTestRunner {
                 .setUserName( "我是测试时间乐观锁" )
                 .setPassword( "root123456" )
                 .setTimeVersion( Date.from( dateTime.atZone( ZoneId.systemDefault() ).toInstant() ) );
-        int result = userService.updateSelective( user );
+        int result = userService.updateNotWithNull( user );
         log.info( "执行结果: {}", result );
     }
     
@@ -75,7 +75,7 @@ public class VersionUpdate extends RootTestRunner {
     public void integerVersionUpdateNoLockTest() {
         User user = new User();
         user.setId( 20L ).setIntegerVersion( 2 ).setUserName( "updateVersionNoLock测试" ).setPassword( "ADMIN" );
-        int result = userService.updateOfNoLock( user );
+        int result = userService.updateNotWithLocking( user );
         log.info( "执行结果: {}", result );
         log.info( "执行后的entity信息：{}", user );
     }
