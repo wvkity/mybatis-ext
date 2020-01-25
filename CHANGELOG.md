@@ -8,4 +8,8 @@
 UnifyServiceExecutor更名为ServiceExecutor
 - 优化自定义拦截器功能
 - 修复存在bug
+- 修改Mapper、Service部分方法名
+- 优化乐观锁拦截器
+- 修复存在的bug
+- 添加批量保存功能支持simple、batch模式
 

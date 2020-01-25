@@ -1,13 +1,20 @@
 package com.wkit.lost.mybatis.service;
 
+import com.wkit.lost.mybatis.batch.BatchDataBeanWrapper;
+import com.wkit.lost.mybatis.binding.MyBatisMapperMethod;
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.factory.AbstractCriteriaBuilderFactory;
+import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.mapper.MapperExecutorCallable;
+import com.wkit.lost.mybatis.session.SqlSessionUtil;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
+import com.wkit.lost.mybatis.utils.ClassUtil;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
+import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.paging.Pageable;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
@@ -27,8 +34,11 @@ import java.util.stream.Collectors;
  * @param <R> 返回值类型
  * @author wvkity
  */
-public abstract class AbstractServiceExecutorCallable<Executor extends MapperExecutorCallable<T, R>, T, R> 
+public abstract class AbstractServiceExecutorCallable<Executor extends MapperExecutorCallable<T, R>, T, R>
         extends AbstractCriteriaBuilderFactory<T> implements ServiceExecutorCallable<T, R> {
+
+    protected static final String METHOD_INSERT = "insert";
+    protected static final String METHOD_INSERT_NOT_WITH_NULL = "insertNotWithNull";
 
     @Inject
     protected Executor executor;
@@ -41,8 +51,52 @@ public abstract class AbstractServiceExecutorCallable<Executor extends MapperExe
 
     @Transactional( rollbackFor = Exception.class )
     @Override
-    public int insertNotWithNull( T entity ) {
+    public int saveNotWithNull( T entity ) {
         return this.executor.insertNotWithNull( entity );
+    }
+
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int batchSave( BatchDataBeanWrapper<T> wrapper ) {
+        return executor.batchInsert( wrapper );
+    }
+
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int batchSaveNotWithAudit( BatchDataBeanWrapper<T> wrapper ) {
+        return executor.batchInsertNotWithAudit( wrapper );
+    }
+
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int embeddedBatchSave( Collection<T> entities, int batchSize ) {
+        return execBatchMethod( entities, batchSize, METHOD_INSERT );
+    }
+
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int embeddedBatchSaveNotWithNull( Collection<T> entities, int batchSize ) {
+        return execBatchMethod( entities, batchSize, METHOD_INSERT_NOT_WITH_NULL );
+    }
+
+    private int execBatchMethod( Collection<T> entities, int batchSize, String method ) {
+        if ( CollectionUtil.isEmpty( entities ) ) {
+            return 0;
+        }
+        SqlSession session = batchSession();
+        int i = 0;
+        String statement = sqlStatement( method );
+        Map<String, Object> param = new MyBatisMapperMethod.ParamMap<>();
+        for ( T entity : entities ) {
+            param.put( Constants.PARAM_ENTITY, entity );
+            session.insert( statement, param );
+            if ( i >= 1 && i % batchSize == 0 ) {
+                session.flushStatements();
+            }
+            i++;
+        }
+        session.flushStatements();
+        return i;
     }
 
     @Transactional( rollbackFor = Exception.class )
@@ -288,5 +342,39 @@ public abstract class AbstractServiceExecutorCallable<Executor extends MapperExe
     @Override
     public Executor getExecutor() {
         return executor;
+    }
+
+    /**
+     * 获取SQL statement
+     * @param method 方法名
+     * @return sql statement
+     */
+    protected String sqlStatement( String method ) {
+        return EntityHandler.getTable( getEntityClass() ).getSqlStatement( method );
+    }
+
+    /**
+     * 获取实体类
+     * @return {@link Class}
+     */
+    @SuppressWarnings( { "unchecked" } )
+    protected Class<T> getEntityClass() {
+        return ( Class<T> ) ClassUtil.getGenericType( getClass(), 1 );
+    }
+
+    /**
+     * 获取批量操作{@link SqlSession}
+     * @return {@link SqlSession}
+     */
+    protected SqlSession batchSession() {
+        return SqlSessionUtil.batchSession( getEntityClass() );
+    }
+
+    /**
+     * 释放批量操作{@link SqlSession}
+     * @param session {@link SqlSession}
+     */
+    protected void closeSession( SqlSession session ) {
+        SqlSessionUtil.closeSession( session, getEntityClass() );
     }
 }

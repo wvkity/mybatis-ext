@@ -5,6 +5,8 @@ package com.wkit.lost.mybatis.utils;
  * @author wvkity
  */
 public interface Constants {
+    
+    String PARAM_BATCH_BEAN_WRAPPER = "batchDataBeanWrapper";
 
     /**
      * 实体参数对象

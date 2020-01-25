@@ -349,8 +349,8 @@ public class MyBatisMapperMethod {
             return this.resultHandlerIndex != null;
         }
 
-        public ResultHandler extractResultHandler( Object[] args ) {
-            return this.hasResultHandler() ? (ResultHandler) args[ this.resultHandlerIndex ] : null;
+        public ResultHandler<?> extractResultHandler( Object[] args ) {
+            return this.hasResultHandler() ? (ResultHandler<?>) args[ this.resultHandlerIndex ] : null;
         }
 
         public boolean returnsMany() {

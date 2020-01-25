@@ -84,16 +84,18 @@ public class MetadataAuditingHandler extends AbstractMetadataAuditable {
                 if ( isDateAuditable( column ) ) {
                     dateAuditing = true;
                     dateTimeAuditing( metadata, column, matching );
-                } else if ( isUserAuditable( column ) ) {
-                    userAuditing = true;
-                    invoke( metadata, column.getProperty(),
-                            auditorAwareOptional.map( AuditorAware::currentUserId )
-                                    .orElse( null ), matching );
-                } else if ( isUserNameAuditable( column ) ) {
-                    userNameAuditing = true;
-                    invoke( metadata, column.getProperty(),
-                            auditorAwareOptional.map( AuditorAware::currentUserName )
-                                    .orElse( null ), matching );
+                } else if ( auditorAwareOptional.isPresent() ) {
+                    if ( isUserAuditable( column ) ) {
+                        userAuditing = true;
+                        invoke( metadata, column.getProperty(),
+                                auditorAwareOptional.map( AuditorAware::currentUserId )
+                                        .orElse( null ), matching );
+                    } else if ( isUserNameAuditable( column ) ) {
+                        userNameAuditing = true;
+                        invoke( metadata, column.getProperty(),
+                                auditorAwareOptional.map( AuditorAware::currentUserName )
+                                        .orElse( null ), matching );
+                    }
                 }
             }
         }

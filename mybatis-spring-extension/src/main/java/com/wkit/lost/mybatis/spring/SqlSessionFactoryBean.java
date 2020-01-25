@@ -177,6 +177,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
         if ( this.customConfiguration == null ) {
             this.customConfiguration = MyBatisConfigCache.defaults();
         }
+        targetConfiguration.setCustomConfiguration( this.customConfiguration );
 
         if ( !isEmpty( this.plugins ) ) {
             Stream.of( this.plugins ).forEach( plugin -> {

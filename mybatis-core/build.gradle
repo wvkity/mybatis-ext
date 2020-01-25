@@ -9,4 +9,6 @@ dependencies {
     //api "${lib.guava}"
     api "${lib.caffeine}"
     compileOnly "${lib.persistence}"
+    compileOnly "${lib["spring-tx"]}"
+    annotationProcessor "${lib["spring-tx"]}"
 }

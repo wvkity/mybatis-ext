@@ -8,6 +8,10 @@ import org.apache.ibatis.plugin.Invocation;
 
 import java.util.Properties;
 
+/**
+ * 拦截器处理器
+ * @author wvkity
+ */
 public abstract class Processor implements Filter {
 
     /**

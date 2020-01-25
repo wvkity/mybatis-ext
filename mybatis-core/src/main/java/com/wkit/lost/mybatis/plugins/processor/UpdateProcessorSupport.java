@@ -1,11 +1,14 @@
 package com.wkit.lost.mybatis.plugins.processor;
 
-import com.wkit.lost.mybatis.plugins.processor.Processor;
 import com.wkit.lost.mybatis.utils.PrimitiveRegistry;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.Invocation;
 
+/**
+ * 更新操作处理器
+ * @author wvkity
+ */
 public abstract class UpdateProcessorSupport extends Processor {
 
     @Override

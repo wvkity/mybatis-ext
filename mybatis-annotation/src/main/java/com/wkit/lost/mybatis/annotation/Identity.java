@@ -42,5 +42,5 @@ public @interface Identity {
      * 获取主键SQL执行时机
      * @return {@link Executing}
      */
-    Executing execution() default Executing.DEFAULT;
+    Executing execution() default Executing.NONE;
 }

@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Log4j2
-class MetadataAuditingProcessor extends AbstractAuditingProcessor {
+public class MetadataAuditingProcessor extends AbstractAuditingProcessor {
 
     private static final String PARAM_KEY_COLLECTION = "collection";
     private static final String PARAM_KEY_LIST = "list";
@@ -32,27 +32,27 @@ class MetadataAuditingProcessor extends AbstractAuditingProcessor {
     protected Object auditing( MappedStatement ms, MyBatisCustomConfiguration customConfiguration,
                                MetadataAuditable auditable, Object parameter,
                                Table table, boolean isInsertCommand ) {
-        if ( table == null ) {
-            return parameter;
-        }
-        String execMethod = execMethod( ms );
-        boolean isExecLogicDeleting = LOGIC_DELETE_METHOD_CACHE.contains( execMethod );
-        Optional.ofNullable( auditable ).ifPresent( it -> {
-            MetaObject metadata = ms.getConfiguration().newMetaObject( parameter );
-            if ( isInsertCommand && auditable.enableInsertedAuditable() ) {
-                // 保存操作审计
-                it.inserted( metadata );
-            } else if ( !isInsertCommand ) {
-                if ( isExecLogicDeleting && it.enableDeletedAuditable() ) {
-                    // 逻辑删除操作审计(审计其他信息)
-                    it.deleted( metadata );
-                } else if ( !isExecLogicDeleting && it.enableModifiedAuditable() ) {
-                    // 更新操作审计
-                    it.modified( metadata );
+        if ( table != null ) {
+            String execMethod = execMethod( ms );
+            boolean isExecLogicDeleting = LOGIC_DELETE_METHOD_CACHE.contains( execMethod );
+            return Optional.ofNullable( auditable ).map( it -> {
+                MetaObject metadata = ms.getConfiguration().newMetaObject( parameter );
+                if ( isInsertCommand && auditable.enableInsertedAuditable() ) {
+                    // 保存操作审计
+                    it.inserted( metadata );
+                } else if ( !isInsertCommand ) {
+                    if ( isExecLogicDeleting && it.enableDeletedAuditable() ) {
+                        // 逻辑删除操作审计(审计其他信息)
+                        it.deleted( metadata );
+                    } else if ( !isExecLogicDeleting && it.enableModifiedAuditable() ) {
+                        // 更新操作审计
+                        it.modified( metadata );
+                    }
                 }
-            }
-        } );
-        return null;
+                return metadata.getOriginalObject();
+            } ).orElse( parameter );
+        }
+        return parameter;
     }
 
 }

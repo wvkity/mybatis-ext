@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.plugins.data.auditing;
 
+import com.wkit.lost.mybatis.batch.BatchDataBeanWrapper;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.core.Criteria;
@@ -36,8 +37,14 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
     protected static final String PARAM_KEY_COLLECTION = "collection";
     protected static final String PARAM_KEY_LIST = "list";
     protected static final String PARAM_KEY_ARRAY = "array";
+    protected static final String METHOD_BATCH_INSERT_NOT_WITH_AUDIT = "batchInsertNotWithAudit";
     protected static final Set<String> LOGIC_DELETE_METHOD_CACHE =
             Collections.unmodifiableSet( new HashSet<>( Arrays.asList( "logicDelete", "logicDeleteByCriteria" ) ) );
+
+    @Override
+    public boolean filter( MappedStatement ms, Object parameter ) {
+        return super.filter( ms, parameter ) && !(METHOD_BATCH_INSERT_NOT_WITH_AUDIT.equals( execMethod( ms ) ));
+    }
 
     @Override
     protected Object doProceed( Invocation invocation, MappedStatement ms, Object parameter ) throws Throwable {
@@ -214,6 +221,7 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
      * @param parameter 方法参数
      * @return 处理后的参数
      */
+    @SuppressWarnings( { "unchecked" } )
     protected Object processParameter( MappedStatement ms, Object parameter ) {
         boolean isInsertCommand = ms.getSqlCommandType() == SqlCommandType.INSERT;
         Collection<Object> parameters = getOriginalParameter( parameter );
@@ -227,6 +235,20 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
                         .orElse( param ) );
             }
             return objects;
+        } else if ( parameter instanceof Map
+                && ( ( Map<?, ?> ) parameter ).containsKey( Constants.PARAM_BATCH_BEAN_WRAPPER ) ) {
+            Object wrapperTarget = ( ( Map<?, ?> ) parameter ).getOrDefault( Constants.PARAM_BATCH_BEAN_WRAPPER, null );
+            if ( wrapperTarget != null ) {
+                BatchDataBeanWrapper<Object> wrapper = ( BatchDataBeanWrapper<Object> ) wrapperTarget;
+                Collection<Object> data = wrapper.getData();
+                if ( data != null && !data.isEmpty() ) {
+                    for ( Object entityTarget : data ) {
+                        Optional.ofNullable( parse( entityTarget ) ).map( it -> auditing( ms, configuration,
+                                auditable, entityTarget, it, isInsertCommand ) );
+                    }
+                }
+            }
+            return parameter;
         } else {
             return Optional.ofNullable( parse( parameter ) )
                     .map( it -> auditing( ms, configuration, auditable, parameter, it, isInsertCommand ) )

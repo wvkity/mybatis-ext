@@ -4,6 +4,7 @@ import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
 import com.wkit.lost.mybatis.exception.MapperException;
 import com.wkit.lost.mybatis.exception.MyBatisException;
+import com.wkit.lost.mybatis.session.MyBatisConfiguration;
 import com.wkit.lost.mybatis.sql.injector.DefaultSqlInjector;
 import com.wkit.lost.mybatis.sql.injector.SqlInjector;
 import lombok.extern.log4j.Log4j2;
@@ -56,6 +57,9 @@ public class MyBatisConfigCache {
         if ( configuration == null ) {
             throw new MapperException( "The configuration object cannot be empty. You need initialize Configuration." );
         }
+        if ( configuration instanceof MyBatisConfiguration ) {
+            return ( ( MyBatisConfiguration ) configuration ).getCustomConfiguration();
+        }
         return getCustomConfiguration( configuration.toString() );
     }
 
@@ -83,7 +87,12 @@ public class MyBatisConfigCache {
         if ( configuration == null || customConfiguration == null ) {
             throw new MyBatisException( "Mybatis configuration object cannot be empty, please initialize it first" );
         }
-        CONFIGURATION_CACHE.put( configuration.toString(), customConfiguration );
+        if ( configuration instanceof MyBatisConfiguration ) {
+            // 覆盖原有的自定义配置
+            ( ( MyBatisConfiguration ) configuration ).setCustomConfiguration( customConfiguration );
+        } else {
+            CONFIGURATION_CACHE.put( configuration.toString(), customConfiguration );
+        }
     }
 
     /**

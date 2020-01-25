@@ -7,6 +7,8 @@ import com.wkit.lost.mybatis.config.Plugin;
 import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.keygen.GuidGenerator;
 import com.wkit.lost.mybatis.keygen.KeyGenerator;
+import com.wkit.lost.mybatis.plugins.batch.BatchParameterFilterInterceptor;
+import com.wkit.lost.mybatis.plugins.batch.BatchStatementInterceptor;
 import com.wkit.lost.mybatis.plugins.config.PluginConvert;
 import com.wkit.lost.mybatis.plugins.data.auditing.DefaultBuiltinAuditingInterceptor;
 import com.wkit.lost.mybatis.resolver.EntityResolver;
@@ -221,8 +223,24 @@ public class MyBatisAutoConfiguration implements InitializingBean {
                 }
             }
         }
+        /////// 注入必要拦截器 ///////
+        // 默认审计插件(主键、逻辑删除)
         if ( pluginRegistrable( DefaultBuiltinAuditingInterceptor.class ) ) {
             Interceptor interceptor = new DefaultBuiltinAuditingInterceptor();
+            interceptorList.add( interceptor );
+            registerExistingInterceptorBean( interceptor );
+        }
+        
+        // 批量保存操作Statement插件
+        if (pluginRegistrable( BatchStatementInterceptor.class )) {
+            Interceptor interceptor = new BatchStatementInterceptor();
+            interceptorList.add( interceptor );
+            registerExistingInterceptorBean( interceptor );
+        }
+        
+        // 批量保存操作参数拦截插件
+        if ( pluginRegistrable( BatchParameterFilterInterceptor.class ) ) {
+            Interceptor interceptor = new BatchParameterFilterInterceptor();
             interceptorList.add( interceptor );
             registerExistingInterceptorBean( interceptor );
         }

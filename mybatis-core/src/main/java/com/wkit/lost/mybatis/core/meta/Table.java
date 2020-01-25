@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.apache.ibatis.session.Configuration;
 
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -38,6 +39,13 @@ public class Table {
      */
     @Getter
     private Map<String, Column> definitions = new ConcurrentHashMap<>();
+
+    /**
+     * 命名空间
+     */
+    @Getter
+    @Setter( AccessLevel.PACKAGE )
+    private String namespace;
 
     /**
      * 实体类
@@ -277,11 +285,11 @@ public class Table {
     public Set<Column> getDeletedAuditable() {
         return auditableColumns( it -> it.isAuditable( AuditMatching.DELETED ) );
     }
-    
+
     private Set<Column> auditableColumns( Predicate<Column> filter ) {
         return this.columns.stream().filter( filter ).collect( Collectors.toCollection( LinkedHashSet::new ) );
     }
-    
+
 
     /**
      * 获取非删除审计字段
@@ -311,6 +319,10 @@ public class Table {
         return this;
     }
 
+    public String getSqlStatement( String method ) {
+        return this.namespace + "." + method;
+    }
+
     /**
      * 创建实例
      * @return 实例对象
@@ -319,7 +331,7 @@ public class Table {
     public Object newInstance() throws Exception {
         return this.getEntity().getDeclaredConstructor().newInstance();
     }
-    
+
 }
 
 

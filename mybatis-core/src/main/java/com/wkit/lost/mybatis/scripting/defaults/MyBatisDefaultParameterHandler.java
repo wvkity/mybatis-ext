@@ -26,7 +26,7 @@ import java.util.List;
  *     </ul>
  * </p>
  * @author wvkity
- * @see com.wkit.lost.mybatis.plugins.interceptor.MetaObjectFillingInterceptor
+ * @see com.wkit.lost.mybatis.plugins.data.auditing.MetadataAuditingInterceptor
  */
 public class MyBatisDefaultParameterHandler extends DefaultParameterHandler {
 

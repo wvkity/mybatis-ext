@@ -19,7 +19,7 @@ public enum Executing {
     /**
      * 全局
      */
-    DEFAULT;
+    NONE;
 
     /**
      * 转换成boolean值

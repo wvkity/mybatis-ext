@@ -25,7 +25,7 @@ public class DefaultBuiltinAuditingProcessor extends AbstractAuditingProcessor {
     }
 
     @Override
-    protected Object auditing( MappedStatement ms, MyBatisCustomConfiguration customConfiguration, 
+    protected Object auditing( MappedStatement ms, MyBatisCustomConfiguration customConfiguration,
                                MetadataAuditable __, Object parameter, Table table, boolean isInsertCommand ) {
         if ( table != null ) {
             MetaObject metadata = ms.getConfiguration().newMetaObject( parameter );
@@ -50,38 +50,42 @@ public class DefaultBuiltinAuditingProcessor extends AbstractAuditingProcessor {
         Column primaryKey = table.getPrimaryKey();
         if ( isInsertCommand && primaryKey != null ) {
             String property = primaryKey.getProperty();
-            MetaObject realMetadata = null;
             if ( metadata.hasGetter( property ) && metadata.hasSetter( property ) ) {
-                realMetadata = metadata;
+                injectPrivateKeyValue( metadata, primaryKey, property, customConfiguration );
             } else {
                 // 采用@Param(Constants.PARAM_ENTITY)指定实体类
                 if ( metadata.hasGetter( Constants.PARAM_ENTITY ) ) {
                     Object entity = metadata.getValue( Constants.PARAM_ENTITY );
                     if ( entity != null ) {
-                        realMetadata = MetaObjectUtil.forObject( entity );
+                        injectPrivateKeyValue( MetaObjectUtil.forObject( entity ), primaryKey,
+                                property, customConfiguration );
                     }
                 }
             }
-            Optional.ofNullable( realMetadata ).ifPresent( it -> {
-                if ( isAuditable( it, property, this::isNullOrBlank ) ) {
-                    if ( primaryKey.isUuid() ) {
-                        // guid
-                        it.setValue( property, customConfiguration.getKeyGenerator().value() );
-                    } else {
-                        Sequence sequence = customConfiguration.getSequence();
-                        if ( primaryKey.isWorker() ) {
-                            // 雪花算法主键(如果不开启注入Sequence对象，则默认使用mac地址分配的Sequence对象)
-                            it.setValue( property, Optional.ofNullable( sequence )
-                                    .map( Sequence::nextValue ).orElse( SequenceWorker.nextValue() ) );
-                        } else if ( primaryKey.isWorkerString() ) {
-                            // 雪花算法字符串主键(如果不开启注入Sequence对象，则默认使用mac地址分配的Sequence对象)
-                            it.setValue( property, Optional.ofNullable( sequence )
-                                    .map( Sequence::nextString ).orElse( SequenceWorker.nextString() ) );
-                        }
+        }
+    }
+
+    private void injectPrivateKeyValue( MetaObject metadata, Column primaryKey,
+                                        String property, MyBatisCustomConfiguration customConfiguration ) {
+        Optional.ofNullable( metadata ).ifPresent( it -> {
+            if ( isAuditable( it, property, this::isNullOrBlank ) ) {
+                if ( primaryKey.isUuid() ) {
+                    // guid
+                    it.setValue( property, customConfiguration.getKeyGenerator().value() );
+                } else {
+                    Sequence sequence = customConfiguration.getSequence();
+                    if ( primaryKey.isWorker() ) {
+                        // 雪花算法主键(如果不开启注入Sequence对象，则默认使用mac地址分配的Sequence对象)
+                        it.setValue( property, Optional.ofNullable( sequence )
+                                .map( Sequence::nextValue ).orElse( SequenceWorker.nextValue() ) );
+                    } else if ( primaryKey.isWorkerString() ) {
+                        // 雪花算法字符串主键(如果不开启注入Sequence对象，则默认使用mac地址分配的Sequence对象)
+                        it.setValue( property, Optional.ofNullable( sequence )
+                                .map( Sequence::nextString ).orElse( SequenceWorker.nextString() ) );
                     }
                 }
-            } );
-        }
+            }
+        } );
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.wkit.lost.mybatis.session;
 
 import com.wkit.lost.mybatis.binding.MyBatisMapperRegistry;
+import com.wkit.lost.mybatis.config.MyBatisConfigCache;
+import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.executor.resultset.MyBatisResultSetHandler;
 import com.wkit.lost.mybatis.reflection.wrapper.MyBatisObjectWrapperFactory;
 import com.wkit.lost.mybatis.scripting.xmltags.MyBatisXMLLanguageDriver;
@@ -12,6 +14,8 @@ import com.wkit.lost.mybatis.type.handlers.StandardLocalTimeTypeHandler;
 import com.wkit.lost.mybatis.type.handlers.StandardOffsetDateTimeTypeHandler;
 import com.wkit.lost.mybatis.type.handlers.StandardOffsetTimeTypeHandler;
 import com.wkit.lost.mybatis.type.handlers.StandardZonedDateTimeTypeHandler;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
@@ -42,6 +46,13 @@ public class MyBatisConfiguration extends Configuration {
 
     protected final MyBatisMapperRegistry mapperRegistry = new MyBatisMapperRegistry( this );
 
+    /**
+     * 自定义配置
+     */
+    @Getter
+    @Setter
+    private MyBatisCustomConfiguration customConfiguration = MyBatisConfigCache.defaults();
+    
     public MyBatisConfiguration() {
         super();
         setDefaultScriptingLanguage( MyBatisXMLLanguageDriver.class );

@@ -86,7 +86,7 @@ public class DefaultEntityResolver implements EntityResolver {
      * 属性解析器
      */
     private FieldResolver fieldResolver;
-
+    
     /**
      * 构造方法
      * @param configuration 配置
@@ -112,7 +112,7 @@ public class DefaultEntityResolver implements EntityResolver {
     }
 
     @Override
-    public Table resolve( Class<?> entity ) {
+    public Table resolve( Class<?> entity, String namespace ) {
         if ( entity == null ) {
             throw new MapperResolverException( "The entity class parameter cannot be empty." );
         }
@@ -130,6 +130,7 @@ public class DefaultEntityResolver implements EntityResolver {
         this.strategy = strategy;
         // 解析@Table注解(处理表映射信息)
         Table table = processTableMappingFromEntity( entity );
+        table.setNamespace( namespace );
         // 处理字段映射信息
         List<Field> fields;
         if ( configuration.isEnableMethodAnnotation() ) {
