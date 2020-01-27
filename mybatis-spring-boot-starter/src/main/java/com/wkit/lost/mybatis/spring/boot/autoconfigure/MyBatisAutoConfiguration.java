@@ -9,7 +9,7 @@ import com.wkit.lost.mybatis.keygen.GuidGenerator;
 import com.wkit.lost.mybatis.keygen.KeyGenerator;
 import com.wkit.lost.mybatis.plugins.batch.BatchParameterFilterInterceptor;
 import com.wkit.lost.mybatis.plugins.batch.BatchStatementInterceptor;
-import com.wkit.lost.mybatis.plugins.config.PluginConvert;
+import com.wkit.lost.mybatis.plugins.paging.config.PluginConvert;
 import com.wkit.lost.mybatis.plugins.data.auditing.DefaultBuiltinAuditingInterceptor;
 import com.wkit.lost.mybatis.resolver.EntityResolver;
 import com.wkit.lost.mybatis.resolver.FieldResolver;

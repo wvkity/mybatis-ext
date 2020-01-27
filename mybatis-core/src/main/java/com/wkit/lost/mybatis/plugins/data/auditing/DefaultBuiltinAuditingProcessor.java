@@ -5,7 +5,6 @@ import com.wkit.lost.mybatis.core.meta.Column;
 import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.exception.MyBatisException;
-import com.wkit.lost.mybatis.plugins.executor.Argument;
 import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
 import com.wkit.lost.mybatis.snowflake.worker.SequenceWorker;
 import com.wkit.lost.mybatis.utils.Constants;
@@ -18,11 +17,6 @@ import java.util.Optional;
 
 @Log4j2
 public class DefaultBuiltinAuditingProcessor extends AbstractAuditingProcessor {
-
-    @Override
-    public boolean filter( Argument arg ) {
-        return false;
-    }
 
     @Override
     protected Object auditing( MappedStatement ms, MyBatisCustomConfiguration customConfiguration,

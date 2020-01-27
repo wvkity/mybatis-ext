@@ -330,13 +330,13 @@ public abstract class AbstractServiceExecutorCallable<Executor extends MapperExe
     }
 
     @Override
-    public List<R> list( Pageable pageable, T entity ) {
-        return executor.pageableList( pageable, entity );
+    public List<R> list( T entity, Pageable pageable ) {
+        return executor.pageableList( entity, pageable  );
     }
 
     @Override
-    public List<R> list( Pageable pageable, Criteria<T> criteria ) {
-        return executor.pageableListByCriteria( pageable, criteria.resultMap( null ).resultType( null ) );
+    public List<R> list( Criteria<T> criteria, Pageable pageable ) {
+        return executor.pageableListByCriteria( criteria.resultMap( null ).resultType( null ), pageable );
     }
 
     @Override

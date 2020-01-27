@@ -42,7 +42,7 @@ public @interface EnableInterceptors {
      * @return 插件列表
      */
     Plugin[] include() default { Plugin.META_DATA_AUDIT, Plugin.OPTIMISTIC_LOCKING,
-            Plugin.PAGEABLE, Plugin.LIMIT };
+            Plugin.PAGEABLE, Plugin.RANGE };
 
     /**
      * 过滤无需注册的插件

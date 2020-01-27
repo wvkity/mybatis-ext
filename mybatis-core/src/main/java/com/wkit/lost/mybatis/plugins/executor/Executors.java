@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.plugins.executor;
 
-import com.wkit.lost.mybatis.plugins.dbs.dialect.Dialect;
+import com.wkit.lost.mybatis.plugins.paging.dbs.dialect.Dialect;
 import com.wkit.lost.mybatis.plugins.exception.MyBatisPluginException;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;

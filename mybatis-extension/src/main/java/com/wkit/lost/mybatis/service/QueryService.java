@@ -79,9 +79,9 @@ interface QueryService<T, R> {
 
     /**
      * 分页查询记录
-     * @param pageable 分页对象
      * @param entity   指定对象
+     * @param pageable 分页对象
      * @return 多条记录
      */
-    List<R> list( Pageable pageable, T entity );
+    List<R> list( T entity, Pageable pageable);
 }

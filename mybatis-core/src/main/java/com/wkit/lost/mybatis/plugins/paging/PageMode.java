@@ -8,7 +8,7 @@ public enum PageMode {
     /**
      * 指定范围查询(如第1~4页，每页12条数据)
      */
-    LIMIT,
+    RANGE,
     /**
      * 常规分页
      */

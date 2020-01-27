@@ -12,4 +12,5 @@ UnifyServiceExecutor更名为ServiceExecutor
 - 优化乐观锁拦截器
 - 修复存在的bug
 - 添加批量保存功能支持simple、batch模式
+- 优化分页拦截器(删除旧的拦截器)
 

@@ -16,16 +16,18 @@ import org.apache.ibatis.session.RowBounds;
 import java.util.Properties;
 
 /**
- * 分页拦截器
+ * 制定范围分页查询拦截器
  * @author wvkity
  */
 @Intercepts( {
-        @Signature( type = Executor.class, method = "query", args = { MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class } ),
-        @Signature( type = Executor.class, method = "query", args = { MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class, CacheKey.class, BoundSql.class } )
+        @Signature( type = Executor.class, method = "query", args = { MappedStatement.class, Object.class,
+                RowBounds.class, ResultHandler.class } ),
+        @Signature( type = Executor.class, method = "query", args = { MappedStatement.class, Object.class,
+                RowBounds.class, ResultHandler.class, CacheKey.class, BoundSql.class } )
 } )
-public class PageableInterceptor implements Interceptor {
+public class RangePageableInterceptor implements Interceptor {
 
-    private final Processor processor = new PageableProcessor();
+    private final Processor processor = new RangePageableProcessor();
 
     @Override
     public Object intercept( Invocation invocation ) throws Throwable {

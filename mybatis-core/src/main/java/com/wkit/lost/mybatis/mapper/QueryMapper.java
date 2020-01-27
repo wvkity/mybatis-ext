@@ -69,9 +69,9 @@ interface QueryMapper<T, R> {
 
     /**
      * 分页查询记录
-     * @param pageable 分页对象
      * @param entity   指定对象
+     * @param pageable 分页对象
      * @return 多条记录
      */
-    List<R> pageableList( @Param( Constants.PARAM_PAGEABLE ) Pageable pageable, @Param( Constants.PARAM_ENTITY ) T entity );
+    List<R> pageableList( @Param( Constants.PARAM_ENTITY ) T entity, @Param( Constants.PARAM_PAGEABLE ) Pageable pageable );
 }

@@ -164,7 +164,7 @@ public class MyBatisCustomConfiguration implements Serializable {
     /**
      * 启用内置插件
      * <p>建议注册顺序：{@link Plugin#META_DATA_AUDIT} > {@link Plugin#OPTIMISTIC_LOCKING} >
-     * {@link Plugin#PAGEABLE} > {@link Plugin#LIMIT}</p>
+     * {@link Plugin#PAGEABLE} > {@link Plugin#RANGE}</p>
      * @see Plugin
      */
     private List<Plugin> plugins;

@@ -20,6 +20,7 @@ import java.util.Set;
 @Log4j2
 public class BatchParameterFilterProcessor extends Processor {
 
+    private static final String VARIABLE_CONFIGURATION = "configuration";
     private static final String VARIABLE_MAPPED_STATEMENT = "mappedStatement";
     private static final String VARIABLE_PARAMETER_OBJECT = "parameterObject";
     private static final Set<String> BATCH_METHODS =
@@ -32,18 +33,20 @@ public class BatchParameterFilterProcessor extends Processor {
         if ( target instanceof DefaultParameterHandler ) {
             DefaultParameterHandler handler = ( DefaultParameterHandler ) target;
             MetaObject metadata = MetaObjectUtil.forObject( handler );
-            if ( metadata.hasGetter( VARIABLE_PARAMETER_OBJECT ) ) {
-                Object parameterTarget = metadata.getValue( VARIABLE_PARAMETER_OBJECT );
-                if ( parameterTarget instanceof BatchDataBeanWrapper
-                        || ( parameterTarget instanceof Map
-                        && ( ( Map<?, ?> ) parameterTarget ).get( Constants.PARAM_BATCH_BEAN_WRAPPER )
-                        instanceof BatchDataBeanWrapper ) ) {
-                    if ( metadata.hasGetter( VARIABLE_MAPPED_STATEMENT ) ) {
-                        Object msTarget = metadata.getValue( VARIABLE_MAPPED_STATEMENT );
-                        if ( msTarget instanceof MappedStatement ) {
-                            MappedStatement ms = ( MappedStatement ) msTarget;
-                            if ( filter( ms, invocation.getArgs()[ 0 ] ) ) {
-                                return null;
+            MappedStatement ms = ( MappedStatement ) metadata.getValue( VARIABLE_MAPPED_STATEMENT );
+            if ( ms.getSqlCommandType() == SqlCommandType.INSERT ) {
+                if ( metadata.hasGetter( VARIABLE_PARAMETER_OBJECT ) ) {
+                    Object parameterTarget = metadata.getValue( VARIABLE_PARAMETER_OBJECT );
+                    if ( parameterTarget instanceof BatchDataBeanWrapper
+                            || ( parameterTarget instanceof Map
+                            && ( ( Map<?, ?> ) parameterTarget ).get( Constants.PARAM_BATCH_BEAN_WRAPPER )
+                            instanceof BatchDataBeanWrapper ) ) {
+                        if ( metadata.hasGetter( VARIABLE_MAPPED_STATEMENT ) ) {
+                            Object msTarget = metadata.getValue( VARIABLE_MAPPED_STATEMENT );
+                            if ( msTarget instanceof MappedStatement ) {
+                                if ( filter( ms, invocation.getArgs()[ 0 ] ) ) {
+                                    return null;
+                                }
                             }
                         }
                     }

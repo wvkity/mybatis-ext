@@ -3,7 +3,6 @@ package com.wkit.lost.mybatis.plugins.data.auditing;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.core.meta.Table;
 import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
-import com.wkit.lost.mybatis.plugins.executor.Argument;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.reflection.MetaObject;
@@ -22,11 +21,6 @@ public class MetadataAuditingProcessor extends AbstractAuditingProcessor {
     private static final String PARAM_KEY_ARRAY = "array";
     private static final Set<String> LOGIC_DELETE_METHOD_CACHE =
             Collections.unmodifiableSet( new HashSet<>( Arrays.asList( "logicDelete", "logicDeleteByCriteria" ) ) );
-
-    @Override
-    public boolean filter( Argument arg ) {
-        return false;
-    }
 
     @Override
     protected Object auditing( MappedStatement ms, MyBatisCustomConfiguration customConfiguration,

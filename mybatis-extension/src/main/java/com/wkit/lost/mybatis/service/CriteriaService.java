@@ -87,9 +87,9 @@ interface CriteriaService<T, R> {
 
     /**
      * 分页查询列表
-     * @param pageable 分页对象
      * @param criteria 条件对象
+     * @param pageable 分页对象
      * @return 列表
      */
-    List<R> list( Pageable pageable, Criteria<T> criteria );
+    List<R> list( Criteria<T> criteria, Pageable pageable );
 }

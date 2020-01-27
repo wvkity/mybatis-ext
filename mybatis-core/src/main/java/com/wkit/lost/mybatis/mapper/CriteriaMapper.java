@@ -86,6 +86,6 @@ interface CriteriaMapper<T, R> {
      * @param criteria 条件对象
      * @return 列表
      */
-    List<R> pageableListByCriteria( @Param( Constants.PARAM_PAGEABLE ) final Pageable pageable, 
-                                    @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria );
+    List<R> pageableListByCriteria( @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria,
+                                    @Param( Constants.PARAM_PAGEABLE ) final Pageable pageable );
 }

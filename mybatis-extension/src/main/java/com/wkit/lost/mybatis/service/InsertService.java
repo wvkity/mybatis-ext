@@ -11,7 +11,7 @@ import java.util.Collection;
  */
 interface InsertService<T> {
 
-    int DEFAULT_BATCH_SIZE = 200;
+    int DEFAULT_BATCH_SIZE = 500;
 
     /**
      * 保存记录
@@ -64,7 +64,7 @@ interface InsertService<T> {
     int batchSave( final BatchDataBeanWrapper<T> wrapper );
 
     /**
-     * 批量保存
+     * 批量保存(不自动审计)
      * @param entities 待保存对象集合
      * @return 受影响行数
      */
@@ -74,7 +74,7 @@ interface InsertService<T> {
     }
 
     /**
-     * 批量保存
+     * 批量保存(不自动审计)
      * @param entities 待保存对象集合
      * @return 受影响行数
      */
@@ -83,22 +83,22 @@ interface InsertService<T> {
     }
 
     /**
-     * 批量保存
+     * 批量保存(不自动审计)
      * @param entities  待保存对象集合
      * @param batchSize 批量大小
      * @return 受影响行数
      */
-    default int batchSaveNotWithAudit(final Collection<T> entities, int batchSize) {
+    default int batchSaveNotWithAudit( final Collection<T> entities, int batchSize ) {
         return batchSaveNotWithAudit( BatchDataBeanWrapper.wrap( entities, batchSize ) );
     }
 
     /**
-     * 批量保存
+     * 批量保存(不自动审计)
      * @param wrapper 包装对象
      * @return 受影响行数
      */
     int batchSaveNotWithAudit( final BatchDataBeanWrapper<T> wrapper );
-    
+
     /**
      * 批量保存
      * @param entities 待保存对象数组
@@ -128,7 +128,8 @@ interface InsertService<T> {
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、在执行批量操作前，当前事务下executorType不为BATCH类型，
      * 则无法获取到{@link org.apache.ibatis.session.SqlSession}出现NPE异常，建议将{@link org.mybatis.spring.SqlSessionTemplate}
      * 中的`SIMPLE`模式修改为`BATCH`模式，或者如果可以的话，将批量操作放置其他增删改操作之前.<br/>
-     * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、
+     * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、非`BATCH`模式可以使用{@link #batchSave(BatchDataBeanWrapper)}、
+     * {@link #batchSaveNotWithAudit(BatchDataBeanWrapper)}方法
      * </p>
      * @param entities  待保存对象集合
      * @param batchSize 批量大小
@@ -165,7 +166,8 @@ interface InsertService<T> {
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、在执行批量操作前，当前事务下executorType不为BATCH类型，
      * 则无法获取到{@link org.apache.ibatis.session.SqlSession}出现NPE异常，建议将{@link org.mybatis.spring.SqlSessionTemplate}
      * 中的`SIMPLE`模式修改为`BATCH`模式，或者如果可以的话，将批量操作放置其他增删改操作之前.<br/>
-     * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、
+     * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、非`BATCH`模式可以使用{@link #batchSave(BatchDataBeanWrapper)}、
+     * {@link #batchSaveNotWithAudit(BatchDataBeanWrapper)}方法
      * </p>
      * @param entities  待保存对象集合
      * @param batchSize 批量大小

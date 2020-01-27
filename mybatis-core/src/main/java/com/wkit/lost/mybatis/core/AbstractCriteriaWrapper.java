@@ -1697,14 +1697,14 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public Context limit( long start, long end ) {
+    public Context range( long start, long end ) {
         this.start = start;
         this.end = end;
         return this.context;
     }
 
     @Override
-    public Context limit( long pageStart, long pageEnd, long size ) {
+    public Context range( long pageStart, long pageEnd, long size ) {
         this.pageStart = pageStart;
         this.pageEnd = pageEnd;
         this.pageSize = size;
@@ -1717,14 +1717,14 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public LimitMode limitMode() {
+    public RangeMode range() {
         if ( start >= 0 && end > 0 ) {
-            return LimitMode.IMMEDIATE;
+            return RangeMode.IMMEDIATE;
         }
         if ( pageStart > 0 && pageEnd > 0 ) {
-            return LimitMode.PAGEABLE;
+            return RangeMode.PAGEABLE;
         }
-        return LimitMode.NORMAL;
+        return RangeMode.NORMAL;
     }
 
     @Override

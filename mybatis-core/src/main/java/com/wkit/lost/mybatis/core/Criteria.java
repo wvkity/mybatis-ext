@@ -100,22 +100,22 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
 
     /**
      * 设置范围
-     * <p>优先级比{@link #limit(long, long, long)}高</p>
+     * <p>优先级比{@link #range(long, long, long)}高</p>
      * @param start 开始位置
      * @param end   结束位置
      * @return 当前对象
      */
-    Criteria<T> limit( long start, long end );
+    Criteria<T> range( long start, long end );
 
     /**
      * 设置范围
-     * <p>优先级比{@link #limit(long, long)}低</p>
+     * <p>优先级比{@link #range(long, long)}低</p>
      * @param pageStart 开始页
      * @param pageEnd   结束页
      * @param size      每页数目
      * @return 当前对象
      */
-    Criteria<T> limit( long pageStart, long pageEnd, long size );
+    Criteria<T> range( long pageStart, long pageEnd, long size );
 
     /**
      * 是否执行limit查询
@@ -124,10 +124,10 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
     boolean isLimit();
 
     /**
-     * limit方式
-     * @return {@link LimitMode}
+     * Range方式
+     * @return {@link RangeMode}
      */
-    LimitMode limitMode();
+    RangeMode range();
 
     /**
      * 获取开始位置
