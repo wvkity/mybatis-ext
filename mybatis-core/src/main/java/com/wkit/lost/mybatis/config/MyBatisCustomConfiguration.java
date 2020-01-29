@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.config;
 
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
+import com.wkit.lost.mybatis.core.metadata.PrimaryKeyType;
 import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.keygen.KeyGenerator;
 import com.wkit.lost.mybatis.naming.DefaultPhysicalNamingStrategy;
@@ -76,27 +77,7 @@ public class MyBatisCustomConfiguration implements Serializable {
      * 主键生成器执行类型
      */
     private boolean before;
-
-    /**
-     * 主键是否为UUID
-     */
-    private boolean uuid;
-
-    /**
-     * 主键是否自增
-     */
-    private boolean identity;
-
-    /**
-     * 是否为雪花算法主键
-     */
-    private boolean worker;
-
-    /**
-     * 是否为雪花算法字符串主键
-     */
-    private boolean workerString;
-
+    
     /**
      * 表名前缀
      */
@@ -111,6 +92,11 @@ public class MyBatisCustomConfiguration implements Serializable {
      * 数据库schema
      */
     private String schema;
+
+    /**
+     * 全局主键生成方式
+     */
+    private PrimaryKeyType primaryKeyType;
 
     /**
      * 自动识别主键(缺省@Id注解时)

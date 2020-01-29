@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.Logic;
 import com.wkit.lost.mybatis.core.Operator;
 import com.wkit.lost.mybatis.core.SubCriteria;
-import com.wkit.lost.mybatis.core.meta.Column;
+import com.wkit.lost.mybatis.core.metadata.Column;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;

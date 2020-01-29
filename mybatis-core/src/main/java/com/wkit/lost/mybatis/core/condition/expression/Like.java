@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.condition.expression;
 
-import com.wkit.lost.mybatis.core.meta.Column;
+import com.wkit.lost.mybatis.core.metadata.Column;
 import com.wkit.lost.mybatis.utils.ColumnConvert;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.Criteria;

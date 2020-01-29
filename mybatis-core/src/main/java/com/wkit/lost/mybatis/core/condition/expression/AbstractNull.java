@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.condition.expression;
 
-import com.wkit.lost.mybatis.core.meta.Column;
+import com.wkit.lost.mybatis.core.metadata.Column;
 
 @SuppressWarnings( "serial" )
 public class AbstractNull<T> extends AbstractExpression<T> {

@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core;
 
 import com.wkit.lost.mybatis.core.function.Aggregation;
-import com.wkit.lost.mybatis.core.meta.Column;
+import com.wkit.lost.mybatis.core.metadata.Column;
 import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.lambda.Property;

@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.core.meta;
+package com.wkit.lost.mybatis.core.metadata;
 
 import com.wkit.lost.mybatis.annotation.extension.Executing;
 import com.wkit.lost.mybatis.data.auditing.AuditMatching;
@@ -83,12 +83,12 @@ public class Column {
     /**
      * 是否为雪花算法主键
      */
-    private boolean worker = false;
+    private boolean snowflakeSequence = false;
 
     /**
      * 是否为雪花算法字符串主键
      */
-    private boolean workerString = false;
+    private boolean snowflakeSequenceString = false;
 
     /**
      * 是否为Blob类型

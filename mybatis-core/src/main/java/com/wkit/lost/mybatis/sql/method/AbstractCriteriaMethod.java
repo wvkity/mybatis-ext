@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.sql.method;
 
-import com.wkit.lost.mybatis.core.meta.Table;
+import com.wkit.lost.mybatis.core.metadata.Table;
 import com.wkit.lost.mybatis.sql.mapping.criteria.CriteriaQuerySqlBuilder;
 import com.wkit.lost.mybatis.sql.mapping.script.DefaultXmlScriptBuilder;
 import org.apache.ibatis.mapping.MappedStatement;

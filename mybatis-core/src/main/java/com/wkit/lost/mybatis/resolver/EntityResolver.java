@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.resolver;
 
-import com.wkit.lost.mybatis.core.meta.Table;
+import com.wkit.lost.mybatis.core.metadata.Table;
 
 /**
  * 实体解析器

@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.core.condition.expression;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.Logic;
-import com.wkit.lost.mybatis.core.meta.Column;
+import com.wkit.lost.mybatis.core.metadata.Column;
 import com.wkit.lost.mybatis.utils.ArgumentUtil;
 import lombok.Getter;
 import lombok.Setter;

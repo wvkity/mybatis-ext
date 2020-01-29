@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core;
 
-import com.wkit.lost.mybatis.core.meta.Column;
+import com.wkit.lost.mybatis.core.metadata.Column;
 import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.ColumnConvert;

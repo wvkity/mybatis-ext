@@ -1,8 +1,8 @@
 package com.wkit.lost.mybatis.sql.method;
 
 import com.wkit.lost.mybatis.annotation.extension.Executing;
-import com.wkit.lost.mybatis.core.meta.Column;
-import com.wkit.lost.mybatis.core.meta.Table;
+import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.Table;
 import com.wkit.lost.mybatis.sql.mapping.SqlBuilder;
 import com.wkit.lost.mybatis.sql.mapping.script.AbstractXmlScriptBuilder;
 import com.wkit.lost.mybatis.sql.mapping.script.DefaultXmlScriptBuilder;

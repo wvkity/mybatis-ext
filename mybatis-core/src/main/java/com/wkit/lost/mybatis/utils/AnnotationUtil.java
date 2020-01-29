@@ -1,7 +1,6 @@
 package com.wkit.lost.mybatis.utils;
 
-import com.wkit.lost.mybatis.core.meta.AnnotationMetaObject;
-import com.wkit.lost.mybatis.exception.MapperResolverException;
+import com.wkit.lost.mybatis.core.metadata.AnnotationMetaObject;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;

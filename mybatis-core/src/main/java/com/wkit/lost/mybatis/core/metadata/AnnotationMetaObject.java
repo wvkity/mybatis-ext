@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.core.meta;
+package com.wkit.lost.mybatis.core.metadata;
 
 import com.wkit.lost.mybatis.utils.AnnotationUtil;
 import lombok.AllArgsConstructor;

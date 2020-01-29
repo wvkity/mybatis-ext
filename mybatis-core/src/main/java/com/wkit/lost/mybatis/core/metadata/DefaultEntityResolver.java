@@ -1,24 +1,24 @@
-package com.wkit.lost.mybatis.core.meta;
+package com.wkit.lost.mybatis.core.metadata;
 
 import com.wkit.lost.mybatis.annotation.ColumnExt;
-import com.wkit.lost.mybatis.annotation.auditing.CreatedDate;
-import com.wkit.lost.mybatis.annotation.auditing.CreatedUser;
-import com.wkit.lost.mybatis.annotation.auditing.CreatedUserName;
-import com.wkit.lost.mybatis.annotation.auditing.DeletedDate;
-import com.wkit.lost.mybatis.annotation.auditing.DeletedUser;
-import com.wkit.lost.mybatis.annotation.auditing.DeletedUserName;
 import com.wkit.lost.mybatis.annotation.Entity;
 import com.wkit.lost.mybatis.annotation.GeneratedValue;
 import com.wkit.lost.mybatis.annotation.Identity;
-import com.wkit.lost.mybatis.annotation.auditing.LastModifiedDate;
-import com.wkit.lost.mybatis.annotation.auditing.LastModifiedUser;
-import com.wkit.lost.mybatis.annotation.auditing.LastModifiedUserName;
 import com.wkit.lost.mybatis.annotation.LogicDeletion;
 import com.wkit.lost.mybatis.annotation.OrderBy;
 import com.wkit.lost.mybatis.annotation.SequenceGenerator;
 import com.wkit.lost.mybatis.annotation.Transient;
 import com.wkit.lost.mybatis.annotation.Version;
 import com.wkit.lost.mybatis.annotation.Worker;
+import com.wkit.lost.mybatis.annotation.auditing.CreatedDate;
+import com.wkit.lost.mybatis.annotation.auditing.CreatedUser;
+import com.wkit.lost.mybatis.annotation.auditing.CreatedUserName;
+import com.wkit.lost.mybatis.annotation.auditing.DeletedDate;
+import com.wkit.lost.mybatis.annotation.auditing.DeletedUser;
+import com.wkit.lost.mybatis.annotation.auditing.DeletedUserName;
+import com.wkit.lost.mybatis.annotation.auditing.LastModifiedDate;
+import com.wkit.lost.mybatis.annotation.auditing.LastModifiedUser;
+import com.wkit.lost.mybatis.annotation.auditing.LastModifiedUserName;
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.annotation.extension.Executing;
 import com.wkit.lost.mybatis.annotation.extension.GenerationType;
@@ -65,7 +65,8 @@ public class DefaultEntityResolver implements EntityResolver {
     /**
      * 雪花算法字符串主键
      */
-    private static final Set<String> WORKER_KEYS = new HashSet<>( Arrays.asList( "WORKER_SEQUENCE", "WORKER_SEQUENCE_STRING" ) );
+    private static final Set<String> WORKER_KEYS = new HashSet<>( Arrays.asList( "WORKER_SEQUENCE",
+            "WORKER_SEQUENCE_STRING" ) );
 
     /**
      * 自定义配置
@@ -86,7 +87,7 @@ public class DefaultEntityResolver implements EntityResolver {
      * 属性解析器
      */
     private FieldResolver fieldResolver;
-    
+
     /**
      * 构造方法
      * @param configuration 配置
@@ -162,7 +163,7 @@ public class DefaultEntityResolver implements EntityResolver {
         if ( AnnotationUtil.hasAnnotation( entity ) ) {
             // 自定义@Table注解
             if ( entity.isAnnotationPresent( com.wkit.lost.mybatis.annotation.Table.class ) ) {
-                com.wkit.lost.mybatis.annotation.Table tableAnnotation = 
+                com.wkit.lost.mybatis.annotation.Table tableAnnotation =
                         entity.getDeclaredAnnotation( com.wkit.lost.mybatis.annotation.Table.class );
                 tableName = tableAnnotation.name();
                 catalog = tableAnnotation.catalog();
@@ -437,9 +438,9 @@ public class DefaultEntityResolver implements EntityResolver {
         } else if ( field.isAnnotationPresent( Worker.class ) ) {
             Worker worker = field.getAnnotation( Worker.class );
             if ( worker.value() ) {
-                column.setWorkerString( true );
+                column.setSnowflakeSequenceString( true );
             } else {
-                column.setWorker( true );
+                column.setSnowflakeSequence( true );
             }
         }
     }
@@ -526,9 +527,9 @@ public class DefaultEntityResolver implements EntityResolver {
             table.addPrimaryKeyProperty( column.getProperty() );
             table.addPrimaryKeyColumn( column.getColumn() );
         } else if ( "WORKER".equalsIgnoreCase( generator ) ) {
-            column.setWorker( true );
+            column.setSnowflakeSequence( true );
         } else if ( generator != null && WORKER_KEYS.contains( generator.toUpperCase( Locale.ENGLISH ) ) ) {
-            column.setWorkerString( true );
+            column.setSnowflakeSequenceString( true );
         } else {
             if ( isIdentity ) {
                 column.setIdentity( true );
@@ -589,13 +590,14 @@ public class DefaultEntityResolver implements EntityResolver {
 
     private void processCustomKeyGenerator( final Table table, final Column column ) {
         // 检测是否存在主键值生成方式
-        if ( !column.isUuid() && !column.isIdentity() && !column.isWorker() && !column.isWorkerString()
+        if ( !column.isUuid() && !column.isIdentity() && !column.isSnowflakeSequence() && !column.isSnowflakeSequenceString()
                 && StringUtil.isBlank( column.getGenerator() ) ) {
             // 直接使用全局主键
-            column.setUuid( this.configuration.isUuid() );
-            column.setIdentity( this.configuration.isIdentity() );
-            column.setWorker( this.configuration.isWorker() );
-            column.setWorkerString( this.configuration.isWorkerString() );
+            PrimaryKeyType keyType = this.configuration.getPrimaryKeyType();
+            column.setUuid( keyType == PrimaryKeyType.UUID );
+            column.setIdentity( keyType == PrimaryKeyType.IDENTITY );
+            column.setSnowflakeSequence( keyType == PrimaryKeyType.SNOWFLAKE_SEQUENCE );
+            column.setSnowflakeSequenceString( keyType == PrimaryKeyType.SNOWFLAKE_SEQUENCE_STRING );
         }
     }
 

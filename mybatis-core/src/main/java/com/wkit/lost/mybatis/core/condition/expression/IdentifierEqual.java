@@ -3,8 +3,8 @@ package com.wkit.lost.mybatis.core.condition.expression;
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.Logic;
 import com.wkit.lost.mybatis.core.Operator;
-import com.wkit.lost.mybatis.core.meta.Column;
-import com.wkit.lost.mybatis.core.meta.Table;
+import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.Table;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 
 import java.util.Optional;

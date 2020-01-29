@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.data.auditing;
 
-import com.wkit.lost.mybatis.core.meta.Column;
-import com.wkit.lost.mybatis.core.meta.Table;
+import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.Table;
 import com.wkit.lost.mybatis.data.auditing.date.provider.DateTimeProvider;
 import com.wkit.lost.mybatis.data.auditing.date.proxy.DateTimeProviderFactory;
 import com.wkit.lost.mybatis.handler.EntityHandler;

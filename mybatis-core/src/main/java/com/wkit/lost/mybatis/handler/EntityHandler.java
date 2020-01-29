@@ -2,8 +2,8 @@ package com.wkit.lost.mybatis.handler;
 
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
-import com.wkit.lost.mybatis.core.meta.DefaultEntityResolver;
-import com.wkit.lost.mybatis.core.meta.Table;
+import com.wkit.lost.mybatis.core.metadata.DefaultEntityResolver;
+import com.wkit.lost.mybatis.core.metadata.Table;
 import com.wkit.lost.mybatis.resolver.EntityResolver;
 import com.wkit.lost.mybatis.utils.ClassUtil;
 import lombok.extern.log4j.Log4j2;

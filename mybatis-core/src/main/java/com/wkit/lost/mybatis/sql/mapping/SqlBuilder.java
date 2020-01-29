@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.sql.mapping;
 
-import com.wkit.lost.mybatis.core.meta.Table;
+import com.wkit.lost.mybatis.core.metadata.Table;
 
 /**
  * SQL语句构建器

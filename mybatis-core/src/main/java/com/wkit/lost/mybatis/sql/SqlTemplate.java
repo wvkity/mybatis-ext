@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.sql;
 
 import com.wkit.lost.mybatis.utils.StringUtil;
-import com.wkit.lost.mybatis.core.meta.Table;
+import com.wkit.lost.mybatis.core.metadata.Table;
 
 /**
  * SQL模板

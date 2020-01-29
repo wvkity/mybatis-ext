@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.core;
 
 import com.wkit.lost.mybatis.core.condition.ConditionManager;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
-import com.wkit.lost.mybatis.core.meta.Column;
+import com.wkit.lost.mybatis.core.metadata.Column;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
 import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.utils.CollectionUtil;

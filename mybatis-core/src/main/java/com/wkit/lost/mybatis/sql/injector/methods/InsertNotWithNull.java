@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.sql.injector.methods;
 
-import com.wkit.lost.mybatis.core.meta.Table;
+import com.wkit.lost.mybatis.core.metadata.Table;
 import com.wkit.lost.mybatis.sql.mapping.insert.InsertNotWithNullSqlBuilder;
 import com.wkit.lost.mybatis.sql.method.AbstractInsertMethod;
 import org.apache.ibatis.mapping.MappedStatement;

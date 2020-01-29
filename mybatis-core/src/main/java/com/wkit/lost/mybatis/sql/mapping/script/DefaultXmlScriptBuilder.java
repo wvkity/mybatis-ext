@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.sql.mapping.script;
 
-import com.wkit.lost.mybatis.core.meta.Table;
+import com.wkit.lost.mybatis.core.metadata.Table;
 import com.wkit.lost.mybatis.sql.mapping.SqlBuilder;
 import lombok.Getter;
 

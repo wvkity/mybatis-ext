@@ -100,7 +100,7 @@ buildScan {
 
 allprojects {
     group 'com.wvkity'
-    version '1.0.0'
+    version '1.0.1'
     apply from: rootDir.canonicalPath + '/.gradle/publish.gradle'
 }
 

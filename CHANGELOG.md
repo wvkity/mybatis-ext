@@ -16,4 +16,6 @@ UnifyServiceExecutor更名为ServiceExecutor
 - 修复实体类解析中自动映射jdbcType存在的NPE异常
 - 修复逻辑删除存在jdbcType映射错误bug
 - 优化Mybatis插件注入，删除AbstractBeanDefinitionRegistry、Plugin(枚举)等类
+- meta包名更名为metadata
+- 简化全局配置主键类型
 

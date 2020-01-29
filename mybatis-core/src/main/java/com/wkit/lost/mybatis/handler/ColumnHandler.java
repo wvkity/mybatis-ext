@@ -1,8 +1,8 @@
 package com.wkit.lost.mybatis.handler;
 
-import com.wkit.lost.mybatis.core.meta.Field;
+import com.wkit.lost.mybatis.core.metadata.Field;
 import com.wkit.lost.mybatis.utils.StringUtil;
-import com.wkit.lost.mybatis.core.meta.DefaultFieldResolver;
+import com.wkit.lost.mybatis.core.metadata.DefaultFieldResolver;
 import com.wkit.lost.mybatis.resolver.FieldResolver;
 
 import java.util.*;

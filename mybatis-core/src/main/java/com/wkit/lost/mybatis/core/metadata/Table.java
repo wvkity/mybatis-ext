@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.core.meta;
+package com.wkit.lost.mybatis.core.metadata;
 
 import com.wkit.lost.mybatis.data.auditing.AuditMatching;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.apache.ibatis.session.Configuration;
 
 import java.util.LinkedHashSet;
 import java.util.Map;

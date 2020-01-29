@@ -5,7 +5,7 @@ import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.condition.criterion.Restrictions;
-import com.wkit.lost.mybatis.core.meta.Table;
+import com.wkit.lost.mybatis.core.metadata.Table;
 import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.handler.EntityHandler;
