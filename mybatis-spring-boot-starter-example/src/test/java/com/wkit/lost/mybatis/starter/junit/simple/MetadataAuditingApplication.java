@@ -106,16 +106,24 @@ public class MetadataAuditingApplication extends RootTestRunner {
                 .setSex( 0 )
                 .setState( 3 )
                 .setPassword( "1234456" )
-                .setScore( 89 )
-                .setIntegerVersion( 1 );
+                .setScore( 77 )
+                .setIntegerVersion( 2 );
         int result = userService.updateNotWithNull( user );
+        log.info( "执行结果: {}", result );
+    }
+    
+    @Test
+    public void logicDelete() {
+        User user = new User();
+        user.setId( 14339874132070402L ).setIntegerVersion( 3 );
+        int result = userService.logicDelete( user );
         log.info( "执行结果: {}", result );
     }
 
     @Test
     public void batchSaveTest() {
         Grade grade = new Grade();
-        grade.setId( 4L ).setName( "X2" );
+        grade.setId( 8L ).setName( "X2" );
         int result = userService.testSave( grade, build( 2 ) );
         log.info( "执行结果: {}", result );
     }
@@ -140,7 +148,7 @@ public class MetadataAuditingApplication extends RootTestRunner {
 
     @Test
     public void batchSaveNotWithNullTest() {
-        List<User> list =  build( 1000 );
+        List<User> list =  build( 2 );
         Instant start = Instant.now();
         int result = userService.batchSaveNotWithAudit( list );
         Instant end = Instant.now();

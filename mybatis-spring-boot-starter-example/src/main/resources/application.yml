@@ -52,7 +52,10 @@ lost:
       jdbc-type-auto-mapping: true
       dialect: mysql
       plugins: 
-        - optimistic_locking
+        - com.wkit.lost.mybatis.plugins.data.auditing.MetadataAuditingInterceptor
+        - com.wkit.lost.mybatis.plugins.locking.OptimisticLockingInterceptor
+        - com.wkit.lost.mybatis.plugins.paging.PageableInterceptor
+        - com.wkit.lost.mybatis.plugins.paging.RangePageableInterceptor
     executor-type: simple
   sequence:
     data-center-id: 2

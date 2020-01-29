@@ -6,7 +6,7 @@ public class DefaultAuditorAware implements AuditorAware {
     
     @Override
     public Object currentUserName() {
-        return "admin";
+        return "root";
     }
 
     @Override

@@ -17,7 +17,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Log4j2
 public class PageableQueryApplication extends RootTestRunner {
@@ -30,7 +32,7 @@ public class PageableQueryApplication extends RootTestRunner {
     public void test() {
         CriteriaImpl<Student> criteria = studentService.getCriteria();
         criteria.asc( "id" );
-        List<StudentVo> result = studentService.list( new Pager( 1, 10 ), criteria );
+        List<StudentVo> result = studentService.list(  criteria, new Pager( 1, 10 ) );
         log.info( "查询结果：{}", result );
     }
 
@@ -38,7 +40,7 @@ public class PageableQueryApplication extends RootTestRunner {
     @DisplayName( "测试分页查询2--指定范围" )
     public void limitTest() {
         CriteriaImpl<Student> criteria = studentService.getCriteria();
-        criteria.asc( "id" ).limit( 10, 30 );
+        criteria.asc( "id" ).range( 15, 24 );
         List<StudentVo> result = studentService.list( criteria );
         log.info( "查询结果：{}", result );
     }
@@ -47,7 +49,7 @@ public class PageableQueryApplication extends RootTestRunner {
     @DisplayName( "测试分页查询3--指定页码、每页显示数目" )
     public void limitTest2() {
         CriteriaImpl<Student> criteria = studentService.getCriteria();
-        criteria.asc( "id" ).limit( 2, 6, 6 );
+        criteria.asc( "id" ).range( 2, 6, 6 );
         List<StudentVo> result = studentService.list( criteria );
         log.info( "查询结果：{}", result );
     }
@@ -59,7 +61,7 @@ public class PageableQueryApplication extends RootTestRunner {
         ForeignCriteria<Result> foreignCriteria = criteria.createForeign( Result.class, "RS", Student::getId, Result::getStudentId, JoinMode.LEFT );
         foreignCriteria.query( "score" );
         criteria.addForeign( foreignCriteria ).asc( "id" );
-        List<StudentVo> result = studentService.list( new Pager( 2, 10 ), criteria );
+        List<StudentVo> result = studentService.list( criteria, new Pager( 2, 10 ) );
         log.info( "查询结果：{}", result );
     }
 
@@ -78,7 +80,7 @@ public class PageableQueryApplication extends RootTestRunner {
         studentCriteria.addForeign( Result.class, "RS", null, Student::getId, Result::getStudentId,
                 ctx -> ctx.eq( Result::getSubjectId, subjectSubCriteria, Subject.Fields.id )
                         .ge( Result::getScore, 84 ).query( Result::getScore ) ).asc( "id" );
-        List<StudentVo> result = studentService.list( new Pager( 1, 10 ), studentCriteria );
+        List<StudentVo> result = studentService.list( studentCriteria, new Pager( 1, 10 ) );
         log.info( "查询结果：{}", result );
     }
 
@@ -97,7 +99,7 @@ public class PageableQueryApplication extends RootTestRunner {
         studentCriteria.addForeign( Result.class, "RS", null, Student::getId, Result::getStudentId,
                 ctx -> ctx.eq( Result::getSubjectId, subjectSubCriteria, Subject.Fields.id )
                         .ge( Result::getScore, 84 ).query( Result::getScore ) )
-                .asc( "id" ).limit( 1, 3, 2 );
+                .asc( "id" ).range( 1, 3, 2 );
         List<StudentVo> result = studentService.list( studentCriteria );
         log.info( "查询结果：{}", result );
     }
@@ -106,8 +108,13 @@ public class PageableQueryApplication extends RootTestRunner {
     @DisplayName( "测试分页查询2--常规分页" )
     public void test2() {
         List<StudentVo> result = studentService.list(
-                new Pager( 1, 10 ),
-                new CriteriaImpl<>(Student.class).desc( "id" ) );
+                new CriteriaImpl<>(Student.class).desc( "id" ), new Pager( 1, 10 ) );
         log.info( "查询结果：{}", result );
+    }
+    
+    @Test
+    public void mapTest() {
+        Map<String, Object> map = new HashMap<>(  );
+        System.out.println(map.getOrDefault( "admin", null ));
     }
 }

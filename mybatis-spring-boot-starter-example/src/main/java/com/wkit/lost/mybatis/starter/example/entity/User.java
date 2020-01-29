@@ -1,8 +1,11 @@
 package com.wkit.lost.mybatis.starter.example.entity;
 
+import com.wkit.lost.mybatis.annotation.LogicDeletion;
 import com.wkit.lost.mybatis.annotation.Table;
 import com.wkit.lost.mybatis.annotation.Version;
 import com.wkit.lost.mybatis.annotation.auditing.CreatedUserName;
+import com.wkit.lost.mybatis.annotation.auditing.DeletedDate;
+import com.wkit.lost.mybatis.annotation.auditing.DeletedUserName;
 import com.wkit.lost.mybatis.annotation.auditing.LastModifiedDate;
 import com.wkit.lost.mybatis.annotation.auditing.LastModifiedUserName;
 import lombok.Data;
@@ -38,8 +41,11 @@ public class User implements Serializable {
     private LocalDateTime gmtModify;
     private Integer score;
     private Integer sex;
+    @LogicDeletion
     private Integer deleted;
+    @DeletedUserName
     private String deleteUser;
+    @DeletedDate
     private LocalDateTime gmtDelete;
     @Version
     private Integer integerVersion;

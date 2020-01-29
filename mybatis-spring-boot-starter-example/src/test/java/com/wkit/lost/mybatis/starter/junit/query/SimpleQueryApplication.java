@@ -1,8 +1,6 @@
 package com.wkit.lost.mybatis.starter.junit.query;
 
-import com.wkit.lost.mybatis.core.Criteria;
 import com.wkit.lost.mybatis.core.CriteriaImpl;
-import com.wkit.lost.mybatis.core.Order;
 import com.wkit.lost.mybatis.starter.example.entity.Result;
 import com.wkit.lost.mybatis.starter.example.entity.Student;
 import com.wkit.lost.mybatis.starter.example.service.ResultService;
@@ -37,7 +35,7 @@ public class SimpleQueryApplication extends RootTestRunner {
     public void neTest() {
         CriteriaImpl<Result> resultCriteria = resultService.getCriteria( "RS" );
         resultCriteria.ne( Result::getScore, 89 ).asc( "id" );
-        List<ResultVo> results = resultService.list( resultCriteria.limit( 0, 10 ) );
+        List<ResultVo> results = resultService.list( resultCriteria.range( 0, 10 ) );
         log.info( "查询结果：{}", results );
     }
 
@@ -45,7 +43,7 @@ public class SimpleQueryApplication extends RootTestRunner {
     public void ltTest() {
         CriteriaImpl<Result> resultCriteria = resultService.getCriteria( "RS" );
         resultCriteria.lt( Result::getScore, 89 ).asc( "id" );
-        List<ResultVo> results = resultService.list( resultCriteria.limit( 0, 10 ) );
+        List<ResultVo> results = resultService.list( resultCriteria.range( 0, 10 ) );
         log.info( "查询结果：{}", results );
     }
 
@@ -53,7 +51,7 @@ public class SimpleQueryApplication extends RootTestRunner {
     public void leTest() {
         CriteriaImpl<Result> resultCriteria = resultService.getCriteria( "RS" );
         resultCriteria.le( Result::getScore, 89 ).asc( "id" );
-        List<ResultVo> results = resultService.list( resultCriteria.limit( 0, 10 ) );
+        List<ResultVo> results = resultService.list( resultCriteria.range( 0, 10 ) );
         log.info( "查询结果：{}", results );
     }
 
@@ -61,7 +59,7 @@ public class SimpleQueryApplication extends RootTestRunner {
     public void gtTest() {
         CriteriaImpl<Result> resultCriteria = resultService.getCriteria( "RS" );
         resultCriteria.gt( Result::getScore, 89 ).asc( "id" );
-        List<ResultVo> results = resultService.list( resultCriteria.limit( 0, 10 ) );
+        List<ResultVo> results = resultService.list( resultCriteria.range( 0, 10 ) );
         log.info( "查询结果：{}", results );
     }
 
@@ -74,7 +72,7 @@ public class SimpleQueryApplication extends RootTestRunner {
                 .asc( "examDate" )
                 .asc( "studentId" );
                 //.addOrder( Order.aliasAsc( "RS", "STUDENT_ID" ) );
-        List<ResultVo> results = resultService.list( resultCriteria.limit( 0, 10 ) );
+        List<ResultVo> results = resultService.list( resultCriteria.range( 0, 10 ) );
         log.info( "查询结果：{}", results );
     }
     

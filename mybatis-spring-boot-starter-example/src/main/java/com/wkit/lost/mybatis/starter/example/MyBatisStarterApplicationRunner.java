@@ -1,6 +1,5 @@
 package com.wkit.lost.mybatis.starter.example;
 
-import com.wkit.lost.mybatis.config.Plugin;
 import com.wkit.lost.mybatis.spring.boot.data.auditing.EnableMetadataAuditing;
 import com.wkit.lost.mybatis.spring.boot.plugin.EnableInterceptors;
 import org.springframework.boot.CommandLineRunner;
@@ -12,8 +11,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableMetadataAuditing( automatic = true )
+// @EnableInterceptors
 @EnableTransactionManagement
-@EnableInterceptors( exclude = { Plugin.META_DATA_AUDIT } )
 @EnableConfigurationProperties
 @SpringBootApplication
 @EnableAsync
