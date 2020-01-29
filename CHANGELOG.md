@@ -8,9 +8,12 @@
 UnifyServiceExecutor更名为ServiceExecutor
 - 优化自定义拦截器功能
 - 修复存在bug
-- 修改Mapper、Service部分方法名
+- 更改Mapper、Service部分方法名
 - 优化乐观锁拦截器
 - 修复存在的bug
 - 添加批量保存功能支持simple、batch模式
 - 优化分页拦截器(删除旧的拦截器)
+- 修复实体类解析中自动映射jdbcType存在的NPE异常
+- 修复逻辑删除存在jdbcType映射错误bug
+- 优化Mybatis插件注入，删除AbstractBeanDefinitionRegistry、Plugin(枚举)等类
 

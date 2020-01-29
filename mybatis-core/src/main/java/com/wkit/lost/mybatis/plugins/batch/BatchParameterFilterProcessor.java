@@ -39,8 +39,8 @@ public class BatchParameterFilterProcessor extends Processor {
                     Object parameterTarget = metadata.getValue( VARIABLE_PARAMETER_OBJECT );
                     if ( parameterTarget instanceof BatchDataBeanWrapper
                             || ( parameterTarget instanceof Map
-                            && ( ( Map<?, ?> ) parameterTarget ).get( Constants.PARAM_BATCH_BEAN_WRAPPER )
-                            instanceof BatchDataBeanWrapper ) ) {
+                            && ( ( Map<?, ?> ) parameterTarget ).getOrDefault( Constants.PARAM_BATCH_BEAN_WRAPPER,
+                            null ) instanceof BatchDataBeanWrapper ) ) {
                         if ( metadata.hasGetter( VARIABLE_MAPPED_STATEMENT ) ) {
                             Object msTarget = metadata.getValue( VARIABLE_MAPPED_STATEMENT );
                             if ( msTarget instanceof MappedStatement ) {

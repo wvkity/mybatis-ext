@@ -16,7 +16,7 @@ import org.apache.ibatis.session.RowBounds;
 import java.util.Properties;
 
 /**
- * 制定范围分页查询拦截器
+ * 指定范围分页查询拦截器
  * @author wvkity
  */
 @Intercepts( {

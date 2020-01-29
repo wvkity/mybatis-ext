@@ -81,13 +81,17 @@ public abstract class JdbcTypeMappingRegister {
         }
     }
 
+    private static JdbcType getOrNull( final Class<?> clazz ) {
+        return MAPPING_CACHE.getOrDefault( clazz, null );
+    }
+
     /**
      * 获取JDBC类型
      * @param clazz 类
      * @return {@link JdbcType}
      */
     public static JdbcType getJdbcType( Class<?> clazz ) {
-        return Optional.ofNullable( clazz ).map( MAPPING_CACHE::get ).orElse( null );
+        return Optional.ofNullable( clazz ).map( JdbcTypeMappingRegister::getOrNull ).orElse( null );
     }
 
 }

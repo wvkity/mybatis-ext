@@ -5,6 +5,7 @@ import com.wkit.lost.mybatis.spring.boot.data.auditing.config.AnnotationAuditing
 import com.wkit.lost.mybatis.spring.boot.data.auditing.config.AuditingConfiguration;
 import com.wkit.lost.mybatis.spring.boot.registry.BeanDefinitionRegistrarSupport;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.core.type.AnnotationMetadata;
@@ -13,6 +14,10 @@ import org.springframework.util.StringUtils;
 
 import java.lang.annotation.Annotation;
 
+/**
+ * 元数据审计bean注册器
+ * @author wvkity
+ */
 class MetadataAuditingRegistrar extends BeanDefinitionRegistrarSupport<AuditingConfiguration> {
 
     private static final String AUDITOR_AWARE = "auditorAware";
@@ -31,22 +36,22 @@ class MetadataAuditingRegistrar extends BeanDefinitionRegistrarSupport<AuditingC
     }
 
     @Override
+    protected AbstractBeanDefinition registerBeanDefinition( BeanDefinitionRegistry registry,
+                                                           AuditingConfiguration configuration ) {
+        return createBeanDefinition( registry, configuration,
+                getBeanName(), MetadataAuditingHandler.class );
+    }
+
+    @Override
     protected AuditingConfiguration getConfiguration( AnnotationMetadata annotationMetadata ) {
         return new AnnotationAuditingConfiguration( annotationMetadata, getAnnotation() );
     }
 
     @Override
-    protected BeanDefinitionBuilder getHandlerBeanDefinitionBuilder( AuditingConfiguration configuration ) {
-        Assert.notNull(configuration, "AuditingConfiguration must not be null!");
-        return defaultHandlerAttributes( configuration, 
-                BeanDefinitionBuilder.rootBeanDefinition( MetadataAuditingHandler.class ) );
-    }
-
-    @Override
-    protected BeanDefinitionBuilder defaultHandlerAttributes( AuditingConfiguration configuration, 
-                                                              BeanDefinitionBuilder builder ) {
+    protected BeanDefinitionBuilder setRegisterBeanAttributes( AuditingConfiguration configuration,
+                                                               BeanDefinitionBuilder builder ) {
         if ( StringUtils.hasText( configuration.getAuditorAwareRef() ) ) {
-            builder.addPropertyValue( AUDITOR_AWARE, 
+            builder.addPropertyValue( AUDITOR_AWARE,
                     createLazyInitTargetSourceBeanDefinition( configuration.getAuditorAwareRef() ) );
         } else {
             builder.setAutowireMode( AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE );
@@ -57,9 +62,9 @@ class MetadataAuditingRegistrar extends BeanDefinitionRegistrarSupport<AuditingC
         builder.addPropertyValue( AUTOMATIC, configuration.enableAutomatic() );
         return builder;
     }
-    
+
     @Override
-    protected String getHandlerBeanName() {
+    protected String getBeanName() {
         return HANDLER_BEAN_NAME;
     }
 

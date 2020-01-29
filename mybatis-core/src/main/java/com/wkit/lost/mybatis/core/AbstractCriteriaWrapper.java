@@ -1815,7 +1815,6 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
         this.parameterSequence = new AtomicInteger( 0 );
         this.paramValueMappings = new ConcurrentHashMap<>( 16 );
         this.segmentManager = new SegmentManager();
-        //this.conditionManager = new ConditionManager<>( this );
     }
     
     Column getOptimisticLockerColumn() {

@@ -22,7 +22,7 @@ public class LogicDeleteSqlBuilder extends AbstractLogicDeletionSqlBuilder {
                 columns.stream().map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, 
                         false, 0, Constants.PARAM_ENTITY, column, null, AND ) )
                         .collect( Collectors.joining( "", "\n", "\n" ) ) +
-                "</where>";
+                "</where>\n";
         return logicDelete( condition );
     }
 }

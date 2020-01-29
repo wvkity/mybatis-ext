@@ -13,6 +13,7 @@ import com.wkit.lost.mybatis.sql.injector.SqlInjector;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -162,12 +163,9 @@ public class MyBatisCustomConfiguration implements Serializable {
     private boolean enableMethodAnnotation = false;
 
     /**
-     * 启用内置插件
-     * <p>建议注册顺序：{@link Plugin#META_DATA_AUDIT} > {@link Plugin#OPTIMISTIC_LOCKING} >
-     * {@link Plugin#PAGEABLE} > {@link Plugin#RANGE}</p>
-     * @see Plugin
+     * Mybatis插件
      */
-    private List<Plugin> plugins;
+    private List<Class<? extends Interceptor>> plugins;
 
     /**
      * 逻辑删除字段

@@ -22,11 +22,11 @@ public abstract class AbstractLogicDeletionSqlBuilder extends AbstractSqlBuilder
         Set<Column> deleteFillings = table.getDeletedAuditable();
         // 更新字段部分
         StringBuilder builder = new StringBuilder( 40 );
-        builder.append( "<trim prefix=\"SET\" suffixOverrides=\",\">\n" );
+        builder.append( "\n<trim prefix=\"SET\" suffixOverrides=\",\">\n" );
         builder.append( logicalDeletionColumn.getColumn() ).append( " = #{" )
                 .append( Constants.PARAM_LOGIC_DELETED_AUDITING_KEY );
         if ( logicalDeletionColumn.getJdbcType() != null ) {
-            builder.append( ", jdbcType=" ).append( logicalDeletionColumn.getJdbcType().getClass().getName() );
+            builder.append( ", jdbcType=" ).append( logicalDeletionColumn.getJdbcType().toString() );
         }
         if ( logicalDeletionColumn.getTypeHandler() != null ) {
             builder.append( ", typeHandler=" ).append( logicalDeletionColumn.getTypeHandler().getName() );
@@ -42,7 +42,7 @@ public abstract class AbstractLogicDeletionSqlBuilder extends AbstractSqlBuilder
                     it, ",", "" ) )
                     .collect( Collectors.joining( "", "\n", "\n" ) ) );
         }
-        builder.append( "</trim>" );
+        builder.append( "</trim>\n" );
         return update( builder.toString(), condition );
     }
 }

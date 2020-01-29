@@ -3,13 +3,11 @@ package com.wkit.lost.mybatis.spring.boot.autoconfigure;
 
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
-import com.wkit.lost.mybatis.config.Plugin;
 import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.keygen.GuidGenerator;
 import com.wkit.lost.mybatis.keygen.KeyGenerator;
 import com.wkit.lost.mybatis.plugins.batch.BatchParameterFilterInterceptor;
 import com.wkit.lost.mybatis.plugins.batch.BatchStatementInterceptor;
-import com.wkit.lost.mybatis.plugins.paging.config.PluginConvert;
 import com.wkit.lost.mybatis.plugins.data.auditing.DefaultBuiltinAuditingInterceptor;
 import com.wkit.lost.mybatis.resolver.EntityResolver;
 import com.wkit.lost.mybatis.resolver.FieldResolver;
@@ -209,13 +207,12 @@ public class MyBatisAutoConfiguration implements InitializingBean {
      * @param interceptorList     插件(拦截器)集合
      */
     private void registerPlugins( MyBatisCustomConfiguration customConfiguration, List<Interceptor> interceptorList ) {
-        // 默认拦截器LimitPlugin > PageablePlugin，存在多个插件，由于内部使用代理(代理类又被代理)，越是在外面优先级越高，故LimitPlugin需要注册在后面
-        List<Plugin> plugins = customConfiguration.getPlugins();
+        // 存在多个插件，由于内部使用代理(代理类又被代理)，越是在外面优先级越高
+        List<Class<? extends Interceptor>> plugins = customConfiguration.getPlugins();
         if ( !CollectionUtils.isEmpty( plugins ) ) {
-            for ( Plugin plugin : new LinkedHashSet<>( plugins ) ) {
-                Class<? extends Interceptor> interceptorClass = PluginConvert.getInterceptorClass( plugin );
-                if ( interceptorClass != null && pluginRegistrable( interceptorClass ) ) {
-                    Optional.ofNullable( PluginConvert.newInstance( interceptorClass ) )
+            for ( Class<? extends Interceptor> plugin : new LinkedHashSet<>( plugins ) ) {
+                if ( plugin != null && pluginRegistrable( plugin ) ) {
+                    Optional.ofNullable( newInstance( plugin ) )
                             .ifPresent( interceptor -> {
                                 interceptorList.add( interceptor );
                                 registerExistingInterceptorBean( interceptor );
@@ -230,20 +227,31 @@ public class MyBatisAutoConfiguration implements InitializingBean {
             interceptorList.add( interceptor );
             registerExistingInterceptorBean( interceptor );
         }
-        
+
         // 批量保存操作Statement插件
-        if (pluginRegistrable( BatchStatementInterceptor.class )) {
+        if ( pluginRegistrable( BatchStatementInterceptor.class ) ) {
             Interceptor interceptor = new BatchStatementInterceptor();
             interceptorList.add( interceptor );
             registerExistingInterceptorBean( interceptor );
         }
-        
+
         // 批量保存操作参数拦截插件
         if ( pluginRegistrable( BatchParameterFilterInterceptor.class ) ) {
             Interceptor interceptor = new BatchParameterFilterInterceptor();
             interceptorList.add( interceptor );
             registerExistingInterceptorBean( interceptor );
         }
+    }
+
+    private <T> T newInstance( Class<T> clazz ) {
+        if ( clazz != null ) {
+            try {
+                return clazz.getDeclaredConstructor().newInstance();
+            } catch ( Exception e ) {
+                // ignore
+            }
+        }
+        return null;
     }
 
     /**

@@ -69,7 +69,8 @@ public class BatchStatementProcessor extends Processor {
                     BoundSql boundSql = psh.getBoundSql();
                     Object methodParameterTarget = boundSql.getParameterObject();
                     if ( methodParameterTarget instanceof Map ) {
-                        methodParameterTarget = ( ( Map<?, ?> ) methodParameterTarget ).get( Constants.PARAM_BATCH_BEAN_WRAPPER );
+                        methodParameterTarget = ( ( Map<?, ?> ) methodParameterTarget )
+                                .getOrDefault( Constants.PARAM_BATCH_BEAN_WRAPPER, null );
                     }
                     if ( methodParameterTarget instanceof BatchDataBeanWrapper ) {
                         if ( pshMetadata.hasGetter( VARIABLE_MAPPED_STATEMENT ) ) {
