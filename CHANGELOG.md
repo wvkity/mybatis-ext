@@ -18,4 +18,7 @@ UnifyServiceExecutor更名为ServiceExecutor
 - 优化Mybatis插件注入，删除AbstractBeanDefinitionRegistry、Plugin(枚举)等类
 - meta包名更名为metadata
 - 简化全局配置主键类型
+- 废除旧的实体解析器、属性解析器、表映射类、字段类、属性类，新增对应的类，优化实体解析
+- 查询条件类统一移至criteria包下
+
 

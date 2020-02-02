@@ -3,8 +3,8 @@ package com.wkit.lost.mybatis.core.segment;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
-import com.wkit.lost.mybatis.core.Group;
-import com.wkit.lost.mybatis.core.Order;
+import com.wkit.lost.mybatis.core.criteria.Group;
+import com.wkit.lost.mybatis.core.criteria.Order;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.function.Aggregation;
 import lombok.Getter;
@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Objects;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**

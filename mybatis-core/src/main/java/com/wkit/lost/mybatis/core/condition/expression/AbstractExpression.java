@@ -1,10 +1,10 @@
 package com.wkit.lost.mybatis.core.condition.expression;
 
-import com.wkit.lost.mybatis.core.Criteria;
-import com.wkit.lost.mybatis.core.ForeignSubCriteria;
-import com.wkit.lost.mybatis.core.Logic;
-import com.wkit.lost.mybatis.core.Operator;
-import com.wkit.lost.mybatis.core.ParamValuePlaceholderConverter;
+import com.wkit.lost.mybatis.core.criteria.Criteria;
+import com.wkit.lost.mybatis.core.criteria.ForeignSubCriteria;
+import com.wkit.lost.mybatis.core.criteria.Logic;
+import com.wkit.lost.mybatis.core.criteria.Operator;
+import com.wkit.lost.mybatis.core.criteria.ParamValuePlaceholderConverter;
 import com.wkit.lost.mybatis.core.condition.Range;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.metadata.Column;

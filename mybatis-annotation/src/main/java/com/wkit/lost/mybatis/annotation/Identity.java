@@ -24,7 +24,7 @@ public @interface Identity {
      * 使用JDBC方式获取(优先级最高)
      * @return boolean
      */
-    boolean useJdbcGenerated() default false;
+    boolean useJdbc() default false;
 
     /**
      * 数据库类型
@@ -36,11 +36,11 @@ public @interface Identity {
      * 根据SQL获取主键值
      * @return SQL
      */
-    String identitySql() default "";
+    String sql() default "";
 
     /**
      * 获取主键SQL执行时机
      * @return {@link Executing}
      */
-    Executing execution() default Executing.NONE;
+    Executing executing() default Executing.NONE;
 }

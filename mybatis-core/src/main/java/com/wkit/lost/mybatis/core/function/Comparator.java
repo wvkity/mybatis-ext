@@ -1,6 +1,5 @@
 package com.wkit.lost.mybatis.core.function;
 
-import com.wkit.lost.mybatis.core.Operator;
 import com.wkit.lost.mybatis.core.segment.Segment;
 
 /**

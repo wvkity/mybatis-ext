@@ -1,8 +1,8 @@
 package com.wkit.lost.mybatis.sql.mapping;
 
-import com.wkit.lost.mybatis.core.Execute;
-import com.wkit.lost.mybatis.core.Logic;
-import com.wkit.lost.mybatis.core.Operator;
+import com.wkit.lost.mybatis.core.criteria.Execute;
+import com.wkit.lost.mybatis.core.criteria.Logic;
+import com.wkit.lost.mybatis.core.criteria.Operator;
 import com.wkit.lost.mybatis.core.metadata.Column;
 import com.wkit.lost.mybatis.core.metadata.Table;
 import com.wkit.lost.mybatis.handler.EntityHandler;

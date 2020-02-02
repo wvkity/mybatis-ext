@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.utils;
 
-import com.wkit.lost.mybatis.core.metadata.AnnotationMetaObject;
+import com.wkit.lost.mybatis.core.metadata.AnnotationMetadata;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
@@ -197,7 +197,7 @@ public abstract class AnnotationUtil {
     }
 
     @SuppressWarnings( "unchecked" )
-    public static AnnotationMetaObject getAnnotationMetaObject( Class<?> target, String annotationClass ) {
+    public static AnnotationMetadata getAnnotationMetaObject( Class<?> target, String annotationClass ) {
         if ( target != null && !Ascii.isNullOrEmpty( annotationClass ) ) {
             try {
                 Class<? extends Annotation> clazz = ( Class<? extends Annotation> ) Class.forName( annotationClass );
@@ -206,11 +206,11 @@ public abstract class AnnotationUtil {
                 log.warn( "Cannot resolve entity class `{}` annotation `{}`: {}", target.getName(), annotationClass, e );
             }
         }
-        return new AnnotationMetaObject( new HashMap<>( 0 ) );
+        return new AnnotationMetadata( new HashMap<>( 0 ) );
     }
 
     @SuppressWarnings( "unchecked" )
-    public static AnnotationMetaObject getAnnotationMetaObject( Field target, String annotationClass ) {
+    public static AnnotationMetadata getAnnotationMetaObject( Field target, String annotationClass ) {
         if ( target != null && StringUtil.hasText( annotationClass ) ) {
             try {
                 Class<? extends Annotation> clazz = ( Class<? extends Annotation> ) Class.forName( annotationClass );
@@ -219,18 +219,18 @@ public abstract class AnnotationUtil {
                 log.warn( "Unable to parse attributes `{}` annotation `{}`: {}", target.getName(), annotationClass, e );
             }
         }
-        return new AnnotationMetaObject( new HashMap<>( 0 ) );
+        return new AnnotationMetadata( new HashMap<>( 0 ) );
     }
 
     @SuppressWarnings( "unchecked" )
-    public static AnnotationMetaObject getAnnotationMetaObject( Annotation annotation ) {
+    public static AnnotationMetadata getAnnotationMetaObject( Annotation annotation ) {
         if ( annotation != null ) {
             MetaObject metaObject = SystemMetaObject.forObject( annotation );
             Object value = metaObject.getValue( "h.memberValues" );
             if ( value instanceof Map ) {
-                return new AnnotationMetaObject( ( Map<String, Object> ) value );
+                return new AnnotationMetadata( ( Map<String, Object> ) value );
             }
         }
-        return new AnnotationMetaObject( new HashMap<>( 0 ) );
+        return new AnnotationMetadata( new HashMap<>( 0 ) );
     }
 }

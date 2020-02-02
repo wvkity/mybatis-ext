@@ -6,6 +6,7 @@ import com.wkit.lost.mybatis.core.metadata.Table;
  * 实体解析器
  * @author wvkity
  */
+@Deprecated
 @FunctionalInterface
 public interface EntityResolver {
 

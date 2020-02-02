@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.annotation;
 
 import com.wkit.lost.mybatis.annotation.extension.UseJavaType;
-import com.wkit.lost.mybatis.annotation.extension.Validate;
+import com.wkit.lost.mybatis.annotation.extension.Validated;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.UnknownTypeHandler;
@@ -43,9 +43,9 @@ public @interface ColumnExt {
 
     /**
      * 字符串空值校验
-     * @return {@link Validate}
+     * @return {@link Validated}
      */
-    Validate notEmpty() default Validate.CONFIG;
+    Validated empty() default Validated.CONFIG;
 
     /**
      * 使用Java类型

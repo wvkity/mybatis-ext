@@ -3,6 +3,8 @@ package com.wkit.lost.mybatis.spring.boot.autoconfigure;
 
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
+import com.wkit.lost.mybatis.core.parser.EntityParser;
+import com.wkit.lost.mybatis.core.parser.FieldParser;
 import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.keygen.GuidGenerator;
 import com.wkit.lost.mybatis.keygen.KeyGenerator;
@@ -185,8 +187,10 @@ public class MyBatisAutoConfiguration implements InitializingBean {
         ifPresent( SqlInjector.class, customConfig::setInjector );
         // 实体解析器
         ifPresent( EntityResolver.class, customConfig::setEntityResolver );
+        ifPresent( EntityParser.class, customConfig::setEntityParser );
         // 属性解析器
         ifPresent( FieldResolver.class, customConfig::setFieldResolver );
+        ifPresent( FieldParser.class, customConfig::setFieldParser );
         // 主键生成器
         if ( hasBeanFromContext( KeyGenerator.class ) ) {
             customConfig.setKeyGenerator( getBean( KeyGenerator.class ) );

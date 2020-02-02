@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.condition;
 
-import com.wkit.lost.mybatis.core.PropertyMappingForLambda;
+import com.wkit.lost.mybatis.core.criteria.PropertyMappingForLambda;
 import com.wkit.lost.mybatis.lambda.Property;
 
 /**

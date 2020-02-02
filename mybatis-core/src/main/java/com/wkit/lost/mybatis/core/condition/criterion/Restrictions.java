@@ -1,10 +1,10 @@
 package com.wkit.lost.mybatis.core.condition.criterion;
 
-import com.wkit.lost.mybatis.core.Criteria;
-import com.wkit.lost.mybatis.core.Logic;
-import com.wkit.lost.mybatis.core.MatchMode;
-import com.wkit.lost.mybatis.core.Operator;
-import com.wkit.lost.mybatis.core.SubCriteria;
+import com.wkit.lost.mybatis.core.criteria.Criteria;
+import com.wkit.lost.mybatis.core.criteria.Logic;
+import com.wkit.lost.mybatis.core.criteria.MatchMode;
+import com.wkit.lost.mybatis.core.criteria.Operator;
+import com.wkit.lost.mybatis.core.criteria.SubCriteria;
 import com.wkit.lost.mybatis.core.condition.expression.Between;
 import com.wkit.lost.mybatis.core.condition.expression.Equal;
 import com.wkit.lost.mybatis.core.condition.expression.GreaterThan;

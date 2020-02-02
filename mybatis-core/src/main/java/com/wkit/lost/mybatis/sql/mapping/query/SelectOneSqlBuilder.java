@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.sql.mapping.query;
 
-import com.wkit.lost.mybatis.core.Execute;
+import com.wkit.lost.mybatis.core.criteria.Execute;
 import com.wkit.lost.mybatis.sql.SqlTemplate;
 import com.wkit.lost.mybatis.sql.mapping.AbstractSqlBuilder;
 import com.wkit.lost.mybatis.utils.ColumnConvert;

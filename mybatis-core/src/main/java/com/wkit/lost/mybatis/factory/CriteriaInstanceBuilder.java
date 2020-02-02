@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.factory;
 
-import com.wkit.lost.mybatis.core.CriteriaImpl;
+import com.wkit.lost.mybatis.core.criteria.CriteriaImpl;
 
 /**
  * Criteria实例构建器

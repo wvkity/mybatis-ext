@@ -5,7 +5,7 @@ package com.wkit.lost.mybatis.utils;
  * @author wvkity
  */
 public interface Constants {
-    
+
     String PARAM_BATCH_BEAN_WRAPPER = "batchDataBeanWrapper";
 
     /**
@@ -47,4 +47,29 @@ public interface Constants {
      * 乐观锁填充值键
      */
     String PARAM_OPTIMISTIC_LOCK_KEY = "OPTIMISTIC_LOCK_FV";
+
+    /**
+     * UUID主键生成方式
+     */
+    String GENERATOR_UUID = "UUID";
+
+    /**
+     * JDBC主键生成方式
+     */
+    String GENERATOR_JDBC = "JDBC";
+    
+    /**
+     * 自增主键生成方式
+     */
+    String GENERATOR_IDENTITY = "IDENTITY";
+
+    /**
+     * 雪花算法主键生成方式
+     */
+    String GENERATOR_SNOWFLAKE_SEQUENCE = "SNOWFLAKE_SEQUENCE";
+
+    /**
+     * 雪花算法字符串主键生成方式
+     */
+    String GENERATOR_SNOWFLAKE_SEQUENCE_STRING = "SNOWFLAKE_SEQUENCE_STRING";
 }

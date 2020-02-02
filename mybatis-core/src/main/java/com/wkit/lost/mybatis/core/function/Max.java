@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core.function;
 
-import com.wkit.lost.mybatis.core.Criteria;
-import com.wkit.lost.mybatis.core.Logic;
+import com.wkit.lost.mybatis.core.criteria.Criteria;
+import com.wkit.lost.mybatis.core.criteria.Logic;
 import lombok.experimental.Accessors;
 
 import java.util.List;

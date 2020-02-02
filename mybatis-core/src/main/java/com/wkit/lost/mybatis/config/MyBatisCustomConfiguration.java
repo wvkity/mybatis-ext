@@ -3,6 +3,8 @@ package com.wkit.lost.mybatis.config;
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
 import com.wkit.lost.mybatis.core.metadata.PrimaryKeyType;
+import com.wkit.lost.mybatis.core.parser.EntityParser;
+import com.wkit.lost.mybatis.core.parser.FieldParser;
 import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.keygen.KeyGenerator;
 import com.wkit.lost.mybatis.naming.DefaultPhysicalNamingStrategy;
@@ -50,13 +52,27 @@ public class MyBatisCustomConfiguration implements Serializable {
 
     /**
      * 实体解析器
+     * @see #entityParser
      */
+    @Deprecated
     private EntityResolver entityResolver;
 
     /**
      * 属性解析器
+     * @see #fieldParser
      */
+    @Deprecated
     private FieldResolver fieldResolver;
+
+    /**
+     * 实体解析器
+     */
+    private EntityParser entityParser;
+
+    /**
+     * 属性解析器
+     */
+    private FieldParser fieldParser;
 
     /**
      * SQL注入器

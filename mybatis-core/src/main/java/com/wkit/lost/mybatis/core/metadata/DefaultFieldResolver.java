@@ -6,7 +6,7 @@ import com.wkit.lost.mybatis.utils.AnnotationUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.annotation.Entity;
 import com.wkit.lost.mybatis.annotation.Transient;
-import com.wkit.lost.mybatis.exception.MapperResolverException;
+import com.wkit.lost.mybatis.exception.MapperParserException;
 import com.wkit.lost.mybatis.javax.JavaxPersistence;
 
 import java.beans.BeanInfo;
@@ -22,6 +22,7 @@ import java.util.stream.Stream;
  * 默认属性解析器
  * @author wvkity
  */
+@Deprecated
 public class DefaultFieldResolver implements FieldResolver {
 
     @Override
@@ -46,7 +47,7 @@ public class DefaultFieldResolver implements FieldResolver {
         try {
             beanInfo = Introspector.getBeanInfo( entity );
         } catch ( IntrospectionException e ) {
-            throw new MapperResolverException( StringUtil.format( "Failed to get bean information of `{}` class: `{}`", entity.getCanonicalName(), e.getMessage() ), e );
+            throw new MapperParserException( StringUtil.format( "Failed to get bean information of `{}` class: `{}`", entity.getCanonicalName(), e.getMessage() ), e );
         }
         PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
         return ArrayUtil.isEmpty( descriptors ) ? new ArrayList<>() : new ArrayList<>( Stream.of( descriptors )

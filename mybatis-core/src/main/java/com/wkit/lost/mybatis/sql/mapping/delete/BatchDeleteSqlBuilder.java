@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.sql.mapping.delete;
 
-import com.wkit.lost.mybatis.core.Execute;
+import com.wkit.lost.mybatis.core.criteria.Execute;
 import com.wkit.lost.mybatis.sql.mapping.AbstractSqlBuilder;
 
 import java.util.stream.Collectors;

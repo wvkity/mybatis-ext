@@ -3,10 +3,10 @@ package com.wkit.lost.mybatis.core.condition.expression;
 import com.wkit.lost.mybatis.core.metadata.Column;
 import com.wkit.lost.mybatis.utils.ColumnConvert;
 import com.wkit.lost.mybatis.utils.StringUtil;
-import com.wkit.lost.mybatis.core.Criteria;
-import com.wkit.lost.mybatis.core.Logic;
-import com.wkit.lost.mybatis.core.MatchMode;
-import com.wkit.lost.mybatis.core.Operator;
+import com.wkit.lost.mybatis.core.criteria.Criteria;
+import com.wkit.lost.mybatis.core.criteria.Logic;
+import com.wkit.lost.mybatis.core.criteria.MatchMode;
+import com.wkit.lost.mybatis.core.criteria.Operator;
 import lombok.Getter;
 import lombok.Setter;
 

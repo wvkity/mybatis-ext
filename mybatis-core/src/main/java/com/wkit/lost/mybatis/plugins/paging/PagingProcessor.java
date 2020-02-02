@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.plugins.paging;
 
-import com.wkit.lost.mybatis.core.Criteria;
+import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.plugins.paging.dbs.dialect.Dialect;
 import com.wkit.lost.mybatis.plugins.processor.QueryProcessorSupport;
 import com.wkit.lost.mybatis.utils.Ascii;

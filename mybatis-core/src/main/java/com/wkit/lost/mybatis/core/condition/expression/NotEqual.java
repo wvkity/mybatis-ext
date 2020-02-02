@@ -1,8 +1,8 @@
 package com.wkit.lost.mybatis.core.condition.expression;
 
-import com.wkit.lost.mybatis.core.Criteria;
-import com.wkit.lost.mybatis.core.Logic;
-import com.wkit.lost.mybatis.core.Operator;
+import com.wkit.lost.mybatis.core.criteria.Criteria;
+import com.wkit.lost.mybatis.core.criteria.Logic;
+import com.wkit.lost.mybatis.core.criteria.Operator;
 
 /**
  * 不等于

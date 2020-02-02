@@ -2,8 +2,8 @@ package com.wkit.lost.mybatis.utils;
 
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
-import com.wkit.lost.mybatis.core.Execute;
-import com.wkit.lost.mybatis.core.Operator;
+import com.wkit.lost.mybatis.core.criteria.Execute;
+import com.wkit.lost.mybatis.core.criteria.Operator;
 import com.wkit.lost.mybatis.core.metadata.Column;
 import com.wkit.lost.mybatis.incrementer.SequenceKeyGenerator;
 import org.apache.ibatis.session.Configuration;

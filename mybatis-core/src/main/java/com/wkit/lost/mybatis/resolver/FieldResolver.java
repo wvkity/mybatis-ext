@@ -8,6 +8,7 @@ import java.util.List;
  * 属性解析接口
  * @author wvkity
  */
+@Deprecated
 public interface FieldResolver {
 
     /**

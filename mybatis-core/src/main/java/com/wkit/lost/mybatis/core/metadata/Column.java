@@ -14,7 +14,7 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 
 /**
- * 数据库表字段映射信息
+ * 数据库表字-实体属性段映射信息
  * @author wvkity
  */
 @Accessors( chain = true )

@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.plugins.data.auditing;
 import com.wkit.lost.mybatis.batch.BatchDataBeanWrapper;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
-import com.wkit.lost.mybatis.core.Criteria;
+import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.condition.criterion.Restrictions;
 import com.wkit.lost.mybatis.core.metadata.Table;
 import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;

@@ -9,7 +9,7 @@ import com.wkit.lost.mybatis.annotation.OrderBy;
 import com.wkit.lost.mybatis.annotation.SequenceGenerator;
 import com.wkit.lost.mybatis.annotation.Transient;
 import com.wkit.lost.mybatis.annotation.Version;
-import com.wkit.lost.mybatis.annotation.Worker;
+import com.wkit.lost.mybatis.annotation.SnowflakeSequence;
 import com.wkit.lost.mybatis.annotation.auditing.CreatedDate;
 import com.wkit.lost.mybatis.annotation.auditing.CreatedUser;
 import com.wkit.lost.mybatis.annotation.auditing.CreatedUserName;
@@ -23,12 +23,12 @@ import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.annotation.extension.Executing;
 import com.wkit.lost.mybatis.annotation.extension.GenerationType;
 import com.wkit.lost.mybatis.annotation.extension.UseJavaType;
-import com.wkit.lost.mybatis.annotation.extension.Validate;
+import com.wkit.lost.mybatis.annotation.extension.Validated;
 import com.wkit.lost.mybatis.annotation.naming.Naming;
 import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
-import com.wkit.lost.mybatis.core.PropertyMappingForLambda;
-import com.wkit.lost.mybatis.exception.MapperResolverException;
+import com.wkit.lost.mybatis.core.criteria.PropertyMappingForLambda;
+import com.wkit.lost.mybatis.exception.MapperParserException;
 import com.wkit.lost.mybatis.handler.ColumnHandler;
 import com.wkit.lost.mybatis.javax.JavaxPersistence;
 import com.wkit.lost.mybatis.keyword.SqlKeyWords;
@@ -41,6 +41,7 @@ import com.wkit.lost.mybatis.type.registry.JdbcTypeMappingRegister;
 import com.wkit.lost.mybatis.utils.AnnotationUtil;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.Ascii;
+import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.type.JdbcType;
@@ -59,6 +60,7 @@ import java.util.Set;
  * 默认实体-表映射解析器
  * @author wvkity
  */
+@Deprecated
 @Log4j2
 public class DefaultEntityResolver implements EntityResolver {
 
@@ -66,7 +68,7 @@ public class DefaultEntityResolver implements EntityResolver {
      * 雪花算法字符串主键
      */
     private static final Set<String> WORKER_KEYS = new HashSet<>( Arrays.asList( "WORKER_SEQUENCE",
-            "WORKER_SEQUENCE_STRING" ) );
+            "WORKER_SEQUENCE_STRING", Constants.GENERATOR_SNOWFLAKE_SEQUENCE_STRING ) );
 
     /**
      * 自定义配置
@@ -115,7 +117,7 @@ public class DefaultEntityResolver implements EntityResolver {
     @Override
     public Table resolve( Class<?> entity, String namespace ) {
         if ( entity == null ) {
-            throw new MapperResolverException( "The entity class parameter cannot be empty." );
+            throw new MapperParserException( "The entity class parameter cannot be empty." );
         }
         // 命名策略
         NamingStrategy strategy = configuration.getStrategy();
@@ -172,7 +174,7 @@ public class DefaultEntityResolver implements EntityResolver {
             } else {
                 // javax定义的@Table注解
                 if ( AnnotationUtil.isAnnotationPresent( entity, JavaxPersistence.TABLE ) ) {
-                    AnnotationMetaObject metaObject = AnnotationMetaObject.forObject( entity, JavaxPersistence.TABLE );
+                    AnnotationMetadata metaObject = AnnotationMetadata.forObject( entity, JavaxPersistence.TABLE );
                     tableName = metaObject.stringValue( "name" );
                     catalog = metaObject.stringValue( "catalog" );
                     schema = metaObject.stringValue( "schema" );
@@ -216,7 +218,7 @@ public class DefaultEntityResolver implements EntityResolver {
         if ( entity.isAnnotationPresent( Entity.class ) ) {
             return entity.getDeclaredAnnotation( Entity.class ).name();
         } else if ( AnnotationUtil.isAnnotationPresent( entity, JavaxPersistence.ENTITY ) ) {
-            return AnnotationMetaObject.forObject( entity, JavaxPersistence.ENTITY ).stringValue( "name" );
+            return AnnotationMetadata.forObject( entity, JavaxPersistence.ENTITY ).stringValue( "name" );
         }
         return null;
     }
@@ -303,7 +305,7 @@ public class DefaultEntityResolver implements EntityResolver {
             updatable = columnAnnotation.updatable();
             columnName = columnAnnotation.name();
         } else if ( field.isAnnotationPresent( JavaxPersistence.COLUMN ) ) {
-            AnnotationMetaObject metaObject = AnnotationMetaObject.forObject( field.getField(), JavaxPersistence.COLUMN );
+            AnnotationMetadata metaObject = AnnotationMetadata.forObject( field.getField(), JavaxPersistence.COLUMN );
             // JPA @Column注解
             insertable = metaObject.booleanValue( "insertable", true );
             updatable = metaObject.booleanValue( "updatable", true );
@@ -324,9 +326,9 @@ public class DefaultEntityResolver implements EntityResolver {
                 typeHandler = columnExt.typeHandler();
             }
             // 字符串类型空值校验
-            Validate validate = columnExt.notEmpty();
-            if ( validate != Validate.CONFIG ) {
-                checkNotEmpty = validate == Validate.REQUIRED;
+            Validated validate = columnExt.empty();
+            if ( validate != Validated.CONFIG ) {
+                checkNotEmpty = validate == Validated.REQUIRED;
             }
             // 使用JAVA类型
             UseJavaType using = columnExt.useJavaType();
@@ -375,7 +377,7 @@ public class DefaultEntityResolver implements EntityResolver {
         if ( field.isAnnotationPresent( LogicDeletion.class )
                 || column.getProperty().equals( logicDeleteProperty ) ) {
             if ( table.isEnableLogicDeletion() ) {
-                throw new MapperResolverException( "There are already `" + table.getLogicDeletionColumn()
+                throw new MapperParserException( "There are already `" + table.getLogicDeletionColumn()
                         .getProperty() + "` attributes in `" + table.getEntity().getName()
                         + "` entity class identified as logical deleted. Only one deleted attribute " +
                         "can exist in an entity class. Please check the entity class attributes." );
@@ -411,7 +413,7 @@ public class DefaultEntityResolver implements EntityResolver {
         if ( field.isAnnotationPresent( OrderBy.class ) ) {
             orderValue = field.getAnnotation( OrderBy.class ).value();
         } else if ( field.isAnnotationPresent( JavaxPersistence.ORDER_BY ) ) {
-            orderValue = AnnotationMetaObject.forObject( field.getField(), JavaxPersistence.ORDER_BY ).stringValue();
+            orderValue = AnnotationMetadata.forObject( field.getField(), JavaxPersistence.ORDER_BY ).stringValue();
         }
         if ( orderValue != null ) {
             orderValue = "".equals( StringUtil.strip( orderValue ) ) ? "ASC" : orderValue;
@@ -435,9 +437,9 @@ public class DefaultEntityResolver implements EntityResolver {
         } else if ( field.isAnnotationPresent( GeneratedValue.class, JavaxPersistence.GENERATED_VALUE ) ) {
             // @GeneratedValue
             processGeneratedValueAnnotation( table, column, field );
-        } else if ( field.isAnnotationPresent( Worker.class ) ) {
-            Worker worker = field.getAnnotation( Worker.class );
-            if ( worker.value() ) {
+        } else if ( field.isAnnotationPresent( SnowflakeSequence.class ) ) {
+            SnowflakeSequence snowflakeSequence = field.getAnnotation( SnowflakeSequence.class );
+            if ( snowflakeSequence.value() ) {
                 column.setSnowflakeSequenceString( true );
             } else {
                 column.setSnowflakeSequence( true );
@@ -453,18 +455,18 @@ public class DefaultEntityResolver implements EntityResolver {
      */
     private void processIdentityAnnotation( final Table table, final Column column, final Field field ) {
         Identity identity = field.getAnnotation( Identity.class );
-        if ( identity.useJdbcGenerated() ) {
+        if ( identity.useJdbc() ) {
             column.setIdentity( true ).setGenerator( "JDBC" );
             table.addPrimaryKeyProperty( column.getProperty() );
         } else if ( identity.dialect() != Dialect.UNDEFINED ) {
             column.setIdentity( true ).setExecuting( Executing.AFTER ).setGenerator( identity.dialect().getKeyGenerator() );
         } else {
-            if ( StringUtil.isBlank( identity.identitySql() ) ) {
-                throw new MapperResolverException( StringUtil.format( "The @identity annotation on the '{}' " +
+            if ( StringUtil.isBlank( identity.sql() ) ) {
+                throw new MapperParserException( StringUtil.format( "The @identity annotation on the '{}' " +
                                 "class's attribute '{}' is invalid",
                         column.getEntity().getCanonicalName(), column.getProperty() ) );
             }
-            column.setIdentity( true ).setExecuting( identity.execution() ).setGenerator( identity.identitySql() );
+            column.setIdentity( true ).setExecuting( identity.executing() ).setGenerator( identity.sql() );
         }
     }
 
@@ -485,14 +487,14 @@ public class DefaultEntityResolver implements EntityResolver {
             }
         } else if ( field.isAnnotationPresent( JavaxPersistence.SEQUENCE_GENERATOR ) ) {
             // JPA @SequenceGenerator注解
-            AnnotationMetaObject metaObject = AnnotationMetaObject.forObject( field.getField(), JavaxPersistence.SEQUENCE_GENERATOR );
+            AnnotationMetadata metaObject = AnnotationMetadata.forObject( field.getField(), JavaxPersistence.SEQUENCE_GENERATOR );
             sequenceName = metaObject.stringValue( "name" );
             if ( StringUtil.isBlank( sequenceName ) ) {
                 sequenceName = metaObject.stringValue( "sequenceName" );
             }
         }
         if ( StringUtil.isBlank( sequenceName ) ) {
-            throw new MapperResolverException( StringUtil.format( "The @SequenceGenerator on the `{}` " +
+            throw new MapperParserException( StringUtil.format( "The @SequenceGenerator on the `{}` " +
                             "attribute of the `{}` class does not specify the sequenceName value.",
                     column.getProperty(), column.getEntity().getCanonicalName() ) );
         }
@@ -515,7 +517,7 @@ public class DefaultEntityResolver implements EntityResolver {
             isIdentity = generatedValueAnnotation.strategy() == GenerationType.IDENTITY;
         } else if ( field.isAnnotationPresent( JavaxPersistence.GENERATED_VALUE ) ) {
             // JPA @GeneratedValue
-            AnnotationMetaObject metaObject = AnnotationMetaObject.forObject( field.getField(), JavaxPersistence.GENERATED_VALUE );
+            AnnotationMetadata metaObject = AnnotationMetadata.forObject( field.getField(), JavaxPersistence.GENERATED_VALUE );
             generator = metaObject.stringValue( "generator" );
             Enum<?> enumValue = metaObject.enumValue( "strategy", null );
             isIdentity = enumValue != null && "IDENTITY".equals( enumValue.name() );
@@ -526,7 +528,7 @@ public class DefaultEntityResolver implements EntityResolver {
             column.setIdentity( true ).setGenerator( generator.toUpperCase( Locale.ENGLISH ) );
             table.addPrimaryKeyProperty( column.getProperty() );
             table.addPrimaryKeyColumn( column.getColumn() );
-        } else if ( "WORKER".equalsIgnoreCase( generator ) ) {
+        } else if ( Constants.GENERATOR_SNOWFLAKE_SEQUENCE.equalsIgnoreCase( generator ) ) {
             column.setSnowflakeSequence( true );
         } else if ( generator != null && WORKER_KEYS.contains( generator.toUpperCase( Locale.ENGLISH ) ) ) {
             column.setSnowflakeSequenceString( true );
@@ -541,7 +543,7 @@ public class DefaultEntityResolver implements EntityResolver {
                     column.setGenerator( generator );
                 }
             } else {
-                throw new MapperResolverException( StringUtil.format( "The @generatedValue annotation on the '{}' class's attribute '{}' supports the following form: \n1.{}\n2.{}\n3.{}",
+                throw new MapperParserException( StringUtil.format( "The @generatedValue annotation on the '{}' class's attribute '{}' supports the following form: \n1.{}\n2.{}\n3.{}",
                         column.getEntity().getCanonicalName(), column.getProperty(),
                         "@GeneratedValue(generator = \"UUID\")",
                         "@GeneratedValue(generator = \"JDBC\")",

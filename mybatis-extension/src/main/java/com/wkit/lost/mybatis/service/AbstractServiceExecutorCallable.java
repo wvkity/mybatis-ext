@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.service;
 
 import com.wkit.lost.mybatis.batch.BatchDataBeanWrapper;
 import com.wkit.lost.mybatis.binding.MyBatisMapperMethod;
-import com.wkit.lost.mybatis.core.Criteria;
+import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.factory.AbstractCriteriaBuilderFactory;
 import com.wkit.lost.mybatis.handler.EntityHandler;

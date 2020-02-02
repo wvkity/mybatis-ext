@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.condition;
 
-import com.wkit.lost.mybatis.core.AbstractQueryCriteria;
+import com.wkit.lost.mybatis.core.criteria.AbstractQueryCriteria;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 
 import java.util.List;

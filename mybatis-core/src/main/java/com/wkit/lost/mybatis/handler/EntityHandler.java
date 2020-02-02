@@ -4,6 +4,9 @@ import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
 import com.wkit.lost.mybatis.core.metadata.DefaultEntityResolver;
 import com.wkit.lost.mybatis.core.metadata.Table;
+import com.wkit.lost.mybatis.core.metadata.TableBuilder;
+import com.wkit.lost.mybatis.core.parser.DefaultEntityParser;
+import com.wkit.lost.mybatis.core.parser.EntityParser;
 import com.wkit.lost.mybatis.resolver.EntityResolver;
 import com.wkit.lost.mybatis.utils.ClassUtil;
 import lombok.extern.log4j.Log4j2;
@@ -18,8 +21,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * 实体-表映射处理器
  * @author wvkity
  */
+@Deprecated
 @Log4j2
-public class EntityHandler {
+public final class EntityHandler {
+
+    private EntityHandler() {
+    }
 
     /**
      * 表映射信息缓存
@@ -31,6 +38,7 @@ public class EntityHandler {
     /**
      * 实体-表映射解析器
      */
+    @Deprecated
     private static EntityResolver resolver;
 
     /**
@@ -40,18 +48,18 @@ public class EntityHandler {
      * @return {@link Table}(表信息)
      */
     public synchronized static Table intercept( final MapperBuilderAssistant assistant, final Class<?> entity ) {
-        Configuration configuration = assistant.getConfiguration();
-        MyBatisCustomConfiguration customConfiguration =
-                MyBatisConfigCache.getCustomConfiguration( configuration );
-        // 初始化实体解析器
-        EntityResolver resolverVariable = customConfiguration.getEntityResolver();
-        if ( resolverVariable == null ) {
-            if ( EntityHandler.resolver == null ) {
-                EntityHandler.resolver = new DefaultEntityResolver( customConfiguration );
-            }
-            resolverVariable = EntityHandler.resolver;
-        }
         if ( entity != null ) {
+            Configuration configuration = assistant.getConfiguration();
+            MyBatisCustomConfiguration customConfiguration =
+                    MyBatisConfigCache.getCustomConfiguration( configuration );
+            // 初始化实体解析器
+            EntityResolver resolverVariable = customConfiguration.getEntityResolver();
+            if ( resolverVariable == null ) {
+                if ( EntityHandler.resolver == null ) {
+                    EntityHandler.resolver = new DefaultEntityResolver( customConfiguration );
+                }
+                resolverVariable = EntityHandler.resolver;
+            }
             Table table = TABLE_CACHE.get( entity );
             if ( table == null ) {
                 log.debug( "Resolve entity class - table mapping information：`{}`", entity.getCanonicalName() );

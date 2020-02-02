@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.segment;
 
-import com.wkit.lost.mybatis.core.Group;
+import com.wkit.lost.mybatis.core.criteria.Group;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.condition;
 
-import com.wkit.lost.mybatis.core.AbstractQueryCriteria;
+import com.wkit.lost.mybatis.core.criteria.AbstractQueryCriteria;
 
 /**
  * 条件管理器

@@ -1,6 +1,7 @@
 package com.wkit.lost.mybatis.factory;
 
-import com.wkit.lost.mybatis.core.CriteriaImpl;
+import com.wkit.lost.mybatis.core.criteria.Criteria;
+import com.wkit.lost.mybatis.core.criteria.CriteriaImpl;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.utils.ClassUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
@@ -10,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * {@link com.wkit.lost.mybatis.core.Criteria}实例缓存类
+ * {@link Criteria}实例缓存类
  * @author wvkity
  */
 public class CriteriaCache implements Serializable {
@@ -23,7 +24,7 @@ public class CriteriaCache implements Serializable {
     private volatile ConcurrentMap<Class<?>, Class<?>> actualClassCache = new ConcurrentHashMap<>( 128 );
     
     /**
-     * {@link com.wkit.lost.mybatis.core.Criteria}实例缓存
+     * {@link Criteria}实例缓存
      */
     private volatile ConcurrentMap<Class<?>, CriteriaImpl<?>> criteriaCache = new ConcurrentHashMap<>( 128 );
     

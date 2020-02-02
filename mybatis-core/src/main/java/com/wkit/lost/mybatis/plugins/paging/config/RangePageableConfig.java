@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.plugins.paging.config;
 
-import com.wkit.lost.mybatis.core.Criteria;
-import com.wkit.lost.mybatis.core.RangeMode;
+import com.wkit.lost.mybatis.core.criteria.Criteria;
+import com.wkit.lost.mybatis.core.criteria.RangeMode;
 import com.wkit.lost.mybatis.plugins.utils.PluginUtil;
 import com.wkit.lost.mybatis.utils.Constants;
 

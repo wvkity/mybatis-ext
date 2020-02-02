@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core.condition.criterion;
 
-import com.wkit.lost.mybatis.core.Criteria;
-import com.wkit.lost.mybatis.core.Logic;
+import com.wkit.lost.mybatis.core.criteria.Criteria;
+import com.wkit.lost.mybatis.core.criteria.Logic;
 import com.wkit.lost.mybatis.core.metadata.Column;
 import com.wkit.lost.mybatis.core.segment.Segment;
 

@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.sql.method;
 
+import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.mapper.MapperExecutor;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
@@ -62,6 +63,7 @@ public abstract class AbstractMethod implements Method {
             }
             // 解析实体-表映射信息
             Table table = EntityHandler.intercept( assistant, entityClass );
+            TableHandler.intercept( assistant, entityClass );
             // 注入
             this.injectMappedStatement( mapperInterface, resultType, table );
         }

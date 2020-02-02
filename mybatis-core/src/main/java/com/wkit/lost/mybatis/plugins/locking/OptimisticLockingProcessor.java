@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.plugins.locking;
 
-import com.wkit.lost.mybatis.core.AbstractModifyCriteria;
-import com.wkit.lost.mybatis.core.Criteria;
+import com.wkit.lost.mybatis.core.criteria.AbstractModifyCriteria;
+import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.metadata.Column;
 import com.wkit.lost.mybatis.core.metadata.Table;
 import com.wkit.lost.mybatis.data.auditing.date.provider.DateTimeProvider;

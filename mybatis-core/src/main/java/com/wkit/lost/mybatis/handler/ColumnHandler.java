@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
  * 表字段映射处理器
  * @author wvkity
  */
+@Deprecated
 public class ColumnHandler {
 
     /**
