@@ -1,10 +1,10 @@
 package com.wkit.lost.mybatis.data.auditing;
 
-import com.wkit.lost.mybatis.core.metadata.Column;
-import com.wkit.lost.mybatis.core.metadata.Table;
+import com.wkit.lost.mybatis.core.handler.TableHandler;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.data.auditing.date.provider.DateTimeProvider;
 import com.wkit.lost.mybatis.data.auditing.date.proxy.DateTimeProviderFactory;
-import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.utils.Ascii;
 import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.MetaObjectUtil;
@@ -75,7 +75,7 @@ abstract class AbstractMetadataAuditable implements MetadataAuditable {
      * @param column   字段映射对象
      * @param matching 匹配模式
      */
-    protected void dateTimeAuditing( MetaObject metadata, Column column, AuditMatching matching ) {
+    protected void dateTimeAuditing( MetaObject metadata, ColumnWrapper column, AuditMatching matching ) {
         dateTimeAuditing( metadata, column.getProperty(),
                 DateTimeProviderFactory.ProviderBuilder.create().target( column.getJavaType() ).build(), matching );
     }
@@ -97,9 +97,9 @@ abstract class AbstractMetadataAuditable implements MetadataAuditable {
      * @param metadata 元数据
      * @return 表信息
      */
-    Table getTable( MetaObject metadata ) {
+    TableWrapper getTable( MetaObject metadata ) {
         if ( metadata != null ) {
-            Table table = EntityHandler.getTable( metadata.getOriginalObject().getClass() );
+            TableWrapper table = TableHandler.getTable( metadata.getOriginalObject().getClass() );
             if ( table == null && metadata.hasGetter( Constants.PARAM_ENTITY ) ) {
                 Object entity = metadata.getValue( Constants.PARAM_ENTITY );
                 if ( entity != null ) {
@@ -117,7 +117,7 @@ abstract class AbstractMetadataAuditable implements MetadataAuditable {
      * @param property 属性
      * @return 字段信息
      */
-    Optional<Column> search( MetaObject metadata, String property ) {
+    Optional<ColumnWrapper> search( MetaObject metadata, String property ) {
         return Optional.ofNullable( getTable( metadata ) )
                 .flatMap( it -> it.search( property ) );
     }

@@ -3,9 +3,9 @@ package com.wkit.lost.mybatis.service;
 import com.wkit.lost.mybatis.batch.BatchDataBeanWrapper;
 import com.wkit.lost.mybatis.binding.MyBatisMapperMethod;
 import com.wkit.lost.mybatis.core.criteria.Criteria;
+import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.factory.AbstractCriteriaBuilderFactory;
-import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.mapper.MapperExecutorCallable;
 import com.wkit.lost.mybatis.session.SqlSessionUtil;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
@@ -331,7 +331,7 @@ public abstract class AbstractServiceExecutorCallable<Executor extends MapperExe
 
     @Override
     public List<R> list( T entity, Pageable pageable ) {
-        return executor.pageableList( entity, pageable  );
+        return executor.pageableList( entity, pageable );
     }
 
     @Override
@@ -350,7 +350,7 @@ public abstract class AbstractServiceExecutorCallable<Executor extends MapperExe
      * @return sql statement
      */
     protected String sqlStatement( String method ) {
-        return EntityHandler.getTable( getEntityClass() ).getSqlStatement( method );
+        return TableHandler.getTable( getEntityClass() ).getSqlStatement( method );
     }
 
     /**

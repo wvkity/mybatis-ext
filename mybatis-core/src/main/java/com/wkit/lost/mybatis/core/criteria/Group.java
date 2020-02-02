@@ -1,11 +1,11 @@
 package com.wkit.lost.mybatis.core.criteria;
 
-import com.wkit.lost.mybatis.utils.ArrayUtil;
-import com.wkit.lost.mybatis.utils.CollectionUtil;
-import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.lambda.Property;
+import com.wkit.lost.mybatis.utils.ArrayUtil;
+import com.wkit.lost.mybatis.utils.CollectionUtil;
 import lombok.Getter;
 
 import java.util.Collection;
@@ -33,14 +33,14 @@ public class Group<T> implements Segment {
      * 分组字段
      */
     @Getter
-    private Set<Column> columns = new LinkedHashSet<>();
+    private Set<ColumnWrapper> columns = new LinkedHashSet<>();
 
     /**
      * 构造方法
      * @param criteria 查询对象
      * @param columns  字段
      */
-    private Group( Criteria<T> criteria, Collection<Column> columns ) {
+    private Group( Criteria<T> criteria, Collection<ColumnWrapper> columns ) {
         if ( criteria == null ) {
             throw new MyBatisException( "The Criteria object cannot be empty" );
         }

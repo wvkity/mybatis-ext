@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.data.auditing;
 
-import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.data.auditing.date.provider.DateTimeProvider;
 import com.wkit.lost.mybatis.data.auditing.date.proxy.DateTimeProviderFactory;
 import lombok.Setter;
@@ -59,28 +59,28 @@ public class MetadataAuditingHandler extends AbstractMetadataAuditable {
     @Override
     public void inserted( MetaObject metadata ) {
         Optional.ofNullable( getTable( metadata ) ).ifPresent( it ->
-                auditing( metadata, it.getInsertedAuditable(), AuditMatching.INSERTED ) );
+                auditing( metadata, it.insertedAuditableColumns(), AuditMatching.INSERTED ) );
     }
 
     @Override
     public void modified( MetaObject metadata ) {
         Optional.ofNullable( getTable( metadata ) ).ifPresent( it ->
-                auditing( metadata, it.getModifiedAuditable(), AuditMatching.MODIFIED ) );
+                auditing( metadata, it.modifiedAuditableColumns(), AuditMatching.MODIFIED ) );
     }
 
     @Override
     public void deleted( MetaObject metadata ) {
         Optional.ofNullable( getTable( metadata ) ).ifPresent( it ->
-                auditing( metadata, it.getDeletedAuditable(), AuditMatching.DELETED ) );
+                auditing( metadata, it.deletedAuditableColumns(), AuditMatching.DELETED ) );
     }
 
-    private void auditing( MetaObject metadata, Set<Column> columns, AuditMatching matching ) {
+    private void auditing( MetaObject metadata, Set<ColumnWrapper> columns, AuditMatching matching ) {
         boolean dateAuditing = false;
         boolean userAuditing = false;
         boolean userNameAuditing = false;
         Optional<AuditorAware> auditorAwareOptional = Optional.ofNullable( auditorAware );
         if ( isNotEmpty( columns ) ) {
-            for ( Column column : columns ) {
+            for ( ColumnWrapper column : columns ) {
                 if ( isDateAuditable( column ) ) {
                     dateAuditing = true;
                     dateTimeAuditing( metadata, column, matching );
@@ -171,9 +171,9 @@ public class MetadataAuditingHandler extends AbstractMetadataAuditable {
         if ( exec ) {
             Optional.ofNullable( getTable( metadata ) ).ifPresent( it -> {
                 for ( String property : properties ) {
-                    Optional<Column> optional = it.search( property );
+                    Optional<ColumnWrapper> optional = it.search( property );
                     if ( optional.isPresent() ) {
-                        Column column = optional.get();
+                        ColumnWrapper column = optional.get();
                         Optional<DateTimeProvider> provider =
                                 Optional.ofNullable( DateTimeProviderFactory.ProviderBuilder.create()
                                         .target( column.getJavaType() ).build() );
@@ -190,7 +190,7 @@ public class MetadataAuditingHandler extends AbstractMetadataAuditable {
         if ( exec && auditorAware != null && value != null ) {
             Optional.ofNullable( getTable( metadata ) ).ifPresent( it -> {
                 for ( String property : properties ) {
-                    Optional<Column> optional = it.search( property );
+                    Optional<ColumnWrapper> optional = it.search( property );
                     if ( optional.isPresent() ) {
                         invoke( metadata, property, value );
                         break;
@@ -200,15 +200,15 @@ public class MetadataAuditingHandler extends AbstractMetadataAuditable {
         }
     }
 
-    private boolean isDateAuditable( Column column ) {
+    private boolean isDateAuditable( ColumnWrapper column ) {
         return column.isCreatedDate() || column.isLastModifiedDate() || column.isDeletedDate();
     }
 
-    private boolean isUserAuditable( Column column ) {
+    private boolean isUserAuditable( ColumnWrapper column ) {
         return column.isCreatedUser() || column.isLastModifiedUser() || column.isDeletedUser();
     }
 
-    private boolean isUserNameAuditable( Column column ) {
+    private boolean isUserNameAuditable( ColumnWrapper column ) {
         return column.isCreatedUserName() || column.isLastModifiedUserName() || column.isDeletedUserName();
     }
 

@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.session;
 
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
-import com.wkit.lost.mybatis.handler.EntityHandler;
+import com.wkit.lost.mybatis.core.handler.TableHandler;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -14,7 +14,7 @@ import java.util.Optional;
 import static org.mybatis.spring.SqlSessionUtils.getSqlSession;
 
 public final class SqlSessionUtil {
-    
+
     private SqlSessionUtil() {
     }
 
@@ -24,7 +24,7 @@ public final class SqlSessionUtil {
      * @return {@link SqlSessionFactory}
      */
     public static SqlSessionFactory getSqlSessionFactory( Class<?> clazz ) {
-        return Optional.ofNullable( EntityHandler.getConfiguration( clazz ) )
+        return Optional.ofNullable( TableHandler.getConfiguration( clazz ) )
                 .map( SqlSessionUtil::getSqlSessionFactory ).orElse( null );
     }
 
@@ -54,7 +54,7 @@ public final class SqlSessionUtil {
      * @return {@link SqlSession}
      */
     public static SqlSession openSession( Class<?> clazz, ExecutorType executorType ) {
-        return Optional.ofNullable( EntityHandler.getConfiguration( clazz ) )
+        return Optional.ofNullable( TableHandler.getConfiguration( clazz ) )
                 .map( it -> openSession( it, executorType ) ).orElse( null );
     }
 

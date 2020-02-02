@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.sql.injector.methods;
 
-import com.wkit.lost.mybatis.core.metadata.Table;
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.sql.mapping.insert.InsertSqlBuilder;
 import com.wkit.lost.mybatis.sql.method.AbstractInsertMethod;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -12,7 +12,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 public class BatchInsert extends AbstractInsertMethod {
 
     @Override
-    public MappedStatement injectMappedStatement( Class<?> mapperInterface, Class<?> resultType, Table table ) {
+    public MappedStatement injectMappedStatement( Class<?> mapperInterface, Class<?> resultType, TableWrapper table ) {
         return addInsertMappedStatement( mapperInterface, resultType, table, new InsertSqlBuilder() );
     }
 

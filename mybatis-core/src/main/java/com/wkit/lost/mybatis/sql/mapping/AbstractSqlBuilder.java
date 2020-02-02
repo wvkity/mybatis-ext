@@ -3,9 +3,9 @@ package com.wkit.lost.mybatis.sql.mapping;
 import com.wkit.lost.mybatis.core.criteria.Execute;
 import com.wkit.lost.mybatis.core.criteria.Logic;
 import com.wkit.lost.mybatis.core.criteria.Operator;
-import com.wkit.lost.mybatis.core.metadata.Column;
-import com.wkit.lost.mybatis.core.metadata.Table;
-import com.wkit.lost.mybatis.handler.EntityHandler;
+import com.wkit.lost.mybatis.core.handler.TableHandler;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.sql.SqlTemplate;
 import com.wkit.lost.mybatis.utils.Assert;
 import com.wkit.lost.mybatis.utils.ColumnConvert;
@@ -40,7 +40,7 @@ public abstract class AbstractSqlBuilder implements SqlBuilder {
      * 表映射信息
      */
     @Getter
-    protected Table table;
+    protected TableWrapper table;
 
     /**
      * 别名
@@ -49,11 +49,12 @@ public abstract class AbstractSqlBuilder implements SqlBuilder {
     protected String alias;
 
     @Override
-    public String buildSqlString( Class<?> entity, Table table, String alias ) {
-        Assert.isTrue( entity != null || table != null, "A build SQL statement must specify the corresponding entity class or table mapping information" );
+    public String buildSqlString( Class<?> entity, TableWrapper table, String alias ) {
+        Assert.isTrue( entity != null || table != null, "A build SQL statement must specify " +
+                "the corresponding entity class or table mapping information" );
         if ( entity != null && table == null ) {
             this.entity = entity;
-            this.table = EntityHandler.getTable( entity );
+            this.table = TableHandler.getTable( entity );
         } else if ( entity == null ) {
             this.entity = table.getEntity();
             this.table = table;
@@ -158,9 +159,11 @@ public abstract class AbstractSqlBuilder implements SqlBuilder {
      * @param separator 分隔符
      * @param join      连接符
      * @return XML-IF标签字符串
-     * @see ColumnConvert#convertToArg(Column, Execute, String, String, String, String)
+     * @see ColumnConvert#convertToArg(ColumnWrapper, Execute, String, String, String, String)
      */
-    protected String convertToIfTagOfNotNull( final boolean toValue, final Execute execute, final boolean isQuery, final int indent, final String argName, final Column column, final String separator, String join ) {
+    protected String convertToIfTagOfNotNull( final boolean toValue, final Execute execute, final boolean isQuery,
+                                              final int indent, final String argName, final ColumnWrapper column,
+                                              final String separator, String join ) {
         boolean hasArgName = StringUtil.hasText( argName );
         String property = column.getProperty();
         StringBuilder buffer = new StringBuilder( 60 );
@@ -186,15 +189,17 @@ public abstract class AbstractSqlBuilder implements SqlBuilder {
         }
         buffer.append( indentOfSpace( indent + 1 ) );
         if ( toValue ) {
-            buffer.append( join ).append( " " ).append( ColumnConvert.convertToArg( column, execute, argName, isQuery ? this.alias : null, Operator.EQ.getSqlSegment(), separator ) ).append( "\n" );
+            buffer.append( join ).append( " " ).append( ColumnConvert.convertToArg( column, execute, argName,
+                    isQuery ? this.alias : null, Operator.EQ.getSqlSegment(), separator ) ).append( "\n" );
         } else {
-            buffer.append( column.getColumn() ).append( ", \n" );
+            buffer.append( column.getColumn() ).append( ", " ).append( NEW_LINE );
         }
         buffer.append( indentOfSpace( indent ) ).append( "</if>\n" );
         return buffer.toString();
     }
-    
-    protected String convertIfTagForLocker(final boolean toValue, final String argName, final Column column, final String separator, final int indent ) {
+
+    protected String convertIfTagForLocker( final boolean toValue, final String argName, final ColumnWrapper column,
+                                            final String separator, final int indent ) {
         String property = column.getProperty();
         StringBuilder buffer = new StringBuilder( 60 );
         buffer.append( indentOfSpace( indent ) ).append( "<if test=\"" ).append( argName ).append( " != null" );
@@ -202,15 +207,15 @@ public abstract class AbstractSqlBuilder implements SqlBuilder {
             buffer.append( " and " ).append( argName ).append( " != ''" );
         }
         // 闭合标签
-        buffer.append( "\">\n" );
+        buffer.append( "\">" ).append( NEW_LINE );
         buffer.append( indentOfSpace( indent + 1 ) );
         if ( toValue ) {
             buffer.append( " " ).append( column.getColumn() ).append( " = #{" )
-                    .append( argName ).append( "}" ).append( separator ).append( "\n" );
+                    .append( argName ).append( "}" ).append( separator ).append( NEW_LINE );
         } else {
-            buffer.append( column.getColumn() ).append( ", \n" );
+            buffer.append( column.getColumn() ).append( ", " ).append( NEW_LINE );
         }
-        buffer.append( indentOfSpace( indent ) ).append( "</if>\n" );
+        buffer.append( indentOfSpace( indent ) ).append( "</if>" ).append( NEW_LINE );
 
         return buffer.toString();
     }

@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.sql.mapping.script;
 
-import com.wkit.lost.mybatis.core.metadata.Table;
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.sql.mapping.SqlBuilder;
 import lombok.Getter;
 
@@ -26,7 +26,7 @@ public class DefaultXmlScriptBuilder extends AbstractXmlScriptBuilder {
      * 表映射信息
      */
     @Getter
-    private Table table;
+    private TableWrapper table;
 
     /**
      * 构造方法
@@ -35,7 +35,7 @@ public class DefaultXmlScriptBuilder extends AbstractXmlScriptBuilder {
      * @param table   表映射信息
      * @param builder SQL构建器
      */
-    public DefaultXmlScriptBuilder( Class<?> entity, String alias, Table table, SqlBuilder builder ) {
+    public DefaultXmlScriptBuilder( Class<?> entity, String alias, TableWrapper table, SqlBuilder builder ) {
         super( builder );
         this.entity = entity;
         this.alias = alias;

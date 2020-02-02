@@ -1,8 +1,8 @@
 package com.wkit.lost.mybatis.plugins.data.auditing;
 
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
-import com.wkit.lost.mybatis.core.metadata.Column;
-import com.wkit.lost.mybatis.core.metadata.Table;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
@@ -20,7 +20,7 @@ public class DefaultBuiltinAuditingProcessor extends AbstractAuditingProcessor {
 
     @Override
     protected Object auditing( MappedStatement ms, MyBatisCustomConfiguration customConfiguration,
-                               MetadataAuditable __, Object parameter, Table table, boolean isInsertCommand ) {
+                               MetadataAuditable __, Object parameter, TableWrapper table, boolean isInsertCommand ) {
         if ( table != null ) {
             MetaObject metadata = ms.getConfiguration().newMetaObject( parameter );
             // 主键值审计
@@ -39,9 +39,9 @@ public class DefaultBuiltinAuditingProcessor extends AbstractAuditingProcessor {
      * @param isInsertCommand     是否为保存操作
      * @param customConfiguration 自定义配置对象
      */
-    private void injectPrimaryKeyValue( MetaObject metadata, Table table, boolean isInsertCommand,
+    private void injectPrimaryKeyValue( MetaObject metadata, TableWrapper table, boolean isInsertCommand,
                                         MyBatisCustomConfiguration customConfiguration ) {
-        Column primaryKey = table.getPrimaryKey();
+        ColumnWrapper primaryKey = table.getPrimaryKey();
         if ( isInsertCommand && primaryKey != null ) {
             String property = primaryKey.getProperty();
             if ( metadata.hasGetter( property ) && metadata.hasSetter( property ) ) {
@@ -59,7 +59,14 @@ public class DefaultBuiltinAuditingProcessor extends AbstractAuditingProcessor {
         }
     }
 
-    private void injectPrivateKeyValue( MetaObject metadata, Column primaryKey,
+    /**
+     * 注入主键值
+     * @param metadata            元数据
+     * @param primaryKey          主键字段
+     * @param property            属性
+     * @param customConfiguration 自定义配置
+     */
+    private void injectPrivateKeyValue( MetaObject metadata, ColumnWrapper primaryKey,
                                         String property, MyBatisCustomConfiguration customConfiguration ) {
         Optional.ofNullable( metadata ).ifPresent( it -> {
             if ( isAuditable( it, property, this::isNullOrBlank ) ) {
@@ -89,12 +96,12 @@ public class DefaultBuiltinAuditingProcessor extends AbstractAuditingProcessor {
      * @param table    实体-表映射信息对象
      * @param __       自定义配置对象
      */
-    private void injectLogicDeletionValue( MappedStatement ms, MetaObject metadata, Table table,
+    private void injectLogicDeletionValue( MappedStatement ms, MetaObject metadata, TableWrapper table,
                                            MyBatisCustomConfiguration __ ) {
         String execMethod = execMethod( ms );
         boolean isExecLogicDelete = LOGIC_DELETE_METHOD_CACHE.contains( execMethod );
         if ( isExecLogicDelete ) {
-            Column logicDeletionColumn = table.getLogicDeletionColumn();
+            ColumnWrapper logicDeletionColumn = table.getLogicDeletedColumn();
             if ( logicDeletionColumn == null ) {
                 throw new MyBatisException( "The `" + table.getEntity().getName() + "` entity class currently does not " +
                         "have a logical deletion property" );

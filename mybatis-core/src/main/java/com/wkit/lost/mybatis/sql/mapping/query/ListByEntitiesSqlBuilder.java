@@ -14,22 +14,23 @@ public class ListByEntitiesSqlBuilder extends AbstractSqlBuilder {
 
     @Override
     public String build() {
-        String querySegment = table.getColumns()
+        String querySegment = table.columns()
                 .stream()
                 .map( column -> ColumnConvert.convertToQueryArg( column, this.alias, null, true ) )
                 .collect( Collectors.joining( ", " ) );
-        String condition = "<where>\n" +
-                " <trim prefixOverrides=\"OR \">\n" +
-                "  <foreach collection=\"entities\" item=\"item\" separator=\"OR \">\n" +
-                "   (\n" +
+        String condition = "<where>" + NEW_LINE +
+                " <trim prefixOverrides=\"OR \">" + NEW_LINE +
+                "  <foreach collection=\"entities\" item=\"item\" separator=\"OR \">" + NEW_LINE +
+                "   (" + NEW_LINE +
                 "    <trim prefixOverrides=\"AND \">" +
-                table.getColumns().stream()
-                        .map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, false, 4, "item", column, "", AND ) )
-                        .collect( Collectors.joining( "", "\n", "\n" ) ) +
-                "    \n</trim>\n" +
-                "   )\n" +
-                "  </foreach>\n" +
-                " </trim>\n" +
+                table.columns().stream()
+                        .map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, false,
+                                4, "item", column, "", AND ) )
+                        .collect( Collectors.joining( "", NEW_LINE, NEW_LINE ) ) +
+                "    " + NEW_LINE + "</trim>" + NEW_LINE +
+                "   )" + NEW_LINE +
+                "  </foreach>" + NEW_LINE +
+                " </trim>" + NEW_LINE +
                 "</where>";
         return select( querySegment, condition );
     }

@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.condition.expression;
 
-import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 
 @SuppressWarnings( "serial" )
 public class AbstractNull<T> extends AbstractExpression<T> {
@@ -8,7 +8,7 @@ public class AbstractNull<T> extends AbstractExpression<T> {
     @Override
     public String getSqlSegment() {
         StringBuilder builder = new StringBuilder();
-        Column column = getColumn();
+        ColumnWrapper column = getColumn();
         String alias = criteria.getAlias();
         boolean isEnable = criteria.isEnableAlias();
         builder.append( logic.getSqlSegment() ).append( " " );

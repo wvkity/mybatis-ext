@@ -1,8 +1,8 @@
 package com.wkit.lost.mybatis.core.criteria;
 
 import com.wkit.lost.mybatis.core.function.Aggregation;
-import com.wkit.lost.mybatis.core.metadata.Column;
-import com.wkit.lost.mybatis.handler.EntityHandler;
+import com.wkit.lost.mybatis.core.handler.TableHandler;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
@@ -42,7 +42,7 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
     /**
      * 查询属性(列)缓存
      */
-    protected Map<String, Column> propertyForQueryCache = new ConcurrentSkipListMap<>();
+    protected Map<String, ColumnWrapper> propertyForQueryCache = new ConcurrentSkipListMap<>();
 
     /**
      * 属性-别名缓存
@@ -78,7 +78,7 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
     @Override
     public AbstractQueryCriteria<T> query( String property ) {
         if ( StringUtil.hasText( property ) ) {
-            Column column = searchColumn( property );
+            ColumnWrapper column = searchColumn( property );
             if ( column != null ) {
                 propertyForQueryCache.put( property, column );
             }
@@ -142,7 +142,7 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
             }
             for ( Property<E, ?> property : properties ) {
                 if ( property != null ) {
-                    Column column = subCriteria.searchColumn( methodToProperty( property ) );
+                    ColumnWrapper column = subCriteria.searchColumn( methodToProperty( property ) );
                     if ( column != null ) {
                         columnCache.put( column.getColumn(), "" );
                     }
@@ -157,7 +157,7 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
 
     @Override
     public <E> AbstractQueryCriteria<T> queryFromSub( SubCriteria<E> subCriteria, Property<E, ?> property, String columnAlias ) {
-        return queryFromSub( subCriteria.getSubTempTabAlias(), methodToProperty( property ), columnAlias  );
+        return queryFromSub( subCriteria.getSubTempTabAlias(), methodToProperty( property ), columnAlias );
     }
 
     @Override
@@ -178,7 +178,7 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
     @Override
     public AbstractQueryCriteria<T> query( String property, String columnAlias ) {
         if ( StringUtil.hasText( property ) ) {
-            Column column = searchColumn( property );
+            ColumnWrapper column = searchColumn( property );
             if ( column != null ) {
                 this.propertyForQueryCache.put( property, column );
                 this.propertyForQueryAliasCache.put( property, columnAlias );
@@ -223,18 +223,18 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
      * 获取所有查询列
      * @return 查询列集合
      */
-    protected Map<String, Column> getQueryColumns() {
-        Map<String, Column> realQueries;
+    protected Map<String, ColumnWrapper> getQueryColumns() {
+        Map<String, ColumnWrapper> realQueries;
         if ( CollectionUtil.hasElement( propertyForQueryCache ) ) {
             // 显式指定查询列
             realQueries = propertyForQueryCache;
         } else {
             // 所有列
             realQueries = Collections.synchronizedMap(
-                    EntityHandler.getTable( entityClass )
-                            .getColumns()
+                    TableHandler.getTable( entityClass )
+                            .columns()
                             .stream()
-                            .collect( Collectors.toMap( Column::getProperty, Function.identity(), 
+                            .collect( Collectors.toMap( ColumnWrapper::getProperty, Function.identity(),
                                     ( oldValue, newValue ) -> newValue, LinkedHashMap::new ) )
             );
         }
@@ -243,11 +243,11 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
         return realQueries;
     }
 
-    protected final void exclude( Map<String, Column> columns, Set<String> excludes ) {
+    protected final void exclude( Map<String, ColumnWrapper> columns, Set<String> excludes ) {
         if ( CollectionUtil.hasElement( columns ) && CollectionUtil.hasElement( excludes ) ) {
-            Iterator<Map.Entry<String, Column>> iterator = columns.entrySet().iterator();
+            Iterator<Map.Entry<String, ColumnWrapper>> iterator = columns.entrySet().iterator();
             while ( iterator.hasNext() ) {
-                Map.Entry<String, Column> entry = iterator.next();
+                Map.Entry<String, ColumnWrapper> entry = iterator.next();
                 String key = entry.getKey();
                 if ( excludes.contains( key ) ) {
                     iterator.remove();
@@ -279,19 +279,19 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
     }
 
     private String getQuerySegment( boolean applyQuery ) {
-        Map<String, Column> realQueries = getQueryColumns();
+        Map<String, ColumnWrapper> realQueries = getQueryColumns();
         List<String> queryColumns = new ArrayList<>();
         // 主表查询字段
         if ( CollectionUtil.hasElement( realQueries ) ) {
-            for ( Map.Entry<String, Column> entry : realQueries.entrySet() ) {
-                Column column = entry.getValue();
+            for ( Map.Entry<String, ColumnWrapper> entry : realQueries.entrySet() ) {
+                ColumnWrapper column = entry.getValue();
                 String property = column.getProperty();
                 String realColumnAlias = propertyForQueryAliasCache.get( property );
                 if ( realColumnAlias == null ) {
-                    queryColumns.add( ColumnConvert.convertToQueryArg( column, this.enableAlias ? getAlias() : null, 
+                    queryColumns.add( ColumnConvert.convertToQueryArg( column, this.enableAlias ? getAlias() : null,
                             applyQuery ? this.reference : null, applyQuery && this.autoMappingAlias ) );
                 } else {
-                    queryColumns.add( ColumnConvert.convertToQueryArg( column.getColumn(), realColumnAlias, 
+                    queryColumns.add( ColumnConvert.convertToQueryArg( column.getColumn(), realColumnAlias,
                             this.enableAlias ? getAlias() : null ) );
                 }
             }
@@ -303,19 +303,19 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
             foreignCriteriaSet.stream()
                     .filter( Objects::nonNull )
                     .forEach( foreignCriteria -> {
-                        Map<String, Column> foreignQueries = foreignCriteria.getQueryColumns();
+                        Map<String, ColumnWrapper> foreignQueries = foreignCriteria.getQueryColumns();
                         Map<String, String> queryAliasCache = foreignCriteria.propertyForQueryAliasCache;
                         if ( CollectionUtil.hasElement( foreignQueries ) ) {
-                            for ( Map.Entry<String, Column> entry : foreignQueries.entrySet() ) {
-                                Column column = entry.getValue();
+                            for ( Map.Entry<String, ColumnWrapper> entry : foreignQueries.entrySet() ) {
+                                ColumnWrapper column = entry.getValue();
                                 String property = column.getProperty();
                                 String realColumnAlias = queryAliasCache.get( property );
                                 if ( realColumnAlias == null ) {
-                                    queryColumns.add( ColumnConvert.convertToQueryArg( column, 
-                                            foreignCriteria.getAlias(), applyQuery ? foreignCriteria.getReference() : null, 
+                                    queryColumns.add( ColumnConvert.convertToQueryArg( column,
+                                            foreignCriteria.getAlias(), applyQuery ? foreignCriteria.getReference() : null,
                                             applyQuery && foreignCriteria.isAutoMappingAlias() ) );
                                 } else {
-                                    queryColumns.add( ColumnConvert.convertToQueryArg( column.getColumn(), 
+                                    queryColumns.add( ColumnConvert.convertToQueryArg( column.getColumn(),
                                             realColumnAlias, foreignCriteria.getAlias() ) );
                                 }
                             }

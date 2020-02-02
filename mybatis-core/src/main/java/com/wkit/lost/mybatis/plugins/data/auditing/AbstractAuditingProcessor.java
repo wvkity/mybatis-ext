@@ -3,12 +3,12 @@ package com.wkit.lost.mybatis.plugins.data.auditing;
 import com.wkit.lost.mybatis.batch.BatchDataBeanWrapper;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
-import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.condition.criterion.Restrictions;
-import com.wkit.lost.mybatis.core.metadata.Table;
+import com.wkit.lost.mybatis.core.criteria.Criteria;
+import com.wkit.lost.mybatis.core.handler.TableHandler;
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.exception.MyBatisException;
-import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.plugins.processor.UpdateProcessorSupport;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.Ascii;
@@ -43,7 +43,7 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
 
     @Override
     public boolean filter( MappedStatement ms, Object parameter ) {
-        return super.filter( ms, parameter ) && !(METHOD_BATCH_INSERT_NOT_WITH_AUDIT.equals( execMethod( ms ) ));
+        return super.filter( ms, parameter ) && !( METHOD_BATCH_INSERT_NOT_WITH_AUDIT.equals( execMethod( ms ) ) );
     }
 
     @Override
@@ -60,13 +60,13 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
      * @return 表对象
      */
     @SuppressWarnings( { "unchecked" } )
-    protected Table parse( Object parameter ) {
+    protected TableWrapper parse( Object parameter ) {
         if ( parameter instanceof Map ) {
             Map<String, Object> map = ( Map<String, Object> ) parameter;
             // 检查参数是否包含实体对象
             if ( map.containsKey( Constants.PARAM_ENTITY ) ) {
                 return Optional.ofNullable( map.getOrDefault( Constants.PARAM_ENTITY, null ) )
-                        .map( it -> EntityHandler.getTable( it.getClass() ) )
+                        .map( it -> TableHandler.getTable( it.getClass() ) )
                         .orElse( null );
             }
             // 检查参数是否包含条件对象
@@ -77,14 +77,14 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
                             if ( metadata.hasGetter( Constants.PARAM_ENTITY_CLASS ) ) {
                                 return Optional.ofNullable( metadata.getValue( Constants.PARAM_ENTITY_CLASS ) )
                                         .filter( clazz -> clazz instanceof Class )
-                                        .map( clazz -> EntityHandler.getTable( ( Class<?> ) clazz ) )
+                                        .map( clazz -> TableHandler.getTable( ( Class<?> ) clazz ) )
                                         .orElse( null );
                             }
                             return null;
                         } ).orElse( null );
             }
         } else {
-            return EntityHandler.getTable( parameter.getClass() );
+            return TableHandler.getTable( parameter.getClass() );
         }
         return null;
     }
@@ -121,7 +121,7 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
      * @param property 属性
      * @param value    值
      */
-    protected void injectEntityIfNecessary( MetaObject metadata, Table table, String property, Object value ) {
+    protected void injectEntityIfNecessary( MetaObject metadata, TableWrapper table, String property, Object value ) {
         // 检查是否包含实体对象参数
         if ( !metadata.hasGetter( Constants.PARAM_ENTITY ) ) {
             if ( metadata.hasGetter( Constants.PARAM_CRITERIA ) ) {
@@ -268,5 +268,5 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
      */
     protected abstract Object auditing( MappedStatement ms, MyBatisCustomConfiguration configuration,
                                         MetadataAuditable auditable, Object parameter,
-                                        Table table, boolean isInsertCommand );
+                                        TableWrapper table, boolean isInsertCommand );
 }

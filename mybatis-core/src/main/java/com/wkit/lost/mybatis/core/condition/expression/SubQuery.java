@@ -4,8 +4,8 @@ import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.criteria.Logic;
 import com.wkit.lost.mybatis.core.criteria.Operator;
 import com.wkit.lost.mybatis.core.criteria.SubCriteria;
-import com.wkit.lost.mybatis.core.metadata.Column;
-import com.wkit.lost.mybatis.handler.EntityHandler;
+import com.wkit.lost.mybatis.core.handler.TableHandler;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 
@@ -153,10 +153,10 @@ public class SubQuery<T> extends AbstractExpression<T> {
 
     @Override
     public String getSqlSegment() {
-        Column column;
+        ColumnWrapper column;
         if ( StringUtil.isBlank( property ) ) {
             if ( operator != Operator.EXISTS && operator != Operator.NOT_EXISTS ) {
-                column = EntityHandler.getTable( criteria.getEntityClass() ).getPrimaryKey();
+                column = TableHandler.getTable( criteria.getEntityClass() ).getPrimaryKey();
             } else {
                 column = null;
             }

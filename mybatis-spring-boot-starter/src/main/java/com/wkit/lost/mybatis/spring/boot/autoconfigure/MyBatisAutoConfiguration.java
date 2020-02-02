@@ -11,8 +11,6 @@ import com.wkit.lost.mybatis.keygen.KeyGenerator;
 import com.wkit.lost.mybatis.plugins.batch.BatchParameterFilterInterceptor;
 import com.wkit.lost.mybatis.plugins.batch.BatchStatementInterceptor;
 import com.wkit.lost.mybatis.plugins.data.auditing.DefaultBuiltinAuditingInterceptor;
-import com.wkit.lost.mybatis.resolver.EntityResolver;
-import com.wkit.lost.mybatis.resolver.FieldResolver;
 import com.wkit.lost.mybatis.scripting.xmltags.MyBatisXMLLanguageDriver;
 import com.wkit.lost.mybatis.session.MyBatisConfiguration;
 import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
@@ -186,10 +184,8 @@ public class MyBatisAutoConfiguration implements InitializingBean {
         // SQL注入器
         ifPresent( SqlInjector.class, customConfig::setInjector );
         // 实体解析器
-        ifPresent( EntityResolver.class, customConfig::setEntityResolver );
         ifPresent( EntityParser.class, customConfig::setEntityParser );
         // 属性解析器
-        ifPresent( FieldResolver.class, customConfig::setFieldResolver );
         ifPresent( FieldParser.class, customConfig::setFieldParser );
         // 主键生成器
         if ( hasBeanFromContext( KeyGenerator.class ) ) {

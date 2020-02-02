@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.criteria;
 
-import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.lambda.Property;
 
 /**
@@ -15,12 +15,12 @@ public interface ColumnSearch<T> {
      * @param property 属性
      * @return 字段映射对象
      */
-    Column searchColumn( Property<T, ?> property );
+    ColumnWrapper searchColumn( Property<T, ?> property );
 
     /**
      * 根据属性搜索字段映射对象
      * @param property 属性
      * @return 字段映射对象
      */
-    Column searchColumn( String property );
+    ColumnWrapper searchColumn( String property );
 }

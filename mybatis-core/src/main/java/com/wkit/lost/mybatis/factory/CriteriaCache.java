@@ -78,7 +78,8 @@ public class CriteriaCache implements Serializable {
             // 解析泛型
             actualClass = ClassUtil.getGenericType( target, 1 );
             if ( actualClass == Object.class ) {
-                throw new MyBatisException( "Cannot get its corresponding generic type according to the specified class `" + target.getName() + "`" );
+                throw new MyBatisException( "Cannot get its corresponding generic type according to the " +
+                        "specified class `" + target.getName() + "`" );
             }
             actualClassCache.putIfAbsent( target, actualClass );
             actualClass = actualClassCache.get( target );

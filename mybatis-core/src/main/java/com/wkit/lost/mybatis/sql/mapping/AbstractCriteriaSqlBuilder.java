@@ -19,9 +19,8 @@ public abstract class AbstractCriteriaSqlBuilder extends AbstractLogicDeletionSq
      * @return XML-SQL字符串
      */
     protected String getConditionForQuery() {
-        return "${criteria.foreignSegment} \n<if test=\"criteria != null and criteria.hasCondition\">\n" +
-                " ${criteria.whereSqlSegment}" +
-                "</if>\n";
+        return "${criteria.foreignSegment} " + NEW_LINE + "<if test=\"criteria != null and criteria.hasCondition\">" +
+                NEW_LINE + " ${criteria.whereSqlSegment}</if>" + NEW_LINE;
     }
 
     /**
@@ -29,8 +28,7 @@ public abstract class AbstractCriteriaSqlBuilder extends AbstractLogicDeletionSq
      * @return XML-SQL字符串
      */
     protected String getConditionForUpdateOrDelete() {
-        return "<if test=\"criteria != null and criteria.hasCondition\">\n" +
-                " ${criteria.whereSqlSegment}\n" +
-                "</if>\n";
+        return "<if test=\"criteria != null and criteria.hasCondition\">" + NEW_LINE +
+                " ${criteria.whereSqlSegment}" + NEW_LINE + "</if>" + NEW_LINE;
     }
 }

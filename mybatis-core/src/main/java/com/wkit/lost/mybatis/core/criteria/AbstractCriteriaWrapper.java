@@ -9,11 +9,11 @@ import com.wkit.lost.mybatis.core.function.Aggregation;
 import com.wkit.lost.mybatis.core.function.Aggregations;
 import com.wkit.lost.mybatis.core.function.Comparator;
 import com.wkit.lost.mybatis.core.function.FunctionType;
-import com.wkit.lost.mybatis.core.metadata.Column;
-import com.wkit.lost.mybatis.core.metadata.Table;
+import com.wkit.lost.mybatis.core.handler.TableHandler;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
-import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.Ascii;
@@ -63,7 +63,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     /**
      * 表名缓存
      */
-    protected static final Map<Table, String> TABLE_NAME_CACHE = new ConcurrentHashMap<>( 128 );
+    protected static final Map<TableWrapper, String> TABLE_NAME_CACHE = new ConcurrentHashMap<>( 64 );
 
     /**
      * 参数前置
@@ -364,21 +364,22 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
             return foreignCriteriaSet.stream().map( criteria -> {
                 Criteria<?> master = criteria.getMaster();
                 Foreign linked = criteria.getForeign();
-                Column masterColumn = master.searchColumn( linked.getMaster() );
+                ColumnWrapper masterColumn = master.searchColumn( linked.getMaster() );
                 // 区分子查询联表条件对象
                 String assistantColumn;
                 if ( criteria instanceof ForeignSubCriteria ) {
                     assistantColumn = linked.getForeign();
-                    Column column = ( ( ForeignSubCriteria<?> ) criteria ).getSubCriteria().searchColumn( assistantColumn );
+                    ColumnWrapper column = ( ( ForeignSubCriteria<?> ) criteria ).getSubCriteria()
+                            .searchColumn( assistantColumn );
                     if ( column != null ) {
                         assistantColumn = column.getColumn();
                     }
                 } else {
                     assistantColumn = criteria.searchColumn( linked.getForeign() ).getColumn();
                 }
-                Table table = EntityHandler.getTable( criteria.getEntityClass() );
-                String catalog = Optional.ofNullable( table ).map( Table::getCatalog ).orElse( null );
-                String schema = Optional.ofNullable( table ).map( Table::getSchema ).orElse( null );
+                TableWrapper table = TableHandler.getTable( criteria.getEntityClass() );
+                String catalog = Optional.ofNullable( table ).map( TableWrapper::getCatalog ).orElse( null );
+                String schema = Optional.ofNullable( table ).map( TableWrapper::getSchema ).orElse( null );
                 String foreignAlias = criteria.getAlias();
                 // 拼接条件
                 StringBuilder builder = new StringBuilder( 60 );
@@ -666,7 +667,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     @Override
     public Context version( Object version ) {
         if ( version != null ) {
-            Column column = getOptimisticLockerColumn();
+            ColumnWrapper column = getOptimisticLockingColumn();
             if ( column != null ) {
                 return add( Restrictions.eq( this, column.getProperty(), version ) );
             }
@@ -1816,15 +1817,15 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
         this.paramValueMappings = new ConcurrentHashMap<>( 16 );
         this.segmentManager = new SegmentManager();
     }
-    
-    Column getOptimisticLockerColumn() {
-        return EntityHandler.getTable( this.entityClass ).getOptimisticLockerColumn();
+
+    ColumnWrapper getOptimisticLockingColumn() {
+        return TableHandler.getTable( this.entityClass ).getOptimisticLockingColumn();
     }
 
     @Override
     public Object getConditionVersionValue() {
-        Column column = getOptimisticLockerColumn();
-        if (column != null) {
+        ColumnWrapper column = getOptimisticLockingColumn();
+        if ( column != null ) {
             return this.segmentManager.getConditionValue( column.getProperty() );
         }
         return null;
@@ -1882,7 +1883,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     private String getTableNameFromCache() {
-        Table table = EntityHandler.getTable( this.entityClass );
+        TableWrapper table = TableHandler.getTable( this.entityClass );
         String cacheTableName = TABLE_NAME_CACHE.get( table );
         if ( StringUtil.hasText( cacheTableName ) ) {
             return cacheTableName;

@@ -1,12 +1,11 @@
 package com.wkit.lost.mybatis.sql.method;
 
 import com.wkit.lost.mybatis.core.handler.TableHandler;
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.mapper.MapperExecutor;
+import com.wkit.lost.mybatis.sql.mapping.script.AbstractXmlScriptBuilder;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
-import com.wkit.lost.mybatis.core.metadata.Table;
-import com.wkit.lost.mybatis.handler.EntityHandler;
-import com.wkit.lost.mybatis.sql.mapping.script.AbstractXmlScriptBuilder;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.builder.MapperBuilderAssistant;
 import org.apache.ibatis.executor.keygen.KeyGenerator;
@@ -62,7 +61,7 @@ public abstract class AbstractMethod implements Method {
                 }
             }
             // 解析实体-表映射信息
-            Table table = EntityHandler.intercept( assistant, entityClass );
+            TableWrapper table = TableHandler.intercept( assistant, entityClass );
             TableHandler.intercept( assistant, entityClass );
             // 注入
             this.injectMappedStatement( mapperInterface, resultType, table );
@@ -78,9 +77,10 @@ public abstract class AbstractMethod implements Method {
      * @param table           表映射信息
      * @return {@link MappedStatement}对象
      */
-    protected MappedStatement addSelectMappedStatement( Class<?> mapperInterface, Class<?> resultType, String id, SqlSource sqlSource, Table table ) {
-        return addMappedStatement( mapperInterface, id, sqlSource, SqlCommandType.SELECT, null, null, resultType,
-                new NoKeyGenerator(), null, null );
+    protected MappedStatement addSelectMappedStatement( Class<?> mapperInterface, Class<?> resultType, String id,
+                                                        SqlSource sqlSource, TableWrapper table ) {
+        return addMappedStatement( mapperInterface, id, sqlSource, SqlCommandType.SELECT, null,
+                null, resultType, new NoKeyGenerator(), null, null );
     }
 
     /**
@@ -94,9 +94,11 @@ public abstract class AbstractMethod implements Method {
      * @param keyColumn       主键字段
      * @return {@link MappedStatement}对象
      */
-    protected MappedStatement addInsertMappedStatement( Class<?> mapperInterface, Class<?> parameterType, String id, SqlSource sqlSource, KeyGenerator keyGenerator, String keyProperty, String keyColumn ) {
-        return addMappedStatement( mapperInterface, id, sqlSource, SqlCommandType.INSERT, parameterType, null, Integer.class,
-                keyGenerator, keyProperty, keyColumn );
+    protected MappedStatement addInsertMappedStatement( Class<?> mapperInterface, Class<?> parameterType, String id,
+                                                        SqlSource sqlSource, KeyGenerator keyGenerator,
+                                                        String keyProperty, String keyColumn ) {
+        return addMappedStatement( mapperInterface, id, sqlSource, SqlCommandType.INSERT, parameterType,
+                null, Integer.class, keyGenerator, keyProperty, keyColumn );
     }
 
     /**
@@ -107,9 +109,10 @@ public abstract class AbstractMethod implements Method {
      * @param sqlSource       SQL源
      * @return {@link MappedStatement}对象
      */
-    protected MappedStatement addUpdateMappedStatement( Class<?> mapperInterface, Class<?> parameterType, String id, SqlSource sqlSource ) {
-        return addMappedStatement( mapperInterface, id, sqlSource, SqlCommandType.UPDATE, parameterType, null, Integer.class,
-                new NoKeyGenerator(), null, null );
+    protected MappedStatement addUpdateMappedStatement( Class<?> mapperInterface, Class<?> parameterType, String id,
+                                                        SqlSource sqlSource ) {
+        return addMappedStatement( mapperInterface, id, sqlSource, SqlCommandType.UPDATE, parameterType,
+                null, Integer.class, new NoKeyGenerator(), null, null );
     }
 
     /**
@@ -120,8 +123,8 @@ public abstract class AbstractMethod implements Method {
      * @return {@link MappedStatement}对象
      */
     protected MappedStatement addDeleteMappedStatement( Class<?> mapperInterface, String id, SqlSource sqlSource ) {
-        return addMappedStatement( mapperInterface, id, sqlSource, SqlCommandType.DELETE, null, null, Integer.class,
-                new NoKeyGenerator(), null, null );
+        return addMappedStatement( mapperInterface, id, sqlSource, SqlCommandType.DELETE, null,
+                null, Integer.class, new NoKeyGenerator(), null, null );
     }
 
     /**
@@ -138,9 +141,10 @@ public abstract class AbstractMethod implements Method {
      * @param keyColumn       主键字段
      * @return {@link MappedStatement}对象
      */
-    protected MappedStatement addMappedStatement( Class<?> mapperInterface, String id, SqlSource sqlSource, SqlCommandType sqlCommandType,
-                                                  Class<?> parameterType, String resultMap, Class<?> resultType,
-                                                  KeyGenerator keyGenerator, String keyProperty, String keyColumn ) {
+    protected MappedStatement addMappedStatement( Class<?> mapperInterface, String id, SqlSource sqlSource,
+                                                  SqlCommandType sqlCommandType, Class<?> parameterType,
+                                                  String resultMap, Class<?> resultType, KeyGenerator keyGenerator,
+                                                  String keyProperty, String keyColumn ) {
         if ( StringUtil.isBlank( id ) ) {
             id = mappedMethod();
         }
@@ -151,8 +155,9 @@ public abstract class AbstractMethod implements Method {
             return this.configuration.getMappedStatement( statementId, false );
         }
         boolean isSelect = sqlCommandType == SqlCommandType.SELECT;
-        return this.assistant.addMappedStatement( id, sqlSource, StatementType.PREPARED, sqlCommandType, null, null, null,
-                parameterType, resultMap, resultType, null, !isSelect, isSelect, false, keyGenerator, keyProperty, keyColumn,
+        return this.assistant.addMappedStatement( id, sqlSource, StatementType.PREPARED, sqlCommandType, null,
+                null, null, parameterType, resultMap, resultType, null, !isSelect,
+                isSelect, false, keyGenerator, keyProperty, keyColumn,
                 this.configuration.getDatabaseId(), this.languageDriver, null );
     }
 
@@ -230,7 +235,8 @@ public abstract class AbstractMethod implements Method {
      * @param table           表映射信息
      * @return {@link MappedStatement}对象
      */
-    public abstract MappedStatement injectMappedStatement( final Class<?> mapperInterface, final Class<?> resultType, final Table table );
+    public abstract MappedStatement injectMappedStatement( final Class<?> mapperInterface, final Class<?> resultType,
+                                                           final TableWrapper table );
 
     /**
      * 映射对应方法

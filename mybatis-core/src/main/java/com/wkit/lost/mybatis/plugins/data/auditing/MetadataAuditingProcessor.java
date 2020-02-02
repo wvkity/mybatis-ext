@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.plugins.data.auditing;
 
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
-import com.wkit.lost.mybatis.core.metadata.Table;
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -25,7 +25,7 @@ public class MetadataAuditingProcessor extends AbstractAuditingProcessor {
     @Override
     protected Object auditing( MappedStatement ms, MyBatisCustomConfiguration customConfiguration,
                                MetadataAuditable auditable, Object parameter,
-                               Table table, boolean isInsertCommand ) {
+                               TableWrapper table, boolean isInsertCommand ) {
         if ( table != null ) {
             String execMethod = execMethod( ms );
             boolean isExecLogicDeleting = LOGIC_DELETE_METHOD_CACHE.contains( execMethod );

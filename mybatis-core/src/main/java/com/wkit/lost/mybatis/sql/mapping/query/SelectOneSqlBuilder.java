@@ -16,11 +16,12 @@ public class SelectOneSqlBuilder extends AbstractSqlBuilder {
     @Override
     public String build() {
         // selectOne不需要别名及属性名
-        String querySegment = table.getColumns()
+        String querySegment = table.columns()
                 .stream()
                 .map( column -> ColumnConvert.convertToQueryArg( column, null, null, false ) )
                 .collect( Collectors.joining( ", " ) );
-        return select( querySegment, "WHERE " + ColumnConvert.convertToArg( table.getPrimaryKey(), Execute.NONE, null, null ) );
+        return select( querySegment, "WHERE " + ColumnConvert.convertToArg( table.getPrimaryKey(),
+                Execute.NONE, null, null ) );
     }
 
     @Override

@@ -18,8 +18,9 @@ public class BatchDeleteSqlBuilder extends AbstractSqlBuilder {
                 "  <foreach collection=\"entities\" item=\"item\" separator=\"OR \">\n" +
                 "   (\n" +
                 "    <trim prefixOverrides=\"AND \">" +
-                table.getColumns().stream()
-                        .map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, false, 4, "item", column, "", AND ) )
+                table.columns().stream()
+                        .map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, false, 
+                                4, "item", column, "", AND ) )
                         .collect( Collectors.joining( "", "\n", "\n" ) ) +
                 "    \n</trim>\n" +
                 "   )\n" +

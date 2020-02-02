@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.core.criteria.Execute;
 import com.wkit.lost.mybatis.core.criteria.Operator;
-import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.incrementer.SequenceKeyGenerator;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.JdbcType;
@@ -16,11 +16,11 @@ public final class ColumnConvert {
 
     /**
      * 转换成条件参数
-     * @param column 字段信息
+     * @param column  字段信息
      * @param argName 参数
      * @return 条件字符串
      */
-    public static String convertToTestCondition( final Column column, final String argName ) {
+    public static String convertToTestCondition( final ColumnWrapper column, final String argName ) {
         StringBuilder builder = new StringBuilder();
         if ( Ascii.hasText( argName ) ) {
             builder.append( argName ).append( "." );
@@ -40,9 +40,9 @@ public final class ColumnConvert {
      * 转换成INSERT参数字符串
      * @param column 字段映射对象
      * @return 字符串
-     * @see #convertToArg(Column, Execute, String, String, String, String)
+     * @see #convertToArg(ColumnWrapper, Execute, String, String, String, String)
      */
-    public String convertToInsertArg( final Column column ) {
+    public String convertToInsertArg( final ColumnWrapper column ) {
         return convertToArg( column, Execute.INSERT );
     }
 
@@ -51,9 +51,9 @@ public final class ColumnConvert {
      * @param column  字段映射对象
      * @param execute 执行操作类型
      * @return 字符串
-     * @see #convertToArg(Column, Execute, String, String, String, String)
+     * @see #convertToArg(ColumnWrapper, Execute, String, String, String, String)
      */
-    public static String convertToArg( final Column column, final Execute execute ) {
+    public static String convertToArg( final ColumnWrapper column, final Execute execute ) {
         return convertToArg( column, execute, null, null, null, null );
     }
 
@@ -64,7 +64,7 @@ public final class ColumnConvert {
      * @param argName 参数名称 [可选]
      * @return 字符串
      */
-    public static String convertToArg( final Column column, final Execute execute, final String argName ) {
+    public static String convertToArg( final ColumnWrapper column, final Execute execute, final String argName ) {
         return convertToArg( column, execute, argName, null, null, null );
     }
 
@@ -75,9 +75,10 @@ public final class ColumnConvert {
      * @param argName 参数名称 [可选]
      * @param alias   别名 [可选]
      * @return 字符串
-     * @see #convertToArg(Column, Execute, String, String, String, String)
+     * @see #convertToArg(ColumnWrapper, Execute, String, String, String, String)
      */
-    public static String convertToArg( final Column column, final Execute execute, final String argName, final String alias ) {
+    public static String convertToArg( final ColumnWrapper column, final Execute execute,
+                                       final String argName, final String alias ) {
         return convertToArg( column, execute, argName, alias, null, null );
     }
 
@@ -89,9 +90,10 @@ public final class ColumnConvert {
      * @param alias    别名 [可选]
      * @param operator 操作符 [可选]
      * @return 字符串
-     * @see #convertToArg(Column, Execute, String, String, String, String)
+     * @see #convertToArg(ColumnWrapper, Execute, String, String, String, String)
      */
-    public static String convertToArg( final Column column, final Execute execute, final String argName, final String alias, String operator ) {
+    public static String convertToArg( final ColumnWrapper column, final Execute execute, final String argName,
+                                       final String alias, String operator ) {
         return convertToArg( column, execute, argName, alias, operator, null );
     }
 
@@ -122,7 +124,8 @@ public final class ColumnConvert {
      * @param separator 分隔符 [可选]
      * @return 字符串
      */
-    public static String convertToArg( final Column column, final Execute execute, final String argName, final String alias, String operator, String separator ) {
+    public static String convertToArg( final ColumnWrapper column, final Execute execute, final String argName,
+                                       final String alias, String operator, String separator ) {
         StringBuffer buffer = new StringBuffer( 60 );
         if ( execute != Execute.INSERT ) {
             // 别名
@@ -162,7 +165,8 @@ public final class ColumnConvert {
      * @param apply     是否带上属性名
      * @return 字符串
      */
-    public static String convertToQueryArg( final Column column, final String alias, final String reference, final boolean apply ) {
+    public static String convertToQueryArg( final ColumnWrapper column, final String alias,
+                                            final String reference, final boolean apply ) {
         StringBuilder buffer = new StringBuilder( 60 );
         if ( StringUtil.hasText( alias ) ) {
             buffer.append( alias ).append( "." );
@@ -212,7 +216,8 @@ public final class ColumnConvert {
      * @param join                  连接符
      * @return SQL字符串
      */
-    public static String convertToCustomArg( final Column column, final String paramValuePlaceHolder, final String alias, Operator operator, String join ) {
+    public static String convertToCustomArg( final ColumnWrapper column, final String paramValuePlaceHolder,
+                                             final String alias, Operator operator, String join ) {
         StringBuffer buffer = new StringBuffer( 60 );
         if ( StringUtil.hasText( join ) ) {
             buffer.append( join ).append( " " );
@@ -246,7 +251,8 @@ public final class ColumnConvert {
      * @param join                  连接符
      * @return SQL字符串
      */
-    public static String convertToCustomArg( final String column, final String paramValuePlaceHolder, final String alias, Operator operator, String join ) {
+    public static String convertToCustomArg( final String column, final String paramValuePlaceHolder,
+                                             final String alias, Operator operator, String join ) {
         StringBuilder buffer = new StringBuilder( 40 );
         if ( StringUtil.hasText( join ) ) {
             buffer.append( join ).append( " " );
@@ -265,7 +271,7 @@ public final class ColumnConvert {
         return buffer.toString();
     }
 
-    private static void appendValue( Column column, StringBuffer buffer ) {
+    private static void appendValue( ColumnWrapper column, StringBuffer buffer ) {
         JdbcType jdbcType = column.getJdbcType();
         Class<?> javaType = column.getJavaType();
         Class<?> typeHandler = column.getTypeHandler();
@@ -292,7 +298,7 @@ public final class ColumnConvert {
      * @param configuration MyBatis配置对象
      * @return 序列SQL
      */
-    public static String getSequenceScript( final Configuration configuration, Column column ) {
+    public static String getSequenceScript( final Configuration configuration, ColumnWrapper column ) {
         return getSequenceScript( MyBatisConfigCache.getDialect( configuration ), column.getSequenceName() );
     }
 

@@ -6,6 +6,14 @@ package com.wkit.lost.mybatis.utils;
  */
 public interface Constants {
 
+    /***
+     * 换行符
+     */
+    String NEW_LINE = System.getProperty( "line.separator" );
+
+    /**
+     * 批量参数对象
+     */
     String PARAM_BATCH_BEAN_WRAPPER = "batchDataBeanWrapper";
 
     /**
@@ -57,7 +65,7 @@ public interface Constants {
      * JDBC主键生成方式
      */
     String GENERATOR_JDBC = "JDBC";
-    
+
     /**
      * 自增主键生成方式
      */

@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.sql.mapping.delete;
 
 import com.wkit.lost.mybatis.core.criteria.Execute;
-import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.sql.mapping.AbstractLogicDeletionSqlBuilder;
 import com.wkit.lost.mybatis.utils.Constants;
 
@@ -17,12 +17,12 @@ public class LogicDeleteSqlBuilder extends AbstractLogicDeletionSqlBuilder {
     @Override
     public String build() {
         // 条件部分
-        Set<Column> columns = table.getIgnoreDeletedAuditableColumns();
+        Set<ColumnWrapper> columns = table.excludeDeletedAuditableColumns();
         String condition = "<where>" +
-                columns.stream().map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, 
+                columns.stream().map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE,
                         false, 0, Constants.PARAM_ENTITY, column, null, AND ) )
-                        .collect( Collectors.joining( "", "\n", "\n" ) ) +
-                "</where>\n";
+                        .collect( Collectors.joining( "", NEW_LINE, NEW_LINE ) ) +
+                "</where>" + NEW_LINE;
         return logicDelete( condition );
     }
 }

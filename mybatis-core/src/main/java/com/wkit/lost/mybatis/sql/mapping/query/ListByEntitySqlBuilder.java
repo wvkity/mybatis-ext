@@ -14,14 +14,15 @@ public class ListByEntitySqlBuilder extends AbstractSqlBuilder {
 
     @Override
     public String build() {
-        String querySegment = table.getColumns()
+        String querySegment = table.columns()
                 .stream()
                 .map( column -> ColumnConvert.convertToQueryArg( column, this.alias, null, true ) )
                 .collect( Collectors.joining( ", " ) );
         String condition = "<where>" +
-                table.getColumns().stream()
-                        .map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, false, 0, null, column, "", AND ) )
-                        .collect( Collectors.joining( "", "\n", "\n" ) )
+                table.columns().stream()
+                        .map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, false,
+                                0, null, column, "", AND ) )
+                        .collect( Collectors.joining( "", NEW_LINE, NEW_LINE ) )
                 + "\n</where>";
         return select( querySegment, condition );
     }

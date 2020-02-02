@@ -3,9 +3,9 @@ package com.wkit.lost.mybatis.core.condition.expression;
 import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.criteria.Logic;
 import com.wkit.lost.mybatis.core.criteria.Operator;
-import com.wkit.lost.mybatis.core.metadata.Column;
-import com.wkit.lost.mybatis.core.metadata.Table;
-import com.wkit.lost.mybatis.handler.EntityHandler;
+import com.wkit.lost.mybatis.core.handler.TableHandler;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 
 import java.util.Optional;
 
@@ -60,7 +60,8 @@ public class IdentifierEqual<T> extends AbstractExpression<T> {
     }
 
     @Override
-    public Column getColumn() {
-        return Optional.ofNullable( EntityHandler.getTable( this.criteria.getEntityClass() ) ).map( Table::getPrimaryKey ).orElse( null );
+    public ColumnWrapper getColumn() {
+        return Optional.ofNullable( TableHandler.getTable( this.criteria.getEntityClass() ) )
+                .map( TableWrapper::getPrimaryKey ).orElse( null );
     }
 }

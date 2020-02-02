@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.core.criteria;
 
 import com.wkit.lost.mybatis.core.condition.ConditionManager;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
-import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
 import lombok.Getter;
 
@@ -97,7 +97,7 @@ public class ForeignSubCriteria<T> extends ForeignCriteria<T> {
     }
 
     @Override
-    protected Map<String, Column> getQueryColumns() {
+    protected Map<String, ColumnWrapper> getQueryColumns() {
         if ( this.isRelation() ) {
             return subCriteria.getQueryColumns();
         }

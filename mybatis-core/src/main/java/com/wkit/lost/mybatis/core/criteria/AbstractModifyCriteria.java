@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.criteria;
 
-import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.ColumnConvert;
@@ -52,7 +52,7 @@ public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T>
 
     @Override
     public AbstractModifyCriteria<T> updateVersion( Object version ) {
-        Column column = getOptimisticLockerColumn();
+        ColumnWrapper column = getOptimisticLockingColumn();
         if ( column != null ) {
             update( column.getProperty(), version );
         }
@@ -61,7 +61,7 @@ public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T>
 
     @Override
     public Object getModifyVersionValue() {
-        Column column = this.getOptimisticLockerColumn();
+        ColumnWrapper column = this.getOptimisticLockingColumn();
         if ( column != null ) {
             return this.modifies.get( column.getProperty() );
         }
@@ -75,7 +75,7 @@ public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T>
             for ( Map.Entry<String, Object> entry : modifies.entrySet() ) {
                 String property = entry.getKey();
                 Object value = entry.getValue();
-                Column column = searchColumn( property );
+                ColumnWrapper column = searchColumn( property );
                 if ( column != null && column.isUpdatable() ) {
                     modifyColumns.add( ColumnConvert.convertToCustomArg( column, defaultPlaceholder( value ),
                             null, Operator.EQ, null ) );

@@ -14,7 +14,7 @@ public class ListSqlBuilder extends AbstractSqlBuilder {
 
     @Override
     public String build() {
-        String querySegment = table.getColumns()
+        String querySegment = table.columns()
                 .stream()
                 .map( column -> ColumnConvert.convertToQueryArg( column, this.alias, null, true ) )
                 .collect( Collectors.joining( ", " ) );
@@ -23,10 +23,11 @@ public class ListSqlBuilder extends AbstractSqlBuilder {
         if ( StringUtil.hasText( this.alias ) ) {
             buffer.append( this.alias ).append( "." );
         }
-        buffer.append( table.getPrimaryKey().getColumn() ).append( " IN \n" );
-        buffer.append( "<foreach collection=\"primaryKeys\" item=\"item\" open=\"(\" close=\")\" separator=\", \">\n" );
-        buffer.append( " #{item}\n" );
-        buffer.append( "\n</foreach>" );
+        buffer.append( table.getPrimaryKey().getColumn() ).append( " IN " ).append( NEW_LINE );
+        buffer.append( "<foreach collection=\"primaryKeys\" item=\"item\" open=\"(\" close=\")\" separator=\", \">" )
+                .append( NEW_LINE );
+        buffer.append( " #{item}" ).append( NEW_LINE );
+        buffer.append( NEW_LINE ).append( "</foreach>" );
         return select( querySegment, buffer.toString() );
     }
 }

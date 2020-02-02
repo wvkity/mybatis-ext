@@ -1,11 +1,11 @@
 package com.wkit.lost.mybatis.core.condition.expression;
 
-import com.wkit.lost.mybatis.utils.CollectionUtil;
-import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.criteria.Logic;
-import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.utils.ArgumentUtil;
+import com.wkit.lost.mybatis.utils.CollectionUtil;
+import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -145,8 +145,9 @@ public class Template<T> extends AbstractExpression<T> {
     public String getSqlSegment() {
         if ( StringUtil.hasText( template ) ) {
             StringBuilder buffer = new StringBuilder( 100 );
-            Column column = getColumn();
-            String realColumnName = Optional.ofNullable( column ).map( Column::getColumn ).orElse( this.property );
+            ColumnWrapper column = getColumn();
+            String realColumnName = Optional.ofNullable( column ).map( ColumnWrapper::getColumn )
+                    .orElse( this.property );
             String alias = criteria.getAlias();
             boolean isEnable = criteria.isEnableAlias();
             String columnArg = isEnable ? ( alias + "." + realColumnName ) : realColumnName;

@@ -2,9 +2,9 @@ package com.wkit.lost.mybatis.core.criteria;
 
 import com.wkit.lost.mybatis.core.condition.ConditionManager;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
-import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.handler.TableHandler;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
-import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
@@ -163,8 +163,8 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
     }
 
     @Override
-    protected Map<String, Column> getQueryColumns() {
-        Map<String, Column> realQueries;
+    protected Map<String, ColumnWrapper> getQueryColumns() {
+        Map<String, ColumnWrapper> realQueries;
         if ( CollectionUtil.hasElement( propertyForQueryCache ) ) {
             // 显式指定查询列
             realQueries = propertyForQueryCache;
@@ -172,10 +172,10 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
             if ( relation ) {
                 // 所有列
                 realQueries = Collections.synchronizedMap(
-                        EntityHandler.getTable( entityClass )
-                                .getColumns()
+                        TableHandler.getTable( entityClass )
+                                .columns()
                                 .stream()
-                                .collect( Collectors.toMap( Column::getProperty, Function.identity(),
+                                .collect( Collectors.toMap( ColumnWrapper::getProperty, Function.identity(),
                                         ( oldValue, newValue ) -> newValue, LinkedHashMap::new ) )
                 );
             } else {

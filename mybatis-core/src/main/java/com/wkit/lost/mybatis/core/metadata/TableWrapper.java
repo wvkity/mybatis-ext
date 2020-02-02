@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -225,6 +226,16 @@ public class TableWrapper {
      */
     public Map<String, ColumnWrapper> columnMappings() {
         return new ConcurrentHashMap<>( this.DEFINITIONS );
+    }
+
+    /**
+     * 根据属性查找对应的字段信息
+     * @param property 属性
+     * @return 字段信息
+     */
+    public Optional<ColumnWrapper> search( String property ) {
+        return Optional.ofNullable( property ).flatMap( value -> this.columns.parallelStream()
+                .filter( column -> column.getProperty().equals( property ) ).findAny() );
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.condition;
 
-import com.wkit.lost.mybatis.core.criteria.PropertyMappingForLambda;
+import com.wkit.lost.mybatis.core.metadata.PropertyMappingCache;
 import com.wkit.lost.mybatis.lambda.Property;
 
 /**
@@ -13,7 +13,7 @@ public abstract class AbstractChainConditionWrapper<T, Context extends AbstractC
     
     @Override
     public String lambdaToProperty( Property<T, ?> lambda ) {
-        return PropertyMappingForLambda.lambdaToProperty( lambda );
+        return PropertyMappingCache.lambdaToProperty( lambda );
     }
     
 }

@@ -4,8 +4,8 @@ import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.criteria.Logic;
 import com.wkit.lost.mybatis.core.criteria.Operator;
 import com.wkit.lost.mybatis.core.criteria.SubCriteria;
-import com.wkit.lost.mybatis.core.metadata.Column;
-import com.wkit.lost.mybatis.handler.EntityHandler;
+import com.wkit.lost.mybatis.core.handler.TableHandler;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 
@@ -87,15 +87,16 @@ public class PropertyEqual<T> extends AbstractExpression<T> {
 
     @Override
     public String getSqlSegment() {
-        Column column;
+        ColumnWrapper column;
         if ( StringUtil.isBlank( property ) ) {
-            column = EntityHandler.getTable( criteria.getEntityClass() ).getPrimaryKey();
+            column = TableHandler.getTable( criteria.getEntityClass() ).getPrimaryKey();
         } else {
             column = getColumn();
         }
-        Column otherColumn = other.searchColumn( otherProperty );
-        String realColumn = Optional.ofNullable( column ).map( Column::getColumn ).orElse( this.property );
-        String otherRealColumn = Optional.ofNullable( otherColumn ).map( Column::getColumn ).orElse( this.otherProperty );
+        ColumnWrapper otherColumn = other.searchColumn( otherProperty );
+        String realColumn = Optional.ofNullable( column ).map( ColumnWrapper::getColumn ).orElse( this.property );
+        String otherRealColumn = Optional.ofNullable( otherColumn ).map( ColumnWrapper::getColumn )
+                .orElse( this.otherProperty );
         if ( column != null && otherColumn != null ) {
             StringBuilder buffer = new StringBuilder( 40 );
             buffer.append( " " );

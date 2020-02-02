@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.sql.injector.methods;
 
-import com.wkit.lost.mybatis.core.metadata.Table;
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.sql.mapping.query.ExistsByPrimaryKeySqlBuilder;
 import com.wkit.lost.mybatis.sql.mapping.script.DefaultXmlScriptBuilder;
 import com.wkit.lost.mybatis.sql.method.AbstractMethod;
@@ -13,11 +13,13 @@ import org.apache.ibatis.mapping.MappedStatement;
 public class ExistsByPrimaryKey extends AbstractMethod {
 
     @Override
-    public MappedStatement injectMappedStatement( Class<?> mapperInterface, Class<?> resultType, Table table ) {
+    public MappedStatement injectMappedStatement( Class<?> mapperInterface, Class<?> resultType, TableWrapper table ) {
         // SQL脚本构建器
         Class<?> entity = table.getEntity();
-        DefaultXmlScriptBuilder scriptBuilder = new DefaultXmlScriptBuilder( entity, table.getAlias(), table, new ExistsByPrimaryKeySqlBuilder() );
-        return this.addSelectMappedStatement( mapperInterface, Integer.class, mappedMethod(), this.createSqlSource( scriptBuilder, entity ), null );
+        DefaultXmlScriptBuilder scriptBuilder = new DefaultXmlScriptBuilder( entity, table.getAlias(),
+                table, new ExistsByPrimaryKeySqlBuilder() );
+        return this.addSelectMappedStatement( mapperInterface, Integer.class, mappedMethod(),
+                this.createSqlSource( scriptBuilder, entity ), null );
     }
 
     @Override

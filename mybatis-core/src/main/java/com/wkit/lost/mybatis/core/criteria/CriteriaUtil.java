@@ -1,9 +1,9 @@
 package com.wkit.lost.mybatis.core.criteria;
 
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
+import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
-import com.wkit.lost.mybatis.core.metadata.Column;
-import com.wkit.lost.mybatis.lambda.Property;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +23,7 @@ public abstract class CriteriaUtil {
      * @param <T>        泛型类型
      * @return 字段集合
      */
-    public static <T> List<Column> transform( Criteria<T> criteria, Collection<String> properties ) {
+    public static <T> List<ColumnWrapper> transform( Criteria<T> criteria, Collection<String> properties ) {
         return CollectionUtil.hasElement( properties ) ? properties.stream()
                 .filter( StringUtil::hasText )
                 .map( criteria::searchColumn )
@@ -37,7 +37,7 @@ public abstract class CriteriaUtil {
      * @param <T>        泛型类型
      * @return 字段集合
      */
-    public static <T> List<Column> transform( Collection<Property<T, ?>> properties, Criteria<T> criteria ) {
+    public static <T> List<ColumnWrapper> transform( Collection<Property<T, ?>> properties, Criteria<T> criteria ) {
         return CollectionUtil.hasElement( properties ) ? properties.stream()
                 .filter( Objects::nonNull )
                 .map( criteria::searchColumn )

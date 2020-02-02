@@ -2,11 +2,11 @@ package com.wkit.lost.mybatis.plugins.locking;
 
 import com.wkit.lost.mybatis.core.criteria.AbstractModifyCriteria;
 import com.wkit.lost.mybatis.core.criteria.Criteria;
-import com.wkit.lost.mybatis.core.metadata.Column;
-import com.wkit.lost.mybatis.core.metadata.Table;
+import com.wkit.lost.mybatis.core.handler.TableHandler;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.data.auditing.date.provider.DateTimeProvider;
 import com.wkit.lost.mybatis.data.auditing.date.proxy.DateTimeProviderFactory;
-import com.wkit.lost.mybatis.handler.EntityHandler;
 import com.wkit.lost.mybatis.plugins.processor.UpdateProcessorSupport;
 import com.wkit.lost.mybatis.utils.Constants;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -26,7 +26,7 @@ public class OptimisticLockingProcessor extends UpdateProcessorSupport {
     private static final String METHOD_UPDATE_NOT_WITH_NULL = "updateNotWithNull";
     private static final String METHOD_UPDATE_BY_CRITERIA = "updateByCriteria";
     private static final String METHOD_MIXIN_UPDATE_NOT_WITH_NULL = "mixinUpdateNotWithNull";
-    private static final Map<Class<?>, Column> OPTIMISTIC_LOCKER_FIELD_CACHE = new ConcurrentHashMap<>( 32 );
+    private static final Map<Class<?>, ColumnWrapper> OPTIMISTIC_LOCKER_FIELD_CACHE = new ConcurrentHashMap<>( 32 );
 
     /**
      * 拦截方法集合
@@ -34,7 +34,7 @@ public class OptimisticLockingProcessor extends UpdateProcessorSupport {
     private static final Set<String> LOCK_METHODS_CACHE = new HashSet<>( Arrays.asList( METHOD_UPDATE,
             METHOD_UPDATE_NOT_WITH_NULL, METHOD_UPDATE_BY_CRITERIA, METHOD_MIXIN_UPDATE_NOT_WITH_NULL ) );
 
-    @SuppressWarnings( {"unchecked"} )
+    @SuppressWarnings( { "unchecked" } )
     @Override
     protected Object doProceed( Invocation invocation, MappedStatement ms, Object parameter ) throws Throwable {
         if ( filter( ms, parameter ) ) {
@@ -50,10 +50,10 @@ public class OptimisticLockingProcessor extends UpdateProcessorSupport {
                             ( ( Criteria<?> ) criteriaObject ).getEntityClass() : null );
                     if ( entityClass != null ) {
                         // 获取乐观锁字段
-                        Optional<Column> optional = Optional.ofNullable( getColumn( entityClass ) );
+                        Optional<ColumnWrapper> optional = Optional.ofNullable( getColumn( entityClass ) );
                         if ( optional.isPresent() ) {
                             // 填充值
-                            Column column = optional.get();
+                            ColumnWrapper column = optional.get();
                             Field field = column.getField().getField();
                             if ( METHOD_UPDATE.equals( execMethod ) || METHOD_UPDATE_NOT_WITH_NULL.equals( execMethod ) ) {
                                 Object originalValue = originalValue( entity, field );
@@ -82,7 +82,8 @@ public class OptimisticLockingProcessor extends UpdateProcessorSupport {
                                         }
                                     } else {
                                         Object entityValue = originalValue( entity, field );
-                                        if ( entity != null && ( entityValue == null || "0".equals( String.valueOf( entityValue ) ) ) ) {
+                                        if ( entity != null && ( entityValue == null
+                                                || "0".equals( String.valueOf( entityValue ) ) ) ) {
                                             Object newValue = newValue( originalValue, column.getJavaType() );
                                             overwriteOriginalValue( entity, field, newValue );
                                             Object result = invocation.proceed();
@@ -106,13 +107,13 @@ public class OptimisticLockingProcessor extends UpdateProcessorSupport {
         return invocation.proceed();
     }
 
-    private Column getColumn( Class<?> entityClass ) {
+    private ColumnWrapper getColumn( Class<?> entityClass ) {
         if ( entityClass != null ) {
             if ( OPTIMISTIC_LOCKER_FIELD_CACHE.containsKey( entityClass ) ) {
                 return OPTIMISTIC_LOCKER_FIELD_CACHE.get( entityClass );
             } else {
-                Optional<Column> optional = Optional.ofNullable( EntityHandler.getTable( entityClass ) )
-                        .map( Table::getOptimisticLockerColumn );
+                Optional<ColumnWrapper> optional = Optional.ofNullable( TableHandler.getTable( entityClass ) )
+                        .map( TableWrapper::getOptimisticLockingColumn );
                 if ( optional.isPresent() ) {
                     OPTIMISTIC_LOCKER_FIELD_CACHE.putIfAbsent( entityClass, optional.get() );
                     return OPTIMISTIC_LOCKER_FIELD_CACHE.get( entityClass );

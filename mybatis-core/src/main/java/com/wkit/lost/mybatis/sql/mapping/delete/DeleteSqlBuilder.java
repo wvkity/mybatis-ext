@@ -15,10 +15,11 @@ public class DeleteSqlBuilder extends AbstractSqlBuilder {
     @Override
     public String build() {
         String condition = "<where>" +
-                table.getColumns().stream()
-                        .map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, false, 0, Constants.PARAM_ENTITY, column, "", AND ) )
-                        .collect( Collectors.joining( "", "\n", "\n" ) )
-                + "\n</where>";
+                table.columns().stream()
+                        .map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, false, 0,
+                                Constants.PARAM_ENTITY, column, "", AND ) )
+                        .collect( Collectors.joining( "", NEW_LINE, NEW_LINE ) )
+                + NEW_LINE + "</where>";
         return delete( condition );
     }
 }

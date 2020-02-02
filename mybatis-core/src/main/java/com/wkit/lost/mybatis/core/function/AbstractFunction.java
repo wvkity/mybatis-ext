@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.core.function;
 
 import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.criteria.Logic;
-import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
@@ -74,7 +74,7 @@ public abstract class AbstractFunction implements Aggregation {
      * 字段对象
      */
     @Getter
-    protected Column column;
+    protected ColumnWrapper column;
 
     /**
      * 是否去重
@@ -170,7 +170,7 @@ public abstract class AbstractFunction implements Aggregation {
         if ( IGNORE_TRANSFORM.contains( this.property ) ) {
             buffer.append( this.property );
         } else {
-            Column column = criteria.searchColumn( this.property );
+            ColumnWrapper column = criteria.searchColumn( this.property );
             String tabAlias = criteria.isEnableAlias() ? ( criteria.getAlias() + "." ) : "";
             // 去重
             if ( this.distinct ) {

@@ -14,10 +14,11 @@ public class ExistsSqlBuilder extends AbstractSqlBuilder {
     @Override
     public String build() {
         String querySegment = "CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END COUNT";
-        String condition = "<where>" + table.getColumns().stream()
-                .map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, true, 0, null, column, "", AND ) )
-                .collect( Collectors.joining( "", "\n", "\n" ) )
-                + "\n</where>";
+        String condition = "<where>" + table.columns().stream()
+                .map( column -> convertToIfTagOfNotNull( true, Execute.REPLACE, true,
+                        0, null, column, "", AND ) )
+                .collect( Collectors.joining( "", NEW_LINE, NEW_LINE ) )
+                + NEW_LINE + "</where>";
         return select( querySegment, condition );
     }
 }

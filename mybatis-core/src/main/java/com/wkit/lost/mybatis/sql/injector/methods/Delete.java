@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.sql.injector.methods;
 
-import com.wkit.lost.mybatis.core.metadata.Table;
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.sql.mapping.delete.DeleteSqlBuilder;
 import com.wkit.lost.mybatis.sql.mapping.script.DefaultXmlScriptBuilder;
 import com.wkit.lost.mybatis.sql.method.AbstractMethod;
@@ -11,11 +11,12 @@ import org.apache.ibatis.mapping.MappedStatement;
  * @author wvkity
  */
 public class Delete extends AbstractMethod {
-    
+
     @Override
-    public MappedStatement injectMappedStatement( Class<?> mapperInterface, Class<?> resultType, Table table ) {
+    public MappedStatement injectMappedStatement( Class<?> mapperInterface, Class<?> resultType, TableWrapper table ) {
         Class<?> entity = table.getEntity();
-        DefaultXmlScriptBuilder scriptBuilder = new DefaultXmlScriptBuilder( entity, null, table, new DeleteSqlBuilder() );
+        DefaultXmlScriptBuilder scriptBuilder = new DefaultXmlScriptBuilder( entity, null,
+                table, new DeleteSqlBuilder() );
         return addDeleteMappedStatement( mapperInterface, mappedMethod(), createSqlSource( scriptBuilder, entity ) );
     }
 

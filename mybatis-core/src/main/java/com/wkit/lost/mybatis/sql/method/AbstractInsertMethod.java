@@ -1,8 +1,8 @@
 package com.wkit.lost.mybatis.sql.method;
 
 import com.wkit.lost.mybatis.annotation.extension.Executing;
-import com.wkit.lost.mybatis.core.metadata.Column;
-import com.wkit.lost.mybatis.core.metadata.Table;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.sql.mapping.SqlBuilder;
 import com.wkit.lost.mybatis.sql.mapping.script.AbstractXmlScriptBuilder;
 import com.wkit.lost.mybatis.sql.mapping.script.DefaultXmlScriptBuilder;
@@ -31,8 +31,8 @@ public abstract class AbstractInsertMethod extends AbstractMethod {
      * @param statementId {@link MappedStatement}-ID
      * @return {@link KeyGenerator}
      */
-    protected KeyGenerator createKeyGenerator( Table table, String statementId ) {
-        Column primaryKey = table.getPrimaryKey();
+    protected KeyGenerator createKeyGenerator( TableWrapper table, String statementId ) {
+        ColumnWrapper primaryKey = table.getPrimaryKey();
         KeyGenerator keyGenerator = new NoKeyGenerator();
         // 序列
         String id = statementId + SelectKeyGenerator.SELECT_KEY_SUFFIX;
@@ -47,14 +47,18 @@ public abstract class AbstractInsertMethod extends AbstractMethod {
                 StatementType statementType = StatementType.PREPARED;
                 String keyProperty = primaryKey.getProperty();
                 String keyColumn = primaryKey.getColumn();
-                SqlSource sqlSource = languageDriver.createSqlSource( this.configuration, ColumnConvert.getSequenceScript( this.configuration, primaryKey ), null );
-                this.assistant.addMappedStatement( id, sqlSource, statementType, SqlCommandType.SELECT, null, null, null,
-                        null, null, primaryKey.getJavaType(), null, false, false, false,
-                        new NoKeyGenerator(), keyProperty, keyColumn, null, this.languageDriver, null );
+                SqlSource sqlSource = languageDriver.createSqlSource( this.configuration,
+                        ColumnConvert.getSequenceScript( this.configuration, primaryKey ), null );
+                this.assistant.addMappedStatement( id, sqlSource, statementType, SqlCommandType.SELECT,
+                        null, null, null, null, null,
+                        primaryKey.getJavaType(), null, false, false,
+                        false, new NoKeyGenerator(), keyProperty, keyColumn, null,
+                        this.languageDriver, null );
                 id = this.assistant.applyCurrentNamespace( id, false );
                 MappedStatement ms = this.assistant.getConfiguration().getMappedStatement( id, false );
                 // 根据<selectKey>标签获取主键
-                keyGenerator = new SelectKeyGenerator( ms, Optional.ofNullable( primaryKey.getExecuting() ).map( Executing::value ).orElse( false ) );
+                keyGenerator = new SelectKeyGenerator( ms, Optional.ofNullable( primaryKey.getExecuting() )
+                        .map( Executing::value ).orElse( false ) );
                 // useGeneratorKeys = true
                 this.assistant.getConfiguration().addKeyGenerator( id, keyGenerator );
                 this.assistant.getConfiguration().setUseGeneratedKeys( true );
@@ -69,23 +73,25 @@ public abstract class AbstractInsertMethod extends AbstractMethod {
      * @param sqlBuilder SQL构建器
      * @return 脚本构建器
      */
-    protected AbstractXmlScriptBuilder createScriptBuilder( Table table, SqlBuilder sqlBuilder ) {
+    protected AbstractXmlScriptBuilder createScriptBuilder( TableWrapper table, SqlBuilder sqlBuilder ) {
         return new DefaultXmlScriptBuilder( table.getEntity(), null, table, sqlBuilder );
     }
 
     /**
      * 添加插入{@link MappedStatement}对象到MyBatis容器中
      * @param mapperInterface 接口
-     * @param resultType      返回值类型
+     * @param __              返回值类型
      * @param table           表对象
      * @param sqlBuilder      SQL构建器
      * @return {@link MappedStatement}对象
      */
-    protected MappedStatement addInsertMappedStatement( Class<?> mapperInterface, Class<?> resultType, Table table, SqlBuilder sqlBuilder ) {
+    protected MappedStatement addInsertMappedStatement( Class<?> mapperInterface, Class<?> __,
+                                                        TableWrapper table, SqlBuilder sqlBuilder ) {
         KeyGenerator keyGenerator = createKeyGenerator( table, ( mapperInterface.getName() + "." + mappedMethod() ) );
-        Column primary = table.getPrimaryKey();
+        ColumnWrapper primary = table.getPrimaryKey();
         Class<?> entity = table.getEntity();
         AbstractXmlScriptBuilder scriptBuilder = createScriptBuilder( table, sqlBuilder );
-        return addInsertMappedStatement( mapperInterface, entity, mappedMethod(), createSqlSource( scriptBuilder, entity ), keyGenerator, primary.getProperty(), primary.getColumn() );
+        return addInsertMappedStatement( mapperInterface, entity, mappedMethod(),
+                createSqlSource( scriptBuilder, entity ), keyGenerator, primary.getProperty(), primary.getColumn() );
     }
 }

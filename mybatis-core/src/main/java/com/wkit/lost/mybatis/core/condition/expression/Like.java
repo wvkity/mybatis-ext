@@ -1,12 +1,12 @@
 package com.wkit.lost.mybatis.core.condition.expression;
 
-import com.wkit.lost.mybatis.core.metadata.Column;
-import com.wkit.lost.mybatis.utils.ColumnConvert;
-import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.criteria.Logic;
 import com.wkit.lost.mybatis.core.criteria.MatchMode;
 import com.wkit.lost.mybatis.core.criteria.Operator;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
+import com.wkit.lost.mybatis.utils.ColumnConvert;
+import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -224,12 +224,15 @@ public class Like<T> extends AbstractExpression<T> {
     @Override
     public String getSqlSegment() {
         StringBuilder builder = new StringBuilder( 60 );
-        String placeholder = StringUtil.nvl( defaultPlaceholder( matchMode.getSqlSegment( value.toString() ) ), "" );
-        Column column = getColumn();
+        String placeholder = StringUtil.nvl( defaultPlaceholder( matchMode.getSqlSegment( value.toString() ) ),
+                "" );
+        ColumnWrapper column = getColumn();
         if ( column == null ) {
-            builder.append( ColumnConvert.convertToCustomArg( this.property, placeholder, getAlias(), operator, logic.getSqlSegment() ) );
+            builder.append( ColumnConvert.convertToCustomArg( this.property, placeholder, getAlias(), operator,
+                    logic.getSqlSegment() ) );
         } else {
-            builder.append( ColumnConvert.convertToCustomArg( getColumn(), placeholder, getAlias(), operator, logic.getSqlSegment() ) );
+            builder.append( ColumnConvert.convertToCustomArg( getColumn(), placeholder, getAlias(), operator,
+                    logic.getSqlSegment() ) );
         }
         if ( escape != null ) {
             builder.append( " ESCAPE " ).append( "'" ).append( escape ).append( "'" );

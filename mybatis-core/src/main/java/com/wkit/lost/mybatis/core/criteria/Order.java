@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core.criteria;
 
 import com.wkit.lost.mybatis.core.function.Aggregation;
-import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.lambda.Property;
@@ -44,7 +44,7 @@ public class Order<T> implements Segment {
     /**
      * 排序字段
      */
-    private Set<Column> columns = new LinkedHashSet<>( 8 );
+    private Set<ColumnWrapper> columns = new LinkedHashSet<>( 8 );
 
     /**
      * 排序属性(字段)
@@ -103,7 +103,7 @@ public class Order<T> implements Segment {
      * @param columns   列
      * @param ascending 排序方式
      */
-    private Order( Criteria<T> criteria, boolean ascending, Collection<Column> columns ) {
+    private Order( Criteria<T> criteria, boolean ascending, Collection<ColumnWrapper> columns ) {
         this( ascending, false );
         if ( criteria == null ) {
             throw new MyBatisException( "The Criteria object cannot be empty" );

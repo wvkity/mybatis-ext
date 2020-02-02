@@ -1,10 +1,10 @@
 package com.wkit.lost.mybatis.core.condition.expression;
 
-import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.criteria.Logic;
-import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.utils.ArgumentUtil;
+import com.wkit.lost.mybatis.utils.CollectionUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -46,7 +46,8 @@ public class Range<T> extends AbstractExpression<T> {
      * @param property 属性
      * @param values   值
      */
-    public Range( Criteria<T> criteria, com.wkit.lost.mybatis.core.condition.Range range, String property, Collection<Object> values ) {
+    public Range( Criteria<T> criteria, com.wkit.lost.mybatis.core.condition.Range range, String property,
+                  Collection<Object> values ) {
         this( criteria, range, property, values, Logic.AND );
     }
 
@@ -57,7 +58,8 @@ public class Range<T> extends AbstractExpression<T> {
      * @param values   值
      * @param logic    逻辑操作
      */
-    public Range( com.wkit.lost.mybatis.core.condition.Range range, String property, Collection<Object> values, Logic logic ) {
+    public Range( com.wkit.lost.mybatis.core.condition.Range range, String property, Collection<Object> values,
+                  Logic logic ) {
         this.range = range;
         this.property = property;
         this.values = values;
@@ -72,7 +74,8 @@ public class Range<T> extends AbstractExpression<T> {
      * @param values   值
      * @param logic    逻辑操作
      */
-    public Range( Criteria<T> criteria, com.wkit.lost.mybatis.core.condition.Range range, String property, Collection<Object> values, Logic logic ) {
+    public Range( Criteria<T> criteria, com.wkit.lost.mybatis.core.condition.Range range, String property,
+                  Collection<Object> values, Logic logic ) {
         this.criteria = criteria;
         this.range = range;
         this.property = property;
@@ -84,14 +87,14 @@ public class Range<T> extends AbstractExpression<T> {
     public String getSqlSegment() {
         if ( CollectionUtil.hasElement( this.values ) ) {
             StringBuilder buffer = new StringBuilder( 100 );
-            Column column = getColumn();
+            ColumnWrapper column = getColumn();
             String alias = criteria.getAlias();
             boolean isEnable = criteria.isEnableAlias();
             buffer.append( logic.getSqlSegment() ).append( " " );
             if ( isEnable ) {
                 buffer.append( alias ).append( "." );
             }
-            buffer.append( Optional.ofNullable( column ).map( Column::getColumn ).orElse( this.property ) )
+            buffer.append( Optional.ofNullable( column ).map( ColumnWrapper::getColumn ).orElse( this.property ) )
                     .append( " " ).append( range.getSqlSegment() ).append( " " );
             String valuePlaceholder = values.stream().filter( Objects::nonNull )
                     .map( value -> ArgumentUtil.fill( column, defaultPlaceholder( value ) ) )

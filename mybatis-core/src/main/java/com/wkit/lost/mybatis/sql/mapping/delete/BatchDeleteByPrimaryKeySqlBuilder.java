@@ -10,9 +10,9 @@ public class BatchDeleteByPrimaryKeySqlBuilder extends AbstractSqlBuilder {
 
     @Override
     public String build() {
-        String condition = " WHERE " + table.getPrimaryKey().getColumn() + " IN \n" +
-                "<foreach collection=\"primaryKeys\" open=\"(\" close=\")\" item=\"item\" separator=\",\">\n" +
-                " #{item}\n" +
+        String condition = " WHERE " + table.getPrimaryKey().getColumn() + " IN " + NEW_LINE +
+                "<foreach collection=\"primaryKeys\" open=\"(\" close=\")\" item=\"item\" separator=\",\">" + NEW_LINE +
+                " #{item}" + NEW_LINE +
                 "</foreach>";
         return delete( condition );
     }

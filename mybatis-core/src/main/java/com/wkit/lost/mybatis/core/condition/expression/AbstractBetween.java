@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.condition.expression;
 
-import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.utils.ArgumentUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,7 +35,7 @@ public abstract class AbstractBetween<T> extends AbstractExpression<T> {
             StringBuffer buffer = new StringBuffer( 80 );
             String alias = criteria.getAlias();
             boolean isEnable = criteria.isEnableAlias();
-            Column column = getColumn();
+            ColumnWrapper column = getColumn();
             buffer.append( logic.getSqlSegment() ).append( " " );
             if ( isEnable ) {
                 buffer.append( alias ).append( "." );
@@ -49,7 +49,8 @@ public abstract class AbstractBetween<T> extends AbstractExpression<T> {
                 buffer.append( "NOT " );
             }
             buffer.append( operator.getSqlSegment() ).append( " " );
-            buffer.append( ArgumentUtil.fill( column, defaultPlaceholder( begin ) ) ).append( " AND " ).append( ArgumentUtil.fill( column, defaultPlaceholder( end ) ) );
+            buffer.append( ArgumentUtil.fill( column, defaultPlaceholder( begin ) ) ).append( " AND " )
+                    .append( ArgumentUtil.fill( column, defaultPlaceholder( end ) ) );
             return buffer.toString();
         }
         return "";

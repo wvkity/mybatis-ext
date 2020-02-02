@@ -7,7 +7,7 @@ import com.wkit.lost.mybatis.core.criteria.Operator;
 import com.wkit.lost.mybatis.core.criteria.ParamValuePlaceholderConverter;
 import com.wkit.lost.mybatis.core.condition.Range;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
-import com.wkit.lost.mybatis.core.metadata.Column;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.utils.Ascii;
 import com.wkit.lost.mybatis.utils.ColumnConvert;
 import com.wkit.lost.mybatis.utils.StringUtil;
@@ -39,7 +39,7 @@ public abstract class AbstractExpression<T> implements Criterion<T>, ParamValueP
     /**
      * 字段映射对象
      */
-    protected Column column;
+    protected ColumnWrapper column;
 
     /**
      * 属性
@@ -91,7 +91,8 @@ public abstract class AbstractExpression<T> implements Criterion<T>, ParamValueP
      * @return 别名
      */
     public String getAlias() {
-        return StringUtil.nvl( getCriteria().isEnableAlias(), getCriteria().getAlias(), "" );
+        return StringUtil.nvl( getCriteria().isEnableAlias(),
+                getCriteria().getAlias(), "" );
     }
 
     @Override
@@ -105,7 +106,7 @@ public abstract class AbstractExpression<T> implements Criterion<T>, ParamValueP
     }
 
     @Override
-    public Column getColumn() {
+    public ColumnWrapper getColumn() {
         if ( this.criteria instanceof ForeignSubCriteria ) {
             return ( ( ForeignSubCriteria<?> ) criteria ).getSubCriteria().searchColumn( this.property );
         }
@@ -115,11 +116,13 @@ public abstract class AbstractExpression<T> implements Criterion<T>, ParamValueP
     @Override
     public String getSqlSegment() {
         String placeholder = StringUtil.nvl( defaultPlaceholder( this.value ), "" );
-        Column column = getColumn();
+        ColumnWrapper column = getColumn();
         if ( column == null ) {
-            return ColumnConvert.convertToCustomArg( this.property, placeholder, getAlias(), this.operator, getLogic().getSqlSegment() );
+            return ColumnConvert.convertToCustomArg( this.property, placeholder, getAlias(),
+                    this.operator, getLogic().getSqlSegment() );
         }
-        return ColumnConvert.convertToCustomArg( getColumn(), placeholder, getAlias(), this.operator, getLogic().getSqlSegment() );
+        return ColumnConvert.convertToCustomArg( getColumn(), placeholder, getAlias(), this.operator,
+                getLogic().getSqlSegment() );
     }
 
     @Override
@@ -147,7 +150,7 @@ public abstract class AbstractExpression<T> implements Criterion<T>, ParamValueP
         builder.append( "{" );
         builder.append( toJsonString( "logic", logic.getSqlSegment(), null, COLON ) );
         builder.append( toJsonString( "criteria", getCriteria() ) );
-        Column column = getColumn();
+        ColumnWrapper column = getColumn();
         if ( column != null ) {
             builder.append( toJsonString( "column", column.getColumn() ) );
             builder.append( toJsonString( "property", column.getProperty() ) );

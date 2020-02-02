@@ -9,8 +9,6 @@ import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.keygen.KeyGenerator;
 import com.wkit.lost.mybatis.naming.DefaultPhysicalNamingStrategy;
 import com.wkit.lost.mybatis.naming.PhysicalNamingStrategy;
-import com.wkit.lost.mybatis.resolver.EntityResolver;
-import com.wkit.lost.mybatis.resolver.FieldResolver;
 import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
 import com.wkit.lost.mybatis.sql.injector.SqlInjector;
 import lombok.Data;
@@ -49,20 +47,6 @@ public class MyBatisCustomConfiguration implements Serializable {
      * SqlSession对象
      */
     private SqlSession sqlSession;
-
-    /**
-     * 实体解析器
-     * @see #entityParser
-     */
-    @Deprecated
-    private EntityResolver entityResolver;
-
-    /**
-     * 属性解析器
-     * @see #fieldParser
-     */
-    @Deprecated
-    private FieldResolver fieldResolver;
 
     /**
      * 实体解析器

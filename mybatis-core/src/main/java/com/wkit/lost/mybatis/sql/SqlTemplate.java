@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.sql;
 
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.utils.StringUtil;
-import com.wkit.lost.mybatis.core.metadata.Table;
 
 /**
  * SQL模板
@@ -17,8 +17,9 @@ public enum SqlTemplate {
      */
     SELECT {
         @Override
-        public String toSqlString( Table table, String alias ) {
-            return "SELECT %s FROM " + SqlTemplate.parseTableName( table ) + (StringUtil.isBlank( alias ) ? " " : " " + alias + " ") + "%s";
+        public String toSqlString( TableWrapper table, String alias ) {
+            return "SELECT %s FROM " + SqlTemplate.parseTableName( table ) +
+                    ( StringUtil.isBlank( alias ) ? " " : " " + alias + " " ) + "%s";
         }
     },
 
@@ -30,7 +31,7 @@ public enum SqlTemplate {
      */
     CRITERIA_SELECT {
         @Override
-        public String toSqlString( Table table, String alias ) {
+        public String toSqlString( TableWrapper table, String alias ) {
             return "SELECT <![CDATA[%s]]> FROM ${criteria.tableName} %s";
         }
     },
@@ -43,7 +44,7 @@ public enum SqlTemplate {
      */
     INSERT {
         @Override
-        public String toSqlString( Table table, String alias ) {
+        public String toSqlString( TableWrapper table, String alias ) {
             return "INSERT INTO " + SqlTemplate.parseTableName( table ) + " %s VALUES %s";
         }
     },
@@ -56,7 +57,7 @@ public enum SqlTemplate {
      */
     UPDATE {
         @Override
-        public String toSqlString( Table table, String alias ) {
+        public String toSqlString( TableWrapper table, String alias ) {
             return "UPDATE " + SqlTemplate.parseTableName( table ) + "%s%s";
         }
     },
@@ -69,7 +70,7 @@ public enum SqlTemplate {
      */
     DELETE {
         @Override
-        public String toSqlString( Table table, String alias ) {
+        public String toSqlString( TableWrapper table, String alias ) {
             return "DELETE FROM " + SqlTemplate.parseTableName( table ) + "%s%s";
         }
     };
@@ -80,14 +81,14 @@ public enum SqlTemplate {
      * @param alias 别名
      * @return SQL字符串
      */
-    public abstract String toSqlString( Table table, String alias );
+    public abstract String toSqlString( TableWrapper table, String alias );
 
     /**
      * 解析表名
      * @param table 表映射对象
      * @return 表名
      */
-    private static String parseTableName( final Table table ) {
+    private static String parseTableName( final TableWrapper table ) {
         String catalog = table.getCatalog();
         String schema = table.getSchema();
         String tableName = table.getName();
