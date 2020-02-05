@@ -75,6 +75,7 @@ public interface Query<T, Context> {
      * 添加子查询列
      * @param subCriteria 子查询条件对象
      * @param properties  属性
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     @SuppressWarnings( "unchecked" )
@@ -103,6 +104,7 @@ public interface Query<T, Context> {
      * @param subCriteria 子查询条件对象
      * @param property    属性
      * @param alias       列别名
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     <E> Context subQuery( SubCriteria<E> subCriteria, Property<E, ?> property, String alias );

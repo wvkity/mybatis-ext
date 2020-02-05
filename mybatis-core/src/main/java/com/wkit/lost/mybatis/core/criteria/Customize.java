@@ -27,8 +27,8 @@ public interface Customize<Context, R> extends LambdaResolver<R> {
     /**
      * 模板条件
      * <p>
-     * &nbsp;&nbsp;&nbsp;&nbsp;eg:<br/>
-     * &nbsp;&nbsp;&nbsp;&nbsp;criteria.template("LEFT({}, 2) = {}", "userName", "张三") &nbsp; => &nbsp;AND LEFT(USER_NAME, 2) = #{param_0, jdbcType="xx.xxx", javaType="xx.xxx"}
+     * &nbsp;&nbsp;&nbsp;&nbsp;eg:<br>
+     * &nbsp;&nbsp;&nbsp;&nbsp;criteria.template("LEFT({}, 2) = {}", "userName", "张三") &nbsp; =&gt; &nbsp;AND LEFT(USER_NAME, 2) = #{param_0, jdbcType="xx.xxx", javaType="xx.xxx"}
      * </p>
      * @param template 模板
      * @param property 属性
@@ -93,8 +93,8 @@ public interface Customize<Context, R> extends LambdaResolver<R> {
     /**
      * 模板条件
      * <p>
-     * &nbsp;&nbsp;&nbsp;&nbsp;eg:<br/>
-     * &nbsp;&nbsp;&nbsp;&nbsp;criteria.orTemplate("LEFT({}, 2) = {}", "userName", "张三") &nbsp; => &nbsp;OR LEFT(USER_NAME, 2) = #{param_0, jdbcType="xx.xxx", javaType="xx.xxx"}
+     * &nbsp;&nbsp;&nbsp;&nbsp;eg:<br>
+     * &nbsp;&nbsp;&nbsp;&nbsp;criteria.orTemplate("LEFT({}, 2) = {}", "userName", "张三") &nbsp; =&gt; &nbsp;OR LEFT(USER_NAME, 2) = #{param_0, jdbcType="xx.xxx", javaType="xx.xxx"}
      * </p>
      * @param template 模板
      * @param property 属性
@@ -148,11 +148,11 @@ public interface Customize<Context, R> extends LambdaResolver<R> {
 
     /**
      * 模板条件
-     * <br/>
+     * <br>
      * <i>注：不受or()或and()方法影响</i>
      * <p>
-     * &nbsp;&nbsp;&nbsp;&nbsp;eg:<br/>
-     * &nbsp;&nbsp;&nbsp;&nbsp;criteria.exactTemplate("AND LEFT({}, 2) = {}", "userName", "张三") &nbsp; => &nbsp;AND LEFT(USER_NAME, 2) = #{param_0, jdbcType="xx.xxx", javaType="xx.xxx"}
+     * &nbsp;&nbsp;&nbsp;&nbsp;eg:<br>
+     * &nbsp;&nbsp;&nbsp;&nbsp;criteria.exactTemplate("AND LEFT({}, 2) = {}", "userName", "张三") &nbsp; =&gt; &nbsp;AND LEFT(USER_NAME, 2) = #{param_0, jdbcType="xx.xxx", javaType="xx.xxx"}
      * </p>
      * @param template 模板
      * @param property 属性

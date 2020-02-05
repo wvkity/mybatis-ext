@@ -80,6 +80,7 @@ public interface Dialect {
      * @param result    分页查询结果
      * @param parameter 接口查询
      * @param rowBounds 分页参数
+     * @param <E>       返回值泛型类型
      * @return 结果
      */
     <E> Object executePagingOnAfter( List<E> result, Object parameter, RowBounds rowBounds );

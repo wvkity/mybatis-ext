@@ -304,7 +304,8 @@ public final class ColumnConvert {
 
     /**
      * 获取序列脚本
-     * @param dialect 数据库类型
+     * @param dialect      数据库类型
+     * @param sequenceName 序列名称
      * @return 序列SQL
      */
     public static String getSequenceScript( final Dialect dialect, String sequenceName ) {

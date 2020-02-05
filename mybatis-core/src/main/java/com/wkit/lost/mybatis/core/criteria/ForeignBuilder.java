@@ -30,6 +30,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master      主表属性
      * @param foreign     副表属性
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, R master,
@@ -44,6 +45,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master      主表属性
      * @param foreign     副表属性
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String master,
@@ -59,6 +61,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master      主表属性
      * @param foreign     副表属性
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, R master,
@@ -74,6 +77,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master      主表属性
      * @param foreign     副表属性
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, String master,
@@ -89,6 +93,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign     副表属性
      * @param joinMode    连接方式
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign,
@@ -104,6 +109,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign     副表属性
      * @param joinMode    连接方式
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String master, String foreign,
@@ -120,6 +126,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign     副表属性
      * @param joinMode    连接方式
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, R master,
@@ -138,6 +145,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign     副表属性
      * @param joinMode    连接方式
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, String master,
@@ -152,6 +160,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master      主表属性
      * @param foreign     副表属性
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, R master,
@@ -166,6 +175,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master      主表属性
      * @param foreign     副表属性
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String master,
@@ -181,6 +191,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master      主表属性
      * @param foreign     副表属性
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, R master,
@@ -196,6 +207,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master      主表属性
      * @param foreign     副表属性
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, String master,
@@ -211,6 +223,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign     副表属性
      * @param joinMode    连接方式
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign,
@@ -226,6 +239,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign     副表属性
      * @param joinMode    连接方式
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String master, String foreign,
@@ -242,6 +256,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign     副表属性
      * @param joinMode    连接方式
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, R master,
@@ -260,6 +275,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign     副表属性
      * @param joinMode    连接方式
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, String master,
@@ -274,6 +290,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master   主表属性
      * @param foreign  副表属性
      * @param function lambda function对象
+     * @param <E>      泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign,
@@ -288,6 +305,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master   主表属性
      * @param foreign  副表属性
      * @param function lambda function对象
+     * @param <E>      泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String master, String foreign,
@@ -303,6 +321,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master    主表属性
      * @param foreign   副表属性
      * @param function  lambda function对象
+     * @param <E>       泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, R master,
@@ -319,6 +338,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master    主表属性
      * @param foreign   副表属性
      * @param function  lambda function对象
+     * @param <E>       泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, String master,
@@ -335,6 +355,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign  副表属性
      * @param joinMode 连接方式
      * @param function lambda function对象
+     * @param <E>      泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign,
@@ -352,6 +373,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign  副表属性
      * @param joinMode 连接方式
      * @param function lambda function对象
+     * @param <E>      泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String master, String foreign,
@@ -368,6 +390,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign   副表属性
      * @param joinMode  连接方式
      * @param function  lambda function对象
+     * @param <E>       泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, R master,
@@ -386,6 +409,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign   副表属性
      * @param joinMode  连接方式
      * @param function  lambda function对象
+     * @param <E>       泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, String master,
@@ -400,6 +424,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param alias       别名
      * @param foreign     联表方式
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, Foreign foreign,
@@ -414,6 +439,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param reference   引用属性
      * @param foreign     联表方式
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, Foreign foreign,
@@ -427,6 +453,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param alias       别名
      * @param foreign     联表方式
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, Foreign foreign,
@@ -441,6 +468,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param reference   引用属性
      * @param foreign     联表方式
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 联表条件对象
      */
     <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, Foreign foreign,
@@ -452,6 +480,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param alias    别名
      * @param foreign  联表方式
      * @param function lambda function对象
+     * @param <E>      泛型类型
      * @return 联表条件对象
      */
     default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, Foreign foreign,
@@ -466,6 +495,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param reference 引用属性
      * @param foreign   联表方式
      * @param function  lambda function对象
+     * @param <E>       泛型类型
      * @return 联表条件对象
      */
     <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, Foreign foreign,
@@ -699,6 +729,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * 创建子查询联表条件对象
      * @param subCriteria 子查询条件对象
      * @param master      主表属性
+     * @param joinMode    连接模式
      * @param foreign     副表属性
      * @param function    lambda function对象
      * @param <E>         泛型类型
@@ -715,6 +746,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
+     * @param joinMode    连接模式
      * @param function    lambda function对象
      * @param <E>         泛型类型
      * @return 联表条件对象
@@ -730,6 +762,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
+     * @param joinMode    连接模式
      * @param function    lambda function对象
      * @param <E>         泛型类型
      * @return 联表条件对象
@@ -912,6 +945,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master      主表属性
      * @param foreign     副表属性
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign,
@@ -926,6 +960,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master      主表属性
      * @param foreign     副表属性
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String master, String foreign,
@@ -941,6 +976,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master      主表属性
      * @param foreign     副表属性
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String reference, R master, Property<E, ?> foreign,
@@ -956,6 +992,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master      主表属性
      * @param foreign     副表属性
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String reference, String master, String foreign,
@@ -971,6 +1008,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign     副表属性
      * @param joinMode    连接方式
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign,
@@ -986,6 +1024,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign     副表属性
      * @param joinMode    连接方式
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String master, String foreign,
@@ -1002,6 +1041,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign     副表属性
      * @param joinMode    连接方式
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String reference, R master, Property<E, ?> foreign,
@@ -1019,6 +1059,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign     副表属性
      * @param joinMode    连接方式
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String reference, String master, String foreign,
@@ -1034,6 +1075,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master      主表属性
      * @param foreign     副表属性
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign,
@@ -1048,6 +1090,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master      主表属性
      * @param foreign     副表属性
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String master, String foreign,
@@ -1063,6 +1106,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master      主表属性
      * @param foreign     副表属性
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String reference, R master, Property<E, ?> foreign,
@@ -1078,6 +1122,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master      主表属性
      * @param foreign     副表属性
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String reference, String master, String foreign,
@@ -1093,6 +1138,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign     副表属性
      * @param joinMode    连接方式
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign, JoinMode joinMode,
@@ -1108,6 +1154,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign     副表属性
      * @param joinMode    连接方式
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String master, String foreign, JoinMode joinMode,
@@ -1124,6 +1171,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign     副表属性
      * @param joinMode    连接方式
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String reference, R master, Property<E, ?> foreign,
@@ -1141,6 +1189,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign     副表属性
      * @param joinMode    连接方式
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String reference, String master, String foreign,
@@ -1154,6 +1203,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param alias       别名
      * @param foreign     联表方式
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, Foreign foreign, Criterion<?>... withClauses ) {
@@ -1167,6 +1217,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param reference   引用属性
      * @param foreign     联表方式
      * @param withClauses 条件数组
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String reference, Foreign foreign,
@@ -1180,6 +1231,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param alias       别名
      * @param foreign     联表方式
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, Foreign foreign,
@@ -1194,6 +1246,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param reference   引用属性
      * @param foreign     联表方式
      * @param withClauses 条件集合
+     * @param <E>         泛型类型
      * @return 当前对象
      */
     <E> Context addForeign( Class<E> entity, String alias, String reference, Foreign foreign,
@@ -1206,6 +1259,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master   主表属性
      * @param foreign  副表属性
      * @param function lambda function对象
+     * @param <E>      泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign,
@@ -1220,6 +1274,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master   主表属性
      * @param foreign  副表属性
      * @param function lambda function对象
+     * @param <E>      泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String master, String foreign,
@@ -1235,6 +1290,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master    主表属性
      * @param foreign   副表属性
      * @param function  lambda function对象
+     * @param <E>       泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String reference, R master, Property<E, ?> foreign,
@@ -1250,6 +1306,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param master    主表属性
      * @param foreign   副表属性
      * @param function  lambda function对象
+     * @param <E>       泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String reference, String master, String foreign,
@@ -1265,6 +1322,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign  副表属性
      * @param joinMode 连接方式
      * @param function lambda function对象
+     * @param <E>      泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign, JoinMode joinMode,
@@ -1280,6 +1338,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign  副表属性
      * @param joinMode 连接方式
      * @param function lambda function对象
+     * @param <E>      泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String master, String foreign, JoinMode joinMode,
@@ -1296,6 +1355,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign   副表属性
      * @param joinMode  连接方式
      * @param function  lambda function对象
+     * @param <E>       泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String reference, R master,
@@ -1314,6 +1374,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param foreign   副表属性
      * @param joinMode  连接方式
      * @param function  lambda function对象
+     * @param <E>       泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, String reference, String master, String foreign,
@@ -1328,6 +1389,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param alias    别名
      * @param foreign  联表方式
      * @param function lambda function对象
+     * @param <E>      泛型类型
      * @return 当前对象
      */
     default <E> Context addForeign( Class<E> entity, String alias, Foreign foreign,
@@ -1342,6 +1404,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param reference 引用属性
      * @param foreign   联表方式
      * @param function  lambda function对象
+     * @param <E>       泛型类型
      * @return 当前对象
      */
     <E> Context addForeign( Class<E> entity, String alias, String reference, Foreign foreign,
@@ -1608,6 +1671,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
+     * @param joinMode    连接模式
      * @param function    lambda function对象
      * @param <E>         泛型类型
      * @return 联表条件对象
@@ -1622,6 +1686,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
+     * @param joinMode    连接模式
      * @param function    lambda function对象
      * @param <E>         泛型类型
      * @return 联表条件对象
@@ -1636,6 +1701,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
      * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
+     * @param joinMode    连接模式
      * @param function    lambda function对象
      * @param <E>         泛型类型
      * @return 联表条件对象

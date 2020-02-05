@@ -124,10 +124,10 @@ interface InsertService<T> {
      * 批量保存
      * <p>
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{@link org.apache.ibatis.session.SqlSession}
-     * 是由{@link org.mybatis.spring.SqlSessionUtils}创建的，需要注意以下问题: <br/>
+     * 是由{@link org.mybatis.spring.SqlSessionUtils}创建的，需要注意以下问题: <br>
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、在执行批量操作前，当前事务下executorType不为BATCH类型，
      * 则无法获取到{@link org.apache.ibatis.session.SqlSession}出现NPE异常，建议将{@link org.mybatis.spring.SqlSessionTemplate}
-     * 中的`SIMPLE`模式修改为`BATCH`模式，或者如果可以的话，将批量操作放置其他增删改操作之前.<br/>
+     * 中的`SIMPLE`模式修改为`BATCH`模式，或者如果可以的话，将批量操作放置其他增删改操作之前.<br>
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、非`BATCH`模式可以使用{@link #batchSave(BatchDataBeanWrapper)}、
      * {@link #batchSaveNotWithAudit(BatchDataBeanWrapper)}方法
      * </p>
@@ -162,10 +162,10 @@ interface InsertService<T> {
      * 批量保存
      * <p>
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{@link org.apache.ibatis.session.SqlSession}
-     * 是由{@link org.mybatis.spring.SqlSessionUtils}创建的，需要注意以下问题: <br/>
+     * 是由{@link org.mybatis.spring.SqlSessionUtils}创建的，需要注意以下问题: <br>
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、在执行批量操作前，当前事务下executorType不为BATCH类型，
      * 则无法获取到{@link org.apache.ibatis.session.SqlSession}出现NPE异常，建议将{@link org.mybatis.spring.SqlSessionTemplate}
-     * 中的`SIMPLE`模式修改为`BATCH`模式，或者如果可以的话，将批量操作放置其他增删改操作之前.<br/>
+     * 中的`SIMPLE`模式修改为`BATCH`模式，或者如果可以的话，将批量操作放置其他增删改操作之前.<br>
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、非`BATCH`模式可以使用{@link #batchSave(BatchDataBeanWrapper)}、
      * {@link #batchSaveNotWithAudit(BatchDataBeanWrapper)}方法
      * </p>

@@ -34,6 +34,7 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
 
     /**
      * 设置自定义返回值类型
+     * @param resultType 返回值类型
      * @return 当前对象
      */
     Criteria<T> resultType( Class<?> resultType );
@@ -271,6 +272,7 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
      * ASC排序
      * @param alias      联表条件对象别名
      * @param properties 属性
+     * @param <E>        泛型类型
      * @return 当前对象
      */
     @SuppressWarnings( "unchecked" )
@@ -331,6 +333,7 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
      * DESC排序
      * @param alias      联表条件对象别名
      * @param properties 属性
+     * @param <E>        泛型类型
      * @return 当前对象
      */
     @SuppressWarnings( "unchecked" )
@@ -391,6 +394,7 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
      * 分组
      * @param alias      联表条件对象别名
      * @param properties 属性
+     * @param <E>        泛型类型
      * @return 当前对象
      */
     @SuppressWarnings( "unchecked" )

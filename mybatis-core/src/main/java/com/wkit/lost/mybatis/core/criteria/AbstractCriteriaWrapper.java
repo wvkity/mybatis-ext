@@ -1979,6 +1979,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     /**
      * 创建实例对象
      * @param parameterSequence      参数序号生成
+     * @param aliasSequence          别名序号生成
      * @param parameterValueMappings 参数值映射
      * @param segmentManager         SQL片段管理器
      * @return {@code this}

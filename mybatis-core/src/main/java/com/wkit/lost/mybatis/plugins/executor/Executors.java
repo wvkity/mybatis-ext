@@ -92,8 +92,9 @@ public abstract class Executors {
      * @param rowBounds     分页参数
      * @param resultHandler 返回值处理类
      * @param cacheKey      缓存Key
+     * @param <E>           泛型类型
      * @return 多条记录
-     * @throws SQLException \n
+     * @throws SQLException SQL异常
      */
     public static <E> List<E> executeQueryPageableOfCustom( Dialect dialect, Executor executor, MappedStatement statement, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql, CacheKey cacheKey ) throws SQLException {
         // 检查是否需要进行分页查询

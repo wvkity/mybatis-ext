@@ -9,6 +9,7 @@ public interface CriteriaSearch {
     /**
      * 搜索{@link ForeignCriteria}对象
      * @param alias 别名
+     * @param <E>   泛型类型
      * @return {@link ForeignCriteria}对象
      */
     <E> ForeignCriteria<E> searchForeign( String alias );

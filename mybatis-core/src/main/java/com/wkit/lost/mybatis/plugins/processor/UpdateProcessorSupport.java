@@ -32,6 +32,7 @@ public abstract class UpdateProcessorSupport extends Processor {
      * @param ms         {@link MappedStatement}
      * @param parameter  方法参数
      * @return 方法执行结果
+     * @throws Throwable 异常信息
      */
     protected abstract Object doProceed( Invocation invocation, MappedStatement ms, Object parameter ) throws Throwable;
 }

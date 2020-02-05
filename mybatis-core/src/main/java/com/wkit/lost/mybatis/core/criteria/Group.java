@@ -90,6 +90,7 @@ public class Group<T> implements Segment {
      * @param master     条件对象
      * @param properties 属性
      * @param <T>        泛型类型
+     * @param <E>        泛型类型
      * @return 分组对象
      */
     public static <T, E> Group<E> group( String alias, Criteria<T> master, String... properties ) {
@@ -102,6 +103,7 @@ public class Group<T> implements Segment {
      * @param master     条件对象
      * @param properties 属性
      * @param <T>        泛型类型
+     * @param <E>        泛型类型
      * @return 分组对象
      */
     @SafeVarargs
@@ -116,6 +118,7 @@ public class Group<T> implements Segment {
      * @param master     条件对象
      * @param properties 属性
      * @param <T>        泛型类型
+     * @param <E>        泛型类型
      * @return 分组对象
      */
     public static <T, E> Group<E> group( String alias, Criteria<T> master, Collection<String> properties ) {

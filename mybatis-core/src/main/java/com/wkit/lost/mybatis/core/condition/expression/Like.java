@@ -48,6 +48,7 @@ public class Like<T> extends AbstractExpression<T> {
      * 构造方法
      * @param property 属性
      * @param value    值
+     * @param logic    逻辑操作符
      */
     public Like( String property, String value, Logic logic ) {
         this( property, value, MatchMode.ANYWHERE, logic );
@@ -168,6 +169,7 @@ public class Like<T> extends AbstractExpression<T> {
      * @param property  属性
      * @param value     值
      * @param matchMode 匹配模式
+     * @param logic     逻辑操作符
      */
     public Like( Criteria<T> criteria, String property, String value, MatchMode matchMode, Logic logic ) {
         this( criteria, property, value, matchMode, null, logic );

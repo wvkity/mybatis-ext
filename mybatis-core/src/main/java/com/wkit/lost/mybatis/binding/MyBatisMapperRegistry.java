@@ -66,8 +66,6 @@ public class MyBatisMapperRegistry extends MapperRegistry {
 
     /**
      * {@inheritDoc}
-     * @return 接口集合
-     * @see 3.2.2
      */
     @Override
     public Collection<Class<?>> getMappers() {

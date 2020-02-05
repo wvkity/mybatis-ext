@@ -4,8 +4,8 @@ import com.wkit.lost.mybatis.lambda.LambdaResolver;
 
 /**
  * BETWEEN范围条件接口
- * @param <Context>
- * @param <R>
+ * @param <Context> 当前对象
+ * @param <R>       lambda对象
  */
 public interface Between<Context, R> extends LambdaResolver<R> {
 

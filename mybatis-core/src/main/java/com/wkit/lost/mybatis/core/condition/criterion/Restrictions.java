@@ -707,6 +707,7 @@ public final class Restrictions {
      * LIKE条件
      * @param property 属性
      * @param value    值
+     * @param <T>      泛型类型
      * @return 条件对象
      */
     public static <T> Like<T> like( String property, String value ) {
@@ -718,6 +719,7 @@ public final class Restrictions {
      * @param property 属性
      * @param value    值
      * @param logic    连接方式
+     * @param <T>      泛型类型
      * @return 条件对象
      */
     public static <T> Like<T> like( String property, String value, Logic logic ) {
@@ -729,6 +731,7 @@ public final class Restrictions {
      * @param property 属性
      * @param value    值
      * @param escape   转移字符
+     * @param <T>      泛型类型
      * @return 条件对象
      */
     public static <T> Like<T> like( String property, String value, Character escape ) {
@@ -740,6 +743,7 @@ public final class Restrictions {
      * @param property  属性
      * @param value     值
      * @param matchMode 匹配模式
+     * @param <T>       泛型类型
      * @return 条件对象
      */
     public static <T> Like<T> like( String property, String value, MatchMode matchMode ) {
@@ -752,6 +756,7 @@ public final class Restrictions {
      * @param value    值
      * @param escape   转移字符
      * @param logic    连接方式
+     * @param <T>      泛型类型
      * @return 条件对象
      */
     public static <T> Like<T> like( String property, String value, Character escape, Logic logic ) {
@@ -764,6 +769,7 @@ public final class Restrictions {
      * @param value     值
      * @param matchMode 匹配模式
      * @param logic     连接方式
+     * @param <T>       泛型类型
      * @return 条件对象
      */
     public static <T> Like<T> like( String property, String value, MatchMode matchMode, Logic logic ) {
@@ -776,6 +782,7 @@ public final class Restrictions {
      * @param value     值
      * @param matchMode 匹配模式
      * @param escape    转移字符
+     * @param <T>       泛型类型
      * @return 条件对象
      */
     public static <T> Like<T> like( String property, String value, MatchMode matchMode, Character escape ) {
@@ -789,6 +796,7 @@ public final class Restrictions {
      * @param matchMode 匹配模式
      * @param escape    转移字符
      * @param logic     连接方式
+     * @param <T>       泛型类型
      * @return 条件对象
      */
     public static <T> Like<T> like( String property, String value, MatchMode matchMode, Character escape, Logic logic ) {
@@ -800,6 +808,7 @@ public final class Restrictions {
      * @param criteria 查询条件对象
      * @param property 属性
      * @param value    值
+     * @param <T>      泛型类型
      * @return 条件对象
      */
     public static <T> Like<T> like( Criteria<T> criteria, String property, String value ) {
@@ -812,6 +821,7 @@ public final class Restrictions {
      * @param property 属性
      * @param value    值
      * @param logic    连接方式
+     * @param <T>      泛型类型
      * @return 条件对象
      */
     public static <T> Like<T> like( Criteria<T> criteria, String property, String value, Logic logic ) {
@@ -824,6 +834,7 @@ public final class Restrictions {
      * @param property 属性
      * @param value    值
      * @param escape   转移字符
+     * @param <T>      泛型类型
      * @return 条件对象
      */
     public static <T> Like<T> like( Criteria<T> criteria, String property, String value, Character escape ) {
@@ -836,6 +847,7 @@ public final class Restrictions {
      * @param property  属性
      * @param value     值
      * @param matchMode 匹配模式
+     * @param <T>       泛型类型
      * @return 条件对象
      */
     public static <T> Like<T> like( Criteria<T> criteria, String property, String value, MatchMode matchMode ) {
@@ -849,6 +861,7 @@ public final class Restrictions {
      * @param value    值
      * @param escape   转移字符
      * @param logic    连接方式
+     * @param <T>      泛型类型
      * @return 条件对象
      */
     public static <T> Like<T> like( Criteria<T> criteria, String property, String value, Character escape, Logic logic ) {
@@ -862,6 +875,7 @@ public final class Restrictions {
      * @param value     值
      * @param matchMode 匹配模式
      * @param logic     连接方式
+     * @param <T>       泛型类型
      * @return 条件对象
      */
     public static <T> Like<T> like( Criteria<T> criteria, String property, String value, MatchMode matchMode, Logic logic ) {
@@ -875,6 +889,7 @@ public final class Restrictions {
      * @param value     值
      * @param matchMode 匹配模式
      * @param escape    转移字符
+     * @param <T>       泛型类型
      * @return 条件对象
      */
     public static <T> Like<T> like( Criteria<T> criteria, String property, String value, MatchMode matchMode, Character escape ) {
@@ -889,6 +904,7 @@ public final class Restrictions {
      * @param matchMode 匹配模式
      * @param escape    转移字符
      * @param logic     连接方式
+     * @param <T>       泛型类型
      * @return 条件对象
      */
     public static <T> Like<T> like( Criteria<T> criteria, String property, String value, MatchMode matchMode, Character escape, Logic logic ) {

@@ -31,6 +31,7 @@ public class ForeignSubCriteria<T> extends ForeignCriteria<T> {
      * @param subCriteria 子查询条件对象
      * @param master      主表查询对象
      * @param foreign     连接方式
+     * @param <E>         泛型类型
      */
     public <E> ForeignSubCriteria( SubCriteria<T> subCriteria, AbstractQueryCriteria<E> master, Foreign foreign ) {
         this( subCriteria, null, master, foreign, null );
@@ -42,6 +43,7 @@ public class ForeignSubCriteria<T> extends ForeignCriteria<T> {
      * @param reference   引用属性
      * @param master      主表查询对象
      * @param foreign     连接方式
+     * @param <E>         泛型类型
      */
     public <E> ForeignSubCriteria( SubCriteria<T> subCriteria, String reference, AbstractQueryCriteria<E> master,
                                    Foreign foreign ) {
@@ -54,6 +56,7 @@ public class ForeignSubCriteria<T> extends ForeignCriteria<T> {
      * @param master      主表查询对象
      * @param foreign     连接方式
      * @param withClauses 条件
+     * @param <E>         泛型类型
      */
     public <E> ForeignSubCriteria( SubCriteria<T> subCriteria, AbstractQueryCriteria<E> master, Foreign foreign,
                                    Collection<Criterion<?>> withClauses ) {
@@ -67,6 +70,7 @@ public class ForeignSubCriteria<T> extends ForeignCriteria<T> {
      * @param master      主表查询对象
      * @param foreign     连接方式
      * @param withClauses 条件
+     * @param <E>         泛型类型
      */
     public <E> ForeignSubCriteria( SubCriteria<T> subCriteria, String reference, AbstractQueryCriteria<E> master,
                                    Foreign foreign, Collection<Criterion<?>> withClauses ) {

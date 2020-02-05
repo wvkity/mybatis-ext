@@ -175,6 +175,7 @@ public class Order<T> implements Segment {
      * ASC排序
      * @param criteria   查询对象
      * @param properties 属性
+     * @param <T>        泛型类型
      * @return 排序对象
      */
     @SafeVarargs
@@ -186,6 +187,7 @@ public class Order<T> implements Segment {
      * ASC排序
      * @param criteria   查询对象
      * @param properties 属性
+     * @param <T>        泛型类型
      * @return 排序对象
      */
     public static <T> Order<T> asc( Criteria<T> criteria, String... properties ) {
@@ -196,6 +198,7 @@ public class Order<T> implements Segment {
      * ASC排序
      * @param criteria   查询对象
      * @param properties 属性
+     * @param <T>        泛型类型
      * @return 排序对象
      */
     public static <T> Order<T> asc( Criteria<T> criteria, List<String> properties ) {
@@ -251,6 +254,7 @@ public class Order<T> implements Segment {
      * DESC排序
      * @param criteria   查询对象
      * @param properties 属性
+     * @param <T>        泛型类型
      * @return 排序对象
      */
     @SafeVarargs
@@ -262,6 +266,7 @@ public class Order<T> implements Segment {
      * DESC排序
      * @param criteria   查询对象
      * @param properties 属性
+     * @param <T>        泛型类型
      * @return 排序对象
      */
     public static <T> Order<T> desc( Criteria<T> criteria, String... properties ) {
@@ -272,6 +277,7 @@ public class Order<T> implements Segment {
      * DESC排序
      * @param criteria   查询对象
      * @param properties 属性
+     * @param <T>        泛型类型
      * @return 排序对象
      */
     public static <T> Order<T> desc( Criteria<T> criteria, List<String> properties ) {
@@ -283,6 +289,7 @@ public class Order<T> implements Segment {
      * @param alias      联表对象别名
      * @param master     主查询对象
      * @param properties 属性
+     * @param <T>        泛型类型
      * @return 排序对象
      */
     public static <T> Order<T> asc( String alias, Criteria<T> master, String... properties ) {
@@ -294,6 +301,8 @@ public class Order<T> implements Segment {
      * @param alias      联表对象别名
      * @param master     主查询对象
      * @param properties 属性
+     * @param <T>        泛型类型
+     * @param <E>        泛型类型
      * @return 排序对象
      */
     @SafeVarargs
@@ -307,6 +316,7 @@ public class Order<T> implements Segment {
      * @param alias      联表对象别名
      * @param master     主查询对象
      * @param properties 属性
+     * @param <T>        泛型类型
      * @return 排序对象
      */
     public static <T> Order<T> asc( String alias, Criteria<T> master, List<String> properties ) {
@@ -318,6 +328,8 @@ public class Order<T> implements Segment {
      * @param alias      联表对象别名
      * @param master     主查询对象
      * @param properties 属性
+     * @param <T>        泛型类型
+     * @param <E>        泛型类型
      * @return 排序对象
      */
     @SafeVarargs
@@ -331,6 +343,7 @@ public class Order<T> implements Segment {
      * @param alias      联表对象别名
      * @param master     主查询对象
      * @param properties 属性
+     * @param <T>        泛型类型
      * @return 排序对象
      */
     public static <T> Order<T> desc( String alias, Criteria<T> master, String... properties ) {
@@ -342,6 +355,7 @@ public class Order<T> implements Segment {
      * @param alias      联表对象别名
      * @param master     主查询对象
      * @param properties 属性
+     * @param <T>        泛型类型
      * @return 排序对象
      */
     public static <T> Order<T> desc( String alias, Criteria<T> master, List<String> properties ) {

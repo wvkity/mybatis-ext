@@ -61,6 +61,7 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
      * @param alias       表别名
      * @param master      主表查询对象
      * @param foreign     连接方式
+     * @param <E>         泛型类型
      */
     public <E> ForeignCriteria( Class<T> entityClass, String alias, AbstractQueryCriteria<E> master, Foreign foreign ) {
         this( entityClass, alias, null, master, foreign, null );
@@ -73,6 +74,7 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
      * @param reference   引用属性
      * @param master      主表查询对象
      * @param foreign     连接方式
+     * @param <E>         泛型类型
      */
     public <E> ForeignCriteria( Class<T> entityClass, String alias, String reference, AbstractQueryCriteria<E> master,
                                 Foreign foreign ) {
@@ -86,6 +88,7 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
      * @param master      主表查询对象
      * @param foreign     连接方式
      * @param withClauses 条件
+     * @param <E>         泛型类型
      */
     public <E> ForeignCriteria( Class<T> entityClass, String alias, AbstractQueryCriteria<E> master, Foreign foreign,
                                 Collection<Criterion<?>> withClauses ) {
@@ -100,6 +103,7 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
      * @param master      主表查询对象
      * @param foreign     连接方式
      * @param withClauses 条件
+     * @param <E>         泛型类型
      */
     public <E> ForeignCriteria( Class<T> entityClass, String alias, String reference, AbstractQueryCriteria<E> master,
                                 Foreign foreign, Collection<Criterion<?>> withClauses ) {
