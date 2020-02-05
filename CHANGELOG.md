@@ -21,5 +21,7 @@ UnifyServiceExecutor更名为ServiceExecutor
 - 废除旧的实体解析器、属性解析器、表映射类、字段类、属性类，新增对应的类，优化实体解析
 - 查询条件类统一移至criteria包下
 - 修复SQL映射写死换行符bug
+- criteria查询条件对象添加默认别名
+- 修复连接子查询时使用子查询别名bug
 
 

@@ -473,7 +473,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param joinMode    连接方式
@@ -487,7 +487,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param joinMode    连接方式
@@ -501,7 +501,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param joinMode    连接方式
@@ -515,7 +515,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param joinMode    连接方式
@@ -530,7 +530,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param joinMode    连接方式
@@ -545,7 +545,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param joinMode    连接方式
@@ -560,7 +560,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -575,7 +575,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -590,7 +590,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -605,7 +605,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -623,7 +623,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -639,7 +639,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -655,7 +655,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param function    lambda function对象
@@ -669,7 +669,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param function    lambda function对象
@@ -683,7 +683,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param function    lambda function对象
@@ -697,7 +697,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param function    lambda function对象
@@ -712,7 +712,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param function    lambda function对象
@@ -727,7 +727,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param function    lambda function对象
@@ -742,7 +742,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -758,7 +758,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -774,7 +774,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -790,7 +790,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -808,7 +808,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -826,7 +826,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -843,7 +843,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param foreign     联表方式
      * @param function    lambda function对象
      * @param <E>         泛型类型
@@ -856,7 +856,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param foreign     联表方式
      * @param withClauses 条件
      * @param <E>         泛型类型
@@ -869,7 +869,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param foreign     联表方式
      * @param withClauses 条件
@@ -883,7 +883,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param foreign     联表方式
      * @param withClauses 条件
@@ -895,7 +895,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 创建子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param foreign     联表方式
      * @param function    lambda function对象
@@ -1349,7 +1349,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param <E>         泛型类型
@@ -1361,7 +1361,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param <E>         泛型类型
@@ -1373,7 +1373,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param <E>         泛型类型
@@ -1385,7 +1385,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param joinMode    连接方式
@@ -1398,7 +1398,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param joinMode    连接方式
@@ -1411,7 +1411,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param joinMode    连接方式
@@ -1424,7 +1424,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param joinMode    连接方式
@@ -1439,7 +1439,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param joinMode    连接方式
@@ -1454,7 +1454,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param joinMode    连接方式
@@ -1469,7 +1469,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -1484,7 +1484,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -1499,7 +1499,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -1514,7 +1514,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -1531,7 +1531,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -1547,7 +1547,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -1563,7 +1563,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param function    lambda function对象
@@ -1577,7 +1577,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param function    lambda function对象
@@ -1591,7 +1591,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param function    lambda function对象
@@ -1605,7 +1605,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param function    lambda function对象
@@ -1619,7 +1619,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param function    lambda function对象
@@ -1633,7 +1633,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param master      主表属性
      * @param foreign     副表属性
      * @param function    lambda function对象
@@ -1647,7 +1647,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -1662,7 +1662,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -1677,7 +1677,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -1692,7 +1692,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -1709,7 +1709,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -1726,7 +1726,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param master      主表属性
      * @param foreign     副表属性
@@ -1742,7 +1742,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param foreign     联表方式
      * @param function    lambda function对象
      * @param <E>         泛型类型
@@ -1755,7 +1755,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param foreign     联表方式
      * @param withClauses 条件
      * @param <E>         泛型类型
@@ -1767,7 +1767,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param foreign     联表方式
      * @param withClauses 条件
@@ -1781,7 +1781,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param foreign     联表方式
      * @param withClauses 条件
@@ -1793,7 +1793,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
 
     /**
      * 添加子查询联表条件对象
-     * @param subCriteria 子查询对象
+     * @param subCriteria 子查询条件对象
      * @param reference   引用属性
      * @param foreign     联表方式
      * @param function    lambda function对象

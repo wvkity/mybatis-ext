@@ -60,7 +60,7 @@ abstract class PagingProcessor extends QueryProcessorSupport {
     public boolean filter( MappedStatement ms, Object parameter ) {
         Criteria<?> criteria = getCriteria( parameter );
         Pageable pageable = getPageable( parameter );
-        return pageable == null && Optional.ofNullable( criteria ).map( Criteria::isLimit ).orElse( false );
+        return pageable == null && Optional.ofNullable( criteria ).map( Criteria::isRange ).orElse( false );
     }
 
     /**

@@ -3,8 +3,12 @@ package com.wkit.lost.mybatis.core.criteria;
 import com.wkit.lost.mybatis.core.condition.ConditionManager;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
+import com.wkit.lost.mybatis.utils.Ascii;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.Collection;
@@ -20,6 +24,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SubCriteria<T> extends AbstractQueryCriteria<T> {
 
     private static final long serialVersionUID = 4463145832039884030L;
+
+    /**
+     * 关联查询条件对象
+     */
+    @Getter
+    @Setter( AccessLevel.PACKAGE )
+    private ForeignCriteria<?> foreignTarget;
 
     /**
      * 构造方法
@@ -136,6 +147,7 @@ public class SubCriteria<T> extends AbstractQueryCriteria<T> {
         this.master = master;
         this.subTempTabAlias = subTempTabAlias;
         this.parameterSequence = master.parameterSequence;
+        this.aliasSequence = master.aliasSequence;
         this.paramValueMappings = master.paramValueMappings;
         this.segmentManager = new SegmentManager();
         this.initMappingCache( this.entityClass.getName(), true );
@@ -146,6 +158,23 @@ public class SubCriteria<T> extends AbstractQueryCriteria<T> {
         if ( CollectionUtil.hasElement( withClauses ) ) {
             this.add( withClauses );
         }
+        this.initAlias();
+        getRootMaster().subCriteriaCache.put( this.subTempTabAlias, this );
+    }
+
+    @Override
+    protected void initAlias() {
+        if ( this.aliasSequence != null ) {
+            int index = -1;
+            if ( Ascii.isNullOrEmpty( this.alias ) ) {
+                index = this.aliasSequence.incrementAndGet();
+                this.alias = SQL_ALIAS_PREFIX + index;
+            }
+            if ( Ascii.isNullOrEmpty( this.subTempTabAlias ) ) {
+                this.subTempTabAlias = SQL_ALIAS_PREFIX + ( index == -1 ?
+                        this.aliasSequence.incrementAndGet() : index );
+            }
+        }
     }
 
     /**
@@ -155,10 +184,11 @@ public class SubCriteria<T> extends AbstractQueryCriteria<T> {
      * @param parameterValueMappings 参数值映射
      * @param segmentManager         SQL片段管理器
      */
-    private SubCriteria( Class<T> entityClass, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings,
-                         SegmentManager segmentManager ) {
+    private SubCriteria( Class<T> entityClass, AtomicInteger parameterSequence, AtomicInteger aliasSequence,
+                         Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
         this.entityClass = entityClass;
         this.parameterSequence = parameterSequence;
+        this.aliasSequence = aliasSequence;
         this.paramValueMappings = parameterValueMappings;
         this.segmentManager = segmentManager;
         this.initMappingCache( this.entityClass.getName(), true );
@@ -166,10 +196,10 @@ public class SubCriteria<T> extends AbstractQueryCriteria<T> {
     }
 
     @Override
-    protected AbstractQueryCriteria<T> instance( AtomicInteger parameterSequence,
+    protected AbstractQueryCriteria<T> instance( AtomicInteger parameterSequence, AtomicInteger aliasSequence,
                                                  Map<String, Object> parameterValueMappings,
                                                  SegmentManager segmentManager ) {
-        return new SubCriteria<>( entityClass, parameterSequence, parameterValueMappings, new SegmentManager() );
+        return new SubCriteria<>( entityClass, parameterSequence, aliasSequence, parameterValueMappings, new SegmentManager() );
     }
 
     @Override

@@ -11,6 +11,16 @@ public interface SubCriteriaBuilder<T> {
     /**
      * 创建子查询条件对象
      * @param entityClass     实体类
+     * @param <E>             泛型类型
+     * @return 子查询条件对象
+     */
+    default <E> SubCriteria<E> createSub( Class<E> entityClass ) {
+        return createSub( entityClass, null );
+    }
+
+    /**
+     * 创建子查询条件对象
+     * @param entityClass     实体类
      * @param subTempTabAlias 子查询别名
      * @param <E>             泛型类型
      * @return 子查询条件对象

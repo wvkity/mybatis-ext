@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.core.criteria;
 
 import com.wkit.lost.mybatis.core.condition.ConditionManager;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
+import com.wkit.lost.mybatis.utils.Ascii;
 import lombok.experimental.Accessors;
 
 import java.util.Map;
@@ -26,6 +27,7 @@ public class CriteriaImpl<T> extends AbstractModifyCriteria<T> {
         this.init();
         this.initMappingCache( this.entityClass.getName(), true );
         this.conditionManager = new ConditionManager<>( this );
+        this.initAlias();
     }
 
     /**
@@ -39,6 +41,7 @@ public class CriteriaImpl<T> extends AbstractModifyCriteria<T> {
         this.setAlias( alias );
         this.initMappingCache( this.entityClass.getName(), true );
         this.conditionManager = new ConditionManager<>( this );
+        this.initAlias();
     }
 
     /**
@@ -48,13 +51,16 @@ public class CriteriaImpl<T> extends AbstractModifyCriteria<T> {
      * @param parameterValueMappings 参数-值映射
      * @param segmentManager         SQL片段管理器
      */
-    private CriteriaImpl( Class<T> entityClass, AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
+    private CriteriaImpl( Class<T> entityClass, AtomicInteger parameterSequence, AtomicInteger aliasSequence,
+                          Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
         this.entityClass = entityClass;
         this.parameterSequence = parameterSequence;
+        this.aliasSequence = aliasSequence;
         this.paramValueMappings = parameterValueMappings;
         this.segmentManager = segmentManager;
         this.initMappingCache( this.entityClass.getName(), true );
         this.conditionManager = new ConditionManager<>( this );
+        this.initAlias();
     }
 
     @Override
@@ -63,7 +69,9 @@ public class CriteriaImpl<T> extends AbstractModifyCriteria<T> {
     }
 
     @Override
-    protected CriteriaImpl<T> instance( AtomicInteger parameterSequence, Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
-        return new CriteriaImpl<>( entityClass, parameterSequence, parameterValueMappings, new SegmentManager() );
+    protected CriteriaImpl<T> instance( AtomicInteger parameterSequence, AtomicInteger aliasSequence,
+                                        Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
+        return new CriteriaImpl<>( entityClass, parameterSequence, aliasSequence, parameterValueMappings,
+                new SegmentManager() );
     }
 }

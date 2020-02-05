@@ -78,7 +78,7 @@ public interface Query<T, Context> {
      * @return 当前对象
      */
     @SuppressWarnings( "unchecked" )
-    <E> Context queryFromSub( SubCriteria<E> subCriteria, Property<E, ?>... properties );
+    <E> Context subQuery( SubCriteria<E> subCriteria, Property<E, ?>... properties );
 
     /**
      * 添加子查询列
@@ -86,8 +86,8 @@ public interface Query<T, Context> {
      * @param columns     子查询列
      * @return 当前对象
      */
-    default Context queryFromSub( SubCriteria<?> subCriteria, String... columns ) {
-        return queryFromSub( subCriteria.getSubTempTabAlias(), columns );
+    default Context subQuery( SubCriteria<?> subCriteria, String... columns ) {
+        return subQuery( subCriteria.getSubTempTabAlias(), columns );
     }
 
     /**
@@ -96,25 +96,35 @@ public interface Query<T, Context> {
      * @param columns         子查询列
      * @return 当前对象
      */
-    Context queryFromSub( String subTempTabAlias, String... columns );
+    Context subQuery( String subTempTabAlias, String... columns );
 
     /**
      * 添加子查询列
      * @param subCriteria 子查询条件对象
-     * @param property  属性
-     * @param columnAlias 别名
+     * @param property    属性
+     * @param alias       列别名
      * @return 当前对象
      */
-    <E> Context queryFromSub( SubCriteria<E> subCriteria, Property<E, ?> property, String columnAlias );
+    <E> Context subQuery( SubCriteria<E> subCriteria, Property<E, ?> property, String alias );
 
     /**
      * 添加子查询列
      * @param subTempTabAlias 子查询别名
      * @param column          子查询列
-     * @param alias           别名
+     * @param alias           列别名
      * @return 当前对象
      */
-    Context queryFromSub( String subTempTabAlias, String column, String alias );
+    Context subQuery( String subTempTabAlias, String column, String alias );
+
+    /**
+     * 添加子查询列
+     * @param subCriteria 子查询条件对象
+     * @param column      列/属性
+     * @param alias       列别名
+     * @param <E>         泛型类型
+     * @return 当前对象
+     */
+    <E> Context subQuery( SubCriteria<E> subCriteria, String column, String alias );
 
     /**
      * 过滤查询列

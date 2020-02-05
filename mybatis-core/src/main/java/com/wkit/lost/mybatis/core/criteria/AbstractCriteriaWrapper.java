@@ -59,6 +59,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
 
     private static final String AND_OR_REGEX = "^(\\s*AND\\s+|\\s*OR\\s+)(.*)";
     private static final Pattern AND_OR_PATTERN = Pattern.compile( AND_OR_REGEX );
+    protected static final String SQL_ALIAS_PREFIX = "__self_";
 
     /**
      * 表名缓存
@@ -187,6 +188,11 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
      * 参数序号生成
      */
     protected AtomicInteger parameterSequence;
+
+    /**
+     * 别名序列生成
+     */
+    protected AtomicInteger aliasSequence;
 
     /**
      * 参数值映射
@@ -559,7 +565,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
 
     protected Context doIt( Function<Context, Context> function, boolean isAnd ) {
         // 创建实例
-        Context instance = instance( this.parameterSequence, this.paramValueMappings, new SegmentManager() );
+        Context instance = instance( this.parameterSequence, this.aliasSequence, this.paramValueMappings, new SegmentManager() );
         // 设置当前查询对象别名
         instance.useAlias( this.getAlias() );
         Context newInstance = function.apply( instance );
@@ -1713,7 +1719,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public boolean isLimit() {
+    public boolean isRange() {
         return ( start >= 0 && end > 0 ) || ( pageStart > 0 && pageEnd > 0 );
     }
 
@@ -1814,8 +1820,15 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
      */
     protected void init() {
         this.parameterSequence = new AtomicInteger( 0 );
+        this.aliasSequence = new AtomicInteger( 0 );
         this.paramValueMappings = new ConcurrentHashMap<>( 16 );
         this.segmentManager = new SegmentManager();
+    }
+
+    protected void initAlias() {
+        if ( this.aliasSequence != null && Ascii.isNullOrEmpty( this.alias ) ) {
+            this.alias = SQL_ALIAS_PREFIX + this.aliasSequence.incrementAndGet();
+        }
     }
 
     ColumnWrapper getOptimisticLockingColumn() {
@@ -1882,6 +1895,10 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
         return this.tableName;
     }
 
+    /**
+     * 从缓存中读取表名
+     * @return 表名
+     */
     private String getTableNameFromCache() {
         TableWrapper table = TableHandler.getTable( this.entityClass );
         String cacheTableName = TABLE_NAME_CACHE.get( table );
@@ -1916,6 +1933,11 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     public Context enableAlias( boolean enabled ) {
         this.enableAlias = enabled;
         return this.context;
+    }
+
+    @Override
+    public Context useAlias() {
+        return this.enableAlias( true );
     }
 
     @Override
@@ -1961,7 +1983,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
      * @param segmentManager         SQL片段管理器
      * @return {@code this}
      */
-    protected abstract Context instance( AtomicInteger parameterSequence, Map<String, Object>
+    protected abstract Context instance( AtomicInteger parameterSequence, AtomicInteger aliasSequence, Map<String, Object>
             parameterValueMappings, SegmentManager segmentManager );
 
     // endregion

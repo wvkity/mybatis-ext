@@ -78,6 +78,12 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
     Criteria<T> enableAlias( boolean enabled );
 
     /**
+     * 使用默认别名
+     * @return 当前对象
+     */
+    Criteria<T> useAlias();
+
+    /**
      * 使用别名
      * @param alias 别名
      * @return 当前对象
@@ -118,10 +124,10 @@ public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>
     Criteria<T> range( long pageStart, long pageEnd, long size );
 
     /**
-     * 是否执行limit查询
+     * 是否执行范围查询
      * @return true: 是 false: 否
      */
-    boolean isLimit();
+    boolean isRange();
 
     /**
      * Range方式

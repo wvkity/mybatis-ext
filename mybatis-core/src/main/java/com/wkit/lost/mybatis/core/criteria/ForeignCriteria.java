@@ -108,6 +108,7 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
         this.master = master;
         this.foreign = foreign;
         this.parameterSequence = master.parameterSequence;
+        this.aliasSequence = master.aliasSequence;
         this.paramValueMappings = master.paramValueMappings;
         this.segmentManager = new SegmentManager();
         if ( this.entityClass != null ) {
@@ -120,6 +121,7 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
         if ( CollectionUtil.hasElement( withClauses ) ) {
             this.add( withClauses );
         }
+        this.initAlias();
     }
 
     /**
@@ -129,10 +131,11 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
      * @param parameterValueMappings 参数-值映射
      * @param segmentManager         SQL片段管理器
      */
-    ForeignCriteria( Class<T> entity, AtomicInteger parameterSequence,
+    ForeignCriteria( Class<T> entity, AtomicInteger parameterSequence, AtomicInteger aliasSequence,
                      Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
         this.entityClass = entity;
         this.parameterSequence = parameterSequence;
+        this.aliasSequence = aliasSequence;
         this.paramValueMappings = parameterValueMappings;
         this.segmentManager = segmentManager;
         if ( entity != null ) {
@@ -157,9 +160,9 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
     }
 
     @Override
-    protected ForeignCriteria<T> instance( AtomicInteger parameterSequence,
+    protected ForeignCriteria<T> instance( AtomicInteger parameterSequence, AtomicInteger aliasSequence,
                                            Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
-        return new ForeignCriteria<>( entityClass, parameterSequence, parameterValueMappings, new SegmentManager() );
+        return new ForeignCriteria<>( entityClass, parameterSequence, aliasSequence, parameterValueMappings, new SegmentManager() );
     }
 
     @Override

@@ -84,14 +84,23 @@ public abstract class AbstractChainCriteriaWrapper<T, Context extends AbstractCh
      * @param property 属性名
      * @return 字段名
      */
-    private ColumnWrapper getColumn( String property ) {
+    protected ColumnWrapper getColumn( String property ) {
         if ( !this.initialized ) {
+            if ( this instanceof ForeignSubCriteria ) {
+                // 子查询联表条件
+                ForeignSubCriteria<?> foreign = ( ForeignSubCriteria<?> ) this;
+                ColumnWrapper wrapper = null;
+                if ( foreign.propertyForQueryCache != null && !foreign.propertyForQueryCache.isEmpty() ) {
+                    wrapper = foreign.propertyForQueryCache.getOrDefault( property, null );
+                }
+                if ( wrapper == null && foreign.subCriteria != null ) {
+                    return foreign.subCriteria.getColumn( property );
+                }
+                return wrapper;
+            }
             String entityName = this.entityClass.getName();
             initMappings( entityName );
         }
-        /*return Optional.ofNullable( this.columnMappingCache.get( property ) )
-                .orElseThrow( () -> new MyBatisException( "The field mapping information for the entity class cannot be found based on the `" + property + "` attribute. " +
-                        "Check to see if the attribute exists or is decorated using the @transient annotation." ) );*/
         ColumnWrapper column = this.columnMappingCache.get( property );
         if ( column == null ) {
             log.warn( "The field mapping information for the entity class({}) cannot be found based on the `{}` " +

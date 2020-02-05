@@ -5,6 +5,7 @@ import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
+import com.wkit.lost.mybatis.utils.Ascii;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.ColumnConvert;
 import com.wkit.lost.mybatis.utils.StringUtil;
@@ -18,7 +19,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
@@ -50,9 +53,14 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
     protected Map<String, String> propertyForQueryAliasCache = new ConcurrentSkipListMap<>();
 
     /**
+     * 子查询条件对象缓存
+     */
+    protected Map<String, SubCriteria<?>> subCriteriaCache = new ConcurrentSkipListMap<>();
+
+    /**
      * 子查询列缓存
      */
-    protected Map<String, Map<String, String>> columnForSubQueryCache = new ConcurrentSkipListMap<>();
+    protected Map<SubCriteria<?>, Map<String, String>> subQueryCache = new ConcurrentHashMap<>( 8 );
 
     /**
      * 排除列(属性)
@@ -111,20 +119,26 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
     }
 
     @Override
-    public AbstractQueryCriteria<T> queryFromSub( String subTempTabAlias, String... columns ) {
-        if ( StringUtil.hasText( subTempTabAlias ) && !ArrayUtil.isEmpty( columns ) ) {
-            Map<String, String> columnCache = this.columnForSubQueryCache.get( subTempTabAlias );
-            boolean notExists = columnCache == null;
-            if ( notExists ) {
-                columnCache = new LinkedHashMap<>();
+    public AbstractQueryCriteria<T> query( String property, String columnAlias ) {
+        if ( StringUtil.hasText( property ) ) {
+            ColumnWrapper column = searchColumn( property );
+            if ( column != null ) {
+                this.propertyForQueryCache.put( property, column );
+                this.propertyForQueryAliasCache.put( property, columnAlias );
             }
+        }
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteria<T> subQuery( String subTempTabAlias, String... columns ) {
+        if ( StringUtil.hasText( subTempTabAlias ) && !ArrayUtil.isEmpty( columns ) ) {
+            SubCriteria<?> subCriteria =
+                    getRootMaster().subCriteriaCache.getOrDefault( subTempTabAlias, null );
             for ( String column : columns ) {
                 if ( StringUtil.hasText( column ) ) {
-                    columnCache.put( column, "" );
+                    subQuery( subCriteria, column, "" );
                 }
-            }
-            if ( notExists ) {
-                this.columnForSubQueryCache.put( subTempTabAlias, columnCache );
             }
         }
         return this;
@@ -132,56 +146,44 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
 
     @SuppressWarnings( "unchecked" )
     @Override
-    public <E> AbstractQueryCriteria<T> queryFromSub( SubCriteria<E> subCriteria, Property<E, ?>... properties ) {
+    public <E> AbstractQueryCriteria<T> subQuery( SubCriteria<E> subCriteria, Property<E, ?>... properties ) {
         if ( subCriteria != null && !ArrayUtil.isEmpty( properties ) ) {
-            String tempTabAlias = subCriteria.getSubTempTabAlias();
-            Map<String, String> columnCache = this.columnForSubQueryCache.get( tempTabAlias );
-            boolean notExists = columnCache == null;
-            if ( notExists ) {
-                columnCache = new LinkedHashMap<>();
-            }
             for ( Property<E, ?> property : properties ) {
                 if ( property != null ) {
-                    ColumnWrapper column = subCriteria.searchColumn( methodToProperty( property ) );
-                    if ( column != null ) {
-                        columnCache.put( column.getColumn(), "" );
-                    }
+                    subQuery( subCriteria, subCriteria.methodToProperty( property ), null );
                 }
             }
-            if ( notExists ) {
-                this.columnForSubQueryCache.put( tempTabAlias, columnCache );
-            }
         }
         return this;
     }
 
     @Override
-    public <E> AbstractQueryCriteria<T> queryFromSub( SubCriteria<E> subCriteria, Property<E, ?> property, String columnAlias ) {
-        return queryFromSub( subCriteria.getSubTempTabAlias(), methodToProperty( property ), columnAlias );
+    public <E> AbstractQueryCriteria<T> subQuery( SubCriteria<E> subCriteria, Property<E, ?> property,
+                                                  String columnAlias ) {
+        return subQuery( subCriteria, subCriteria.methodToProperty( property ), columnAlias );
     }
 
     @Override
-    public AbstractQueryCriteria<T> queryFromSub( String subTempTabAlias, String column, String alias ) {
+    public AbstractQueryCriteria<T> subQuery( String subTempTabAlias, String column, String alias ) {
         if ( StringUtil.hasText( subTempTabAlias ) && StringUtil.hasText( column ) ) {
-            Map<String, String> map = columnForSubQueryCache.get( subTempTabAlias );
-            if ( map == null ) {
-                map = new LinkedHashMap<>( 8 );
-                map.put( column, alias );
-                columnForSubQueryCache.put( subTempTabAlias, map );
-            } else {
-                map.put( column, alias );
-            }
+            subQuery( this.subCriteriaCache.getOrDefault( subTempTabAlias, null ), column, alias );
         }
         return this;
     }
 
     @Override
-    public AbstractQueryCriteria<T> query( String property, String columnAlias ) {
-        if ( StringUtil.hasText( property ) ) {
-            ColumnWrapper column = searchColumn( property );
-            if ( column != null ) {
-                this.propertyForQueryCache.put( property, column );
-                this.propertyForQueryAliasCache.put( property, columnAlias );
+    public <E> AbstractQueryCriteria<T> subQuery( SubCriteria<E> subCriteria, String column, String alias ) {
+        if ( subCriteria != null && Ascii.hasText( column ) ) {
+            Map<String, String> columns = subQueryCache.getOrDefault( subCriteria, null );
+            String realColumn = Optional.ofNullable( subCriteria.searchColumn( column ) )
+                    .map( ColumnWrapper::getColumn )
+                    .orElse( column );
+            if ( columns == null ) {
+                columns = new LinkedHashMap<>( 8 );
+                columns.put( realColumn, Ascii.isNullOrEmpty( alias ) ? "" : alias );
+                subQueryCache.put( subCriteria, columns );
+            } else {
+                columns.put( realColumn, alias );
             }
         }
         return this;
@@ -302,9 +304,9 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
         if ( CollectionUtil.hasElement( foreignCriteriaSet ) ) {
             foreignCriteriaSet.stream()
                     .filter( Objects::nonNull )
-                    .forEach( foreignCriteria -> {
-                        Map<String, ColumnWrapper> foreignQueries = foreignCriteria.getQueryColumns();
-                        Map<String, String> queryAliasCache = foreignCriteria.propertyForQueryAliasCache;
+                    .forEach( it -> {
+                        Map<String, ColumnWrapper> foreignQueries = it.getQueryColumns();
+                        Map<String, String> queryAliasCache = it.propertyForQueryAliasCache;
                         if ( CollectionUtil.hasElement( foreignQueries ) ) {
                             for ( Map.Entry<String, ColumnWrapper> entry : foreignQueries.entrySet() ) {
                                 ColumnWrapper column = entry.getValue();
@@ -312,34 +314,38 @@ public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrap
                                 String realColumnAlias = queryAliasCache.get( property );
                                 if ( realColumnAlias == null ) {
                                     queryColumns.add( ColumnConvert.convertToQueryArg( column,
-                                            foreignCriteria.getAlias(), applyQuery ? foreignCriteria.getReference() : null,
-                                            applyQuery && foreignCriteria.isAutoMappingAlias() ) );
+                                            it.getAlias(), applyQuery ? it.getReference() : null,
+                                            applyQuery && it.isAutoMappingAlias() ) );
                                 } else {
                                     queryColumns.add( ColumnConvert.convertToQueryArg( column.getColumn(),
-                                            realColumnAlias, foreignCriteria.getAlias() ) );
+                                            realColumnAlias, it.getAlias() ) );
                                 }
                             }
                         }
                         // 子查询列
-                        loopSubQueries( foreignCriteria, queryColumns );
+                        loopSubQueries( it, queryColumns );
                     } );
         }
         return CollectionUtil.hasElement( queryColumns ) ? String.join( ", ", queryColumns ) : "";
     }
 
-    protected void loopSubQueries( AbstractQueryCriteria<?> queryCriteria, List<String> columnWrapper ) {
-        Map<String, Map<String, String>> subQueries = queryCriteria.columnForSubQueryCache;
+    protected void loopSubQueries( AbstractQueryCriteria<?> queryCriteria, List<String> queries ) {
+        Map<SubCriteria<?>, Map<String, String>> subQueries = queryCriteria.subQueryCache;
         if ( !subQueries.isEmpty() ) {
             // 遍历临时表
-            for ( Map.Entry<String, Map<String, String>> rootEntry : subQueries.entrySet() ) {
-                String tempTabAlias = rootEntry.getKey();
+            for ( Map.Entry<SubCriteria<?>, Map<String, String>> rootEntry : subQueries.entrySet() ) {
+                SubCriteria<?> criteria = rootEntry.getKey();
+                ForeignCriteria<?> foreign = criteria.getForeignTarget();
+                String defAlias = foreign.getAlias();
+                String tempTabAlias = foreign.subTempTabAlias;
+                String realAlias = Ascii.isNullOrEmpty( tempTabAlias ) ? defAlias : tempTabAlias;
                 Map<String, String> columns = rootEntry.getValue();
                 // 遍历查询字段
                 if ( !columns.isEmpty() ) {
                     for ( Map.Entry<String, String> columnEntry : columns.entrySet() ) {
                         String column = columnEntry.getKey();
-                        String alias = columnEntry.getValue();
-                        columnWrapper.add( ColumnConvert.convertToQueryArg( column, alias, tempTabAlias ) );
+                        String columnAlias = columnEntry.getValue();
+                        queries.add( ColumnConvert.convertToQueryArg( column, columnAlias, realAlias ) );
                     }
                 }
             }

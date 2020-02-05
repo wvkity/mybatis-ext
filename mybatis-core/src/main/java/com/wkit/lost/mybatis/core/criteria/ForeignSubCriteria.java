@@ -70,8 +70,10 @@ public class ForeignSubCriteria<T> extends ForeignCriteria<T> {
      */
     public <E> ForeignSubCriteria( SubCriteria<T> subCriteria, String reference, AbstractQueryCriteria<E> master,
                                    Foreign foreign, Collection<Criterion<?>> withClauses ) {
-        super( null, subCriteria.getSubTempTabAlias(), reference, master, foreign, withClauses );
+        // subCriteria.getSubTempTabAlias() 待定
+        super( null, null, reference, master, foreign, withClauses );
         this.subCriteria = subCriteria;
+        subCriteria.setForeignTarget( this );
     }
 
     /**
@@ -80,16 +82,16 @@ public class ForeignSubCriteria<T> extends ForeignCriteria<T> {
      * @param parameterValueMappings 参数-值映射
      * @param segmentManager         SQL片段管理器
      */
-    private ForeignSubCriteria( AtomicInteger parameterSequence,
+    private ForeignSubCriteria( AtomicInteger parameterSequence, AtomicInteger aliasSequence,
                                 Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
-        super( null, parameterSequence, parameterValueMappings, segmentManager );
+        super( null, parameterSequence, aliasSequence, parameterValueMappings, segmentManager );
         this.conditionManager = new ConditionManager<>( this );
     }
 
     @Override
-    protected ForeignSubCriteria<T> instance( AtomicInteger parameterSequence,
+    protected ForeignSubCriteria<T> instance( AtomicInteger parameterSequence, AtomicInteger aliasSequence,
                                               Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
-        return new ForeignSubCriteria<>( parameterSequence, parameterValueMappings, new SegmentManager() );
+        return new ForeignSubCriteria<>( parameterSequence, aliasSequence, parameterValueMappings, new SegmentManager() );
     }
 
     public String getTableSegment() {
