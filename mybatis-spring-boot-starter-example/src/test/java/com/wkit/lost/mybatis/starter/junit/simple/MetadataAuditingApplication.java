@@ -131,7 +131,7 @@ public class MetadataAuditingApplication extends RootTestRunner {
     @Test
     public void batchSaveTest2() {
         Grade grade = new Grade();
-        grade.setId( 7L ).setName( "X5" );
+        grade.setId( 9L ).setName( "X9" );
         int result = userService.testSave( grade, build( 3 ) );
         log.info( "执行结果: {}", result );
     }
@@ -151,6 +151,16 @@ public class MetadataAuditingApplication extends RootTestRunner {
         List<User> list =  build( 2 );
         Instant start = Instant.now();
         int result = userService.batchSaveNotWithAudit( list );
+        Instant end = Instant.now();
+        log.info( "耗时: {}", ChronoUnit.MILLIS.between( start, end ) );
+        log.info( "执行结果: {}", result );
+    }
+    
+    @Test
+    public void embeddedSaveTest() {
+        List<User> list =  build( 3 );
+        Instant start = Instant.now();
+        int result = userService.embeddedBatchSave( list );
         Instant end = Instant.now();
         log.info( "耗时: {}", ChronoUnit.MILLIS.between( start, end ) );
         log.info( "执行结果: {}", result );

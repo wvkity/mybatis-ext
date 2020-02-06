@@ -1,8 +1,8 @@
 package com.wkit.lost.mybatis.starter.junit.query;
 
 import com.alibaba.fastjson.JSON;
-import com.wkit.lost.mybatis.core.CriteriaImpl;
-import com.wkit.lost.mybatis.core.SubCriteria;
+import com.wkit.lost.mybatis.core.criteria.CriteriaImpl;
+import com.wkit.lost.mybatis.core.criteria.SubCriteria;
 import com.wkit.lost.mybatis.starter.example.entity.Grade;
 import com.wkit.lost.mybatis.starter.example.entity.Student;
 import com.wkit.lost.mybatis.starter.example.service.StudentService;

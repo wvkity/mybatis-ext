@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.starter.junit.update;
 
-import com.wkit.lost.mybatis.core.CriteriaImpl;
+import com.wkit.lost.mybatis.core.criteria.CriteriaImpl;
 import com.wkit.lost.mybatis.starter.example.entity.Student;
 import com.wkit.lost.mybatis.starter.example.service.StudentService;
 import com.wkit.lost.mybatis.starter.junit.RootTestRunner;

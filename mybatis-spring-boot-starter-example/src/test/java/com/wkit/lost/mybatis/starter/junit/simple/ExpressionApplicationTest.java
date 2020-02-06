@@ -1,8 +1,8 @@
 package com.wkit.lost.mybatis.starter.junit.simple;
 
-import com.wkit.lost.mybatis.core.CriteriaImpl;
-import com.wkit.lost.mybatis.core.Logic;
-import com.wkit.lost.mybatis.core.MatchMode;
+import com.wkit.lost.mybatis.core.criteria.CriteriaImpl;
+import com.wkit.lost.mybatis.core.criteria.Logic;
+import com.wkit.lost.mybatis.core.criteria.MatchMode;
 import com.wkit.lost.mybatis.core.condition.criterion.Restrictions;
 import com.wkit.lost.mybatis.core.condition.expression.Equal;
 import com.wkit.lost.mybatis.core.condition.expression.Like;

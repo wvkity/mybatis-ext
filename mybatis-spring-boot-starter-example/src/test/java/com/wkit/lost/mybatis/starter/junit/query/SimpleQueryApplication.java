@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.starter.junit.query;
 
-import com.wkit.lost.mybatis.core.CriteriaImpl;
+import com.wkit.lost.mybatis.core.criteria.CriteriaImpl;
 import com.wkit.lost.mybatis.starter.example.entity.Result;
 import com.wkit.lost.mybatis.starter.example.entity.Student;
 import com.wkit.lost.mybatis.starter.example.service.ResultService;
@@ -19,14 +19,14 @@ public class SimpleQueryApplication extends RootTestRunner {
 
     @Inject
     ResultService resultService;
-    
+
     @Inject
     StudentService studentService;
 
     @Test
     public void eqTest() {
-        CriteriaImpl<Result> resultCriteria = resultService.getCriteria( "RS" );
-        resultCriteria.eq( Result::getScore, 89 ).asc( "id" ).autoMappingColumnAlias();
+        CriteriaImpl<Result> resultCriteria = resultService.getCriteria();
+        resultCriteria.eq( Result::getScore, 89 ).asc( "id" ).useAlias();
         List<ResultVo> results = resultService.list( resultCriteria );
         log.info( "查询结果：{}", results );
     }
@@ -71,11 +71,11 @@ public class SimpleQueryApplication extends RootTestRunner {
                 .desc( "score", "subjectId" )
                 .asc( "examDate" )
                 .asc( "studentId" );
-                //.addOrder( Order.aliasAsc( "RS", "STUDENT_ID" ) );
+        //.addOrder( Order.aliasAsc( "RS", "STUDENT_ID" ) );
         List<ResultVo> results = resultService.list( resultCriteria.range( 0, 10 ) );
         log.info( "查询结果：{}", results );
     }
-    
+
     @Test
     public void templateTest() {
         CriteriaImpl<Student> criteria = studentService.getCriteria();

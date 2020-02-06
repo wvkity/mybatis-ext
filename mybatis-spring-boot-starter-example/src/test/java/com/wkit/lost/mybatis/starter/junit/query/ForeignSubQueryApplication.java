@@ -1,8 +1,9 @@
 package com.wkit.lost.mybatis.starter.junit.query;
 
 import com.alibaba.fastjson.JSON;
-import com.wkit.lost.mybatis.core.CriteriaImpl;
-import com.wkit.lost.mybatis.core.SubCriteria;
+import com.wkit.lost.mybatis.core.criteria.CriteriaImpl;
+import com.wkit.lost.mybatis.core.criteria.ForeignCriteria;
+import com.wkit.lost.mybatis.core.criteria.SubCriteria;
 import com.wkit.lost.mybatis.starter.example.entity.Grade;
 import com.wkit.lost.mybatis.starter.example.entity.Result;
 import com.wkit.lost.mybatis.starter.example.entity.Student;
@@ -42,17 +43,18 @@ public class ForeignSubQueryApplication extends RootTestRunner {
     @DisplayName( "测试子查询作为联表-1" )
     public void test1() {
         // 主表
-        CriteriaImpl<Student> studentCriteria = studentService.getCriteria( "sd" );
+        CriteriaImpl<Student> studentCriteria = studentService.getCriteria();
+        studentCriteria.useAlias();
         // 子查询
-        SubCriteria<Subject> subjectSubCriteria = studentCriteria.createSub( Subject.class, "sj" );
+        SubCriteria<Subject> subjectSubCriteria = studentCriteria.createSub( Subject.class, "" );
         subjectSubCriteria.createForeign( Grade.class, null, Subject::getGradeId, Grade::getId,
-                ctx -> ctx.in( Grade::getName, "S2", "Y2" ) ).appendTo();
+                ctx -> ctx.in( Grade::getName, "S2", "Y2" ) ).appendTo().useAlias();
         // 关联子查询
-        studentCriteria.addForeign( subjectSubCriteria, Student::getGradeId, Subject::getGradeId,
-                ctx -> ctx.setRelation( true ).ge( Subject::getHours, 55 ) );
+        ForeignCriteria<Subject> foreignCriteria = studentCriteria.createForeign( subjectSubCriteria, Student::getGradeId, Subject::getGradeId,
+                ctx -> ctx.setRelation( true ).ge( Subject::getHours, 55 ).useAlias() ).appendTo();
         // 关联分数查询
         studentCriteria.addForeign( Result.class, "rs", null, Student::getId, Result::getStudentId,
-                ctx -> ctx.eq( Result::getSubjectId, subjectSubCriteria, Subject.Fields.id ).ge( Result::getScore, 84 ).query( Result::getScore ));
+                ctx -> ctx.eq( Result::getSubjectId, foreignCriteria, Subject.Fields.id ).ge( Result::getScore, 84 ).query( Result::getScore ).useAlias() );
         // 结果
         List<StudentVo> result = studentService.list( studentCriteria );
         log.info( "查询学生结果: {}", JSON.toJSONString( result, true ) );
@@ -74,11 +76,36 @@ public class ForeignSubQueryApplication extends RootTestRunner {
         // 关联子查询
         studentCriteria.addForeign( subjectSubCriteria, Student::getGradeId, Subject::getGradeId,
                 ctx -> ctx.ge( Subject::getHours, 55 ) );
-        studentCriteria.queryFromSub( subjectSubCriteria, Subject::getId, "subjectId" )
-                .queryFromSub( subjectSubCriteria, Subject::getName, Subject::getHours, Subject::getGradeId );
+        studentCriteria.subQuery( subjectSubCriteria, Subject::getId, "subjectId" )
+                .subQuery( subjectSubCriteria, Subject::getName, Subject::getHours, Subject::getGradeId );
         // 关联分数
         studentCriteria.addForeign( Result.class, "rs", null, Student::getId, Result::getStudentId,
                 ctx -> ctx.eq( Result::getSubjectId, subjectSubCriteria, Subject.Fields.id )
+                        .ge( Result::getScore, 84 ).query( Result::getScore ) );
+        // List<StudentVo> result = studentService.list( studentCriteria );
+        List<Student> list = studentService.custom( studentCriteria.resultType( Student.class ) );
+        log.info( "查询学生结果: {}", JSON.toJSONString( list, true ) );
+    }
+
+    @Test
+    @DisplayName( "测试子查询作为联表-3" )
+    @SuppressWarnings( "unchecked" )
+    public void test3() {
+        // 主表
+        CriteriaImpl<Student> studentCriteria = studentService.getCriteria();
+        // 子查询
+        SubCriteria<Subject> subjectSubCriteria = studentCriteria.createSub( Subject.class );
+        subjectSubCriteria.addForeign( Grade.class, null, Subject::getGradeId, Grade::getId,
+                ctx -> ctx.in( Grade::getName, "S2", "Y2" ) );
+        // 关联子查询
+        ForeignCriteria<Subject> foreignCriteria = studentCriteria.createForeign( subjectSubCriteria, Student::getGradeId, Subject::getGradeId,
+                ctx -> ctx.ge( Subject::getHours, 55 ) ).appendTo();
+        foreignCriteria.setAlias( "_foreign_1" );
+        studentCriteria.subQuery( subjectSubCriteria, Subject::getId, "subjectId" )
+                .subQuery( subjectSubCriteria, Subject::getName, Subject::getHours, Subject::getGradeId );
+        // 关联分数
+        studentCriteria.addForeign( Result.class, "rs", null, Student::getId, Result::getStudentId,
+                ctx -> ctx.eq( Result::getSubjectId, foreignCriteria, Subject.Fields.id )
                         .ge( Result::getScore, 84 ).query( Result::getScore ) );
         // List<StudentVo> result = studentService.list( studentCriteria );
         List<Student> list = studentService.custom( studentCriteria.resultType( Student.class ) );

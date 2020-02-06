@@ -1,6 +1,7 @@
 package com.wkit.lost.mybatis.starter.example.entity;
 
 import com.wkit.lost.mybatis.annotation.GeneratedValue;
+import com.wkit.lost.mybatis.utils.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,7 +29,7 @@ public class Student implements Serializable {
     /**
      * 学生ID(学号)
      */
-    @GeneratedValue(generator = "WORKER_SEQUENCE_STRING")
+    @GeneratedValue(generator = Constants.GENERATOR_SNOWFLAKE_SEQUENCE )
     private String id;
 
     /**

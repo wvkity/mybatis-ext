@@ -46,9 +46,8 @@ lost:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
       #map-underscore-to-camel-case: false
     custom-configuration:
-      identity: false
-      worker: true
       #dialect: mysql
+      primary-key-type: snowflake_sequence
       jdbc-type-auto-mapping: true
       dialect: mysql
       plugins: 

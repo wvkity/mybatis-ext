@@ -1,9 +1,9 @@
 package com.wkit.lost.mybatis.starter.junit.query;
 
-import com.wkit.lost.mybatis.core.CriteriaImpl;
-import com.wkit.lost.mybatis.core.ForeignCriteria;
-import com.wkit.lost.mybatis.core.JoinMode;
-import com.wkit.lost.mybatis.core.SubCriteria;
+import com.wkit.lost.mybatis.core.criteria.CriteriaImpl;
+import com.wkit.lost.mybatis.core.criteria.ForeignCriteria;
+import com.wkit.lost.mybatis.core.criteria.JoinMode;
+import com.wkit.lost.mybatis.core.criteria.SubCriteria;
 import com.wkit.lost.mybatis.starter.example.entity.Grade;
 import com.wkit.lost.mybatis.starter.example.entity.Result;
 import com.wkit.lost.mybatis.starter.example.entity.Student;
