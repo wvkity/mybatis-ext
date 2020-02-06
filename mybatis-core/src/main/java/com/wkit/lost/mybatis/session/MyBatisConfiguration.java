@@ -3,6 +3,9 @@ package com.wkit.lost.mybatis.session;
 import com.wkit.lost.mybatis.binding.MyBatisMapperRegistry;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
+import com.wkit.lost.mybatis.executor.MyBatisBatchExecutor;
+import com.wkit.lost.mybatis.executor.MyBatisReuseExecutor;
+import com.wkit.lost.mybatis.executor.MyBatisSimpleExecutor;
 import com.wkit.lost.mybatis.executor.resultset.MyBatisResultSetHandler;
 import com.wkit.lost.mybatis.reflection.wrapper.MyBatisObjectWrapperFactory;
 import com.wkit.lost.mybatis.scripting.xmltags.MyBatisXMLLanguageDriver;
@@ -17,6 +20,7 @@ import com.wkit.lost.mybatis.type.handlers.StandardZonedDateTimeTypeHandler;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import org.apache.ibatis.executor.CachingExecutor;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.resultset.ResultSetHandler;
@@ -24,9 +28,11 @@ import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.scripting.LanguageDriver;
 import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.transaction.Transaction;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
 import java.time.Instant;
@@ -52,7 +58,7 @@ public class MyBatisConfiguration extends Configuration {
     @Getter
     @Setter
     private MyBatisCustomConfiguration customConfiguration = MyBatisConfigCache.defaults();
-    
+
     public MyBatisConfiguration() {
         super();
         setDefaultScriptingLanguage( MyBatisXMLLanguageDriver.class );
@@ -120,9 +126,31 @@ public class MyBatisConfiguration extends Configuration {
     }
 
     @Override
-    public ResultSetHandler newResultSetHandler( Executor executor, MappedStatement mappedStatement, RowBounds rowBounds, ParameterHandler parameterHandler, ResultHandler resultHandler, BoundSql boundSql ) {
-        ResultSetHandler resultSetHandler = new MyBatisResultSetHandler( executor, mappedStatement, parameterHandler, resultHandler, boundSql, rowBounds );
+    public ResultSetHandler newResultSetHandler( Executor executor, MappedStatement mappedStatement,
+                                                 RowBounds rowBounds, ParameterHandler parameterHandler,
+                                                 ResultHandler resultHandler, BoundSql boundSql ) {
+        ResultSetHandler resultSetHandler = new MyBatisResultSetHandler( executor, mappedStatement,
+                parameterHandler, resultHandler, boundSql, rowBounds );
         resultSetHandler = ( ResultSetHandler ) interceptorChain.pluginAll( resultSetHandler );
         return resultSetHandler;
+    }
+
+    @Override
+    public Executor newExecutor( Transaction transaction, ExecutorType executorType ) {
+        executorType = executorType == null ? defaultExecutorType : executorType;
+        executorType = executorType == null ? ExecutorType.SIMPLE : executorType;
+        Executor executor;
+        if ( ExecutorType.BATCH == executorType ) {
+            executor = new MyBatisBatchExecutor( this, transaction );
+        } else if ( ExecutorType.REUSE == executorType ) {
+            executor = new MyBatisReuseExecutor( this, transaction );
+        } else {
+            executor = new MyBatisSimpleExecutor( this, transaction );
+        }
+        if ( cacheEnabled ) {
+            executor = new CachingExecutor( executor );
+        }
+        executor = ( Executor ) interceptorChain.pluginAll( executor );
+        return executor;
     }
 }

@@ -1,5 +1,5 @@
 # CHANGELOG
-## [v1.0.1] 2020-01-21
+## [v1.0.1] 2020-02-06
 - 移除自动填充值相关类(MetaFilling、MetaObjectFillingInterceptor、MetaObjectFillingExecutor等)
 - 新增元数据审计类(data.auditing包下都是审计相关)替代自动填充值类，优化自动填充值功能
 - 主键、逻辑删除自动填充值功能已分离到其他的拦截器实现
@@ -7,7 +7,6 @@
 - MapperExecutor更名为MapperExecutorCallable，UnifyMapperExecutor更名为MapperExecutor，ServiceExecutor更名为ServiceExecutorCallable，
 UnifyServiceExecutor更名为ServiceExecutor
 - 优化自定义拦截器功能
-- 修复存在bug
 - 更改Mapper、Service部分方法名
 - 优化乐观锁拦截器
 - 修复存在的bug
@@ -23,5 +22,9 @@ UnifyServiceExecutor更名为ServiceExecutor
 - 修复SQL映射写死换行符bug
 - criteria查询条件对象添加默认别名
 - 修复连接子查询时使用子查询别名bug
-
-
+- LambdaResolver更名为LambdaConverter
+- InsertService更名为SaveService
+- 修复service层批量保存操作事务没交由spring托管
+- 重写BatchExecutor、SimpleExecutor、ReuseExecutor
+- 雪花算法开始时间戳调整至2020-01-25 00:00:00
+- 修复其他bug

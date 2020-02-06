@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.criteria;
 
-import com.wkit.lost.mybatis.lambda.LambdaResolver;
+import com.wkit.lost.mybatis.lambda.LambdaConverter;
 
 /**
  * 子查询条件
@@ -17,7 +17,7 @@ import com.wkit.lost.mybatis.lambda.LambdaResolver;
  * @param <R>       lambda对象
  * @author wvkity
  */
-public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, LambdaResolver<R> {
+public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, LambdaConverter<R> {
 
     /**
      * 主键等于

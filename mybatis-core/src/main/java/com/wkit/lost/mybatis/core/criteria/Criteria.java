@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.core.condition.AbstractConditionManager;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.function.Aggregation;
 import com.wkit.lost.mybatis.core.segment.Segment;
-import com.wkit.lost.mybatis.executor.resultset.ReturnType;
+import com.wkit.lost.mybatis.executor.resultset.EmbeddedResult;
 import com.wkit.lost.mybatis.lambda.Property;
 
 import java.util.Collection;
@@ -16,7 +16,7 @@ import java.util.function.Function;
  * @param <T> 泛型类型
  * @author wvkity
  */
-public interface Criteria<T> extends Segment, ReturnType, AggregationFunction<T>,
+public interface Criteria<T> extends Segment, EmbeddedResult, AggregationFunction<T>,
         Search<T>, ParamValuePlaceholderConverter {
 
     /**

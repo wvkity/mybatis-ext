@@ -10,12 +10,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Lambda对象解析类
+ * Lambda转换器(对象转属性)
  * @param <R> Lambda对象
  * @author wvkity
  */
 @FunctionalInterface
-public interface LambdaResolver<R> extends Serializable {
+public interface LambdaConverter<R> extends Serializable {
     
     /**
      * lambda对象转属性

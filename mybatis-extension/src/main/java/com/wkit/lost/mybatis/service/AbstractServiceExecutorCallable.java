@@ -55,10 +55,48 @@ public abstract class AbstractServiceExecutorCallable<Executor extends MapperExe
         return this.executor.insertNotWithNull( entity );
     }
 
+    @SuppressWarnings( { "unchecked" } )
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int batchSave( T... entities ) {
+        return batchSave( ArrayUtil.toList( entities ), DEFAULT_BATCH_SIZE );
+    }
+
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int batchSave( Collection<T> entities ) {
+        return batchSave( entities, DEFAULT_BATCH_SIZE );
+    }
+
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int batchSave( Collection<T> entities, int batchSize ) {
+        return batchSave( BatchDataBeanWrapper.wrap( entities, batchSize ) );
+    }
+
     @Transactional( rollbackFor = Exception.class )
     @Override
     public int batchSave( BatchDataBeanWrapper<T> wrapper ) {
         return executor.batchInsert( wrapper );
+    }
+
+    @SuppressWarnings( { "unchecked" } )
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int batchSaveNotWithAudit( T... entities ) {
+        return batchSaveNotWithAudit( ArrayUtil.toList( entities ), DEFAULT_BATCH_SIZE );
+    }
+
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int batchSaveNotWithAudit( Collection<T> entities ) {
+        return batchSaveNotWithAudit( entities, DEFAULT_BATCH_SIZE );
+    }
+
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int batchSaveNotWithAudit( Collection<T> entities, int batchSize ) {
+        return batchSaveNotWithAudit( BatchDataBeanWrapper.wrap( entities, batchSize ) );
     }
 
     @Transactional( rollbackFor = Exception.class )
@@ -67,10 +105,36 @@ public abstract class AbstractServiceExecutorCallable<Executor extends MapperExe
         return executor.batchInsertNotWithAudit( wrapper );
     }
 
+    @SuppressWarnings( { "unchecked" } )
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int embeddedBatchSave( T... entities ) {
+        return embeddedBatchSave( ArrayUtil.toList( entities ), DEFAULT_BATCH_SIZE );
+    }
+
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int embeddedBatchSave( Collection<T> entities ) {
+        return embeddedBatchSave( entities, DEFAULT_BATCH_SIZE );
+    }
+
     @Transactional( rollbackFor = Exception.class )
     @Override
     public int embeddedBatchSave( Collection<T> entities, int batchSize ) {
         return execBatchMethod( entities, batchSize, METHOD_INSERT );
+    }
+
+    @SuppressWarnings( { "unchecked" } )
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int embeddedBatchSaveNotWithNull( T... entities ) {
+        return embeddedBatchSaveNotWithNull( ArrayUtil.toList( entities ), DEFAULT_BATCH_SIZE );
+    }
+
+    @Transactional( rollbackFor = Exception.class )
+    @Override
+    public int embeddedBatchSaveNotWithNull( Collection<T> entities ) {
+        return embeddedBatchSaveNotWithNull( entities, DEFAULT_BATCH_SIZE );
     }
 
     @Transactional( rollbackFor = Exception.class )
@@ -307,7 +371,7 @@ public abstract class AbstractServiceExecutorCallable<Executor extends MapperExe
     @SuppressWarnings( "unchecked" )
     @Override
     public <E> List<E> custom( Criteria<T> criteria ) {
-        if ( criteria != null && ( criteria.getResultType() != null || StringUtil.hasText( criteria.getResultMap() ) ) ) {
+        if ( criteria != null && ( criteria.resultType() != null || StringUtil.hasText( criteria.resultMap() ) ) ) {
             List<Object> result = executor.objectList( criteria );
             return Optional.ofNullable( result ).map( value -> ( List<E> ) value ).orElse( new ArrayList<>() );
         }

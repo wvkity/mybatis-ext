@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core.criteria;
 
 import com.wkit.lost.mybatis.core.segment.Segment;
-import com.wkit.lost.mybatis.lambda.LambdaResolver;
+import com.wkit.lost.mybatis.lambda.LambdaConverter;
 
 import java.io.Serializable;
 
@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @param <Context> 当前对象
  * @param <R>       lambda属性对象
  */
-public interface IndistinctMatching<Context, R> extends LambdaResolver<R>, Segment, Serializable {
+public interface IndistinctMatching<Context, R> extends LambdaConverter<R>, Segment, Serializable {
     
     /**
      * 模糊匹配

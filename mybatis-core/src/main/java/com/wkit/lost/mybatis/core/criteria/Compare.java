@@ -1,14 +1,14 @@
 package com.wkit.lost.mybatis.core.criteria;
 
 import com.wkit.lost.mybatis.core.segment.Segment;
-import com.wkit.lost.mybatis.lambda.LambdaResolver;
+import com.wkit.lost.mybatis.lambda.LambdaConverter;
 
 /**
  * 值比较条件封装
  * @param <Context> 当前对象
  * @param <R>       lambda属性对象
  */
-public interface Compare<Context, R> extends LambdaResolver<R>, Segment {
+public interface Compare<Context, R> extends LambdaConverter<R>, Segment {
 
     /**
      * 主键等于

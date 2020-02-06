@@ -5,7 +5,7 @@ import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.criteria.Logic;
 import com.wkit.lost.mybatis.core.criteria.MatchMode;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
-import com.wkit.lost.mybatis.lambda.LambdaResolver;
+import com.wkit.lost.mybatis.lambda.LambdaConverter;
 
 import java.util.Collection;
 import java.util.function.Function;
@@ -15,7 +15,7 @@ import java.util.function.Function;
  * @param <R> Lambda类型
  * @author wvkity
  */
-public interface ConditionBuilder<T, Context, R> extends LambdaResolver<R> {
+public interface ConditionBuilder<T, Context, R> extends LambdaConverter<R> {
 
     /**
      * 主键值等于

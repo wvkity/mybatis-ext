@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core.criteria;
 
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
-import com.wkit.lost.mybatis.lambda.LambdaResolver;
+import com.wkit.lost.mybatis.lambda.LambdaConverter;
 import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 
@@ -14,7 +14,7 @@ import java.util.function.Function;
  * @param <Context> 当前对象
  * @param <R>       Lambda对象
  */
-public interface ForeignBuilder<T, Context, R> extends LambdaResolver<R> {
+public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
 
     /**
      * 根据方法名获取属性(getXX|isXX)

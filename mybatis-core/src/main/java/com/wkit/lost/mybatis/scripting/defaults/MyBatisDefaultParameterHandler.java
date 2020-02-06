@@ -21,7 +21,7 @@ import java.util.List;
  * 参数处理
  * <p>
  *     <ul>
- *         <li>原本打算用来处理自动填充值，出现一个问题，由于boundSql对象已经生成(绑定的sql已经确定)，
+ *         <li>由于boundSql对象已经生成(绑定的sql已经确定)，
  *         如果保存、更新操作时是selective情况下就算填充值也无效，最终还是修改成交由拦截处理.</li>
  *     </ul>
  * </p>
@@ -66,7 +66,7 @@ public class MyBatisDefaultParameterHandler extends DefaultParameterHandler {
                         MetaObject metaObject = configuration.newMetaObject( parameterObject );
                         value = metaObject.getValue( propertyName );
                     }
-                    TypeHandler typeHandler = parameterMapping.getTypeHandler();
+                    TypeHandler<Object> typeHandler = ( TypeHandler<Object> ) parameterMapping.getTypeHandler();
                     JdbcType jdbcType = parameterMapping.getJdbcType();
                     if ( value == null && jdbcType == null ) {
                         jdbcType = configuration.getJdbcTypeForNull();

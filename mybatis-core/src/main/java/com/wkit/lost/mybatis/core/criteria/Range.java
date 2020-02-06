@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.core.criteria;
 
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.core.segment.Segment;
-import com.wkit.lost.mybatis.lambda.LambdaResolver;
+import com.wkit.lost.mybatis.lambda.LambdaConverter;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -13,7 +13,7 @@ import java.util.Collection;
  * @param <R>       lambda属性对象
  * @author wvkity
  */
-public interface Range<Context, R> extends LambdaResolver<R>, Segment, Serializable {
+public interface Range<Context, R> extends LambdaConverter<R>, Segment, Serializable {
 
     /**
      * IN范围

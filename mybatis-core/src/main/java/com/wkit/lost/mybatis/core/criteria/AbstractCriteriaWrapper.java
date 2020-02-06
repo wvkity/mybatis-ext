@@ -125,13 +125,11 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     /**
      * 返回值映射Map
      */
-    @Getter
     protected String resultMap;
 
     /**
      * 返回值类型
      */
-    @Getter
     protected Class<?> resultType;
 
     /**
@@ -1842,6 +1840,16 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
             return this.segmentManager.getConditionValue( column.getProperty() );
         }
         return null;
+    }
+
+    @Override
+    public String resultMap() {
+        return this.resultMap;
+    }
+
+    @Override
+    public Class<?> resultType() {
+        return this.resultType;
     }
 
     // endregion

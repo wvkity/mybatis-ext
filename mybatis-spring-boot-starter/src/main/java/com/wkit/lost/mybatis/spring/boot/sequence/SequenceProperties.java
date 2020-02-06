@@ -16,7 +16,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class SequenceProperties {
     
     /**
-     * 开始时间(默认为2019-12-12 12:12:12)
+     * 开始时间(默认为2020-01-25 00:00:00)
      */
     private long epochTimestamp = -1L;
 

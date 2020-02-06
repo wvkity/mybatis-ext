@@ -88,8 +88,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
     private boolean useConstructorMappings;
 
     // custom result type
-    private final Class<?> customResultType;
-    private final String customResultMap;
+    private final Class<?> embeddedResultType;
+    private final String embeddedResultMap;
 
     private static class PendingRelation {
         public MetaObject metaObject;
@@ -131,15 +131,15 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
             Map<String, Object> paramMap = ( Map<String, Object> ) parameter;
             if ( paramMap.containsKey( Constants.PARAM_CRITERIA ) ) {
                 Object value = paramMap.get( Constants.PARAM_CRITERIA );
-                if ( value instanceof ReturnType ) {
-                    ReturnType returnType = ( ReturnType ) value;
-                    resultType = returnType.getResultType();
-                    resultMap = StringUtil.hasText( returnType.getResultMap() ) ? returnType.getResultMap() : null;
+                if ( value instanceof EmbeddedResult ) {
+                    EmbeddedResult embedded = ( EmbeddedResult ) value;
+                    resultType = embedded.resultType();
+                    resultMap = StringUtil.hasText( embedded.resultMap() ) ? embedded.resultMap() : null;
                 }
             }
         }
-        this.customResultType = resultType;
-        this.customResultMap = resultMap;
+        this.embeddedResultType = resultType;
+        this.embeddedResultMap = resultMap;
     }
 
     //
@@ -197,7 +197,7 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         int resultSetCount = 0;
         MyBatisResultSetWrapper rsw = getFirstResultSet( stmt );
         // 检查是否存在自定义resultMap
-        ResultMap customResultMapCache = Optional.ofNullable( customResultMap ).map( configuration::getResultMap ).orElse( null );
+        ResultMap customResultMapCache = Optional.ofNullable( embeddedResultMap ).map( configuration::getResultMap ).orElse( null );
         if ( customResultMapCache != null ) {
             // 自定义resultMap
             rsw = resultSet( rsw, customResultMapCache, multipleResults, stmt );
@@ -680,8 +680,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
             throws SQLException {
         final Class<?> resultType;
         Class<?> tempResultType = resultMap.getType();
-        if ( !tempResultType.isArray() && tempResultType == Object.class && customResultType != null ) {
-            resultType = customResultType;
+        if ( !tempResultType.isArray() && tempResultType == Object.class && embeddedResultType != null ) {
+            resultType = embeddedResultType;
         } else {
             resultType = tempResultType;
         }
@@ -835,7 +835,7 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         Object value = null;
         if ( nestedQueryParameterObject != null ) {
             final BoundSql nestedBoundSql = nestedQuery.getBoundSql( nestedQueryParameterObject );
-            final CacheKey key = executor.createCacheKey( nestedQuery, nestedQueryParameterObject, 
+            final CacheKey key = executor.createCacheKey( nestedQuery, nestedQueryParameterObject,
                     RowBounds.DEFAULT, nestedBoundSql );
             final Class<?> targetType = constructorMapping.getJavaType();
             final ResultLoader resultLoader = new ResultLoader( configuration, executor, nestedQuery,
@@ -930,7 +930,7 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
     // DISCRIMINATOR
     //
 
-    public ResultMap resolveDiscriminatedResultMap( ResultSet rs, ResultMap resultMap, 
+    public ResultMap resolveDiscriminatedResultMap( ResultSet rs, ResultMap resultMap,
                                                     String columnPrefix ) throws SQLException {
         Set<String> pastDiscriminators = new HashSet<>();
         Discriminator discriminator = resultMap.getDiscriminator();
@@ -1273,8 +1273,8 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         if ( resultType.isArray() ) {
             return typeHandlerRegistry.hasTypeHandler( resultType.getComponentType() );
         } else {
-            if ( resultType == Object.class && customResultType != null ) {
-                return typeHandlerRegistry.hasTypeHandler( customResultType );
+            if ( resultType == Object.class && embeddedResultType != null ) {
+                return typeHandlerRegistry.hasTypeHandler( embeddedResultType );
             }
         }
         return typeHandlerRegistry.hasTypeHandler( resultType );

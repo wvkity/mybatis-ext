@@ -1,13 +1,13 @@
 package com.wkit.lost.mybatis.core.criteria;
 
-import com.wkit.lost.mybatis.lambda.LambdaResolver;
+import com.wkit.lost.mybatis.lambda.LambdaConverter;
 
 /**
  * BETWEEN范围条件接口
  * @param <Context> 当前对象
  * @param <R>       lambda对象
  */
-public interface Between<Context, R> extends LambdaResolver<R> {
+public interface Between<Context, R> extends LambdaConverter<R> {
 
     /**
      * BETWEEN条件

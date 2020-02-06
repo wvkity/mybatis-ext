@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core.criteria;
 
 import com.wkit.lost.mybatis.utils.ArrayUtil;
-import com.wkit.lost.mybatis.lambda.LambdaResolver;
+import com.wkit.lost.mybatis.lambda.LambdaConverter;
 
 import java.util.Collection;
 
@@ -11,7 +11,7 @@ import java.util.Collection;
  * @param <R>       Lambda对象
  * @author wvkity
  */
-public interface Customize<Context, R> extends LambdaResolver<R> {
+public interface Customize<Context, R> extends LambdaConverter<R> {
 
     /**
      * 模板条件
