@@ -17,6 +17,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 批量保存参数拦截处理器
+ * @author wvkity
+ */
 @Log4j2
 public class BatchParameterFilterProcessor extends Processor {
 

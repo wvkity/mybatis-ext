@@ -1522,8 +1522,8 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     @Override
     public Context functions( String property, boolean distinct, String aliasPrefix, int scale ) {
         count( getFuncAlias( aliasPrefix, FunctionType.COUNT ), property, distinct );
-        sum( getFuncAlias( aliasPrefix, FunctionType.SUM ), property, distinct, scale );
-        avg( getFuncAlias( aliasPrefix, FunctionType.AVG ), property, distinct, scale );
+        sum( getFuncAlias( aliasPrefix, FunctionType.SUM ), property, scale, distinct );
+        avg( getFuncAlias( aliasPrefix, FunctionType.AVG ), property, scale, distinct );
         max( getFuncAlias( aliasPrefix, FunctionType.MAX ), property, distinct );
         min( getFuncAlias( aliasPrefix, FunctionType.MIN ), property, distinct );
         return this.context;

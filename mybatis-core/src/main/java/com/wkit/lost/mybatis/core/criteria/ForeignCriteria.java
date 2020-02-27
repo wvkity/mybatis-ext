@@ -213,7 +213,7 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
      * 将当前对象添加到联表对象容器中
      * @return 当前对象
      */
-    public ForeignCriteria<T> appendTo() {
+    public ForeignCriteria<T> join() {
         AbstractQueryCriteria<?> masterCriteria = getMaster();
         if ( masterCriteria != null ) {
             Set<ForeignCriteria<?>> foreignList = masterCriteria.foreignCriteriaSet;

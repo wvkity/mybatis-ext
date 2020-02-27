@@ -1,5 +1,6 @@
 dependencies {
     api project(":mybatis-core")
+    api "${lib["mybatis-spring"]}"
     implementation "${lib["spring-tx"]}"
     annotationProcessor "${lib["spring-tx"]}"
 }

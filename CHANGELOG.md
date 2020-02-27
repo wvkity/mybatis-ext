@@ -28,3 +28,8 @@ UnifyServiceExecutor更名为ServiceExecutor
 - 重写BatchExecutor、SimpleExecutor、ReuseExecutor
 - 雪花算法开始时间戳调整至2020-01-25 00:00:00
 - 修复其他bug
+
+## [v1.0.2] 2020-02-07
+- ForeignCriteria类中的appendTo方法更名为join
+- SqlSessionUtil类从mybatis-code模块迁移到mybatis-extension模块
+- 修复Criteria聚合函数条件指定小数位数无效bug
