@@ -1,10 +1,9 @@
 package com.wkit.lost.mybatis.generator.ui
 
-import com.alibaba.fastjson.JSON
 import com.wkit.lost.mybatis.generator.bean.ConnectionConfig
 import com.wkit.lost.mybatis.generator.bean.GeneratorConfig
 import com.wkit.lost.mybatis.generator.bean.Table
-import com.wkit.lost.mybatis.generator.code.CodeGenerator
+import com.wkit.lost.mybatis.generator.code.Generator
 import com.wkit.lost.mybatis.generator.code.bean.Column
 import com.wkit.lost.mybatis.generator.constants.*
 import com.wkit.lost.mybatis.generator.jdbc.LocalDataSource
@@ -402,6 +401,11 @@ class ApplicationController : AbstractController() {
      */
     private val selectTableCache = SimpleListProperty<Table>(tableObservable)
 
+    /**
+     * 数据库连接
+     */
+    private var databaseConnectionConfig: ConnectionConfig? = null
+
     fun initSysConfig(configCache: MutableMap<String, String>) {
         if (SYS_CONFIG_CACHE.isEmpty()) {
             SYS_CONFIG_CACHE.putAll(configCache)
@@ -411,7 +415,7 @@ class ApplicationController : AbstractController() {
     /**
      * 获取生成class文件目录
      */
-    fun getCompileDir(): String {
+    private fun getCompileDir(): String {
         val dir = getConfigValue("java.binDir")
         return if (dir.isNullOrBlank()) {
             SystemUtil.userHome() + FileUtil.SLASH + ".MybatisGenerator" + FileUtil.SLASH + "compile" + FileUtil.SLASH
@@ -420,16 +424,16 @@ class ApplicationController : AbstractController() {
         }
     }
 
-    fun getExtDir(): String {
+    private fun getExtDir(): String {
         val dir = getConfigValue("java.extDirs")
-        if (dir.isNullOrBlank()) {
-            return System.getProperty("java.class.path") + FileUtil.SLASH
+        return if (dir.isNullOrBlank()) {
+            System.getProperty("java.class.path") + FileUtil.SLASH
         } else {
-            return dir
+            dir
         }
     }
 
-    fun getConfigValue(key: String): String? {
+    private fun getConfigValue(key: String): String? {
         return SYS_CONFIG_CACHE[key]
     }
 
@@ -944,6 +948,7 @@ class ApplicationController : AbstractController() {
                     cacheUpdate(child, TreeItemCacheKey.SELECTION.key, true)
                 }
             }
+            databaseConnectionConfig = getConfig(treeItem)
         }
         // 移除所有表
         val removeAllTableMenuItem = MenuItem(ContextMenuText.REMOVE_DB_FROM_GENERATE.text)
@@ -958,6 +963,7 @@ class ApplicationController : AbstractController() {
                     cacheUpdate(child, TreeItemCacheKey.SELECTION.key, false)
                 }
             }
+            databaseConnectionConfig = null
         }
         return ArrayList(listOf(openMenuItem, closeMenuItem, reloadMenuItem, addAllTableMenuItem, removeAllTableMenuItem))
     }
@@ -987,6 +993,9 @@ class ApplicationController : AbstractController() {
                 selectTableCache.add((userData(treeItem)[TreeItemCacheKey.TABLE.key] as Table))
                 // 更新选择状态
                 cacheUpdate(treeItem, TreeItemCacheKey.SELECTION.key, true)
+                if (databaseConnectionConfig != null) {
+                    databaseConnectionConfig = getConfig(treeItem)
+                }
             }
         }
         // 移除当前表
@@ -1389,32 +1398,55 @@ class ApplicationController : AbstractController() {
     @FXML
     fun generateCode() {
         try {
-            val validateResult = validateGenerateConfig()
-            if (validateResult) {
-                val config = extractGeneratorConfig()
-                // 检查是否为文件夹
-                val isEmpty = config.projectFolder.isBlank()
-                if (isEmpty || FileUtil.isDir(config.projectFolder)) {
-                    removeError(this.projectFolder)
-                    // 判断路径是否为空
-                    if (isEmpty) {
-                        // 获取当前路径
-                        config.projectFolder = SystemUtil.userDir()
-                    }
-                    config.binDir = getCompileDir()
-                    config.extDirs = getExtDir()
-                    val generator = CodeGenerator(config, dataTransform(selectTableCache, config))
-                    // 生成代码
-                    generator.generateCode()
-                    LOG.info("Code generator info => {}", JSON.toJSONString(config, true))
-                    println("==========================")
-                    LOG.info("Table info => {}", JSON.toJSONString(this.selectTableCache, true))
-                } else {
-                    error(this.projectFolder)
-                }
-            }
+            build { it.generateCode() }
         } catch (e: Exception) {
             LOG.error("Source code generation failed: {}", e.message, e)
+        }
+    }
+
+    /**
+     * 生成maven项目
+     */
+    @FXML
+    fun generateMavenProject() {
+        try {
+            build { it.generateMavenProject(databaseConnectionConfig) }
+        } catch (e: Exception) {
+            LOG.error("Maven project generation failed: {}", e.message, e)
+        }
+    }
+
+    /**
+     * 生成Gradle项目
+     */
+    @FXML
+    fun generateGradleProject() {
+        try {
+            build { it.generateGradleProject(databaseConnectionConfig) }
+        } catch (e: Exception) {
+            LOG.error("Gradle project generation failed: {}", e.message, e)
+        }
+    }
+
+    private fun build(after: (it: Generator) -> Unit) {
+        val validateResult = validateGenerateConfig()
+        if (validateResult) {
+            val config = extractGeneratorConfig()
+            // 检查是否为文件夹
+            val isEmpty = config.projectFolder.isBlank()
+            if (isEmpty || FileUtil.isDir(config.projectFolder)) {
+                removeError(this.projectFolder)
+                // 判断路径是否为空
+                if (isEmpty) {
+                    // 获取当前路径
+                    config.projectFolder = SystemUtil.userDir()
+                }
+                config.binDir = getCompileDir()
+                config.extDirs = getExtDir()
+                after(Generator(config, dataTransform(selectTableCache, config)))
+            } else {
+                error(this.projectFolder)
+            }
         }
     }
 

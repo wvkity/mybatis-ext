@@ -493,15 +493,15 @@
                                     <String fx:value="theme_success" />
                                 </styleClass>
                             </Button>
-                            <Button mnemonicParsing="false" text="创建Maven项目">
+                            <Button mnemonicParsing="false" text="创建Maven项目" onAction="#generateMavenProject">
                                 <styleClass>
                                     <String fx:value="button" />
                                     <String fx:value="theme_primary" />
                                 </styleClass>
                             </Button>
-                            <Button mnemonicParsing="false" text="创建Gradle项目">
+                            <Button mnemonicParsing="false" text="创建Gradle项目" onAction="#generateGradleProject">
                                 <styleClass>
-                                    <String fx:value="button" />
+                                    <String fx:value="button"/>
                                     <String fx:value="theme_warn" />
                                 </styleClass>
                             </Button>

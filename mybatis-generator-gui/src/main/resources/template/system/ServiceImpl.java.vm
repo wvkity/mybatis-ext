@@ -8,7 +8,7 @@ ${IMPORTS}
  * @author ${AUTHOR}
  */
 #end
-#if($USE_REPOSITORY_ANNOTATION)@Repository$NEW_LINE#end
-public interface ${CLASS_NAME}$!{EXT_CLASS} {
+@Service
+public class ${CLASS_NAME}$!{EXT_CLASS} {
     
 }

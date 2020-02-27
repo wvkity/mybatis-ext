@@ -167,7 +167,7 @@ class GeneratorConfig {
     /**
      * JPA注解
      */
-    var jpaAnnotationChoice: String = "内置"
+    var jpaAnnotationChoice: String = "BuiltIn"
 
     /**
      * 文件编码格式
@@ -289,6 +289,13 @@ class GeneratorConfig {
      */
     fun projectAbsolutePath(): String {
         return this.projectFolder + FileUtil.SLASH + this.moduleName + FileUtil.SLASH
+    }
+
+    /**
+     * 获取src路径
+     */
+    fun projectSrcAbsolutePath(): String {
+        return this.projectAbsolutePath() + "src" + FileUtil.SLASH
     }
 
     /**

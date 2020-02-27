@@ -44,7 +44,7 @@ public class SourceCodeSerialUIDReplacement {
                 Class<?> clazz = classLoader.findClass( className );
                 Long serialVersionUID = generateSerialVersionUID( clazz );
                 if ( serialVersionUID != 1 ) {
-                    LOG.info( "找到的class => {}, 生成对应的serialUID => {}", clazz, serialVersionUID );
+                    // LOG.info( "找到的class => {}, 生成对应的serialUID => {}", clazz, serialVersionUID );
                     return serialVersionUID;
                 }
             }
@@ -62,7 +62,7 @@ public class SourceCodeSerialUIDReplacement {
                 String className = packageName + "." + javaName;
                 Class<?> clazz = classLoader.findClass( className );
                 Long serialVersionUID = generateSerialVersionUID( clazz );
-                LOG.info( "找到的class => {}, 生成对应的serialUID => {}", clazz, serialVersionUID );
+                //LOG.info( "找到的class => {}, 生成对应的serialUID => {}", clazz, serialVersionUID );
                 replace( filePath + javaName + ".java", encoding, serialVersionUID );
                 return true;
             }
