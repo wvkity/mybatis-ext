@@ -11,17 +11,20 @@ public final class CriteriaCopierFactory {
     /**
      * {@link CriteriaImpl}实例复制器
      */
-    public static final BeanCopier CRITERIA_IMPL_INSTANCE_COPIER = BeanCopier.create( CriteriaImpl.class, CriteriaImpl.class, false );
+    public static final BeanCopier CRITERIA_IMPL_INSTANCE_COPIER = BeanCopier.create( CriteriaImpl.class, 
+            CriteriaImpl.class, false );
 
     /**
      * {@link ForeignCriteria}实例复制器
      */
-    public static final BeanCopier FOREIGN_CRITERIA_IMPL_INSTANCE_COPIER = BeanCopier.create( ForeignCriteria.class, ForeignCriteria.class, false );
+    public static final BeanCopier FOREIGN_CRITERIA_IMPL_INSTANCE_COPIER = BeanCopier.create( ForeignCriteria.class, 
+            ForeignCriteria.class, false );
 
     /**
      * {@link SubCriteria}实例复制器
      */
-    public static final BeanCopier SUB_CRITERIA_IMPL_INSTANCE_COPIER = BeanCopier.create( SubCriteria.class, SubCriteria.class, false );
+    public static final BeanCopier SUB_CRITERIA_IMPL_INSTANCE_COPIER = BeanCopier.create( SubCriteria.class, 
+            SubCriteria.class, false );
 
     /**
      * 深复制实例({@link CriteriaImpl})

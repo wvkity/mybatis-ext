@@ -2,7 +2,6 @@ package com.wkit.lost.mybatis.core.criteria;
 
 import com.wkit.lost.mybatis.core.condition.ConditionManager;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
-import com.wkit.lost.mybatis.utils.Ascii;
 import lombok.experimental.Accessors;
 
 import java.util.Map;
