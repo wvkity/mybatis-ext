@@ -33,7 +33,7 @@ public class SubQueryConditionApplication extends RootTestRunner {
                 "gd", ctx -> ctx.eq( Grade::getName, "S2" ) );
         gradeSubCriteria.query( Grade::getId );
         studentCriteria.notIn( Student::getGradeId, gradeSubCriteria ).desc( "name" ).autoMappingColumnAlias( true );
-        List<StudentVo> result = studentService.list( new Pager( 1, 20 ), studentCriteria );
+        List<StudentVo> result = studentService.list( studentCriteria, new Pager( 1, 20 ) );
         log.info( "查询学生结果: {}", JSON.toJSONString( result, true ) );
     }
 
@@ -45,7 +45,7 @@ public class SubQueryConditionApplication extends RootTestRunner {
                 "gd", ctx -> ctx.eq( Grade::getName, "S2" ) );
         gradeSubCriteria.query( Grade::getId );
         studentCriteria.eq( Student::getGradeId, gradeSubCriteria );
-        List<StudentVo> result = studentService.list( studentCriteria );
+        List<StudentVo> result = studentService.list( studentCriteria.range( 1, 2, 8 ) );
         log.info( "查询学生结果: {}", JSON.toJSONString( result, true ) );
     }
 }

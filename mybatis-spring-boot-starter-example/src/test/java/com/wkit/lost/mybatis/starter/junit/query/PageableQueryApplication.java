@@ -72,7 +72,7 @@ public class PageableQueryApplication extends RootTestRunner {
         // 创建子查询
         SubCriteria<Subject> subjectSubCriteria = studentCriteria.createSub( Subject.class, "SJ" );
         subjectSubCriteria.createForeign( Grade.class, null, Subject::getGradeId, Grade::getId,
-                ctx -> ctx.in( Grade::getName, "S2", "Y2" ) ).appendTo();
+                ctx -> ctx.in( Grade::getName, "S2", "Y2" ) ).join();
         // 关联子查询
         studentCriteria.addForeign( subjectSubCriteria, Student::getGradeId, Subject::getGradeId,
                 ctx -> ctx.setRelation( true ).ge( Subject::getHours, 55 ) );
@@ -91,7 +91,7 @@ public class PageableQueryApplication extends RootTestRunner {
         // 创建子查询
         SubCriteria<Subject> subjectSubCriteria = studentCriteria.createSub( Subject.class, "SJ" );
         subjectSubCriteria.createForeign( Grade.class, null, Subject::getGradeId, Grade::getId,
-                ctx -> ctx.in( Grade::getName, "S2", "Y2" ) ).appendTo();
+                ctx -> ctx.in( Grade::getName, "S2", "Y2" ) ).join();
         // 关联子查询
         studentCriteria.addForeign( subjectSubCriteria, Student::getGradeId, Subject::getGradeId,
                 ctx -> ctx.ge( Subject::getHours, 55 ) );

@@ -48,16 +48,18 @@ public class ForeignSubQueryApplication extends RootTestRunner {
         // 子查询
         SubCriteria<Subject> subjectSubCriteria = studentCriteria.createSub( Subject.class, "" );
         subjectSubCriteria.createForeign( Grade.class, null, Subject::getGradeId, Grade::getId,
-                ctx -> ctx.in( Grade::getName, "S2", "Y2" ) ).appendTo().useAlias();
+                ctx -> ctx.in( Grade::getName, "S2", "Y2" ) ).join().useAlias();
         // 关联子查询
         ForeignCriteria<Subject> foreignCriteria = studentCriteria.createForeign( subjectSubCriteria, Student::getGradeId, Subject::getGradeId,
-                ctx -> ctx.setRelation( true ).ge( Subject::getHours, 55 ).useAlias() ).appendTo();
+                ctx -> ctx.setRelation( true ).ge( Subject::getHours, 55 ).useAlias() ).join();
         // 关联分数查询
         studentCriteria.addForeign( Result.class, "rs", null, Student::getId, Result::getStudentId,
                 ctx -> ctx.eq( Result::getSubjectId, foreignCriteria, Subject.Fields.id ).ge( Result::getScore, 84 ).query( Result::getScore ).useAlias() );
         // 结果
-        List<StudentVo> result = studentService.list( studentCriteria );
-        log.info( "查询学生结果: {}", JSON.toJSONString( result, true ) );
+        /*List<StudentVo> result = studentService.list( studentCriteria );
+        log.info( "查询学生结果: {}", JSON.toJSONString( result, true ) );*/
+        log.info( studentCriteria.getSqlSegment() );
+        log.info( studentCriteria.getWhereSqlSegment() );
     }
 
     /**
@@ -99,7 +101,7 @@ public class ForeignSubQueryApplication extends RootTestRunner {
                 ctx -> ctx.in( Grade::getName, "S2", "Y2" ) );
         // 关联子查询
         ForeignCriteria<Subject> foreignCriteria = studentCriteria.createForeign( subjectSubCriteria, Student::getGradeId, Subject::getGradeId,
-                ctx -> ctx.ge( Subject::getHours, 55 ) ).appendTo();
+                ctx -> ctx.ge( Subject::getHours, 55 ) ).join();
         foreignCriteria.setAlias( "_foreign_1" );
         studentCriteria.subQuery( subjectSubCriteria, Subject::getId, "subjectId" )
                 .subQuery( subjectSubCriteria, Subject::getName, Subject::getHours, Subject::getGradeId );
