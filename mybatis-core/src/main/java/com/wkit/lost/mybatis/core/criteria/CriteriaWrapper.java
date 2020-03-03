@@ -11,14 +11,14 @@ import java.util.function.Function;
  * 查询条件接口
  * @param <T>       泛型类型
  * @param <Context> 当前对象
- * @param <R>       Lambda对象
+ * @param <P>       Lambda属性对象
  * @author wvkity
  */
-public interface CriteriaWrapper<T, Context, R> extends Criteria<T>, InstanceClone<Context>,
-        Compare<Context, R>, Null<Context, R>, Range<Context, R>, IndistinctMatching<Context, R>,
-        Between<Context, R>, Customize<Context, R>, com.wkit.lost.mybatis.core.criteria.Nested<Context>, 
-        ForeignBuilder<T, Context, R>, SubCriteriaBuilder<T>, ConditionBuilder<T, AbstractConditionManager<T>, R>, 
-        SubQueryCondition<T, Context, R> {
+public interface CriteriaWrapper<T, Context, P> extends Criteria<T>, InstanceClone<Context>,
+        Compare<Context, P>, Null<Context, P>, Range<Context, P>, IndistinctMatching<Context, P>,
+        Between<Context, P>, Customize<Context, P>, com.wkit.lost.mybatis.core.criteria.Nested<Context>, 
+        ForeignBuilder<T, Context, P>, SubCriteriaBuilder<T>, ConditionBuilder<T, AbstractConditionManager<T>, P>, 
+        SubQueryCondition<T, Context, P> {
 
     /**
      * {@link Nested}条件简写形式
@@ -44,7 +44,7 @@ public interface CriteriaWrapper<T, Context, R> extends Criteria<T>, InstanceClo
      * @return 当前对象
      */
     @SuppressWarnings( "unchecked" )
-    Criteria<T> asc( R... properties );
+    Criteria<T> asc( P... properties );
 
     /**
      * DESC排序
@@ -52,7 +52,7 @@ public interface CriteriaWrapper<T, Context, R> extends Criteria<T>, InstanceClo
      * @return 当前对象
      */
     @SuppressWarnings( "unchecked" )
-    Criteria<T> desc( R... properties );
+    Criteria<T> desc( P... properties );
 
     /**
      * 分组
@@ -60,6 +60,6 @@ public interface CriteriaWrapper<T, Context, R> extends Criteria<T>, InstanceClo
      * @return 当前对象
      */
     @SuppressWarnings( "unchecked" )
-    Criteria<T> group( R... properties );
+    Criteria<T> group( P... properties );
 
 }

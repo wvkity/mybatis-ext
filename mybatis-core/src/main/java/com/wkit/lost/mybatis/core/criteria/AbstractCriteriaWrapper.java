@@ -45,15 +45,15 @@ import java.util.stream.Collectors;
 /**
  * 条件容器
  * @param <T>       泛型类型
- * @param <R>       Lambda类型
+ * @param <P>       Lambda类型
  * @param <Context> 当前对象
  * @author wvkity
  */
 @Log4j2
 @Accessors( chain = true )
 @SuppressWarnings( value = { "unchecked", "serial" } )
-public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCriteriaWrapper<T, R, Context>>
-        extends AbstractConditionExpressionWrapper<T, R> implements CriteriaWrapper<T, Context, R> {
+public abstract class AbstractCriteriaWrapper<T, P, Context extends AbstractCriteriaWrapper<T, P, Context>>
+        extends AbstractConditionExpressionWrapper<T, P> implements CriteriaWrapper<T, Context, P> {
 
     // region fields
 
@@ -982,7 +982,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public Context asc( R... properties ) {
+    public Context asc( P... properties ) {
         return addOrder( Order.asc( this, lambdaToProperty( properties ) ) );
     }
 
@@ -1022,7 +1022,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public Context desc( R... properties ) {
+    public Context desc( P... properties ) {
         return addOrder( Order.desc( this, lambdaToProperty( properties ) ) );
     }
 
@@ -1089,7 +1089,7 @@ public abstract class AbstractCriteriaWrapper<T, R, Context extends AbstractCrit
     }
 
     @Override
-    public Context group( R... properties ) {
+    public Context group( P... properties ) {
         return addGroup( Group.group( this, lambdaToProperty( properties ) ) );
     }
 

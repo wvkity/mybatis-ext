@@ -14,10 +14,10 @@ import com.wkit.lost.mybatis.lambda.LambdaConverter;
  * </p>
  * @param <T>       泛型类型
  * @param <Context> 当前对象
- * @param <R>       lambda对象
+ * @param <P>       lambda属性对象
  * @author wvkity
  */
-public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, LambdaConverter<R> {
+public interface SubQueryCondition<T, Context, P> extends CriteriaSearch, LambdaConverter<P> {
 
     /**
      * 主键等于
@@ -57,7 +57,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context eqFromSub( R property, String subTempTabAlias ) {
+    default Context eqFromSub( P property, String subTempTabAlias ) {
         return eq( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -77,7 +77,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询条件对象
      * @return 当前对象
      */
-    default Context eq( R property, SubCriteria<?> subCriteria ) {
+    default Context eq( P property, SubCriteria<?> subCriteria ) {
         return eq( lambdaToProperty( property ), subCriteria );
     }
 
@@ -95,7 +95,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context orEqFromSub( R property, String subTempTabAlias ) {
+    default Context orEqFromSub( P property, String subTempTabAlias ) {
         return orEq( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -115,7 +115,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询条件对象
      * @return 当前对象
      */
-    default Context orEq( R property, SubCriteria<?> subCriteria ) {
+    default Context orEq( P property, SubCriteria<?> subCriteria ) {
         return orEq( lambdaToProperty( property ), subCriteria );
     }
 
@@ -133,7 +133,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context neFromSub( R property, String subTempTabAlias ) {
+    default Context neFromSub( P property, String subTempTabAlias ) {
         return ne( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -153,7 +153,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询条件对象
      * @return 当前对象
      */
-    default Context ne( R property, SubCriteria<?> subCriteria ) {
+    default Context ne( P property, SubCriteria<?> subCriteria ) {
         return ne( lambdaToProperty( property ), subCriteria );
     }
 
@@ -171,7 +171,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context orNeFromSub( R property, String subTempTabAlias ) {
+    default Context orNeFromSub( P property, String subTempTabAlias ) {
         return orNe( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -191,7 +191,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询条件对象
      * @return 当前对象
      */
-    default Context orNe( R property, SubCriteria<?> subCriteria ) {
+    default Context orNe( P property, SubCriteria<?> subCriteria ) {
         return orNe( lambdaToProperty( property ), subCriteria );
     }
 
@@ -209,7 +209,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context ltFromSub( R property, String subTempTabAlias ) {
+    default Context ltFromSub( P property, String subTempTabAlias ) {
         return lt( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -229,7 +229,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询条件对象
      * @return 当前对象
      */
-    default Context lt( R property, SubCriteria<?> subCriteria ) {
+    default Context lt( P property, SubCriteria<?> subCriteria ) {
         return lt( lambdaToProperty( property ), subCriteria );
     }
 
@@ -247,7 +247,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context orLtFromSub( R property, String subTempTabAlias ) {
+    default Context orLtFromSub( P property, String subTempTabAlias ) {
         return orLt( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -267,7 +267,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询条件对象
      * @return 当前对象
      */
-    default Context orLt( R property, SubCriteria<?> subCriteria ) {
+    default Context orLt( P property, SubCriteria<?> subCriteria ) {
         return orLt( lambdaToProperty( property ), subCriteria );
     }
 
@@ -285,7 +285,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context leFromSub( R property, String subTempTabAlias ) {
+    default Context leFromSub( P property, String subTempTabAlias ) {
         return le( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -305,7 +305,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询条件对象
      * @return 当前对象
      */
-    default Context le( R property, SubCriteria<?> subCriteria ) {
+    default Context le( P property, SubCriteria<?> subCriteria ) {
         return le( lambdaToProperty( property ), subCriteria );
     }
 
@@ -323,7 +323,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context orLeFromSub( R property, String subTempTabAlias ) {
+    default Context orLeFromSub( P property, String subTempTabAlias ) {
         return orLe( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -343,7 +343,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询条件对象
      * @return 当前对象
      */
-    default Context orLe( R property, SubCriteria<?> subCriteria ) {
+    default Context orLe( P property, SubCriteria<?> subCriteria ) {
         return orLe( lambdaToProperty( property ), subCriteria );
     }
 
@@ -361,7 +361,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context gtFromSub( R property, String subTempTabAlias ) {
+    default Context gtFromSub( P property, String subTempTabAlias ) {
         return gt( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -381,7 +381,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询条件对象
      * @return 当前对象
      */
-    default Context gt( R property, SubCriteria<?> subCriteria ) {
+    default Context gt( P property, SubCriteria<?> subCriteria ) {
         return gt( lambdaToProperty( property ), subCriteria );
     }
 
@@ -399,7 +399,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context orGtFromSub( R property, String subTempTabAlias ) {
+    default Context orGtFromSub( P property, String subTempTabAlias ) {
         return orGt( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -419,7 +419,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询条件对象
      * @return 当前对象
      */
-    default Context orGt( R property, SubCriteria<?> subCriteria ) {
+    default Context orGt( P property, SubCriteria<?> subCriteria ) {
         return orGt( lambdaToProperty( property ), subCriteria );
     }
 
@@ -437,7 +437,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context geFromSub( R property, String subTempTabAlias ) {
+    default Context geFromSub( P property, String subTempTabAlias ) {
         return ge( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -457,7 +457,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询条件对象
      * @return 当前对象
      */
-    default Context ge( R property, SubCriteria<?> subCriteria ) {
+    default Context ge( P property, SubCriteria<?> subCriteria ) {
         return ge( lambdaToProperty( property ), subCriteria );
     }
 
@@ -475,7 +475,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context orGeFromSub( R property, String subTempTabAlias ) {
+    default Context orGeFromSub( P property, String subTempTabAlias ) {
         return orGe( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -495,7 +495,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询条件对象
      * @return 当前对象
      */
-    default Context orGe( R property, SubCriteria<?> subCriteria ) {
+    default Context orGe( P property, SubCriteria<?> subCriteria ) {
         return orGe( lambdaToProperty( property ), subCriteria );
     }
 
@@ -513,7 +513,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context inFromSub( R property, String subTempTabAlias ) {
+    default Context inFromSub( P property, String subTempTabAlias ) {
         return in( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -533,7 +533,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询对象
      * @return 当前对象
      */
-    default Context in( R property, SubCriteria<?> subCriteria ) {
+    default Context in( P property, SubCriteria<?> subCriteria ) {
         return in( lambdaToProperty( property ), subCriteria );
     }
 
@@ -551,7 +551,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context orInFromSub( R property, String subTempTabAlias ) {
+    default Context orInFromSub( P property, String subTempTabAlias ) {
         return orIn( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -571,7 +571,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询对象
      * @return 当前对象
      */
-    default Context orIn( R property, SubCriteria<?> subCriteria ) {
+    default Context orIn( P property, SubCriteria<?> subCriteria ) {
         return orIn( lambdaToProperty( property ), subCriteria );
     }
 
@@ -589,7 +589,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context notInFromSub( R property, String subTempTabAlias ) {
+    default Context notInFromSub( P property, String subTempTabAlias ) {
         return notIn( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -609,7 +609,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询对象
      * @return 当前对象
      */
-    default Context notIn( R property, SubCriteria<?> subCriteria ) {
+    default Context notIn( P property, SubCriteria<?> subCriteria ) {
         return notIn( lambdaToProperty( property ), subCriteria );
     }
 
@@ -627,7 +627,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context orNotInFromSub( R property, String subTempTabAlias ) {
+    default Context orNotInFromSub( P property, String subTempTabAlias ) {
         return orNotIn( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -647,7 +647,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询条件对象
      * @return 当前对象
      */
-    default Context orNotIn( R property, SubCriteria<?> subCriteria ) {
+    default Context orNotIn( P property, SubCriteria<?> subCriteria ) {
         return orNotIn( lambdaToProperty( property ), subCriteria );
     }
 
@@ -683,7 +683,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context exists( R property, String subTempTabAlias ) {
+    default Context exists( P property, String subTempTabAlias ) {
         return exists( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -703,7 +703,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询条件对象
      * @return 当前对象
      */
-    default Context exists( R property, SubCriteria<?> subCriteria ) {
+    default Context exists( P property, SubCriteria<?> subCriteria ) {
         return exists( lambdaToProperty( property ), subCriteria );
     }
 
@@ -739,7 +739,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subTempTabAlias 子查询别名
      * @return 当前对象
      */
-    default Context notExists( R property, String subTempTabAlias ) {
+    default Context notExists( P property, String subTempTabAlias ) {
         return notExists( lambdaToProperty( property ), searchSubCriteria( subTempTabAlias ) );
     }
 
@@ -759,7 +759,7 @@ public interface SubQueryCondition<T, Context, R> extends CriteriaSearch, Lambda
      * @param subCriteria 子查询条件对象
      * @return 当前对象
      */
-    default Context notExists( R property, SubCriteria<?> subCriteria ) {
+    default Context notExists( P property, SubCriteria<?> subCriteria ) {
         return notExists( lambdaToProperty( property ), subCriteria );
     }
 

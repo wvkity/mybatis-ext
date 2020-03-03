@@ -12,9 +12,9 @@ import java.util.function.Function;
  * 联表查询条件对象创建接口
  * @param <T>       实体泛型类型
  * @param <Context> 当前对象
- * @param <R>       Lambda对象
+ * @param <P>       Lambda属性对象
  */
-public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
+public interface ForeignBuilder<T, Context, P> extends LambdaConverter<P> {
 
     /**
      * 根据方法名获取属性(getXX|isXX)
@@ -33,7 +33,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, R master,
+    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, P master,
                                                   Property<E, ?> foreign, Criterion<?>... withClauses ) {
         return createForeign( entity, alias, null, master, foreign, JoinMode.INNER, withClauses );
     }
@@ -64,7 +64,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, R master,
+    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, P master,
                                                   Property<E, ?> foreign, Criterion<?>... withClauses ) {
         return createForeign( entity, alias, reference, master, foreign, JoinMode.INNER, withClauses );
     }
@@ -96,7 +96,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign,
+    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, P master, Property<E, ?> foreign,
                                                   JoinMode joinMode, Criterion<?>... withClauses ) {
         return createForeign( entity, alias, null, master, foreign, joinMode, withClauses );
     }
@@ -129,7 +129,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, R master,
+    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, P master,
                                                   Property<E, ?> foreign, JoinMode joinMode,
                                                   Criterion<?>... withClauses ) {
         return createForeign( entity, alias, reference, new Foreign( lambdaToProperty( master ),
@@ -163,7 +163,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, R master,
+    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, P master,
                                                   Property<E, ?> foreign, Collection<Criterion<?>> withClauses ) {
         return createForeign( entity, alias, null, master, foreign, JoinMode.INNER, withClauses );
     }
@@ -194,7 +194,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, R master,
+    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, P master,
                                                   Property<E, ?> foreign, Collection<Criterion<?>> withClauses ) {
         return createForeign( entity, alias, reference, master, foreign, JoinMode.INNER, withClauses );
     }
@@ -226,7 +226,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign,
+    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, P master, Property<E, ?> foreign,
                                                   JoinMode joinMode, Collection<Criterion<?>> withClauses ) {
         return createForeign( entity, alias, null, master, foreign, joinMode, withClauses );
     }
@@ -259,7 +259,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, R master,
+    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, P master,
                                                   Property<E, ?> foreign, JoinMode joinMode,
                                                   Collection<Criterion<?>> withClauses ) {
         return createForeign( entity, alias, reference, new Foreign( lambdaToProperty( master ),
@@ -293,7 +293,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>      泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign,
+    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, P master, Property<E, ?> foreign,
                                                   Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return createForeign( entity, alias, null, master, foreign, JoinMode.INNER, function );
     }
@@ -324,7 +324,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>       泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, R master,
+    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, P master,
                                                   Property<E, ?> foreign, Function<ForeignCriteria<E>,
             AbstractQueryCriteria<E>> function ) {
         return createForeign( entity, alias, reference, master, foreign, JoinMode.INNER, function );
@@ -358,7 +358,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>      泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign,
+    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, P master, Property<E, ?> foreign,
                                                   JoinMode joinMode, Function<ForeignCriteria<E>,
             AbstractQueryCriteria<E>> function ) {
         return createForeign( entity, alias, null, new Foreign( lambdaToProperty( master ),
@@ -393,7 +393,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>       泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, R master,
+    default <E> ForeignCriteria<E> createForeign( Class<E> entity, String alias, String reference, P master,
                                                   Property<E, ?> foreign, JoinMode joinMode,
                                                   Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return createForeign( entity, alias, reference, new Foreign( lambdaToProperty( master ),
@@ -510,7 +510,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, R master,
+    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, P master,
                                                      String foreign, JoinMode joinMode ) {
         return createForeign( subCriteria, null, master, foreign, joinMode );
     }
@@ -524,7 +524,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, R master,
+    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, P master,
                                                      Property<E, ?> foreign, JoinMode joinMode ) {
         return createForeign( subCriteria, null, master, foreign, joinMode );
     }
@@ -553,7 +553,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, R master, String foreign,
+    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, P master, String foreign,
                                                      JoinMode joinMode, Criterion<?>... withClauses ) {
         return createForeign( subCriteria, null, master, foreign, joinMode, withClauses );
     }
@@ -568,7 +568,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, R master, Property<E, ?> foreign,
+    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, P master, Property<E, ?> foreign,
                                                      JoinMode joinMode, Criterion<?>... withClauses ) {
         return createForeign( subCriteria, null, master, foreign, joinMode, withClauses );
     }
@@ -598,7 +598,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, R master,
+    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, P master,
                                                      String foreign, Criterion<?>... withClauses ) {
         return createForeign( subCriteria, reference, master, foreign, JoinMode.INNER, withClauses );
     }
@@ -613,7 +613,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, R master,
+    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, P master,
                                                      Property<E, ?> foreign, Criterion<?>... withClauses ) {
         return createForeign( subCriteria, reference, master, foreign, JoinMode.INNER, withClauses );
     }
@@ -645,7 +645,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @return 联表条件对象
      */
     default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference,
-                                                     R master, Property<E, ?> foreign,
+                                                     P master, Property<E, ?> foreign,
                                                      JoinMode joinMode, Criterion<?>... withClauses ) {
         return createForeign( subCriteria, reference, new Foreign( lambdaToProperty( master ),
                 methodToProperty( foreign ), joinMode ), withClauses );
@@ -662,7 +662,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, R master,
+    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, P master,
                                                      String foreign, JoinMode joinMode, Criterion<?>... withClauses ) {
         return createForeign( subCriteria, reference, new Foreign( lambdaToProperty( master ), foreign, joinMode ), withClauses );
     }
@@ -692,7 +692,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, R master, Property<E, ?> foreign,
+    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, P master, Property<E, ?> foreign,
                                                      Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return createForeign( subCriteria, null, master, foreign, JoinMode.INNER, function );
     }
@@ -706,7 +706,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, R master, String foreign,
+    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, P master, String foreign,
                                                      Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return createForeign( subCriteria, null, master, foreign, JoinMode.INNER, function );
     }
@@ -735,7 +735,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, R master,
+    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, P master,
                                                      Property<E, ?> foreign, JoinMode joinMode,
                                                      Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return createForeign( subCriteria, null, master, foreign, joinMode, function );
@@ -751,7 +751,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, R master,
+    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, P master,
                                                      String foreign, JoinMode joinMode,
                                                      Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return createForeign( subCriteria, null, master, foreign, joinMode, function );
@@ -783,7 +783,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, R master,
+    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, P master,
                                                      String foreign,
                                                      Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return createForeign( subCriteria, reference, master, foreign, JoinMode.INNER, function );
@@ -799,7 +799,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, R master,
+    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, P master,
                                                      Property<E, ?> foreign,
                                                      Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return createForeign( subCriteria, reference, master, foreign, JoinMode.INNER, function );
@@ -832,7 +832,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, R master,
+    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, P master,
                                                      String foreign, JoinMode joinMode,
                                                      Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return createForeign( subCriteria, reference, new Foreign( lambdaToProperty( master ),
@@ -850,7 +850,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, R master,
+    default <E> ForeignSubCriteria<E> createForeign( SubCriteria<E> subCriteria, String reference, P master,
                                                      Property<E, ?> foreign, JoinMode joinMode,
                                                      Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return createForeign( subCriteria, reference, new Foreign( lambdaToProperty( master ),
@@ -948,7 +948,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 当前对象
      */
-    default <E> Context addForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign,
+    default <E> Context addForeign( Class<E> entity, String alias, P master, Property<E, ?> foreign,
                                     Criterion<?>... withClauses ) {
         return addForeign( entity, alias, lambdaToProperty( master ), methodToProperty( foreign ), withClauses );
     }
@@ -979,7 +979,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 当前对象
      */
-    default <E> Context addForeign( Class<E> entity, String alias, String reference, R master, Property<E, ?> foreign,
+    default <E> Context addForeign( Class<E> entity, String alias, String reference, P master, Property<E, ?> foreign,
                                     Criterion<?>... withClauses ) {
         return addForeign( entity, alias, reference, master, foreign, JoinMode.INNER, withClauses );
     }
@@ -1011,7 +1011,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 当前对象
      */
-    default <E> Context addForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign,
+    default <E> Context addForeign( Class<E> entity, String alias, P master, Property<E, ?> foreign,
                                     JoinMode joinMode, Criterion<?>... withClauses ) {
         return addForeign( entity, alias, null, master, foreign, joinMode, withClauses );
     }
@@ -1044,7 +1044,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 当前对象
      */
-    default <E> Context addForeign( Class<E> entity, String alias, String reference, R master, Property<E, ?> foreign,
+    default <E> Context addForeign( Class<E> entity, String alias, String reference, P master, Property<E, ?> foreign,
                                     JoinMode joinMode, Criterion<?>... withClauses ) {
         return addForeign( entity, alias, reference, new Foreign( lambdaToProperty( master ),
                 methodToProperty( foreign ), joinMode ), ArrayUtil.toList( withClauses ) );
@@ -1078,7 +1078,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 当前对象
      */
-    default <E> Context addForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign,
+    default <E> Context addForeign( Class<E> entity, String alias, P master, Property<E, ?> foreign,
                                     Collection<Criterion<?>> withClauses ) {
         return addForeign( entity, alias, null, master, foreign, withClauses );
     }
@@ -1109,7 +1109,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 当前对象
      */
-    default <E> Context addForeign( Class<E> entity, String alias, String reference, R master, Property<E, ?> foreign,
+    default <E> Context addForeign( Class<E> entity, String alias, String reference, P master, Property<E, ?> foreign,
                                     Collection<Criterion<?>> withClauses ) {
         return addForeign( entity, alias, reference, master, foreign, JoinMode.INNER, withClauses );
     }
@@ -1141,7 +1141,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 当前对象
      */
-    default <E> Context addForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign, JoinMode joinMode,
+    default <E> Context addForeign( Class<E> entity, String alias, P master, Property<E, ?> foreign, JoinMode joinMode,
                                     Collection<Criterion<?>> withClauses ) {
         return addForeign( entity, alias, null, master, foreign, joinMode, withClauses );
     }
@@ -1174,7 +1174,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 当前对象
      */
-    default <E> Context addForeign( Class<E> entity, String alias, String reference, R master, Property<E, ?> foreign,
+    default <E> Context addForeign( Class<E> entity, String alias, String reference, P master, Property<E, ?> foreign,
                                     JoinMode joinMode, Collection<Criterion<?>> withClauses ) {
         return addForeign( entity, alias, reference,
                 new Foreign( lambdaToProperty( master ), methodToProperty( foreign ), joinMode ), withClauses );
@@ -1262,7 +1262,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>      泛型类型
      * @return 当前对象
      */
-    default <E> Context addForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign,
+    default <E> Context addForeign( Class<E> entity, String alias, P master, Property<E, ?> foreign,
                                     Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return addForeign( entity, alias, null, master, foreign, JoinMode.INNER, function );
     }
@@ -1293,7 +1293,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>       泛型类型
      * @return 当前对象
      */
-    default <E> Context addForeign( Class<E> entity, String alias, String reference, R master, Property<E, ?> foreign,
+    default <E> Context addForeign( Class<E> entity, String alias, String reference, P master, Property<E, ?> foreign,
                                     Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return addForeign( entity, alias, reference, master, foreign, JoinMode.INNER, function );
     }
@@ -1325,7 +1325,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>      泛型类型
      * @return 当前对象
      */
-    default <E> Context addForeign( Class<E> entity, String alias, R master, Property<E, ?> foreign, JoinMode joinMode,
+    default <E> Context addForeign( Class<E> entity, String alias, P master, Property<E, ?> foreign, JoinMode joinMode,
                                     Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return addForeign( entity, alias, null, master, foreign, joinMode, function );
     }
@@ -1358,7 +1358,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>       泛型类型
      * @return 当前对象
      */
-    default <E> Context addForeign( Class<E> entity, String alias, String reference, R master,
+    default <E> Context addForeign( Class<E> entity, String alias, String reference, P master,
                                     Property<E, ?> foreign, JoinMode joinMode,
                                     Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return addForeign( entity, alias, reference, lambdaToProperty( master ),
@@ -1418,7 +1418,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, R master, Property<E, ?> foreign ) {
+    default <E> Context addForeign( SubCriteria<E> subCriteria, P master, Property<E, ?> foreign ) {
         return addForeign( subCriteria, null, master, foreign, JoinMode.INNER );
     }
 
@@ -1430,7 +1430,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, R master, String foreign ) {
+    default <E> Context addForeign( SubCriteria<E> subCriteria, P master, String foreign ) {
         return addForeign( subCriteria, null, master, foreign, JoinMode.INNER );
     }
 
@@ -1455,7 +1455,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, R master, Property<E, ?> foreign, JoinMode joinMode ) {
+    default <E> Context addForeign( SubCriteria<E> subCriteria, P master, Property<E, ?> foreign, JoinMode joinMode ) {
         return addForeign( subCriteria, null, master, foreign, joinMode );
     }
 
@@ -1468,7 +1468,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, R master, String foreign, JoinMode joinMode ) {
+    default <E> Context addForeign( SubCriteria<E> subCriteria, P master, String foreign, JoinMode joinMode ) {
         return addForeign( subCriteria, null, master, foreign, joinMode );
     }
 
@@ -1495,7 +1495,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, R master, String foreign,
+    default <E> Context addForeign( SubCriteria<E> subCriteria, P master, String foreign,
                                     JoinMode joinMode, Criterion<?>... withClauses ) {
         return addForeign( subCriteria, null, master, foreign, joinMode, withClauses );
     }
@@ -1510,7 +1510,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, R master, Property<E, ?> foreign,
+    default <E> Context addForeign( SubCriteria<E> subCriteria, P master, Property<E, ?> foreign,
                                     JoinMode joinMode, Criterion<?>... withClauses ) {
         return addForeign( subCriteria, null, master, foreign, joinMode, withClauses );
     }
@@ -1540,7 +1540,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, String reference, R master, Property<E, ?> foreign,
+    default <E> Context addForeign( SubCriteria<E> subCriteria, String reference, P master, Property<E, ?> foreign,
                                     Criterion<?>... withClauses ) {
         return addForeign( subCriteria, reference, master, foreign, JoinMode.INNER, withClauses );
     }
@@ -1555,7 +1555,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, String reference, R master, String foreign,
+    default <E> Context addForeign( SubCriteria<E> subCriteria, String reference, P master, String foreign,
                                     Criterion<?>... withClauses ) {
         return addForeign( subCriteria, reference, master, foreign, JoinMode.INNER, withClauses );
     }
@@ -1586,7 +1586,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, String reference, R master, Property<E, ?> foreign,
+    default <E> Context addForeign( SubCriteria<E> subCriteria, String reference, P master, Property<E, ?> foreign,
                                     JoinMode joinMode, Criterion<?>... withClauses ) {
         return addForeign( subCriteria, reference, new Foreign( lambdaToProperty( master ),
                 methodToProperty( foreign ), joinMode ), withClauses );
@@ -1603,7 +1603,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, String reference, R master, String foreign,
+    default <E> Context addForeign( SubCriteria<E> subCriteria, String reference, P master, String foreign,
                                     JoinMode joinMode, Criterion<?>... withClauses ) {
         return addForeign( subCriteria, reference, new Foreign( lambdaToProperty( master ), foreign, joinMode ), withClauses );
     }
@@ -1633,7 +1633,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, R master, Property<E, ?> foreign,
+    default <E> Context addForeign( SubCriteria<E> subCriteria, P master, Property<E, ?> foreign,
                                     Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return addForeign( subCriteria, null, master, foreign, JoinMode.INNER, function );
     }
@@ -1647,7 +1647,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, R master, String foreign,
+    default <E> Context addForeign( SubCriteria<E> subCriteria, P master, String foreign,
                                     Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return addForeign( subCriteria, null, master, foreign, JoinMode.INNER, function );
     }
@@ -1676,7 +1676,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, R master, Property<E, ?> foreign, JoinMode joinMode,
+    default <E> Context addForeign( SubCriteria<E> subCriteria, P master, Property<E, ?> foreign, JoinMode joinMode,
                                     Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return addForeign( subCriteria, null, master, foreign, joinMode, function );
     }
@@ -1691,7 +1691,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, R master, String foreign, JoinMode joinMode,
+    default <E> Context addForeign( SubCriteria<E> subCriteria, P master, String foreign, JoinMode joinMode,
                                     Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return addForeign( subCriteria, null, master, foreign, joinMode, function );
     }
@@ -1721,7 +1721,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, String reference, R master, String foreign,
+    default <E> Context addForeign( SubCriteria<E> subCriteria, String reference, P master, String foreign,
                                     Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return addForeign( subCriteria, reference, master, foreign, JoinMode.INNER, function );
     }
@@ -1736,7 +1736,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, String reference, R master, Property<E, ?> foreign,
+    default <E> Context addForeign( SubCriteria<E> subCriteria, String reference, P master, Property<E, ?> foreign,
                                     Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return addForeign( subCriteria, reference, master, foreign, JoinMode.INNER, function );
     }
@@ -1767,7 +1767,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, String reference, R master, Property<E, ?> foreign,
+    default <E> Context addForeign( SubCriteria<E> subCriteria, String reference, P master, Property<E, ?> foreign,
                                     JoinMode joinMode, Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return addForeign( subCriteria, reference, new Foreign( lambdaToProperty( master ), methodToProperty( foreign ),
                 joinMode ), function );
@@ -1784,7 +1784,7 @@ public interface ForeignBuilder<T, Context, R> extends LambdaConverter<R> {
      * @param <E>         泛型类型
      * @return 联表条件对象
      */
-    default <E> Context addForeign( SubCriteria<E> subCriteria, String reference, R master, String foreign,
+    default <E> Context addForeign( SubCriteria<E> subCriteria, String reference, P master, String foreign,
                                     JoinMode joinMode, Function<ForeignCriteria<E>, AbstractQueryCriteria<E>> function ) {
         return addForeign( subCriteria, reference, new Foreign( lambdaToProperty( master ), foreign,
                 joinMode ), function );
