@@ -1,7 +1,6 @@
 package com.wkit.lost.mybatis.service;
 
 import com.wkit.lost.mybatis.batch.BatchDataBeanWrapper;
-import com.wkit.lost.mybatis.utils.ArrayUtil;
 
 import java.util.Collection;
 
@@ -9,7 +8,7 @@ import java.util.Collection;
  * 保存操作接口
  * @param <T> 泛型类型
  */
-interface SaveService<T> {
+public interface SaveService<T> {
 
     int DEFAULT_BATCH_SIZE = 500;
 

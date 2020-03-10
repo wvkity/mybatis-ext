@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.core.function;
+package com.wkit.lost.mybatis.core.aggregate;
 
 import com.wkit.lost.mybatis.core.segment.Segment;
 
@@ -6,7 +6,7 @@ import com.wkit.lost.mybatis.core.segment.Segment;
  * 聚合函数类型
  * @author wvkity
  */
-public enum FunctionType implements Segment {
+public enum AggregateType implements Segment {
 
     /**
      * COUNT聚合函数

@@ -1,6 +1,5 @@
 package com.wkit.lost.mybatis.mapper;
 
-import com.wkit.lost.mybatis.annotation.EnableMapper;
 import com.wkit.lost.mybatis.utils.Constants;
 import org.apache.ibatis.annotations.Param;
 
@@ -8,7 +7,6 @@ import org.apache.ibatis.annotations.Param;
  * 更新数据操作接口
  * @param <T> 泛型类
  */
-@EnableMapper
 interface UpdateMapper<T> {
 
     /**

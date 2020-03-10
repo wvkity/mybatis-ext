@@ -38,17 +38,30 @@ public class AnnotationInterceptorConfiguration implements InterceptorConfigurat
 
     @Override
     public List<InterceptorDefinition> interceptors() {
-        AnnotationAttributes[] pluginAnnotation = attributes.getAnnotationArray( PLUGIN_ANNOTATION_KEY );
-        if ( !ArrayUtil.isEmpty( pluginAnnotation ) ) {
+        List<InterceptorDefinition> interceptors = new ArrayList<>();
+        // 默认拦截器
+        AnnotationAttributes[] defaults = attributes.getAnnotationArray( PLUGIN_VALUE );
+        if ( !ArrayUtil.isEmpty( defaults ) ) {
             Set<InterceptorDefinition> plugins = new HashSet<>();
-            for ( AnnotationAttributes attribute : pluginAnnotation ) {
+            for ( AnnotationAttributes attribute : defaults ) {
                 plugins.add( new InterceptorDefinition( attribute.getClass( PLUGIN_VALUE ),
                         attribute.getString( PLUGIN_BEAN_NAME ), ( Integer ) attribute.get( PLUGIN_ORDER ) ) );
             }
-            List<InterceptorDefinition> interceptors = new ArrayList<>( plugins );
-            interceptors.sort( Comparator.comparingInt( InterceptorDefinition::getOrder ) );
-            return interceptors;
+            interceptors.addAll( plugins );
         }
-        return new ArrayList<>();
+        // 其他拦截器
+        AnnotationAttributes[] others = attributes.getAnnotationArray( PLUGIN_ANNOTATION_KEY );
+        if ( !ArrayUtil.isEmpty( others ) ) {
+            Set<InterceptorDefinition> plugins = new HashSet<>();
+            for ( AnnotationAttributes attribute : others ) {
+                plugins.add( new InterceptorDefinition( attribute.getClass( PLUGIN_VALUE ),
+                        attribute.getString( PLUGIN_BEAN_NAME ), ( Integer ) attribute.get( PLUGIN_ORDER ) ) );
+            }
+            interceptors.addAll( plugins );
+        }
+        if ( !interceptors.isEmpty() ) {
+            interceptors.sort( Comparator.comparingInt( InterceptorDefinition::getOrder ) );
+        }
+        return interceptors;
     }
 }

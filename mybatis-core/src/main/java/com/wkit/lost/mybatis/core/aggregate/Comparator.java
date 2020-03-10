@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.core.function;
+package com.wkit.lost.mybatis.core.aggregate;
 
 import com.wkit.lost.mybatis.core.segment.Segment;
 

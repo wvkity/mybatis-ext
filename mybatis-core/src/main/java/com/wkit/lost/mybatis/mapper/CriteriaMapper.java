@@ -2,18 +2,16 @@ package com.wkit.lost.mybatis.mapper;
 
 import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.utils.Constants;
-import com.wkit.lost.paging.Pageable;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 查询数据操作接口
  * @param <T> 泛型类
- * @param <R> 返回值类型
+ * @param <V> 返回值类型
  */
-interface CriteriaMapper<T, R> {
+public interface CriteriaMapper<T, V> {
 
     /**
      * 根据指定条件对象更新记录
@@ -57,35 +55,6 @@ interface CriteriaMapper<T, R> {
      * @param criteria 条件对象
      * @return 列表
      */
-    List<R> listByCriteria( @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria );
-
-    /**
-     * 查询数据
-     * @param criteria 条件对象
-     * @return Object集合
-     */
-    List<Object> objectList( @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria );
-
-    /**
-     * 查询数据
-     * @param criteria 条件对象
-     * @return Object集合
-     */
-    List<Object[]> arrayList( @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria );
-
-    /**
-     * 查询数据
-     * @param criteria 条件对象
-     * @return Map
-     */
-    List<Map<String, Object>> mapList( @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria );
-
-    /**
-     * 分页查询列表
-     * @param pageable 分页对象
-     * @param criteria 条件对象
-     * @return 列表
-     */
-    List<R> pageableListByCriteria( @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria,
-                                    @Param( Constants.PARAM_PAGEABLE ) final Pageable pageable );
+    List<V> listByCriteria( @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria );
+    
 }

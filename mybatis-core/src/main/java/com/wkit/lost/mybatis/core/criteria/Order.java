@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.criteria;
 
-import com.wkit.lost.mybatis.core.function.Aggregation;
+import com.wkit.lost.mybatis.core.aggregate.Aggregation;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.exception.MyBatisException;

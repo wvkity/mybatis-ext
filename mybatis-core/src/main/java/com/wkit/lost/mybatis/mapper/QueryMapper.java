@@ -1,6 +1,5 @@
 package com.wkit.lost.mybatis.mapper;
 
-import com.wkit.lost.mybatis.annotation.EnableMapper;
 import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.paging.Pageable;
 import org.apache.ibatis.annotations.Param;
@@ -13,10 +12,9 @@ import java.util.Optional;
 /**
  * 查询数据操作接口
  * @param <T> 泛型类
- * @param <R> 返回值类
+ * @param <V> 返回值类
  */
-@EnableMapper
-interface QueryMapper<T, R> {
+public interface QueryMapper<T, V> {
 
     /**
      * 根据指定对象查询记录是否存在
@@ -44,28 +42,28 @@ interface QueryMapper<T, R> {
      * @param id 主键
      * @return 对应数据
      */
-    Optional<R> selectOne( Serializable id );
+    Optional<V> selectOne( Serializable id );
 
     /**
      * 根据多个主键查询记录
      * @param idList 主键集合
      * @return 多条记录
      */
-    List<R> list( @Param( Constants.PARAM_PRIMARY_KEYS ) Collection<? extends Serializable> idList );
+    List<V> list( @Param( Constants.PARAM_PRIMARY_KEYS ) Collection<? extends Serializable> idList );
 
     /**
      * 根据制定对象查询记录
      * @param entity 制定对象
      * @return 多条记录
      */
-    List<R> listByEntity( T entity );
+    List<V> listByEntity( T entity );
 
     /**
      * 根据多个对象查询记录
      * @param entities 对象集合
      * @return 多条记录
      */
-    List<R> listByEntities( @Param( Constants.PARAM_ENTITIES ) Collection<T> entities );
+    List<V> listByEntities( @Param( Constants.PARAM_ENTITIES ) Collection<T> entities );
 
     /**
      * 分页查询记录
@@ -73,5 +71,6 @@ interface QueryMapper<T, R> {
      * @param pageable 分页对象
      * @return 多条记录
      */
-    List<R> pageableList( @Param( Constants.PARAM_ENTITY ) T entity, @Param( Constants.PARAM_PAGEABLE ) Pageable pageable );
+    List<V> pageableList( @Param( Constants.PARAM_ENTITY ) T entity, 
+                          @Param( Constants.PARAM_PAGEABLE ) Pageable pageable );
 }

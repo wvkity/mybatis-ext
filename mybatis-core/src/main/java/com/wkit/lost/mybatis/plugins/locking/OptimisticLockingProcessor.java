@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.plugins.locking;
 
-import com.wkit.lost.mybatis.core.criteria.AbstractModifyCriteria;
+import com.wkit.lost.mybatis.core.criteria.AbstractUpdateCriteria;
 import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
@@ -77,7 +77,7 @@ public class OptimisticLockingProcessor extends UpdateProcessorSupport {
                                     if ( METHOD_UPDATE_BY_CRITERIA.equals( execMethod ) ) {
                                         Object modifyValue = criteria.getModifyVersionValue();
                                         if ( modifyValue == null ) {
-                                            ( ( AbstractModifyCriteria<?> ) criteriaObject ).updateVersion(
+                                            ( ( AbstractUpdateCriteria<?> ) criteriaObject ).updateVersion(
                                                     newValue( originalValue, column.getJavaType() ) );
                                         }
                                     } else {

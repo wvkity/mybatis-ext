@@ -6,7 +6,7 @@ import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.factory.AbstractCriteriaBuilderFactory;
-import com.wkit.lost.mybatis.mapper.MapperExecutorCallable;
+import com.wkit.lost.mybatis.mapper.BaseMapperExecutor;
 import com.wkit.lost.mybatis.session.SqlSessionUtil;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.ClassUtil;
@@ -34,8 +34,8 @@ import java.util.stream.Collectors;
  * @param <R> 返回值类型
  * @author wvkity
  */
-public abstract class AbstractServiceExecutorCallable<Executor extends MapperExecutorCallable<T, R>, T, R>
-        extends AbstractCriteriaBuilderFactory<T> implements ServiceExecutorCallable<T, R> {
+public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExecutor<T, R>, T, R>
+        extends AbstractCriteriaBuilderFactory<T> implements BaseServiceExecutor<T, R> {
 
     protected static final String METHOD_INSERT = "insert";
     protected static final String METHOD_INSERT_NOT_WITH_NULL = "insertNotWithNull";

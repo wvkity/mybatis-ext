@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.core.function;
+package com.wkit.lost.mybatis.core.aggregate;
 
 import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.criteria.Logic;
@@ -22,7 +22,7 @@ public class Avg extends AbstractFunction {
      * @param distinct 是否去重
      */
     public Avg( Criteria<?> criteria, String property, boolean distinct ) {
-        this.name = FunctionType.AVG.getSqlSegment();
+        this.name = AggregateType.AVG.getSqlSegment();
         this.criteria = criteria;
         this.property = property;
         this.distinct = distinct;
@@ -36,7 +36,7 @@ public class Avg extends AbstractFunction {
      * @param distinct 是否去重
      */
     public Avg( Criteria<?> criteria, String property, Integer scale, boolean distinct ) {
-        this.name = FunctionType.AVG.getSqlSegment();
+        this.name = AggregateType.AVG.getSqlSegment();
         this.criteria = criteria;
         this.property = property;
         this.scale = scale;
@@ -51,7 +51,7 @@ public class Avg extends AbstractFunction {
      * @param distinct 是否去重
      */
     public Avg( Criteria<?> criteria, String alias, String property, boolean distinct ) {
-        this.name = FunctionType.AVG.getSqlSegment();
+        this.name = AggregateType.AVG.getSqlSegment();
         this.criteria = criteria;
         this.alias = alias;
         this.property = property;
@@ -67,7 +67,7 @@ public class Avg extends AbstractFunction {
      * @param distinct 是否去重
      */
     public Avg( Criteria<?> criteria, String alias, String property, Integer scale, boolean distinct ) {
-        this.name = FunctionType.AVG.getSqlSegment();
+        this.name = AggregateType.AVG.getSqlSegment();
         this.criteria = criteria;
         this.alias = alias;
         this.property = property;
@@ -165,7 +165,7 @@ public class Avg extends AbstractFunction {
      * @param values     值
      */
     public Avg( Criteria<?> criteria, String alias, boolean distinct, Comparator comparator, Logic logic, String property, List<Object> values ) {
-        this.name = FunctionType.AVG.getSqlSegment();
+        this.name = AggregateType.AVG.getSqlSegment();
         this.criteria = criteria;
         this.alias = alias;
         this.distinct = distinct;
@@ -187,7 +187,7 @@ public class Avg extends AbstractFunction {
      * @param values     值
      */
     public Avg( Criteria<?> criteria, String alias, Integer scale, boolean distinct, Comparator comparator, Logic logic, String property, List<Object> values ) {
-        this.name = FunctionType.AVG.getSqlSegment();
+        this.name = AggregateType.AVG.getSqlSegment();
         this.criteria = criteria;
         this.alias = alias;
         this.scale = scale;

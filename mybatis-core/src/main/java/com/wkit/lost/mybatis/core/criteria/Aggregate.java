@@ -1,8 +1,13 @@
 package com.wkit.lost.mybatis.core.criteria;
 
-import com.wkit.lost.mybatis.core.function.Aggregation;
-import com.wkit.lost.mybatis.core.function.Comparator;
-import com.wkit.lost.mybatis.core.function.FunctionType;
+import com.wkit.lost.mybatis.core.aggregate.Aggregation;
+import com.wkit.lost.mybatis.core.aggregate.Comparator;
+import com.wkit.lost.mybatis.core.aggregate.AggregateType;
+import com.wkit.lost.mybatis.lambda.LambdaConverter;
+import com.wkit.lost.mybatis.utils.ArrayUtil;
+
+import static com.wkit.lost.mybatis.core.criteria.Logic.AND;
+import static com.wkit.lost.mybatis.core.aggregate.Comparator.EQ;
 
 import java.util.Collection;
 
@@ -10,7 +15,7 @@ import java.util.Collection;
  * 聚合函数接口
  * @param <T> 泛型类型
  */
-public interface AggregationFunction<T> {
+public interface Aggregate<T, Context, P> extends LambdaConverter<P> {
 
     // region count
 
@@ -18,14 +23,18 @@ public interface AggregationFunction<T> {
      * COUNT聚合函数
      * @return 条件对象
      */
-    Criteria<T> count();
+    default Context count() {
+        return count( "*" );
+    }
 
     /**
      * COUNT聚合函数
      * @param property 属性
      * @return 条件对象
      */
-    Criteria<T> count( String property );
+    default Context count( String property ) {
+        return count( null, property );
+    }
 
     /**
      * COUNT聚合函数
@@ -33,7 +42,9 @@ public interface AggregationFunction<T> {
      * @param property 属性
      * @return 条件对象
      */
-    Criteria<T> count( String alias, String property );
+    default Context count( String alias, String property ) {
+        return count( alias, property, false );
+    }
 
     /**
      * COUNT聚合函数
@@ -41,7 +52,9 @@ public interface AggregationFunction<T> {
      * @param distinct 是否去重
      * @return 条件对象
      */
-    Criteria<T> count( String property, boolean distinct );
+    default Context count( String property, boolean distinct ) {
+        return count( null, property, distinct );
+    }
 
     /**
      * COUNT聚合函数
@@ -50,7 +63,9 @@ public interface AggregationFunction<T> {
      * @param distinct 是否去重
      * @return 条件对象
      */
-    Criteria<T> count( String alias, String property, boolean distinct );
+    default Context count( String alias, String property, boolean distinct ) {
+        return count( alias, distinct, EQ, AND, property );
+    }
 
     /**
      * COUNT聚合函数
@@ -59,7 +74,9 @@ public interface AggregationFunction<T> {
      * @param values   值
      * @return 条件对象
      */
-    Criteria<T> count( String alias, String property, Object... values );
+    default Context count( String alias, String property, Object... values ) {
+        return count( alias, false, EQ, AND, property, values );
+    }
 
     /**
      * COUNT聚合函数
@@ -69,7 +86,9 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> count( String alias, Comparator comparator, String property, Object... values );
+    default Context count( String alias, Comparator comparator, String property, Object... values ) {
+        return count( alias, false, comparator, AND, property, values );
+    }
 
     /**
      * COUNT聚合函数
@@ -80,7 +99,9 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> count( String alias, Comparator comparator, Logic logic, String property, Object... values );
+    default Context count( String alias, Comparator comparator, Logic logic, String property, Object... values ) {
+        return count( alias, false, comparator, logic, property, values );
+    }
 
     /**
      * COUNT聚合函数
@@ -91,7 +112,9 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> count( String alias, boolean distinct, Comparator comparator, String property, Object... values );
+    default Context count( String alias, boolean distinct, Comparator comparator, String property, Object... values ) {
+        return count( alias, distinct, comparator, AND, property, values );
+    }
 
     /**
      * COUNT聚合函数
@@ -103,7 +126,8 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> count( String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values );
+    Context count( String alias, boolean distinct, Comparator comparator, Logic logic,
+                   String property, Object... values );
 
     // endregion
 
@@ -114,7 +138,9 @@ public interface AggregationFunction<T> {
      * @param property 属性
      * @return 条件对象
      */
-    Criteria<T> sum( String property );
+    default Context sum( String property ) {
+        return sum( null, property );
+    }
 
     /**
      * SUM聚合函数
@@ -122,7 +148,9 @@ public interface AggregationFunction<T> {
      * @param scale    保留小数位数
      * @return 条件对象
      */
-    Criteria<T> sum( String property, Integer scale );
+    default Context sum( String property, Integer scale ) {
+        return sum( null, property, scale );
+    }
 
     /**
      * SUM聚合函数
@@ -130,52 +158,64 @@ public interface AggregationFunction<T> {
      * @param property 属性
      * @return 条件对象
      */
-    Criteria<T> sum( String alias, String property );
-
-    /**
-     * SUM聚合函数
-     * @param alias    聚合函数别名
-     * @param property 属性
-     * @param scale    保留小数位数
-     * @return 条件对象
-     */
-    Criteria<T> sum( String alias, String property, Integer scale );
-
-    /**
-     * SUM聚合函数
-     * @param property 属性
-     * @param distinct 是否去重
-     * @return 条件对象
-     */
-    Criteria<T> sum( String property, boolean distinct );
-
-    /**
-     * SUM聚合函数
-     * @param property 属性
-     * @param scale    保留小数位数
-     * @param distinct 是否去重
-     * @return 条件对象
-     */
-    Criteria<T> sum( String property, Integer scale, boolean distinct );
-
-    /**
-     * SUM聚合函数
-     * @param alias    聚合函数别名
-     * @param property 属性
-     * @param distinct 是否去重
-     * @return 条件对象
-     */
-    Criteria<T> sum( String alias, String property, boolean distinct );
+    default Context sum( String alias, String property ) {
+        return sum( alias, property, false );
+    }
 
     /**
      * SUM聚合函数
      * @param alias    聚合函数别名
      * @param property 属性
      * @param scale    保留小数位数
+     * @return 条件对象
+     */
+    default Context sum( String alias, String property, Integer scale ) {
+        return sum( alias, property, scale, false );
+    }
+
+    /**
+     * SUM聚合函数
+     * @param property 属性
      * @param distinct 是否去重
      * @return 条件对象
      */
-    Criteria<T> sum( String alias, String property, Integer scale, boolean distinct );
+    default Context sum( String property, boolean distinct ) {
+        return sum( null, property, distinct );
+    }
+
+    /**
+     * SUM聚合函数
+     * @param property 属性
+     * @param scale    保留小数位数
+     * @param distinct 是否去重
+     * @return 条件对象
+     */
+    default Context sum( String property, Integer scale, boolean distinct ) {
+        return sum( null, property, scale, distinct );
+    }
+
+    /**
+     * SUM聚合函数
+     * @param alias    聚合函数别名
+     * @param property 属性
+     * @param distinct 是否去重
+     * @return 条件对象
+     */
+    default Context sum( String alias, String property, boolean distinct ) {
+        return sum( alias, distinct, EQ, property );
+    }
+
+    /**
+     * SUM聚合函数
+     * @param alias    聚合函数别名
+     * @param property 属性
+     * @param scale    保留小数位数
+     * @param distinct 是否去重
+     * @return 条件对象
+     */
+    default Context sum( String alias, String property, Integer scale, boolean distinct ) {
+        return sum( alias, scale, distinct, EQ, property );
+    }
 
     /**
      * SUM聚合函数
@@ -184,7 +224,9 @@ public interface AggregationFunction<T> {
      * @param values   值
      * @return 条件对象
      */
-    Criteria<T> sum( String alias, String property, Object... values );
+    default Context sum( String alias, String property, Object... values ) {
+        return sum( alias, false, EQ, property, values );
+    }
 
     /**
      * SUM聚合函数
@@ -194,7 +236,9 @@ public interface AggregationFunction<T> {
      * @param values   值
      * @return 条件对象
      */
-    Criteria<T> sum( String alias, Integer scale, String property, Object... values );
+    default Context sum( String alias, Integer scale, String property, Object... values ) {
+        return sum( alias, scale, false, EQ, AND, property, values );
+    }
 
     /**
      * SUM聚合函数
@@ -204,7 +248,9 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> sum( String alias, Comparator comparator, String property, Object... values );
+    default Context sum( String alias, Comparator comparator, String property, Object... values ) {
+        return sum( alias, false, comparator, property, values );
+    }
 
     /**
      * SUM聚合函数
@@ -215,7 +261,9 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> sum( String alias, Integer scale, Comparator comparator, String property, Object... values );
+    default Context sum( String alias, Integer scale, Comparator comparator, String property, Object... values ) {
+        return sum( alias, scale, false, comparator, AND, property, values );
+    }
 
     /**
      * SUM聚合函数
@@ -226,7 +274,9 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> sum( String alias, Comparator comparator, Logic logic, String property, Object... values );
+    default Context sum( String alias, Comparator comparator, Logic logic, String property, Object... values ) {
+        return sum( alias, false, comparator, logic, property, values );
+    }
 
     /**
      * SUM聚合函数
@@ -238,7 +288,10 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> sum( String alias, Integer scale, Comparator comparator, Logic logic, String property, Object... values );
+    default Context sum( String alias, Integer scale, Comparator comparator, Logic logic,
+                         String property, Object... values ) {
+        return sum( alias, scale, false, comparator, logic, property, values );
+    }
 
     /**
      * SUM聚合函数
@@ -249,7 +302,9 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> sum( String alias, boolean distinct, Comparator comparator, String property, Object... values );
+    default Context sum( String alias, boolean distinct, Comparator comparator, String property, Object... values ) {
+        return sum( alias, distinct, comparator, AND, property, values );
+    }
 
     /**
      * SUM聚合函数
@@ -261,7 +316,10 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> sum( String alias, Integer scale, boolean distinct, Comparator comparator, String property, Object... values );
+    default Context sum( String alias, Integer scale, boolean distinct, Comparator comparator,
+                         String property, Object... values ) {
+        return sum( alias, scale, distinct, comparator, AND, property, values );
+    }
 
     /**
      * SUM聚合函数
@@ -273,7 +331,8 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> sum( String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values );
+    Context sum( String alias, boolean distinct, Comparator comparator, Logic logic,
+                 String property, Object... values );
 
     /**
      * SUM聚合函数
@@ -286,7 +345,8 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> sum( String alias, Integer scale, boolean distinct, Comparator comparator, Logic logic, String property, Object... values );
+    Context sum( String alias, Integer scale, boolean distinct, Comparator comparator, Logic logic,
+                 String property, Object... values );
 
     // endregion
 
@@ -297,7 +357,9 @@ public interface AggregationFunction<T> {
      * @param property 属性
      * @return 条件对象
      */
-    Criteria<T> avg( String property );
+    default Context avg( String property ) {
+        return avg( null, property );
+    }
 
     /**
      * AVG聚合函数
@@ -305,7 +367,9 @@ public interface AggregationFunction<T> {
      * @param scale    保留小数位数
      * @return 条件对象
      */
-    Criteria<T> avg( String property, Integer scale );
+    default Context avg( String property, Integer scale ) {
+        return avg( null, property, scale );
+    }
 
     /**
      * AVG聚合函数
@@ -313,52 +377,64 @@ public interface AggregationFunction<T> {
      * @param property 属性
      * @return 条件对象
      */
-    Criteria<T> avg( String alias, String property );
-
-    /**
-     * AVG聚合函数
-     * @param alias    聚合函数别名
-     * @param property 属性
-     * @param scale    保留小数位数
-     * @return 条件对象
-     */
-    Criteria<T> avg( String alias, String property, Integer scale );
-
-    /**
-     * AVG聚合函数
-     * @param property 属性
-     * @param distinct 是否去重
-     * @return 条件对象
-     */
-    Criteria<T> avg( String property, boolean distinct );
-
-    /**
-     * AVG聚合函数
-     * @param property 属性
-     * @param scale    保留小数位数
-     * @param distinct 是否去重
-     * @return 条件对象
-     */
-    Criteria<T> avg( String property, Integer scale, boolean distinct );
-
-    /**
-     * AVG聚合函数
-     * @param alias    聚合函数别名
-     * @param property 属性
-     * @param distinct 是否去重
-     * @return 条件对象
-     */
-    Criteria<T> avg( String alias, String property, boolean distinct );
+    default Context avg( String alias, String property ) {
+        return avg( alias, property, false );
+    }
 
     /**
      * AVG聚合函数
      * @param alias    聚合函数别名
      * @param property 属性
      * @param scale    保留小数位数
+     * @return 条件对象
+     */
+    default Context avg( String alias, String property, Integer scale ) {
+        return avg( alias, property, scale, false );
+    }
+
+    /**
+     * AVG聚合函数
+     * @param property 属性
      * @param distinct 是否去重
      * @return 条件对象
      */
-    Criteria<T> avg( String alias, String property, Integer scale, boolean distinct );
+    default Context avg( String property, boolean distinct ) {
+        return avg( null, property, distinct );
+    }
+
+    /**
+     * AVG聚合函数
+     * @param property 属性
+     * @param scale    保留小数位数
+     * @param distinct 是否去重
+     * @return 条件对象
+     */
+    default Context avg( String property, Integer scale, boolean distinct ) {
+        return avg( null, property, scale, distinct );
+    }
+
+    /**
+     * AVG聚合函数
+     * @param alias    聚合函数别名
+     * @param property 属性
+     * @param distinct 是否去重
+     * @return 条件对象
+     */
+    default Context avg( String alias, String property, boolean distinct ) {
+        return avg( alias, distinct, EQ, property );
+    }
+
+    /**
+     * AVG聚合函数
+     * @param alias    聚合函数别名
+     * @param property 属性
+     * @param scale    保留小数位数
+     * @param distinct 是否去重
+     * @return 条件对象
+     */
+    default Context avg( String alias, String property, Integer scale, boolean distinct ) {
+        return avg( alias, scale, distinct, EQ, property );
+    }
 
     /**
      * AVG聚合函数
@@ -367,7 +443,9 @@ public interface AggregationFunction<T> {
      * @param values   值
      * @return 条件对象
      */
-    Criteria<T> avg( String alias, String property, Object... values );
+    default Context avg( String alias, String property, Object... values ) {
+        return avg( alias, EQ, property, values );
+    }
 
     /**
      * AVG聚合函数
@@ -377,7 +455,9 @@ public interface AggregationFunction<T> {
      * @param values   值
      * @return 条件对象
      */
-    Criteria<T> avg( String alias, Integer scale, String property, Object... values );
+    default Context avg( String alias, Integer scale, String property, Object... values ) {
+        return avg( alias, scale, EQ, property, values );
+    }
 
     /**
      * AVG聚合函数
@@ -387,7 +467,9 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> avg( String alias, Comparator comparator, String property, Object... values );
+    default Context avg( String alias, Comparator comparator, String property, Object... values ) {
+        return avg( alias, comparator, AND, property, values );
+    }
 
     /**
      * AVG聚合函数
@@ -398,7 +480,9 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> avg( String alias, Integer scale, Comparator comparator, String property, Object... values );
+    default Context avg( String alias, Integer scale, Comparator comparator, String property, Object... values ) {
+        return avg( alias, scale, false, comparator, property, values );
+    }
 
     /**
      * AVG聚合函数
@@ -409,7 +493,9 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> avg( String alias, Comparator comparator, Logic logic, String property, Object... values );
+    default Context avg( String alias, Comparator comparator, Logic logic, String property, Object... values ) {
+        return avg( alias, false, comparator, logic, property, values );
+    }
 
     /**
      * AVG聚合函数
@@ -421,7 +507,10 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> avg( String alias, Integer scale, Comparator comparator, Logic logic, String property, Object... values );
+    default Context avg( String alias, Integer scale, Comparator comparator, Logic logic,
+                         String property, Object... values ) {
+        return avg( alias, scale, false, comparator, logic, property, values );
+    }
 
     /**
      * AVG聚合函数
@@ -432,7 +521,9 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> avg( String alias, boolean distinct, Comparator comparator, String property, Object... values );
+    default Context avg( String alias, boolean distinct, Comparator comparator, String property, Object... values ) {
+        return avg( alias, distinct, comparator, AND, property, values );
+    }
 
     /**
      * AVG聚合函数
@@ -444,7 +535,10 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> avg( String alias, Integer scale, boolean distinct, Comparator comparator, String property, Object... values );
+    default Context avg( String alias, Integer scale, boolean distinct, Comparator comparator,
+                         String property, Object... values ) {
+        return avg( alias, scale, distinct, comparator, AND, property, values );
+    }
 
     /**
      * AVG聚合函数
@@ -456,7 +550,8 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> avg( String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values );
+    Context avg( String alias, boolean distinct, Comparator comparator, Logic logic,
+                 String property, Object... values );
 
     /**
      * AVG聚合函数
@@ -469,7 +564,8 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> avg( String alias, Integer scale, boolean distinct, Comparator comparator, Logic logic, String property, Object... values );
+    Context avg( String alias, Integer scale, boolean distinct, Comparator comparator, Logic logic,
+                 String property, Object... values );
 
     // endregion
 
@@ -480,7 +576,9 @@ public interface AggregationFunction<T> {
      * @param property 属性
      * @return 条件对象
      */
-    Criteria<T> max( String property );
+    default Context max( String property ) {
+        return max( null, property );
+    }
 
     /**
      * MAX聚合函数
@@ -488,7 +586,9 @@ public interface AggregationFunction<T> {
      * @param property 属性
      * @return 条件对象
      */
-    Criteria<T> max( String alias, String property );
+    default Context max( String alias, String property ) {
+        return max( alias, property, false );
+    }
 
     /**
      * MAX聚合函数
@@ -496,7 +596,9 @@ public interface AggregationFunction<T> {
      * @param distinct 是否去重
      * @return 条件对象
      */
-    Criteria<T> max( String property, boolean distinct );
+    default Context max( String property, boolean distinct ) {
+        return max( null, property, distinct );
+    }
 
     /**
      * MAX聚合函数
@@ -505,7 +607,9 @@ public interface AggregationFunction<T> {
      * @param distinct 是否去重
      * @return 条件对象
      */
-    Criteria<T> max( String alias, String property, boolean distinct );
+    default Context max( String alias, String property, boolean distinct ) {
+        return max( alias, distinct, EQ, property );
+    }
 
     /**
      * MAX聚合函数
@@ -514,7 +618,9 @@ public interface AggregationFunction<T> {
      * @param values   值
      * @return 条件对象
      */
-    Criteria<T> max( String alias, String property, Object... values );
+    default Context max( String alias, String property, Object... values ) {
+        return max( alias, EQ, property, values );
+    }
 
     /**
      * MAX聚合函数
@@ -524,7 +630,9 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> max( String alias, Comparator comparator, String property, Object... values );
+    default Context max( String alias, Comparator comparator, String property, Object... values ) {
+        return max( alias, comparator, AND, property, values );
+    }
 
     /**
      * MAX聚合函数
@@ -535,7 +643,9 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> max( String alias, Comparator comparator, Logic logic, String property, Object... values );
+    default Context max( String alias, Comparator comparator, Logic logic, String property, Object... values ) {
+        return max( alias, false, comparator, logic, property, values );
+    }
 
     /**
      * MAX聚合函数
@@ -546,7 +656,10 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> max( String alias, boolean distinct, Comparator comparator, String property, Object... values );
+    default Context max( String alias, boolean distinct, Comparator comparator,
+                         String property, Object... values ) {
+        return max( alias, distinct, comparator, AND, property, values );
+    }
 
     /**
      * MAX聚合函数
@@ -558,7 +671,8 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> max( String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values );
+    Context max( String alias, boolean distinct, Comparator comparator, Logic logic,
+                 String property, Object... values );
 
     // endregion
 
@@ -569,7 +683,9 @@ public interface AggregationFunction<T> {
      * @param property 属性
      * @return 条件对象
      */
-    Criteria<T> min( String property );
+    default Context min( String property ) {
+        return min( null, property );
+    }
 
     /**
      * MIN聚合函数
@@ -577,7 +693,9 @@ public interface AggregationFunction<T> {
      * @param property 属性
      * @return 条件对象
      */
-    Criteria<T> min( String alias, String property );
+    default Context min( String alias, String property ) {
+        return min( alias, property, false );
+    }
 
     /**
      * MIN聚合函数
@@ -585,7 +703,9 @@ public interface AggregationFunction<T> {
      * @param distinct 是否去重
      * @return 条件对象
      */
-    Criteria<T> min( String property, boolean distinct );
+    default Context min( String property, boolean distinct ) {
+        return min( null, property, distinct );
+    }
 
     /**
      * MIN聚合函数
@@ -594,7 +714,9 @@ public interface AggregationFunction<T> {
      * @param distinct 是否去重
      * @return 条件对象
      */
-    Criteria<T> min( String alias, String property, boolean distinct );
+    default Context min( String alias, String property, boolean distinct ) {
+        return min( alias, distinct, EQ, AND, property );
+    }
 
     /**
      * MIN聚合函数
@@ -603,7 +725,9 @@ public interface AggregationFunction<T> {
      * @param values   值
      * @return 条件对象
      */
-    Criteria<T> min( String alias, String property, Object... values );
+    default Context min( String alias, String property, Object... values ) {
+        return min( alias, EQ, property, values );
+    }
 
     /**
      * MIN聚合函数
@@ -613,7 +737,9 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> min( String alias, Comparator comparator, String property, Object... values );
+    default Context min( String alias, Comparator comparator, String property, Object... values ) {
+        return min( alias, false, comparator, property, values );
+    }
 
     /**
      * MIN聚合函数
@@ -624,7 +750,9 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> min( String alias, Comparator comparator, Logic logic, String property, Object... values );
+    default Context min( String alias, Comparator comparator, Logic logic, String property, Object... values ) {
+        return min( alias, false, comparator, logic, property, values );
+    }
 
     /**
      * MIN聚合函数
@@ -635,7 +763,10 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> min( String alias, boolean distinct, Comparator comparator, String property, Object... values );
+    default Context min( String alias, boolean distinct, Comparator comparator,
+                         String property, Object... values ) {
+        return min( alias, distinct, comparator, AND, property, values );
+    }
 
     /**
      * MIN聚合函数
@@ -647,7 +778,8 @@ public interface AggregationFunction<T> {
      * @param values     值
      * @return 条件对象
      */
-    Criteria<T> min( String alias, boolean distinct, Comparator comparator, Logic logic, String property, Object... values );
+    Context min( String alias, boolean distinct, Comparator comparator, Logic logic,
+                 String property, Object... values );
 
     // endregion
 
@@ -655,35 +787,35 @@ public interface AggregationFunction<T> {
 
     /**
      * 创建多个聚合函数
-     * @param property  属性
+     * @param property 属性
      * @return 条件对象
      */
-    Criteria<T> functions( String property );
+    Context functions( String property );
 
     /**
      * 创建多个聚合函数
-     * @param property  属性
-     * @param scale     保留小数位数(针对sum,avg聚合函数)
+     * @param property 属性
+     * @param scale    保留小数位数(针对sum,avg聚合函数)
      * @return 条件对象
      */
-    Criteria<T> functions( String property, int scale );
+    Context functions( String property, int scale );
 
     /**
      * 创建多个聚合函数
-     * @param property  属性
-     * @param distinct  是否去重
+     * @param property 属性
+     * @param distinct 是否去重
      * @return 条件对象
      */
-    Criteria<T> functions( String property, boolean distinct );
+    Context functions( String property, boolean distinct );
 
     /**
      * 创建多个聚合函数
-     * @param property  属性
-     * @param distinct  是否去重
-     * @param scale     保留小数位数(针对sum,avg聚合函数)
+     * @param property 属性
+     * @param distinct 是否去重
+     * @param scale    保留小数位数(针对sum,avg聚合函数)
      * @return 条件对象
      */
-    Criteria<T> functions( String property, boolean distinct, int scale );
+    Context functions( String property, boolean distinct, int scale );
 
     /**
      * 创建多个聚合函数
@@ -691,7 +823,7 @@ public interface AggregationFunction<T> {
      * @param aliasPrefix 别名前缀
      * @return 条件对象
      */
-    Criteria<T> functions( String property, String aliasPrefix );
+    Context functions( String property, String aliasPrefix );
 
     /**
      * 创建多个聚合函数
@@ -700,7 +832,7 @@ public interface AggregationFunction<T> {
      * @param scale       保留小数位数(针对sum,avg聚合函数)
      * @return 条件对象
      */
-    Criteria<T> functions( String property, String aliasPrefix, int scale );
+    Context functions( String property, String aliasPrefix, int scale );
 
     /**
      * 创建多个聚合函数
@@ -709,7 +841,7 @@ public interface AggregationFunction<T> {
      * @param aliasPrefix 别名前缀
      * @return 条件对象
      */
-    Criteria<T> functions( String property, boolean distinct, String aliasPrefix );
+    Context functions( String property, boolean distinct, String aliasPrefix );
 
     /**
      * 创建多个聚合函数
@@ -719,7 +851,7 @@ public interface AggregationFunction<T> {
      * @param scale       保留小数位数(针对sum,avg聚合函数)
      * @return 条件对象
      */
-    Criteria<T> functions( String property, boolean distinct, String aliasPrefix, int scale );
+    Context functions( String property, boolean distinct, String aliasPrefix, int scale );
 
 
     /**
@@ -728,7 +860,7 @@ public interface AggregationFunction<T> {
      * @param functions 函数类型
      * @return 条件对象
      */
-    Criteria<T> functions( String property, FunctionType... functions );
+    Context functions( String property, AggregateType... functions );
 
     /**
      * 创建多个聚合函数
@@ -737,7 +869,7 @@ public interface AggregationFunction<T> {
      * @param functions 函数类型
      * @return 条件对象
      */
-    Criteria<T> functions( String property, int scale, FunctionType... functions );
+    Context functions( String property, int scale, AggregateType... functions );
 
     /**
      * 创建多个聚合函数
@@ -746,7 +878,7 @@ public interface AggregationFunction<T> {
      * @param functions 函数类型
      * @return 条件对象
      */
-    Criteria<T> functions( String property, boolean distinct, FunctionType... functions );
+    Context functions( String property, boolean distinct, AggregateType... functions );
 
     /**
      * 创建多个聚合函数
@@ -756,7 +888,7 @@ public interface AggregationFunction<T> {
      * @param functions 函数类型
      * @return 条件对象
      */
-    Criteria<T> functions( String property, boolean distinct, int scale, FunctionType... functions );
+    Context functions( String property, boolean distinct, int scale, AggregateType... functions );
 
     /**
      * 创建多个聚合函数
@@ -765,7 +897,7 @@ public interface AggregationFunction<T> {
      * @param functions   函数类型
      * @return 条件对象
      */
-    Criteria<T> functions( String property, String aliasPrefix, FunctionType... functions );
+    Context functions( String property, String aliasPrefix, AggregateType... functions );
 
     /**
      * 创建多个聚合函数
@@ -775,7 +907,7 @@ public interface AggregationFunction<T> {
      * @param functions   函数类型
      * @return 条件对象
      */
-    Criteria<T> functions( String property, String aliasPrefix, int scale, FunctionType... functions );
+    Context functions( String property, String aliasPrefix, int scale, AggregateType... functions );
 
     /**
      * 创建多个聚合函数
@@ -785,7 +917,7 @@ public interface AggregationFunction<T> {
      * @param functions   函数类型
      * @return 条件对象
      */
-    Criteria<T> functions( String property, boolean distinct, String aliasPrefix, FunctionType... functions );
+    Context functions( String property, boolean distinct, String aliasPrefix, AggregateType... functions );
 
     /**
      * 创建多个聚合函数
@@ -796,79 +928,57 @@ public interface AggregationFunction<T> {
      * @param functions   函数类型
      * @return 条件对象
      */
-    Criteria<T> functions( String property, boolean distinct, String aliasPrefix, int scale, FunctionType... functions );
+    Context functions( String property, boolean distinct, String aliasPrefix, int scale, AggregateType... functions );
 
     // endregion
 
     // region assist methods
 
     /**
-     * 查询是否包含聚合函数
-     * @param include 是否包含
-     * @return 条件对象
-     */
-    Criteria<T> includeFunction( boolean include );
-
-    /**
-     * 是否包含聚合函数
-     * @return true: 是, false: 否
-     */
-    boolean isInclude();
-
-    /**
-     * 是否只查询聚合函数
-     * @param only 是否
-     * @return 条件对象
-     */
-    Criteria<T> onlyFunction( boolean only );
-
-    /**
-     * 是否只查询聚合函数
-     * @return true: 是, false: 否
-     */
-    boolean isOnly();
-
-    /**
      * 添加聚合函数
      * @param function 聚合函数
      * @return 条件对象
      */
-    Criteria<T> addFunction( Aggregation function );
+    Context addFunction( Aggregation function );
 
     /**
      * 添加聚合函数
      * @param functions 聚合函数数组
      * @return 条件对象
      */
-    Criteria<T> addFunction( Aggregation... functions );
+    default Context addFunction( Aggregation... functions ) {
+        return addFunction( ArrayUtil.toList( functions ) );
+    }
 
     /**
      * 添加聚合函数
      * @param functions 聚合函数集合
      * @return 条件对象
      */
-    Criteria<T> addFunction( Collection<Aggregation> functions );
+    Context addFunction( Collection<Aggregation> functions );
 
     /**
      * 添加分组筛选条件
      * @param aliases 聚合函数别名数组
      * @return 条件对象
      */
-    Criteria<T> having( String... aliases );
+    default Context having( String... aliases ) {
+        return having( ArrayUtil.toList( aliases ) );
+    }
 
     /**
      * 添加分组筛选条件
      * @param aliases 聚合函数别名集合
      * @return 条件对象
      */
-    Criteria<T> having( Collection<String> aliases );
+    Context having( Collection<String> aliases );
 
     /**
      * 添加分组筛选条件
      * @param functions 聚合函数对象数组
      * @return 条件对象
      */
-    Criteria<T> having( Aggregation... functions );
+    Context having( Aggregation... functions );
 
     // endregion
 

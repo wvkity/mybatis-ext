@@ -100,7 +100,7 @@ public interface SubCriteriaBuilder<T> {
      * @return 子查询条件对象
      */
     default <E> SubCriteria<E> createSub( Class<E> entityClass, String subTempTabAlias, Function<SubCriteria<E>,
-            AbstractQueryCriteria<E>> function ) {
+            AbstractCriteriaWrapper<E>> function ) {
         return createSub( entityClass, null, subTempTabAlias, function );
     }
 
@@ -114,6 +114,6 @@ public interface SubCriteriaBuilder<T> {
      * @return 子查询条件对象
      */
     <E> SubCriteria<E> createSub( Class<E> entityClass, String alias, String subTempTabAlias, Function<SubCriteria<E>,
-            AbstractQueryCriteria<E>> function );
+            AbstractCriteriaWrapper<E>> function );
 
 }

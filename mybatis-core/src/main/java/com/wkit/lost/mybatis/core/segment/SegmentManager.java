@@ -6,7 +6,7 @@ import com.wkit.lost.mybatis.utils.StringUtil;
 import com.wkit.lost.mybatis.core.criteria.Group;
 import com.wkit.lost.mybatis.core.criteria.Order;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
-import com.wkit.lost.mybatis.core.function.Aggregation;
+import com.wkit.lost.mybatis.core.aggregate.Aggregation;
 import lombok.Getter;
 
 import java.util.Arrays;

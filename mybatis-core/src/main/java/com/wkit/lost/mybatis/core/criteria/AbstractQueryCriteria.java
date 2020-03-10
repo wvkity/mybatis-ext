@@ -1,6 +1,5 @@
 package com.wkit.lost.mybatis.core.criteria;
-
-import com.wkit.lost.mybatis.core.function.Aggregation;
+import com.wkit.lost.mybatis.core.aggregate.Aggregation;
 import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.lambda.Property;
@@ -28,7 +27,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @SuppressWarnings( "serial" )
-public abstract class AbstractQueryCriteria<T> extends AbstractChainCriteriaWrapper<T, AbstractQueryCriteria<T>>
+public abstract class AbstractQueryCriteria<T> extends AbstractGeneralQueryCriteria<T, AbstractQueryCriteria<T>>
         implements Query<T, AbstractQueryCriteria<T>> {
 
     /**

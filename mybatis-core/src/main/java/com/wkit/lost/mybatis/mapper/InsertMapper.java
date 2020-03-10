@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
  * 保存数据操作接口
  * @param <T> 泛型类
  */
-interface InsertMapper<T> {
+public interface InsertMapper<T> {
 
     int DEFAULT_BATCH_SIZE = 200;
 

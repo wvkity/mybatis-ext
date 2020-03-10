@@ -15,7 +15,7 @@ import java.util.function.Function;
  * @param <R> Lambda类型
  * @author wvkity
  */
-public interface ConditionBuilder<T, Context, R> extends LambdaConverter<R> {
+public interface ExpressionBuilder<T, Context, R> extends LambdaConverter<R> {
 
     /**
      * 主键值等于

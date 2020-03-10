@@ -1,11 +1,12 @@
 package com.wkit.lost.mybatis.core.condition;
 
+import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
+import com.wkit.lost.mybatis.core.condition.criterion.Restrictions;
+import com.wkit.lost.mybatis.core.criteria.AbstractCriteriaWrapper;
 import com.wkit.lost.mybatis.core.criteria.AbstractQueryCriteria;
 import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.criteria.Logic;
 import com.wkit.lost.mybatis.core.criteria.MatchMode;
-import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
-import com.wkit.lost.mybatis.core.condition.criterion.Restrictions;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 
@@ -37,7 +38,7 @@ public abstract class AbstractConditionWrapper<T, R, Context extends AbstractCon
     /**
      * 查询对象
      */
-    protected AbstractQueryCriteria<T> criteria;
+    protected AbstractCriteriaWrapper<T> criteria;
 
     /**
      * 当前对象
@@ -288,7 +289,7 @@ public abstract class AbstractConditionWrapper<T, R, Context extends AbstractCon
      * 将所有条件添加查询对象中(自动清空当前对象中保存的条件对象)
      * @return 查询对象
      */
-    public AbstractQueryCriteria<T> flush() {
+    public AbstractCriteriaWrapper<T> flush() {
         if ( this.hasCondition() ) {
             this.criteria.add( this.all() );
             this.clear();
@@ -325,5 +326,5 @@ public abstract class AbstractConditionWrapper<T, R, Context extends AbstractCon
      * @param criteria 查询对象
      * @return 实例对象
      */
-    protected abstract Context instance( AbstractQueryCriteria<T> criteria );
+    protected abstract Context instance( AbstractCriteriaWrapper<T> criteria );
 }

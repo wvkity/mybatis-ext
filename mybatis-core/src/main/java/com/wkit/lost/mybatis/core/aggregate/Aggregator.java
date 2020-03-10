@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.core.function;
+package com.wkit.lost.mybatis.core.aggregate;
 
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.core.criteria.Criteria;
@@ -8,7 +8,7 @@ import com.wkit.lost.mybatis.core.criteria.Logic;
  * 聚合函数工具类
  * @author wvkity
  */
-public abstract class Aggregations {
+public final class Aggregator {
 
     // region count
 

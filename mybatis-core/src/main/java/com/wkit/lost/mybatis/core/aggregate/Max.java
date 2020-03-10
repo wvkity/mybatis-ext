@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.core.function;
+package com.wkit.lost.mybatis.core.aggregate;
 
 import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.criteria.Logic;
@@ -7,13 +7,13 @@ import lombok.experimental.Accessors;
 import java.util.List;
 
 /**
- * COUNT聚合函数
+ * MAX聚合函数
  * @author wvkity
  */
 @Accessors( chain = true )
-public class Count extends AbstractFunction {
+public class Max extends AbstractFunction {
 
-    private static final long serialVersionUID = 2837296671612645330L;
+    private static final long serialVersionUID = 4385429253292099255L;
 
     /**
      * 构造方法
@@ -21,8 +21,8 @@ public class Count extends AbstractFunction {
      * @param property 属性
      * @param distinct 是否去重
      */
-    public Count( Criteria<?> criteria, String property, boolean distinct ) {
-        this.name = FunctionType.COUNT.getSqlSegment();
+    public Max( Criteria<?> criteria, String property, boolean distinct ) {
+        this.name = AggregateType.MAX.getSqlSegment();
         this.criteria = criteria;
         this.property = property;
         this.distinct = distinct;
@@ -35,8 +35,8 @@ public class Count extends AbstractFunction {
      * @param property 属性
      * @param distinct 是否去重
      */
-    public Count( Criteria<?> criteria, String alias, String property, boolean distinct ) {
-        this.name = FunctionType.COUNT.getSqlSegment();
+    public Max( Criteria<?> criteria, String alias, String property, boolean distinct ) {
+        this.name = AggregateType.MAX.getSqlSegment();
         this.criteria = criteria;
         this.alias = alias;
         this.property = property;
@@ -51,7 +51,7 @@ public class Count extends AbstractFunction {
      * @param property 属性
      * @param values   值
      */
-    public Count( Criteria<?> criteria, String alias, boolean distinct, String property, List<Object> values ) {
+    public Max( Criteria<?> criteria, String alias, boolean distinct, String property, List<Object> values ) {
         this( criteria, alias, distinct, Comparator.EQ, Logic.AND, property, values );
     }
 
@@ -64,7 +64,7 @@ public class Count extends AbstractFunction {
      * @param property 属性
      * @param values   值
      */
-    public Count( Criteria<?> criteria, String alias, boolean distinct, Logic logic, String property, List<Object> values ) {
+    public Max( Criteria<?> criteria, String alias, boolean distinct, Logic logic, String property, List<Object> values ) {
         this( criteria, alias, distinct, Comparator.EQ, logic, property, values );
     }
 
@@ -77,7 +77,7 @@ public class Count extends AbstractFunction {
      * @param property   属性
      * @param values     值
      */
-    public Count( Criteria<?> criteria, String alias, boolean distinct, Comparator comparator, String property, List<Object> values ) {
+    public Max( Criteria<?> criteria, String alias, boolean distinct, Comparator comparator, String property, List<Object> values ) {
         this( criteria, alias, distinct, comparator, Logic.AND, property, values );
     }
 
@@ -91,8 +91,8 @@ public class Count extends AbstractFunction {
      * @param property   属性
      * @param values     值
      */
-    public Count( Criteria<?> criteria, String alias, boolean distinct, Comparator comparator, Logic logic, String property, List<Object> values ) {
-        this.name = FunctionType.COUNT.getSqlSegment();
+    public Max( Criteria<?> criteria, String alias, boolean distinct, Comparator comparator, Logic logic, String property, List<Object> values ) {
+        this.name = AggregateType.MAX.getSqlSegment();
         this.criteria = criteria;
         this.alias = alias;
         this.distinct = distinct;

@@ -14,8 +14,8 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 @Log4j2
 @SuppressWarnings( "serial" )
-public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T> implements 
-        Modify<T, AbstractModifyCriteria<T>> {
+public abstract class AbstractUpdateCriteria<T> extends AbstractCriteriaWrapper<T> implements 
+        Modify<T, AbstractUpdateCriteria<T>> {
 
     /**
      * 更新代码片段
@@ -28,12 +28,12 @@ public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T>
     protected Map<String, Object> modifies = new ConcurrentSkipListMap<>();
 
     @Override
-    public AbstractModifyCriteria<T> update( Property<T, ?> property, Object value ) {
+    public AbstractUpdateCriteria<T> update( Property<T, ?> property, Object value ) {
         return update( lambdaToProperty( property ), value );
     }
 
     @Override
-    public AbstractModifyCriteria<T> update( String property, Object value ) {
+    public AbstractUpdateCriteria<T> update( String property, Object value ) {
         if ( StringUtil.hasText( property ) ) {
             this.modifies.put( property, value );
         }
@@ -41,7 +41,7 @@ public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T>
     }
 
     @Override
-    public AbstractModifyCriteria<T> update( Map<String, Object> map ) {
+    public AbstractUpdateCriteria<T> update( Map<String, Object> map ) {
         if ( CollectionUtil.hasElement( map ) ) {
             for ( Map.Entry<String, Object> entry : map.entrySet() ) {
                 update( entry.getKey(), entry.getValue() );
@@ -51,7 +51,7 @@ public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T>
     }
 
     @Override
-    public AbstractModifyCriteria<T> updateVersion( Object version ) {
+    public AbstractUpdateCriteria<T> updateVersion( Object version ) {
         ColumnWrapper column = getOptimisticLockingColumn();
         if ( column != null ) {
             update( column.getProperty(), version );
@@ -88,4 +88,5 @@ public abstract class AbstractModifyCriteria<T> extends AbstractQueryCriteria<T>
         }
         return "";
     }
+    
 }

@@ -9,9 +9,9 @@ import java.util.Map;
 /**
  * 查询操作接口
  * @param <T> 泛型类
- * @param <R> 返回值类
+ * @param <V> 返回值类
  */
-interface CriteriaService<T, R> {
+public interface CriteriaService<T, V> {
 
     /**
      * 根据Criteria对象查询记录是否存在
@@ -54,7 +54,7 @@ interface CriteriaService<T, R> {
      * @param criteria 条件对象
      * @return 列表
      */
-    List<R> list( Criteria<T> criteria );
+    List<V> list( Criteria<T> criteria );
 
     /**
      * 查询列表(返回自定义类型)
@@ -91,5 +91,5 @@ interface CriteriaService<T, R> {
      * @param pageable 分页对象
      * @return 列表
      */
-    List<R> list( Criteria<T> criteria, Pageable pageable );
+    List<V> list( Criteria<T> criteria, Pageable pageable );
 }

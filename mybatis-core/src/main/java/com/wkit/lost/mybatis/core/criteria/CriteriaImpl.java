@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.core.criteria;
 
 import com.wkit.lost.mybatis.core.condition.ConditionManager;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
+import com.wkit.lost.mybatis.lambda.Property;
 import lombok.experimental.Accessors;
 
 import java.util.Map;
@@ -13,9 +14,14 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author wvkity
  */
 @Accessors( chain = true )
-public class CriteriaImpl<T> extends AbstractModifyCriteria<T> {
+public class CriteriaImpl<T> extends AbstractQueryCriteria<T> implements Modify<T, CriteriaImpl<T>> {
 
     private static final long serialVersionUID = 505287408705513144L;
+
+    /**
+     * 
+     */
+    private UpdateCriteria<T> delegate;
 
     /**
      * 构造方法
@@ -27,6 +33,7 @@ public class CriteriaImpl<T> extends AbstractModifyCriteria<T> {
         this.initMappingCache( this.entityClass.getName(), true );
         this.conditionManager = new ConditionManager<>( this );
         this.initAlias();
+        this.delegate = new UpdateCriteria<>( entityClass, this.getAlias() );
     }
 
     /**
@@ -41,6 +48,7 @@ public class CriteriaImpl<T> extends AbstractModifyCriteria<T> {
         this.initMappingCache( this.entityClass.getName(), true );
         this.conditionManager = new ConditionManager<>( this );
         this.initAlias();
+        this.delegate = new UpdateCriteria<>( entityClass, this.getAlias() );
     }
 
     /**
@@ -60,6 +68,36 @@ public class CriteriaImpl<T> extends AbstractModifyCriteria<T> {
         this.initMappingCache( this.entityClass.getName(), true );
         this.conditionManager = new ConditionManager<>( this );
         this.initAlias();
+        this.delegate = new UpdateCriteria<>( entityClass, this.getAlias() );
+    }
+
+    @Override
+    public CriteriaImpl<T> update( Property<T, ?> property, Object value ) {
+        this.delegate.update( property, value );
+        return this;
+    }
+
+    @Override
+    public CriteriaImpl<T> update( String property, Object value ) {
+        this.delegate.update( property, value );
+        return this;
+    }
+
+    @Override
+    public CriteriaImpl<T> update( Map<String, Object> map ) {
+        this.delegate.update( map );
+        return this;
+    }
+
+    @Override
+    public CriteriaImpl<T> updateVersion( Object version ) {
+        this.delegate.updateVersion( version );
+        return this;
+    }
+
+    @Override
+    public String getUpdateSegment() {
+        return this.delegate.getUpdateSegment();
     }
 
     @Override

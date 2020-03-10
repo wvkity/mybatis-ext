@@ -36,10 +36,9 @@ import java.lang.annotation.Target;
 public @interface EnableInterceptors {
 
     /**
-     * 拦截器列表
+     * 默认拦截器列表
      * @return 拦截器列表
      */
-    @AliasFor( "interceptors" )
     Plugin[] value() default {
             @Plugin( value = MetadataAuditingInterceptor.class, order = 1 ),
             @Plugin( value = OptimisticLockingInterceptor.class, order = 2 ),
@@ -48,14 +47,8 @@ public @interface EnableInterceptors {
     };
 
     /**
-     * 拦截器列表
+     * 拦截器列表(其他拦截器)
      * @return 拦截器列表
      */
-    @AliasFor( "value" )
-    Plugin[] interceptors() default {
-            @Plugin( value = MetadataAuditingInterceptor.class, order = 1 ),
-            @Plugin( value = OptimisticLockingInterceptor.class, order = 2 ),
-            @Plugin( value = PageableInterceptor.class, order = 3 ),
-            @Plugin( value = RangePageableInterceptor.class, order = 4 )
-    };
+    Plugin[] interceptors() default {};
 }

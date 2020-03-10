@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.core.criteria;
 
+import com.wkit.lost.mybatis.lambda.LambdaConverter;
 import com.wkit.lost.mybatis.lambda.Property;
 
 import java.util.Map;

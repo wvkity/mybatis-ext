@@ -7,7 +7,7 @@ import java.util.Collection;
  * 删除操作接口
  * @param <T> 泛型类
  */
-interface DeleteService<T> {
+public interface DeleteService<T> {
 
     /**
      * 根据指定对象删除记录
@@ -48,15 +48,15 @@ interface DeleteService<T> {
 
     /**
      * 根据主键批量删除记录
-     * @param idArray 主键数组
+     * @param ids 主键数组
      * @return 受影响行数
      */
-    int batchDelete( Serializable... idArray );
+    int batchDelete( Serializable... ids );
 
     /**
      * 根据主键批量删除记录
-     * @param idList 主键集合
+     * @param ids 主键集合
      * @return 受影响行数
      */
-    int batchDelete( Collection<? extends Serializable> idList );
+    int batchDelete( Collection<? extends Serializable> ids );
 }

@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.builder.annotation;
 
 import com.wkit.lost.mybatis.binding.MyBatisMapperMethod;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
-import com.wkit.lost.mybatis.mapper.MapperExecutorCallable;
+import com.wkit.lost.mybatis.mapper.BaseMapperExecutor;
 import com.wkit.lost.mybatis.session.MyBatisConfiguration;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.extern.log4j.Log4j2;
@@ -136,7 +136,7 @@ public class MyBatisMapperAnnotationBuilder extends MapperAnnotationBuilder {
                 }
             }
             // 注入无XML配置文件CURD-SQL
-            if ( MapperExecutorCallable.class.isAssignableFrom( this.type ) ) {
+            if ( BaseMapperExecutor.class.isAssignableFrom( this.type ) ) {
                 log.debug( "Customize processing the mapper interface: `{}`", this.type.getCanonicalName() );
                 MyBatisConfigCache.getSqlInjector( this.configuration ).inject( this.assistant, this.type );
             }

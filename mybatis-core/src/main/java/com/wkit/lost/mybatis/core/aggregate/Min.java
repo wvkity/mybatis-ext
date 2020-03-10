@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.core.function;
+package com.wkit.lost.mybatis.core.aggregate;
 
 import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.criteria.Logic;
@@ -22,7 +22,7 @@ public class Min extends AbstractFunction {
      * @param distinct 是否去重
      */
     public Min( Criteria<?> criteria, String property, boolean distinct ) {
-        this.name = FunctionType.MIN.getSqlSegment();
+        this.name = AggregateType.MIN.getSqlSegment();
         this.criteria = criteria;
         this.property = property;
         this.distinct = distinct;
@@ -36,7 +36,7 @@ public class Min extends AbstractFunction {
      * @param distinct 是否去重
      */
     public Min( Criteria<?> criteria, String alias, String property, boolean distinct ) {
-        this.name = FunctionType.MIN.getSqlSegment();
+        this.name = AggregateType.MIN.getSqlSegment();
         this.criteria = criteria;
         this.alias = alias;
         this.property = property;
@@ -92,7 +92,7 @@ public class Min extends AbstractFunction {
      * @param values     值
      */
     public Min( Criteria<?> criteria, String alias, boolean distinct, Comparator comparator, Logic logic, String property, List<Object> values ) {
-        this.name = FunctionType.MIN.getSqlSegment();
+        this.name = AggregateType.MIN.getSqlSegment();
         this.criteria = criteria;
         this.alias = alias;
         this.distinct = distinct;

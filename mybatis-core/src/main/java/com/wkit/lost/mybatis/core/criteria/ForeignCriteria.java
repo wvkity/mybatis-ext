@@ -199,6 +199,18 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
         return null;
     }
 
+    @Override
+    public <E> AbstractQueryCriteria<E> getMaster() {
+        AbstractCriteriaWrapper<E> wrapper = super.getMaster();
+        return wrapper instanceof AbstractQueryCriteria ? ( AbstractQueryCriteria<E> ) wrapper : null;
+    }
+
+    @Override
+    public <E> AbstractQueryCriteria<E> getRootMaster() {
+        AbstractCriteriaWrapper<E> wrapper = super.getRootMaster();
+        return wrapper instanceof AbstractQueryCriteria ? ( AbstractQueryCriteria<E> ) wrapper : null;
+    }
+
     /**
      * 设置master对象
      * @param master 主查询对象
@@ -214,6 +226,18 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
      * @return 当前对象
      */
     public ForeignCriteria<T> join() {
+        doJoin();
+        return this;
+    }
+
+    public ForeignCriteria<T> join( Function<ForeignCriteria<T>, AbstractCriteriaWrapper<T>> function ) {
+        if ( doJoin() ) {
+            function.apply( this );
+        }
+        return this;
+    }
+
+    private boolean doJoin() {
         AbstractQueryCriteria<?> masterCriteria = getMaster();
         if ( masterCriteria != null ) {
             Set<ForeignCriteria<?>> foreignList = masterCriteria.foreignCriteriaSet;
@@ -222,7 +246,8 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
             } else if ( !foreignList.contains( this ) ) {
                 masterCriteria.addForeign( this );
             }
+            return true;
         }
-        return this;
+        return false;
     }
 }

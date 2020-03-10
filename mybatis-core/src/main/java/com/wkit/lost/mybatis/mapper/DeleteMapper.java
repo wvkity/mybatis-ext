@@ -1,6 +1,5 @@
 package com.wkit.lost.mybatis.mapper;
 
-import com.wkit.lost.mybatis.annotation.EnableMapper;
 import com.wkit.lost.mybatis.utils.Constants;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,8 +11,7 @@ import java.util.List;
  * 删除数据操作接口
  * @param <T> 泛型类
  */
-@EnableMapper
-interface DeleteMapper<T> {
+public interface DeleteMapper<T> {
 
     /**
      * 根据指定对象删除记录

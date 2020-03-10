@@ -9,5 +9,5 @@ import com.wkit.lost.mybatis.mapper.MapperExecutor;
  * @author wvkity
  */
 public abstract class AbstractServiceExecutor<Executor extends MapperExecutor<T>, T> extends
-        AbstractServiceExecutorCallable<Executor, T, T> {
+        AbstractBaseServiceExecutor<Executor, T, T> {
 }

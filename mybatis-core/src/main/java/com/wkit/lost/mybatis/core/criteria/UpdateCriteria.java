@@ -6,15 +6,15 @@ import com.wkit.lost.mybatis.core.segment.SegmentManager;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class QueryCriteria<T> extends AbstractQueryCriteria<T> {
+public class UpdateCriteria<T> extends AbstractUpdateCriteria<T> {
 
-    private static final long serialVersionUID = -1253597753461923353L;
+    private static final long serialVersionUID = -4569380372671941501L;
 
     /**
      * 构造方法
      * @param entityClass 实体类
      */
-    public QueryCriteria( Class<T> entityClass ) {
+    public UpdateCriteria( Class<T> entityClass ) {
         this.entityClass = entityClass;
         this.init();
         this.initMappingCache( this.entityClass.getName(), true );
@@ -27,7 +27,7 @@ public class QueryCriteria<T> extends AbstractQueryCriteria<T> {
      * @param entityClass 实体类
      * @param alias       表别名
      */
-    public QueryCriteria( Class<T> entityClass, String alias ) {
+    public UpdateCriteria( Class<T> entityClass, String alias ) {
         this.entityClass = entityClass;
         this.init();
         this.setAlias( alias );
@@ -43,8 +43,8 @@ public class QueryCriteria<T> extends AbstractQueryCriteria<T> {
      * @param parameterValueMappings 参数-值映射
      * @param segmentManager         SQL片段管理器
      */
-    private QueryCriteria( Class<T> entityClass, AtomicInteger parameterSequence, AtomicInteger aliasSequence,
-                            Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
+    private UpdateCriteria( Class<T> entityClass, AtomicInteger parameterSequence, AtomicInteger aliasSequence,
+                          Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
         this.entityClass = entityClass;
         this.parameterSequence = parameterSequence;
         this.aliasSequence = aliasSequence;
@@ -56,21 +56,14 @@ public class QueryCriteria<T> extends AbstractQueryCriteria<T> {
     }
 
     @Override
-    protected QueryCriteria<T> instance( AtomicInteger parameterSequence, 
-                                                 AtomicInteger aliasSequence, 
-                                                 Map<String, Object> parameterValueMappings, 
-                                                 SegmentManager segmentManager ) {
-        return new QueryCriteria<>( entityClass, parameterSequence, aliasSequence, parameterValueMappings, 
+    protected UpdateCriteria<T> instance( AtomicInteger parameterSequence, AtomicInteger aliasSequence, 
+                                          Map<String, Object> parameterValueMappings, SegmentManager segmentManager ) {
+        return new UpdateCriteria<>( entityClass, parameterSequence, aliasSequence, parameterValueMappings,
                 new SegmentManager() );
     }
 
     @Override
-    public Object getModifyVersionValue() {
-        return null;
-    }
-
-    @Override
-    public AbstractQueryCriteria<T> deepClone() {
+    public AbstractCriteriaWrapper<T> deepClone() {
         return null;
     }
 }

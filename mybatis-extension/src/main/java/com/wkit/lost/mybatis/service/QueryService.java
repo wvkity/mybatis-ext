@@ -9,9 +9,10 @@ import java.util.Optional;
 
 /**
  * 查询操作接口
- * @param <T>  泛型类
+ * @param <T> 泛型类
+ * @param <V> 返回值类型
  */
-interface QueryService<T, R> {
+public interface QueryService<T, V> {
 
     /**
      * 根据指定对象查询记录是否存在
@@ -39,28 +40,28 @@ interface QueryService<T, R> {
      * @param id 主键
      * @return 对应数据
      */
-    Optional<R> selectOne( Serializable id );
+    Optional<V> selectOne( Serializable id );
 
     /**
      * 根据多个主键查询记录
-     * @param idArray 主键数组
+     * @param ids 主键数组
      * @return 多条记录
      */
-    List<R> list( Serializable... idArray );
+    List<V> list( Serializable... ids );
 
     /**
      * 根据多个主键查询记录
-     * @param idList 主键集合
+     * @param ids 主键集合
      * @return 多条记录
      */
-    List<R> list( Collection<? extends Serializable> idList );
+    List<V> list( Collection<? extends Serializable> ids );
 
     /**
      * 根据制定对象查询记录
      * @param entity 制定对象
      * @return 多条记录
      */
-    List<R> list( T entity );
+    List<V> list( T entity );
 
     /**
      * 根据多个对象查询记录
@@ -68,14 +69,14 @@ interface QueryService<T, R> {
      * @return 多条记录
      */
     @SuppressWarnings( "unchecked" )
-    List<R> list( T... entities );
+    List<V> list( T... entities );
 
     /**
      * 根据多个对象查询记录
      * @param entities 对象集合
      * @return 多条记录
      */
-    List<R> listByEntities( Collection<T> entities );
+    List<V> listByEntities( Collection<T> entities );
 
     /**
      * 分页查询记录
@@ -83,5 +84,5 @@ interface QueryService<T, R> {
      * @param pageable 分页对象
      * @return 多条记录
      */
-    List<R> list( T entity, Pageable pageable);
+    List<V> list( T entity, Pageable pageable );
 }

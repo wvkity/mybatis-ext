@@ -15,7 +15,7 @@ import java.util.Map;
 @SuppressWarnings( "serial" )
 @Log4j2
 public abstract class AbstractChainCriteriaWrapper<T, Context extends AbstractChainCriteriaWrapper<T, Context>>
-        extends AbstractCriteriaWrapper<T, Property<T, ?>, Context> {
+        extends AbstractGeneralCriteria<T, Context, Property<T, ?>> {
 
     /**
      * 实体属性-数据库字段映射缓存
@@ -43,7 +43,7 @@ public abstract class AbstractChainCriteriaWrapper<T, Context extends AbstractCh
     }
 
     @Override
-    public String methodToProperty( Property<?, ?> property ) {
+    public <E> String methodToProperty( Property<E, ?> property ) {
         return methodToProperty( PropertyMappingCache.parse( property ).getImplMethodName() );
     }
 

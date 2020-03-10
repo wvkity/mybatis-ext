@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core.criteria;
 
 import com.wkit.lost.mybatis.core.condition.AbstractConditionManager;
-import com.wkit.lost.mybatis.core.condition.ConditionBuilder;
+import com.wkit.lost.mybatis.core.condition.ExpressionBuilder;
 import com.wkit.lost.mybatis.core.condition.ConditionManager;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 
@@ -15,8 +15,8 @@ import java.util.function.Function;
  * @author wvkity
  */
 @SuppressWarnings( "serial" )
-public abstract class AbstractConditionExpressionWrapper<T, R> extends AbstractParamValueConverter
-        implements ConditionBuilder<T, AbstractConditionManager<T>, R> {
+public abstract class AbstractExpressionWrapper<T, R> extends AbstractParamValueConverter
+        implements ExpressionBuilder<T, AbstractConditionManager<T>, R> {
 
     /**
      * 条件管理器
@@ -200,17 +200,20 @@ public abstract class AbstractConditionExpressionWrapper<T, R> extends AbstractP
     }
 
     @Override
-    public AbstractConditionManager<T> nesting( Criteria<T> criteria, Logic logic, Collection<Criterion<?>> conditions ) {
+    public AbstractConditionManager<T> nesting( Criteria<T> criteria, Logic logic,
+                                                Collection<Criterion<?>> conditions ) {
         return conditionManager.nesting( criteria, logic, conditions );
     }
 
     @Override
-    public AbstractConditionManager<T> nesting( Function<AbstractConditionManager<T>, AbstractConditionManager<T>> function ) {
+    public AbstractConditionManager<T> nesting( Function<AbstractConditionManager<T>,
+            AbstractConditionManager<T>> function ) {
         return this.conditionManager.nesting( function );
     }
 
     @Override
-    public AbstractConditionManager<T> orNesting( Function<AbstractConditionManager<T>, AbstractConditionManager<T>> function ) {
+    public AbstractConditionManager<T> orNesting( Function<AbstractConditionManager<T>,
+            AbstractConditionManager<T>> function ) {
         return this.conditionManager.orNesting( function );
     }
 }

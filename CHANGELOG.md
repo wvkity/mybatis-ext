@@ -33,3 +33,7 @@ UnifyServiceExecutor更名为ServiceExecutor
 - ForeignCriteria类中的appendTo方法更名为join
 - SqlSessionUtil类从mybatis-code模块迁移到mybatis-extension模块
 - 修复Criteria聚合函数条件指定小数位数无效bug
+- MapperExecutorCallable更名为BaseMapperExecutor, ServiceExecutorCallable更名为BaseServiceExecutor
+- 聚合函数包(function)更名为aggregate，部分类名也更改
+- 优化Criteria及相关子类，区分读、写相关操作
+- 修改EnableInterceptors注解
