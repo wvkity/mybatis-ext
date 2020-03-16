@@ -17,7 +17,7 @@ import com.wkit.lost.mybatis.lambda.LambdaConverter;
  * @param <P>       lambda属性对象
  * @author wvkity
  */
-public interface SubQuery<T, Context, P> extends CriteriaSearch, LambdaConverter<P> {
+public interface SubCondition<T, Context, P> extends CriteriaSearch, LambdaConverter<P> {
 
     /**
      * 主键等于

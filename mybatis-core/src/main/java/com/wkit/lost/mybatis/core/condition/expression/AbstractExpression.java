@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.criteria.ForeignSubCriteria;
 import com.wkit.lost.mybatis.core.criteria.Logic;
 import com.wkit.lost.mybatis.core.criteria.Operator;
-import com.wkit.lost.mybatis.core.criteria.ParamValuePlaceholderConverter;
+import com.wkit.lost.mybatis.core.criteria.PlaceholderConverter;
 import com.wkit.lost.mybatis.core.condition.Range;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
@@ -25,7 +25,7 @@ import java.util.Objects;
  */
 @Accessors( chain = true )
 @SuppressWarnings( "serial" )
-public abstract class AbstractExpression<T> implements Criterion<T>, ParamValuePlaceholderConverter {
+public abstract class AbstractExpression<T> implements Criterion<T>, PlaceholderConverter {
 
     protected static final String COMMA = ", ";
     protected static final String COLON = ": ";

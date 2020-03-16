@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.core.criteria;
 
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.segment.Segment;
+import com.wkit.lost.mybatis.core.wrapper.ColumnGroup;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
  * 分组
  * @param <T> 泛型类型
  * @author wvkity
+ * @see ColumnWrapper
+ * @see ColumnGroup
  */
 public class Group<T> implements Segment {
 
@@ -70,7 +73,7 @@ public class Group<T> implements Segment {
      */
     @SafeVarargs
     public static <T> Group<T> group( Criteria<T> criteria, Property<T, ?>... properties ) {
-        return new Group<>( criteria, CriteriaUtil.transform( ArrayUtil.toList( properties ), criteria ) );
+        return new Group<>( criteria, CriteriaUtil.lambdaToColumn( criteria, ArrayUtil.toList( properties ) ) );
     }
 
     /**
@@ -81,7 +84,7 @@ public class Group<T> implements Segment {
      * @return 分组对象
      */
     public static <T> Group<T> group( Criteria<T> criteria, Collection<String> properties ) {
-        return new Group<>( criteria, CriteriaUtil.transform( criteria, properties ) );
+        return new Group<>( criteria, CriteriaUtil.propertyToColumn( criteria, properties ) );
     }
 
     /**
@@ -93,7 +96,9 @@ public class Group<T> implements Segment {
      * @param <E>        泛型类型
      * @return 分组对象
      */
-    public static <T, E> Group<E> group( String alias, Criteria<T> master, String... properties ) {
+    public static <T, C extends AbstractGeneralQueryCriteria<T, C>, E> Group<E> group( String alias,
+                                                                                       AbstractGeneralQueryCriteria<T, C> master,
+                                                                                       String... properties ) {
         return group( alias, master, ArrayUtil.toList( properties ) );
     }
 
@@ -107,9 +112,11 @@ public class Group<T> implements Segment {
      * @return 分组对象
      */
     @SafeVarargs
-    public static <T, E> Group<E> group( String alias, Criteria<T> master, Property<E, ?>... properties ) {
+    public static <T, C extends AbstractGeneralQueryCriteria<T, C>, E> Group<E> group( String alias,
+                                                                                       AbstractGeneralQueryCriteria<T, C> master,
+                                                                                       Property<E, ?>... properties ) {
         Criteria<E> criteria = master.searchForeign( alias );
-        return new Group<>( criteria, CriteriaUtil.transform( ArrayUtil.toList( properties ), criteria ) );
+        return new Group<>( criteria, CriteriaUtil.lambdaToColumn( criteria, ArrayUtil.toList( properties ) ) );
     }
 
     /**
@@ -121,9 +128,11 @@ public class Group<T> implements Segment {
      * @param <E>        泛型类型
      * @return 分组对象
      */
-    public static <T, E> Group<E> group( String alias, Criteria<T> master, Collection<String> properties ) {
+    public static <T, C extends AbstractGeneralQueryCriteria<T, C>, E> Group<E> group( String alias,
+                                                                                       AbstractGeneralQueryCriteria<T, C> master,
+                                                                                       Collection<String> properties ) {
         Criteria<E> criteria = master.searchForeign( alias );
-        return new Group<>( criteria, CriteriaUtil.transform( criteria, properties ) );
+        return new Group<>( criteria, CriteriaUtil.propertyToColumn( criteria, properties ) );
     }
 
     @Override

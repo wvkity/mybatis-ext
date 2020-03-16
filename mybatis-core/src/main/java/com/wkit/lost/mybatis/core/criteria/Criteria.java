@@ -14,7 +14,7 @@ import java.util.function.Function;
  * @param <T> 泛型类型
  * @author wvkity
  */
-public interface Criteria<T> extends Segment, EmbeddedResult, Search<T>, ParamValuePlaceholderConverter {
+public interface Criteria<T> extends Segment, EmbeddedResult, Search<T>, PlaceholderConverter {
 
     /**
      * 获取WHERE条件SQL片段
@@ -149,17 +149,10 @@ public interface Criteria<T> extends Segment, EmbeddedResult, Search<T>, ParamVa
 
     /**
      * 添加子查询条件对象
-     * @param subCriteria 子查询条件对象
-     * @return 当前对象
-     */
-    Criteria<T> addSubCriteria( SubCriteria<?> subCriteria );
-
-    /**
-     * 添加子查询条件对象
      * @param subCriteriaArray 子查询条件对象数组
      * @return 当前对象
      */
-    Criteria<T> addSubCriteria( SubCriteria<?>... subCriteriaArray );
+    Criteria<T> add( SubCriteria<?>... subCriteriaArray );
 
     /**
      * 添加子查询条件对象
@@ -175,6 +168,22 @@ public interface Criteria<T> extends Segment, EmbeddedResult, Search<T>, ParamVa
      */
     default Aggregation getFunction( String alias ) {
         return null;
+    }
+
+    /**
+     * 联表查询副表引用属性
+     * @return 联表查询副表引用属性
+     */
+    default String getReference() {
+        return null;
+    }
+
+    /**
+     * 开启自动映射列别名(针对查询自动映射属性名)
+     * @return true: 是, false: 否
+     */
+    default boolean isColumnAliasAutoMapping() {
+        return false;
     }
 
     /**
@@ -241,5 +250,5 @@ public interface Criteria<T> extends Segment, EmbeddedResult, Search<T>, ParamVa
     default Criteria<T> resultType( Class<?> resultType ) {
         return this;
     }
-    
+
 }

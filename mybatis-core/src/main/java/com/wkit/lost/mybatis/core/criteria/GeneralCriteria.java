@@ -8,7 +8,7 @@ import java.util.function.Function;
 public interface GeneralCriteria<T, Context, P> extends Criteria<T>, InstanceClone<Context>, Compare<Context, P>,
         Null<Context, P>, Range<Context, P>, IndistinctMatching<Context, P>, Between<Context, P>,
         Customize<Context, P>, com.wkit.lost.mybatis.core.criteria.Nested<Context>,
-        SubCriteriaBuilder<T>, SubQuery<T, Context, P> {
+        SubCriteriaBuilder<T>, SubCondition<T, Context, P> {
 
     /**
      * 设置别名

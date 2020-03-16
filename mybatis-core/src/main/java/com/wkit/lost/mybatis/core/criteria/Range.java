@@ -10,10 +10,10 @@ import java.util.Collection;
 /**
  * 范围条件接口
  * @param <Context> 当前对象
- * @param <R>       lambda属性对象
+ * @param <P>       lambda属性对象
  * @author wvkity
  */
-public interface Range<Context, R> extends LambdaConverter<R>, Segment, Serializable {
+public interface Range<Context, P> extends LambdaConverter<P>, Segment, Serializable {
 
     /**
      * IN范围
@@ -21,7 +21,7 @@ public interface Range<Context, R> extends LambdaConverter<R>, Segment, Serializ
      * @param values   值
      * @return 当前对象
      */
-    default Context in( R property, Object... values ) {
+    default Context in( P property, Object... values ) {
         return in( lambdaToProperty( property ), values );
     }
 
@@ -41,7 +41,7 @@ public interface Range<Context, R> extends LambdaConverter<R>, Segment, Serializ
      * @param values   值
      * @return 当前对象
      */
-    default Context in( R property, Collection<Object> values ) {
+    default Context in( P property, Collection<Object> values ) {
         return in( lambdaToProperty( property ), values );
     }
 
@@ -59,7 +59,7 @@ public interface Range<Context, R> extends LambdaConverter<R>, Segment, Serializ
      * @param values   值
      * @return 当前对象
      */
-    default Context orIn( R property, Object... values ) {
+    default Context orIn( P property, Object... values ) {
         return orIn( lambdaToProperty( property ), values );
     }
 
@@ -79,7 +79,7 @@ public interface Range<Context, R> extends LambdaConverter<R>, Segment, Serializ
      * @param values   值
      * @return 当前对象
      */
-    default Context orIn( R property, Collection<Object> values ) {
+    default Context orIn( P property, Collection<Object> values ) {
         return orIn( lambdaToProperty( property ), values );
     }
 
@@ -97,7 +97,7 @@ public interface Range<Context, R> extends LambdaConverter<R>, Segment, Serializ
      * @param values   值
      * @return 当前对象
      */
-    default Context notIn( R property, Object... values ) {
+    default Context notIn( P property, Object... values ) {
         return notIn( lambdaToProperty( property ), values );
     }
 
@@ -117,7 +117,7 @@ public interface Range<Context, R> extends LambdaConverter<R>, Segment, Serializ
      * @param values   值
      * @return 当前对象
      */
-    default Context notIn( R property, Collection<Object> values ) {
+    default Context notIn( P property, Collection<Object> values ) {
         return notIn( lambdaToProperty( property ), values );
     }
 
@@ -135,7 +135,7 @@ public interface Range<Context, R> extends LambdaConverter<R>, Segment, Serializ
      * @param values   值
      * @return 当前对象
      */
-    default Context orNotIn( R property, Object... values ) {
+    default Context orNotIn( P property, Object... values ) {
         return orNotIn( lambdaToProperty( property ), values );
     }
 
@@ -155,7 +155,7 @@ public interface Range<Context, R> extends LambdaConverter<R>, Segment, Serializ
      * @param values   值
      * @return 当前对象
      */
-    default Context orNotIn( R property, Collection<Object> values ) {
+    default Context orNotIn( P property, Collection<Object> values ) {
         return orNotIn( lambdaToProperty( property ), values );
     }
 

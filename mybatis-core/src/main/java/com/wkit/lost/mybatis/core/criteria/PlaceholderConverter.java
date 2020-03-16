@@ -8,7 +8,7 @@ import java.util.Collection;
  * 参数值占位符转换接口
  * @author wvkity
  */
-public interface ParamValuePlaceholderConverter {
+public interface PlaceholderConverter {
     
     /**
      * 默认模板

@@ -15,8 +15,13 @@ import org.apache.ibatis.reflection.MetaObject;
 
 import java.util.Optional;
 
+/**
+ * 系统内置审计处理器
+ * <p>主键、逻辑删除审计</p>
+ * @author wvkity
+ */
 @Log4j2
-public class DefaultBuiltinAuditingProcessor extends AbstractAuditingProcessor {
+public class SystemBuiltinAuditingProcessor extends AbstractAuditingProcessor {
 
     @Override
     protected Object auditing( MappedStatement ms, MyBatisCustomConfiguration customConfiguration,
@@ -45,13 +50,13 @@ public class DefaultBuiltinAuditingProcessor extends AbstractAuditingProcessor {
         if ( isInsertCommand && primaryKey != null ) {
             String property = primaryKey.getProperty();
             if ( metadata.hasGetter( property ) && metadata.hasSetter( property ) ) {
-                injectPrivateKeyValue( metadata, primaryKey, property, customConfiguration );
+                injectPrimaryKeyValue( metadata, primaryKey, property, customConfiguration );
             } else {
                 // 采用@Param(Constants.PARAM_ENTITY)指定实体类
                 if ( metadata.hasGetter( Constants.PARAM_ENTITY ) ) {
                     Object entity = metadata.getValue( Constants.PARAM_ENTITY );
                     if ( entity != null ) {
-                        injectPrivateKeyValue( MetaObjectUtil.forObject( entity ), primaryKey,
+                        injectPrimaryKeyValue( MetaObjectUtil.forObject( entity ), primaryKey,
                                 property, customConfiguration );
                     }
                 }
@@ -66,7 +71,7 @@ public class DefaultBuiltinAuditingProcessor extends AbstractAuditingProcessor {
      * @param property            属性
      * @param customConfiguration 自定义配置
      */
-    private void injectPrivateKeyValue( MetaObject metadata, ColumnWrapper primaryKey,
+    private void injectPrimaryKeyValue( MetaObject metadata, ColumnWrapper primaryKey,
                                         String property, MyBatisCustomConfiguration customConfiguration ) {
         Optional.ofNullable( metadata ).ifPresent( it -> {
             if ( isAuditable( it, property, this::isNullOrBlank ) ) {

@@ -37,3 +37,11 @@ UnifyServiceExecutor更名为ServiceExecutor
 - 聚合函数包(function)更名为aggregate，部分类名也更改
 - 优化Criteria及相关子类，区分读、写相关操作
 - 修改EnableInterceptors注解
+- 优化分组、排序功能，废除Group、Order类，使用GroupWrapper、OrderWrapper及子类代替Group、Order类
+- DefaultBuiltinAuditingInterceptor更名为SystemBuiltinAuditingInterceptor，DefaultBuiltinAuditingProcessor更名为
+SystemBuiltinAuditingProcessor
+- 优化查询指定列方法，使用AbstractQueryWrapper<T, E>及子类代替旧的相关查询指定列方法
+
+
+
+

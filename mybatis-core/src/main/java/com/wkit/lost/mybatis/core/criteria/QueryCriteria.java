@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.core.criteria;
 
 import com.wkit.lost.mybatis.core.condition.ConditionManager;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
+import com.wkit.lost.mybatis.core.wrapper.QueryManager;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;

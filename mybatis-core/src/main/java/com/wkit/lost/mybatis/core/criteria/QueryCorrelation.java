@@ -11,17 +11,42 @@ import java.util.List;
 public interface QueryCorrelation<T, Context, P> extends ForeignBuilder<T, Context, P>,  LambdaConverter<P> {
 
     /**
+     * 搜索{@link ForeignCriteria}对象
+     * @param alias 别名
+     * @param <E>   泛型类型
+     * @return {@link ForeignCriteria}对象
+     */
+    <E> ForeignCriteria<E> searchForeign( String alias );
+
+    /**
+     * 搜索{@link ForeignCriteria}对象
+     * @param entity 实体类
+     * @param <E>    泛型类型
+     * @return {@link ForeignCriteria}对象
+     */
+    <E> ForeignCriteria<E> searchForeign( Class<E> entity );
+
+    /**
+     * 搜索{@link ForeignCriteria}对象
+     * @param alias  别名
+     * @param entity 实体类
+     * @param <E>    泛型类型
+     * @return {@link ForeignCriteria}对象
+     */
+    <E> ForeignCriteria<E> searchForeign( String alias, Class<E> entity );
+    
+    /**
      * 开启自动映射列别名(针对查询自动映射属性名)
      * @return 当前对象
      */
-    Context autoMappingColumnAlias();
+    Context columnAliasAutoMapping();
 
     /**
      * 是否开启自动映射列别名(针对查询自动映射属性名)
      * @param enable 是否开启
      * @return 当前对象
      */
-    Context autoMappingColumnAlias( boolean enable );
+    Context columnAliasAutoMapping( boolean enable );
 
     /**
      * 设置是否启用根据所有查询字段分组
@@ -67,7 +92,7 @@ public interface QueryCorrelation<T, Context, P> extends ForeignBuilder<T, Conte
      */
     @SuppressWarnings( "unchecked" )
     default Context asc( P... properties ) {
-        return asc( lambdaToProperty( properties ) );
+        return asc( lambdaToProperties( properties ) );
     }
 
     /**
@@ -144,7 +169,7 @@ public interface QueryCorrelation<T, Context, P> extends ForeignBuilder<T, Conte
      */
     @SuppressWarnings( "unchecked" )
     default Context desc( P... properties ) {
-        return desc( lambdaToProperty( properties ) );
+        return desc( lambdaToProperties( properties ) );
     }
 
     /**
@@ -221,7 +246,7 @@ public interface QueryCorrelation<T, Context, P> extends ForeignBuilder<T, Conte
      */
     @SuppressWarnings( "unchecked" )
     default Context group( P... properties ) {
-        return group( lambdaToProperty( properties ) );
+        return group( lambdaToProperties( properties ) );
     }
 
     /**
@@ -296,20 +321,14 @@ public interface QueryCorrelation<T, Context, P> extends ForeignBuilder<T, Conte
      */
     Context onlyFunction( boolean only );
 
-
-    /**
-     * 添加多个排序
-     * @param order 排序对象
-     * @return 当前对象
-     */
-    Context addOrder( Order<?> order );
-
     /**
      * 添加多个排序
      * @param orders 排序对象数组
      * @return 当前对象
      */
-    Context addOrder( Order<?>... orders );
+    default Context addOrder( Order<?>... orders ) {
+        return addOrder( ArrayUtil.toList( orders ) );
+    }
 
     /**
      * 添加多个排序
@@ -317,14 +336,7 @@ public interface QueryCorrelation<T, Context, P> extends ForeignBuilder<T, Conte
      * @return 当前对象
      */
     Context addOrder( List<Order<?>> orders );
-
-    /**
-     * 添加联表条件对象
-     * @param foreignCriteria 联表条件对象
-     * @return 当前对象
-     */
-    Context addForeign( ForeignCriteria<?> foreignCriteria );
-
+    
     /**
      * 添加联表条件对象
      * @param foreignCriteriaArray 联表条件对象数组

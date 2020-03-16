@@ -19,9 +19,9 @@ import java.util.Properties;
 @Intercepts( {
         @Signature( type = Executor.class, method = "update", args = { MappedStatement.class, Object.class } )
 } )
-public class DefaultBuiltinAuditingInterceptor implements Interceptor {
+public class SystemBuiltinAuditingInterceptor implements Interceptor {
     
-    private final Processor processor = new DefaultBuiltinAuditingProcessor();
+    private final Processor processor = new SystemBuiltinAuditingProcessor();
     
     @Override
     public Object intercept( Invocation invocation ) throws Throwable {

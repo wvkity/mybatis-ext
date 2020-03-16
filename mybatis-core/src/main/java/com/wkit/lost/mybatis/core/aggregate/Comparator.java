@@ -106,11 +106,6 @@ public enum Comparator implements Segment {
         public String getSqlSegment() {
             return "({} > {} OR {} > {})";
         }
-
-        @Override
-        public boolean isSimple() {
-            return false;
-        }
     },
 
     /**
@@ -120,11 +115,6 @@ public enum Comparator implements Segment {
         @Override
         public String getSqlSegment() {
             return "({} > {} OR {} >= {})";
-        }
-
-        @Override
-        public boolean isSimple() {
-            return false;
         }
     },
 
@@ -136,11 +126,6 @@ public enum Comparator implements Segment {
         public String getSqlSegment() {
             return "({} >= {} OR {} > {})";
         }
-
-        @Override
-        public boolean isSimple() {
-            return false;
-        }
     },
 
     /**
@@ -150,11 +135,6 @@ public enum Comparator implements Segment {
         @Override
         public String getSqlSegment() {
             return "({} >= {} OR {} >= {})";
-        }
-
-        @Override
-        public boolean isSimple() {
-            return false;
         }
     },
 
@@ -166,11 +146,6 @@ public enum Comparator implements Segment {
         public String getSqlSegment() {
             return "({} < {} AND {} < {})";
         }
-
-        @Override
-        public boolean isSimple() {
-            return false;
-        }
     },
 
     /**
@@ -180,11 +155,6 @@ public enum Comparator implements Segment {
         @Override
         public String getSqlSegment() {
             return "({} <= {} AND {} < {})";
-        }
-
-        @Override
-        public boolean isSimple() {
-            return false;
         }
     },
 
@@ -196,11 +166,6 @@ public enum Comparator implements Segment {
         public String getSqlSegment() {
             return "{} < {} AND {} <= {}";
         }
-
-        @Override
-        public boolean isSimple() {
-            return false;
-        }
     },
 
     /**
@@ -211,16 +176,13 @@ public enum Comparator implements Segment {
         public String getSqlSegment() {
             return "({} <= {} AND {} <= {})";
         }
-
-        @Override
-        public boolean isSimple() {
-            return false;
-        }
     };
 
     /**
      * 是否为简单比较
      * @return true: 是, false: 否
      */
-    public abstract boolean isSimple();
+    public boolean isSimple() {
+        return false;
+    }
 }

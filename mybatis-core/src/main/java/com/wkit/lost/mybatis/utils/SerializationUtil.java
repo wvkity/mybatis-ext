@@ -18,10 +18,9 @@ import java.util.Map;
  * 序列化工具
  * @author wvkity
  */
-public class SerializationUtil {
+public abstract class SerializationUtil {
 
     public SerializationUtil() {
-        super();
     }
 
     /**

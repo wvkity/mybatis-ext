@@ -159,17 +159,17 @@ public final class ColumnConvert {
 
     /**
      * 转换成查询字段
-     * @param column    字段映射对象
-     * @param alias     别名
-     * @param reference 实体内的引用属性名
-     * @param apply     是否带上属性名
+     * @param column     字段映射对象
+     * @param tableAlias 表别名
+     * @param reference  实体内的引用属性名
+     * @param apply      是否带上属性名
      * @return 字符串
      */
-    public static String convertToQueryArg( final ColumnWrapper column, final String alias,
+    public static String convertToQueryArg( final ColumnWrapper column, final String tableAlias,
                                             final String reference, final boolean apply ) {
         StringBuilder buffer = new StringBuilder( 60 );
-        if ( StringUtil.hasText( alias ) ) {
-            buffer.append( alias ).append( "." );
+        if ( StringUtil.hasText( tableAlias ) ) {
+            buffer.append( tableAlias ).append( "." );
         }
         buffer.append( column.getColumn() );
         if ( apply ) {
@@ -186,14 +186,14 @@ public final class ColumnConvert {
     /**
      * 转换成查询字段
      * @param column      字段映
-     * @param alias       别名
      * @param columnAlias 列别名
+     * @param tableAlias  表别名
      * @return 字符串
      */
-    public static String convertToQueryArg( final String column, final String columnAlias, final String alias ) {
+    public static String convertToQueryArg( final String column, final String columnAlias, final String tableAlias ) {
         StringBuilder buffer = new StringBuilder( 40 );
-        if ( StringUtil.hasText( alias ) ) {
-            buffer.append( alias ).append( "." );
+        if ( StringUtil.hasText( tableAlias ) ) {
+            buffer.append( tableAlias ).append( "." );
         }
         buffer.append( column );
         if ( StringUtil.hasText( columnAlias ) ) {

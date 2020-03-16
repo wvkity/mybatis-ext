@@ -3,6 +3,9 @@ package com.wkit.lost.mybatis.core.criteria;
 import com.wkit.lost.mybatis.core.aggregate.Aggregation;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.segment.Segment;
+import com.wkit.lost.mybatis.core.wrapper.AggregationOrder;
+import com.wkit.lost.mybatis.core.wrapper.ColumnOrder;
+import com.wkit.lost.mybatis.core.wrapper.StringOrder;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
@@ -20,6 +23,9 @@ import java.util.stream.Collectors;
 /**
  * 排序类
  * @author wvkity
+ * @see StringOrder
+ * @see ColumnOrder
+ * @see AggregationOrder
  */
 public class Order<T> implements Segment {
 
@@ -180,7 +186,7 @@ public class Order<T> implements Segment {
      */
     @SafeVarargs
     public static <T> Order<T> asc( Criteria<T> criteria, Property<T, ?>... properties ) {
-        return new Order<>( criteria, true, CriteriaUtil.transform( ArrayUtil.toList( properties ), criteria ) );
+        return new Order<>( criteria, true, CriteriaUtil.lambdaToColumn( criteria, ArrayUtil.toList( properties ) ) );
     }
 
     /**
@@ -202,7 +208,7 @@ public class Order<T> implements Segment {
      * @return 排序对象
      */
     public static <T> Order<T> asc( Criteria<T> criteria, List<String> properties ) {
-        return new Order<>( criteria, true, CriteriaUtil.transform( criteria, properties ) );
+        return new Order<>( criteria, true, CriteriaUtil.propertyToColumn( criteria, properties ) );
     }
 
     /**
@@ -259,7 +265,7 @@ public class Order<T> implements Segment {
      */
     @SafeVarargs
     public static <T> Order<T> desc( Criteria<T> criteria, Property<T, ?>... properties ) {
-        return new Order<>( criteria, false, CriteriaUtil.transform( ArrayUtil.toList( properties ), criteria ) );
+        return new Order<>( criteria, false, CriteriaUtil.lambdaToColumn( criteria, ArrayUtil.toList( properties ) ) );
     }
 
     /**
@@ -281,7 +287,7 @@ public class Order<T> implements Segment {
      * @return 排序对象
      */
     public static <T> Order<T> desc( Criteria<T> criteria, List<String> properties ) {
-        return new Order<>( criteria, false, CriteriaUtil.transform( criteria, properties ) );
+        return new Order<>( criteria, false, CriteriaUtil.propertyToColumn( criteria, properties ) );
     }
 
     /**
@@ -292,7 +298,9 @@ public class Order<T> implements Segment {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    public static <T> Order<T> asc( String alias, Criteria<T> master, String... properties ) {
+    public static <T, C extends AbstractGeneralQueryCriteria<T, C>> Order<T> asc( String alias,
+                                                                                  AbstractGeneralQueryCriteria<T, C> master,
+                                                                                  String... properties ) {
         return asc( master.searchForeign( alias ), ArrayUtil.toList( properties ) );
     }
 
@@ -306,9 +314,11 @@ public class Order<T> implements Segment {
      * @return 排序对象
      */
     @SafeVarargs
-    public static <T, E> Order<E> asc( String alias, Criteria<T> master, Property<E, ?>... properties ) {
+    public static <T, C extends AbstractGeneralQueryCriteria<T, C>, E> Order<E> asc( String alias,
+                                                                                     AbstractGeneralQueryCriteria<T, C> master,
+                                                                                     Property<E, ?>... properties ) {
         Criteria<E> criteria = master.searchForeign( alias );
-        return new Order<>( criteria, true, CriteriaUtil.transform( ArrayUtil.toList( properties ), criteria ) );
+        return new Order<>( criteria, true, CriteriaUtil.lambdaToColumn( criteria, ArrayUtil.toList( properties ) ) );
     }
 
     /**
@@ -319,7 +329,9 @@ public class Order<T> implements Segment {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    public static <T> Order<T> asc( String alias, Criteria<T> master, List<String> properties ) {
+    public static <T, C extends AbstractGeneralQueryCriteria<T, C>> Order<T> asc( String alias,
+                                                                                  AbstractGeneralQueryCriteria<T, C> master,
+                                                                                  List<String> properties ) {
         return asc( master.searchForeign( alias ), properties );
     }
 
@@ -333,9 +345,11 @@ public class Order<T> implements Segment {
      * @return 排序对象
      */
     @SafeVarargs
-    public static <T, E> Order<E> desc( String alias, Criteria<T> master, Property<E, ?>... properties ) {
+    public static <T, C extends AbstractGeneralQueryCriteria<T, C>, E> Order<E> desc( String alias,
+                                                                                      AbstractGeneralQueryCriteria<T, C> master,
+                                                                                      Property<E, ?>... properties ) {
         Criteria<E> criteria = master.searchForeign( alias );
-        return new Order<>( criteria, false, CriteriaUtil.transform( ArrayUtil.toList( properties ), criteria ) );
+        return new Order<>( criteria, false, CriteriaUtil.lambdaToColumn( criteria, ArrayUtil.toList( properties ) ) );
     }
 
     /**
@@ -346,7 +360,9 @@ public class Order<T> implements Segment {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    public static <T> Order<T> desc( String alias, Criteria<T> master, String... properties ) {
+    public static <T, C extends AbstractGeneralQueryCriteria<T, C>> Order<T> desc( String alias,
+                                                                                   AbstractGeneralQueryCriteria<T, C> master,
+                                                                                   String... properties ) {
         return desc( master.searchForeign( alias ), properties );
     }
 
@@ -358,7 +374,9 @@ public class Order<T> implements Segment {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    public static <T> Order<T> desc( String alias, Criteria<T> master, List<String> properties ) {
+    public static <T, C extends AbstractGeneralQueryCriteria<T, C>> Order<T> desc( String alias,
+                                                                                   AbstractGeneralQueryCriteria<T, C> master,
+                                                                                   List<String> properties ) {
         return desc( master.searchForeign( alias ), properties );
     }
 

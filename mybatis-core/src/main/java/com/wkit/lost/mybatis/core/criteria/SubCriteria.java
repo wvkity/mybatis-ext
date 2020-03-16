@@ -3,6 +3,7 @@ package com.wkit.lost.mybatis.core.criteria;
 import com.wkit.lost.mybatis.core.condition.ConditionManager;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
+import com.wkit.lost.mybatis.core.wrapper.QueryManager;
 import com.wkit.lost.mybatis.utils.Ascii;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
@@ -150,6 +151,7 @@ public class SubCriteria<T> extends AbstractQueryCriteria<T> {
         this.aliasSequence = master.aliasSequence;
         this.paramValueMappings = master.paramValueMappings;
         this.segmentManager = new SegmentManager();
+        this.queryManager = new QueryManager( this );
         this.initMappingCache( this.entityClass.getName(), true );
         this.conditionManager = new ConditionManager<>( this );
         if ( StringUtil.hasText( alias ) ) {
@@ -193,6 +195,7 @@ public class SubCriteria<T> extends AbstractQueryCriteria<T> {
         this.segmentManager = segmentManager;
         this.initMappingCache( this.entityClass.getName(), true );
         this.conditionManager = new ConditionManager<>( this );
+        this.queryManager = new QueryManager( this );
     }
 
     @Override
@@ -205,11 +208,6 @@ public class SubCriteria<T> extends AbstractQueryCriteria<T> {
     @Override
     public AbstractQueryCriteria<T> deepClone() {
         return CriteriaCopierFactory.clone( this );
-    }
-
-    @Override
-    public Object getModifyVersionValue() {
-        return null;
     }
 
     public String getSqlSegmentForCondition() {

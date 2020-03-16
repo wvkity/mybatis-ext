@@ -5,15 +5,19 @@ import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
+import com.wkit.lost.mybatis.core.wrapper.AbstractQueryWrapper;
+import com.wkit.lost.mybatis.core.wrapper.QueryManager;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -45,7 +49,7 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
      */
     @Getter
     @Setter
-    private boolean relation = false;
+    private boolean fetch = false;
 
     /**
      * 构造方法
@@ -115,6 +119,7 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
         this.aliasSequence = master.aliasSequence;
         this.paramValueMappings = master.paramValueMappings;
         this.segmentManager = new SegmentManager();
+        this.queryManager = new QueryManager( this );
         if ( this.entityClass != null ) {
             this.initMappingCache( this.entityClass.getName(), true );
         }
@@ -142,6 +147,7 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
         this.aliasSequence = aliasSequence;
         this.paramValueMappings = parameterValueMappings;
         this.segmentManager = segmentManager;
+        this.queryManager = new QueryManager( this );
         if ( entity != null ) {
             this.initMappingCache( this.entityClass.getName(), true );
         }
@@ -176,7 +182,7 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
             // 显式指定查询列
             realQueries = propertyForQueryCache;
         } else {
-            if ( relation ) {
+            if ( fetch ) {
                 // 所有列
                 realQueries = Collections.synchronizedMap(
                         TableHandler.getTable( entityClass )
@@ -209,6 +215,14 @@ public class ForeignCriteria<T> extends AbstractQueryCriteria<T> {
     public <E> AbstractQueryCriteria<E> getRootMaster() {
         AbstractCriteriaWrapper<E> wrapper = super.getRootMaster();
         return wrapper instanceof AbstractQueryCriteria ? ( AbstractQueryCriteria<E> ) wrapper : null;
+    }
+
+    /**
+     * 设置主动关联查询副表字段
+     * @return 当前对象
+     */
+    public ForeignCriteria<T> fetch() {
+        return setFetch( true );
     }
 
     /**

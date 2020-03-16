@@ -4,10 +4,13 @@ import com.wkit.lost.mybatis.core.condition.ConditionManager;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
+import com.wkit.lost.mybatis.core.wrapper.AbstractQueryWrapper;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -104,9 +107,10 @@ public class ForeignSubCriteria<T> extends ForeignCriteria<T> {
 
     @Override
     protected Map<String, ColumnWrapper> getQueryColumns() {
-        if ( this.isRelation() ) {
+        if ( this.isFetch() ) {
             return subCriteria.getQueryColumns();
         }
         return new LinkedHashMap<>( 0 );
     }
+    
 }

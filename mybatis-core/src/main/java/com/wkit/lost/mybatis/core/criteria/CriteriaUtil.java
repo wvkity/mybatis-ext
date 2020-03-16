@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 /**
  * 条件工具类
+ * @author wvkity
  */
 public abstract class CriteriaUtil {
 
@@ -23,11 +24,11 @@ public abstract class CriteriaUtil {
      * @param <T>        泛型类型
      * @return 字段集合
      */
-    public static <T> List<ColumnWrapper> transform( Criteria<T> criteria, Collection<String> properties ) {
+    public static <T> List<ColumnWrapper> propertyToColumn( Criteria<T> criteria, Collection<String> properties ) {
         return CollectionUtil.hasElement( properties ) ? properties.stream()
                 .filter( StringUtil::hasText )
                 .map( criteria::searchColumn )
-                .collect( Collectors.toList() ) : new ArrayList<>();
+                .collect( Collectors.toList() ) : new ArrayList<>( 0 );
     }
 
     /**
@@ -37,10 +38,10 @@ public abstract class CriteriaUtil {
      * @param <T>        泛型类型
      * @return 字段集合
      */
-    public static <T> List<ColumnWrapper> transform( Collection<Property<T, ?>> properties, Criteria<T> criteria ) {
+    public static <T> List<ColumnWrapper> lambdaToColumn( Criteria<T> criteria, Collection<Property<T, ?>> properties ) {
         return CollectionUtil.hasElement( properties ) ? properties.stream()
                 .filter( Objects::nonNull )
                 .map( criteria::searchColumn )
-                .collect( Collectors.toList() ) : new ArrayList<>();
+                .collect( Collectors.toList() ) : new ArrayList<>( 0 );
     }
 }

@@ -31,6 +31,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
+/**
+ * 抽象审计处理器
+ * @author wvkity
+ */
 @Log4j2
 abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
 
@@ -76,8 +80,8 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
                             MetaObject metadata = MetaObjectUtil.forObject( it );
                             if ( metadata.hasGetter( Constants.PARAM_ENTITY_CLASS ) ) {
                                 return Optional.ofNullable( metadata.getValue( Constants.PARAM_ENTITY_CLASS ) )
-                                        .filter( clazz -> clazz instanceof Class )
-                                        .map( clazz -> TableHandler.getTable( ( Class<?> ) clazz ) )
+                                        .filter( klass -> klass instanceof Class )
+                                        .map( klass -> TableHandler.getTable( ( Class<?> ) klass ) )
                                         .orElse( null );
                             }
                             return null;

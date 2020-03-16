@@ -13,6 +13,10 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * 元数据审计处理器
+ * @author wvkity
+ */
 @Log4j2
 public class MetadataAuditingProcessor extends AbstractAuditingProcessor {
 

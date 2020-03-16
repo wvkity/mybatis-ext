@@ -42,7 +42,7 @@ public abstract class AbstractGeneralCriteria<T, Context extends AbstractGeneral
 
     private static final String AND_OR_REGEX = "^(\\s*AND\\s+|\\s*OR\\s+)(.*)";
     private static final Pattern AND_OR_PATTERN = Pattern.compile( AND_OR_REGEX );
-    protected static final String SQL_ALIAS_PREFIX = "__self_";
+    protected static final String SQL_ALIAS_PREFIX = "_self_";
 
     /**
      * 表名缓存
@@ -179,17 +179,7 @@ public abstract class AbstractGeneralCriteria<T, Context extends AbstractGeneral
      * 联表SQL片段
      */
     protected String foreignSegment;
-
-    /**
-     * 联表条件对象集合
-     */
-    protected Set<ForeignCriteria<?>> foreignCriteriaSet = Collections.synchronizedSet( new LinkedHashSet<>( 8 ) );
-
-    /**
-     * 联表条件对象缓存
-     */
-    protected Map<String, ForeignCriteria<?>> foreignCriteriaCache = new ConcurrentHashMap<>( 8 );
-
+    
     /**
      * 子查询条件对象集合
      */
@@ -214,104 +204,6 @@ public abstract class AbstractGeneralCriteria<T, Context extends AbstractGeneral
 
     // region foreign criteria
 
-    /**
-     * 获取联表查询SQL片段
-     * @return SQL片段
-     */
-    public String getForeignSegment() {
-        if ( CollectionUtil.hasElement( foreignCriteriaSet ) ) {
-            return foreignCriteriaSet.stream().map( criteria -> {
-                Criteria<?> master = criteria.getMaster();
-                Foreign linked = criteria.getForeign();
-                ColumnWrapper masterColumn = master.searchColumn( linked.getMaster() );
-                // 区分子查询联表条件对象
-                String assistantColumn;
-                if ( criteria instanceof ForeignSubCriteria ) {
-                    assistantColumn = linked.getForeign();
-                    ColumnWrapper column = ( ( ForeignSubCriteria<?> ) criteria ).getSubCriteria()
-                            .searchColumn( assistantColumn );
-                    if ( column != null ) {
-                        assistantColumn = column.getColumn();
-                    }
-                } else {
-                    assistantColumn = criteria.searchColumn( linked.getForeign() ).getColumn();
-                }
-                TableWrapper table = TableHandler.getTable( criteria.getEntityClass() );
-                String catalog = Optional.ofNullable( table ).map( TableWrapper::getCatalog ).orElse( null );
-                String schema = Optional.ofNullable( table ).map( TableWrapper::getSchema ).orElse( null );
-                String foreignAlias = criteria.getAlias();
-                // 拼接条件
-                StringBuilder builder = new StringBuilder( 60 );
-                builder.append( linked.getJoinMode().getSqlSegment() );
-                if ( StringUtil.hasText( schema ) ) {
-                    builder.append( schema ).append( "." );
-                } else if ( StringUtil.hasText( catalog ) ) {
-                    builder.append( catalog ).append( "." );
-                }
-                // ForeignSubCriteria对象subTempTabAlias是临时表别名也是alias
-                if ( criteria instanceof ForeignSubCriteria ) {
-                    builder.append( " " ).append( ( ( ForeignSubCriteria<?> ) criteria ).getTableSegment() )
-                            .append( " " ).append( foreignAlias );
-                } else {
-                    if ( table != null ) {
-                        builder.append( table.getName() ).append( " " ).append( foreignAlias );
-                    }
-                }
-                builder.append( " ON " ).append( foreignAlias ).append( "." ).append( assistantColumn );
-                builder.append( " = " ).append( master.getAlias() ).append( "." ).append( masterColumn.getColumn() );
-                // 拼接其他条件
-                if ( criteria.isHasCondition() ) {
-                    builder.append( " " ).append( criteria.getSqlSegment() );
-                }
-                return builder.toString();
-            } ).collect( Collectors.joining( " \n" ) );
-        }
-        return "";
-    }
-
-    // region search foreign criteria
-
-    @Override
-    public <E> ForeignCriteria<E> searchForeign( String alias ) {
-        if ( CollectionUtil.hasElement( foreignCriteriaSet ) ) {
-            return ( ForeignCriteria<E> ) Optional.ofNullable( foreignCriteriaCache.get( alias ) ).orElse( null );
-        }
-        return null;
-    }
-
-    @Override
-    public <E> ForeignCriteria<E> searchForeign( Class<E> entity ) {
-        if ( entity != null && CollectionUtil.hasElement( foreignCriteriaSet ) ) {
-            ForeignCriteria<?> criteria = foreignCriteriaSet.stream()
-                    .filter( subCriteria -> entity.equals( subCriteria.getEntityClass() ) ).findFirst().orElse( null );
-            return ( ForeignCriteria<E> ) Optional.ofNullable( criteria ).orElse( null );
-        }
-        return null;
-    }
-
-    @Override
-    public <E> ForeignCriteria<E> searchForeign( String alias, Class<E> entity ) {
-        if ( CollectionUtil.hasElement( foreignCriteriaSet ) ) {
-            boolean hasAlias = StringUtil.hasText( alias );
-            boolean hasEntity = entity != null;
-            if ( hasAlias || hasEntity ) {
-                if ( hasAlias && hasEntity ) {
-                    ForeignCriteria<E> criteria = searchForeign( entity );
-                    if ( criteria != null && alias.equals( criteria.getAlias() ) ) {
-                        return criteria;
-                    }
-                } else if ( StringUtil.hasText( alias ) ) {
-                    return searchForeign( alias );
-                } else {
-                    return searchForeign( entity );
-                }
-            }
-        }
-        return null;
-    }
-
-    // endregion
-
     // region sub criteria
 
     // region sub criteria builder
@@ -330,8 +222,7 @@ public abstract class AbstractGeneralCriteria<T, Context extends AbstractGeneral
         return subCriteria;
     }
 
-    @Override
-    public Context addSubCriteria( SubCriteria<?> subCriteria ) {
+    protected Context addSubCriteria( SubCriteria<?> subCriteria ) {
         if ( subCriteria != null ) {
             this.subCriteriaSet.add( subCriteria );
             if ( StringUtil.hasText( subCriteria.getSubTempTabAlias() ) ) {
@@ -342,7 +233,7 @@ public abstract class AbstractGeneralCriteria<T, Context extends AbstractGeneral
     }
 
     @Override
-    public Context addSubCriteria( SubCriteria<?>... subCriteriaArray ) {
+    public Context add( SubCriteria<?>... subCriteriaArray ) {
         return addSubCriteria( ArrayUtil.toList( subCriteriaArray ) );
     }
 

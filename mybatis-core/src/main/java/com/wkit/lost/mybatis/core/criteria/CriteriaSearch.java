@@ -7,31 +7,6 @@ package com.wkit.lost.mybatis.core.criteria;
 public interface CriteriaSearch {
 
     /**
-     * 搜索{@link ForeignCriteria}对象
-     * @param alias 别名
-     * @param <E>   泛型类型
-     * @return {@link ForeignCriteria}对象
-     */
-    <E> ForeignCriteria<E> searchForeign( String alias );
-
-    /**
-     * 搜索{@link ForeignCriteria}对象
-     * @param entity 实体类
-     * @param <E>    泛型类型
-     * @return {@link ForeignCriteria}对象
-     */
-    <E> ForeignCriteria<E> searchForeign( Class<E> entity );
-
-    /**
-     * 搜索{@link ForeignCriteria}对象
-     * @param alias  别名
-     * @param entity 实体类
-     * @param <E>    泛型类型
-     * @return {@link ForeignCriteria}对象
-     */
-    <E> ForeignCriteria<E> searchForeign( String alias, Class<E> entity );
-
-    /**
      * 搜索子查询条件对象
      * @param subTempTabAlias 子查询别名
      * @param <E>             泛型类型

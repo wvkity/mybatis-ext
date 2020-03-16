@@ -8,17 +8,17 @@ import java.io.Serializable;
 /**
  * 空条件
  * @param <Context> 当前对象
- * @param <R>       Lambda对象
+ * @param <P>       Lambda对象
  * @author wvkity
  */
-public interface Null<Context, R> extends LambdaConverter<R>, Segment, Serializable {
+public interface Null<Context, P> extends LambdaConverter<P>, Segment, Serializable {
 
     /**
      * IS NULL
      * @param property 属性
      * @return 当前对象
      */
-    default Context isNull( R property ) {
+    default Context isNull( P property ) {
         return isNull( lambdaToProperty( property ) );
     }
 
@@ -34,7 +34,7 @@ public interface Null<Context, R> extends LambdaConverter<R>, Segment, Serializa
      * @param property 属性
      * @return 当前对象
      */
-    default Context orIsNull( R property ) {
+    default Context orIsNull( P property ) {
         return orIsNull( lambdaToProperty( property ) );
     }
 
@@ -50,7 +50,7 @@ public interface Null<Context, R> extends LambdaConverter<R>, Segment, Serializa
      * @param property 属性
      * @return 当前对象
      */
-    default Context notNull( R property ) {
+    default Context notNull( P property ) {
         return notNull( lambdaToProperty( property ) );
     }
 
@@ -66,7 +66,7 @@ public interface Null<Context, R> extends LambdaConverter<R>, Segment, Serializa
      * @param property 属性
      * @return 当前对象
      */
-    default Context orNotNull( R property ) {
+    default Context orNotNull( P property ) {
         return orNotNull( lambdaToProperty( property ) );
     }
 

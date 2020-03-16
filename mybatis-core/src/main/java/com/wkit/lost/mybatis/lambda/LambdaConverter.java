@@ -30,7 +30,7 @@ public interface LambdaConverter<P> extends Serializable {
      * @return 属性集合
      */
     @SuppressWarnings( "unchecked" )
-    default List<String> lambdaToProperty( P... properties ) {
+    default List<String> lambdaToProperties( P... properties ) {
         List<String> props;
         if ( !ArrayUtil.isEmpty( properties ) ) {
             props = Stream.of( properties )

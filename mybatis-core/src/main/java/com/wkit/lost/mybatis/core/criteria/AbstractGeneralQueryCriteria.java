@@ -6,8 +6,11 @@ import com.wkit.lost.mybatis.core.aggregate.Aggregation;
 import com.wkit.lost.mybatis.core.aggregate.Aggregator;
 import com.wkit.lost.mybatis.core.aggregate.Comparator;
 import com.wkit.lost.mybatis.core.condition.criterion.Criterion;
+import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
+import com.wkit.lost.mybatis.core.wrapper.QueryManager;
 import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.Ascii;
@@ -17,10 +20,14 @@ import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -74,7 +81,38 @@ public abstract class AbstractGeneralQueryCriteria<T, Context extends AbstractGe
     @Getter
     protected long pageSize;
 
+    /**
+     * 查询管理器
+     */
+    @Getter
+    protected QueryManager queryManager;
+
+    /**
+     * 联表对象集合
+     */
+    protected Set<ForeignCriteria<?>> foreignCriteriaSet = Collections.synchronizedSet( new LinkedHashSet<>( 8 ) );
+
+    /**
+     * 联表对象缓存
+     */
+    protected Map<String, ForeignCriteria<?>> foreignCriteriaCache = new ConcurrentHashMap<>( 8 );
+
     // endregion
+
+    @Override
+    protected void init() {
+        super.init();
+        this.queryManager = new QueryManager( this );
+    }
+
+    /**
+     * 检查是否存在查询列对象
+     * @return true: 是, false: 否
+     */
+    public boolean hasQueries() {
+        return this.queryManager.hasQueries();
+    }
+
 
     // region aggregate functions
 
@@ -391,8 +429,7 @@ public abstract class AbstractGeneralQueryCriteria<T, Context extends AbstractGe
         return addForeign( createForeign( subCriteria, reference, foreign, function ) );
     }
 
-    @Override
-    public Context addForeign( ForeignCriteria<?> foreignCriteria ) {
+    protected Context addForeign( ForeignCriteria<?> foreignCriteria ) {
         if ( foreignCriteria != null ) {
             if ( Ascii.isNullOrEmpty( foreignCriteria.getAlias() ) ) {
                 foreignCriteria.useAlias( "" );
@@ -421,14 +458,111 @@ public abstract class AbstractGeneralQueryCriteria<T, Context extends AbstractGe
         return this.context;
     }
 
+    // region search foreign criteria
+
+    @Override
+    public <E> ForeignCriteria<E> searchForeign( String alias ) {
+        if ( CollectionUtil.hasElement( foreignCriteriaSet ) ) {
+            return ( ForeignCriteria<E> ) foreignCriteriaCache.getOrDefault( alias, null );
+        }
+        return null;
+    }
+
+    @Override
+    public <E> ForeignCriteria<E> searchForeign( Class<E> entity ) {
+        if ( entity != null && CollectionUtil.hasElement( foreignCriteriaSet ) ) {
+            ForeignCriteria<?> criteria = foreignCriteriaSet.stream()
+                    .filter( subCriteria -> entity.equals( subCriteria.getEntityClass() ) ).findFirst().orElse( null );
+            return ( ForeignCriteria<E> ) Optional.ofNullable( criteria ).orElse( null );
+        }
+        return null;
+    }
+
+    @Override
+    public <E> ForeignCriteria<E> searchForeign( String alias, Class<E> entity ) {
+        if ( CollectionUtil.hasElement( foreignCriteriaSet ) ) {
+            boolean hasAlias = StringUtil.hasText( alias );
+            boolean hasEntity = entity != null;
+            if ( hasAlias || hasEntity ) {
+                if ( hasAlias && hasEntity ) {
+                    ForeignCriteria<E> criteria = searchForeign( entity );
+                    if ( criteria != null && alias.equals( criteria.getAlias() ) ) {
+                        return criteria;
+                    }
+                } else if ( StringUtil.hasText( alias ) ) {
+                    return searchForeign( alias );
+                } else {
+                    return searchForeign( entity );
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 获取联表查询SQL片段
+     * @return SQL片段
+     */
+    public String getForeignSegment() {
+        if ( CollectionUtil.hasElement( foreignCriteriaSet ) ) {
+            return foreignCriteriaSet.stream().map( it -> {
+                Criteria<?> master = it.getMaster();
+                Foreign linked = it.getForeign();
+                ColumnWrapper masterColumn = master.searchColumn( linked.getMaster() );
+                // 区分子查询联表条件对象
+                String assistantColumn;
+                if ( it instanceof ForeignSubCriteria ) {
+                    assistantColumn = linked.getForeign();
+                    ColumnWrapper column = ( ( ForeignSubCriteria<?> ) it ).getSubCriteria()
+                            .searchColumn( assistantColumn );
+                    if ( column != null ) {
+                        assistantColumn = column.getColumn();
+                    }
+                } else {
+                    assistantColumn = it.searchColumn( linked.getForeign() ).getColumn();
+                }
+                TableWrapper table = TableHandler.getTable( it.getEntityClass() );
+                String catalog = Optional.ofNullable( table ).map( TableWrapper::getCatalog ).orElse( null );
+                String schema = Optional.ofNullable( table ).map( TableWrapper::getSchema ).orElse( null );
+                String foreignAlias = it.getAlias();
+                // 拼接条件
+                StringBuilder builder = new StringBuilder( 60 );
+                builder.append( linked.getJoinMode().getSqlSegment() );
+                if ( StringUtil.hasText( schema ) ) {
+                    builder.append( schema ).append( "." );
+                } else if ( StringUtil.hasText( catalog ) ) {
+                    builder.append( catalog ).append( "." );
+                }
+                // ForeignSubCriteria对象subTempTabAlias是临时表别名也是alias
+                if ( it instanceof ForeignSubCriteria ) {
+                    ForeignSubCriteria<?> fsc = ( ForeignSubCriteria<?> ) it;
+                    String scTempAlias = fsc.getSubCriteria().getSubTempTabAlias();
+                    if (StringUtil.hasText( scTempAlias )) {
+                        foreignAlias = scTempAlias;
+                    }
+                    builder.append( " " ).append( ( ( ForeignSubCriteria<?> ) it ).getTableSegment() )
+                            .append( " " ).append( foreignAlias );
+                } else {
+                    if ( table != null ) {
+                        builder.append( table.getName() ).append( " " ).append( foreignAlias );
+                    }
+                }
+                builder.append( " ON " ).append( foreignAlias ).append( "." ).append( assistantColumn );
+                builder.append( " = " ).append( master.getAlias() ).append( "." ).append( masterColumn.getColumn() );
+                // 拼接其他条件
+                if ( it.isHasCondition() ) {
+                    builder.append( " " ).append( it.getSqlSegment() );
+                }
+                return builder.toString();
+            } ).collect( Collectors.joining( " \n" ) );
+        }
+        return "";
+    }
+
+    // endregion
     // endregion
 
     // region order by
-
-    @Override
-    public Context asc( String... properties ) {
-        return addOrder( Order.asc( this, properties ) );
-    }
 
     @Override
     public Context asc( List<String> properties ) {
@@ -438,11 +572,6 @@ public abstract class AbstractGeneralQueryCriteria<T, Context extends AbstractGe
     @Override
     public Context asc( Aggregation... aggregations ) {
         return addOrder( Order.asc( aggregations ) );
-    }
-
-    @Override
-    public Context ascFunc( String... aliases ) {
-        return ascFunc( ArrayUtil.toList( aliases ) );
     }
 
     @Override
@@ -456,18 +585,8 @@ public abstract class AbstractGeneralQueryCriteria<T, Context extends AbstractGe
     }
 
     @Override
-    public Context aliasAsc( String alias, String... properties ) {
-        return addOrder( Order.asc( this.searchForeign( alias ), properties ) );
-    }
-
-    @Override
     public Context aliasAsc( String alias, List<String> properties ) {
         return addOrder( Order.asc( this.searchForeign( alias ), properties ) );
-    }
-
-    @Override
-    public Context desc( String... properties ) {
-        return addOrder( Order.desc( this, properties ) );
     }
 
     @Override
@@ -481,11 +600,6 @@ public abstract class AbstractGeneralQueryCriteria<T, Context extends AbstractGe
     }
 
     @Override
-    public Context descFunc( String... aliases ) {
-        return descFunc( ArrayUtil.toList( aliases ) );
-    }
-
-    @Override
     public Context descFunc( List<String> aliases ) {
         return addOrder( Order.descFunc( this, aliases ) );
     }
@@ -496,25 +610,8 @@ public abstract class AbstractGeneralQueryCriteria<T, Context extends AbstractGe
     }
 
     @Override
-    public Context aliasDesc( String alias, String... properties ) {
-        return addOrder( Order.desc( searchForeign( alias ), properties ) );
-    }
-
-    @Override
     public Context aliasDesc( String alias, List<String> properties ) {
         return addOrder( Order.desc( searchForeign( alias ), properties ) );
-    }
-
-    @Override
-    public Context addOrder( Order<?> order ) {
-        Optional.ofNullable( order ).ifPresent( value -> getRootMaster().segmentManager.orders( value ) );
-        return this.context;
-    }
-
-    @Override
-    public Context addOrder( Order<?>... orders ) {
-        getRootMaster().segmentManager.orders( orders );
-        return this.context;
     }
 
     @Override
