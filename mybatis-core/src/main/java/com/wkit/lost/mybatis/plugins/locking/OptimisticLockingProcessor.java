@@ -1,10 +1,10 @@
 package com.wkit.lost.mybatis.plugins.locking;
 
-import com.wkit.lost.mybatis.core.criteria.AbstractUpdateCriteria;
-import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
+import com.wkit.lost.mybatis.core.wrapper.criteria.AbstractUpdateCriteriaWrapper;
+import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 import com.wkit.lost.mybatis.data.auditing.date.provider.DateTimeProvider;
 import com.wkit.lost.mybatis.data.auditing.date.proxy.DateTimeProviderFactory;
 import com.wkit.lost.mybatis.plugins.processor.UpdateProcessorSupport;
@@ -77,7 +77,7 @@ public class OptimisticLockingProcessor extends UpdateProcessorSupport {
                                     if ( METHOD_UPDATE_BY_CRITERIA.equals( execMethod ) ) {
                                         Object modifyValue = criteria.getModifyVersionValue();
                                         if ( modifyValue == null ) {
-                                            ( ( AbstractUpdateCriteria<?> ) criteriaObject ).updateVersion(
+                                            ( ( AbstractUpdateCriteriaWrapper<?> ) criteriaObject ).updateVersion(
                                                     newValue( originalValue, column.getJavaType() ) );
                                         }
                                     } else {

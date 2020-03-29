@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableMetadataAuditing( automatic = true )
-// @EnableInterceptors
+@EnableInterceptors
 @EnableTransactionManagement
 @EnableConfigurationProperties
 @SpringBootApplication

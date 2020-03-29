@@ -48,7 +48,7 @@ public class DateTimeProviderFactory {
      * 时间提供者构建器
      * @author wvkity
      */
-    public static interface Builder {
+    public interface Builder {
 
         /**
          * 构建时间提供者

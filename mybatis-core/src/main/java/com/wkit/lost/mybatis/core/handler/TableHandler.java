@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.core.handler;
 
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.metadata.TableBuilder;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.core.parser.DefaultEntityParser;
@@ -45,7 +46,7 @@ public final class TableHandler {
      * @param entity    实体类
      * @return 表映射对象
      */
-    public synchronized static TableWrapper intercept( final MapperBuilderAssistant assistant, final Class<?> entity ) {
+    public synchronized static TableWrapper parse( final MapperBuilderAssistant assistant, final Class<?> entity ) {
         if ( entity != null ) {
             TableWrapper wrapper = TABLE_WRAPPER_CACHE.getOrDefault( entity, null );
             if ( wrapper == null ) {
@@ -102,6 +103,17 @@ public final class TableHandler {
     public static Configuration getConfiguration( final TableWrapper table ) {
         return Optional.ofNullable( table )
                 .map( it -> CONFIGURATION_CACHE.getOrDefault( it.getEntity(), null ) )
+                .orElse( null );
+    }
+
+    /**
+     * 获取主键
+     * @param klass 实体类
+     * @return 主键字段包装对象
+     */
+    public static ColumnWrapper getPrimaryKey( final Class<?> klass ) {
+        return Optional.ofNullable( klass )
+                .flatMap( it -> Optional.ofNullable( TableHandler.getTable( it ) ).map( TableWrapper::getPrimaryKey ) )
                 .orElse( null );
     }
 }

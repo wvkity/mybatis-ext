@@ -2,15 +2,16 @@ package com.wkit.lost.mybatis.config;
 
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
-import com.wkit.lost.mybatis.core.metadata.PrimaryKeyType;
+import com.wkit.lost.mybatis.core.injector.Injector;
+import com.wkit.lost.mybatis.core.metadata.PrimaryKey;
 import com.wkit.lost.mybatis.core.parser.EntityParser;
 import com.wkit.lost.mybatis.core.parser.FieldParser;
 import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.keygen.KeyGenerator;
+import com.wkit.lost.mybatis.mapper.BaseMapperExecutor;
 import com.wkit.lost.mybatis.naming.DefaultPhysicalNamingStrategy;
 import com.wkit.lost.mybatis.naming.PhysicalNamingStrategy;
 import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
-import com.wkit.lost.mybatis.sql.injector.SqlInjector;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -61,7 +62,12 @@ public class MyBatisCustomConfiguration implements Serializable {
     /**
      * SQL注入器
      */
-    private SqlInjector injector;
+    private Injector injector;
+
+    /**
+     * Mapper接口父类
+     */
+    private Class<?> baseMapperClass = BaseMapperExecutor.class;
 
     /**
      * 命名策略
@@ -96,7 +102,7 @@ public class MyBatisCustomConfiguration implements Serializable {
     /**
      * 全局主键生成方式
      */
-    private PrimaryKeyType primaryKeyType;
+    private PrimaryKey primaryKey;
 
     /**
      * 自动识别主键(缺省@Id注解时)

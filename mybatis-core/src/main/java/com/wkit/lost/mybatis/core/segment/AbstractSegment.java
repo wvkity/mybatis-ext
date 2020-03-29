@@ -1,41 +1,49 @@
 package com.wkit.lost.mybatis.core.segment;
 
 import com.wkit.lost.mybatis.utils.CollectionUtil;
-import lombok.Getter;
 
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 /**
- * 抽象SQL片段类
- * @author wvkity
+ * 抽象SQL片段
+ * @param <T> 泛型类型
  */
-@SuppressWarnings( "serial" )
-public abstract class AbstractSegment implements Segment {
+@SuppressWarnings( { "serial" } )
+public abstract class AbstractSegment<E> implements Segment {
 
     /**
      * SQL片段集合
      */
-    @Getter
-    protected List<Segment> segments = new CopyOnWriteArrayList<>();
+    protected List<E> segments;
 
     /**
-     * 添加SQL片段
-     * @param collection SQL片段集合
+     * 添加多个片段对象
+     * @param segments 片段对象集合
      */
-    public void addAll( Collection<? extends Segment> collection ) {
-        if ( CollectionUtil.hasElement( collection ) ) {
-            this.segments.addAll( collection );
+    public void addAll( Collection<E> segments ) {
+        if ( CollectionUtil.hasElement( segments ) ) {
+            Set<E> its = segments.stream().filter( Objects::nonNull )
+                    .collect( Collectors.toCollection( LinkedHashSet::new ) );
+            if ( CollectionUtil.hasElement( its ) ) {
+                if ( this.segments == null ) {
+                    this.segments = new CopyOnWriteArrayList<>();
+                }
+                this.segments.addAll( its );
+            }
         }
     }
 
     /**
-     * 检测SQL片段是否存在元素
-     * @return true: 是 | false: 否
+     * 检查是否存在SQL片段
+     * @return boolean
      */
     public boolean isNotEmpty() {
         return CollectionUtil.hasElement( this.segments );
     }
-
 }

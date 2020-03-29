@@ -2,12 +2,16 @@ package com.wkit.lost.mybatis.core.segment;
 
 import java.io.Serializable;
 
+/**
+ * SQL片段接口
+ * @author wvkity
+ */
 @FunctionalInterface
 public interface Segment extends Serializable {
 
     /**
-     * 转成SQL片段
-     * @return SQL字符串
+     * 获取SQL片段
+     * @return SQL片段
      */
-    String getSqlSegment();
+    String getSegment();
 }

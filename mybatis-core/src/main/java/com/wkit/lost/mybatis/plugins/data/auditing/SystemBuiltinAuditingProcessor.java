@@ -6,7 +6,7 @@ import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
-import com.wkit.lost.mybatis.snowflake.worker.SequenceWorker;
+import com.wkit.lost.mybatis.snowflake.worker.SequenceGenerator;
 import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.MetaObjectUtil;
 import lombok.extern.log4j.Log4j2;
@@ -83,11 +83,11 @@ public class SystemBuiltinAuditingProcessor extends AbstractAuditingProcessor {
                     if ( primaryKey.isSnowflakeSequence() ) {
                         // 雪花算法主键(如果不开启注入Sequence对象，则默认使用mac地址分配的Sequence对象)
                         it.setValue( property, Optional.ofNullable( sequence )
-                                .map( Sequence::nextValue ).orElse( SequenceWorker.nextValue() ) );
+                                .map( Sequence::nextValue ).orElse( SequenceGenerator.nextValue() ) );
                     } else if ( primaryKey.isSnowflakeSequenceString() ) {
                         // 雪花算法字符串主键(如果不开启注入Sequence对象，则默认使用mac地址分配的Sequence对象)
                         it.setValue( property, Optional.ofNullable( sequence )
-                                .map( Sequence::nextString ).orElse( SequenceWorker.nextString() ) );
+                                .map( Sequence::nextString ).orElse( SequenceGenerator.nextString() ) );
                     }
                 }
             }

@@ -19,12 +19,14 @@ import com.wkit.lost.mybatis.type.handlers.StandardOffsetTimeTypeHandler;
 import com.wkit.lost.mybatis.type.handlers.StandardZonedDateTimeTypeHandler;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.executor.CachingExecutor;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.resultset.ResultSetHandler;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.scripting.LanguageDriver;
 import org.apache.ibatis.session.Configuration;
@@ -47,10 +49,11 @@ import java.time.chrono.JapaneseDate;
 /**
  * {@inheritDoc}
  */
-@Log4j2
 public class MyBatisConfiguration extends Configuration {
 
-    protected final MyBatisMapperRegistry mapperRegistry = new MyBatisMapperRegistry( this );
+    private static final Log log = LogFactory.getLog( MyBatisConfiguration.class );
+
+    protected final MyBatisMapperRegistry myBatisMapperRegistry = new MyBatisMapperRegistry( this );
 
     /**
      * 自定义配置
@@ -78,10 +81,15 @@ public class MyBatisConfiguration extends Configuration {
         this.setMapUnderscoreToCamelCase( true );
     }
 
+    public MyBatisConfiguration( Environment environment ) {
+        this();
+        this.environment = environment;
+    }
+
     @Override
     public void addMappedStatement( MappedStatement ms ) {
         if ( mappedStatements.containsKey( ms.getId() ) ) {
-            log.warn( "Mapper `{}` is ignored, because is's exists, maybe from xml file.", ms.getId() );
+            // log.warn( "Mapper `" + ms.getId() + "` is ignored, because is's exists, maybe from xml file." );
             return;
         }
         super.addMappedStatement( ms );
@@ -95,34 +103,33 @@ public class MyBatisConfiguration extends Configuration {
         super.setDefaultScriptingLanguage( driver );
     }
 
-    @Override
-    public MyBatisMapperRegistry getMapperRegistry() {
-        return this.mapperRegistry;
+    public MyBatisMapperRegistry getMyBatisMapperRegistry() {
+        return this.myBatisMapperRegistry;
     }
 
     @Override
     public <T> void addMapper( Class<T> type ) {
-        this.mapperRegistry.addMapper( type );
+        this.myBatisMapperRegistry.addMapper( type );
     }
 
     @Override
     public void addMappers( String packageName, Class<?> superType ) {
-        this.mapperRegistry.addMappers( packageName, superType );
+        this.myBatisMapperRegistry.addMappers( packageName, superType );
     }
 
     @Override
     public void addMappers( String packageName ) {
-        this.mapperRegistry.addMappers( packageName );
+        this.myBatisMapperRegistry.addMappers( packageName );
     }
 
     @Override
     public <T> T getMapper( Class<T> type, SqlSession sqlSession ) {
-        return this.mapperRegistry.getMapper( type, sqlSession );
+        return this.myBatisMapperRegistry.getMapper( type, sqlSession );
     }
 
     @Override
     public boolean hasMapper( Class<?> type ) {
-        return this.mapperRegistry.hasMapper( type );
+        return this.myBatisMapperRegistry.hasMapper( type );
     }
 
     @Override

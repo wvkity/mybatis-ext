@@ -8,6 +8,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Optional;
@@ -29,10 +31,10 @@ import java.util.stream.Collectors;
 public class TableWrapper {
 
     /**
-     * 定义信息
+     * 属性-字段包装对象缓存(只读)
      */
     @Getter( AccessLevel.NONE )
-    private final Map<String, ColumnWrapper> DEFINITIONS = new ConcurrentHashMap<>();
+    private Map<String, ColumnWrapper> PROPERTY_COLUMN_CACHE;
 
     /**
      * 实体类
@@ -214,9 +216,11 @@ public class TableWrapper {
      * 初始化定义信息
      */
     void initDefinition() {
-        if ( this.columns != null && !this.columns.isEmpty() && this.DEFINITIONS.isEmpty() ) {
-            this.DEFINITIONS.putAll( this.columns.stream()
-                    .collect( Collectors.toMap( ColumnWrapper::getProperty, Function.identity() ) ) );
+        if ( this.columns != null && !this.columns.isEmpty() && this.PROPERTY_COLUMN_CACHE == null ) {
+            this.PROPERTY_COLUMN_CACHE = Collections.unmodifiableMap( this.columns.stream().collect(
+                    Collectors.toMap( ColumnWrapper::getProperty, Function.identity() ) ) );
+        } else {
+            this.PROPERTY_COLUMN_CACHE = Collections.unmodifiableMap( new HashMap<>( 0 ) );
         }
     }
 
@@ -225,7 +229,7 @@ public class TableWrapper {
      * @return 字段映射集合
      */
     public Map<String, ColumnWrapper> columnMappings() {
-        return new ConcurrentHashMap<>( this.DEFINITIONS );
+        return this.PROPERTY_COLUMN_CACHE;
     }
 
     /**
@@ -255,5 +259,5 @@ public class TableWrapper {
     public Object newInstance() throws Exception {
         return this.getEntity().getDeclaredConstructor().newInstance();
     }
-    
+
 }

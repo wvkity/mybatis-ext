@@ -1,0 +1,20 @@
+package com.wkit.lost.mybatis.core.mapping.sql;
+
+import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
+import com.wkit.lost.mybatis.utils.Constants;
+
+/**
+ * Criteria相关SQL构件器
+ * @author wvkity
+ */
+public abstract class AbstractCriteriaProvider extends AbstractLogicDeleteProvider {
+
+    /**
+     * 获取查询条件
+     * @return 查询条件表达式
+     */
+    protected String getConditionForQuery() {
+        return NEW_LINE + ScriptUtil.convertIfTag( CRITERIA_HAS_CONDITION_SEGMENT,
+                ScriptUtil.unSafeJoint( Constants.PARAM_CRITERIA, ".whereSegment" ), true ) + NEW_LINE;
+    }
+}

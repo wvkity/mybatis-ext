@@ -32,7 +32,7 @@ import com.wkit.lost.mybatis.core.handler.FieldHandler;
 import com.wkit.lost.mybatis.core.metadata.AnnotationMetadata;
 import com.wkit.lost.mybatis.core.metadata.ColumnBuilder;
 import com.wkit.lost.mybatis.core.metadata.FieldWrapper;
-import com.wkit.lost.mybatis.core.metadata.PrimaryKeyType;
+import com.wkit.lost.mybatis.core.metadata.PrimaryKey;
 import com.wkit.lost.mybatis.core.metadata.TableBuilder;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.exception.MapperParserException;
@@ -460,11 +460,11 @@ public class DefaultEntityParser implements EntityParser {
     protected void parseCustomKeyGenerator( final TableBuilder __, final ColumnBuilder builder,
                                             final FieldWrapper field, final MyBatisCustomConfiguration configuration ) {
         if ( !builder.hasKeyGenerator() ) {
-            PrimaryKeyType keyType = configuration.getPrimaryKeyType();
-            builder.uuid( keyType == PrimaryKeyType.UUID )
-                    .identity( keyType == PrimaryKeyType.IDENTITY || keyType == PrimaryKeyType.JDBC )
-                    .snowflakeSequence( keyType == PrimaryKeyType.SNOWFLAKE_SEQUENCE )
-                    .snowflakeSequenceString( keyType == PrimaryKeyType.SNOWFLAKE_SEQUENCE_STRING );
+            PrimaryKey keyType = configuration.getPrimaryKey();
+            builder.uuid( keyType == PrimaryKey.UUID )
+                    .identity( keyType == PrimaryKey.IDENTITY || keyType == PrimaryKey.JDBC )
+                    .snowflakeSequence( keyType == PrimaryKey.SNOWFLAKE_SEQUENCE )
+                    .snowflakeSequenceString( keyType == PrimaryKey.SNOWFLAKE_SEQUENCE_STRING );
         }
     }
 

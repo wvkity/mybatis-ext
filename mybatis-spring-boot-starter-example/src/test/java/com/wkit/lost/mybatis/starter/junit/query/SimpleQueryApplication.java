@@ -1,12 +1,10 @@
 package com.wkit.lost.mybatis.starter.junit.query;
 
-import com.wkit.lost.mybatis.core.criteria.CriteriaImpl;
-import com.wkit.lost.mybatis.starter.example.entity.Result;
-import com.wkit.lost.mybatis.starter.example.entity.Student;
-import com.wkit.lost.mybatis.starter.example.service.ResultService;
-import com.wkit.lost.mybatis.starter.example.service.StudentService;
-import com.wkit.lost.mybatis.starter.example.vo.ResultVo;
-import com.wkit.lost.mybatis.starter.example.vo.StudentVo;
+import com.alibaba.fastjson.JSON;
+import com.wkit.lost.mybatis.core.wrapper.criteria.QueryCriteria;
+import com.wkit.lost.mybatis.starter.example.entity.Grade;
+import com.wkit.lost.mybatis.starter.example.service.GradeService;
+import com.wkit.lost.mybatis.starter.example.vo.GradeVo;
 import com.wkit.lost.mybatis.starter.junit.RootTestRunner;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -18,71 +16,30 @@ import java.util.List;
 public class SimpleQueryApplication extends RootTestRunner {
 
     @Inject
-    ResultService resultService;
-
-    @Inject
-    StudentService studentService;
+    private GradeService gradeService;
 
     @Test
-    public void eqTest() {
-        CriteriaImpl<Result> resultCriteria = resultService.getCriteria();
-        resultCriteria.eq( Result::getScore, 89 ).asc( "id" ).useAlias();
-        List<ResultVo> results = resultService.list( resultCriteria );
-        log.info( "查询结果：{}", results );
+    public void idEqualTest() {
+        QueryCriteria<Grade> criteria = new QueryCriteria<>( Grade.class );
+        criteria.idEq( 1L );
+        List<GradeVo> list = gradeService.list( criteria );
+        log.info( "结果: {}", JSON.toJSONString( list, true ) );
     }
 
     @Test
-    public void neTest() {
-        CriteriaImpl<Result> resultCriteria = resultService.getCriteria( "RS" );
-        resultCriteria.ne( Result::getScore, 89 ).asc( "id" );
-        List<ResultVo> results = resultService.list( resultCriteria.range( 0, 10 ) );
-        log.info( "查询结果：{}", results );
+    public void equalTest() {
+        QueryCriteria<Grade> criteria = new QueryCriteria<>( Grade.class );
+        criteria.eq( Grade::getId, 1L );
+        List<GradeVo> list = gradeService.list( criteria );
+        log.info( "结果: {}", JSON.toJSONString( list, true ) );
+
     }
 
     @Test
-    public void ltTest() {
-        CriteriaImpl<Result> resultCriteria = resultService.getCriteria( "RS" );
-        resultCriteria.lt( Result::getScore, 89 ).asc( "id" );
-        List<ResultVo> results = resultService.list( resultCriteria.range( 0, 10 ) );
-        log.info( "查询结果：{}", results );
-    }
-
-    @Test
-    public void leTest() {
-        CriteriaImpl<Result> resultCriteria = resultService.getCriteria( "RS" );
-        resultCriteria.le( Result::getScore, 89 ).asc( "id" );
-        List<ResultVo> results = resultService.list( resultCriteria.range( 0, 10 ) );
-        log.info( "查询结果：{}", results );
-    }
-
-    @Test
-    public void gtTest() {
-        CriteriaImpl<Result> resultCriteria = resultService.getCriteria( "RS" );
-        resultCriteria.gt( Result::getScore, 89 ).asc( "id" );
-        List<ResultVo> results = resultService.list( resultCriteria.range( 0, 10 ) );
-        log.info( "查询结果：{}", results );
-    }
-
-    @Test
-    public void geTest() {
-        CriteriaImpl<Result> resultCriteria = resultService.getCriteria( "RS" );
-        resultCriteria.ge( Result::getScore, 89 )
-                .asc( "id" )
-                .desc( "score", "subjectId" )
-                .asc( "examDate" )
-                .asc( "studentId" );
-        //.addOrder( Order.aliasAsc( "RS", "STUDENT_ID" ) );
-        List<ResultVo> results = resultService.list( resultCriteria.range( 0, 10 ) );
-        log.info( "查询结果：{}", results );
-    }
-
-    @Test
-    public void templateTest() {
-        CriteriaImpl<Student> criteria = studentService.getCriteria();
-        String template = "DATE_FORMAT({}, '%Y-%m-%d') = {}";
-        criteria.template( template, Student::getBirthday, "1994-12-05" )
-                .orTemplate( template, "birthday", "1995-09-10" );
-        List<StudentVo> result = studentService.list( criteria );
-        log.info( "查询结果：{}", result );
+    public void immediateEqualTest() {
+        QueryCriteria<Grade> criteria = new QueryCriteria<>( Grade.class );
+        criteria.immediateEq( "ID", 2L );
+        List<GradeVo> list = gradeService.list( criteria );
+        log.info( "结果: {}", JSON.toJSONString( list, true ) );
     }
 }

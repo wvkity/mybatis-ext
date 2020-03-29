@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.mapper;
 
-import com.wkit.lost.mybatis.core.criteria.Criteria;
+import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 import com.wkit.lost.mybatis.utils.Constants;
 import org.apache.ibatis.annotations.Param;
 

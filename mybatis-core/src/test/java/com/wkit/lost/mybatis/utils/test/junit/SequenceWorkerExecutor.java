@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.utils.test.junit;
 
-import com.wkit.lost.mybatis.snowflake.worker.SequenceWorker;
+import com.wkit.lost.mybatis.snowflake.worker.SequenceGenerator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,9 +26,9 @@ public class SequenceWorkerExecutor implements Runnable {
         try {
             Thread.sleep( 1000 );
             System.out.println( "当前执行数：" + INDEX.incrementAndGet() );
-            long id = SequenceWorker.nextValue();
+            long id = SequenceGenerator.nextValue();
             if ( SEQUENCE_CACHE.contains( id ) ) {
-                REPEAT_SEQUENCE_CACHE.add( SequenceWorker.parse( id ) );
+                REPEAT_SEQUENCE_CACHE.add( SequenceGenerator.parse( id ) );
             }
             SEQUENCE_CACHE.add( id );
         } catch ( Exception e ) {
@@ -52,7 +52,7 @@ public class SequenceWorkerExecutor implements Runnable {
             if ( !REPEAT_SEQUENCE_CACHE.isEmpty() ) {
                 REPEAT_SEQUENCE_CACHE.forEach( System.out::println );
             } else {
-                SEQUENCE_CACHE.stream().map( SequenceWorker::parse ).forEach( System.out::println );
+                SEQUENCE_CACHE.stream().map( SequenceGenerator::parse ).forEach( System.out::println );
                 long size = SEQUENCE_CACHE.size();
                 long oSize = SEQUENCE_CACHE.stream().filter( value -> value % 2 == 0 ).count();
                 System.out.println( "偶数：" + oSize + " 奇数：" + ( size - oSize ) );

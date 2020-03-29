@@ -2,8 +2,8 @@ package com.wkit.lost.mybatis.utils;
 
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
-import com.wkit.lost.mybatis.core.criteria.Execute;
-import com.wkit.lost.mybatis.core.criteria.Operator;
+import com.wkit.lost.mybatis.core.constant.Execute;
+import com.wkit.lost.mybatis.core.constant.Symbol;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.incrementer.SequenceKeyGenerator;
 import org.apache.ibatis.session.Configuration;
@@ -134,7 +134,7 @@ public final class ColumnConvert {
             }
             // 操作符[=, >, <, ...]
             if ( StringUtil.isBlank( operator ) ) {
-                operator = Operator.EQ.getSqlSegment();
+                operator = Symbol.EQ.getSegment();
             }
             // 字段
             buffer.append( column.getColumn() ).append( " " ).append( operator );
@@ -217,7 +217,7 @@ public final class ColumnConvert {
      * @return SQL字符串
      */
     public static String convertToCustomArg( final ColumnWrapper column, final String paramValuePlaceHolder,
-                                             final String alias, Operator operator, String join ) {
+                                             final String alias, Symbol operator, String join ) {
         StringBuffer buffer = new StringBuffer( 60 );
         if ( StringUtil.hasText( join ) ) {
             buffer.append( join ).append( " " );
@@ -228,11 +228,11 @@ public final class ColumnConvert {
         }
         // 操作符[=, >, <, ...]
         if ( operator == null ) {
-            operator = Operator.EQ;
+            operator = Symbol.EQ;
         }
         // 字段
-        buffer.append( column.getColumn() ).append( " " ).append( operator.getSqlSegment() );
-        if ( Operator.filter( operator ) ) {
+        buffer.append( column.getColumn() ).append( " " ).append( operator.getSegment() );
+        if ( Symbol.filter( operator ) ) {
             buffer.append( " #{" );
             // 参数属性名
             buffer.append( paramValuePlaceHolder );
@@ -252,7 +252,7 @@ public final class ColumnConvert {
      * @return SQL字符串
      */
     public static String convertToCustomArg( final String column, final String paramValuePlaceHolder,
-                                             final String alias, Operator operator, String join ) {
+                                             final String alias, Symbol operator, String join ) {
         StringBuilder buffer = new StringBuilder( 40 );
         if ( StringUtil.hasText( join ) ) {
             buffer.append( join ).append( " " );
@@ -263,10 +263,10 @@ public final class ColumnConvert {
         }
         // 操作符[=, >, <, ...]
         if ( operator == null ) {
-            operator = Operator.EQ;
+            operator = Symbol.EQ;
         }
         // 字段
-        buffer.append( column ).append( " " ).append( operator.getSqlSegment() );
+        buffer.append( column ).append( " " ).append( operator.getSegment() );
         buffer.append( " #{" ).append( paramValuePlaceHolder ).append( "}" );
         return buffer.toString();
     }

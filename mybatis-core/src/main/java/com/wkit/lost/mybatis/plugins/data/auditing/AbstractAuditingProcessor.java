@@ -3,10 +3,10 @@ package com.wkit.lost.mybatis.plugins.data.auditing;
 import com.wkit.lost.mybatis.batch.BatchDataBeanWrapper;
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
-import com.wkit.lost.mybatis.core.condition.criterion.Restrictions;
-import com.wkit.lost.mybatis.core.criteria.Criteria;
+import com.wkit.lost.mybatis.core.conditional.Restrictions;
 import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
+import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.plugins.processor.UpdateProcessorSupport;
@@ -134,7 +134,8 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
                     try {
                         Criteria<?> criteria = ( Criteria<?> ) parameter;
                         // 注入条件
-                        criteria.add( Restrictions.eq( property, value ) );
+                        //criteria.add( Restrictions.eq( property, value ) );
+                        criteria.add( Restrictions.eq( criteria, property, value ) );
                         // 注入实体参数对象，但不填充值
                         metadata.setValue( Constants.PARAM_ENTITY, table.newInstance() );
                     } catch ( Exception e ) {

@@ -1,6 +1,5 @@
 package com.wkit.lost.mybatis.service;
 
-import com.wkit.lost.mybatis.factory.CriteriaBuilderFactory;
 import com.wkit.lost.mybatis.mapper.BaseMapperExecutor;
 
 /**
@@ -9,7 +8,7 @@ import com.wkit.lost.mybatis.mapper.BaseMapperExecutor;
  * @param <V> 返回值类型
  */
 public interface BaseServiceExecutor<T, V> extends SaveService<T>, UpdateService<T>, DeleteService<T>,
-        QueryService<T, V>, CriteriaService<T, V>, CriteriaBuilderFactory<T> {
+        QueryService<T, V>, CriteriaService<T, V> {
 
     /**
      * 获取Mapper泛型接口

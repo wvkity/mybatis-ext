@@ -2,15 +2,17 @@ package com.wkit.lost.mybatis.config;
 
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
+import com.wkit.lost.mybatis.core.injector.Injector;
+import com.wkit.lost.mybatis.core.injector.DefaultInjector;
 import com.wkit.lost.mybatis.exception.MapperException;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.session.MyBatisConfiguration;
-import com.wkit.lost.mybatis.sql.injector.DefaultSqlInjector;
-import com.wkit.lost.mybatis.sql.injector.SqlInjector;
 import lombok.extern.log4j.Log4j2;
+import org.apache.ibatis.builder.MapperBuilderAssistant;
 import org.apache.ibatis.session.Configuration;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -131,18 +133,32 @@ public class MyBatisConfigCache {
     /**
      * 获取SQL注入器
      * @param configuration 配置信息
-     * @return {@link SqlInjector}
+     * @return {@link Injector}
      */
-    public static SqlInjector getSqlInjector( final Configuration configuration ) {
+    public static Injector getInjector( final Configuration configuration ) {
         MyBatisCustomConfiguration customConfiguration = getCustomConfiguration( configuration );
-        SqlInjector injector = customConfiguration.getInjector();
+        Injector injector = customConfiguration.getInjector();
         if ( injector != null ) {
             return injector;
         } else {
-            SqlInjector instance = new DefaultSqlInjector();
+            Injector instance = new DefaultInjector();
             customConfiguration.setInjector( instance );
             return instance;
         }
+    }
+
+    /**
+     * 注入CURD-SQL
+     * @param assistant       构建器
+     * @param mapperInterface Mapper接口
+     */
+    public static void inject( final MapperBuilderAssistant assistant, Class<?> mapperInterface ) {
+        Configuration configuration = assistant.getConfiguration();
+        Optional.ofNullable( getCustomConfiguration( configuration ).getBaseMapperClass() ).ifPresent( it -> {
+            if ( it.isAssignableFrom( mapperInterface ) ) {
+                getInjector( configuration ).inject( assistant, mapperInterface );
+            }
+        } );
     }
 
     /**

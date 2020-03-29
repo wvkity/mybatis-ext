@@ -7,6 +7,7 @@ import org.apache.ibatis.reflection.property.PropertyNamer;
 
 import java.lang.ref.WeakReference;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,18 +36,9 @@ public final class PropertyMappingCache {
      * @param table 表映射对象
      */
     public static void build( final TableWrapper table ) {
-        build( table.getEntity().getName(), table );
-    }
-
-    /**
-     * 构建实体-表字段映射缓存
-     * @param className 实体类名
-     * @param table     表映射对象
-     */
-    public static void build( final String className, final TableWrapper table ) {
-        if ( !COLUMN_CACHE.containsKey( className ) ) {
-            COLUMN_CACHE.putIfAbsent( className, table.columnMappings() );
-        }
+        Optional.ofNullable( table )
+                .filter( it -> Objects.nonNull( it.getEntity() ) )
+                .ifPresent( it -> COLUMN_CACHE.putIfAbsent( it.getEntity().toString(), it.columnMappings() ) );
     }
 
     /**
@@ -90,10 +82,10 @@ public final class PropertyMappingCache {
 
     /**
      * 根据类名获取字段映射
-     * @param className 类名
+     * @param klass 实体类
      * @return 字段映射集合
      */
-    public static Map<String, ColumnWrapper> columnCache( final String className ) {
-        return COLUMN_CACHE.getOrDefault( className, null );
+    public static Map<String, ColumnWrapper> columnCache( final Class<?> klass ) {
+        return klass == null ? null : COLUMN_CACHE.getOrDefault( klass.toString(), null );
     }
 }

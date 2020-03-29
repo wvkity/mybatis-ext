@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.plugins.paging;
 
-import com.wkit.lost.mybatis.core.criteria.Criteria;
+import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 import com.wkit.lost.mybatis.plugins.paging.dbs.dialect.Dialect;
 import com.wkit.lost.mybatis.plugins.processor.QueryProcessorSupport;
 import com.wkit.lost.mybatis.utils.Ascii;
@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
- 
+
 abstract class PagingProcessor extends QueryProcessorSupport {
 
     /**

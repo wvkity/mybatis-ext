@@ -9,7 +9,7 @@ public interface Constants {
     /***
      * 换行符
      */
-    String NEW_LINE = System.getProperty( "line.separator" );
+    String NEW_LINE = System.lineSeparator();
 
     /**
      * 批量参数对象
@@ -80,4 +80,15 @@ public interface Constants {
      * 雪花算法字符串主键生成方式
      */
     String GENERATOR_SNOWFLAKE_SEQUENCE_STRING = "SNOWFLAKE_SEQUENCE_STRING";
+
+    String HASH_OPEN_BRACE = "#{";
+    String DOLLAR_OPEN_BRACE = "${";
+    String CLOSE_BRACE = "}";
+    String CHAR_QUOTE = "\"";
+    String CHAR_LT = "<";
+    String CHAR_GT = ">";
+    String CHAR_SLASH = "/";
+    String CHAR_DOT = ".";
+    String CHAR_EMPTY = "";
+    String CHAR_SPACE = " ";
 }

@@ -1,8 +1,8 @@
 package com.wkit.lost.mybatis.spring.boot.autoconfigure;
 
-
 import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
+import com.wkit.lost.mybatis.core.injector.Injector;
 import com.wkit.lost.mybatis.core.parser.EntityParser;
 import com.wkit.lost.mybatis.core.parser.FieldParser;
 import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
@@ -15,7 +15,6 @@ import com.wkit.lost.mybatis.scripting.xmltags.MyBatisXMLLanguageDriver;
 import com.wkit.lost.mybatis.session.MyBatisConfiguration;
 import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
 import com.wkit.lost.mybatis.spring.SqlSessionFactoryBean;
-import com.wkit.lost.mybatis.sql.injector.SqlInjector;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.extern.log4j.Log4j2;
@@ -182,7 +181,7 @@ public class MyBatisAutoConfiguration implements InitializingBean {
             factory.setMapperLocations( this.properties.resolveMapperLocations() );
         }
         // SQL注入器
-        ifPresent( SqlInjector.class, customConfig::setInjector );
+        ifPresent( Injector.class, customConfig::setInjector );
         // 实体解析器
         ifPresent( EntityParser.class, customConfig::setEntityParser );
         // 属性解析器

@@ -2,10 +2,9 @@ package com.wkit.lost.mybatis.service;
 
 import com.wkit.lost.mybatis.batch.BatchDataBeanWrapper;
 import com.wkit.lost.mybatis.binding.MyBatisMapperMethod;
-import com.wkit.lost.mybatis.core.criteria.Criteria;
 import com.wkit.lost.mybatis.core.handler.TableHandler;
+import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 import com.wkit.lost.mybatis.exception.MyBatisException;
-import com.wkit.lost.mybatis.factory.AbstractCriteriaBuilderFactory;
 import com.wkit.lost.mybatis.mapper.BaseMapperExecutor;
 import com.wkit.lost.mybatis.session.SqlSessionUtil;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
@@ -31,11 +30,11 @@ import java.util.stream.Collectors;
 /**
  * 泛型接口
  * @param <T> 实体类
- * @param <R> 返回值类型
+ * @param <V> 返回值类型
  * @author wvkity
  */
-public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExecutor<T, R>, T, R>
-        extends AbstractCriteriaBuilderFactory<T> implements BaseServiceExecutor<T, R> {
+public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExecutor<T, V>, T, V>
+        implements BaseServiceExecutor<T, V> {
 
     protected static final String METHOD_INSERT = "insert";
     protected static final String METHOD_INSERT_NOT_WITH_NULL = "insertNotWithNull";
@@ -324,16 +323,16 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
     }
 
     @Override
-    public Optional<R> selectOne( Serializable id ) {
+    public Optional<V> selectOne( Serializable id ) {
         return id == null ? Optional.empty() : executor.selectOne( id );
     }
 
     @Override
-    public List<R> list( Serializable... idArray ) {
-        return ArrayUtil.isEmpty( idArray ) ? new ArrayList<>() : list( Arrays.asList( idArray ) );
+    public List<V> list( Serializable... ids ) {
+        return ArrayUtil.isEmpty( ids ) ? new ArrayList<>() : list( Arrays.asList( ids ) );
     }
 
-    public List<R> list( Collection<? extends Serializable> idList ) {
+    public List<V> list( Collection<? extends Serializable> idList ) {
         List<? extends Serializable> pks = Optional.ofNullable( idList )
                 .orElse( new ArrayList<>() )
                 .stream()
@@ -343,18 +342,18 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
     }
 
     @Override
-    public List<R> list( T entity ) {
+    public List<V> list( T entity ) {
         return entity == null ? new ArrayList<>() : executor.listByEntity( entity );
     }
 
     @SuppressWarnings( "unchecked" )
     @Override
-    public List<R> list( T... entities ) {
+    public List<V> list( T... entities ) {
         return ArrayUtil.isEmpty( entities ) ? new ArrayList<>() : listByEntities( Arrays.asList( entities ) );
     }
 
     @Override
-    public List<R> listByEntities( Collection<T> entities ) {
+    public List<V> listByEntities( Collection<T> entities ) {
         List<T> list = Optional.ofNullable( entities )
                 .orElse( new ArrayList<>() )
                 .stream()
@@ -364,7 +363,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
     }
 
     @Override
-    public List<R> list( Criteria<T> criteria ) {
+    public List<V> list( Criteria<T> criteria ) {
         return criteria == null ? new ArrayList<>() : executor.listByCriteria( criteria.resultMap( null ).resultType( null ) );
     }
 
@@ -394,12 +393,12 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
     }
 
     @Override
-    public List<R> list( T entity, Pageable pageable ) {
+    public List<V> list( T entity, Pageable pageable ) {
         return executor.pageableList( entity, pageable );
     }
 
     @Override
-    public List<R> list( Criteria<T> criteria, Pageable pageable ) {
+    public List<V> list( Criteria<T> criteria, Pageable pageable ) {
         return executor.pageableListByCriteria( criteria.resultMap( null ).resultType( null ), pageable );
     }
 
