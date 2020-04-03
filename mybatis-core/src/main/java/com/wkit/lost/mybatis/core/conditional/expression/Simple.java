@@ -17,20 +17,6 @@ public class Simple<T> extends ColumnExpressionWrapper<T> {
 
     /**
      * 构造方法
-     * @param column 列包装对象
-     * @param value  值
-     * @param symbol 条件符号
-     * @param logic  逻辑符号
-     */
-    Simple( ColumnWrapper column, Object value, Symbol symbol, Logic logic ) {
-        this.column = column;
-        this.value = value;
-        this.symbol = symbol;
-        this.logic = logic;
-    }
-
-    /**
-     * 构造方法
      * @param criteria 条件对象
      * @param column   列包装对象
      * @param value    值
@@ -155,57 +141,6 @@ public class Simple<T> extends ColumnExpressionWrapper<T> {
                                         Symbol symbol, Logic logic ) {
         if ( criteria != null && hasText( property ) ) {
             return create( criteria, criteria.searchColumn( property ), value, symbol, logic );
-        }
-        return null;
-    }
-
-    /**
-     * 创建简单条件对象
-     * @param column 列包装对象
-     * @param value  值
-     * @param <T>    实体类型
-     * @return 简单条件对象
-     */
-    public static <T> Simple<T> create( ColumnWrapper column, Object value ) {
-        return create( column, value, Symbol.EQ );
-    }
-
-    /**
-     * 创建简单条件对象
-     * @param column 列包装对象
-     * @param value  值
-     * @param logic  逻辑符号
-     * @param <T>    实体类型
-     * @return 简单条件对象
-     */
-    public static <T> Simple<T> create( ColumnWrapper column, Object value, Logic logic ) {
-        return create( column, value, Symbol.EQ, logic );
-    }
-
-    /**
-     * 创建简单条件对象
-     * @param column 列包装对象
-     * @param value  值
-     * @param symbol 条件符号
-     * @param <T>    实体类型
-     * @return 简单条件对象
-     */
-    public static <T> Simple<T> create( ColumnWrapper column, Object value, Symbol symbol ) {
-        return create( column, value, symbol, Logic.AND );
-    }
-
-    /**
-     * 创建简单条件对象
-     * @param column 列包装对象
-     * @param value  值
-     * @param symbol 条件符号
-     * @param logic  逻辑符号
-     * @param <T>    实体类型
-     * @return 简单条件对象
-     */
-    public static <T> Simple<T> create( ColumnWrapper column, Object value, Symbol symbol, Logic logic ) {
-        if ( column != null ) {
-            return new Simple<>( column, value, symbol, logic );
         }
         return null;
     }

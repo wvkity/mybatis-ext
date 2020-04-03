@@ -5,13 +5,13 @@ import com.wkit.lost.mybatis.core.constant.Symbol;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 
 /**
- * 等于条件(字符串字段)
+ * 大于或等于条件(字符串字段)
  * @param <T> 泛型类型
  * @author wvkity
  */
-public class ImmediateEqual<T> extends ImmediateSimple<T> {
+public class ImmediateGreaterThanOrEqual<T> extends ImmediateSimple<T> {
 
-    private static final long serialVersionUID = -5802093065564571877L;
+    private static final long serialVersionUID = -2478288775983917149L;
 
     /**
      * 构造方法
@@ -19,8 +19,8 @@ public class ImmediateEqual<T> extends ImmediateSimple<T> {
      * @param value  值
      * @param logic  逻辑符号
      */
-    ImmediateEqual( String column, Object value, Logic logic ) {
-        super( column, value, Symbol.EQ, logic );
+    ImmediateGreaterThanOrEqual( String column, Object value, Logic logic ) {
+        super( column, value, Symbol.GE, logic );
     }
 
     /**
@@ -30,8 +30,8 @@ public class ImmediateEqual<T> extends ImmediateSimple<T> {
      * @param value      值
      * @param logic      逻辑符号
      */
-    ImmediateEqual( String tableAlias, String column, Object value, Logic logic ) {
-        super( tableAlias, column, value, Symbol.EQ, logic );
+    ImmediateGreaterThanOrEqual( String tableAlias, String column, Object value, Logic logic ) {
+        super( tableAlias, column, value, Symbol.GE, logic );
     }
 
     /**
@@ -41,50 +41,50 @@ public class ImmediateEqual<T> extends ImmediateSimple<T> {
      * @param value    值
      * @param logic    逻辑符号
      */
-    ImmediateEqual( Criteria<T> criteria, String column, Object value, Logic logic ) {
-        super( criteria, column, value, Symbol.EQ, logic );
+    ImmediateGreaterThanOrEqual( Criteria<T> criteria, String column, Object value, Logic logic ) {
+        super( criteria, column, value, Symbol.GE, logic );
     }
 
     /**
-     * 创建等于条件对象
+     * 创建大于或等于条件对象
      * @param column 列名
      * @param value  值
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> create( String column, Object value ) {
+    public static <T> ImmediateGreaterThanOrEqual<T> create( String column, Object value ) {
         return create( column, value, Logic.AND );
     }
 
     /**
-     * 创建等于条件对象
+     * 创建大于或等于条件对象
      * @param column 列名
      * @param value  值
      * @param logic  逻辑符号
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> create( String column, Object value, Logic logic ) {
+    public static <T> ImmediateGreaterThanOrEqual<T> create( String column, Object value, Logic logic ) {
         if ( hasText( column ) ) {
-            return new ImmediateEqual<>( column, value, logic );
+            return new ImmediateGreaterThanOrEqual<>( column, value, logic );
         }
         return null;
     }
 
     /**
-     * 创建等于条件对象
+     * 创建大于或等于条件对象
      * @param tableAlias 表别名
      * @param column     列名
      * @param value      值
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> create( String tableAlias, String column, Object value ) {
+    public static <T> ImmediateGreaterThanOrEqual<T> create( String tableAlias, String column, Object value ) {
         return create( tableAlias, column, value, Logic.AND );
     }
 
     /**
-     * 创建等于条件对象
+     * 创建大于或等于条件对象
      * @param tableAlias 表别名
      * @param column     列名
      * @param value      值
@@ -92,27 +92,27 @@ public class ImmediateEqual<T> extends ImmediateSimple<T> {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> create( String tableAlias, String column, Object value, Logic logic ) {
+    public static <T> ImmediateGreaterThanOrEqual<T> create( String tableAlias, String column, Object value, Logic logic ) {
         if ( hasText( column ) ) {
-            return new ImmediateEqual<>( tableAlias, column, value, logic );
+            return new ImmediateGreaterThanOrEqual<>( tableAlias, column, value, logic );
         }
         return null;
     }
 
     /**
-     * 创建等于条件对象
+     * 创建大于或等于条件对象
      * @param criteria 条件包装对象
      * @param column   列名
      * @param value    值
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> create( Criteria<T> criteria, String column, Object value ) {
+    public static <T> ImmediateGreaterThanOrEqual<T> create( Criteria<T> criteria, String column, Object value ) {
         return create( criteria, column, value, Logic.AND );
     }
 
     /**
-     * 创建等于条件对象
+     * 创建大于或等于条件对象
      * @param criteria 条件包装对象
      * @param column   列名
      * @param value    值
@@ -120,9 +120,9 @@ public class ImmediateEqual<T> extends ImmediateSimple<T> {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> create( Criteria<T> criteria, String column, Object value, Logic logic ) {
+    public static <T> ImmediateGreaterThanOrEqual<T> create( Criteria<T> criteria, String column, Object value, Logic logic ) {
         if ( hasText( column ) ) {
-            return new ImmediateEqual<>( criteria, column, value, logic );
+            return new ImmediateGreaterThanOrEqual<>( criteria, column, value, logic );
         }
         return null;
     }

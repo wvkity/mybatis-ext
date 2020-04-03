@@ -293,6 +293,20 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
         this.resultType = resultType;
         return this;
     }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> useAlias() {
+        this.enableAlias = true;
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> useAlias( String alias ) {
+        this.enableAlias = true;
+        this.tableAlias = alias;
+        return this;
+    }
+
     // endregion
 
 

@@ -19,8 +19,8 @@ public class RangePageableConfig {
         if ( criteria != null ) {
             Range mode = criteria.range();
             if ( mode == Range.IMMEDIATE ) {
-                rowStart = criteria.getRowStart();
-                rowEnd = criteria.getRowEnd();
+                rowStart = Math.max( criteria.getRowStart() - 1, 0 );
+                rowEnd = Math.max( criteria.getRowEnd() - rowStart + 1, 0 );
                 offset = rowEnd - rowStart;
                 range = new RangePageable( rowStart, rowEnd, offset, true );
             } else if ( mode == Range.PAGEABLE ) {

@@ -17,16 +17,6 @@ public class Equal<T> extends Simple<T> {
 
     /**
      * 构造方法
-     * @param column 列包装对象
-     * @param value  值
-     * @param logic  逻辑符号
-     */
-    Equal( ColumnWrapper column, Object value, Logic logic ) {
-        super( column, value, Symbol.EQ, logic );
-    }
-
-    /**
-     * 构造方法
      * @param criteria 条件包装对象
      * @param column   列包装对象
      * @param value    值
@@ -34,32 +24,6 @@ public class Equal<T> extends Simple<T> {
      */
     Equal( Criteria<T> criteria, ColumnWrapper column, Object value, Logic logic ) {
         super( criteria, column, value, Symbol.EQ, logic );
-    }
-
-    /**
-     * 创建等于条件对象
-     * @param column 字段包装对象
-     * @param value  值
-     * @param <T>    实体类型
-     * @return 条件对象
-     */
-    public static <T> Equal<T> create( ColumnWrapper column, Object value ) {
-        return create( column, value, Logic.AND );
-    }
-
-    /**
-     * 创建等于条件对象
-     * @param column 字段包装对象
-     * @param value  值
-     * @param logic  逻辑符号
-     * @param <T>    实体类型
-     * @return 条件对象
-     */
-    public static <T> Equal<T> create( ColumnWrapper column, Object value, Logic logic ) {
-        if ( column != null ) {
-            return new Equal<>( column, value, logic );
-        }
-        return null;
     }
 
     /**

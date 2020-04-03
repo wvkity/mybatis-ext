@@ -7,7 +7,7 @@ public abstract class ImmediateExpressionWrapper<T> extends ExpressionWrapper<T,
 
     @Override
     public String getSegment() {
-        return ScriptUtil.convertConditionArg( getAlias(), this.column, defaultPlaceholder( this.value ),
-                this.symbol, this.logic );
+        return ScriptUtil.convertConditionArg( getAlias(), this.column,
+                this.symbol, this.logic, defaultPlaceholder( this.value ) );
     }
 }

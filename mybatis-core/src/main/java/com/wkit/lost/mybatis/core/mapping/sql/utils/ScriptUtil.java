@@ -4,11 +4,15 @@ import com.wkit.lost.mybatis.core.constant.Execute;
 import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.constant.Symbol;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
+import com.wkit.lost.mybatis.utils.ArrayUtil;
+import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import org.apache.ibatis.type.JdbcType;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -217,52 +221,103 @@ public final class ScriptUtil {
 
     /**
      * 转换成条件参数
-     * @param tableAlias  表别名
-     * @param column      字段
-     * @param placeholder 参数值
-     * @param symbol      条件符号
-     * @param logic       逻辑符号
+     * @param tableAlias   表别名
+     * @param column       字段
+     * @param symbol       条件符号
+     * @param logic        逻辑符号
+     * @param placeholders 参数值
      * @return 参数字符串
      */
     public static String convertConditionArg( final String tableAlias, final ColumnWrapper column,
-                                              final String placeholder, final Symbol symbol, final Logic logic ) {
-        return convertConditionArg( tableAlias, column.getColumn(), placeholder, column.getJdbcType(),
-                column.getTypeHandler(), column.getJavaType(), column.isUseJavaType(), symbol, logic );
+                                              final Symbol symbol, final Logic logic, final String... placeholders ) {
+        return convertConditionArg( tableAlias, column.getColumn(), column.getJdbcType(),
+                column.getTypeHandler(), column.getJavaType(), column.isUseJavaType(), symbol, logic, placeholders );
     }
 
     /**
      * 转换成条件参数
-     * @param tableAlias    表别名
-     * @param column        字段
-     * @param placeholder   参数值
-     * @param symbol        条件符号
-     * @param logic         逻辑符号
+     * @param tableAlias   表别名
+     * @param column       字段
+     * @param symbol       条件符号
+     * @param logic        逻辑符号
+     * @param placeholders 参数值
      * @return 参数字符串
      */
-    public static String convertConditionArg( final String tableAlias, final String column, final String placeholder,
-                                              final Symbol symbol, final Logic logic ) {
-        return convertConditionArg( tableAlias, column, placeholder, null, null,
-                null, false, symbol, logic );
+    public static String convertConditionArg( final String tableAlias, final ColumnWrapper column,
+                                              final Symbol symbol, final Logic logic, final List<String> placeholders ) {
+        return convertConditionArg( tableAlias, column.getColumn(), column.getJdbcType(),
+                column.getTypeHandler(), column.getJavaType(), column.isUseJavaType(), symbol, logic, placeholders );
     }
 
+    /**
+     * 转换成条件参数
+     * @param tableAlias   表别名
+     * @param column       字段
+     * @param symbol       条件符号
+     * @param logic        逻辑符号
+     * @param placeholders 参数值
+     * @return 参数字符串
+     */
+    public static String convertConditionArg( final String tableAlias, final String column,
+                                              final Symbol symbol, final Logic logic, final String... placeholders ) {
+        return convertConditionArg( tableAlias, column, null, null, null,
+                false, symbol, logic, placeholders );
+    }
+
+    /**
+     * 转换成条件参数
+     * @param tableAlias   表别名
+     * @param column       字段
+     * @param symbol       条件符号
+     * @param logic        逻辑符号
+     * @param placeholders 参数值
+     * @return 参数字符串
+     */
+    public static String convertConditionArg( final String tableAlias, final String column,
+                                              final Symbol symbol, final Logic logic, final List<String> placeholders ) {
+        return convertConditionArg( tableAlias, column, null, null, null,
+                false, symbol, logic, placeholders );
+    }
 
     /**
      * 转换成条件参数
      * @param tableAlias    表别名
      * @param column        字段
-     * @param placeholder   参数值
      * @param jdbcType      JDBC类型
      * @param typeHandler   类型处理器
      * @param javaType      Java类型
      * @param isUseJavaType 是否使用Java类型
      * @param symbol        条件符号
      * @param logic         逻辑符号
+     * @param placeholders  参数值
      * @return 参数字符串
      */
-    public static String convertConditionArg( final String tableAlias, final String column, final String placeholder,
+    public static String convertConditionArg( final String tableAlias, final String column,
                                               final JdbcType jdbcType, final Class<?> typeHandler,
                                               final Class<?> javaType, final boolean isUseJavaType,
-                                              final Symbol symbol, final Logic logic ) {
+                                              final Symbol symbol, final Logic logic, final String... placeholders ) {
+        return convertConditionArg( tableAlias, column, jdbcType, typeHandler, javaType, isUseJavaType,
+                symbol, logic, ArrayUtil.toList( placeholders ) );
+    }
+
+
+    /**
+     * 转换成条件参数
+     * @param tableAlias    表别名
+     * @param column        字段
+     * @param jdbcType      JDBC类型
+     * @param typeHandler   类型处理器
+     * @param javaType      Java类型
+     * @param isUseJavaType 是否使用Java类型
+     * @param symbol        条件符号
+     * @param logic         逻辑符号
+     * @param placeholders  参数值
+     * @return 参数字符串
+     */
+    public static String convertConditionArg( final String tableAlias, final String column,
+                                              final JdbcType jdbcType, final Class<?> typeHandler,
+                                              final Class<?> javaType, final boolean isUseJavaType,
+                                              final Symbol symbol, final Logic logic, final List<String> placeholders ) {
         StringBuilder builder = new StringBuilder( 60 );
         if ( logic != null ) {
             builder.append( logic.getSegment() ).append( Constants.CHAR_SPACE );
@@ -278,9 +333,32 @@ public final class ScriptUtil {
         }
         builder.append( column ).append( Constants.CHAR_SPACE ).append( realSymbol.getSegment() )
                 .append( Constants.CHAR_SPACE );
-        if ( Symbol.filter( realSymbol ) ) {
-            builder.append( safeJoint( placeholder, concatIntactArg( javaType, jdbcType,
-                    typeHandler, isUseJavaType ) ) );
+        if ( Symbol.filter( realSymbol ) && CollectionUtil.hasElement( placeholders ) ) {
+            switch ( symbol ) {
+                case EQ:
+                case NE:
+                case LT:
+                case LE:
+                case GT:
+                case GE:
+                case LIKE:
+                case NOT_LIKE:
+                    builder.append( safeJoint( placeholders.get( 0 ), concatIntactArg( javaType, jdbcType,
+                            typeHandler, isUseJavaType ) ) );
+                    break;
+                case IN:
+                case NOT_IN:
+                    builder.append( placeholders.stream().map( it -> safeJoint( it,
+                            concatIntactArg( javaType, jdbcType, typeHandler, isUseJavaType ) ) )
+                            .collect( Collectors.joining( ", ", "(", ")" ) ) );
+                    break;
+                case BETWEEN:
+                case NOT_BETWEEN:
+                    builder.append( placeholders.stream().limit( 2 ).map( it -> safeJoint( it,
+                            concatIntactArg( javaType, jdbcType, typeHandler, isUseJavaType ) ) )
+                            .collect( Collectors.joining( " AND " ) ) );
+                    break;
+            }
         }
         return builder.toString();
     }
