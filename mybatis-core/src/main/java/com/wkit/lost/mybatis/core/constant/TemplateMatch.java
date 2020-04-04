@@ -1,4 +1,4 @@
-package com.wkit.lost.mybatis.core.conditional.expression;
+package com.wkit.lost.mybatis.core.constant;
 
 public enum TemplateMatch {
 

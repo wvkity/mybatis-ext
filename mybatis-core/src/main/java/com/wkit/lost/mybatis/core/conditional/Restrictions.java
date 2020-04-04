@@ -18,6 +18,7 @@ import com.wkit.lost.mybatis.core.conditional.expression.ImmediateNotEqual;
 import com.wkit.lost.mybatis.core.conditional.expression.ImmediateNotIn;
 import com.wkit.lost.mybatis.core.conditional.expression.ImmediateNotLike;
 import com.wkit.lost.mybatis.core.conditional.expression.ImmediateNull;
+import com.wkit.lost.mybatis.core.conditional.expression.ImmediateTemplate;
 import com.wkit.lost.mybatis.core.conditional.expression.In;
 import com.wkit.lost.mybatis.core.conditional.expression.LessThan;
 import com.wkit.lost.mybatis.core.conditional.expression.LessThanOrEqual;
@@ -44,6 +45,8 @@ public final class Restrictions {
 
     private Restrictions() {
     }
+
+    // region simple expression
 
     /**
      * ID等于
@@ -819,6 +822,10 @@ public final class Restrictions {
         return ImmediateGreaterThanOrEqual.create( criteria, column, value, logic );
     }
 
+    // endregion
+
+    // region empty expression
+
     /**
      * IS NULL
      * @param criteria 条件包装对象
@@ -1002,6 +1009,10 @@ public final class Restrictions {
     public static <T> ImmediateNull<T> immediateNotNull( Criteria<T> criteria, String column, Logic logic ) {
         return ImmediateNull.create( criteria, column, logic );
     }
+
+    // endregion
+
+    // region range expression
 
     /**
      * IN
@@ -1472,6 +1483,10 @@ public final class Restrictions {
                                                                   Object end, Logic logic ) {
         return ImmediateNotBetween.create( criteria, column, begin, end, logic );
     }
+
+    // endregion
+
+    // region fuzzy expression
 
     /**
      * LIKE
@@ -2157,6 +2172,10 @@ public final class Restrictions {
         return ImmediateNotLike.create( criteria, column, value, match, escape, logic );
     }
 
+    // endregion
+
+    // region template expression
+
     /**
      * TEMPLATE
      * @param criteria 条件包装对象
@@ -2329,5 +2348,259 @@ public final class Restrictions {
                                             String template, Logic logic ) {
         return Template.create( criteria, property, values, template, logic );
     }
+
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param value    值
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( String template, Object value ) {
+        return immediateTemplate( template, value, Logic.AND );
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param value    值
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( String template, Object value, Logic logic ) {
+        return ImmediateTemplate.create( template, value, logic );
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( String template, Collection<Object> values ) {
+        return immediateTemplate( template, values, Logic.AND );
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( String template, Collection<Object> values,
+                                                              Logic logic ) {
+        return ImmediateTemplate.create( template, values, logic );
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( String template, Map<String, Object> values ) {
+        return immediateTemplate( template, values, Logic.AND );
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( String template, Map<String, Object> values,
+                                                              Logic logic ) {
+        return ImmediateTemplate.create( template, values, logic );
+    }
+
+
+    /**
+     * TEMPLATE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param value      值
+     * @param template   模板
+     * @param <T>        实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( String tableAlias, String column,
+                                                              Object value, String template ) {
+        return immediateTemplate( tableAlias, column, value, template, Logic.AND );
+    }
+
+    /**
+     * TEMPLATE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param value      值
+     * @param template   模板
+     * @param logic      逻辑符号
+     * @param <T>        实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( String tableAlias, String column,
+                                                              Object value, String template, Logic logic ) {
+        return ImmediateTemplate.create( tableAlias, column, value, template, logic );
+    }
+
+    /**
+     * TEMPLATE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param values     值
+     * @param template   模板
+     * @param <T>        实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( String tableAlias, String column,
+                                                              Collection<Object> values, String template ) {
+        return immediateTemplate( tableAlias, column, values, template, Logic.AND );
+    }
+
+    /**
+     * TEMPLATE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param values     值
+     * @param template   模板
+     * @param logic      逻辑符号
+     * @param <T>        实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( String tableAlias, String column,
+                                                              Collection<Object> values, String template,
+                                                              Logic logic ) {
+        return ImmediateTemplate.create( tableAlias, column, values, template, logic );
+    }
+
+    /**
+     * TEMPLATE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param values     值
+     * @param template   模板
+     * @param <T>        实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( String tableAlias, String column,
+                                                              Map<String, Object> values, String template ) {
+        return immediateTemplate( tableAlias, column, values, template, Logic.AND );
+    }
+
+    /**
+     * TEMPLATE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param values     值
+     * @param template   模板
+     * @param logic      逻辑符号
+     * @param <T>        实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( String tableAlias, String column,
+                                                              Map<String, Object> values, String template,
+                                                              Logic logic ) {
+        return ImmediateTemplate.create( tableAlias, column, values, template, logic );
+    }
+
+
+    /**
+     * TEMPLATE
+     * @param criteria 条件包装对象
+     * @param column   字段
+     * @param value    值
+     * @param template 模板
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( Criteria<T> criteria, String column,
+                                                              Object value, String template ) {
+        return immediateTemplate( criteria, column, value, template, Logic.AND );
+    }
+
+    /**
+     * TEMPLATE
+     * @param criteria 条件包装对象
+     * @param column   字段
+     * @param value    值
+     * @param template 模板
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( Criteria<T> criteria, String column,
+                                                              Object value, String template, Logic logic ) {
+        return ImmediateTemplate.create( criteria, column, value, template, logic );
+    }
+
+    /**
+     * TEMPLATE
+     * @param criteria 条件包装对象
+     * @param column   字段
+     * @param values   值
+     * @param template 模板
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( Criteria<T> criteria, String column,
+                                                              Collection<Object> values, String template ) {
+        return immediateTemplate( criteria, column, values, template, Logic.AND );
+    }
+
+    /**
+     * TEMPLATE
+     * @param criteria 条件包装对象
+     * @param column   字段
+     * @param values   值
+     * @param template 模板
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( Criteria<T> criteria, String column,
+                                                              Collection<Object> values, String template,
+                                                              Logic logic ) {
+        return ImmediateTemplate.create( criteria, column, values, template, logic );
+    }
+
+    /**
+     * TEMPLATE
+     * @param criteria 条件包装对象
+     * @param column   字段
+     * @param values   值
+     * @param template 模板
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( Criteria<T> criteria, String column,
+                                                              Map<String, Object> values, String template ) {
+        return immediateTemplate( criteria, column, values, template, Logic.AND );
+    }
+
+    /**
+     * TEMPLATE
+     * @param criteria 条件包装对象
+     * @param column   字段
+     * @param values   值
+     * @param template 模板
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> ImmediateTemplate<T> immediateTemplate( Criteria<T> criteria, String column,
+                                                              Map<String, Object> values, String template,
+                                                              Logic logic ) {
+        return ImmediateTemplate.create( criteria, column, values, template, logic );
+    }
+
+    // endregion
 
 }

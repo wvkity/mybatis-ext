@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.core.conditional.expression;
 
 import com.wkit.lost.mybatis.core.conditional.utils.Formatter;
 import com.wkit.lost.mybatis.core.constant.Logic;
+import com.wkit.lost.mybatis.core.constant.TemplateMatch;
 import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
@@ -24,26 +25,35 @@ import java.util.stream.Collectors;
  * <pre>
  *     // MYSQL
  *     // Examples:
+ *     &#64;Inject
+ *     private GradeService gradeService;
+ *     
  *     QueryCriteria&lt;Grade&gt; criteria = new QueryCriteria&lt;&gt;(Grade.class);
  *
  *     // single parameter:
+ *     // NO1.
  *     String template = "LEFT({&#64;&#64;}, 2) = {}";
  *     criteria.template(template, Grade::Name, "S1");
+ *     gradeService.list(criteria);
  *     return:
  *     SELECT column1, column2, ... FROM GRADE WHERE LEFT(NAME, 2) = ?
  *
  *     // multiple parameter:
+ *     // NO2.
  *     String template = "LEFT({&#64;&#64;}, {}) = {}";
  *     criteria.template(template, Grade::Name, 2, "S1");
+ *     gradeService.list(criteria);
  *     return:
  *     SELECT column1, column2, ... FROM GRADE WHERE LEFT(NAME, ?) = ?
  *
  *     // map parameter:
+ *     // NO3.
  *     String template = "LEFT({&#64;&#64;}, ${left}) = ${name}";
  *     Map&lt;String, Object&gt; params = new HashMap&lt;&gt;();
  *     params.put("left", 2);
  *     params.put("name", "S1");
  *     criteria.template(template, Grade::Name, params);
+ *     gradeService.list(criteria);
  *     return:
  *     SELECT column1, column2, ... FROM GRADE WHERE LEFT(NAME, ?) = ?
  * </pre>

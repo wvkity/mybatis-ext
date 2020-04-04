@@ -11,6 +11,8 @@ import java.util.Map;
  * @param <Chain> 子类
  * @param <P>     Lambda类
  * @author wvkity
+ * @see com.wkit.lost.mybatis.core.conditional.expression.Template
+ * @see com.wkit.lost.mybatis.core.conditional.expression.ImmediateTemplate
  */
 public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> extends LambdaConverter<P> {
 
@@ -177,5 +179,149 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @return {@code this}
      */
     Chain orTemplate( String template, String property, Map<String, Object> values );
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param value    值
+     * @return {@code this}
+     */
+    Chain immediateTemplate( String template, Object value );
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @return {@code this}
+     */
+    default Chain immediateTemplate( String template, Object... values ) {
+        return immediateTemplate( template, ArrayUtil.toList( values ) );
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @return {@code this}
+     */
+    Chain immediateTemplate( String template, Collection<Object> values );
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @return {@code this}
+     */
+    Chain immediateTemplate( String template, Map<String, Object> values );
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param value    值
+     * @return {@code this}
+     */
+    Chain immediateTemplate( String template, String column, Object value );
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param values   值
+     * @return {@code this}
+     */
+    default Chain immediateTemplate( String template, String column, Object... values ) {
+        return immediateTemplate( template, column, ArrayUtil.toList( values ) );
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param values   值
+     * @return {@code this}
+     */
+    Chain immediateTemplate( String template, String column, Collection<Object> values );
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param values   值
+     * @return {@code this}
+     */
+    Chain immediateTemplate( String template, String column, Map<String, Object> values );
+    
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param value    值
+     * @return {@code this}
+     */
+    Chain orImmediateTemplate( String template, Object value );
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @return {@code this}
+     */
+    default Chain orImmediateTemplate( String template, Object... values ) {
+        return orImmediateTemplate( template, ArrayUtil.toList( values ) );
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @return {@code this}
+     */
+    Chain orImmediateTemplate( String template, Collection<Object> values );
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @return {@code this}
+     */
+    Chain orImmediateTemplate( String template, Map<String, Object> values );
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param value    值
+     * @return {@code this}
+     */
+    Chain orImmediateTemplate( String template, String column, Object value );
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param values   值
+     * @return {@code this}
+     */
+    default Chain orImmediateTemplate( String template, String column, Object... values ) {
+        return orImmediateTemplate( template, column, ArrayUtil.toList( values ) );
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param values   值
+     * @return {@code this}
+     */
+    Chain orImmediateTemplate( String template, String column, Collection<Object> values );
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param values   值
+     * @return {@code this}
+     */
+    Chain orImmediateTemplate( String template, String column, Map<String, Object> values );
 
 }

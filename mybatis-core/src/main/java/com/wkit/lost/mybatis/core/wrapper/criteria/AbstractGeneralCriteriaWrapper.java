@@ -798,6 +798,66 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
         return add( Restrictions.template( this, property, values, template, Logic.OR ) );
     }
 
+    @Override
+    public Chain immediateTemplate( String template, Object value ) {
+        return add( Restrictions.immediateTemplate( template, value ) );
+    }
+
+    @Override
+    public Chain immediateTemplate( String template, Collection<Object> values ) {
+        return add( Restrictions.immediateTemplate( template, values ) );
+    }
+
+    @Override
+    public Chain immediateTemplate( String template, Map<String, Object> values ) {
+        return add( Restrictions.immediateTemplate( template, values ) );
+    }
+
+    @Override
+    public Chain immediateTemplate( String template, String column, Object value ) {
+        return add( Restrictions.immediateTemplate( this, column, value, template ) );
+    }
+
+    @Override
+    public Chain immediateTemplate( String template, String column, Collection<Object> values ) {
+        return add( Restrictions.immediateTemplate( this, column, values, template ) );
+    }
+
+    @Override
+    public Chain immediateTemplate( String template, String column, Map<String, Object> values ) {
+        return add( Restrictions.immediateTemplate( this, column, values, template ) );
+    }
+
+    @Override
+    public Chain orImmediateTemplate( String template, Object value ) {
+        return add( Restrictions.immediateTemplate( template, value, Logic.OR ) );
+    }
+
+    @Override
+    public Chain orImmediateTemplate( String template, Collection<Object> values ) {
+        return add( Restrictions.immediateTemplate( template, values, Logic.OR ) );
+    }
+
+    @Override
+    public Chain orImmediateTemplate( String template, Map<String, Object> values ) {
+        return add( Restrictions.immediateTemplate( template, values, Logic.OR ) );
+    }
+
+    @Override
+    public Chain orImmediateTemplate( String template, String column, Object value ) {
+        return add( Restrictions.immediateTemplate( this, column, value, template, Logic.OR ) );
+    }
+
+    @Override
+    public Chain orImmediateTemplate( String template, String column, Collection<Object> values ) {
+        return add( Restrictions.immediateTemplate( this, column, values, template, Logic.OR ) );
+    }
+
+    @Override
+    public Chain orImmediateTemplate( String template, String column, Map<String, Object> values ) {
+        return add( Restrictions.immediateTemplate( this, column, values, template, Logic.OR ) );
+    }
+
     // endregion
 
     // endregion
