@@ -3,6 +3,7 @@ package com.wkit.lost.mybatis.core.wrapper.criteria;
 import com.wkit.lost.mybatis.core.conditional.Restrictions;
 import com.wkit.lost.mybatis.core.conditional.criterion.Criterion;
 import com.wkit.lost.mybatis.core.constant.Logic;
+import com.wkit.lost.mybatis.core.constant.Match;
 import com.wkit.lost.mybatis.core.converter.AbstractPlaceholderConverter;
 import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
@@ -32,7 +33,7 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     // region fields
 
     private static final String AND_OR_REGEX = "^(\\s*AND\\s+|\\s*OR\\s+)(.*)";
-    private static final Pattern AND_OR_PATTERN = Pattern.compile( AND_OR_REGEX );
+    private static final Pattern AND_OR_PATTERN = Pattern.compile( AND_OR_REGEX, Pattern.CASE_INSENSITIVE );
     protected static final String SYS_SQL_ALIAS_PREFIX = "_self_";
 
     /**
@@ -200,6 +201,7 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
 
     // region conditions
 
+    // region simple condition
     @Override
     public Chain idEq( Object value ) {
         return add( Restrictions.idEq( this, value ) );
@@ -390,6 +392,10 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
         return add( Restrictions.immediateGe( tableAlias, column, value, Logic.OR ) );
     }
 
+    // endregion
+
+    // region empty condition
+
     @Override
     public Chain isNull( String property ) {
         return add( Restrictions.isNull( this, property ) );
@@ -450,6 +456,10 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
         return add( Restrictions.immediateNotNull( tableAlias, column, Logic.OR ) );
     }
 
+    // endregion
+
+    // region range condition
+
     @Override
     public Chain in( String property, Collection<Object> values ) {
         return add( Restrictions.in( this, property, values ) );
@@ -497,7 +507,7 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
 
     @Override
     public Chain immediateNotIn( String tableAlias, String column, Collection<Object> values ) {
-        return add( Restrictions.immediateNotIn( tableAlias, column, values, Logic.OR ) );
+        return add( Restrictions.immediateNotIn( tableAlias, column, values ) );
     }
 
     @Override
@@ -539,6 +549,256 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     public Chain orImmediateBetween( String tableAlias, String column, Object begin, Object end ) {
         return add( Restrictions.immediateBetween( tableAlias, column, begin, end, Logic.OR ) );
     }
+
+    @Override
+    public Chain notBetween( String property, Object begin, Object end ) {
+        return add( Restrictions.notBetween( this, property, begin, end ) );
+    }
+
+    @Override
+    public Chain orNotBetween( String property, Object begin, Object end ) {
+        return add( Restrictions.notBetween( this, property, begin, end, Logic.OR ) );
+    }
+
+    @Override
+    public Chain immediateNotBetween( String column, Object begin, Object end ) {
+        return add( Restrictions.immediateNotBetween( this, column, begin, end ) );
+    }
+
+    @Override
+    public Chain immediateNotBetween( String tableAlias, String column, Object begin, Object end ) {
+        return add( Restrictions.immediateNotBetween( tableAlias, column, begin, end ) );
+    }
+
+    @Override
+    public Chain orImmediateNotBetween( String column, Object begin, Object end ) {
+        return add( Restrictions.immediateNotBetween( this, column, begin, end, Logic.OR ) );
+    }
+
+    @Override
+    public Chain orImmediateNotBetween( String tableAlias, String column, Object begin, Object end ) {
+        return add( Restrictions.immediateNotBetween( tableAlias, column, begin, end, Logic.OR ) );
+    }
+
+    // endregion
+
+    // region fuzzy condition
+
+    @Override
+    public Chain like( String property, Object value, Character escape ) {
+        return add( Restrictions.like( this, property, value, escape ) );
+    }
+
+    @Override
+    public Chain orLike( String property, Object value, Character escape ) {
+        return add( Restrictions.like( this, property, value, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain likeLeft( String property, Object value, Character escape ) {
+        return add( Restrictions.like( this, property, value, Match.END, escape ) );
+    }
+
+    @Override
+    public Chain orLikeLeft( String property, Object value, Character escape ) {
+        return add( Restrictions.like( this, property, value, Match.END, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain likeRight( String property, Object value, Character escape ) {
+        return add( Restrictions.like( this, property, value, Match.START, escape ) );
+    }
+
+    @Override
+    public Chain orLikeRight( String property, Object value, Character escape ) {
+        return add( Restrictions.like( this, property, value, Match.START, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain notLike( String property, Object value, Character escape ) {
+        return add( Restrictions.notLike( this, property, value, escape ) );
+    }
+
+    @Override
+    public Chain orNotLike( String property, Object value, Character escape ) {
+        return add( Restrictions.notLike( this, property, value, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain notLikeLeft( String property, Object value, Character escape ) {
+        return add( Restrictions.notLike( this, property, value, Match.END, escape ) );
+    }
+
+    @Override
+    public Chain orNotLikeLeft( String property, Object value, Character escape ) {
+        return add( Restrictions.notLike( this, property, value, Match.END, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain notLikeRight( String property, Object value, Character escape ) {
+        return add( Restrictions.notLike( this, property, value, Match.START, escape ) );
+    }
+
+    @Override
+    public Chain orNotLikeRight( String property, Object value, Character escape ) {
+        return add( Restrictions.notLike( this, property, value, Match.START, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain immediateLike( String column, Object value, Character escape ) {
+        return add( Restrictions.immediateLike( this, column, value, escape ) );
+    }
+
+    @Override
+    public Chain immediateLike( String tableAlias, String column, Object value, Character escape ) {
+        return add( Restrictions.immediateLike( tableAlias, column, value, escape ) );
+    }
+
+    @Override
+    public Chain orImmediateLike( String column, Object value, Character escape ) {
+        return add( Restrictions.immediateLike( this, column, value, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain orImmediateLike( String tableAlias, String column, Object value, Character escape ) {
+        return add( Restrictions.immediateLike( tableAlias, column, value, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain immediateLikeLeft( String column, Object value, Character escape ) {
+        return add( Restrictions.immediateLike( this, column, value, Match.END, escape ) );
+    }
+
+    @Override
+    public Chain immediateLikeLeft( String tableAlias, String column, Object value, Character escape ) {
+        return add( Restrictions.immediateLike( tableAlias, column, value, Match.END, escape ) );
+    }
+
+    @Override
+    public Chain orImmediateLikeLeft( String column, Object value, Character escape ) {
+        return add( Restrictions.immediateLike( this, column, value, Match.END, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain orImmediateLikeLeft( String tableAlias, String column, Object value, Character escape ) {
+        return add( Restrictions.immediateLike( tableAlias, column, value, Match.END, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain immediateLikeRight( String column, Object value, Character escape ) {
+        return add( Restrictions.immediateLike( this, column, value, Match.START, escape ) );
+    }
+
+    @Override
+    public Chain immediateLikeRight( String tableAlias, String column, Object value, Character escape ) {
+        return add( Restrictions.immediateLike( tableAlias, column, value, Match.START, escape ) );
+    }
+
+    @Override
+    public Chain orImmediateLikeRight( String column, Object value, Character escape ) {
+        return add( Restrictions.immediateLike( this, column, value, Match.START, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain orImmediateLikeRight( String tableAlias, String column, Object value, Character escape ) {
+        return add( Restrictions.immediateLike( tableAlias, column, value, Match.START, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain immediateNotLike( String column, Object value, Character escape ) {
+        return add( Restrictions.immediateNotLike( this, column, value, escape ) );
+    }
+
+    @Override
+    public Chain immediateNotLike( String tableAlias, String column, Object value, Character escape ) {
+        return add( Restrictions.immediateNotLike( tableAlias, column, value, escape ) );
+    }
+
+    @Override
+    public Chain orImmediateNotLike( String column, Object value, Character escape ) {
+        return add( Restrictions.immediateNotLike( this, column, value, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain orImmediateNotLike( String tableAlias, String column, Object value, Character escape ) {
+        return add( Restrictions.immediateNotLike( tableAlias, column, value, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain immediateNotLikeLeft( String column, Object value, Character escape ) {
+        return add( Restrictions.immediateNotLike( this, column, value, Match.END, escape ) );
+    }
+
+    @Override
+    public Chain immediateNotLikeLeft( String tableAlias, String column, Object value, Character escape ) {
+        return add( Restrictions.immediateNotLike( tableAlias, column, value, Match.END, escape ) );
+    }
+
+    @Override
+    public Chain orImmediateNotLikeLeft( String column, Object value, Character escape ) {
+        return add( Restrictions.immediateNotLike( this, column, value, Match.END, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain orImmediateNotLikeLeft( String tableAlias, String column, Object value, Character escape ) {
+        return add( Restrictions.immediateNotLike( tableAlias, column, value, Match.END, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain immediateNotLikeRight( String column, Object value, Character escape ) {
+        return add( Restrictions.immediateNotLike( this, column, value, Match.START, escape ) );
+    }
+
+    @Override
+    public Chain immediateNotLikeRight( String tableAlias, String column, Object value, Character escape ) {
+        return add( Restrictions.immediateNotLike( tableAlias, column, value, Match.START, escape ) );
+    }
+
+    @Override
+    public Chain orImmediateNotLikeRight( String column, Object value, Character escape ) {
+        return add( Restrictions.immediateNotLike( this, column, value, Match.START, escape, Logic.OR ) );
+    }
+
+    @Override
+    public Chain orImmediateNotLikeRight( String tableAlias, String column, Object value, Character escape ) {
+        return add( Restrictions.immediateNotLike( tableAlias, column, value, Match.START, escape, Logic.OR ) );
+    }
+
+    // endregion
+
+    // region template condition
+
+    @Override
+    public Chain template( String template, String property, Object value ) {
+        return add( Restrictions.template( this, property, value, template ) );
+    }
+
+    @Override
+    public Chain orTemplate( String template, String property, Object value ) {
+        return add( Restrictions.template( this, property, value, template, Logic.OR ) );
+    }
+
+    @Override
+    public Chain template( String template, String property, Collection<Object> values ) {
+        return add( Restrictions.template( this, property, values, template ) );
+    }
+
+    @Override
+    public Chain orTemplate( String template, String property, Collection<Object> values ) {
+        return add( Restrictions.template( this, property, values, template, Logic.OR ) );
+    }
+
+    @Override
+    public Chain template( String template, String property, Map<String, Object> values ) {
+        return add( Restrictions.template( this, property, values, template ) );
+    }
+
+    @Override
+    public Chain orTemplate( String template, String property, Map<String, Object> values ) {
+        return add( Restrictions.template( this, property, values, template, Logic.OR ) );
+    }
+
+    // endregion
 
     // endregion
 

@@ -25,7 +25,7 @@ public class ImmediateNotBetween<T> extends AbstractImmediateBetweenExpression<T
         this.begin = begin;
         this.end = end;
         this.logic = logic;
-        this.symbol = Symbol.BETWEEN;
+        this.symbol = Symbol.NOT_BETWEEN;
     }
 
     /**
@@ -42,7 +42,7 @@ public class ImmediateNotBetween<T> extends AbstractImmediateBetweenExpression<T
         this.begin = begin;
         this.end = end;
         this.logic = logic;
-        this.symbol = Symbol.BETWEEN;
+        this.symbol = Symbol.NOT_BETWEEN;
     }
 
     /**
@@ -59,7 +59,7 @@ public class ImmediateNotBetween<T> extends AbstractImmediateBetweenExpression<T
         this.begin = begin;
         this.end = end;
         this.logic = logic;
-        this.symbol = Symbol.BETWEEN;
+        this.symbol = Symbol.NOT_BETWEEN;
     }
 
     /**

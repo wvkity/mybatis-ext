@@ -397,4 +397,82 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      */
     Chain orImmediateBetween( String tableAlias, String column, Object begin, Object end );
 
+    /**
+     * NOT BETWEEN
+     * @param property 属性
+     * @param begin    开始值
+     * @param end      结束值
+     * @return {@code this}
+     */
+    default Chain notBetween( P property, Object begin, Object end ) {
+        return notBetween( lambdaToProperty( property ), begin, end );
+    }
+
+    /**
+     * NOT BETWEEN
+     * @param property 属性
+     * @param begin    开始值
+     * @param end      结束值
+     * @return {@code this}
+     */
+    Chain notBetween( String property, Object begin, Object end );
+
+    /**
+     * 或NOT BETWEEN
+     * @param property 属性
+     * @param begin    开始值
+     * @param end      结束值
+     * @return {@code this}
+     */
+    default Chain orNotBetween( P property, Object begin, Object end ) {
+        return orNotBetween( lambdaToProperty( property ), begin, end );
+    }
+
+    /**
+     * 或NOT BETWEEN
+     * @param property 属性
+     * @param begin    开始值
+     * @param end      结束值
+     * @return {@code this}
+     */
+    Chain orNotBetween( String property, Object begin, Object end );
+
+    /**
+     * NOT BETWEEN
+     * @param column 字段
+     * @param begin  开始值
+     * @param end    结束值
+     * @return {@code this}
+     */
+    Chain immediateNotBetween( String column, Object begin, Object end );
+
+    /**
+     * NOT BETWEEN
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param begin      开始值
+     * @param end        结束值
+     * @return {@code this}
+     */
+    Chain immediateNotBetween( String tableAlias, String column, Object begin, Object end );
+
+    /**
+     * NOT BETWEEN
+     * @param column 字段
+     * @param begin  开始值
+     * @param end    结束值
+     * @return {@code this}
+     */
+    Chain orImmediateNotBetween( String column, Object begin, Object end );
+
+    /**
+     * NOT BETWEEN
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param begin      开始值
+     * @param end        结束值
+     * @return {@code this}
+     */
+    Chain orImmediateNotBetween( String tableAlias, String column, Object begin, Object end );
+    
 }

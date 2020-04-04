@@ -11,7 +11,6 @@ import com.wkit.lost.mybatis.utils.StringUtil;
 import org.apache.ibatis.type.JdbcType;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
