@@ -1,9 +1,9 @@
 package com.wkit.lost.mybatis.starter.example.config;
 
-import com.wkit.lost.mybatis.data.auditing.AuditorAware;
+import com.wkit.lost.mybatis.core.data.auditing.AuditorAware;
 
 public class DefaultAuditorAware implements AuditorAware {
-    
+
     @Override
     public Object currentUserName() {
         return "root";
@@ -11,6 +11,6 @@ public class DefaultAuditorAware implements AuditorAware {
 
     @Override
     public Object currentUserId() {
-        return 1L;
+        return 2L;
     }
 }

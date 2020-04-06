@@ -8,29 +8,24 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 
-import java.io.Serializable;
-
 /**
  * 年级
  */
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @ToString
 @Accessors( chain = true )
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants
-public class Grade implements Serializable {
+public class Grade extends BaseEntity {
+    
     private static final long serialVersionUID = -4653601420462226184L;
-
-    /**
-     * 年级编号
-     */
-    private Long id;
 
     /**
      * 年级名称
      */
     private String name;
+    
 }
 

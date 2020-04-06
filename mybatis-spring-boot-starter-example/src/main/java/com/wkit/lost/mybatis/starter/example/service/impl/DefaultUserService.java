@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class DefaultUserService extends AbstractServiceExecutor<UserMapper, User> implements UserService {
-    
+
     private final GradeService gradeService;
 
     @Transactional( rollbackFor = Exception.class )

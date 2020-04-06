@@ -14,20 +14,15 @@ import java.io.Serializable;
  * 科目信息
  */
 @Data
-@EqualsAndHashCode
 @ToString
 @Accessors( chain = true )
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants
-public class Subject implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class Subject extends BaseEntity {
 
     private static final long serialVersionUID = 2144459382963875592L;
-
-    /**
-     * 科目ID
-     */
-    private Long id;
 
     /**
      * 科目名称

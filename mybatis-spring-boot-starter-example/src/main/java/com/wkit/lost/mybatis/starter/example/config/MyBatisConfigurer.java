@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.starter.example.config;
 
-import com.wkit.lost.mybatis.data.auditing.AuditorAware;
+import com.wkit.lost.mybatis.core.data.auditing.AuditorAware;
 import com.wkit.lost.mybatis.plugins.locking.OptimisticLockingInterceptor;
 import com.wkit.lost.mybatis.spring.boot.sequence.SequenceProperties;
 import org.mybatis.spring.annotation.MapperScan;
@@ -17,14 +17,14 @@ public class MyBatisConfigurer {
         configuration.setWorkerId( 1L ).setDataCenterId( 3L );
         return configuration;
     }
-    
+
     public OptimisticLockingInterceptor optimisticLockerInterceptor() {
         return new OptimisticLockingInterceptor();
     }
-    
+
     @Bean
     public AuditorAware getAuditorAware() {
         return new DefaultAuditorAware();
     }
-    
+
 }

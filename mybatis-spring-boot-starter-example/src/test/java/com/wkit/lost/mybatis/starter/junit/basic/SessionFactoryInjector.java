@@ -21,8 +21,8 @@ public class SessionFactoryInjector extends RootTestRunner {
         Assert.assertNotNull( "SqlSessionFactory对象注入失败", factory );
         log.info( "注入的对象: {}", factory );
     }
-    
-    
+
+
     @Test
     public void test1() {
         log.info( "{}", TestApp.class.toString() );

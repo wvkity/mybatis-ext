@@ -15,19 +15,14 @@ import java.time.LocalDateTime;
  * 学生信息
  */
 @Data
-@EqualsAndHashCode
 @ToString
 @Accessors( chain = true )
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants
-public class Student implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class Student extends BaseEntity {
     private static final long serialVersionUID = -5414906538791067259L;
-
-    /**
-     * 学生ID(学号)
-     */
-    private Long id;
 
     /**
      * 登录密码
@@ -68,14 +63,5 @@ public class Student implements Serializable {
      * 电子邮件
      */
     private String email;
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime gmtCreate;
-
-    /**
-     * 创建人
-     */
-    private String createUser;
+    
 }

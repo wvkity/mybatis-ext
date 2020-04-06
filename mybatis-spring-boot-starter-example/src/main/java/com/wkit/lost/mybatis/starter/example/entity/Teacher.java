@@ -15,19 +15,14 @@ import java.time.LocalDateTime;
  * 老师
  */
 @Data
-@EqualsAndHashCode
 @ToString
 @Accessors( chain = true )
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants
-public class Teacher implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class Teacher extends BaseEntity {
     private static final long serialVersionUID = 1278029478672232127L;
-
-    /**
-     * 主键
-     */
-    private Long id;
 
     /**
      * 姓名
@@ -43,9 +38,5 @@ public class Teacher implements Serializable {
      * 所属年级
      */
     private Long gradeId;
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime gmtCreate;
+    
 }
