@@ -19,20 +19,12 @@ import java.util.Set;
  */
 @Log4j2
 public class MetadataAuditingProcessor extends AbstractAuditingProcessor {
-
-    private static final String PARAM_KEY_COLLECTION = "collection";
-    private static final String PARAM_KEY_LIST = "list";
-    private static final String PARAM_KEY_ARRAY = "array";
-    private static final Set<String> LOGIC_DELETE_METHOD_CACHE =
-            Collections.unmodifiableSet( new HashSet<>( Arrays.asList( "logicDelete", "logicDeleteByCriteria" ) ) );
-
+    
     @Override
     protected Object auditing( MappedStatement ms, MyBatisCustomConfiguration customConfiguration,
                                MetadataAuditable auditable, Object parameter,
-                               TableWrapper table, boolean isInsertCommand ) {
+                               TableWrapper table, boolean isInsertCommand, boolean isExecLogicDeleting ) {
         if ( table != null ) {
-            String execMethod = execMethod( ms );
-            boolean isExecLogicDeleting = LOGIC_DELETE_METHOD_CACHE.contains( execMethod );
             return Optional.ofNullable( auditable ).map( it -> {
                 MetaObject metadata = ms.getConfiguration().newMetaObject( parameter );
                 if ( isInsertCommand && auditable.enableInsertedAuditable() ) {

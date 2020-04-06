@@ -229,6 +229,8 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
     @SuppressWarnings( { "unchecked" } )
     protected Object processParameter( MappedStatement ms, Object parameter ) {
         boolean isInsertCommand = ms.getSqlCommandType() == SqlCommandType.INSERT;
+        String execMethod = execMethod( ms );
+        boolean isExecLogicDeleting = LOGIC_DELETE_METHOD_CACHE.contains( execMethod );
         Collection<Object> parameters = getOriginalParameter( parameter );
         MyBatisCustomConfiguration configuration = MyBatisConfigCache.getCustomConfiguration( ms.getConfiguration() );
         MetadataAuditable auditable = configuration.getMetadataAuditable();
@@ -236,7 +238,8 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
             List<Object> objects = new ArrayList<>( parameters.size() );
             for ( Object param : parameters ) {
                 objects.add( Optional.ofNullable( parse( param ) )
-                        .map( it -> auditing( ms, configuration, auditable, param, it, isInsertCommand ) )
+                        .map( it -> auditing( ms, configuration, auditable, param, it,
+                                isInsertCommand, isExecLogicDeleting ) )
                         .orElse( param ) );
             }
             return objects;
@@ -249,29 +252,31 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
                 if ( data != null && !data.isEmpty() ) {
                     for ( Object entityTarget : data ) {
                         Optional.ofNullable( parse( entityTarget ) ).map( it -> auditing( ms, configuration,
-                                auditable, entityTarget, it, isInsertCommand ) );
+                                auditable, entityTarget, it, isInsertCommand, isExecLogicDeleting ) );
                     }
                 }
             }
             return parameter;
         } else {
             return Optional.ofNullable( parse( parameter ) )
-                    .map( it -> auditing( ms, configuration, auditable, parameter, it, isInsertCommand ) )
+                    .map( it -> auditing( ms, configuration, auditable, parameter, it,
+                            isInsertCommand, isExecLogicDeleting ) )
                     .orElse( parameter );
         }
     }
 
     /**
      * 审计
-     * @param ms              {@link MappedStatement}
-     * @param configuration   自定义配置对象
-     * @param auditable       审计对象
-     * @param parameter       方法参数
-     * @param table           实体-表映射信息对象
-     * @param isInsertCommand 是否为保存操作
+     * @param ms                  {@link MappedStatement}
+     * @param configuration       自定义配置对象
+     * @param auditable           审计对象
+     * @param parameter           方法参数
+     * @param table               实体-表映射信息对象
+     * @param isInsertCommand     是否为保存操作
+     * @param isExecLogicDeleting 是否为逻辑删除
      * @return 审计后的方法参数
      */
     protected abstract Object auditing( MappedStatement ms, MyBatisCustomConfiguration configuration,
                                         MetadataAuditable auditable, Object parameter,
-                                        TableWrapper table, boolean isInsertCommand );
+                                        TableWrapper table, boolean isInsertCommand, boolean isExecLogicDeleting );
 }

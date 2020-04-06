@@ -25,13 +25,14 @@ public class SystemBuiltinAuditingProcessor extends AbstractAuditingProcessor {
 
     @Override
     protected Object auditing( MappedStatement ms, MyBatisCustomConfiguration customConfiguration,
-                               MetadataAuditable __, Object parameter, TableWrapper table, boolean isInsertCommand ) {
+                               MetadataAuditable __, Object parameter, TableWrapper table, 
+                               boolean isInsertCommand, boolean isExecLogicDeleting ) {
         if ( table != null ) {
             MetaObject metadata = ms.getConfiguration().newMetaObject( parameter );
             // 主键值审计
             injectPrimaryKeyValue( metadata, table, isInsertCommand, customConfiguration );
             // 逻辑删除审计
-            injectLogicDeletionValue( ms, metadata, table, customConfiguration );
+            injectLogicDeletionValue( ms, metadata, table, customConfiguration, isExecLogicDeleting );
             return metadata.getOriginalObject();
         }
         return parameter;
@@ -102,10 +103,8 @@ public class SystemBuiltinAuditingProcessor extends AbstractAuditingProcessor {
      * @param __       自定义配置对象
      */
     private void injectLogicDeletionValue( MappedStatement ms, MetaObject metadata, TableWrapper table,
-                                           MyBatisCustomConfiguration __ ) {
-        String execMethod = execMethod( ms );
-        boolean isExecLogicDelete = LOGIC_DELETE_METHOD_CACHE.contains( execMethod );
-        if ( isExecLogicDelete ) {
+                                           MyBatisCustomConfiguration __, boolean isExecLogicDeleting ) {
+        if ( isExecLogicDeleting ) {
             ColumnWrapper logicDeletionColumn = table.getLogicDeletedColumn();
             if ( logicDeletionColumn == null ) {
                 throw new MyBatisException( "The `" + table.getEntity().getName() + "` entity class currently does not " +

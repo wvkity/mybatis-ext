@@ -11,14 +11,19 @@ import java.lang.annotation.Target;
 
 /**
  * 开启元数据审计注解
- * <p>注入默认元数据审计处理器</p>
+ * <p>
+ *     <ul>
+ *         <li>注入默认元数据审计处理器</li>
+ *         <li>注入默认元数据审计拦截器</li>
+ *     </ul>
+ * </p>
  * @author wvkity
  */
 @Documented
 @Inherited
 @Target( ElementType.TYPE )
 @Retention( RetentionPolicy.RUNTIME )
-@Import( { MetadataAuditingRegistrar.class } )
+@Import( { MetadataAuditingRegistrar.class, MetadataAuditingInterceptorRegistrar.class } )
 public @interface EnableMetadataAuditing {
 
     /**
