@@ -32,7 +32,7 @@ public abstract class CharUtil {
      * @return boolean
      */
     public static boolean isBlank( final char ch ) {
-        return isBlank( (int) ch );
+        return isBlank( ( int ) ch );
     }
 
     /**

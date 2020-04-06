@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.core.mapping.sql;
 
 import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.utils.Constants;
 import lombok.Getter;
@@ -57,6 +58,26 @@ public abstract class AbstractProvider implements Provider {
     }
 
     /**
+     * 添加
+     * @param columnSegment 字段SQL片段
+     * @param valueSegment  值SQL片段
+     * @return SQL语句
+     */
+    protected String insert( String columnSegment, String valueSegment ) {
+        return toSqlString( SqlTemplate.INSERT, columnSegment, valueSegment );
+    }
+
+    /**
+     * 更新
+     * @param script    脚本SQL片段
+     * @param condition 条件SQL片段
+     * @return SQL语句
+     */
+    protected String update( String script, String condition ) {
+        return toSqlString( SqlTemplate.UPDATE, script, condition );
+    }
+
+    /**
      * Criteria条件查询
      * @param conditionSegment 条件片段
      * @return SQL语句
@@ -85,6 +106,27 @@ public abstract class AbstractProvider implements Provider {
      */
     protected String toSqlString( SqlTemplate template, final String requireSegment, final String conditionSegment ) {
         return String.format( template.getSegment( this.table, this.alias ), requireSegment, conditionSegment );
+    }
+
+    /**
+     * 转换成乐观锁if标签脚本
+     * @param column 字段包装对象
+     * @return if标签脚本
+     */
+    protected String convertIfTagForLocking( final ColumnWrapper column ) {
+        // 条件
+        StringBuilder condition = new StringBuilder( 30 );
+        condition.append( Constants.PARAM_OPTIMISTIC_LOCKING_KEY ).append( " != null" );
+        if ( column.isCheckNotEmpty() && String.class.isAssignableFrom( column.getJavaType() ) ) {
+            condition.append( " and " ).append( Constants.PARAM_OPTIMISTIC_LOCKING_KEY ).append( " != ''" );
+        }
+        // 脚本
+        String script = Constants.CHAR_SPACE + column.getColumn() + " = " +
+                ScriptUtil.safeJoint( Constants.PARAM_OPTIMISTIC_LOCKING_KEY,
+                        ScriptUtil.concatIntactArg( column.getJavaType(), column.getJdbcType(),
+                                column.getTypeHandler(), column.isUseJavaType() ) );
+        return ScriptUtil.convertIfTag( condition.toString(),
+                script, true );
     }
 
     /**

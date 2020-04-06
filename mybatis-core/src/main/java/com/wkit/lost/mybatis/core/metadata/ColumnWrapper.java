@@ -1,8 +1,8 @@
 package com.wkit.lost.mybatis.core.metadata;
 
 import com.wkit.lost.mybatis.annotation.extension.Executing;
+import com.wkit.lost.mybatis.core.data.auditing.AuditMatching;
 import com.wkit.lost.mybatis.core.handler.TableHandler;
-import com.wkit.lost.mybatis.data.auditing.AuditMatching;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -228,16 +228,16 @@ public class ColumnWrapper {
 
     /**
      * 检查当前字段是否可自动审计
-     * @return  true: 是, false: 否
+     * @return true: 是, false: 否
      */
     public boolean isAuditable() {
-        return (this.insertable || this.updatable) && !primaryKey && !logicDelete;
+        return ( this.insertable || this.updatable ) && !primaryKey && !logicDelete;
     }
 
     /**
      * 检查当前字段是否可自动审计
      * @param matching 审计类型
-     * @return  true: 是, false: 否
+     * @return true: 是, false: 否
      */
     public boolean isAuditable( AuditMatching matching ) {
         switch ( matching ) {

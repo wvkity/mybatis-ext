@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.spring.boot.sequence;
 
-import com.wkit.lost.mybatis.snowflake.sequence.Level;
-import com.wkit.lost.mybatis.snowflake.sequence.Rule;
+import com.wkit.lost.mybatis.core.snowflake.sequence.Level;
+import com.wkit.lost.mybatis.core.snowflake.sequence.Rule;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -14,7 +14,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Accessors( chain = true )
 @ConfigurationProperties( prefix = "lost.sequence", ignoreInvalidFields = true )
 public class SequenceProperties {
-    
+
     /**
      * 开始时间(默认为2020-01-25 00:00:00)
      */

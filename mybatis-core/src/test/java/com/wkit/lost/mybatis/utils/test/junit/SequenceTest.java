@@ -1,11 +1,11 @@
 package com.wkit.lost.mybatis.utils.test.junit;
 
-import com.wkit.lost.mybatis.snowflake.factory.ElasticSequenceFactory;
-import com.wkit.lost.mybatis.snowflake.factory.MillisecondsSequenceFactory;
-import com.wkit.lost.mybatis.snowflake.factory.SecondsSequenceFactory;
-import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
-import com.wkit.lost.mybatis.snowflake.worker.DefaultWorkerAssigner;
-import com.wkit.lost.mybatis.snowflake.worker.WorkerAssigner;
+import com.wkit.lost.mybatis.core.snowflake.factory.ElasticSequenceFactory;
+import com.wkit.lost.mybatis.core.snowflake.factory.MillisecondsSequenceFactory;
+import com.wkit.lost.mybatis.core.snowflake.factory.SecondsSequenceFactory;
+import com.wkit.lost.mybatis.core.snowflake.sequence.Sequence;
+import com.wkit.lost.mybatis.core.snowflake.worker.DefaultWorkerAssigner;
+import com.wkit.lost.mybatis.core.snowflake.worker.WorkerAssigner;
 
 import java.util.concurrent.TimeUnit;
 

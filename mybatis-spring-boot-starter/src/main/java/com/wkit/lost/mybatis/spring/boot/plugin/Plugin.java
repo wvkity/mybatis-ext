@@ -35,5 +35,5 @@ public @interface Plugin {
      * @return 序号
      */
     int order() default 0;
-    
+
 }

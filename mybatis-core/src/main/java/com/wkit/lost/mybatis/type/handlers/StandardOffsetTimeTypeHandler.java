@@ -36,7 +36,7 @@ public class StandardOffsetTimeTypeHandler extends BaseTypeHandler<OffsetTime> {
     public OffsetTime getNullableResult( CallableStatement cs, int columnIndex ) throws SQLException {
         return valueOf( cs.getTime( columnIndex ) );
     }
-    
+
     public OffsetTime valueOf( Time time ) {
         return Optional.ofNullable( time ).map( value -> value.toLocalTime().atOffset( OffsetTime.now().getOffset() ) ).orElse( null );
     }

@@ -2,9 +2,9 @@ package com.wkit.lost.mybatis.core.conditional.expression;
 
 import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.constant.Symbol;
+import com.wkit.lost.mybatis.core.lambda.Property;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
-import com.wkit.lost.mybatis.lambda.Property;
 
 /**
  * 小于条件
@@ -14,7 +14,7 @@ import com.wkit.lost.mybatis.lambda.Property;
 public class LessThan<T> extends Simple<T> {
 
     private static final long serialVersionUID = 771632679424527146L;
-    
+
     /**
      * 构造方法
      * @param criteria 条件包装对象

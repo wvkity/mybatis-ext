@@ -67,7 +67,7 @@ public enum SequenceKeyGenerator {
     public static SequenceKeyGenerator getInstance( Dialect dialect ) {
         return getInstance( dialect.name() );
     }
-    
+
     /**
      * 获取序列实例
      * @param dialect 数据类型

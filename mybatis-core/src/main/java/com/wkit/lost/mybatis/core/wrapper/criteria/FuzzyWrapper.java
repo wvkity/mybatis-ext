@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
-import com.wkit.lost.mybatis.lambda.LambdaConverter;
+import com.wkit.lost.mybatis.core.lambda.LambdaConverter;
 
 /**
  * 模糊条件接口
@@ -548,7 +548,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @return {@code this}
      */
     Chain orImmediateLike( String column, Object value, Character escape );
-    
+
     /**
      * 或LIKE
      * @param tableAlias 表别名
@@ -708,7 +708,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @return {@code this}
      */
     Chain orImmediateLikeRight( String column, Object value, Character escape );
-    
+
     /**
      * 或LIKE
      * @param tableAlias 表别名
@@ -969,5 +969,5 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @return {@code this}
      */
     Chain orImmediateNotLikeRight( String tableAlias, String column, Object value, Character escape );
-   
+
 }

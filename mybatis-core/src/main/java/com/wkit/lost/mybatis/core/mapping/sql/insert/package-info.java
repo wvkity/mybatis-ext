@@ -1,0 +1,1 @@
+package com.wkit.lost.mybatis.core.mapping.sql.insert;

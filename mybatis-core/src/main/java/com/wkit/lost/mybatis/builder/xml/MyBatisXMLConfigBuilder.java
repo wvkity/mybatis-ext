@@ -153,7 +153,7 @@ public class MyBatisXMLConfigBuilder extends BaseBuilder {
             for ( String clazz : classes ) {
                 if ( StringUtil.hasText( clazz ) ) {
                     @SuppressWarnings( "unchecked" )
-                    Class<? extends VFS> vfsImpl = (Class<? extends VFS>) Resources.classForName( clazz );
+                    Class<? extends VFS> vfsImpl = ( Class<? extends VFS> ) Resources.classForName( clazz );
                     this.configuration.setVfsImpl( vfsImpl );
                 }
             }
@@ -195,7 +195,7 @@ public class MyBatisXMLConfigBuilder extends BaseBuilder {
                 String interceptor = child.getStringAttribute( "interceptor" );
                 Properties properties = child.getChildrenAsProperties();
                 // JDK9+ Class.newInstance() is deprecated
-                Interceptor interceptorInstance = (Interceptor) resolveClass( interceptor ).getDeclaredConstructor().newInstance();
+                Interceptor interceptorInstance = ( Interceptor ) resolveClass( interceptor ).getDeclaredConstructor().newInstance();
                 interceptorInstance.setProperties( properties );
                 this.configuration.addInterceptor( interceptorInstance );
             }
@@ -206,7 +206,7 @@ public class MyBatisXMLConfigBuilder extends BaseBuilder {
         if ( context != null ) {
             String type = context.getStringAttribute( "type" );
             Properties properties = context.getChildrenAsProperties();
-            ObjectFactory factory = (ObjectFactory) resolveClass( type ).getDeclaredConstructor().newInstance();
+            ObjectFactory factory = ( ObjectFactory ) resolveClass( type ).getDeclaredConstructor().newInstance();
             factory.setProperties( properties );
             this.configuration.setObjectFactory( factory );
         }
@@ -215,7 +215,7 @@ public class MyBatisXMLConfigBuilder extends BaseBuilder {
     private void objectWrapperFactoryElement( XNode context ) throws Exception {
         if ( context != null ) {
             String type = context.getStringAttribute( "type" );
-            ObjectWrapperFactory factory = (ObjectWrapperFactory) resolveClass( type ).getDeclaredConstructor().newInstance();
+            ObjectWrapperFactory factory = ( ObjectWrapperFactory ) resolveClass( type ).getDeclaredConstructor().newInstance();
             this.configuration.setObjectWrapperFactory( factory );
         }
     }
@@ -223,7 +223,7 @@ public class MyBatisXMLConfigBuilder extends BaseBuilder {
     private void reflectorFactoryElement( XNode context ) throws Exception {
         if ( context != null ) {
             String type = context.getStringAttribute( "type" );
-            ReflectorFactory factory = (ReflectorFactory) resolveClass( type ).getDeclaredConstructor().newInstance();
+            ReflectorFactory factory = ( ReflectorFactory ) resolveClass( type ).getDeclaredConstructor().newInstance();
             this.configuration.setReflectorFactory( factory );
         }
     }
@@ -232,7 +232,7 @@ public class MyBatisXMLConfigBuilder extends BaseBuilder {
         this.configuration.setAutoMappingBehavior( AutoMappingBehavior.valueOf( props.getProperty( "autoMappingBehavior", "PARTIAL" ) ) );
         this.configuration.setAutoMappingUnknownColumnBehavior( AutoMappingUnknownColumnBehavior.valueOf( props.getProperty( "autoMappingUnknownColumnBehavior", "NONE" ) ) );
         this.configuration.setCacheEnabled( booleanValueOf( props.getProperty( "cacheEnabled" ), true ) );
-        this.configuration.setProxyFactory( (ProxyFactory) createInstance( props.getProperty( "proxyFactory" ) ) );
+        this.configuration.setProxyFactory( ( ProxyFactory ) createInstance( props.getProperty( "proxyFactory" ) ) );
         this.configuration.setLazyLoadingEnabled( booleanValueOf( props.getProperty( "lazyLoadingEnabled" ), true ) );
         this.configuration.setAggressiveLazyLoading( booleanValueOf( props.getProperty( "aggressiveLazyLoading" ), true ) );
         this.configuration.setMultipleResultSetsEnabled( booleanValueOf( props.getProperty( "multipleResultSetsEnabled" ), true ) );
@@ -289,7 +289,7 @@ public class MyBatisXMLConfigBuilder extends BaseBuilder {
         if ( context != null ) {
             String type = context.getStringAttribute( "type" );
             Properties props = context.getChildrenAsProperties();
-            TransactionFactory factory = (TransactionFactory) resolveClass( type ).getDeclaredConstructor().newInstance();
+            TransactionFactory factory = ( TransactionFactory ) resolveClass( type ).getDeclaredConstructor().newInstance();
             factory.setProperties( props );
             return factory;
         }
@@ -300,7 +300,7 @@ public class MyBatisXMLConfigBuilder extends BaseBuilder {
         if ( context != null ) {
             String type = context.getStringAttribute( "type" );
             Properties props = context.getChildrenAsProperties();
-            DataSourceFactory factory = (DataSourceFactory) resolveClass( type ).getDeclaredConstructor().newInstance();
+            DataSourceFactory factory = ( DataSourceFactory ) resolveClass( type ).getDeclaredConstructor().newInstance();
             factory.setProperties( props );
             return factory;
         }
@@ -315,7 +315,7 @@ public class MyBatisXMLConfigBuilder extends BaseBuilder {
                 type = "DB_VENDOR";
             }
             Properties properties = context.getChildrenAsProperties();
-            databaseIdProvider = (DatabaseIdProvider) resolveClass( type ).getDeclaredConstructor().newInstance();
+            databaseIdProvider = ( DatabaseIdProvider ) resolveClass( type ).getDeclaredConstructor().newInstance();
             databaseIdProvider.setProperties( properties );
         }
         Environment environment = this.configuration.getEnvironment();
@@ -376,7 +376,7 @@ public class MyBatisXMLConfigBuilder extends BaseBuilder {
                         Class<?> mapperInterface = Resources.classForName( mapperClass );
                         this.configuration.addMapper( mapperInterface );
                     } else {
-                        throw new BuilderException("A mapper element may only specify a url, resource or class, but not more than one.");
+                        throw new BuilderException( "A mapper element may only specify a url, resource or class, but not more than one." );
                     }
                 }
             }

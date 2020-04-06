@@ -8,5 +8,5 @@ import com.wkit.lost.mybatis.core.segment.Segment;
  * @author wvkity
  */
 public interface GroupWrapper<T> extends Segment {
-    
+
 }

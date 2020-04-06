@@ -107,7 +107,7 @@ public enum Symbol implements Segment {
             return "NOT IN";
         }
     },
-    
+
     /**
      * EXISTS
      */
@@ -147,7 +147,7 @@ public enum Symbol implements Segment {
             return "NOT LIKE";
         }
     },
-    
+
     /**
      * BETWEEN
      */
@@ -169,6 +169,6 @@ public enum Symbol implements Segment {
     };
 
     public static boolean filter( Symbol symbol ) {
-        return true;
+        return symbol != NULL && symbol != NOT_NULL && symbol != EXISTS && symbol != NOT_EXISTS;
     }
 }

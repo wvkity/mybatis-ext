@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
-import com.wkit.lost.mybatis.lambda.LambdaConverter;
+import com.wkit.lost.mybatis.core.lambda.LambdaConverter;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 
 import java.util.Collection;
@@ -474,5 +474,5 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @return {@code this}
      */
     Chain orImmediateNotBetween( String tableAlias, String column, Object begin, Object end );
-    
+
 }

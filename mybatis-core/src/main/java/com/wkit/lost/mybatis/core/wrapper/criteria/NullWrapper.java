@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
-import com.wkit.lost.mybatis.lambda.LambdaConverter;
+import com.wkit.lost.mybatis.core.lambda.LambdaConverter;
 
 /**
  * NULL条件
@@ -133,5 +133,5 @@ public interface NullWrapper<Chain extends NullWrapper<Chain, P>, P> extends Lam
      * @return {@code this}
      */
     Chain orImmediateNotNull( String tableAlias, String column );
-    
+
 }

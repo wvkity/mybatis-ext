@@ -3,12 +3,14 @@ package com.wkit.lost.mybatis.core.injector.method;
 import com.wkit.lost.mybatis.core.mapping.script.ScriptBuilder;
 import com.wkit.lost.mybatis.core.mapping.script.ScriptBuilderFactory;
 import com.wkit.lost.mybatis.core.mapping.sql.Provider;
+import com.wkit.lost.mybatis.core.mapping.sql.ProviderBuilder;
 import com.wkit.lost.mybatis.core.mapping.sql.ProviderCache;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import org.apache.ibatis.mapping.MappedStatement;
 
 /**
  * Criteria相关方法注入器
+ * @param <T> SQL提供类
  * @author wvkity
  * @see com.wkit.lost.mybatis.core.wrapper.criteria.Criteria
  */

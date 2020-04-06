@@ -218,6 +218,15 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
+    public Chain eq( Map<String, Object> properties ) {
+        if ( CollectionUtil.isEmpty( properties ) ) {
+            return this.context;
+        }
+        return add( properties.entrySet().stream().filter( it -> StringUtil.hasText( it.getKey() ) ).map( it ->
+                Restrictions.eq( this, it.getKey(), it.getValue() ) ).collect( Collectors.toList() ) );
+    }
+
+    @Override
     public Chain orEq( String property, Object value ) {
         return add( Restrictions.eq( this, property, value, Logic.OR ) );
     }
@@ -228,8 +237,26 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
+    public Chain immediateEq( Map<String, Object> columns ) {
+        if ( CollectionUtil.isEmpty( columns ) ) {
+            return this.context;
+        }
+        return add( columns.entrySet().stream().filter( it -> StringUtil.hasText( it.getKey() ) ).map( it ->
+                Restrictions.immediateEq( this, it.getKey(), it.getValue() ) ).collect( Collectors.toList() ) );
+    }
+
+    @Override
     public Chain immediateEq( String tableAlias, String column, Object value ) {
         return add( Restrictions.immediateEq( tableAlias, column, value ) );
+    }
+
+    @Override
+    public Chain immediateEq( String tableAlias, Map<String, Object> columns ) {
+        if ( CollectionUtil.isEmpty( columns ) ) {
+            return this.context;
+        }
+        return add( columns.entrySet().stream().filter( it -> StringUtil.hasText( it.getKey() ) ).map( it ->
+                Restrictions.immediateEq( tableAlias, it.getKey(), it.getValue() ) ).collect( Collectors.toList() ) );
     }
 
     @Override

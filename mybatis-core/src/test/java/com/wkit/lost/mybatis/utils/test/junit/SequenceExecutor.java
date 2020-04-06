@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.utils.test.junit;
 
-import com.wkit.lost.mybatis.snowflake.factory.MillisecondsSequenceFactory;
-import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
+import com.wkit.lost.mybatis.core.snowflake.factory.MillisecondsSequenceFactory;
+import com.wkit.lost.mybatis.core.snowflake.sequence.Sequence;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;

@@ -70,7 +70,7 @@ public class DefaultFieldParser implements FieldParser {
         if ( superClass != null && !Object.class.equals( superClass )
                 && ( AnnotationUtil.isAnnotationPresent( superClass, Entity.class, JavaxPersistence.ENTITY )
                 || ( !Map.class.isAssignableFrom( superClass ) && !Collection.class.isAssignableFrom( superClass ) ) ) ) {
-            return recursivelyRead( wrappers, entity, ++level );
+            return recursivelyRead( wrappers, superClass, ++level );
         }
         return wrappers;
     }

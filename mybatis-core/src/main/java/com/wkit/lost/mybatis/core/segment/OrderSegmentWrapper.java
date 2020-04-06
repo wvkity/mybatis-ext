@@ -14,5 +14,5 @@ public class OrderSegmentWrapper extends AbstractSegment<AbstractOrderWrapper<?,
     public String getSegment() {
         return "";
     }
-    
+
 }

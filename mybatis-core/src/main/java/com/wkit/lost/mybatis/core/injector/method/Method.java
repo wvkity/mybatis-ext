@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import org.apache.ibatis.builder.MapperBuilderAssistant;
 
 /**
- * 方法注入接口
+ * 方法映射注入接口
  * @author wvkity
  */
 @FunctionalInterface

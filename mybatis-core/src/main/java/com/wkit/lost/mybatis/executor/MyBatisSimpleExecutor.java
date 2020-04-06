@@ -49,7 +49,7 @@ public class MyBatisSimpleExecutor extends AbstractBaseExecutor {
 
     @Override
     public <E> List<E> doQuery( MappedStatement ms, Object parameter, RowBounds rowBounds,
-                                   ResultHandler resultHandler, BoundSql boundSql ) throws SQLException {
+                                ResultHandler resultHandler, BoundSql boundSql ) throws SQLException {
         Statement stmt = null;
         try {
             Configuration configuration = ms.getConfiguration();

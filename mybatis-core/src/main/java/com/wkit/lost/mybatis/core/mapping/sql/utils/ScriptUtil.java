@@ -1,13 +1,17 @@
 package com.wkit.lost.mybatis.core.mapping.sql.utils;
 
+import com.wkit.lost.mybatis.annotation.extension.Dialect;
+import com.wkit.lost.mybatis.config.MyBatisConfigCache;
 import com.wkit.lost.mybatis.core.constant.Execute;
 import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.constant.Symbol;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
+import com.wkit.lost.mybatis.incrementer.SequenceKeyGenerator;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.StringUtil;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.JdbcType;
 
 import java.util.Arrays;
@@ -73,6 +77,29 @@ public final class ScriptUtil {
     }
 
     /**
+     * 转成if条件部分
+     * @param argName 参数名称
+     * @param column  字段包装对象
+     * @return if条件字符串
+     */
+    public static String convertIfTest( final String argName, final ColumnWrapper column ) {
+        StringBuilder builder = new StringBuilder();
+        boolean hasArgName = StringUtil.hasText( argName );
+        if ( hasArgName ) {
+            builder.append( argName ).append( Constants.CHAR_DOT );
+        }
+        builder.append( column.getProperty() ).append( " != null" );
+        if ( String.class.isAssignableFrom( column.getJavaType() ) ) {
+            builder.append( " and " );
+            if ( hasArgName ) {
+                builder.append( argName ).append( Constants.CHAR_DOT );
+            }
+            builder.append( column.getProperty() ).append( " != ''" );
+        }
+        return builder.toString();
+    }
+
+    /**
      * 转换成if条件标签脚本
      * <pre>
      *     // Examples:
@@ -90,18 +117,122 @@ public final class ScriptUtil {
      *     &lt;/if&gt;
      * </pre>
      * @param condition 条件
-     * @param segment   SQL片段
+     * @param script    SQL片段
      * @param newLine   是否换行
      * @return if条件标签脚本
      */
-    public static String convertIfTag( final String condition, final String segment, boolean newLine ) {
+    public static String convertIfTag( final String condition, final String script, boolean newLine ) {
         String newScript;
         if ( newLine ) {
-            newScript = Constants.NEW_LINE + segment + Constants.NEW_LINE;
+            newScript = Constants.NEW_LINE + script + Constants.NEW_LINE;
         } else {
-            newScript = segment;
+            newScript = script;
         }
         return String.format( "<if test=\"%s\">%s</if>", condition, newScript );
+    }
+
+    /**
+     * 转成if条件标签脚本
+     * @param tableAlias 表别名
+     * @param column     字段包装对象
+     * @param argName    参数名称
+     * @param toValue    是否转成值
+     * @param isQuery    是否为查询
+     * @param symbol     条件符号
+     * @param logic      逻辑符号
+     * @param separator  分隔符
+     * @param execute    执行类型
+     * @return if标签脚本
+     */
+    public static String convertIfTagWithNotNull( final String tableAlias, final ColumnWrapper column,
+                                                  final String argName, final boolean toValue,
+                                                  final boolean isQuery, final Symbol symbol, final Logic logic,
+                                                  final String separator, final Execute execute ) {
+        // 条件部分
+        StringBuilder condition = new StringBuilder( 45 );
+        boolean hasArgName = StringUtil.hasText( argName );
+        String property = column.getProperty();
+        if ( hasArgName ) {
+            condition.append( argName ).append( Constants.CHAR_DOT );
+        }
+        condition.append( property ).append( " != null" );
+        if ( column.isCheckNotEmpty() && String.class.isAssignableFrom( column.getJavaType() ) ) {
+            condition.append( " and " );
+            if ( hasArgName ) {
+                condition.append( argName ).append( Constants.CHAR_DOT );
+            }
+            condition.append( property ).append( " != ''" );
+        }
+        StringBuilder script = new StringBuilder( 45 );
+        if ( toValue ) {
+            if ( logic != null ) {
+                script.append( logic.getSegment() ).append( Constants.CHAR_SPACE );
+            }
+            script.append( convertPartArg( isQuery ? tableAlias : null, column, argName, symbol, separator, execute ) );
+        } else {
+            script.append( column.getColumn() ).append( ", " ).append( Constants.NEW_LINE );
+        }
+        return convertIfTag( condition.toString(), script.toString(), true );
+    }
+
+    /**
+     * 转换成trim标签脚本
+     * @param script          SQL脚本
+     * @param prefix          前缀
+     * @param suffix          后缀
+     * @param prefixOverrides 干掉最前一个
+     * @param suffixOverrides 干掉最后一个
+     * @return trim脚本
+     */
+    public static String convertTrimTag( final String script, final String prefix, final String suffix,
+                                         final String prefixOverrides, final String suffixOverrides ) {
+        StringBuilder builder = new StringBuilder( 60 );
+        builder.append( "<trim" );
+        if ( StringUtil.hasText( prefix ) ) {
+            builder.append( " prefix=\"" ).append( prefix ).append( Constants.CHAR_QUOTE );
+        }
+        if ( StringUtil.hasText( suffix ) ) {
+            builder.append( " suffix=\"" ).append( suffix ).append( Constants.CHAR_QUOTE );
+        }
+        if ( StringUtil.hasText( prefixOverrides ) ) {
+            builder.append( " prefixOverrides=\"" ).append( prefixOverrides ).append( Constants.CHAR_QUOTE );
+        }
+        if ( StringUtil.hasText( suffixOverrides ) ) {
+            builder.append( " suffixOverrides=\"" ).append( suffixOverrides ).append( Constants.CHAR_QUOTE );
+        }
+        return builder.append( Constants.CHAR_GT ).append( Constants.NEW_LINE )
+                .append( script ).append( Constants.NEW_LINE ).append( "</trim>" ).toString();
+    }
+
+    /**
+     * 转成choose标签脚本
+     * <pre>
+     *     // Examples:
+     *     ScriptUtil.convertChooseTag("entity.version != null", "AND VERSION = #{entity.version}", "AND VERSION IS NULL");
+     *     return:
+     *     &lt;choose&gt;
+     *      &lt;when test="entity.version != null">
+     *       AND VERSION = #{entity.version}
+     *      &lt;/when&gt;
+     *      &lt;otherwise&gt;
+     *       AND VERSION IS NULL
+     *      &lt;/otherwise&gt;
+     *     &lt;/choose&gt;
+     * </pre>
+     * @param whenCondition   when条件
+     * @param whenScript      when脚本
+     * @param otherwiseScript otherwise脚本
+     * @return choose标签脚本
+     */
+    public static String convertChooseTag( final String whenCondition, final String whenScript,
+                                           final String otherwiseScript ) {
+        return "<choose>" + Constants.NEW_LINE +
+                " <when test=\"" + whenCondition + Constants.CHAR_QUOTE + Constants.CHAR_GT + Constants.NEW_LINE +
+                "  " + whenScript + Constants.NEW_LINE +
+                " </when>" + Constants.NEW_LINE +
+                " <otherwise>" + "  " + otherwiseScript + Constants.NEW_LINE +
+                " </otherwise>" + Constants.NEW_LINE +
+                "</choose>";
     }
 
     /**
@@ -114,6 +245,17 @@ public final class ScriptUtil {
     public static String convertPartArg( final String tableAlias, final ColumnWrapper column,
                                          final Execute execute ) {
         return convertPartArg( tableAlias, column, null, execute );
+    }
+
+    /**
+     * 转成参数
+     * @param column  字段包装对象
+     * @param argName 参数名称
+     * @param execute 执行类型
+     * @return 参数字符串
+     */
+    public static String convertPartArg( final ColumnWrapper column, final String argName, final Execute execute ) {
+        return convertPartArg( null, column, argName, Symbol.EQ, execute );
     }
 
     /**
@@ -375,5 +517,25 @@ public final class ScriptUtil {
             builder.append( ", javaType=" ).append( javaType.getCanonicalName() );
         }
         return builder.toString();
+    }
+
+    /**
+     * 获取序列脚本
+     * @param column        字段映射对象
+     * @param configuration MyBatis配置对象
+     * @return 序列SQL
+     */
+    public static String getSequenceScript( final Configuration configuration, ColumnWrapper column ) {
+        return getSequenceScript( MyBatisConfigCache.getDialect( configuration ), column.getSequenceName() );
+    }
+
+    /**
+     * 获取序列脚本
+     * @param dialect      数据库类型
+     * @param sequenceName 序列名称
+     * @return 序列SQL
+     */
+    public static String getSequenceScript( final Dialect dialect, String sequenceName ) {
+        return SequenceKeyGenerator.getInstance( dialect ).toSqlString( sequenceName );
     }
 }

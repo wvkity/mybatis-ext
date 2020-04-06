@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core.metadata;
 
+import com.wkit.lost.mybatis.core.lambda.Property;
 import com.wkit.lost.mybatis.invoke.SerializedLambda;
-import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.Ascii;
 import org.apache.ibatis.reflection.property.PropertyNamer;
 

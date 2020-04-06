@@ -18,7 +18,7 @@ import java.util.Optional;
  */
 @MappedTypes( LocalDate.class )
 public class StandardLocalDateTypeHandler extends BaseTypeHandler<LocalDate> {
-    
+
     @Override
     public void setNonNullParameter( PreparedStatement ps, int i, LocalDate parameter, JdbcType jdbcType ) throws SQLException {
         ps.setDate( i, Optional.ofNullable( parameter ).map( Date::valueOf ).orElse( null ) );
@@ -38,7 +38,7 @@ public class StandardLocalDateTypeHandler extends BaseTypeHandler<LocalDate> {
     public LocalDate getNullableResult( CallableStatement cs, int columnIndex ) throws SQLException {
         return valueOf( cs.getDate( columnIndex ) );
     }
-    
+
     private LocalDate valueOf( Date date ) {
         return Optional.ofNullable( date ).map( Date::toLocalDate ).orElse( null );
     }

@@ -3,9 +3,9 @@ package com.wkit.lost.mybatis.core.conditional.expression;
 import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.constant.Match;
 import com.wkit.lost.mybatis.core.constant.Symbol;
+import com.wkit.lost.mybatis.core.lambda.Property;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
-import com.wkit.lost.mybatis.lambda.Property;
 
 /**
  * LIKE模糊匹配
@@ -83,7 +83,7 @@ public class Like<T> extends AbstractFuzzyExpression<T> {
         this.logic = logic;
         this.symbol = Symbol.LIKE;
     }
-    
+
     /**
      * 创建LIKE条件对象
      * @param criteria 条件包装对象

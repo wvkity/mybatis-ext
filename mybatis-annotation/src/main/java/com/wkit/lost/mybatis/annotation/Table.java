@@ -40,5 +40,5 @@ public @interface Table {
      * @return 字符串
      */
     String prefix() default "";
-    
+
 }

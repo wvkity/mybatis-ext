@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
-import com.wkit.lost.mybatis.lambda.LambdaConverter;
+import com.wkit.lost.mybatis.core.lambda.LambdaConverter;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 
 import java.util.Collection;
@@ -251,7 +251,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @return {@code this}
      */
     Chain immediateTemplate( String template, String column, Map<String, Object> values );
-    
+
     /**
      * TEMPLATE
      * @param template 模板

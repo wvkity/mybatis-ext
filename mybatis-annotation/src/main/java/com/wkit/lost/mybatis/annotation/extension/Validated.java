@@ -5,7 +5,7 @@ package com.wkit.lost.mybatis.annotation.extension;
  * @author wvkity
  */
 public enum Validated {
-    
+
     /**
      * 根据配置
      */

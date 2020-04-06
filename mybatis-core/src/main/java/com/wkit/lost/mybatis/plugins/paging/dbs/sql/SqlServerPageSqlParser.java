@@ -135,7 +135,7 @@ public class SqlServerPageSqlParser {
         fromItem.setAlias( PAGE_TABLE_ALIAS );
         newSelectBody.setFromItem( fromItem );
         newSelect.setSelectBody( newSelectBody );
-        if (isNotEmpty( select.getWithItemsList() )) {
+        if ( isNotEmpty( select.getWithItemsList() ) ) {
             newSelect.setWithItemsList( select.getWithItemsList() );
         }
         return newSelect;

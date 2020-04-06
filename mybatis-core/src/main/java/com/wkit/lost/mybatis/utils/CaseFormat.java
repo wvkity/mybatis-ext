@@ -98,7 +98,7 @@ public enum CaseFormat {
      * <p>如: lowerCamel</p>
      * <p>注: 当字符串为lowerCamel规则时返回原字符串</p>
      */
-    NORMAL_LOWER_CAMEL(Ascii::isUpperCase, "" ) {
+    NORMAL_LOWER_CAMEL( Ascii::isUpperCase, "" ) {
         @Override
         String normalizeWord( String word ) {
             return firstCharOnlyToUpper( word );
@@ -160,7 +160,7 @@ public enum CaseFormat {
     String convert( CaseFormat format, String source ) {
         // normal lower camel特殊处理
         if ( format == NORMAL_LOWER_CAMEL ) {
-            if (!source.contains( "_" ) && !source.contains( "-" ) && !CHECK_FOR_NORMAL.matcher( source ).matches() ) {
+            if ( !source.contains( "_" ) && !source.contains( "-" ) && !CHECK_FOR_NORMAL.matcher( source ).matches() ) {
                 return Ascii.toLowerCase( source.charAt( 0 ) ) + source.substring( 1 );
             }
         }

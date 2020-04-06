@@ -52,10 +52,10 @@ public abstract class StringUtil {
      * @since jdk.11
      */
     public static boolean isBlank( final CharSequence source ) {
-        if ( !isEmpty(source) ) {
+        if ( !isEmpty( source ) ) {
             int size = source.length();
-            for (int i = 0; i < size; i++) {
-                if (!Character.isWhitespace(source.charAt(i))) {
+            for ( int i = 0; i < size; i++ ) {
+                if ( !Character.isWhitespace( source.charAt( i ) ) ) {
                     return false;
                 }
             }
@@ -87,7 +87,7 @@ public abstract class StringUtil {
      * @param target 待处理类
      * @return 首字母大写字符串
      */
-    public static String getSimpleNameOfSplitFirstUpper(final Class<?> target ) {
+    public static String getSimpleNameOfSplitFirstUpper( final Class<?> target ) {
         if ( target == null ) {
             return null;
         }
@@ -99,7 +99,7 @@ public abstract class StringUtil {
      * @param value 待处理字符串
      * @return 首字母大写字符串
      */
-    public static String getSimpleNameOfSplitFirstUpper(final String value ) {
+    public static String getSimpleNameOfSplitFirstUpper( final String value ) {
         if ( value == null ) {
             return null;
         }
@@ -189,9 +189,9 @@ public abstract class StringUtil {
         if ( CharSequence.class.isAssignableFrom( source.getClass() ) ) {
             return source.toString();
         } else if ( source instanceof byte[] ) {
-            return toString( (byte[]) source, charset );
+            return toString( ( byte[] ) source, charset );
         } else if ( source.getClass().isArray() ) {
-            return Arrays.deepToString( (Object[]) source );
+            return Arrays.deepToString( ( Object[] ) source );
         }
         return source.toString();
     }
@@ -238,14 +238,14 @@ public abstract class StringUtil {
         int size = value.length();
         int start = 0;
         if ( stripChars == null ) {
-            while ( ( start != size ) && (Character.isWhitespace( value.charAt(start) )) ) {
+            while ( ( start != size ) && ( Character.isWhitespace( value.charAt( start ) ) ) ) {
                 start++;
             }
         } else {
-            if (stripChars.isEmpty()) {
+            if ( stripChars.isEmpty() ) {
                 return value;
             }
-            while ((start != size) && (stripChars.indexOf(value.charAt(start)) != -1)) {
+            while ( ( start != size ) && ( stripChars.indexOf( value.charAt( start ) ) != -1 ) ) {
                 start++;
             }
         }
@@ -259,14 +259,14 @@ public abstract class StringUtil {
         String value = source.toString();
         int end = value.length();
         if ( stripChars == null ) {
-            while ( ( end != 0) && ( Character.isWhitespace( value.charAt( end - 1 ) ) ) ) {
+            while ( ( end != 0 ) && ( Character.isWhitespace( value.charAt( end - 1 ) ) ) ) {
                 end--;
             }
         } else {
-            if (stripChars.isEmpty()) {
+            if ( stripChars.isEmpty() ) {
                 return value;
             }
-            while ((end != 0) && (stripChars.indexOf( value.charAt( end - 1 ) ) != -1 ) ) {
+            while ( ( end != 0 ) && ( stripChars.indexOf( value.charAt( end - 1 ) ) != -1 ) ) {
                 end--;
             }
         }
@@ -278,7 +278,7 @@ public abstract class StringUtil {
      * @param source 待转换字符串
      * @return 转换后的字符串
      */
-    public static String camelHumpToUnderline(final String source ) {
+    public static String camelHumpToUnderline( final String source ) {
         if ( hasText( source ) ) {
             StringBuffer buffer = new StringBuffer( strip( source ) );
             int i = 1;
@@ -362,7 +362,7 @@ public abstract class StringUtil {
      * @return true | false
      */
     public static boolean toBoolean( final String value ) {
-        return !isBlank( value ) && ("true".equals( value.toLowerCase( Locale.ROOT ) ) || "1".equals( value ));
+        return !isBlank( value ) && ( "true".equals( value.toLowerCase( Locale.ROOT ) ) || "1".equals( value ) );
     }
 
     /**

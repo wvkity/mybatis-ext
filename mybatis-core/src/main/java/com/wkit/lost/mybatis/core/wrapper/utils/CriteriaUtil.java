@@ -1,8 +1,8 @@
 package com.wkit.lost.mybatis.core.wrapper.utils;
 
+import com.wkit.lost.mybatis.core.lambda.Property;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
-import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 

@@ -32,7 +32,7 @@ import com.wkit.lost.mybatis.core.conditional.expression.Template;
 import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.constant.Match;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
-import com.wkit.lost.mybatis.lambda.Property;
+import com.wkit.lost.mybatis.core.lambda.Property;
 
 import java.util.Collection;
 import java.util.Map;

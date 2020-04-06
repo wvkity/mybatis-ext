@@ -47,7 +47,7 @@ public enum Match implements Segment {
             return '%' + value + '%';
         }
     };
-    
+
 
     @Override
     public String getSegment() {

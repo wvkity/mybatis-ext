@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
 
 /**
  * 开启元数据审计注解
+ * <p>注入默认元数据审计处理器</p>
  * @author wvkity
  */
 @Documented
@@ -45,8 +46,8 @@ public @interface EnableMetadataAuditing {
     boolean automatic() default false;
 
     /**
-     * {@link com.wkit.lost.mybatis.data.auditing.AuditorAware}实例名
-     * @return {@link com.wkit.lost.mybatis.data.auditing.AuditorAware}实例名
+     * {@link com.wkit.lost.mybatis.core.data.auditing.AuditorAware}实例名
+     * @return {@link com.wkit.lost.mybatis.core.data.auditing.AuditorAware}实例名
      */
     String auditorAwareRef() default "";
 }

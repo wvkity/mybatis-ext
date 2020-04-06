@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.utils.test.junit;
 
-import com.wkit.lost.mybatis.snowflake.clock.MillisecondsClock;
+import com.wkit.lost.mybatis.core.snowflake.clock.MillisecondsClock;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -17,9 +17,9 @@ public class MillisecondClockTest implements Runnable {
     public void run() {
         try {
             System.out.println( "index: " + INDEX.incrementAndGet() );
-            System.out.println("system: " + System.currentTimeMillis());
-            System.out.println("custom: " + MillisecondsClock.currentTimeMillis() );
-            System.out.println("===================================");
+            System.out.println( "system: " + System.currentTimeMillis() );
+            System.out.println( "custom: " + MillisecondsClock.currentTimeMillis() );
+            System.out.println( "===================================" );
         } catch ( Exception e ) {
             e.printStackTrace();
         }

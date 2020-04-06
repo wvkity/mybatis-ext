@@ -190,7 +190,7 @@ public enum Dialect {
                 .map( DATABASE_JDBC_CACHE::get )
                 .orElse( UNDEFINED );
     }
-    
+
     /**
      * 获取主键生成方法
      * @return 字符串

@@ -17,7 +17,7 @@ public final class ScriptBuilderFactory {
     /**
      * 创建脚本构建器
      * @param provider SQL提供者
-     * @param table 表包装对象
+     * @param table    表包装对象
      * @return 脚本构建器
      */
     public static ScriptBuilder create( final Provider provider, final TableWrapper table ) {
@@ -27,9 +27,9 @@ public final class ScriptBuilderFactory {
     /**
      * 创建脚本构建器
      * @param provider SQL提供者
-     * @param table 表包装对象
-     * @param entity 实体类
-     * @param alias 表别名
+     * @param table    表包装对象
+     * @param entity   实体类
+     * @param alias    表别名
      * @return 脚本构建器
      */
     public static ScriptBuilder create( final Provider provider, final TableWrapper table,

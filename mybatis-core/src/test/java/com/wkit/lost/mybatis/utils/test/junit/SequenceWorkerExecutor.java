@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.utils.test.junit;
 
-import com.wkit.lost.mybatis.snowflake.worker.SequenceGenerator;
+import com.wkit.lost.mybatis.core.snowflake.worker.SequenceGenerator;
 
 import java.util.ArrayList;
 import java.util.Collections;

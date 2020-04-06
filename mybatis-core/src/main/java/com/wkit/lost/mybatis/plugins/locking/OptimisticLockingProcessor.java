@@ -1,12 +1,12 @@
 package com.wkit.lost.mybatis.plugins.locking;
 
+import com.wkit.lost.mybatis.core.data.auditing.time.provider.DateTimeProvider;
+import com.wkit.lost.mybatis.core.data.auditing.time.proxy.DateTimeProviderFactory;
 import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.AbstractUpdateCriteriaWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
-import com.wkit.lost.mybatis.data.auditing.date.provider.DateTimeProvider;
-import com.wkit.lost.mybatis.data.auditing.date.proxy.DateTimeProviderFactory;
 import com.wkit.lost.mybatis.plugins.processor.UpdateProcessorSupport;
 import com.wkit.lost.mybatis.utils.Constants;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -59,7 +59,7 @@ public class OptimisticLockingProcessor extends UpdateProcessorSupport {
                                 Object originalValue = originalValue( entity, field );
                                 if ( originalValue != null ) {
                                     Object newValue = newValue( originalValue, column.getJavaType() );
-                                    paramMap.put( Constants.PARAM_OPTIMISTIC_LOCK_KEY, newValue );
+                                    paramMap.put( Constants.PARAM_OPTIMISTIC_LOCKING_KEY, newValue );
                                     Object result = invocation.proceed();
                                     if ( result instanceof Integer ) {
                                         // 更新成功

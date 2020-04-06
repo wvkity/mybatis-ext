@@ -71,6 +71,6 @@ public interface QueryMapper<T, V> {
      * @param pageable 分页对象
      * @return 多条记录
      */
-    List<V> pageableList( @Param( Constants.PARAM_ENTITY ) T entity, 
+    List<V> pageableList( @Param( Constants.PARAM_ENTITY ) T entity,
                           @Param( Constants.PARAM_PAGEABLE ) Pageable pageable );
 }

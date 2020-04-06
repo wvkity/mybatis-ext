@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.metadata;
 
-import com.wkit.lost.mybatis.data.auditing.AuditMatching;
+import com.wkit.lost.mybatis.core.data.auditing.AuditMatching;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,7 +14,6 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;

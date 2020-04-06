@@ -7,9 +7,9 @@ import com.wkit.lost.mybatis.core.mapping.sql.AbstractCriteriaProvider;
  * @author wvkity
  */
 public class CriteriaQueryGeneralProvider extends AbstractCriteriaProvider {
-    
+
     @Override
     public String build() {
-        return criteriaQuery( getConditionForQuery() );
+        return criteriaQuery( getQueryCondition() );
     }
 }

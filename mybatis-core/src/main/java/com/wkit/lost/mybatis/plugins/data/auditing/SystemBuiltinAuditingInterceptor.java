@@ -20,9 +20,9 @@ import java.util.Properties;
         @Signature( type = Executor.class, method = "update", args = { MappedStatement.class, Object.class } )
 } )
 public class SystemBuiltinAuditingInterceptor implements Interceptor {
-    
+
     private final Processor processor = new SystemBuiltinAuditingProcessor();
-    
+
     @Override
     public Object intercept( Invocation invocation ) throws Throwable {
         return processor.intercept( invocation );

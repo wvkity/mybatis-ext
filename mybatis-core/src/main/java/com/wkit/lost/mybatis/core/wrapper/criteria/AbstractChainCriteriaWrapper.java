@@ -1,10 +1,10 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
+import com.wkit.lost.mybatis.core.lambda.Property;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.metadata.PropertyMappingCache;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.invoke.SerializedLambda;
-import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import lombok.extern.log4j.Log4j2;
 

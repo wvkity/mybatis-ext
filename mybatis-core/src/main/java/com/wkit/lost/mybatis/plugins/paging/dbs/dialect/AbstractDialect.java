@@ -76,11 +76,11 @@ public abstract class AbstractDialect implements Dialect {
         }
         if ( isLimit() ) {
             RangePageable range = ThreadLocalRangePageable.getRange();
-            return processPageableParameter( statement, paramMap, boundSql, cacheKey, range.getStart(), 
+            return processPageableParameter( statement, paramMap, boundSql, cacheKey, range.getStart(),
                     range.getEnd(), range.getOffset() );
         } else {
             Pageable pageable = ThreadLocalPageable.getPageable();
-            return processPageableParameter( statement, paramMap, boundSql, cacheKey, pageable.offset(), 
+            return processPageableParameter( statement, paramMap, boundSql, cacheKey, pageable.offset(),
                     pageable.getSize() + pageable.offset(), pageable.getSize() );
         }
     }

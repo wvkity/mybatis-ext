@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
-import com.wkit.lost.mybatis.lambda.LambdaConverter;
-import com.wkit.lost.mybatis.lambda.Property;
+import com.wkit.lost.mybatis.core.lambda.LambdaConverter;
+import com.wkit.lost.mybatis.core.lambda.Property;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 
 import java.util.Collection;
@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * 查询列接口
- * @param <T> 实体类型
+ * @param <T>     实体类型
  * @param <Chain> 子类
  */
 public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch, LambdaConverter<Property<T, ?>> {
@@ -345,5 +345,5 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @return SQL字符串
      */
     String getQuerySegment();
-    
+
 }

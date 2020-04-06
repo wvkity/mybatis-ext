@@ -77,7 +77,7 @@ public class MyBatisMapperMethod {
                     result = null;
                 } else if ( this.method.returnsMany() ) {
                     // 分页查询处理
-                    if ( args != null && (Pageable.class.isAssignableFrom( this.method.getReturnType() ) || ClassUtil.isAssignableFrom( Pageable.class, args )) ) {
+                    if ( args != null && ( Pageable.class.isAssignableFrom( this.method.getReturnType() ) || ClassUtil.isAssignableFrom( Pageable.class, args ) ) ) {
                         result = executeForPageable( sqlSession, args );
                     } else {
                         result = executeForMany( sqlSession, args );
@@ -88,12 +88,12 @@ public class MyBatisMapperMethod {
                     result = executeForCursor( sqlSession, args );
                 } else {
                     Object param = this.method.convertArgsToSqlCommandParam( args );
-                    if ( args != null && (Pageable.class.isAssignableFrom( this.method.getReturnType() ) || ClassUtil.isAssignableFrom( Pageable.class, args )) ) {
+                    if ( args != null && ( Pageable.class.isAssignableFrom( this.method.getReturnType() ) || ClassUtil.isAssignableFrom( Pageable.class, args ) ) ) {
                         // 分页查询处理
                         result = executeForPageable( sqlSession, args );
                     } else {
                         result = sqlSession.selectOne( this.command.getName(), param );
-                        if ( this.method.returnsOptional() && (result == null || !this.method.getReturnType().equals( result.getClass() )) ) {
+                        if ( this.method.returnsOptional() && ( result == null || !this.method.getReturnType().equals( result.getClass() ) ) ) {
                             result = Optional.ofNullable( result );
                         }
                     }
@@ -119,7 +119,7 @@ public class MyBatisMapperMethod {
         } else if ( Integer.class.equals( this.method.getReturnType() ) || Integer.TYPE.equals( this.method.getReturnType() ) ) {
             result = rowCount;
         } else if ( Long.class.equals( this.method.getReturnType() ) || Long.TYPE.equals( this.method.getReturnType() ) ) {
-            result = (long) rowCount;
+            result = ( long ) rowCount;
         } else if ( Boolean.class.equals( this.method.getReturnType() ) || Boolean.TYPE.equals( this.method.getReturnType() ) ) {
             result = rowCount > 0;
         } else {
@@ -180,7 +180,7 @@ public class MyBatisMapperMethod {
             }
             return array;
         } else {
-            return list.toArray( (E[]) array );
+            return list.toArray( ( E[] ) array );
         }
     }
 
@@ -316,9 +316,9 @@ public class MyBatisMapperMethod {
         public MethodSignature( Configuration configuration, Class<?> mapperInterface, Method method ) {
             Type resolvedReturnType = TypeParameterResolver.resolveReturnType( method, mapperInterface );
             if ( resolvedReturnType instanceof Class<?> ) {
-                this.returnType = (Class<?>) resolvedReturnType;
+                this.returnType = ( Class<?> ) resolvedReturnType;
             } else if ( resolvedReturnType instanceof ParameterizedType ) {
-                this.returnType = (Class<?>) ((ParameterizedType) resolvedReturnType).getRawType();
+                this.returnType = ( Class<?> ) ( ( ParameterizedType ) resolvedReturnType ).getRawType();
             } else {
                 this.returnType = method.getReturnType();
             }
@@ -342,7 +342,7 @@ public class MyBatisMapperMethod {
         }
 
         public RowBounds extractRowBounds( Object[] args ) {
-            return this.hasRowBounds() ? (RowBounds) args[ this.rowBoundsIndex ] : null;
+            return this.hasRowBounds() ? ( RowBounds ) args[ this.rowBoundsIndex ] : null;
         }
 
         public boolean hasResultHandler() {
@@ -350,7 +350,7 @@ public class MyBatisMapperMethod {
         }
 
         public ResultHandler<?> extractResultHandler( Object[] args ) {
-            return this.hasResultHandler() ? (ResultHandler<?>) args[ this.resultHandlerIndex ] : null;
+            return this.hasResultHandler() ? ( ResultHandler<?> ) args[ this.resultHandlerIndex ] : null;
         }
 
         public boolean returnsMany() {

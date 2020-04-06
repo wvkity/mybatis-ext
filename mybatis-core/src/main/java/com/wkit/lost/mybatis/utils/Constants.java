@@ -47,14 +47,14 @@ public interface Constants {
     String PARAM_PRIMARY_KEYS = "primaryKeys";
 
     /**
-     * 逻辑删除填充值键
+     * 逻辑删除审计值键
      */
-    String PARAM_LOGIC_DELETED_AUDITING_KEY = "LOGIC_DELETED_AUDITING_VALUE";
+    String PARAM_LOGIC_DELETED_AUDITING_KEY = "LOGIC_DELETED_AUDITING_VAL";
 
     /**
-     * 乐观锁填充值键
+     * 乐观锁审计值键
      */
-    String PARAM_OPTIMISTIC_LOCK_KEY = "OPTIMISTIC_LOCK_FV";
+    String PARAM_OPTIMISTIC_LOCKING_KEY = "OPTIMISTIC_LOCK_AUDITING_VAL";
 
     /**
      * UUID主键生成方式
@@ -91,4 +91,5 @@ public interface Constants {
     String CHAR_DOT = ".";
     String CHAR_EMPTY = "";
     String CHAR_SPACE = " ";
+    String CHAR_COMMA = ",";
 }

@@ -1,11 +1,11 @@
 package com.wkit.lost.mybatis.spring.boot.sequence;
 
-import com.wkit.lost.mybatis.snowflake.factory.MillisecondsSequenceFactory;
-import com.wkit.lost.mybatis.snowflake.factory.SecondsSequenceFactory;
-import com.wkit.lost.mybatis.snowflake.sequence.Level;
-import com.wkit.lost.mybatis.snowflake.sequence.Rule;
-import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
-import com.wkit.lost.mybatis.snowflake.worker.SequenceUtil;
+import com.wkit.lost.mybatis.core.snowflake.factory.MillisecondsSequenceFactory;
+import com.wkit.lost.mybatis.core.snowflake.factory.SecondsSequenceFactory;
+import com.wkit.lost.mybatis.core.snowflake.sequence.Level;
+import com.wkit.lost.mybatis.core.snowflake.sequence.Rule;
+import com.wkit.lost.mybatis.core.snowflake.sequence.Sequence;
+import com.wkit.lost.mybatis.core.snowflake.worker.SequenceUtil;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;

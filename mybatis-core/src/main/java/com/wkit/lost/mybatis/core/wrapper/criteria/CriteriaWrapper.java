@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
-import com.wkit.lost.mybatis.lambda.Property;
+import com.wkit.lost.mybatis.core.lambda.Property;
 
 public interface CriteriaWrapper<T, Chain extends CriteriaWrapper<T, Chain, P>, P> extends Criteria<T>,
         CompareWrapper<Chain, P>, NullWrapper<Chain, P>, RangeWrapper<Chain, P>, FuzzyWrapper<Chain, P>,

@@ -78,7 +78,7 @@ ext {
             // region springboot依赖
             "springboot-dependencies"           : "org.springframework.boot:spring-boot-dependencies:$springBoot",
             "springboot-jdbc"                   : "org.springframework.boot:spring-boot-starter-jdbc",
-            "springboot-aop"                   : "org.springframework.boot:spring-boot-starter-aop",
+            "springboot-aop"                    : "org.springframework.boot:spring-boot-starter-aop",
             "springboot-autoconfigure"          : "org.springframework.boot:spring-boot-autoconfigure",
             "springboot-configuration-processor": "org.springframework.boot:spring-boot-configuration-processor",
             "springboot-autoconfigure-processor": "org.springframework.boot:spring-boot-autoconfigure-processor",

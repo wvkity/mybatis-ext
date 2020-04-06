@@ -12,6 +12,32 @@ import com.wkit.lost.mybatis.utils.StringUtil;
 public enum SqlTemplate {
 
     /**
+     * 添加
+     * <pre>
+     *     INSERT INTO TABLE_NAME %s VALUES %s
+     * </pre>
+     */
+    INSERT {
+        @Override
+        protected String getSegment( String tableName ) {
+            return "INSERT INTO " + tableName + " %s VALUES %s";
+        }
+    },
+
+    /**
+     * 更新
+     * <pre>
+     *     UPDATE TABLE_NAME %s %s
+     * </pre>
+     */
+    UPDATE {
+        @Override
+        protected String getSegment( String tableName ) {
+            return "UPDATE " + tableName + "%s%s";
+        }
+    },
+
+    /**
      * Criteria条件查询
      */
     SELECT_CRITERIA {
@@ -25,7 +51,7 @@ public enum SqlTemplate {
     /**
      * 获取SQL语句
      * @param table 表包装对象
-     * @param __ 表别名
+     * @param __    表别名
      * @return SQL语句
      */
     public String getSegment( final TableWrapper table, final String __ ) {

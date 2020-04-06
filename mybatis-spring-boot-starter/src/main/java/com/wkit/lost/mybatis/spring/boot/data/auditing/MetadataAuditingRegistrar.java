@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.spring.boot.data.auditing;
 
-import com.wkit.lost.mybatis.data.auditing.MetadataAuditingHandler;
+import com.wkit.lost.mybatis.core.data.auditing.MetadataAuditingHandler;
 import com.wkit.lost.mybatis.spring.boot.data.auditing.config.AnnotationAuditingConfiguration;
 import com.wkit.lost.mybatis.spring.boot.data.auditing.config.AuditingConfiguration;
 import com.wkit.lost.mybatis.spring.boot.registry.BeanDefinitionRegistrarSupport;
@@ -26,6 +26,7 @@ class MetadataAuditingRegistrar extends BeanDefinitionRegistrarSupport<AuditingC
     private static final String DELETED = "deleted";
     private static final String AUTOMATIC = "automatic";
     private static final String HANDLER_BEAN_NAME = "metadataAuditingHandler";
+    private static final Class<?> REGISTER_ROOT_CLASS = MetadataAuditingHandler.class;
 
     @Override
     public void registerBeanDefinitions( AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry ) {
@@ -37,9 +38,9 @@ class MetadataAuditingRegistrar extends BeanDefinitionRegistrarSupport<AuditingC
 
     @Override
     protected AbstractBeanDefinition registerBeanDefinition( BeanDefinitionRegistry registry,
-                                                           AuditingConfiguration configuration ) {
+                                                             AuditingConfiguration configuration ) {
         return createBeanDefinition( registry, configuration,
-                getBeanName(), MetadataAuditingHandler.class );
+                getBeanName(), REGISTER_ROOT_CLASS );
     }
 
     @Override

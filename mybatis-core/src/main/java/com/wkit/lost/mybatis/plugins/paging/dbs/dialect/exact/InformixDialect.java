@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class InformixDialect extends AbstractPageableDialect {
-    
+
     @Override
     public Object processPageableParameter( MappedStatement statement, Map<String, Object> parameter, BoundSql boundSql, CacheKey cacheKey, Long rowStart, Long rowEnd, Long offset ) {
         parameter.put( OFFSET_PARAMETER, rowStart );

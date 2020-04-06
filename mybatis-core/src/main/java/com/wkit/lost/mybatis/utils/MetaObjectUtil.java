@@ -28,7 +28,7 @@ public abstract class MetaObjectUtil {
             } catch ( Exception e1 ) {
                 try {
                     Class<?> metaClass = Class.forName( "org.apache.ibatis.reflection.MetaObject" );
-                    method = metaClass.getDeclaredMethod( "forObject", Object.class, ObjectFactory.class, 
+                    method = metaClass.getDeclaredMethod( "forObject", Object.class, ObjectFactory.class,
                             ObjectWrapperFactory.class, ReflectorFactory.class );
                 } catch ( Exception e2 ) {
                     throw new MyBatisException( e2 );

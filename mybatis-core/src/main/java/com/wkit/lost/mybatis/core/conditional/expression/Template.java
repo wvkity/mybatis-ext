@@ -3,10 +3,10 @@ package com.wkit.lost.mybatis.core.conditional.expression;
 import com.wkit.lost.mybatis.core.conditional.utils.Formatter;
 import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.constant.TemplateMatch;
+import com.wkit.lost.mybatis.core.lambda.Property;
 import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
-import com.wkit.lost.mybatis.lambda.Property;
 import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.Getter;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  *     // Examples:
  *     &#64;Inject
  *     private GradeService gradeService;
- *     
+ *
  *     QueryCriteria&lt;Grade&gt; criteria = new QueryCriteria&lt;&gt;(Grade.class);
  *
  *     // single parameter:

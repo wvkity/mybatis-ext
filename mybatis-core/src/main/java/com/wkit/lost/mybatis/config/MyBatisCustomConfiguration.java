@@ -2,16 +2,16 @@ package com.wkit.lost.mybatis.config;
 
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
+import com.wkit.lost.mybatis.core.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.core.injector.Injector;
 import com.wkit.lost.mybatis.core.metadata.PrimaryKey;
+import com.wkit.lost.mybatis.core.naming.DefaultPhysicalNamingStrategy;
+import com.wkit.lost.mybatis.core.naming.PhysicalNamingStrategy;
 import com.wkit.lost.mybatis.core.parser.EntityParser;
 import com.wkit.lost.mybatis.core.parser.FieldParser;
-import com.wkit.lost.mybatis.data.auditing.MetadataAuditable;
-import com.wkit.lost.mybatis.keygen.KeyGenerator;
+import com.wkit.lost.mybatis.core.snowflake.sequence.Sequence;
 import com.wkit.lost.mybatis.mapper.BaseMapperExecutor;
-import com.wkit.lost.mybatis.naming.DefaultPhysicalNamingStrategy;
-import com.wkit.lost.mybatis.naming.PhysicalNamingStrategy;
-import com.wkit.lost.mybatis.snowflake.sequence.Sequence;
+import com.wkit.lost.mybatis.keygen.KeyGenerator;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -83,7 +83,7 @@ public class MyBatisCustomConfiguration implements Serializable {
      * 主键生成器执行类型
      */
     private boolean before;
-    
+
     /**
      * 表名前缀
      */
@@ -178,9 +178,9 @@ public class MyBatisCustomConfiguration implements Serializable {
      * 主键序列(雪花算法)
      */
     private Sequence sequence;
-    
+
     /**
-     * 元数据审计
+     * 元数据审计处理器
      */
     private MetadataAuditable metadataAuditable;
 

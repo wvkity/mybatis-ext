@@ -19,7 +19,7 @@ import java.util.Properties;
         @Signature( type = Executor.class, method = "update", args = { MappedStatement.class, Object.class } )
 } )
 public class OptimisticLockingInterceptor implements Interceptor {
-    
+
     private final Processor processor = new OptimisticLockingProcessor();
 
     @Override

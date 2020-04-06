@@ -89,7 +89,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
     private Cache cache;
     private ObjectFactory objectFactory;
     private ObjectWrapperFactory objectWrapperFactory;
-    
+
     /**
      * 自定义配置
      */
@@ -265,7 +265,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
         customConfiguration.setSqlSessionFactory( factory );
         return factory;
     }
-    
+
     /**
      * {@inheritDoc}
      */

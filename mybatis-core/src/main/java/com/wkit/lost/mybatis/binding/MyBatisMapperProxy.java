@@ -65,7 +65,7 @@ public class MyBatisMapperProxy<T> implements InvocationHandler, Serializable {
      * @return boolean
      */
     private boolean isDefaultMethod( Method method ) {
-        return (method.getModifiers() & (Modifier.ABSTRACT | Modifier.PUBLIC | Modifier.STATIC)) == Modifier.PUBLIC
+        return ( method.getModifiers() & ( Modifier.ABSTRACT | Modifier.PUBLIC | Modifier.STATIC ) ) == Modifier.PUBLIC
                 && method.getDeclaringClass().isInterface();
     }
 }

@@ -22,5 +22,5 @@ public interface FieldParser {
      * @param entity 实体类
      * @return 属性列表
      */
-    List<FieldWrapper> parseFromBeanInfo(final Class<?> entity);
+    List<FieldWrapper> parseFromBeanInfo( final Class<?> entity );
 }

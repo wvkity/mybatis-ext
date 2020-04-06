@@ -13,5 +13,5 @@ public interface Builder<T> {
      * @return 泛型对象
      */
     T build();
-    
+
 }

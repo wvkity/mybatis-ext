@@ -25,9 +25,9 @@ import java.util.stream.Collectors;
  *     // Examples
  *     &#64;Inject
  *     private GradeService gradeService;
- *     
+ *
  *     QueryCriteria&lt;Grade&gt; criteria = new QueryCriteria&lt;&gt;(Grade.class);
- *     
+ *
  *     // single parameter:
  *     // NO1.
  *     String template = "LEFT(NAME, 2) = {}";
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  *     gradeService.list(criteria);
  *     return:
  *     SELECT column1, column2, ... FROM GRADE WHERE LEFT(NAME, 2) = ?
- *     
+ *
  *     // NO2.
  *     String template = "LEFT({&#64;&#64;}, 2) = {}";
  *     criteria.immediateTemplate(template, "NAME", "S1");
@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
  *     gradeService.list(criteria);
  *     return:
  *     SELECT column1, column2, ... FROM GRADE WHERE LEFT(NAME, ?) = ?
- *     
+ *
  *     // NO4.
  *     String template = "LEFT({&#64;&#64;}, {}) = {}";
  *     criteria.immediateTemplate(template,"NAME", 2, "S1");
@@ -68,7 +68,7 @@ import java.util.stream.Collectors;
  *     gradeService.list(criteria);
  *     return:
  *     SELECT column1, column2, ... FROM GRADE WHERE LEFT(NAME, ?) = ?
- *     
+ *
  *     // NO6.
  *     String template = "LEFT({&#64;&#64;}, ${left}) = ${name}";
  *     Map&lt;String, Object&gt; params = new HashMap&lt;&gt;();

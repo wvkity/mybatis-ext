@@ -27,8 +27,8 @@ public interface AuditingConfiguration {
     boolean enableAutomatic();
 
     /**
-     * {@link com.wkit.lost.mybatis.data.auditing.AuditorAware}实例名
-     * @return {@link com.wkit.lost.mybatis.data.auditing.AuditorAware}实例名
+     * {@link com.wkit.lost.mybatis.core.data.auditing.AuditorAware}实例名
+     * @return {@link com.wkit.lost.mybatis.core.data.auditing.AuditorAware}实例名
      */
     String getAuditorAwareRef();
 }

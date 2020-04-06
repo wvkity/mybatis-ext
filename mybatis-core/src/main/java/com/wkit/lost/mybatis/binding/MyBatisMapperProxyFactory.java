@@ -38,10 +38,10 @@ public class MyBatisMapperProxyFactory<T> {
         final MyBatisMapperProxy<T> mapperProxy = new MyBatisMapperProxy<>( sqlSession, this.mapperInterface, this.methodCache );
         return newInstance( mapperProxy );
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public T newInstance( MyBatisMapperProxy<T> mapperProxy ) {
-        return (T) Proxy.newProxyInstance( this.mapperInterface.getClassLoader(), new Class[]{ this.mapperInterface }, mapperProxy );
+        return ( T ) Proxy.newProxyInstance( this.mapperInterface.getClassLoader(), new Class[]{ this.mapperInterface }, mapperProxy );
     }
 
 }

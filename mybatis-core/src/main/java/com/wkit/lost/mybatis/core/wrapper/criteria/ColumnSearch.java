@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
+import com.wkit.lost.mybatis.core.lambda.Property;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
-import com.wkit.lost.mybatis.lambda.Property;
 
 /**
  * 字段搜索接口

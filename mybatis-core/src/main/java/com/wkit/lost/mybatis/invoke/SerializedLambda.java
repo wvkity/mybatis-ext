@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.invoke;
 
 import com.wkit.lost.mybatis.utils.SerializationUtil;
 import com.wkit.lost.mybatis.exception.MyBatisException;
-import com.wkit.lost.mybatis.lambda.Property;
+import com.wkit.lost.mybatis.core.lambda.Property;
 import lombok.Getter;
 
 import java.io.*;

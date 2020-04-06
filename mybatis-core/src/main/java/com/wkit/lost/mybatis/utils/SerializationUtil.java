@@ -72,7 +72,7 @@ public abstract class SerializationUtil {
     public static <T> T deserialize( final InputStream inputStream ) {
         isTrue( inputStream != null, "The InputStream must not be null" );
         try ( ObjectInputStream in = new ObjectInputStream( inputStream ) ) {
-            return (T) in.readObject();
+            return ( T ) in.readObject();
         } catch ( IOException | ClassNotFoundException e ) {
             throw new SerializationException( e );
         }
@@ -93,17 +93,17 @@ public abstract class SerializationUtil {
     static class ClassLoaderAwareObjectInputStream extends ObjectInputStream {
 
         private static final Map<String, Class<?>> PRIMITIVE_TYPE_CACHE = new HashMap<>();
-        
+
         static {
-            PRIMITIVE_TYPE_CACHE.put("byte", byte.class);
-            PRIMITIVE_TYPE_CACHE.put("short", short.class);
-            PRIMITIVE_TYPE_CACHE.put("int", int.class);
-            PRIMITIVE_TYPE_CACHE.put("long", long.class);
-            PRIMITIVE_TYPE_CACHE.put("float", float.class);
-            PRIMITIVE_TYPE_CACHE.put("double", double.class);
-            PRIMITIVE_TYPE_CACHE.put("boolean", boolean.class);
-            PRIMITIVE_TYPE_CACHE.put("char", char.class);
-            PRIMITIVE_TYPE_CACHE.put("void", void.class);
+            PRIMITIVE_TYPE_CACHE.put( "byte", byte.class );
+            PRIMITIVE_TYPE_CACHE.put( "short", short.class );
+            PRIMITIVE_TYPE_CACHE.put( "int", int.class );
+            PRIMITIVE_TYPE_CACHE.put( "long", long.class );
+            PRIMITIVE_TYPE_CACHE.put( "float", float.class );
+            PRIMITIVE_TYPE_CACHE.put( "double", double.class );
+            PRIMITIVE_TYPE_CACHE.put( "boolean", boolean.class );
+            PRIMITIVE_TYPE_CACHE.put( "char", char.class );
+            PRIMITIVE_TYPE_CACHE.put( "void", void.class );
         }
 
         private final ClassLoader classLoader;

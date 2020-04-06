@@ -32,26 +32,26 @@ public class CaseFormatApp {
     @Test
     public void patternTest() {
         Pattern pattern = Pattern.compile( "[A-Z0-9_\\-]+" );
-        System.out.println(pattern.matcher( "AAABB3" ).matches());
-        System.out.println(pattern.matcher( "aaabb3" ).matches());
-        System.out.println(pattern.matcher( "AAabB3" ).matches());
-        System.out.println(pattern.matcher( "abB3" ).matches());
-        System.out.println(pattern.matcher( "abB" ).matches());
-        System.out.println(pattern.matcher( "abbabb" ).matches());
-        System.out.println(pattern.matcher( "ABBABB" ).matches());
-        System.out.println(pattern.matcher( "test-data" ).matches());
-        System.out.println(pattern.matcher( "TEST-DATA" ).matches());
-        System.out.println(pattern.matcher( "TEST_DATA" ).matches());
-        System.out.println(pattern.matcher( "DATA" ).matches());
-        System.out.println(pattern.matcher( "tDATA" ).matches());
-        System.out.println(!pattern.matcher( "ADATA" ).matches());
-        System.out.println(!pattern.matcher( "t_DATA" ).matches());
+        System.out.println( pattern.matcher( "AAABB3" ).matches() );
+        System.out.println( pattern.matcher( "aaabb3" ).matches() );
+        System.out.println( pattern.matcher( "AAabB3" ).matches() );
+        System.out.println( pattern.matcher( "abB3" ).matches() );
+        System.out.println( pattern.matcher( "abB" ).matches() );
+        System.out.println( pattern.matcher( "abbabb" ).matches() );
+        System.out.println( pattern.matcher( "ABBABB" ).matches() );
+        System.out.println( pattern.matcher( "test-data" ).matches() );
+        System.out.println( pattern.matcher( "TEST-DATA" ).matches() );
+        System.out.println( pattern.matcher( "TEST_DATA" ).matches() );
+        System.out.println( pattern.matcher( "DATA" ).matches() );
+        System.out.println( pattern.matcher( "tDATA" ).matches() );
+        System.out.println( !pattern.matcher( "ADATA" ).matches() );
+        System.out.println( !pattern.matcher( "t_DATA" ).matches() );
     }
 
     @Test
     public void test3() {
-        System.out.println(CaseFormat.UPPER_UNDERSCORE.to( CaseFormat.LOWER_CAMEL, (CaseFormat.LOWER_CAMEL.to( CaseFormat.UPPER_UNDERSCORE, "zhangSan" ) + "_AVG")));
-        System.out.println(CaseFormat.UPPER_UNDERSCORE.to( CaseFormat.LOWER_CAMEL, (CaseFormat.LOWER_CAMEL.to( CaseFormat.UPPER_UNDERSCORE, "userName" ) + "_AVG")));
-        System.out.println(CaseFormat.UPPER_UNDERSCORE.to( CaseFormat.LOWER_CAMEL, (CaseFormat.LOWER_CAMEL.to( CaseFormat.UPPER_UNDERSCORE, "userAAName" ) + "_AVG")));
+        System.out.println( CaseFormat.UPPER_UNDERSCORE.to( CaseFormat.LOWER_CAMEL, ( CaseFormat.LOWER_CAMEL.to( CaseFormat.UPPER_UNDERSCORE, "zhangSan" ) + "_AVG" ) ) );
+        System.out.println( CaseFormat.UPPER_UNDERSCORE.to( CaseFormat.LOWER_CAMEL, ( CaseFormat.LOWER_CAMEL.to( CaseFormat.UPPER_UNDERSCORE, "userName" ) + "_AVG" ) ) );
+        System.out.println( CaseFormat.UPPER_UNDERSCORE.to( CaseFormat.LOWER_CAMEL, ( CaseFormat.LOWER_CAMEL.to( CaseFormat.UPPER_UNDERSCORE, "userAAName" ) + "_AVG" ) ) );
     }
 }

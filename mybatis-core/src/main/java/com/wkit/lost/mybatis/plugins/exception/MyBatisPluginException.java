@@ -5,7 +5,9 @@ package com.wkit.lost.mybatis.plugins.exception;
  * @author wvkity
  */
 public class MyBatisPluginException extends RuntimeException {
-    
+
+    private static final long serialVersionUID = 8722811709208826971L;
+
     public MyBatisPluginException() {
         super();
     }

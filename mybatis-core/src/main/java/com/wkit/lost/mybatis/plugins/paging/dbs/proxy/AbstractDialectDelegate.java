@@ -93,7 +93,7 @@ public abstract class AbstractDialectDelegate {
         // SQL SERVER
         register( "SQLSERVER", SqlServerDialect.class );
         // SQL SERVER 2012 OR LATER
-        register( "SQLSERVERLATER", SqlServer2012LaterDialect.class);
+        register( "SQLSERVERLATER", SqlServer2012LaterDialect.class );
         // DERBY
         register( "DERBY", SqlServer2012LaterDialect.class );
         // DB2
@@ -155,7 +155,7 @@ public abstract class AbstractDialectDelegate {
         try {
             Class<?> clazz = transform( dialectClazz );
             if ( !AbstractDialect.class.isAssignableFrom( clazz ) ) {
-                throw new MyBatisPluginException( "The current plug-in must inherit the `" + 
+                throw new MyBatisPluginException( "The current plug-in must inherit the `" +
                         AbstractDialect.class.getName() + "` abstract class and implement the corresponding methods" );
             }
             return ( AbstractDialect ) clazz.getDeclaredConstructor().newInstance();
@@ -246,7 +246,7 @@ public abstract class AbstractDialectDelegate {
         } catch ( SQLException e ) {
             throw new MyBatisPluginException( e );
         } finally {
-            if ( connection != null && this.autoReleaseConnect) {
+            if ( connection != null && this.autoReleaseConnect ) {
                 try {
                     connection.close();
                 } catch ( Exception e ) {
@@ -293,8 +293,8 @@ public abstract class AbstractDialectDelegate {
                 .filter( Ascii::hasText ).orElse( null );
         this.autoRuntimeDialect = Optional.ofNullable( props.getProperty( "autoRuntimeDialect" ) )
                 .map( Ascii::toBool ).orElse( false );
-         Optional.ofNullable( props.getProperty( "autoReleaseConnect" ) )
-                 .ifPresent( release -> this.autoReleaseConnect = Ascii.toBool( release ) );
+        Optional.ofNullable( props.getProperty( "autoReleaseConnect" ) )
+                .ifPresent( release -> this.autoReleaseConnect = Ascii.toBool( release ) );
     }
 
     /**

@@ -38,7 +38,7 @@ public class StandardInstantTypeHandler extends BaseTypeHandler<Instant> {
     public Instant getNullableResult( CallableStatement cs, int columnIndex ) throws SQLException {
         return valueOf( cs.getTimestamp( columnIndex ) );
     }
-    
+
     private Instant valueOf( Timestamp timestamp ) {
         return Optional.ofNullable( timestamp ).map( Timestamp::toInstant ).orElse( null );
     }

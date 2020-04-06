@@ -2,8 +2,8 @@ package com.wkit.lost.mybatis.core.metadata;
 
 import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
-import com.wkit.lost.mybatis.naming.DefaultPhysicalNamingStrategy;
-import com.wkit.lost.mybatis.naming.PhysicalNamingStrategy;
+import com.wkit.lost.mybatis.core.naming.DefaultPhysicalNamingStrategy;
+import com.wkit.lost.mybatis.core.naming.PhysicalNamingStrategy;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;

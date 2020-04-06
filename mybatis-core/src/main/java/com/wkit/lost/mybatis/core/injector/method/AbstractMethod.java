@@ -1,6 +1,8 @@
 package com.wkit.lost.mybatis.core.injector.method;
 
 import com.wkit.lost.mybatis.core.mapping.script.ScriptBuilder;
+import com.wkit.lost.mybatis.core.mapping.script.ScriptBuilderFactory;
+import com.wkit.lost.mybatis.core.mapping.sql.Provider;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.extern.log4j.Log4j2;
@@ -15,7 +17,7 @@ import org.apache.ibatis.scripting.LanguageDriver;
 import org.apache.ibatis.session.Configuration;
 
 /**
- * 抽象方法注入器
+ * 抽象方法映射注入器
  * @author wvkity
  */
 @Log4j2
@@ -151,6 +153,27 @@ public abstract class AbstractMethod implements Method {
      */
     protected boolean hasMappedStatement( final String statementName ) {
         return this.configuration.hasStatement( statementName, false );
+    }
+
+    /**
+     * 创建脚本构建器
+     * @param table    表对象
+     * @param provider SQL提供者
+     * @return 脚本构建器
+     */
+    protected ScriptBuilder createScriptBuilder( TableWrapper table, Provider provider ) {
+        return createScriptBuilder( null, table, provider );
+    }
+
+    /**
+     * 创建脚本构建器
+     * @param alias    表别名
+     * @param table    表对象
+     * @param provider SQL提供者
+     * @return 脚本构建器
+     */
+    protected ScriptBuilder createScriptBuilder( String alias, TableWrapper table, Provider provider ) {
+        return ScriptBuilderFactory.create( provider, table, table.getEntity(), alias );
     }
 
     /**

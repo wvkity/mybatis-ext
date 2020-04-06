@@ -56,5 +56,5 @@ public interface CriteriaMapper<T, V> {
      * @return 列表
      */
     List<V> listByCriteria( @Param( Constants.PARAM_CRITERIA ) final Criteria<T> criteria );
-    
+
 }

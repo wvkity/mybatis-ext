@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import java.util.Collection;
 
-@SuppressWarnings( {"serial"} )
+@SuppressWarnings( { "serial" } )
 public abstract class AbstractImmediateRangeExpression<T> extends ImmediateExpressionWrapper<T> {
 
     /**

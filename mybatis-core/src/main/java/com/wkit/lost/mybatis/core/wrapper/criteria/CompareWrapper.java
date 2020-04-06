@@ -1,6 +1,9 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
-import com.wkit.lost.mybatis.lambda.LambdaConverter;
+import com.wkit.lost.mybatis.core.lambda.LambdaConverter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 比较条件包装接口
@@ -35,11 +38,84 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
 
     /**
      * 等于
+     * @param p1 属性1
+     * @param v1 值1
+     * @param p2 属性2
+     * @param v2 值2
+     * @return {@code this}
+     */
+    default Chain eq( P p1, Object v1, P p2, Object v2 ) {
+        Map<String, Object> props = new HashMap<>( 2 );
+        props.put( lambdaToProperty( p1 ), v1 );
+        props.put( lambdaToProperty( p2 ), v2 );
+        return eq( props );
+    }
+
+    /**
+     * 等于
+     * @param p1 属性1
+     * @param v1 值1
+     * @param p2 属性2
+     * @param v2 值2
+     * @param p3 属性3
+     * @param v3 值3
+     * @return {@code this}
+     */
+    default Chain eq( P p1, Object v1, P p2, Object v2, P p3, Object v3 ) {
+        Map<String, Object> props = new HashMap<>( 3 );
+        props.put( lambdaToProperty( p1 ), v1 );
+        props.put( lambdaToProperty( p2 ), v2 );
+        props.put( lambdaToProperty( p3 ), v3 );
+        return eq( props );
+    }
+
+    /**
+     * 等于
      * @param property 属性
      * @param value    值
      * @return {@code this}
      */
     Chain eq( String property, Object value );
+
+    /**
+     * 等于
+     * @param p1 属性1
+     * @param v1 值1
+     * @param p2 属性2
+     * @param v2 值2
+     * @return {@code this}
+     */
+    default Chain eq( String p1, Object v1, String p2, Object v2 ) {
+        Map<String, Object> props = new HashMap<>( 2 );
+        props.put( p1, v1 );
+        props.put( p2, v2 );
+        return eq( props );
+    }
+
+    /**
+     * 等于
+     * @param p1 属性1
+     * @param v1 值1
+     * @param p2 属性2
+     * @param v2 值2
+     * @param p3 属性3
+     * @param v3 值3
+     * @return {@code this}
+     */
+    default Chain eq( String p1, Object v1, String p2, Object v2, String p3, Object v3 ) {
+        Map<String, Object> props = new HashMap<>( 3 );
+        props.put( p1, v1 );
+        props.put( p2, v2 );
+        props.put( p3, v3 );
+        return eq( props );
+    }
+
+    /**
+     * 等于
+     * @param properties 属性-值集合
+     * @return {@code this}
+     */
+    Chain eq( Map<String, Object> properties );
 
     /**
      * 或等于
@@ -69,12 +145,95 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
 
     /**
      * 等于
+     * @param c1 字段1
+     * @param v1 值1
+     * @param c2 字段2
+     * @param v2 值2
+     * @return {@code this}
+     */
+    default Chain immediateEq( String c1, Object v1, String c2, Object v2 ) {
+        Map<String, Object> columns = new HashMap<>( 2 );
+        columns.put( c1, v1 );
+        columns.put( c2, v2 );
+        return immediateEq( columns );
+    }
+
+    /**
+     * 等于
+     * @param c1 字段1
+     * @param v1 值1
+     * @param c2 字段2
+     * @param v2 值2
+     * @param c3 字段3
+     * @param v3 值3
+     * @return {@code this}
+     */
+    default Chain immediateEq( String c1, Object v1, String c2, Object v2, String c3, Object v3 ) {
+        Map<String, Object> columns = new HashMap<>( 3 );
+        columns.put( c1, v1 );
+        columns.put( c2, v2 );
+        columns.put( c3, v3 );
+        return immediateEq( columns );
+    }
+
+    /**
+     * 等于
+     * @param columns 字段-值集合
+     * @return {@code this}
+     */
+    Chain immediateEq( Map<String, Object> columns );
+
+    /**
+     * 等于
      * @param tableAlias 表别名
      * @param column     字段
      * @param value      值
      * @return {@code this}
      */
     Chain immediateEq( String tableAlias, String column, Object value );
+
+    /**
+     * 等于
+     * @param tableAlias 表别名
+     * @param c1         字段1
+     * @param v1         值1
+     * @param c2         字段2
+     * @param v2         值2
+     * @return {@code this}
+     */
+    default Chain immediateEq( String tableAlias, String c1, Object v1, String c2, Object v2 ) {
+        Map<String, Object> columns = new HashMap<>( 2 );
+        columns.put( c1, v1 );
+        columns.put( c2, v2 );
+        return immediateEq( tableAlias, columns );
+    }
+
+    /**
+     * 等于
+     * @param tableAlias 表别名
+     * @param c1         字段1
+     * @param v1         值1
+     * @param c2         字段2
+     * @param v2         值2
+     * @param c3         字段3
+     * @param v3         值3
+     * @return {@code this}
+     */
+    default Chain immediateEq( String tableAlias, String c1, Object v1, String c2, Object v2, String c3, Object v3 ) {
+        Map<String, Object> columns = new HashMap<>( 3 );
+        columns.put( c1, v1 );
+        columns.put( c2, v2 );
+        columns.put( c3, v3 );
+        return immediateEq( tableAlias, columns );
+    }
+
+    /**
+     * 等于
+     * @param tableAlias 表别名
+     * @param columns    字段-值集合
+     * @return {@code this}
+     */
+    Chain immediateEq( String tableAlias, Map<String, Object> columns );
 
     /**
      * 或等于

@@ -57,26 +57,26 @@ public abstract class AbstractBaseExecutor extends BaseExecutor {
         List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
         TypeHandlerRegistry typeHandlerRegistry = ms.getConfiguration().getTypeHandlerRegistry();
         // mimic DefaultParameterHandler logic
-        for (ParameterMapping parameterMapping : parameterMappings) {
-            if (parameterMapping.getMode() != ParameterMode.OUT) {
+        for ( ParameterMapping parameterMapping : parameterMappings ) {
+            if ( parameterMapping.getMode() != ParameterMode.OUT ) {
                 Object value;
                 String propertyName = parameterMapping.getProperty();
-                if (boundSql.hasAdditionalParameter(propertyName)) {
-                    value = boundSql.getAdditionalParameter(propertyName);
-                } else if (parameterObject == null) {
+                if ( boundSql.hasAdditionalParameter( propertyName ) ) {
+                    value = boundSql.getAdditionalParameter( propertyName );
+                } else if ( parameterObject == null ) {
                     value = null;
-                } else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
+                } else if ( typeHandlerRegistry.hasTypeHandler( parameterObject.getClass() ) ) {
                     value = parameterObject;
                 } else {
-                    MetaObject metaObject = configuration.newMetaObject(parameterObject);
-                    value = metaObject.getValue(propertyName);
+                    MetaObject metaObject = configuration.newMetaObject( parameterObject );
+                    value = metaObject.getValue( propertyName );
                 }
-                cacheKey.update(value);
+                cacheKey.update( value );
             }
         }
-        if (configuration.getEnvironment() != null) {
+        if ( configuration.getEnvironment() != null ) {
             // issue #176
-            cacheKey.update(configuration.getEnvironment().getId());
+            cacheKey.update( configuration.getEnvironment().getId() );
         }
         return cacheKey;
     }

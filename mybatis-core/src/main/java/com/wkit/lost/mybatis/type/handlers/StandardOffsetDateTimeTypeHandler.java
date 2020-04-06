@@ -39,7 +39,7 @@ public class StandardOffsetDateTimeTypeHandler extends BaseTypeHandler<OffsetDat
     public OffsetDateTime getNullableResult( CallableStatement cs, int columnIndex ) throws SQLException {
         return valueOf( cs.getTimestamp( columnIndex ) );
     }
-    
+
     private OffsetDateTime valueOf( Timestamp timestamp ) {
         return Optional.ofNullable( timestamp ).map( time -> OffsetDateTime.ofInstant( time.toInstant(), ZoneId.systemDefault() ) ).orElse( null );
     }

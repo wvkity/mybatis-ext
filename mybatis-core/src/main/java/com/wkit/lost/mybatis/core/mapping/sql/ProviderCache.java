@@ -31,7 +31,7 @@ public final class ProviderCache {
             return target;
         } ).orElse( null );
     }
-    
+
     public static Provider newInstance( final Class<?> klass ) {
         return Optional.ofNullable( getTarget( klass ) ).map( it -> {
             try {

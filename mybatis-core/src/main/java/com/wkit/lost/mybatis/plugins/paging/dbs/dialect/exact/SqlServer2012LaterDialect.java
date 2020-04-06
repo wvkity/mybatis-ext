@@ -7,7 +7,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 import java.util.Map;
 
 public class SqlServer2012LaterDialect extends SqlServerDialect {
-    
+
     @Override
     public Object processPageableParameter( MappedStatement statement, Map<String, Object> parameter, BoundSql boundSql, CacheKey cacheKey, Long rowStart, Long rowEnd, Long offset ) {
         parameter.put( OFFSET_PARAMETER, rowStart );
