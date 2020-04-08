@@ -230,7 +230,7 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
     protected Object processParameter( MappedStatement ms, Object parameter ) {
         boolean isInsertCommand = ms.getSqlCommandType() == SqlCommandType.INSERT;
         String execMethod = execMethod( ms );
-        boolean isExecLogicDeleting = LOGIC_DELETE_METHOD_CACHE.contains( execMethod );
+        boolean isExecLogicDeleting = !isInsertCommand && LOGIC_DELETE_METHOD_CACHE.contains( execMethod );
         Collection<Object> parameters = getOriginalParameter( parameter );
         MyBatisCustomConfiguration configuration = MyBatisConfigCache.getCustomConfiguration( ms.getConfiguration() );
         MetadataAuditable auditable = configuration.getMetadataAuditable();
@@ -245,7 +245,8 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
             return objects;
         } else if ( parameter instanceof Map
                 && ( ( Map<?, ?> ) parameter ).containsKey( Constants.PARAM_BATCH_BEAN_WRAPPER ) ) {
-            Object wrapperTarget = ( ( Map<?, ?> ) parameter ).getOrDefault( Constants.PARAM_BATCH_BEAN_WRAPPER, null );
+            Object wrapperTarget = ( ( Map<?, ?> ) parameter ).getOrDefault( Constants.PARAM_BATCH_BEAN_WRAPPER,
+                    null );
             if ( wrapperTarget != null ) {
                 BatchDataBeanWrapper<Object> wrapper = ( BatchDataBeanWrapper<Object> ) wrapperTarget;
                 Collection<Object> data = wrapper.getData();

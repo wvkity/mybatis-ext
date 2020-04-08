@@ -25,6 +25,19 @@ public enum SqlTemplate {
     },
 
     /**
+     * 删除
+     * <pre>
+     *     DELETE FROM TABLE_NAME %s%s
+     * </pre>
+     */
+    DELETE {
+        @Override
+        protected String getSegment( String tableName ) {
+            return "DELETE FROM " + tableName + "%s%s";
+        }
+    },
+
+    /**
      * 更新
      * <pre>
      *     UPDATE TABLE_NAME %s %s
@@ -34,6 +47,19 @@ public enum SqlTemplate {
         @Override
         protected String getSegment( String tableName ) {
             return "UPDATE " + tableName + "%s%s";
+        }
+    },
+
+    /**
+     * 查询
+     * <pre>
+     *     SELECT %s FROM TABLE_NAME %s
+     * </pre>
+     */
+    SELECT {
+        @Override
+        protected String getSegment( String tableName ) {
+            return "SELECT %s FROM " + tableName + " %s";
         }
     },
 

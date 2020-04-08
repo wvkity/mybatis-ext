@@ -17,7 +17,7 @@ import java.util.Optional;
  * 抽象元数据审计处理器
  * @author wvkity
  */
-public abstract class AbstractMetadataAuditable implements MetadataAuditable {
+abstract class AbstractMetadataAuditable implements MetadataAuditable {
 
     public AbstractMetadataAuditable() {
     }

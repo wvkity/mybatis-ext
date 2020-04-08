@@ -21,7 +21,7 @@ public interface QueryMapper<T, V> {
      * @param entity 指定对象
      * @return 1: 存在 | 0: 不存在
      */
-    int exists( T entity );
+    int exists( @Param( Constants.PARAM_ENTITY ) T entity );
 
     /**
      * 根据主键查询记录是否存在

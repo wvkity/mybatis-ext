@@ -1,30 +1,16 @@
 package com.wkit.lost.mybatis.core.mapping.sql;
 
-import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.utils.Constants;
 import lombok.Getter;
 
-import static com.wkit.lost.mybatis.utils.Constants.NEW_LINE;
-import static com.wkit.lost.mybatis.utils.Constants.PARAM_CRITERIA;
-
 /**
  * 抽象SQL构建器
  * @author wvkity
  */
 public abstract class AbstractProvider implements Provider {
-
-    /**
-     * AND连接符
-     */
-    protected static final String AND = Logic.AND.getSegment();
-
-    /**
-     * OR连接符
-     */
-    protected static final String OR = Logic.OR.getSegment();
 
     /**
      * 换行符
@@ -68,6 +54,15 @@ public abstract class AbstractProvider implements Provider {
     }
 
     /**
+     * 删除
+     * @param condition 条件SQL片段
+     * @return SQL语句
+     */
+    protected String delete( String condition ) {
+        return toSqlString( SqlTemplate.DELETE, "", condition );
+    }
+
+    /**
      * 更新
      * @param script    脚本SQL片段
      * @param condition 条件SQL片段
@@ -75,6 +70,16 @@ public abstract class AbstractProvider implements Provider {
      */
     protected String update( String script, String condition ) {
         return toSqlString( SqlTemplate.UPDATE, script, condition );
+    }
+
+    /**
+     * 查询
+     * @param script    脚本SQL片段
+     * @param condition 条件SQL片段
+     * @return SQL语句
+     */
+    protected String select( String script, String condition ) {
+        return toSqlString( SqlTemplate.SELECT, script, condition );
     }
 
     /**

@@ -128,7 +128,7 @@ public final class ScriptUtil {
         } else {
             newScript = script;
         }
-        return String.format( "<if test=\"%s\">%s</if>", condition, newScript );
+        return String.format( Constants.NEW_LINE + "<if test=\"%s\">%s</if>", condition, newScript );
     }
 
     /**
@@ -236,6 +236,69 @@ public final class ScriptUtil {
     }
 
     /**
+     * 转换成where脚本标签
+     * @param script SQL脚本
+     * @return where脚本标签
+     */
+    public static String convertWhereTag( final String script ) {
+        return "<where>" + Constants.NEW_LINE + Constants.CHAR_SPACE +
+                script + Constants.NEW_LINE +
+                "</where>";
+    }
+
+    /**
+     * 转换成foreach脚本标签
+     * @param script     SQL脚本
+     * @param collection 数据集
+     * @param item       数据
+     * @param open       前缀
+     * @param close      后缀
+     * @param separator  分隔符
+     * @return foreach脚本标签
+     */
+    public static String convertForeachTag( final String script, final String collection, final String item,
+                                            final String open, final String close, final String separator ) {
+        return convertForeachTag( script, collection, null, item, open, close, separator );
+    }
+
+    /**
+     * 转换成foreach脚本标签
+     * @param script     SQL脚本
+     * @param collection 数据集
+     * @param index      索引
+     * @param item       数据
+     * @param open       前缀
+     * @param close      后缀
+     * @param separator  分隔符
+     * @return foreach脚本标签
+     */
+    public static String convertForeachTag( final String script, final String collection, final String index,
+                                            final String item, final String open, final String close,
+                                            final String separator ) {
+        StringBuilder builder = new StringBuilder( "<foreach" );
+        if ( StringUtil.hasText( collection ) ) {
+            builder.append( " collection=\"" ).append( collection ).append( Constants.CHAR_QUOTE );
+        }
+        if ( StringUtil.hasText( index ) ) {
+            builder.append( " index=\"" ).append( index ).append( Constants.CHAR_QUOTE );
+        }
+        if ( StringUtil.hasText( item ) ) {
+            builder.append( " item=\"" ).append( item ).append( Constants.CHAR_QUOTE );
+        }
+        if ( StringUtil.hasText( open ) ) {
+            builder.append( " open=\"" ).append( open ).append( Constants.CHAR_QUOTE );
+        }
+        if ( StringUtil.hasText( close ) ) {
+            builder.append( " close=\"" ).append( close ).append( Constants.CHAR_QUOTE );
+        }
+        if ( StringUtil.hasText( separator ) ) {
+            builder.append( " separator=\"" ).append( separator ).append( Constants.CHAR_QUOTE );
+        }
+        return builder.append( Constants.CHAR_GT ).append( Constants.NEW_LINE )
+                .append( script ).append( "</foreach>" ).append( Constants.NEW_LINE ).toString();
+    }
+
+    /**
      * 转成参数
      * @param tableAlias 表别名
      * @param column     字段包装对象
@@ -305,8 +368,12 @@ public final class ScriptUtil {
     /**
      * 转换成参数
      * <pre>
+     *     // Examples: 
      *     // execute = {@link Execute#REPLACE} && tableAlias == null
+     *     ScriptUtil.convertPartArg()
+     *     return: 
      *     USER_NAME = #{entity.userName}
+     *     return: 
      *     USER_NAME = #{entity.userName, javaType="java.lang.String", jdbcType="VARCHAR", typeHandler="xx.xxx.ClassName"}
      *
      *     // execute = {@link Execute#REPLACE} && tableAlias != null
