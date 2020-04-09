@@ -8,9 +8,11 @@ import com.wkit.lost.mybatis.core.injector.execute.Delete;
 import com.wkit.lost.mybatis.core.injector.execute.DeleteByCriteria;
 import com.wkit.lost.mybatis.core.injector.execute.DeleteById;
 import com.wkit.lost.mybatis.core.injector.execute.Exists;
+import com.wkit.lost.mybatis.core.injector.execute.ExistsById;
 import com.wkit.lost.mybatis.core.injector.execute.Insert;
 import com.wkit.lost.mybatis.core.injector.execute.InsertNotWithNull;
 import com.wkit.lost.mybatis.core.injector.execute.ListByCriteria;
+import com.wkit.lost.mybatis.core.injector.execute.ListByEntity;
 import com.wkit.lost.mybatis.core.injector.execute.LogicDelete;
 import com.wkit.lost.mybatis.core.injector.execute.LogicDeleteByCriteria;
 import com.wkit.lost.mybatis.core.injector.execute.MixinUpdateNotWithNull;
@@ -54,6 +56,8 @@ public class DefaultInjector extends AbstractInjector {
                 new MixinUpdateNotWithNull(),
                 // query
                 new Exists(),
+                new ExistsById(),
+                new ListByEntity(),
                 new ListByCriteria()
         ).collect( Collectors.toList() );
     }

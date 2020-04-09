@@ -56,7 +56,7 @@ public interface QueryMapper<T, V> {
      * @param entity 制定对象
      * @return 多条记录
      */
-    List<V> listByEntity( T entity );
+    List<V> listByEntity( @Param( Constants.PARAM_ENTITY ) T entity );
 
     /**
      * 根据多个对象查询记录

@@ -32,6 +32,7 @@ UnifyServiceExecutor更名为ServiceExecutor
 ## [v1.0.2] 2020-02-07
 - ForeignCriteria类中的appendTo方法更名为join
 - SqlSessionUtil类从mybatis-code模块迁移到mybatis-extension模块
+- mybatis-core中部分包移动到core包里，格式化代码
 - 修复Criteria聚合函数条件指定小数位数无效bug
 - MapperExecutorCallable更名为BaseMapperExecutor, ServiceExecutorCallable更名为BaseServiceExecutor
 - 聚合函数包(function)更名为aggregate，部分类名也更改
@@ -41,6 +42,9 @@ UnifyServiceExecutor更名为ServiceExecutor
 - DefaultBuiltinAuditingInterceptor更名为SystemBuiltinAuditingInterceptor，DefaultBuiltinAuditingProcessor更名为
 SystemBuiltinAuditingProcessor
 - 优化查询指定列方法，使用AbstractQueryWrapper<T, E>及子类代替旧的相关查询指定列方法
+- 全局配置添加Boolean类型属性映射数据库字段是否自动添加is前缀
+- 优化解析实体类，对于逻辑删除值直接初始化对应的类型值
+- 优化逻辑删除审计功能
 
 
 

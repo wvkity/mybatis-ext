@@ -13,6 +13,10 @@ public class UpdateNotWithNullAndLockingProvider extends AbstractProvider {
 
     @Override
     public String build() {
+        ColumnWrapper primaryKey = table.getPrimaryKey();
+        if ( primaryKey == null ) {
+            return Constants.CHAR_EMPTY;
+        }
         StringBuilder script = new StringBuilder( 200 );
         Set<ColumnWrapper> columns = table.updatableColumns();
         for ( ColumnWrapper it : columns ) {
@@ -23,7 +27,7 @@ public class UpdateNotWithNullAndLockingProvider extends AbstractProvider {
         return update(
                 ScriptUtil.convertTrimTag( script.toString(), "SET", null,
                         null, Constants.CHAR_COMMA ),
-                ( " WHERE " + ScriptUtil.convertPartArg( table.getPrimaryKey(), Constants.PARAM_ENTITY, Execute.REPLACE ) )
+                ( " WHERE " + ScriptUtil.convertPartArg( primaryKey, Constants.PARAM_ENTITY, Execute.REPLACE ) )
         );
     }
 }

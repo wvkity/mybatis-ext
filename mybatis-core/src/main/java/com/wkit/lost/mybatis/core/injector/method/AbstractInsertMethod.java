@@ -78,9 +78,11 @@ public abstract class AbstractInsertMethod extends AbstractMethod {
                                                         TableWrapper table, Provider provider ) {
         KeyGenerator keyGenerator = createKeyGenerator( table, ( mapperInterface.getName() + "." + applyMethod() ) );
         ColumnWrapper primary = table.getPrimaryKey();
+        boolean hasPrimaryKey = primary != null;
         Class<?> entity = table.getEntity();
         ScriptBuilder scriptBuilder = createScriptBuilder( table, provider );
         return addInsertMappedStatement( mapperInterface, applyMethod(), createSqlSource( scriptBuilder, entity ),
-                entity, keyGenerator, primary.getProperty(), primary.getColumn() );
+                entity, keyGenerator, hasPrimaryKey ? primary.getProperty() : null, hasPrimaryKey ?
+                        primary.getColumn() : null );
     }
 }

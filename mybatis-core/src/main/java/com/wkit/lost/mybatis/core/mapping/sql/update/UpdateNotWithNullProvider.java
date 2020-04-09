@@ -20,6 +20,10 @@ public class UpdateNotWithNullProvider extends AbstractProvider {
     public String build() {
         // 乐观锁
         ColumnWrapper lockingColumn = table.getOptimisticLockingColumn();
+        ColumnWrapper primaryKey = table.getPrimaryKey();
+        if ( primaryKey == null && lockingColumn == null ) {
+            return Constants.CHAR_EMPTY;
+        }
         // script
         StringBuilder scriptBuilder = new StringBuilder( 200 );
         if ( lockingColumn == null ) {
@@ -39,8 +43,10 @@ public class UpdateNotWithNullProvider extends AbstractProvider {
         }
         // condition
         StringBuilder conditionBuilder = new StringBuilder( 80 );
-        conditionBuilder.append( Constants.CHAR_SPACE ).append( ScriptUtil.convertPartArg( table.getPrimaryKey(),
-                Constants.PARAM_ENTITY, Execute.REPLACE ) );
+        if ( primaryKey != null ) {
+            conditionBuilder.append( Constants.CHAR_SPACE ).append( ScriptUtil.convertPartArg( primaryKey,
+                    Constants.PARAM_ENTITY, Execute.REPLACE ) );
+        }
         if ( lockingColumn != null ) {
             conditionBuilder.append( Constants.NEW_LINE ).append( ScriptUtil.convertIfTagWithNotNull( null,
                     lockingColumn, Constants.PARAM_ENTITY, true, false, Symbol.EQ,
