@@ -107,7 +107,12 @@ public class MyBatisCustomConfiguration implements Serializable {
     /**
      * 自动识别主键(缺省@Id注解时)
      */
-    private boolean autoDiscernPrimaryKey = true;
+    private boolean autoDiscernPrimaryKey = false;
+
+    /**
+     * 布尔值属性映射的字段自动添加IS前缀
+     */
+    private boolean booleanPropertyAutoAddIsPrefix = true;
 
     /**
      * 全局主键标识(用于自动识别主键)
