@@ -119,13 +119,14 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
     }
 
     /**
-     * 必要时注入实体对象参数(注入空对象，交由)
+     * 必要时注入实体对象参数(注入空对象)，并返回实体元数据对象
      * @param metadata 元数据对象
      * @param table    实体-表映射信息对象
      * @param property 属性
      * @param value    值
+     * @return {@link MetaObject}实体元数据对象
      */
-    protected void injectEntityIfNecessary( MetaObject metadata, TableWrapper table, String property, Object value ) {
+    protected MetaObject injectEntityIfNecessary( MetaObject metadata, TableWrapper table, String property, Object value ) {
         // 检查是否包含实体对象参数
         if ( !metadata.hasGetter( Constants.PARAM_ENTITY ) ) {
             if ( metadata.hasGetter( Constants.PARAM_CRITERIA ) ) {
@@ -134,10 +135,11 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
                     try {
                         Criteria<?> criteria = ( Criteria<?> ) parameter;
                         // 注入条件
-                        //criteria.add( Restrictions.eq( property, value ) );
                         criteria.add( Restrictions.eq( criteria, property, value ) );
-                        // 注入实体参数对象，但不填充值
-                        metadata.setValue( Constants.PARAM_ENTITY, table.newInstance() );
+                        // 创建实体参数对象
+                        Object instance = table.newInstance();
+                        metadata.setValue( Constants.PARAM_ENTITY, instance );
+                        return MetaObjectUtil.forObject( instance );
                     } catch ( Exception e ) {
                         throw new MyBatisException( "Failed to create an instance based on the `"
                                 + table.getEntity().getName() + "` class", e );
@@ -145,6 +147,7 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
                 }
             }
         }
+        return null;
     }
 
     /**

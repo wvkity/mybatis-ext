@@ -1,12 +1,12 @@
 package com.wkit.lost.mybatis.plugins.data.auditing;
 
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
+import com.wkit.lost.mybatis.core.data.auditing.MetadataAuditable;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
-import com.wkit.lost.mybatis.core.data.auditing.MetadataAuditable;
-import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.core.snowflake.sequence.Sequence;
 import com.wkit.lost.mybatis.core.snowflake.worker.SequenceGenerator;
+import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.MetaObjectUtil;
 import lombok.extern.log4j.Log4j2;
@@ -25,7 +25,7 @@ public class SystemBuiltinAuditingProcessor extends AbstractAuditingProcessor {
 
     @Override
     protected Object auditing( MappedStatement ms, MyBatisCustomConfiguration customConfiguration,
-                               MetadataAuditable __, Object parameter, TableWrapper table, 
+                               MetadataAuditable __, Object parameter, TableWrapper table,
                                boolean isInsertCommand, boolean isExecLogicDeleting ) {
         if ( table != null ) {
             MetaObject metadata = ms.getConfiguration().newMetaObject( parameter );
@@ -97,13 +97,13 @@ public class SystemBuiltinAuditingProcessor extends AbstractAuditingProcessor {
 
     /**
      * 注入逻辑删除值
-     * @param ms       {@link MappedStatement}
+     * @param __       {@link MappedStatement}
      * @param metadata 元数据对象
      * @param table    实体-表映射信息对象
-     * @param __       自定义配置对象
+     * @param ___      自定义配置对象
      */
-    private void injectLogicDeletionValue( MappedStatement ms, MetaObject metadata, TableWrapper table,
-                                           MyBatisCustomConfiguration __, boolean isExecLogicDeleting ) {
+    private void injectLogicDeletionValue( MappedStatement __, MetaObject metadata, TableWrapper table,
+                                           MyBatisCustomConfiguration ___, boolean isExecLogicDeleting ) {
         if ( isExecLogicDeleting ) {
             ColumnWrapper logicDeletionColumn = table.getLogicDeletedColumn();
             if ( logicDeletionColumn == null ) {
@@ -112,14 +112,16 @@ public class SystemBuiltinAuditingProcessor extends AbstractAuditingProcessor {
             }
             Class<?> javaType = logicDeletionColumn.getJavaType();
             String logicDeletedProperty = logicDeletionColumn.getProperty();
-            Object logicDeleteValue = primitiveConvert( javaType, logicDeletionColumn.getLogicDeletedTrueValue() );
-            Object logicNotDeleteValue = primitiveConvert( javaType, logicDeletionColumn.getLogicDeletedFalseValue() );
+            Object logicDeleteValue = logicDeletionColumn.getLogicDeletedTrueValue();
+            Object logicNotDeleteValue = logicDeletionColumn.getLogicDeletedFalseValue();
             // 注入逻辑删除值
             metadata.setValue( Constants.PARAM_LOGIC_DELETED_AUDITING_KEY, logicDeleteValue );
             // 创建实例
-            injectEntityIfNecessary( metadata, table, logicDeletedProperty, logicNotDeleteValue );
+            MetaObject injectMetadata = injectEntityIfNecessary( metadata, table, logicDeletedProperty,
+                    logicNotDeleteValue );
             // 注入值
-            injectEntityPropertyValue( metadata, logicDeletedProperty, logicNotDeleteValue );
+            Optional.ofNullable( injectMetadata ).ifPresent( it -> injectEntityPropertyValue( it, logicDeletedProperty,
+                    logicNotDeleteValue ) );
         }
     }
 
