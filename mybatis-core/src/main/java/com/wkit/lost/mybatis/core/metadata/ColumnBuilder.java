@@ -11,7 +11,6 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 
 import java.text.MessageFormat;
-import java.util.Optional;
 
 /**
  * 数据库表字段-实体属性映射类构建器
@@ -191,12 +190,17 @@ public class ColumnBuilder extends BuilderSupport implements Builder<ColumnWrapp
     /**
      * 逻辑删除真值
      */
-    private String logicDeletedTrueValue;
+    private Object logicDeletedTrueValue;
 
     /**
      * 逻辑删除假值
      */
-    private String logicDeletedFalseValue;
+    private Object logicDeletedFalseValue;
+
+    /**
+     * 自动添加IS前缀(针对Boolean类型属性)
+     */
+    private boolean autoAddIsPrefix;
 
     /**
      * 创建构建器
@@ -231,14 +235,23 @@ public class ColumnBuilder extends BuilderSupport implements Builder<ColumnWrapp
      * @return 字段名
      */
     private String realColumnName() {
-        return Optional.of( Ascii.isNullOrEmpty( this.column ) ? this.property : this.column ).map( it -> {
-            String realName = columnNameTransform( it );
-            String keyWord = this.configuration.getWrapKeyWord();
-            if ( Ascii.hasText( keyWord ) && SqlKeyWords.containsWord( realName ) ) {
-                return MessageFormat.format( keyWord, realName );
+        String realName;
+        String realColumnName;
+        if ( Ascii.isNullOrEmpty( this.column ) ) {
+            if ( this.autoAddIsPrefix && Boolean.class.isAssignableFrom( this.javaType ) ) {
+                realColumnName = "is" + Character.toUpperCase( this.property.charAt( 0 ) ) + this.property.substring( 1 );
+            } else {
+                realColumnName = this.property;
             }
-            return realName;
-        } ).get();
+            realName = columnNameTransform( realColumnName );
+        } else {
+            realName = this.column;
+        }
+        String keyWord = this.configuration.getWrapKeyWord();
+        if ( Ascii.hasText( keyWord ) && SqlKeyWords.containsWord( realName ) ) {
+            return MessageFormat.format( keyWord, realName );
+        }
+        return realName;
     }
 
     @Override

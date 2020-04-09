@@ -192,12 +192,12 @@ public class ColumnWrapper {
     /**
      * 逻辑删除真值
      */
-    private String logicDeletedTrueValue;
+    private Object logicDeletedTrueValue;
 
     /**
      * 逻辑删除假值
      */
-    private String logicDeletedFalseValue;
+    private Object logicDeletedFalseValue;
 
     /**
      * 构造方法

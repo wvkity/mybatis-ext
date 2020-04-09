@@ -43,6 +43,7 @@ import com.wkit.lost.mybatis.utils.AnnotationUtil;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.Ascii;
 import com.wkit.lost.mybatis.utils.Constants;
+import com.wkit.lost.mybatis.utils.PrimitiveRegistry;
 import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.type.JdbcType;
@@ -115,12 +116,14 @@ public class DefaultEntityParser implements EntityParser {
         } else {
             fields = FieldHandler.parse( fieldParser, entity );
         }
+        boolean autoAddIsPrefix = configuration.isBooleanPropertyAutoAddIsPrefix();
         fields.stream().filter( it -> this.filter( it, configuration ) ).forEach( it -> {
             ColumnBuilder columnBuilder = ColumnBuilder.create();
             columnBuilder.entity( entity )
                     .field( it )
                     .property( it.getName() )
                     .javaType( it.getJavaType() )
+                    .autoAddIsPrefix( autoAddIsPrefix )
                     .configuration( configuration )
                     .namingStrategy( naming );
             parseField( builder, it, columnBuilder, configuration );
@@ -261,15 +264,24 @@ public class DefaultEntityParser implements EntityParser {
             table.enableLogicDeleted( true ).logicDeletedColumn( builder );
             builder.logicDelete( true );
             LogicDeletion logicDeletion = field.getAnnotation( LogicDeletion.class );
+            String deletedValue;
+            String notDeletedValue;
             if ( logicDeletion != null ) {
-                builder.logicDeletedTrueValue( Optional.ofNullable( logicDeletion.trueValue() )
-                        .filter( Ascii::hasText ).orElseGet( configuration::getLogicDeletedTrueValue ) )
-                        .logicDeletedFalseValue( Optional.ofNullable( logicDeletion.falseValue() )
-                                .filter( Ascii::hasText ).orElseGet( configuration::getLogicDeletedFalseValue ) );
+                // 注解-全局
+                deletedValue = Optional.ofNullable( logicDeletion.trueValue() ).filter( Ascii::hasText )
+                        .orElseGet( configuration::getLogicDeletedTrueValue );
+                notDeletedValue = Optional.ofNullable( logicDeletion.falseValue() ).filter( Ascii::hasText )
+                        .orElseGet( configuration::getLogicDeletedFalseValue );
             } else {
-                builder.logicDeletedTrueValue( configuration.getLogicDeletedTrueValue() )
-                        .logicDeletedFalseValue( configuration.getLogicDeletedFalseValue() );
+                // 全局
+                deletedValue = Optional.ofNullable( configuration.getLogicDeletedTrueValue() ).orElse( null );
+                notDeletedValue = Optional.ofNullable( configuration.getLogicDeletedFalseValue() ).orElse( null );
             }
+            // 将值转换成对应类型值
+            builder.logicDeletedTrueValue( Optional.ofNullable( deletedValue ).map( it ->
+                    PrimitiveRegistry.convert( builder.javaType(), it ) ).orElse( null ) );
+            builder.logicDeletedFalseValue( Optional.ofNullable( notDeletedValue ).map( it ->
+                    PrimitiveRegistry.convert( builder.javaType(), it ) ).orElse( null ) );
         }
     }
 
