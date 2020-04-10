@@ -219,26 +219,28 @@ public class MyBatisAutoConfiguration implements InitializingBean {
                 }
             }
         }
-        /////// 注入必要拦截器 ///////
-        // 默认审计插件(主键、逻辑删除)
-        if ( pluginRegistrable( SystemBuiltinAuditingInterceptor.class ) ) {
-            Interceptor interceptor = new SystemBuiltinAuditingInterceptor();
-            interceptorList.add( interceptor );
-            registerExistingInterceptorBean( interceptor );
-        }
+        /////// 注入内置拦截器 ///////
+        if ( customConfiguration.isAutoRegisterBuiltinPlugin() ) {
+            // 默认审计插件(主键、逻辑删除)
+            if ( pluginRegistrable( SystemBuiltinAuditingInterceptor.class ) ) {
+                Interceptor interceptor = new SystemBuiltinAuditingInterceptor();
+                interceptorList.add( interceptor );
+                registerExistingInterceptorBean( interceptor );
+            }
 
-        // 批量保存操作Statement插件
-        if ( pluginRegistrable( BatchStatementInterceptor.class ) ) {
-            Interceptor interceptor = new BatchStatementInterceptor();
-            interceptorList.add( interceptor );
-            registerExistingInterceptorBean( interceptor );
-        }
+            // 批量保存操作Statement插件
+            if ( pluginRegistrable( BatchStatementInterceptor.class ) ) {
+                Interceptor interceptor = new BatchStatementInterceptor();
+                interceptorList.add( interceptor );
+                registerExistingInterceptorBean( interceptor );
+            }
 
-        // 批量保存操作参数拦截插件
-        if ( pluginRegistrable( BatchParameterFilterInterceptor.class ) ) {
-            Interceptor interceptor = new BatchParameterFilterInterceptor();
-            interceptorList.add( interceptor );
-            registerExistingInterceptorBean( interceptor );
+            // 批量保存操作参数拦截插件
+            if ( pluginRegistrable( BatchParameterFilterInterceptor.class ) ) {
+                Interceptor interceptor = new BatchParameterFilterInterceptor();
+                interceptorList.add( interceptor );
+                registerExistingInterceptorBean( interceptor );
+            }
         }
     }
 
