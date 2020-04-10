@@ -1,7 +1,9 @@
 package com.wkit.lost.mybatis.starter.example;
 
+import com.wkit.lost.mybatis.plugins.data.auditing.SystemBuiltinAuditingInterceptor;
 import com.wkit.lost.mybatis.spring.boot.data.auditing.EnableMetadataAuditing;
 import com.wkit.lost.mybatis.spring.boot.plugin.EnableInterceptors;
+import com.wkit.lost.mybatis.spring.boot.plugin.Plugin;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableMetadataAuditing( automatic = true )
 @EnableInterceptors
+//( interceptors = { @Plugin( value = SystemBuiltinAuditingInterceptor.class, order = 33 ) } )
 @EnableTransactionManagement
 @EnableConfigurationProperties
 @SpringBootApplication

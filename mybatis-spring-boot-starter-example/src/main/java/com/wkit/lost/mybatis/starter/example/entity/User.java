@@ -21,7 +21,6 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Table( name = "SYS_USER" )
 @Data
@@ -39,7 +38,8 @@ public class User implements Serializable {
     private Integer state;
     private Integer score;
     private Integer sex;
-    @Column( name = "IS_DELETED" )
+    @LogicDeletion
+    // @Column( name = "IS_DELETED" )
     private Boolean deleted;
     @Version
     private Integer version;

@@ -43,10 +43,8 @@ public class InsertApplication extends RootTestRunner {
     @Test
     public void saveTest() {
         User user = new User();
-        user.setUserName( "张三" ).setPassword( "123456a" )
-                .setState( 1 ).setScore( 88 ).setSex( 1 ).setVersion( 1 )
-                .setCreatedUserId( DEF_SYS_USER_ID ).setCreatedUserName( DEF_SYS_USER_NAME )
-                .setGmtCreated( LocalDateTime.now() ).setDeleted( false );
+        user.setUserName( "兮兮" ).setPassword( "123456test" )
+                .setState( 1 ).setScore( 88 ).setSex( 1 ).setVersion( 1 ).setDeleted( false );
         int result = userService.save( user );
         log.info( "执行结果: {}", result );
     }
