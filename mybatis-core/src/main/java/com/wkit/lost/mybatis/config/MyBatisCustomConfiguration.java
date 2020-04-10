@@ -110,9 +110,19 @@ public class MyBatisCustomConfiguration implements Serializable {
     private boolean autoDiscernPrimaryKey = false;
 
     /**
-     * 布尔值属性映射的字段自动添加IS前缀
+     * 布尔值属性映射的字段是否自动添加is前缀
      */
     private boolean booleanPropertyAutoAddIsPrefix = true;
+
+    /**
+     * 是否自动注册内置插件
+     * <pre>
+     *     {@link com.wkit.lost.mybatis.plugins.data.auditing.SystemBuiltinAuditingInterceptor}
+     *     {@link com.wkit.lost.mybatis.plugins.batch.BatchStatementInterceptor}
+     *     {@link com.wkit.lost.mybatis.plugins.batch.BatchParameterFilterInterceptor}
+     * </pre>
+     */
+    private boolean autoRegisterBuiltinPlugin = true;
 
     /**
      * 全局主键标识(用于自动识别主键)
