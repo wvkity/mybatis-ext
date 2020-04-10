@@ -368,12 +368,12 @@ public final class ScriptUtil {
     /**
      * 转换成参数
      * <pre>
-     *     // Examples: 
+     *     // Examples:
      *     // execute = {@link Execute#REPLACE} && tableAlias == null
      *     ScriptUtil.convertPartArg()
-     *     return: 
+     *     return:
      *     USER_NAME = #{entity.userName}
-     *     return: 
+     *     return:
      *     USER_NAME = #{entity.userName, javaType="java.lang.String", jdbcType="VARCHAR", typeHandler="xx.xxx.ClassName"}
      *
      *     // execute = {@link Execute#REPLACE} && tableAlias != null
@@ -582,6 +582,59 @@ public final class ScriptUtil {
         }
         if ( isUseJavaType && javaType != null ) {
             builder.append( ", javaType=" ).append( javaType.getCanonicalName() );
+        }
+        return builder.toString();
+    }
+
+    /**
+     * 转换成查询字段参数
+     * @param column 字段包装对象
+     * @return 查询字段
+     */
+    public static String convertQueryArg( final ColumnWrapper column ) {
+        return convertQueryArg( null, column, null, false );
+    }
+
+    /**
+     * 转换成查询字段参数
+     * @param tableAlias 表别名
+     * @param column     字段包装对象
+     * @param reference  实体中的引用属性
+     * @param apply      是否带上属性名
+     * @return 查询字段
+     */
+    public static String convertQueryArg( final String tableAlias, final ColumnWrapper column,
+                                          final String reference, final boolean apply ) {
+        String columnAlias;
+        if ( apply ) {
+            columnAlias = StringUtil.hasText( reference ) ? ( reference + Constants.CHAR_DOT + column.getProperty() )
+                    : column.getProperty();
+        } else {
+            columnAlias = null;
+        }
+        return convertQueryArg( tableAlias, column.getColumn(), columnAlias );
+    }
+
+    /**
+     * 转换成查询字段参数
+     * @param tableAlias  表别名
+     * @param column      字段
+     * @param columnAlias 字段别名
+     * @return 查询字段
+     */
+    public static String convertQueryArg( final String tableAlias, final String column, final String columnAlias ) {
+        StringBuilder builder = new StringBuilder( 40 );
+        if ( StringUtil.hasText( tableAlias ) ) {
+            builder.append( tableAlias ).append( Constants.CHAR_DOT );
+        }
+        builder.append( column );
+        if ( StringUtil.hasText( columnAlias ) ) {
+            builder.append( Constants.CHAR_SPACE );
+            if ( columnAlias.contains( Constants.CHAR_DOT ) ) {
+                builder.append( Constants.CHAR_QUOTE ).append( columnAlias ).append( Constants.CHAR_QUOTE );
+            } else {
+                builder.append( columnAlias );
+            }
         }
         return builder.toString();
     }

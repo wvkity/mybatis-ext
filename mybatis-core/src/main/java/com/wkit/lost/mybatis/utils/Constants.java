@@ -92,4 +92,8 @@ public interface Constants {
     String CHAR_EMPTY = "";
     String CHAR_SPACE = " ";
     String CHAR_COMMA = ",";
+    String CHAR_BRACKET_LEFT = "(";
+    String CHAR_BRACKET_RIGHT = ")";
+    String ARG_ITEM = "item";
+    String ARG_HASH_ITEM = "#{item}";
 }

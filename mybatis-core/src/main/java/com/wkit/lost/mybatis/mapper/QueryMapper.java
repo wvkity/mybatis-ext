@@ -35,7 +35,7 @@ public interface QueryMapper<T, V> {
      * @param entity 指定对象
      * @return 记录数
      */
-    long count( T entity );
+    long count( @Param( Constants.PARAM_ENTITY ) T entity );
 
     /**
      * 根据条件查询记录
