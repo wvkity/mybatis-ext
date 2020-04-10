@@ -22,23 +22,23 @@ public interface LambdaConverter<P> extends Serializable {
      * @param property lambda对象
      * @return 字符串
      */
-    String lambdaToProperty( P property );
+    String lambdaToProperty(P property);
 
     /**
      * lambda对象转属性
      * @param properties lambda对象数组
      * @return 属性集合
      */
-    @SuppressWarnings( "unchecked" )
-    default List<String> lambdaToProperties( P... properties ) {
+    @SuppressWarnings("unchecked")
+    default List<String> lambdaToProperties(P... properties) {
         List<String> props;
-        if ( !ArrayUtil.isEmpty( properties ) ) {
-            props = Stream.of( properties )
-                    .filter( Objects::nonNull )
-                    .map( this::lambdaToProperty )
-                    .collect( Collectors.toList() );
+        if (!ArrayUtil.isEmpty(properties)) {
+            props = Stream.of(properties)
+                    .filter(Objects::nonNull)
+                    .map(this::lambdaToProperty)
+                    .collect(Collectors.toList());
         } else {
-            props = new ArrayList<>( 0 );
+            props = new ArrayList<>(0);
         }
         return props;
     }

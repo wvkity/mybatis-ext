@@ -10,15 +10,15 @@ public abstract class AbstractGeneralQueryMethod<T extends Provider> extends Abs
         implements ProviderBuilder<T> {
 
     @Override
-    public MappedStatement injectMappedStatement( TableWrapper table, Class<?> mapperInterface, Class<?> resultType ) {
+    public MappedStatement injectMappedStatement(TableWrapper table, Class<?> mapperInterface, Class<?> resultType) {
         Class<?> entity = table.getEntity();
-        return addSelectMappedStatement( mapperInterface, applyMethod(), createSqlSource(
-                createScriptBuilder( table, target() ), entity ), entity, resultType, table );
+        return addSelectMappedStatement(mapperInterface, applyMethod(), createSqlSource(
+                createScriptBuilder(table, target()), entity), entity, resultType, table);
     }
 
-    @SuppressWarnings( { "unchecked" } )
+    @SuppressWarnings({"unchecked"})
     @Override
     public T target() {
-        return ( T ) ProviderCache.newInstance( getClass() );
+        return (T) ProviderCache.newInstance(getClass());
     }
 }

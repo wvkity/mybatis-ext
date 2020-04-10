@@ -21,7 +21,7 @@ public class ImmediateIn<T> extends AbstractImmediateRangeExpression<T> {
      * @param values 值
      * @param logic  逻辑符号
      */
-    ImmediateIn( String column, Collection<Object> values, Logic logic ) {
+    ImmediateIn(String column, Collection<Object> values, Logic logic) {
         this.column = column;
         this.values = values;
         this.logic = logic;
@@ -35,7 +35,7 @@ public class ImmediateIn<T> extends AbstractImmediateRangeExpression<T> {
      * @param values     值
      * @param logic      逻辑符号
      */
-    ImmediateIn( String tableAlias, String column, Collection<Object> values, Logic logic ) {
+    ImmediateIn(String tableAlias, String column, Collection<Object> values, Logic logic) {
         this.tableAlias = tableAlias;
         this.column = column;
         this.values = values;
@@ -50,7 +50,7 @@ public class ImmediateIn<T> extends AbstractImmediateRangeExpression<T> {
      * @param values   值
      * @param logic    逻辑符号
      */
-    ImmediateIn( Criteria<T> criteria, String column, Collection<Object> values, Logic logic ) {
+    ImmediateIn(Criteria<T> criteria, String column, Collection<Object> values, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.values = values;
@@ -65,8 +65,8 @@ public class ImmediateIn<T> extends AbstractImmediateRangeExpression<T> {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateIn<T> create( String column, Collection<Object> values ) {
-        return create( column, values, Logic.AND );
+    public static <T> ImmediateIn<T> create(String column, Collection<Object> values) {
+        return create(column, values, Logic.AND);
     }
 
     /**
@@ -77,9 +77,9 @@ public class ImmediateIn<T> extends AbstractImmediateRangeExpression<T> {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateIn<T> create( String column, Collection<Object> values, Logic logic ) {
-        if ( hasText( column ) ) {
-            return new ImmediateIn<>( column, values, logic );
+    public static <T> ImmediateIn<T> create(String column, Collection<Object> values, Logic logic) {
+        if (hasText(column)) {
+            return new ImmediateIn<>(column, values, logic);
         }
         return null;
     }
@@ -92,8 +92,8 @@ public class ImmediateIn<T> extends AbstractImmediateRangeExpression<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateIn<T> create( String tableAlias, String column, Collection<Object> values ) {
-        return create( tableAlias, column, values, Logic.AND );
+    public static <T> ImmediateIn<T> create(String tableAlias, String column, Collection<Object> values) {
+        return create(tableAlias, column, values, Logic.AND);
     }
 
     /**
@@ -105,10 +105,10 @@ public class ImmediateIn<T> extends AbstractImmediateRangeExpression<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateIn<T> create( String tableAlias, String column,
-                                             Collection<Object> values, Logic logic ) {
-        if ( hasText( column ) ) {
-            return new ImmediateIn<>( tableAlias, column, values, logic );
+    public static <T> ImmediateIn<T> create(String tableAlias, String column,
+                                            Collection<Object> values, Logic logic) {
+        if (hasText(column)) {
+            return new ImmediateIn<>(tableAlias, column, values, logic);
         }
         return null;
     }
@@ -121,8 +121,8 @@ public class ImmediateIn<T> extends AbstractImmediateRangeExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateIn<T> create( Criteria<T> criteria, String column, Collection<Object> values ) {
-        return create( criteria, column, values, Logic.AND );
+    public static <T> ImmediateIn<T> create(Criteria<T> criteria, String column, Collection<Object> values) {
+        return create(criteria, column, values, Logic.AND);
     }
 
     /**
@@ -134,10 +134,10 @@ public class ImmediateIn<T> extends AbstractImmediateRangeExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateIn<T> create( Criteria<T> criteria, String column,
-                                             Collection<Object> values, Logic logic ) {
-        if ( criteria != null && hasText( column ) ) {
-            return new ImmediateIn<>( criteria, column, values, logic );
+    public static <T> ImmediateIn<T> create(Criteria<T> criteria, String column,
+                                            Collection<Object> values, Logic logic) {
+        if (criteria != null && hasText(column)) {
+            return new ImmediateIn<>(criteria, column, values, logic);
         }
         return null;
     }

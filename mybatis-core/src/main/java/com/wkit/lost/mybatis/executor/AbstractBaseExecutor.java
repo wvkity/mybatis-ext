@@ -24,59 +24,59 @@ import java.util.Optional;
  */
 public abstract class AbstractBaseExecutor extends BaseExecutor {
 
-    protected AbstractBaseExecutor( Configuration configuration, Transaction transaction ) {
-        super( configuration, transaction );
+    protected AbstractBaseExecutor(Configuration configuration, Transaction transaction) {
+        super(configuration, transaction);
     }
 
     @Override
-    public CacheKey createCacheKey( MappedStatement ms, Object parameterObject, RowBounds rowBounds, BoundSql boundSql ) {
-        if ( super.isClosed() ) {
-            throw new ExecutorException( "Executor was closed." );
+    public CacheKey createCacheKey(MappedStatement ms, Object parameterObject, RowBounds rowBounds, BoundSql boundSql) {
+        if (super.isClosed()) {
+            throw new ExecutorException("Executor was closed.");
         }
         CacheKey cacheKey = new CacheKey();
-        cacheKey.update( ms.getId() );
+        cacheKey.update(ms.getId());
         Object offset = rowBounds.getOffset();
         Object limit = rowBounds.getLimit();
-        if ( parameterObject instanceof Map ) {
-            Map<?, ?> parameterMap = ( Map<?, ?> ) parameterObject;
+        if (parameterObject instanceof Map) {
+            Map<?, ?> parameterMap = (Map<?, ?>) parameterObject;
             Optional<? extends Map.Entry<?, ?>> optional = parameterMap.entrySet().stream()
-                    .filter( it -> it.getValue() instanceof Pageable ).findFirst();
-            if ( optional.isPresent() ) {
-                Pageable pageable = ( Pageable ) optional.get().getValue();
+                    .filter(it -> it.getValue() instanceof Pageable).findFirst();
+            if (optional.isPresent()) {
+                Pageable pageable = (Pageable) optional.get().getValue();
                 offset = pageable.getPage();
                 limit = pageable.getSize();
             }
-        } else if ( parameterObject instanceof Pageable ) {
-            Pageable pageable = ( Pageable ) parameterObject;
+        } else if (parameterObject instanceof Pageable) {
+            Pageable pageable = (Pageable) parameterObject;
             offset = pageable.getPage();
             limit = pageable.getSize();
         }
-        cacheKey.update( offset );
-        cacheKey.update( limit );
-        cacheKey.update( boundSql.getSql() );
+        cacheKey.update(offset);
+        cacheKey.update(limit);
+        cacheKey.update(boundSql.getSql());
         List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
         TypeHandlerRegistry typeHandlerRegistry = ms.getConfiguration().getTypeHandlerRegistry();
         // mimic DefaultParameterHandler logic
-        for ( ParameterMapping parameterMapping : parameterMappings ) {
-            if ( parameterMapping.getMode() != ParameterMode.OUT ) {
+        for (ParameterMapping parameterMapping : parameterMappings) {
+            if (parameterMapping.getMode() != ParameterMode.OUT) {
                 Object value;
                 String propertyName = parameterMapping.getProperty();
-                if ( boundSql.hasAdditionalParameter( propertyName ) ) {
-                    value = boundSql.getAdditionalParameter( propertyName );
-                } else if ( parameterObject == null ) {
+                if (boundSql.hasAdditionalParameter(propertyName)) {
+                    value = boundSql.getAdditionalParameter(propertyName);
+                } else if (parameterObject == null) {
                     value = null;
-                } else if ( typeHandlerRegistry.hasTypeHandler( parameterObject.getClass() ) ) {
+                } else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
                     value = parameterObject;
                 } else {
-                    MetaObject metaObject = configuration.newMetaObject( parameterObject );
-                    value = metaObject.getValue( propertyName );
+                    MetaObject metaObject = configuration.newMetaObject(parameterObject);
+                    value = metaObject.getValue(propertyName);
                 }
-                cacheKey.update( value );
+                cacheKey.update(value);
             }
         }
-        if ( configuration.getEnvironment() != null ) {
+        if (configuration.getEnvironment() != null) {
             // issue #176
-            cacheKey.update( configuration.getEnvironment().getId() );
+            cacheKey.update(configuration.getEnvironment().getId());
         }
         return cacheKey;
     }

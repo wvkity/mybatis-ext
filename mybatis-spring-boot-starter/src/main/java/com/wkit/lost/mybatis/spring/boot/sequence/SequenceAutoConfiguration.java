@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Optional;
 
 @Configuration
-@EnableConfigurationProperties( SequenceProperties.class )
+@EnableConfigurationProperties(SequenceProperties.class)
 public class SequenceAutoConfiguration {
 
     private static final int WORKER_BIT = 5;
@@ -22,33 +22,33 @@ public class SequenceAutoConfiguration {
 
     private final SequenceProperties properties;
 
-    public SequenceAutoConfiguration( SequenceProperties properties ) {
+    public SequenceAutoConfiguration(SequenceProperties properties) {
         this.properties = properties;
     }
 
     @Bean
     @ConditionalOnMissingBean
     public Sequence sequence() {
-        return Optional.ofNullable( properties ).map( it -> {
-            if ( it.getLevel() == Level.SECONDS ) {
-                if ( it.getRule() == Rule.MAC ) {
-                    return new SecondsSequenceFactory( it.getEpochTimestamp() )
-                            .build( SequenceUtil.getDefaultWorkerId( WORKER_BIT, DATA_CENTER_BIT ),
-                                    SequenceUtil.getDefaultDataCenterId( DATA_CENTER_BIT ) );
+        return Optional.ofNullable(properties).map(it -> {
+            if (it.getLevel() == Level.SECONDS) {
+                if (it.getRule() == Rule.MAC) {
+                    return new SecondsSequenceFactory(it.getEpochTimestamp())
+                            .build(SequenceUtil.getDefaultWorkerId(WORKER_BIT, DATA_CENTER_BIT),
+                                    SequenceUtil.getDefaultDataCenterId(DATA_CENTER_BIT));
                 } else {
-                    return new SecondsSequenceFactory( it.getEpochTimestamp() )
-                            .build( it.getWorkerId(), it.getDataCenterId() );
+                    return new SecondsSequenceFactory(it.getEpochTimestamp())
+                            .build(it.getWorkerId(), it.getDataCenterId());
                 }
             } else {
-                if ( it.getRule() == Rule.MAC ) {
-                    return new MillisecondsSequenceFactory( it.getEpochTimestamp() )
-                            .build( SequenceUtil.getDefaultWorkerId( WORKER_BIT, DATA_CENTER_BIT ),
-                                    SequenceUtil.getDefaultDataCenterId( DATA_CENTER_BIT ) );
+                if (it.getRule() == Rule.MAC) {
+                    return new MillisecondsSequenceFactory(it.getEpochTimestamp())
+                            .build(SequenceUtil.getDefaultWorkerId(WORKER_BIT, DATA_CENTER_BIT),
+                                    SequenceUtil.getDefaultDataCenterId(DATA_CENTER_BIT));
                 } else {
-                    return new MillisecondsSequenceFactory( it.getEpochTimestamp() )
-                            .build( it.getWorkerId(), it.getDataCenterId() );
+                    return new MillisecondsSequenceFactory(it.getEpochTimestamp())
+                            .build(it.getWorkerId(), it.getDataCenterId());
                 }
             }
-        } ).orElse( new MillisecondsSequenceFactory().build() );
+        }).orElse(new MillisecondsSequenceFactory().build());
     }
 }

@@ -15,25 +15,25 @@ import java.util.Properties;
  * 乐观锁拦截器
  * @author wvkity
  */
-@Intercepts( {
-        @Signature( type = Executor.class, method = "update", args = { MappedStatement.class, Object.class } )
-} )
+@Intercepts({
+        @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})
+})
 public class OptimisticLockingInterceptor implements Interceptor {
 
     private final Processor processor = new OptimisticLockingProcessor();
 
     @Override
-    public Object intercept( Invocation invocation ) throws Throwable {
-        return processor.intercept( invocation );
+    public Object intercept(Invocation invocation) throws Throwable {
+        return processor.intercept(invocation);
     }
 
     @Override
-    public Object plugin( Object target ) {
-        return Plugin.wrap( target, this );
+    public Object plugin(Object target) {
+        return Plugin.wrap(target, this);
     }
 
     @Override
-    public void setProperties( Properties properties ) {
-        processor.setProperties( properties );
+    public void setProperties(Properties properties) {
+        processor.setProperties(properties);
     }
 }

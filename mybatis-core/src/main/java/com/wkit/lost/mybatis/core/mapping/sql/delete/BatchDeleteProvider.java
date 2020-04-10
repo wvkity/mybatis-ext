@@ -17,13 +17,13 @@ public class BatchDeleteProvider extends AbstractProvider {
 
     @Override
     public String build() {
-        String script = "(" + ScriptUtil.convertTrimTag( table.columns().stream().map( it ->
-                        ScriptUtil.convertIfTagWithNotNull( null, it, "item", true,
-                                false, Symbol.EQ, Logic.AND, Constants.CHAR_EMPTY, Execute.REPLACE ) )
-                        .collect( Collectors.joining( Constants.CHAR_EMPTY, Constants.NEW_LINE, Constants.NEW_LINE ) ),
-                null, null, "AND ", null ) + ") ";
-        return delete( ScriptUtil.convertWhereTag( ScriptUtil.convertTrimTag(
-                ScriptUtil.convertForeachTag( ( script ), Constants.PARAM_ENTITIES, "item", null, 
-                        null, "OR " ), null, null, "OR ", null ) ) );
+        String script = "(" + ScriptUtil.convertTrimTag(table.columns().stream().map(it ->
+                        ScriptUtil.convertIfTagWithNotNull(null, it, "item", true,
+                                false, Symbol.EQ, Logic.AND, Constants.CHAR_EMPTY, Execute.REPLACE))
+                        .collect(Collectors.joining(Constants.CHAR_EMPTY, Constants.NEW_LINE, Constants.NEW_LINE)),
+                null, null, "AND ", null) + ") ";
+        return delete(ScriptUtil.convertWhereTag(ScriptUtil.convertTrimTag(
+                ScriptUtil.convertForeachTag((script), Constants.PARAM_ENTITIES, "item", null,
+                        null, "OR "), null, null, "OR ", null)));
     }
 }

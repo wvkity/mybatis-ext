@@ -68,11 +68,11 @@ import java.util.function.Consumer;
 
 @Log4j2
 @org.springframework.context.annotation.Configuration
-@ConditionalOnClass( { SqlSessionFactory.class, org.mybatis.spring.SqlSessionFactoryBean.class } )
-@ConditionalOnSingleCandidate( DataSource.class )
-@EnableConfigurationProperties( MyBatisProperties.class )
-@AutoConfigureAfter( DataSourceAutoConfiguration.class )
-@AutoConfigureBefore( name = "org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration" )
+@ConditionalOnClass({SqlSessionFactory.class, org.mybatis.spring.SqlSessionFactoryBean.class})
+@ConditionalOnSingleCandidate(DataSource.class)
+@EnableConfigurationProperties(MyBatisProperties.class)
+@AutoConfigureAfter(DataSourceAutoConfiguration.class)
+@AutoConfigureBefore(name = "org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration")
 public class MyBatisAutoConfiguration implements InitializingBean {
 
     private final MyBatisProperties properties;
@@ -85,13 +85,13 @@ public class MyBatisAutoConfiguration implements InitializingBean {
     private final DefaultListableBeanFactory beanFactory;
     private final AutowireCapableBeanFactory autowireBeanFactory;
 
-    public MyBatisAutoConfiguration( MyBatisProperties properties,
-                                     ObjectProvider<Interceptor[]> interceptorsProvider,
-                                     ResourceLoader resourceLoader,
-                                     ObjectProvider<DatabaseIdProvider> databaseIdProvider,
-                                     ObjectProvider<List<ConfigurationCustomizer>> configurationCustomizersProvider,
-                                     ObjectProvider<List<PropertiesCustomizer>> propertiesCustomizersProvider,
-                                     ApplicationContext applicationContext ) {
+    public MyBatisAutoConfiguration(MyBatisProperties properties,
+                                    ObjectProvider<Interceptor[]> interceptorsProvider,
+                                    ResourceLoader resourceLoader,
+                                    ObjectProvider<DatabaseIdProvider> databaseIdProvider,
+                                    ObjectProvider<List<ConfigurationCustomizer>> configurationCustomizersProvider,
+                                    ObjectProvider<List<PropertiesCustomizer>> propertiesCustomizersProvider,
+                                    ApplicationContext applicationContext) {
         AutowireCapableBeanFactory autowireCapableBeanFactory = null;
         this.properties = properties;
         this.interceptors = interceptorsProvider.getIfAvailable();
@@ -100,12 +100,12 @@ public class MyBatisAutoConfiguration implements InitializingBean {
         this.configurationCustomizers = configurationCustomizersProvider.getIfAvailable();
         this.propertiesCustomizers = propertiesCustomizersProvider.getIfAvailable();
         this.applicationContext = applicationContext;
-        if ( applicationContext instanceof GenericApplicationContext ) {
-            GenericApplicationContext context = ( ( GenericApplicationContext ) applicationContext );
+        if (applicationContext instanceof GenericApplicationContext) {
+            GenericApplicationContext context = ((GenericApplicationContext) applicationContext);
             this.beanFactory = context.getDefaultListableBeanFactory();
             try {
                 autowireCapableBeanFactory = context.getAutowireCapableBeanFactory();
-            } catch ( Exception e ) {
+            } catch (Exception e) {
                 // ignore
             }
         } else {
@@ -116,87 +116,87 @@ public class MyBatisAutoConfiguration implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if ( !CollectionUtils.isEmpty( propertiesCustomizers ) ) {
-            this.propertiesCustomizers.forEach( customizer -> customizer.customize( this.properties ) );
+        if (!CollectionUtils.isEmpty(propertiesCustomizers)) {
+            this.propertiesCustomizers.forEach(customizer -> customizer.customize(this.properties));
         }
         checkConfigFileExists();
     }
 
     private void checkConfigFileExists() {
-        if ( this.properties.isCheckConfigLocation() && StringUtils.hasText( this.properties.getConfigLocation() ) ) {
-            Resource resource = this.resourceLoader.getResource( this.properties.getConfigLocation() );
-            Assert.state( resource.exists(), "Cannot find config location: " + resource
-                    + " (please add config file or check your MyBatis configuration)" );
+        if (this.properties.isCheckConfigLocation() && StringUtils.hasText(this.properties.getConfigLocation())) {
+            Resource resource = this.resourceLoader.getResource(this.properties.getConfigLocation());
+            Assert.state(resource.exists(), "Cannot find config location: " + resource
+                    + " (please add config file or check your MyBatis configuration)");
         }
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public SqlSessionFactory sqlSessionFactory( DataSource dataSource ) throws Exception {
+    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
         // 全局配置
         MyBatisCustomConfiguration customConfig;
-        if ( !ObjectUtils.isEmpty( this.properties.getCustomConfiguration() ) ) {
+        if (!ObjectUtils.isEmpty(this.properties.getCustomConfiguration())) {
             customConfig = this.properties.getCustomConfiguration();
         } else {
             // 优先从容器中获取
-            if ( hasBeanFromContext( MyBatisCustomConfiguration.class ) ) {
-                customConfig = getBean( MyBatisCustomConfiguration.class );
+            if (hasBeanFromContext(MyBatisCustomConfiguration.class)) {
+                customConfig = getBean(MyBatisCustomConfiguration.class);
             } else {
                 // 直接创建
                 customConfig = MyBatisConfigCache.defaults();
             }
         }
         SqlSessionFactoryBean factory = new SqlSessionFactoryBean();
-        factory.setDataSource( dataSource );
-        factory.setVfs( SpringBootVFS.class );
-        if ( StringUtil.hasText( this.properties.getConfigLocation() ) ) {
-            factory.setConfigLocation( this.resourceLoader.getResource( this.properties.getConfigLocation() ) );
+        factory.setDataSource(dataSource);
+        factory.setVfs(SpringBootVFS.class);
+        if (StringUtil.hasText(this.properties.getConfigLocation())) {
+            factory.setConfigLocation(this.resourceLoader.getResource(this.properties.getConfigLocation()));
         }
-        applyConfiguration( factory );
-        if ( this.properties.getConfigurationProperties() != null ) {
-            factory.setConfigurationProperties( this.properties.getConfigurationProperties() );
+        applyConfiguration(factory);
+        if (this.properties.getConfigurationProperties() != null) {
+            factory.setConfigurationProperties(this.properties.getConfigurationProperties());
         }
         // 注册内置的插件
-        List<Interceptor> interceptorList = new ArrayList<>( ArrayUtil.toList( this.interceptors ) );
-        registerPlugins( customConfig, interceptorList );
-        if ( !CollectionUtils.isEmpty( interceptorList ) ) {
-            factory.setPlugins( interceptorList.toArray( new Interceptor[ 0 ] ) );
+        List<Interceptor> interceptorList = new ArrayList<>(ArrayUtil.toList(this.interceptors));
+        registerPlugins(customConfig, interceptorList);
+        if (!CollectionUtils.isEmpty(interceptorList)) {
+            factory.setPlugins(interceptorList.toArray(new Interceptor[0]));
         }
-        if ( this.databaseIdProvider != null ) {
-            factory.setDatabaseIdProvider( this.databaseIdProvider );
+        if (this.databaseIdProvider != null) {
+            factory.setDatabaseIdProvider(this.databaseIdProvider);
         }
-        if ( StringUtils.hasLength( this.properties.getTypeAliasesPackage() ) ) {
-            factory.setTypeAliasesPackage( this.properties.getTypeAliasesPackage() );
+        if (StringUtils.hasLength(this.properties.getTypeAliasesPackage())) {
+            factory.setTypeAliasesPackage(this.properties.getTypeAliasesPackage());
         }
-        if ( StringUtils.hasLength( this.properties.getTypeEnumsPackage() ) ) {
-            factory.setTypeEnumsPackage( this.properties.getTypeEnumsPackage() );
+        if (StringUtils.hasLength(this.properties.getTypeEnumsPackage())) {
+            factory.setTypeEnumsPackage(this.properties.getTypeEnumsPackage());
         }
-        if ( this.properties.getTypeAliasesSuperType() != null ) {
-            factory.setTypeAliasesSuperType( this.properties.getTypeAliasesSuperType() );
+        if (this.properties.getTypeAliasesSuperType() != null) {
+            factory.setTypeAliasesSuperType(this.properties.getTypeAliasesSuperType());
         }
-        if ( StringUtils.hasLength( this.properties.getTypeHandlersPackage() ) ) {
-            factory.setTypeHandlersPackage( this.properties.getTypeHandlersPackage() );
+        if (StringUtils.hasLength(this.properties.getTypeHandlersPackage())) {
+            factory.setTypeHandlersPackage(this.properties.getTypeHandlersPackage());
         }
-        if ( !ObjectUtils.isEmpty( this.properties.resolveMapperLocations() ) ) {
-            factory.setMapperLocations( this.properties.resolveMapperLocations() );
+        if (!ObjectUtils.isEmpty(this.properties.resolveMapperLocations())) {
+            factory.setMapperLocations(this.properties.resolveMapperLocations());
         }
         // SQL注入器
-        ifPresent( Injector.class, customConfig::setInjector );
+        ifPresent(Injector.class, customConfig::setInjector);
         // 实体解析器
-        ifPresent( EntityParser.class, customConfig::setEntityParser );
+        ifPresent(EntityParser.class, customConfig::setEntityParser);
         // 属性解析器
-        ifPresent( FieldParser.class, customConfig::setFieldParser );
+        ifPresent(FieldParser.class, customConfig::setFieldParser);
         // 主键生成器
-        if ( hasBeanFromContext( KeyGenerator.class ) ) {
-            customConfig.setKeyGenerator( getBean( KeyGenerator.class ) );
+        if (hasBeanFromContext(KeyGenerator.class)) {
+            customConfig.setKeyGenerator(getBean(KeyGenerator.class));
         } else {
-            customConfig.setKeyGenerator( new GuidGenerator() );
+            customConfig.setKeyGenerator(new GuidGenerator());
         }
         // 雪花算法主键生成器
-        ifPresent( Sequence.class, customConfig::setSequence );
+        ifPresent(Sequence.class, customConfig::setSequence);
         // 元数据审计
-        ifPresent( MetadataAuditable.class, customConfig::setMetadataAuditable );
-        factory.setCustomConfiguration( customConfig );
+        ifPresent(MetadataAuditable.class, customConfig::setMetadataAuditable);
+        factory.setCustomConfiguration(customConfig);
         return factory.getObject();
     }
 
@@ -205,50 +205,50 @@ public class MyBatisAutoConfiguration implements InitializingBean {
      * @param customConfiguration mybatis自定义配置
      * @param interceptorList     插件(拦截器)集合
      */
-    private void registerPlugins( MyBatisCustomConfiguration customConfiguration, List<Interceptor> interceptorList ) {
+    private void registerPlugins(MyBatisCustomConfiguration customConfiguration, List<Interceptor> interceptorList) {
         // 存在多个插件，由于内部使用代理(代理类又被代理)，越是在外面优先级越高
         List<Class<? extends Interceptor>> plugins = customConfiguration.getPlugins();
-        if ( !CollectionUtils.isEmpty( plugins ) ) {
-            for ( Class<? extends Interceptor> plugin : new LinkedHashSet<>( plugins ) ) {
-                if ( plugin != null && pluginRegistrable( plugin ) ) {
-                    Optional.ofNullable( newInstance( plugin ) )
-                            .ifPresent( interceptor -> {
-                                interceptorList.add( interceptor );
-                                registerExistingInterceptorBean( interceptor );
-                            } );
+        if (!CollectionUtils.isEmpty(plugins)) {
+            for (Class<? extends Interceptor> plugin : new LinkedHashSet<>(plugins)) {
+                if (plugin != null && pluginRegistrable(plugin)) {
+                    Optional.ofNullable(newInstance(plugin))
+                            .ifPresent(interceptor -> {
+                                interceptorList.add(interceptor);
+                                registerExistingInterceptorBean(interceptor);
+                            });
                 }
             }
         }
         /////// 注入内置拦截器 ///////
-        if ( customConfiguration.isAutoRegisterBuiltinPlugin() ) {
+        if (customConfiguration.isAutoRegisterBuiltinPlugin()) {
             // 默认审计插件(主键、逻辑删除)
-            if ( pluginRegistrable( SystemBuiltinAuditingInterceptor.class ) ) {
+            if (pluginRegistrable(SystemBuiltinAuditingInterceptor.class)) {
                 Interceptor interceptor = new SystemBuiltinAuditingInterceptor();
-                interceptorList.add( interceptor );
-                registerExistingInterceptorBean( interceptor );
+                interceptorList.add(interceptor);
+                registerExistingInterceptorBean(interceptor);
             }
 
             // 批量保存操作Statement插件
-            if ( pluginRegistrable( BatchStatementInterceptor.class ) ) {
+            if (pluginRegistrable(BatchStatementInterceptor.class)) {
                 Interceptor interceptor = new BatchStatementInterceptor();
-                interceptorList.add( interceptor );
-                registerExistingInterceptorBean( interceptor );
+                interceptorList.add(interceptor);
+                registerExistingInterceptorBean(interceptor);
             }
 
             // 批量保存操作参数拦截插件
-            if ( pluginRegistrable( BatchParameterFilterInterceptor.class ) ) {
+            if (pluginRegistrable(BatchParameterFilterInterceptor.class)) {
                 Interceptor interceptor = new BatchParameterFilterInterceptor();
-                interceptorList.add( interceptor );
-                registerExistingInterceptorBean( interceptor );
+                interceptorList.add(interceptor);
+                registerExistingInterceptorBean(interceptor);
             }
         }
     }
 
-    private <T> T newInstance( Class<T> clazz ) {
-        if ( clazz != null ) {
+    private <T> T newInstance(Class<T> clazz) {
+        if (clazz != null) {
             try {
                 return clazz.getDeclaredConstructor().newInstance();
-            } catch ( Exception e ) {
+            } catch (Exception e) {
                 // ignore
             }
         }
@@ -261,10 +261,10 @@ public class MyBatisAutoConfiguration implements InitializingBean {
      * @param <T>   类型
      * @return true: 是 false: 否
      */
-    private <T extends Interceptor> boolean pluginRegistrable( Class<T> clazz ) {
-        if ( !ArrayUtil.isEmpty( this.interceptors ) ) {
-            for ( Interceptor plugin : this.interceptors ) {
-                if ( plugin.getClass().isAssignableFrom( clazz ) ) {
+    private <T extends Interceptor> boolean pluginRegistrable(Class<T> clazz) {
+        if (!ArrayUtil.isEmpty(this.interceptors)) {
+            for (Interceptor plugin : this.interceptors) {
+                if (plugin.getClass().isAssignableFrom(clazz)) {
                     return false;
                 }
             }
@@ -276,53 +276,53 @@ public class MyBatisAutoConfiguration implements InitializingBean {
      * 将{@link MyBatisCustomConfiguration#plugins}配置的插件注入到Spring容器中
      * @param existingInterceptor 插件(拦截器)
      */
-    private void registerExistingInterceptorBean( Interceptor existingInterceptor ) {
-        if ( this.beanFactory != null && existingInterceptor != null ) {
+    private void registerExistingInterceptorBean(Interceptor existingInterceptor) {
+        if (this.beanFactory != null && existingInterceptor != null) {
             try {
                 // 注入到Spring容器中
                 String beanName = existingInterceptor.getClass().getSimpleName();
-                this.beanFactory.registerSingleton( ( Character.toLowerCase( beanName.charAt( 0 ) ) +
-                        beanName.substring( 1 ) ), existingInterceptor );
+                this.beanFactory.registerSingleton((Character.toLowerCase(beanName.charAt(0)) +
+                        beanName.substring(1)), existingInterceptor);
                 // 注入依赖
-                if ( this.autowireBeanFactory != null ) {
-                    this.autowireBeanFactory.autowireBean( existingInterceptor );
+                if (this.autowireBeanFactory != null) {
+                    this.autowireBeanFactory.autowireBean(existingInterceptor);
                 }
-            } catch ( Exception e ) {
+            } catch (Exception e) {
                 // ignore
             }
         }
     }
 
-    private void applyConfiguration( SqlSessionFactoryBean factory ) {
+    private void applyConfiguration(SqlSessionFactoryBean factory) {
         MyBatisConfiguration configuration = this.properties.getConfiguration();
-        if ( configuration == null && !StringUtils.hasText( this.properties.getConfigLocation() ) ) {
+        if (configuration == null && !StringUtils.hasText(this.properties.getConfigLocation())) {
             configuration = new MyBatisConfiguration();
             // 默认开启下划线大写转驼峰命名规则
-            configuration.setMapUnderscoreToCamelCase( true );
+            configuration.setMapUnderscoreToCamelCase(true);
         }
-        if ( configuration != null && !CollectionUtils.isEmpty( this.configurationCustomizers ) ) {
-            for ( ConfigurationCustomizer customizer : this.configurationCustomizers ) {
-                customizer.customize( configuration );
+        if (configuration != null && !CollectionUtils.isEmpty(this.configurationCustomizers)) {
+            for (ConfigurationCustomizer customizer : this.configurationCustomizers) {
+                customizer.customize(configuration);
             }
         }
-        if ( configuration != null ) {
-            configuration.setDefaultScriptingLanguage( MyBatisXMLLanguageDriver.class );
+        if (configuration != null) {
+            configuration.setDefaultScriptingLanguage(MyBatisXMLLanguageDriver.class);
         }
-        factory.setConfiguration( configuration );
+        factory.setConfiguration(configuration);
     }
 
-    private <T> void ifPresent( Class<T> clazz, Consumer<T> consumer ) {
-        if ( hasBeanFromContext( clazz ) ) {
-            consumer.accept( getBean( clazz ) );
+    private <T> void ifPresent(Class<T> clazz, Consumer<T> consumer) {
+        if (hasBeanFromContext(clazz)) {
+            consumer.accept(getBean(clazz));
         }
     }
 
-    private boolean hasBeanFromContext( final Class<?> target ) {
-        return this.applicationContext.getBeanNamesForType( target, false, false ).length > 0;
+    private boolean hasBeanFromContext(final Class<?> target) {
+        return this.applicationContext.getBeanNamesForType(target, false, false).length > 0;
     }
 
-    private <T> T getBean( Class<T> clazz ) {
-        return this.applicationContext.getBean( clazz );
+    private <T> T getBean(Class<T> clazz) {
+        return this.applicationContext.getBean(clazz);
     }
 
     /*@Bean
@@ -333,12 +333,12 @@ public class MyBatisAutoConfiguration implements InitializingBean {
 
     @Bean
     @ConditionalOnMissingBean
-    public SqlSessionTemplate sqlSessionTemplate( SqlSessionFactory sqlSessionFactory ) {
+    public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
         ExecutorType executorType = this.properties.getExecutorType();
-        if ( executorType != null ) {
-            return new SqlSessionTemplate( sqlSessionFactory, executorType );
+        if (executorType != null) {
+            return new SqlSessionTemplate(sqlSessionFactory, executorType);
         } else {
-            return new SqlSessionTemplate( sqlSessionFactory );
+            return new SqlSessionTemplate(sqlSessionFactory);
         }
     }
 
@@ -356,33 +356,33 @@ public class MyBatisAutoConfiguration implements InitializingBean {
         private ResourceLoader resourceLoader;
 
         @Override
-        public void registerBeanDefinitions( @Nullable AnnotationMetadata importingClassMetadata,
-                                             @NonNull BeanDefinitionRegistry registry ) {
-            log.debug( "Searching for mappers annotated with @Mapper" );
-            ClassPathMapperScanner scanner = new ClassPathMapperScanner( registry );
+        public void registerBeanDefinitions(@Nullable AnnotationMetadata importingClassMetadata,
+                                            @NonNull BeanDefinitionRegistry registry) {
+            log.debug("Searching for mappers annotated with @Mapper");
+            ClassPathMapperScanner scanner = new ClassPathMapperScanner(registry);
             try {
-                if ( this.resourceLoader != null ) {
-                    scanner.setResourceLoader( resourceLoader );
+                if (this.resourceLoader != null) {
+                    scanner.setResourceLoader(resourceLoader);
                 }
-                List<String> packages = AutoConfigurationPackages.get( this.beanFactory );
-                if ( log.isDebugEnabled() ) {
-                    packages.forEach( pkg -> log.debug( "Using auto-configuration base package '{}'", pkg ) );
+                List<String> packages = AutoConfigurationPackages.get(this.beanFactory);
+                if (log.isDebugEnabled()) {
+                    packages.forEach(pkg -> log.debug("Using auto-configuration base package '{}'", pkg));
                 }
-                scanner.setAnnotationClass( Mapper.class );
+                scanner.setAnnotationClass(Mapper.class);
                 scanner.registerFilters();
-                scanner.doScan( StringUtils.toStringArray( packages ) );
-            } catch ( IllegalStateException ex ) {
-                log.debug( "Could not determine auto-configuration package, automatic mapper scanning disabled.", ex );
+                scanner.doScan(StringUtils.toStringArray(packages));
+            } catch (IllegalStateException ex) {
+                log.debug("Could not determine auto-configuration package, automatic mapper scanning disabled.", ex);
             }
         }
 
         @Override
-        public void setBeanFactory( @Nullable BeanFactory beanFactory ) throws BeansException {
+        public void setBeanFactory(@Nullable BeanFactory beanFactory) throws BeansException {
             this.beanFactory = beanFactory;
         }
 
         @Override
-        public void setResourceLoader( @Nullable ResourceLoader resourceLoader ) {
+        public void setResourceLoader(@Nullable ResourceLoader resourceLoader) {
             this.resourceLoader = resourceLoader;
         }
     }
@@ -396,13 +396,13 @@ public class MyBatisAutoConfiguration implements InitializingBean {
      * on the same component-scanning path as Spring Boot itself.
      */
     @org.springframework.context.annotation.Configuration
-    @Import( { AutoConfiguredMapperScannerRegistrar.class } )
-    @ConditionalOnMissingBean( MapperFactoryBean.class )
+    @Import({AutoConfiguredMapperScannerRegistrar.class})
+    @ConditionalOnMissingBean(MapperFactoryBean.class)
     public static class MapperScannerRegistrarNotFoundConfiguration {
 
         @PostConstruct
         public void afterPropertiesSet() {
-            log.debug( "No {} found.", MapperFactoryBean.class.getName() );
+            log.debug("No {} found.", MapperFactoryBean.class.getName());
         }
     }
 }

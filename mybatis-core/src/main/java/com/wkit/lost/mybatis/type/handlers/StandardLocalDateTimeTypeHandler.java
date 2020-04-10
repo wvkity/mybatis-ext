@@ -16,30 +16,30 @@ import java.util.Optional;
  * {@link LocalDateTime}处理器
  * @author wvkity
  */
-@MappedTypes( LocalDateTime.class )
+@MappedTypes(LocalDateTime.class)
 public class StandardLocalDateTimeTypeHandler extends BaseTypeHandler<LocalDateTime> {
 
     @Override
-    public void setNonNullParameter( PreparedStatement ps, int i, LocalDateTime parameter, JdbcType jdbcType ) throws SQLException {
-        ps.setTimestamp( i, Optional.ofNullable( parameter ).map( Timestamp::valueOf ).orElse( null ) );
+    public void setNonNullParameter(PreparedStatement ps, int i, LocalDateTime parameter, JdbcType jdbcType) throws SQLException {
+        ps.setTimestamp(i, Optional.ofNullable(parameter).map(Timestamp::valueOf).orElse(null));
     }
 
     @Override
-    public LocalDateTime getNullableResult( ResultSet rs, String columnName ) throws SQLException {
-        return valueOf( rs.getTimestamp( columnName ) );
+    public LocalDateTime getNullableResult(ResultSet rs, String columnName) throws SQLException {
+        return valueOf(rs.getTimestamp(columnName));
     }
 
     @Override
-    public LocalDateTime getNullableResult( ResultSet rs, int columnIndex ) throws SQLException {
-        return valueOf( rs.getTimestamp( columnIndex ) );
+    public LocalDateTime getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+        return valueOf(rs.getTimestamp(columnIndex));
     }
 
     @Override
-    public LocalDateTime getNullableResult( CallableStatement cs, int columnIndex ) throws SQLException {
-        return valueOf( cs.getTimestamp( columnIndex ) );
+    public LocalDateTime getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+        return valueOf(cs.getTimestamp(columnIndex));
     }
 
-    public LocalDateTime valueOf( Timestamp timestamp ) {
-        return Optional.ofNullable( timestamp ).map( Timestamp::toLocalDateTime ).orElse( null );
+    public LocalDateTime valueOf(Timestamp timestamp) {
+        return Optional.ofNullable(timestamp).map(Timestamp::toLocalDateTime).orElse(null);
     }
 }

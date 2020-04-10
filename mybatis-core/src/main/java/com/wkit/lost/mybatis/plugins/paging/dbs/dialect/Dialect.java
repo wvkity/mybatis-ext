@@ -23,7 +23,7 @@ public interface Dialect {
      * 设置属性
      * @param props 属性
      */
-    void setProperties( Properties props );
+    void setProperties(Properties props);
 
     /**
      * 过滤分页查询
@@ -32,7 +32,7 @@ public interface Dialect {
      * @param rowBounds 分页参数
      * @return true: 执行 | false: 跳出
      */
-    boolean filter( MappedStatement statement, Object parameter, RowBounds rowBounds );
+    boolean filter(MappedStatement statement, Object parameter, RowBounds rowBounds);
 
     /**
      * 生成查询总记录数SQL语句
@@ -43,7 +43,7 @@ public interface Dialect {
      * @param cacheKey  缓存Key对象
      * @return 查询总记录数SQL
      */
-    String generateQueryRecordSql( MappedStatement statement, BoundSql boundSql, Object parameter, RowBounds rowBounds, CacheKey cacheKey );
+    String generateQueryRecordSql(MappedStatement statement, BoundSql boundSql, Object parameter, RowBounds rowBounds, CacheKey cacheKey);
 
     /**
      * 处理查询参数对象
@@ -53,7 +53,7 @@ public interface Dialect {
      * @param cacheKey  缓存Key对象
      * @return 新的对象
      */
-    Object processParameter( MappedStatement statement, BoundSql boundSql, Object parameter, CacheKey cacheKey );
+    Object processParameter(MappedStatement statement, BoundSql boundSql, Object parameter, CacheKey cacheKey);
 
     /**
      * 生成分页SQL语句
@@ -64,7 +64,7 @@ public interface Dialect {
      * @param cacheKey  缓存Key对象
      * @return 分页SQL
      */
-    String generatePageableSql( MappedStatement statement, BoundSql boundSql, Object parameter, RowBounds rowBounds, CacheKey cacheKey );
+    String generatePageableSql(MappedStatement statement, BoundSql boundSql, Object parameter, RowBounds rowBounds, CacheKey cacheKey);
 
     /**
      * 执行分页查询前，检查是否需要分页查询
@@ -73,7 +73,7 @@ public interface Dialect {
      * @param rowBounds 分页参数
      * @return true: 执行 | false: 返回查询结果
      */
-    boolean executePagingOnBefore( MappedStatement statement, Object parameter, RowBounds rowBounds );
+    boolean executePagingOnBefore(MappedStatement statement, Object parameter, RowBounds rowBounds);
 
     /**
      * 执行分页查询后，处理分页结果
@@ -83,7 +83,7 @@ public interface Dialect {
      * @param <E>       返回值泛型类型
      * @return 结果
      */
-    <E> Object executePagingOnAfter( List<E> result, Object parameter, RowBounds rowBounds );
+    <E> Object executePagingOnAfter(List<E> result, Object parameter, RowBounds rowBounds);
 
     /**
      * 所有查询执行完成后

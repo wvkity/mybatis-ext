@@ -17,30 +17,30 @@ import java.util.Optional;
  * {@link ZonedDateTime}处理器
  * @author wvkity
  */
-@MappedTypes( ZonedDateTime.class )
+@MappedTypes(ZonedDateTime.class)
 public class StandardZonedDateTimeTypeHandler extends BaseTypeHandler<ZonedDateTime> {
 
     @Override
-    public void setNonNullParameter( PreparedStatement ps, int i, ZonedDateTime parameter, JdbcType jdbcType ) throws SQLException {
-        ps.setTimestamp( i, Optional.ofNullable( parameter ).map( ZonedDateTime::toInstant ).map( Timestamp::from ).orElse( null ) );
+    public void setNonNullParameter(PreparedStatement ps, int i, ZonedDateTime parameter, JdbcType jdbcType) throws SQLException {
+        ps.setTimestamp(i, Optional.ofNullable(parameter).map(ZonedDateTime::toInstant).map(Timestamp::from).orElse(null));
     }
 
     @Override
-    public ZonedDateTime getNullableResult( ResultSet rs, String columnName ) throws SQLException {
-        return valueOf( rs.getTimestamp( columnName ) );
+    public ZonedDateTime getNullableResult(ResultSet rs, String columnName) throws SQLException {
+        return valueOf(rs.getTimestamp(columnName));
     }
 
     @Override
-    public ZonedDateTime getNullableResult( ResultSet rs, int columnIndex ) throws SQLException {
-        return valueOf( rs.getTimestamp( columnIndex ) );
+    public ZonedDateTime getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+        return valueOf(rs.getTimestamp(columnIndex));
     }
 
     @Override
-    public ZonedDateTime getNullableResult( CallableStatement cs, int columnIndex ) throws SQLException {
-        return valueOf( cs.getTimestamp( columnIndex ) );
+    public ZonedDateTime getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+        return valueOf(cs.getTimestamp(columnIndex));
     }
 
-    private ZonedDateTime valueOf( Timestamp timestamp ) {
-        return Optional.ofNullable( timestamp ).map( time -> ZonedDateTime.ofInstant( time.toInstant(), ZoneId.systemDefault() ) ).orElse( null );
+    private ZonedDateTime valueOf(Timestamp timestamp) {
+        return Optional.ofNullable(timestamp).map(time -> ZonedDateTime.ofInstant(time.toInstant(), ZoneId.systemDefault())).orElse(null);
     }
 }

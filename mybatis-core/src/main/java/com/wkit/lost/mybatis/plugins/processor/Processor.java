@@ -26,9 +26,9 @@ public abstract class Processor implements Filter {
      * @param ms {@link MappedStatement}
      * @return 方法名
      */
-    protected String execMethod( MappedStatement ms ) {
+    protected String execMethod(MappedStatement ms) {
         String msId = ms.getId();
-        return msId.substring( msId.lastIndexOf( "." ) + 1 );
+        return msId.substring(msId.lastIndexOf(".") + 1);
     }
 
     /**
@@ -37,6 +37,6 @@ public abstract class Processor implements Filter {
      * @return 结果
      * @throws Throwable 异常信息
      */
-    public abstract Object intercept( Invocation invocation ) throws Throwable;
+    public abstract Object intercept(Invocation invocation) throws Throwable;
 
 }

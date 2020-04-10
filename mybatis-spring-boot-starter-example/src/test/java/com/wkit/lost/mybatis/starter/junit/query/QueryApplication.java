@@ -20,46 +20,46 @@ public class QueryApplication extends RootTestRunner {
     @Test
     public void existsTest() {
         User u = new User();
-        u.setId( 1L ).setSex( 1 ).setState( 2 );
-        boolean result = userService.exists( u );
-        log.info( "执行结果: {}", result );
+        u.setId(1L).setSex(1).setState(2);
+        boolean result = userService.exists(u);
+        log.info("执行结果: {}", result);
     }
 
     @Test
     public void existsByIdTest() {
-        boolean result = userService.exists( 2L );
-        log.info( "执行结果: {}", result );
+        boolean result = userService.exists(2L);
+        log.info("执行结果: {}", result);
     }
 
     @Test
     public void queryByEntityTest() {
         User u = new User();
-        u.setId( 2L ).setSex( 1 ).setState( 1 );
-        List<User> result = userService.list( u );
-        log.info( "执行结果: {}", JSON.toJSONString( result, true ) );
+        u.setId(2L).setSex(1).setState(1);
+        List<User> result = userService.list(u);
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
     }
 
     @Test
     public void countTest() {
         User u = new User();
-        u.setId( 2L ).setSex( 1 ).setState( 1 );
-        long result = userService.count( u );
-        log.info( "执行结果: {}", result );
+        u.setId(2L).setSex(1).setState(1);
+        long result = userService.count(u);
+        log.info("执行结果: {}", result);
     }
 
     @Test
     public void selectOneTest() {
-        Optional<User> optional = userService.selectOne( 2L );
-        if ( optional.isPresent() ) {
-            log.info( "执行结果: {}", JSON.toJSONString( optional.get(), true ) );
+        Optional<User> optional = userService.selectOne(2L);
+        if (optional.isPresent()) {
+            log.info("执行结果: {}", JSON.toJSONString(optional.get(), true));
         } else {
-            log.info( "执行结果: empty!" );
+            log.info("执行结果: empty!");
         }
     }
-    
+
     @Test
     public void listTest() {
-        List<User> result = userService.list( 1L, 2L, 3L, 4L );
-        log.info( "执行结果: {}", JSON.toJSONString( result, true ) );
+        List<User> result = userService.list(1L, 2L, 3L, 4L);
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
     }
 }

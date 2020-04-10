@@ -11,11 +11,11 @@ public class ThreadLocalRangePageable {
         return RANGE_PAGE_THREAD_LOCAL.get();
     }
 
-    public static void set( RangePageable value ) {
-        if ( value == null ) {
+    public static void set(RangePageable value) {
+        if (value == null) {
             remove();
         } else {
-            RANGE_PAGE_THREAD_LOCAL.set( value );
+            RANGE_PAGE_THREAD_LOCAL.set(value);
         }
     }
 

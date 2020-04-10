@@ -11,8 +11,8 @@ import java.lang.annotation.Target;
  * 是否启用泛型接口注解
  * @author wvkity
  */
-@Target( ElementType.TYPE )
-@Retention( RetentionPolicy.RUNTIME )
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
 public @interface EnableMapper {

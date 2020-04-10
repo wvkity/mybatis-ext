@@ -8,13 +8,13 @@ import java.util.Map;
 
 public class MyBatisObjectWrapperFactory implements ObjectWrapperFactory {
     @Override
-    public boolean hasWrapperFor( Object object ) {
+    public boolean hasWrapperFor(Object object) {
         return object instanceof Map;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Override
-    public ObjectWrapper getWrapperFor( MetaObject metaObject, Object object ) {
-        return new MyBatisMapWrapper( metaObject, ( Map<String, Object> ) object );
+    public ObjectWrapper getWrapperFor(MetaObject metaObject, Object object) {
+        return new MyBatisMapWrapper(metaObject, (Map<String, Object>) object);
     }
 }

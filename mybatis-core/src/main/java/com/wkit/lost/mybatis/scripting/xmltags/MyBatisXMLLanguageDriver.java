@@ -8,7 +8,7 @@ import org.apache.ibatis.scripting.xmltags.XMLLanguageDriver;
 public class MyBatisXMLLanguageDriver extends XMLLanguageDriver {
 
     @Override
-    public MyBatisDefaultParameterHandler createParameterHandler( MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql ) {
-        return new MyBatisDefaultParameterHandler( mappedStatement, parameterObject, boundSql );
+    public MyBatisDefaultParameterHandler createParameterHandler(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql) {
+        return new MyBatisDefaultParameterHandler(mappedStatement, parameterObject, boundSql);
     }
 }

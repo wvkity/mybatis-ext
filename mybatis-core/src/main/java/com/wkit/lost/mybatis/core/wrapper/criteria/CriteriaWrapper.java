@@ -11,5 +11,5 @@ public interface CriteriaWrapper<T, Chain extends CriteriaWrapper<T, Chain, P>, 
      * @param property lambda对象
      * @return 属性名
      */
-    <E> String methodToProperty( Property<E, ?> property );
+    <E> String methodToProperty(Property<E, ?> property);
 }

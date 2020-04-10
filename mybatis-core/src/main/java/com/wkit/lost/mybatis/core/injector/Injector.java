@@ -13,5 +13,5 @@ public interface Injector {
      * @param assistant       构建对象
      * @param mapperInterface Mapper接口
      */
-    void inject( MapperBuilderAssistant assistant, Class<?> mapperInterface );
+    void inject(MapperBuilderAssistant assistant, Class<?> mapperInterface);
 }

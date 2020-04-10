@@ -20,7 +20,7 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param symbol 条件符号
      * @param logic  逻辑符号
      */
-    ImmediateSimple( String column, Object value, Symbol symbol, Logic logic ) {
+    ImmediateSimple(String column, Object value, Symbol symbol, Logic logic) {
         this.column = column;
         this.value = value;
         this.symbol = symbol;
@@ -35,7 +35,7 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param symbol     条件符号
      * @param logic      逻辑符号
      */
-    ImmediateSimple( String tableAlias, String column, Object value, Symbol symbol, Logic logic ) {
+    ImmediateSimple(String tableAlias, String column, Object value, Symbol symbol, Logic logic) {
         this.tableAlias = tableAlias;
         this.column = column;
         this.value = value;
@@ -51,7 +51,7 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param symbol   条件符号
      * @param logic    逻辑符号
      */
-    ImmediateSimple( Criteria<T> criteria, String column, Object value, Symbol symbol, Logic logic ) {
+    ImmediateSimple(Criteria<T> criteria, String column, Object value, Symbol symbol, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.value = value;
@@ -66,8 +66,8 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create( String column, Object value ) {
-        return create( column, value, Symbol.EQ );
+    public static <T> ImmediateSimple<T> create(String column, Object value) {
+        return create(column, value, Symbol.EQ);
     }
 
     /**
@@ -78,8 +78,8 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create( String column, Object value, Logic logic ) {
-        return create( column, value, Symbol.EQ, logic );
+    public static <T> ImmediateSimple<T> create(String column, Object value, Logic logic) {
+        return create(column, value, Symbol.EQ, logic);
     }
 
     /**
@@ -90,8 +90,8 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create( String column, Object value, Symbol symbol ) {
-        return create( column, value, symbol, Logic.AND );
+    public static <T> ImmediateSimple<T> create(String column, Object value, Symbol symbol) {
+        return create(column, value, symbol, Logic.AND);
     }
 
     /**
@@ -103,9 +103,9 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create( String column, Object value, Symbol symbol, Logic logic ) {
-        if ( hasText( column ) ) {
-            return new ImmediateSimple<>( column, value, symbol, logic );
+    public static <T> ImmediateSimple<T> create(String column, Object value, Symbol symbol, Logic logic) {
+        if (hasText(column)) {
+            return new ImmediateSimple<>(column, value, symbol, logic);
         }
         return null;
     }
@@ -118,8 +118,8 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create( String tableAlias, String column, Object value ) {
-        return create( tableAlias, column, value, Symbol.EQ );
+    public static <T> ImmediateSimple<T> create(String tableAlias, String column, Object value) {
+        return create(tableAlias, column, value, Symbol.EQ);
     }
 
     /**
@@ -131,8 +131,8 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create( String tableAlias, String column, Object value, Logic logic ) {
-        return create( tableAlias, column, value, Symbol.EQ, logic );
+    public static <T> ImmediateSimple<T> create(String tableAlias, String column, Object value, Logic logic) {
+        return create(tableAlias, column, value, Symbol.EQ, logic);
     }
 
     /**
@@ -144,8 +144,8 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create( String tableAlias, String column, Object value, Symbol symbol ) {
-        return create( tableAlias, column, value, symbol, Logic.AND );
+    public static <T> ImmediateSimple<T> create(String tableAlias, String column, Object value, Symbol symbol) {
+        return create(tableAlias, column, value, symbol, Logic.AND);
     }
 
     /**
@@ -158,10 +158,10 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create( String tableAlias, String column, Object value,
-                                                 Symbol symbol, Logic logic ) {
-        if ( hasText( column ) ) {
-            return new ImmediateSimple<>( tableAlias, column, value, symbol, logic );
+    public static <T> ImmediateSimple<T> create(String tableAlias, String column, Object value,
+                                                Symbol symbol, Logic logic) {
+        if (hasText(column)) {
+            return new ImmediateSimple<>(tableAlias, column, value, symbol, logic);
         }
         return null;
     }
@@ -174,8 +174,8 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create( Criteria<T> criteria, String column, Object value ) {
-        return create( criteria, column, value, Symbol.EQ );
+    public static <T> ImmediateSimple<T> create(Criteria<T> criteria, String column, Object value) {
+        return create(criteria, column, value, Symbol.EQ);
     }
 
     /**
@@ -187,8 +187,8 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create( Criteria<T> criteria, String column, Object value, Logic logic ) {
-        return create( criteria, column, value, Symbol.EQ, logic );
+    public static <T> ImmediateSimple<T> create(Criteria<T> criteria, String column, Object value, Logic logic) {
+        return create(criteria, column, value, Symbol.EQ, logic);
     }
 
     /**
@@ -200,9 +200,9 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create( Criteria<T> criteria, String column, Object value,
-                                                 Symbol symbol ) {
-        return create( criteria, column, value, symbol, Logic.AND );
+    public static <T> ImmediateSimple<T> create(Criteria<T> criteria, String column, Object value,
+                                                Symbol symbol) {
+        return create(criteria, column, value, symbol, Logic.AND);
     }
 
     /**
@@ -215,10 +215,10 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create( Criteria<T> criteria, String column, Object value,
-                                                 Symbol symbol, Logic logic ) {
-        if ( hasText( column ) ) {
-            return new ImmediateSimple<>( criteria, column, value, symbol, logic );
+    public static <T> ImmediateSimple<T> create(Criteria<T> criteria, String column, Object value,
+                                                Symbol symbol, Logic logic) {
+        if (hasText(column)) {
+            return new ImmediateSimple<>(criteria, column, value, symbol, logic);
         }
         return null;
     }

@@ -12,7 +12,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 public class ExistsById extends AbstractGeneralQueryMethod<ExistsByIdProvider> {
 
     @Override
-    public MappedStatement injectMappedStatement( TableWrapper table, Class<?> mapperInterface, Class<?> __ ) {
-        return super.injectMappedStatement( table, mapperInterface, Integer.class );
+    public MappedStatement injectMappedStatement(TableWrapper table, Class<?> mapperInterface, Class<?> __) {
+        return super.injectMappedStatement(table, mapperInterface, Integer.class);
     }
 }

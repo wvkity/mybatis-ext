@@ -19,28 +19,28 @@ import java.util.Properties;
  * 指定范围分页查询拦截器
  * @author wvkity
  */
-@Intercepts( {
-        @Signature( type = Executor.class, method = "query", args = { MappedStatement.class, Object.class,
-                RowBounds.class, ResultHandler.class } ),
-        @Signature( type = Executor.class, method = "query", args = { MappedStatement.class, Object.class,
-                RowBounds.class, ResultHandler.class, CacheKey.class, BoundSql.class } )
-} )
+@Intercepts({
+        @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class,
+                RowBounds.class, ResultHandler.class}),
+        @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class,
+                RowBounds.class, ResultHandler.class, CacheKey.class, BoundSql.class})
+})
 public class RangePageableInterceptor implements Interceptor {
 
     private final Processor processor = new RangePageableProcessor();
 
     @Override
-    public Object intercept( Invocation invocation ) throws Throwable {
-        return processor.intercept( invocation );
+    public Object intercept(Invocation invocation) throws Throwable {
+        return processor.intercept(invocation);
     }
 
     @Override
-    public Object plugin( Object target ) {
-        return Plugin.wrap( target, this );
+    public Object plugin(Object target) {
+        return Plugin.wrap(target, this);
     }
 
     @Override
-    public void setProperties( Properties properties ) {
-        processor.setProperties( properties );
+    public void setProperties(Properties properties) {
+        processor.setProperties(properties);
     }
 }

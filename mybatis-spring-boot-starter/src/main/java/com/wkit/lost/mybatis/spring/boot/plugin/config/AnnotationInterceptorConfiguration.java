@@ -26,41 +26,41 @@ public class AnnotationInterceptorConfiguration implements InterceptorConfigurat
 
     private final AnnotationAttributes attributes;
 
-    public AnnotationInterceptorConfiguration( AnnotationMetadata metadata, Class<? extends Annotation> annotation ) {
-        Map<String, Object> attributesSource = metadata.getAnnotationAttributes( annotation.getName() );
+    public AnnotationInterceptorConfiguration(AnnotationMetadata metadata, Class<? extends Annotation> annotation) {
+        Map<String, Object> attributesSource = metadata.getAnnotationAttributes(annotation.getName());
 
-        if ( attributesSource == null ) {
-            throw new IllegalArgumentException( String.format( MISSING_ANNOTATION_ATTRIBUTES, annotation, metadata ) );
+        if (attributesSource == null) {
+            throw new IllegalArgumentException(String.format(MISSING_ANNOTATION_ATTRIBUTES, annotation, metadata));
         }
 
-        this.attributes = new AnnotationAttributes( attributesSource );
+        this.attributes = new AnnotationAttributes(attributesSource);
     }
 
     @Override
     public List<InterceptorDefinition> interceptors() {
         List<InterceptorDefinition> interceptors = new ArrayList<>();
         // 默认拦截器
-        AnnotationAttributes[] defaults = attributes.getAnnotationArray( PLUGIN_VALUE );
-        if ( !ArrayUtil.isEmpty( defaults ) ) {
+        AnnotationAttributes[] defaults = attributes.getAnnotationArray(PLUGIN_VALUE);
+        if (!ArrayUtil.isEmpty(defaults)) {
             Set<InterceptorDefinition> plugins = new HashSet<>();
-            for ( AnnotationAttributes attribute : defaults ) {
-                plugins.add( new InterceptorDefinition( attribute.getClass( PLUGIN_VALUE ),
-                        attribute.getString( PLUGIN_BEAN_NAME ), ( Integer ) attribute.get( PLUGIN_ORDER ) ) );
+            for (AnnotationAttributes attribute : defaults) {
+                plugins.add(new InterceptorDefinition(attribute.getClass(PLUGIN_VALUE),
+                        attribute.getString(PLUGIN_BEAN_NAME), (Integer) attribute.get(PLUGIN_ORDER)));
             }
-            interceptors.addAll( plugins );
+            interceptors.addAll(plugins);
         }
         // 其他拦截器
-        AnnotationAttributes[] others = attributes.getAnnotationArray( PLUGIN_ANNOTATION_KEY );
-        if ( !ArrayUtil.isEmpty( others ) ) {
+        AnnotationAttributes[] others = attributes.getAnnotationArray(PLUGIN_ANNOTATION_KEY);
+        if (!ArrayUtil.isEmpty(others)) {
             Set<InterceptorDefinition> plugins = new HashSet<>();
-            for ( AnnotationAttributes attribute : others ) {
-                plugins.add( new InterceptorDefinition( attribute.getClass( PLUGIN_VALUE ),
-                        attribute.getString( PLUGIN_BEAN_NAME ), ( Integer ) attribute.get( PLUGIN_ORDER ) ) );
+            for (AnnotationAttributes attribute : others) {
+                plugins.add(new InterceptorDefinition(attribute.getClass(PLUGIN_VALUE),
+                        attribute.getString(PLUGIN_BEAN_NAME), (Integer) attribute.get(PLUGIN_ORDER)));
             }
-            interceptors.addAll( plugins );
+            interceptors.addAll(plugins);
         }
-        if ( !interceptors.isEmpty() ) {
-            interceptors.sort( Comparator.comparingInt( InterceptorDefinition::getOrder ) );
+        if (!interceptors.isEmpty()) {
+            interceptors.sort(Comparator.comparingInt(InterceptorDefinition::getOrder));
         }
         return interceptors;
     }

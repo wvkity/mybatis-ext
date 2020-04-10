@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 @Log4j2
 @Setter
 @NoArgsConstructor
-@Accessors( chain = true )
+@Accessors(chain = true)
 public class ElasticSequenceFactory implements SequenceFactory {
 
     /**
@@ -34,32 +34,32 @@ public class ElasticSequenceFactory implements SequenceFactory {
 
     @Override
     public Sequence build() {
-        return build( getDefaultWorkerId(), getDefaultDataCenterId() );
+        return build(getDefaultWorkerId(), getDefaultDataCenterId());
     }
 
     @Override
-    public Sequence build( WorkerAssigner workerAssigner ) {
-        return build( workerAssigner.workerId(), workerAssigner.dataCenterId() );
+    public Sequence build(WorkerAssigner workerAssigner) {
+        return build(workerAssigner.workerId(), workerAssigner.dataCenterId());
     }
 
     @Override
-    public Sequence build( long workerId, long dataCenterId ) {
-        return new SnowflakeSequence( timeUnit, timestampBits, workerBits, dataCenterBits, sequenceBits, epochTimestamp, workerId, dataCenterId );
+    public Sequence build(long workerId, long dataCenterId) {
+        return new SnowflakeSequence(timeUnit, timestampBits, workerBits, dataCenterBits, sequenceBits, epochTimestamp, workerId, dataCenterId);
     }
 
     public long getMaxWorkerId() {
-        return SequenceUtil.getMaxWorkerId( workerBits );
+        return SequenceUtil.getMaxWorkerId(workerBits);
     }
 
     public long getMaxDataCenterId() {
-        return SequenceUtil.getMaxDataCenterId( dataCenterBits );
+        return SequenceUtil.getMaxDataCenterId(dataCenterBits);
     }
 
     public long getDefaultDataCenterId() {
-        return SequenceUtil.getDefaultDataCenterId( dataCenterBits );
+        return SequenceUtil.getDefaultDataCenterId(dataCenterBits);
     }
 
     public long getDefaultWorkerId() {
-        return SequenceUtil.getDefaultWorkerId( workerBits, dataCenterBits );
+        return SequenceUtil.getDefaultWorkerId(workerBits, dataCenterBits);
     }
 }

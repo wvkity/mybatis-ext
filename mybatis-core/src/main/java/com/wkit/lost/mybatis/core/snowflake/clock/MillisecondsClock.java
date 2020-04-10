@@ -23,14 +23,14 @@ public class MillisecondsClock {
     }
 
     private void start() {
-        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor( r -> {
-            Thread thread = new Thread( r, "MILLISECOND CLOCK" );
-            thread.setDaemon( true );
+        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor(r -> {
+            Thread thread = new Thread(r, "MILLISECOND CLOCK");
+            thread.setDaemon(true);
             return thread;
-        } );
+        });
         // 固定每1ms获取一次系统日期
-        exec.scheduleAtFixedRate( () -> now = System.currentTimeMillis(), period,
-                period, TimeUnit.MILLISECONDS );
+        exec.scheduleAtFixedRate(() -> now = System.currentTimeMillis(), period,
+                period, TimeUnit.MILLISECONDS);
     }
 
     public static MillisecondsClock getInstance() {

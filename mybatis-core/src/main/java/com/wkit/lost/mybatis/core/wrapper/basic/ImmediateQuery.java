@@ -30,7 +30,7 @@ public class ImmediateQuery<T> extends AbstractQueryWrapper<T, String> {
      * @param column      列
      * @param columnAlias 列别名
      */
-    private ImmediateQuery( String column, String columnAlias ) {
+    private ImmediateQuery(String column, String columnAlias) {
         this.column = column;
         this.columnAlias = columnAlias;
     }
@@ -41,7 +41,7 @@ public class ImmediateQuery<T> extends AbstractQueryWrapper<T, String> {
      * @param column      列
      * @param columnAlias 列别名
      */
-    private ImmediateQuery( String tableAlias, String column, String columnAlias ) {
+    private ImmediateQuery(String tableAlias, String column, String columnAlias) {
         this.tableAlias = tableAlias;
         this.column = column;
         this.columnAlias = columnAlias;
@@ -53,7 +53,7 @@ public class ImmediateQuery<T> extends AbstractQueryWrapper<T, String> {
      * @param column      列
      * @param columnAlias 列别名
      */
-    private ImmediateQuery( Criteria<T> criteria, String column, String columnAlias ) {
+    private ImmediateQuery(Criteria<T> criteria, String column, String columnAlias) {
         this.criteria = criteria;
         this.column = column;
         this.columnAlias = columnAlias;
@@ -68,25 +68,25 @@ public class ImmediateQuery<T> extends AbstractQueryWrapper<T, String> {
     }
 
     @Override
-    public AbstractQueryWrapper<?, ?> transform( Criteria<?> criteria ) {
-        if ( criteria != null ) {
-            return ImmediateQuery.Single.query( criteria,
-                    StringUtil.hasText( this.columnAlias ) ? this.columnAlias : this.column, null );
+    public AbstractQueryWrapper<?, ?> transform(Criteria<?> criteria) {
+        if (criteria != null) {
+            return ImmediateQuery.Single.query(criteria,
+                    StringUtil.hasText(this.columnAlias) ? this.columnAlias : this.column, null);
         }
         return null;
     }
 
     @Override
     public String getSegment() {
-        return getSegment( true );
+        return getSegment(true);
     }
 
     @Override
-    public String getSegment( boolean applyQuery ) {
-        if ( StringUtil.hasText( this.column ) ) {
-            String realTableAlias = StringUtil.hasText( this.tableAlias ) ? this.tableAlias :
-                    ( this.criteria != null && this.criteria.isEnableAlias() ? this.criteria.getAlias() : null );
-            return ColumnConvert.convertToQueryArg( this.column, applyQuery ? this.columnAlias : null, realTableAlias );
+    public String getSegment(boolean applyQuery) {
+        if (StringUtil.hasText(this.column)) {
+            String realTableAlias = StringUtil.hasText(this.tableAlias) ? this.tableAlias :
+                    (this.criteria != null && this.criteria.isEnableAlias() ? this.criteria.getAlias() : null);
+            return ColumnConvert.convertToQueryArg(this.column, applyQuery ? this.columnAlias : null, realTableAlias);
         }
         return "";
     }
@@ -105,8 +105,8 @@ public class ImmediateQuery<T> extends AbstractQueryWrapper<T, String> {
          * @param <T>         实体类型
          * @return 字符串列对象
          */
-        public static <T> ImmediateQuery<T> query( String column, String columnAlias ) {
-            return StringUtil.isBlank( column ) ? null : new ImmediateQuery<>( column, columnAlias );
+        public static <T> ImmediateQuery<T> query(String column, String columnAlias) {
+            return StringUtil.isBlank(column) ? null : new ImmediateQuery<>(column, columnAlias);
         }
 
         /**
@@ -117,8 +117,8 @@ public class ImmediateQuery<T> extends AbstractQueryWrapper<T, String> {
          * @param <T>         实体类型
          * @return 字符串查询列对象
          */
-        public static <T> ImmediateQuery<T> query( String tableAlias, String column, String columnAlias ) {
-            return StringUtil.isBlank( column ) ? null : new ImmediateQuery<>( tableAlias, column, columnAlias );
+        public static <T> ImmediateQuery<T> query(String tableAlias, String column, String columnAlias) {
+            return StringUtil.isBlank(column) ? null : new ImmediateQuery<>(tableAlias, column, columnAlias);
         }
 
         /**
@@ -129,8 +129,8 @@ public class ImmediateQuery<T> extends AbstractQueryWrapper<T, String> {
          * @param <T>         实体类型
          * @return 字符串查询列对象
          */
-        public static <T> ImmediateQuery<T> query( Criteria<T> criteria, String column, String columnAlias ) {
-            return StringUtil.isBlank( column ) ? null : new ImmediateQuery<>( criteria, column, columnAlias );
+        public static <T> ImmediateQuery<T> query(Criteria<T> criteria, String column, String columnAlias) {
+            return StringUtil.isBlank(column) ? null : new ImmediateQuery<>(criteria, column, columnAlias);
         }
     }
 
@@ -148,16 +148,16 @@ public class ImmediateQuery<T> extends AbstractQueryWrapper<T, String> {
          * @param <T>        实体类型
          * @return 字符串查询列对象集合
          */
-        public static <T> ArrayList<ImmediateQuery<T>> query( String tableAlias, Collection<String> columns ) {
-            Set<String> its = distinct( columns );
-            if ( !its.isEmpty() ) {
-                ArrayList<ImmediateQuery<T>> list = new ArrayList<>( its.size() );
-                for ( String it : its ) {
-                    list.add( Single.query( tableAlias, it, null ) );
+        public static <T> ArrayList<ImmediateQuery<T>> query(String tableAlias, Collection<String> columns) {
+            Set<String> its = distinct(columns);
+            if (!its.isEmpty()) {
+                ArrayList<ImmediateQuery<T>> list = new ArrayList<>(its.size());
+                for (String it : its) {
+                    list.add(Single.query(tableAlias, it, null));
                 }
                 return list;
             }
-            return new ArrayList<>( 0 );
+            return new ArrayList<>(0);
         }
 
         /**
@@ -167,16 +167,16 @@ public class ImmediateQuery<T> extends AbstractQueryWrapper<T, String> {
          * @param <T>        实体类型
          * @return 字符串查询列对象集合
          */
-        public static <T> ArrayList<ImmediateQuery<T>> query( String tableAlias, Map<String, String> columns ) {
-            Map<String, String> its = filterNullValue( columns );
-            if ( CollectionUtil.hasElement( its ) ) {
-                ArrayList<ImmediateQuery<T>> list = new ArrayList<>( its.size() );
-                for ( Map.Entry<String, String> entry : its.entrySet() ) {
-                    list.add( Single.query( tableAlias, entry.getValue(), entry.getKey() ) );
+        public static <T> ArrayList<ImmediateQuery<T>> query(String tableAlias, Map<String, String> columns) {
+            Map<String, String> its = filterNullValue(columns);
+            if (CollectionUtil.hasElement(its)) {
+                ArrayList<ImmediateQuery<T>> list = new ArrayList<>(its.size());
+                for (Map.Entry<String, String> entry : its.entrySet()) {
+                    list.add(Single.query(tableAlias, entry.getValue(), entry.getKey()));
                 }
                 return list;
             }
-            return new ArrayList<>( 0 );
+            return new ArrayList<>(0);
         }
 
         /**
@@ -186,8 +186,8 @@ public class ImmediateQuery<T> extends AbstractQueryWrapper<T, String> {
          * @param <T>      实体类型
          * @return 字符串查询列对象
          */
-        public static <T> ArrayList<ImmediateQuery<T>> query( Criteria<T> criteria, String... columns ) {
-            return query( criteria, ArrayUtil.toList( columns ) );
+        public static <T> ArrayList<ImmediateQuery<T>> query(Criteria<T> criteria, String... columns) {
+            return query(criteria, ArrayUtil.toList(columns));
         }
 
         /**
@@ -197,16 +197,16 @@ public class ImmediateQuery<T> extends AbstractQueryWrapper<T, String> {
          * @param <T>      实体类型
          * @return 字符串查询列对象集合
          */
-        public static <T> ArrayList<ImmediateQuery<T>> query( Criteria<T> criteria, Collection<String> columns ) {
-            Set<String> its = distinct( columns );
-            if ( !its.isEmpty() ) {
-                ArrayList<ImmediateQuery<T>> list = new ArrayList<>( its.size() );
-                for ( String it : its ) {
-                    list.add( Single.query( criteria, it, null ) );
+        public static <T> ArrayList<ImmediateQuery<T>> query(Criteria<T> criteria, Collection<String> columns) {
+            Set<String> its = distinct(columns);
+            if (!its.isEmpty()) {
+                ArrayList<ImmediateQuery<T>> list = new ArrayList<>(its.size());
+                for (String it : its) {
+                    list.add(Single.query(criteria, it, null));
                 }
                 return list;
             }
-            return new ArrayList<>( 0 );
+            return new ArrayList<>(0);
         }
 
         /**
@@ -216,16 +216,16 @@ public class ImmediateQuery<T> extends AbstractQueryWrapper<T, String> {
          * @param <T>      实体类型
          * @return 字符串查询列对象集合
          */
-        public static <T> ArrayList<ImmediateQuery<T>> query( Criteria<T> criteria, Map<String, String> columns ) {
-            Map<String, String> its = filterNullValue( columns );
-            if ( CollectionUtil.hasElement( its ) ) {
-                ArrayList<ImmediateQuery<T>> list = new ArrayList<>( its.size() );
-                for ( Map.Entry<String, String> entry : its.entrySet() ) {
-                    list.add( Single.query( criteria, entry.getValue(), entry.getKey() ) );
+        public static <T> ArrayList<ImmediateQuery<T>> query(Criteria<T> criteria, Map<String, String> columns) {
+            Map<String, String> its = filterNullValue(columns);
+            if (CollectionUtil.hasElement(its)) {
+                ArrayList<ImmediateQuery<T>> list = new ArrayList<>(its.size());
+                for (Map.Entry<String, String> entry : its.entrySet()) {
+                    list.add(Single.query(criteria, entry.getValue(), entry.getKey()));
                 }
                 return list;
             }
-            return new ArrayList<>( 0 );
+            return new ArrayList<>(0);
         }
     }
 }

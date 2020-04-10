@@ -20,8 +20,8 @@ public final class ScriptBuilderFactory {
      * @param table    表包装对象
      * @return 脚本构建器
      */
-    public static ScriptBuilder create( final Provider provider, final TableWrapper table ) {
-        return create( provider, table, table.getEntity(), null );
+    public static ScriptBuilder create(final Provider provider, final TableWrapper table) {
+        return create(provider, table, table.getEntity(), null);
     }
 
     /**
@@ -32,11 +32,11 @@ public final class ScriptBuilderFactory {
      * @param alias    表别名
      * @return 脚本构建器
      */
-    public static ScriptBuilder create( final Provider provider, final TableWrapper table,
-                                        final Class<?> entity, final String alias ) {
+    public static ScriptBuilder create(final Provider provider, final TableWrapper table,
+                                       final Class<?> entity, final String alias) {
         return () -> {
-            String script = provider.build( table, entity, alias );
-            if ( script.toLowerCase( Locale.ENGLISH ).startsWith( "<script>" ) ) {
+            String script = provider.build(table, entity, alias);
+            if (script.toLowerCase(Locale.ENGLISH).startsWith("<script>")) {
                 return script;
             }
             return "<script>" + script + "</script>";

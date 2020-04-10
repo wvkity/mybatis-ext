@@ -17,34 +17,34 @@ import java.lang.annotation.Annotation;
  * 元数据审计拦截器注册器
  * @author wvkity
  */
-@Order( 100 )
+@Order(100)
 class MetadataAuditingInterceptorRegistrar extends BeanDefinitionRegistrarSupport<AuditingConfiguration> {
 
     private static final String INTERCEPTOR_BEAN_NAME = "MetadataAuditingInterceptor";
     private static final Class<?> REGISTER_ROOT_CLASS = MetadataAuditingInterceptor.class;
 
     @Override
-    public void registerBeanDefinitions( AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry ) {
-        Assert.notNull( annotationMetadata, "AnnotationMetadata must not be null!" );
-        Assert.notNull( registry, "BeanDefinitionRegistry must not be null!" );
-        registerBeanConfigurerAspectIfNecessary( registry );
-        super.registerBeanDefinitions( annotationMetadata, registry );
+    public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry) {
+        Assert.notNull(annotationMetadata, "AnnotationMetadata must not be null!");
+        Assert.notNull(registry, "BeanDefinitionRegistry must not be null!");
+        registerBeanConfigurerAspectIfNecessary(registry);
+        super.registerBeanDefinitions(annotationMetadata, registry);
     }
 
     @Override
-    protected AbstractBeanDefinition registerBeanDefinition( BeanDefinitionRegistry registry,
-                                                             AuditingConfiguration configuration ) {
-        return createBeanDefinition( registry, configuration, getBeanName(), REGISTER_ROOT_CLASS );
+    protected AbstractBeanDefinition registerBeanDefinition(BeanDefinitionRegistry registry,
+                                                            AuditingConfiguration configuration) {
+        return createBeanDefinition(registry, configuration, getBeanName(), REGISTER_ROOT_CLASS);
     }
 
     @Override
-    protected AuditingConfiguration getConfiguration( AnnotationMetadata annotationMetadata ) {
-        return new AnnotationAuditingConfiguration( annotationMetadata, getAnnotation() );
+    protected AuditingConfiguration getConfiguration(AnnotationMetadata annotationMetadata) {
+        return new AnnotationAuditingConfiguration(annotationMetadata, getAnnotation());
     }
 
     @Override
-    protected BeanDefinitionBuilder setRegisterBeanAttributes( AuditingConfiguration configuration,
-                                                               BeanDefinitionBuilder builder ) {
+    protected BeanDefinitionBuilder setRegisterBeanAttributes(AuditingConfiguration configuration,
+                                                              BeanDefinitionBuilder builder) {
         return builder;
     }
 

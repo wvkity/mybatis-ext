@@ -13,7 +13,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@SuppressWarnings( { "serial" } )
+@SuppressWarnings({"serial"})
 public abstract class ExpressionWrapper<T, E> implements Criterion<T>, PlaceholderConverter {
 
     protected static final String COMMA = ", ";
@@ -55,13 +55,13 @@ public abstract class ExpressionWrapper<T, E> implements Criterion<T>, Placehold
     protected Logic logic = Logic.AND;
 
     @Override
-    public ArrayList<String> placeholders( String template, Collection<Object> values ) {
-        return getCriteria().placeholders( template, values );
+    public ArrayList<String> placeholders(String template, Collection<Object> values) {
+        return getCriteria().placeholders(template, values);
     }
 
     @Override
-    public String placeholder( boolean format, String template, Object... values ) {
-        return getCriteria().placeholder( format, template, values );
+    public String placeholder(boolean format, String template, Object... values) {
+        return getCriteria().placeholder(format, template, values);
     }
 
     @Override
@@ -69,21 +69,21 @@ public abstract class ExpressionWrapper<T, E> implements Criterion<T>, Placehold
         return this.criteria;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Override
-    public ExpressionWrapper<T, E> criteria( Criteria<?> criteria ) {
-        this.criteria = ( Criteria<T> ) criteria;
+    public ExpressionWrapper<T, E> criteria(Criteria<?> criteria) {
+        this.criteria = (Criteria<T>) criteria;
         return this;
     }
 
     @Override
-    public ExpressionWrapper<T, ?> logic( Logic logic ) {
+    public ExpressionWrapper<T, ?> logic(Logic logic) {
         this.logic = logic;
         return this;
     }
 
     @Override
-    public ExpressionWrapper<T, ?> value( Object value ) {
+    public ExpressionWrapper<T, ?> value(Object value) {
         this.value = value;
         return this;
     }
@@ -93,8 +93,8 @@ public abstract class ExpressionWrapper<T, E> implements Criterion<T>, Placehold
      * @return 表别名
      */
     public String getAlias() {
-        return StringUtil.hasText( this.tableAlias ) ? this.tableAlias :
-                ( this.criteria != null ? this.criteria.getAlias() : "" );
+        return StringUtil.hasText(this.tableAlias) ? this.tableAlias :
+                (this.criteria != null ? this.criteria.getAlias() : "");
     }
 
     /**
@@ -102,8 +102,8 @@ public abstract class ExpressionWrapper<T, E> implements Criterion<T>, Placehold
      * @param value 待检查字符串
      * @return boolean
      */
-    public static boolean hasText( String value ) {
-        return StringUtil.hasText( value );
+    public static boolean hasText(String value) {
+        return StringUtil.hasText(value);
     }
 
     /**
@@ -111,7 +111,7 @@ public abstract class ExpressionWrapper<T, E> implements Criterion<T>, Placehold
      * @param klass 实体类
      * @return 主键字段包装对象
      */
-    static ColumnWrapper loadIdColumn( Class<?> klass ) {
-        return TableHandler.getPrimaryKey( klass );
+    static ColumnWrapper loadIdColumn(Class<?> klass) {
+        return TableHandler.getPrimaryKey(klass);
     }
 }

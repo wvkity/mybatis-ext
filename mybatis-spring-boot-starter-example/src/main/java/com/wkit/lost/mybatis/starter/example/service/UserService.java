@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface UserService extends ServiceExecutor<User> {
 
-    int testSave( Grade grade, List<User> users );
+    int testSave(Grade grade, List<User> users);
 }

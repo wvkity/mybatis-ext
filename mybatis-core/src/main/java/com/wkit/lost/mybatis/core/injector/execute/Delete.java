@@ -8,5 +8,5 @@ import com.wkit.lost.mybatis.core.mapping.sql.delete.DeleteProvider;
  * @author wvkity
  */
 public class Delete extends AbstractGeneralDeleteMethod<DeleteProvider> {
-    
+
 }

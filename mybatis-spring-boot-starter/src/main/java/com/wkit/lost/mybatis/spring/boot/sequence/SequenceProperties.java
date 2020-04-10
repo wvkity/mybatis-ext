@@ -11,8 +11,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author wvkity
  */
 @Data
-@Accessors( chain = true )
-@ConfigurationProperties( prefix = "lost.sequence", ignoreInvalidFields = true )
+@Accessors(chain = true)
+@ConfigurationProperties(prefix = "lost.sequence", ignoreInvalidFields = true)
 public class SequenceProperties {
 
     /**

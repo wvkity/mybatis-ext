@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  */
 @Documented
 @Inherited
-@Target( ElementType.FIELD )
-@Retention( RetentionPolicy.RUNTIME )
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface LastModifiedUserName {
 }

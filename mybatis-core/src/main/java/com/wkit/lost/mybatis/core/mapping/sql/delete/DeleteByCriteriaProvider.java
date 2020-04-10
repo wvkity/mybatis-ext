@@ -10,6 +10,6 @@ public class DeleteByCriteriaProvider extends AbstractCriteriaProvider {
 
     @Override
     public String build() {
-        return delete( getUpdateCondition() );
+        return delete(getUpdateCondition());
     }
 }

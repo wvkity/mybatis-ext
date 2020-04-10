@@ -11,6 +11,6 @@ public class DateProvider extends AbstractProvider {
 
     @Override
     public Date getNow() {
-        return Date.from( Instant.now() );
+        return Date.from(Instant.now());
     }
 }

@@ -28,10 +28,10 @@ public class ImmediateOrder<T> extends AbstractOrderWrapper<T, String> {
      * @param ascending 排序方式(是否为ASC排序)
      * @param columns   字段集合
      */
-    public ImmediateOrder( String alias, boolean ascending, Collection<String> columns ) {
+    public ImmediateOrder(String alias, boolean ascending, Collection<String> columns) {
         this.alias = alias;
         this.ascending = ascending;
-        this.columns = distinct( columns );
+        this.columns = distinct(columns);
     }
 
     /**
@@ -40,8 +40,8 @@ public class ImmediateOrder<T> extends AbstractOrderWrapper<T, String> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    public static <T> ImmediateOrder<T> asc( String... properties ) {
-        return new ImmediateOrder<>( null, true, ArrayUtil.toList( properties ) );
+    public static <T> ImmediateOrder<T> asc(String... properties) {
+        return new ImmediateOrder<>(null, true, ArrayUtil.toList(properties));
     }
 
     /**
@@ -51,8 +51,8 @@ public class ImmediateOrder<T> extends AbstractOrderWrapper<T, String> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    public static <T> ImmediateOrder<T> ascWithAlias( String alias, String... properties ) {
-        return new ImmediateOrder<>( alias, true, ArrayUtil.toList( properties ) );
+    public static <T> ImmediateOrder<T> ascWithAlias(String alias, String... properties) {
+        return new ImmediateOrder<>(alias, true, ArrayUtil.toList(properties));
     }
 
     /**
@@ -61,8 +61,8 @@ public class ImmediateOrder<T> extends AbstractOrderWrapper<T, String> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    public static <T> ImmediateOrder<T> desc( String... properties ) {
-        return new ImmediateOrder<>( null, false, ArrayUtil.toList( properties ) );
+    public static <T> ImmediateOrder<T> desc(String... properties) {
+        return new ImmediateOrder<>(null, false, ArrayUtil.toList(properties));
     }
 
     /**
@@ -72,17 +72,17 @@ public class ImmediateOrder<T> extends AbstractOrderWrapper<T, String> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    public static <T> ImmediateOrder<T> descWithAlias( String alias, String... properties ) {
-        return new ImmediateOrder<>( alias, false, ArrayUtil.toList( properties ) );
+    public static <T> ImmediateOrder<T> descWithAlias(String alias, String... properties) {
+        return new ImmediateOrder<>(alias, false, ArrayUtil.toList(properties));
     }
 
     @Override
     public String getSegment() {
-        if ( notEmpty() ) {
+        if (notEmpty()) {
             String orderMode = ascending ? " ASC" : " DESC";
-            String realAlias = StringUtil.hasText( this.alias ) ? ( this.alias + "." ) : "";
-            return this.columns.stream().map( it -> realAlias + it + orderMode )
-                    .collect( Collectors.joining( ", " ) );
+            String realAlias = StringUtil.hasText(this.alias) ? (this.alias + ".") : "";
+            return this.columns.stream().map(it -> realAlias + it + orderMode)
+                    .collect(Collectors.joining(", "));
         }
         return "";
     }

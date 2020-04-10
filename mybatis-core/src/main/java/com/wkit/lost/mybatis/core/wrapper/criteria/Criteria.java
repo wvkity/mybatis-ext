@@ -117,28 +117,28 @@ public interface Criteria<T> extends Search<T>, EmbeddedResult, PlaceholderConve
      * @param array 条件对象数组
      * @return 当前对象
      */
-    Criteria<T> add( Criterion<?>... array );
+    Criteria<T> add(Criterion<?>... array);
 
     /**
      * 添加多个条件
      * @param list 条件对象集合
      * @return 当前对象
      */
-    Criteria<T> add( Collection<Criterion<?>> list );
+    Criteria<T> add(Collection<Criterion<?>> list);
 
     /**
      * 添加子查询条件对象
      * @param array 子查询条件对象数组
      * @return 当前对象
      */
-    Criteria<T> add( SubCriteria<?>... array );
+    Criteria<T> add(SubCriteria<?>... array);
 
     /**
      * 添加子查询条件对象
      * @param list 子查询条件对象集合
      * @return 当前对象
      */
-    Criteria<T> addSubCriteria( Collection<SubCriteria<?>> list );
+    Criteria<T> addSubCriteria(Collection<SubCriteria<?>> list);
 
     /**
      * 联表查询副表引用属性
@@ -201,7 +201,7 @@ public interface Criteria<T> extends Search<T>, EmbeddedResult, PlaceholderConve
      * @param alias 聚合函数别名
      * @return 聚合函数对象
      */
-    default Aggregation getAggregate( String alias ) {
+    default Aggregation getAggregate(String alias) {
         return null;
     }
 
@@ -210,14 +210,14 @@ public interface Criteria<T> extends Search<T>, EmbeddedResult, PlaceholderConve
      * @param enabled 是否启用
      * @return 当前对象
      */
-    Criteria<T> enableAlias( boolean enabled );
+    Criteria<T> enableAlias(boolean enabled);
 
     /**
      * 设置自定义resultMap key
      * @param resultMap result key
      * @return 当前对象
      */
-    default Criteria<T> resultMap( String resultMap ) {
+    default Criteria<T> resultMap(String resultMap) {
         return this;
     }
 
@@ -226,7 +226,7 @@ public interface Criteria<T> extends Search<T>, EmbeddedResult, PlaceholderConve
      * @param resultType 返回值类型
      * @return 当前对象
      */
-    default Criteria<T> resultType( Class<?> resultType ) {
+    default Criteria<T> resultType(Class<?> resultType) {
         return this;
     }
 

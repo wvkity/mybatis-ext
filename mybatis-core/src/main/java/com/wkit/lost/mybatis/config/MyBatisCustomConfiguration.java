@@ -28,7 +28,7 @@ import java.util.List;
  * @author wvkity
  */
 @Data
-@Accessors( chain = true )
+@Accessors(chain = true)
 @NoArgsConstructor
 public class MyBatisCustomConfiguration implements Serializable {
 
@@ -127,7 +127,7 @@ public class MyBatisCustomConfiguration implements Serializable {
     /**
      * 全局主键标识(用于自动识别主键)
      */
-    private String[] primaryKeys = { "id" };
+    private String[] primaryKeys = {"id"};
 
     /**
      * 主键接口
@@ -204,9 +204,9 @@ public class MyBatisCustomConfiguration implements Serializable {
      * @param factory {@link SqlSessionFactory}
      * @return {@link SqlSessionFactory}
      */
-    public SqlSessionFactory cacheSelf( SqlSessionFactory factory ) {
-        if ( factory != null ) {
-            cacheSelf( factory.getConfiguration() );
+    public SqlSessionFactory cacheSelf(SqlSessionFactory factory) {
+        if (factory != null) {
+            cacheSelf(factory.getConfiguration());
         }
         return factory;
     }
@@ -215,9 +215,9 @@ public class MyBatisCustomConfiguration implements Serializable {
      * 缓存当前对象
      * @param configuration {@link Configuration}
      */
-    public void cacheSelf( Configuration configuration ) {
-        if ( configuration != null ) {
-            MyBatisConfigCache.cacheCustomConfiguration( configuration, this );
+    public void cacheSelf(Configuration configuration) {
+        if (configuration != null) {
+            MyBatisConfigCache.cacheCustomConfiguration(configuration, this);
         }
     }
 }

@@ -10,6 +10,6 @@ public class CriteriaQueryGeneralProvider extends AbstractCriteriaProvider {
 
     @Override
     public String build() {
-        return criteriaQuery( getQueryCondition() );
+        return criteriaQuery(getQueryCondition());
     }
 }

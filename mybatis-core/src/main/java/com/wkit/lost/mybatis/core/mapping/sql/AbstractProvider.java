@@ -36,7 +36,7 @@ public abstract class AbstractProvider implements Provider {
     protected String alias;
 
     @Override
-    public String build( TableWrapper table, Class<?> entity, String alias ) {
+    public String build(TableWrapper table, Class<?> entity, String alias) {
         this.table = table;
         this.entity = entity;
         this.alias = alias;
@@ -49,8 +49,8 @@ public abstract class AbstractProvider implements Provider {
      * @param valueSegment  值SQL片段
      * @return SQL语句
      */
-    protected String insert( String columnSegment, String valueSegment ) {
-        return toSqlString( SqlTemplate.INSERT, columnSegment, valueSegment );
+    protected String insert(String columnSegment, String valueSegment) {
+        return toSqlString(SqlTemplate.INSERT, columnSegment, valueSegment);
     }
 
     /**
@@ -58,8 +58,8 @@ public abstract class AbstractProvider implements Provider {
      * @param condition 条件SQL片段
      * @return SQL语句
      */
-    protected String delete( String condition ) {
-        return toSqlString( SqlTemplate.DELETE, "", condition );
+    protected String delete(String condition) {
+        return toSqlString(SqlTemplate.DELETE, "", condition);
     }
 
     /**
@@ -68,8 +68,8 @@ public abstract class AbstractProvider implements Provider {
      * @param condition 条件SQL片段
      * @return SQL语句
      */
-    protected String update( String script, String condition ) {
-        return toSqlString( SqlTemplate.UPDATE, script, condition );
+    protected String update(String script, String condition) {
+        return toSqlString(SqlTemplate.UPDATE, script, condition);
     }
 
     /**
@@ -78,8 +78,8 @@ public abstract class AbstractProvider implements Provider {
      * @param condition 条件SQL片段
      * @return SQL语句
      */
-    protected String select( String script, String condition ) {
-        return toSqlString( SqlTemplate.SELECT, script, condition );
+    protected String select(String script, String condition) {
+        return toSqlString(SqlTemplate.SELECT, script, condition);
     }
 
     /**
@@ -87,9 +87,9 @@ public abstract class AbstractProvider implements Provider {
      * @param conditionSegment 条件片段
      * @return SQL语句
      */
-    protected String criteriaQuery( final String conditionSegment ) {
-        return criteriaQuery( ScriptUtil.unSafeJoint( Constants.PARAM_CRITERIA, ".querySegment" ),
-                conditionSegment );
+    protected String criteriaQuery(final String conditionSegment) {
+        return criteriaQuery(ScriptUtil.unSafeJoint(Constants.PARAM_CRITERIA, ".querySegment"),
+                conditionSegment);
     }
 
     /**
@@ -98,8 +98,8 @@ public abstract class AbstractProvider implements Provider {
      * @param conditionSegment 条件片段
      * @return SQL语句
      */
-    protected String criteriaQuery( final String requireSegment, final String conditionSegment ) {
-        return toSqlString( SqlTemplate.SELECT_CRITERIA, requireSegment, conditionSegment );
+    protected String criteriaQuery(final String requireSegment, final String conditionSegment) {
+        return toSqlString(SqlTemplate.SELECT_CRITERIA, requireSegment, conditionSegment);
     }
 
     /**
@@ -109,8 +109,8 @@ public abstract class AbstractProvider implements Provider {
      * @param conditionSegment 条件片段
      * @return SQL语句
      */
-    protected String toSqlString( SqlTemplate template, final String requireSegment, final String conditionSegment ) {
-        return String.format( template.getSegment( this.table, this.alias ), requireSegment, conditionSegment );
+    protected String toSqlString(SqlTemplate template, final String requireSegment, final String conditionSegment) {
+        return String.format(template.getSegment(this.table, this.alias), requireSegment, conditionSegment);
     }
 
     /**
@@ -118,20 +118,20 @@ public abstract class AbstractProvider implements Provider {
      * @param column 字段包装对象
      * @return if标签脚本
      */
-    protected String convertIfTagForLocking( final ColumnWrapper column ) {
+    protected String convertIfTagForLocking(final ColumnWrapper column) {
         // 条件
-        StringBuilder condition = new StringBuilder( 30 );
-        condition.append( Constants.PARAM_OPTIMISTIC_LOCKING_KEY ).append( " != null" );
-        if ( column.isCheckNotEmpty() && String.class.isAssignableFrom( column.getJavaType() ) ) {
-            condition.append( " and " ).append( Constants.PARAM_OPTIMISTIC_LOCKING_KEY ).append( " != ''" );
+        StringBuilder condition = new StringBuilder(30);
+        condition.append(Constants.PARAM_OPTIMISTIC_LOCKING_KEY).append(" != null");
+        if (column.isCheckNotEmpty() && String.class.isAssignableFrom(column.getJavaType())) {
+            condition.append(" and ").append(Constants.PARAM_OPTIMISTIC_LOCKING_KEY).append(" != ''");
         }
         // 脚本
         String script = Constants.CHAR_SPACE + column.getColumn() + " = " +
-                ScriptUtil.safeJoint( Constants.PARAM_OPTIMISTIC_LOCKING_KEY,
-                        ScriptUtil.concatIntactArg( column.getJavaType(), column.getJdbcType(),
-                                column.getTypeHandler(), column.isUseJavaType() ) );
-        return ScriptUtil.convertIfTag( condition.toString(),
-                script, true );
+                ScriptUtil.safeJoint(Constants.PARAM_OPTIMISTIC_LOCKING_KEY,
+                        ScriptUtil.concatIntactArg(column.getJavaType(), column.getJdbcType(),
+                                column.getTypeHandler(), column.isUseJavaType()));
+        return ScriptUtil.convertIfTag(condition.toString(),
+                script, true);
     }
 
     /**

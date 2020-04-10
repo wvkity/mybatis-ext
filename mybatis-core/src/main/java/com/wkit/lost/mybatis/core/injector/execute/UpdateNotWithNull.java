@@ -8,5 +8,5 @@ import com.wkit.lost.mybatis.core.mapping.sql.update.UpdateNotWithNullProvider;
  * @author wvkity
  */
 public class UpdateNotWithNull extends AbstractGeneralUpdateMethod<UpdateNotWithNullProvider> {
-    
+
 }

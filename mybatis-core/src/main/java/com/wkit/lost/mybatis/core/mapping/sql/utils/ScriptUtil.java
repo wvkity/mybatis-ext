@@ -39,9 +39,9 @@ public final class ScriptUtil {
      * @param args 参数列表
      * @return String
      */
-    public static String safeJoint( String... args ) {
-        String result = Arrays.stream( args ).filter( Objects::nonNull ).collect( Collectors.joining( "" ) );
-        return StringUtil.isBlank( result ) ? "" : Constants.HASH_OPEN_BRACE + result + Constants.CLOSE_BRACE;
+    public static String safeJoint(String... args) {
+        String result = Arrays.stream(args).filter(Objects::nonNull).collect(Collectors.joining(""));
+        return StringUtil.isBlank(result) ? "" : Constants.HASH_OPEN_BRACE + result + Constants.CLOSE_BRACE;
     }
 
     /**
@@ -56,8 +56,8 @@ public final class ScriptUtil {
      * @param jointArgs 参数列表
      * @return String
      */
-    public static String safeJointBeforePart( final String part, final String... jointArgs ) {
-        return part + " " + safeJoint( jointArgs );
+    public static String safeJointBeforePart(final String part, final String... jointArgs) {
+        return part + " " + safeJoint(jointArgs);
     }
 
     /**
@@ -71,9 +71,9 @@ public final class ScriptUtil {
      * @param args 参数列表
      * @return String
      */
-    public static String unSafeJoint( String... args ) {
-        String result = Arrays.stream( args ).filter( Objects::nonNull ).collect( Collectors.joining( "" ) );
-        return StringUtil.isBlank( result ) ? "" : Constants.DOLLAR_OPEN_BRACE + result + Constants.CLOSE_BRACE;
+    public static String unSafeJoint(String... args) {
+        String result = Arrays.stream(args).filter(Objects::nonNull).collect(Collectors.joining(""));
+        return StringUtil.isBlank(result) ? "" : Constants.DOLLAR_OPEN_BRACE + result + Constants.CLOSE_BRACE;
     }
 
     /**
@@ -82,19 +82,19 @@ public final class ScriptUtil {
      * @param column  字段包装对象
      * @return if条件字符串
      */
-    public static String convertIfTest( final String argName, final ColumnWrapper column ) {
+    public static String convertIfTest(final String argName, final ColumnWrapper column) {
         StringBuilder builder = new StringBuilder();
-        boolean hasArgName = StringUtil.hasText( argName );
-        if ( hasArgName ) {
-            builder.append( argName ).append( Constants.CHAR_DOT );
+        boolean hasArgName = StringUtil.hasText(argName);
+        if (hasArgName) {
+            builder.append(argName).append(Constants.CHAR_DOT);
         }
-        builder.append( column.getProperty() ).append( " != null" );
-        if ( String.class.isAssignableFrom( column.getJavaType() ) ) {
-            builder.append( " and " );
-            if ( hasArgName ) {
-                builder.append( argName ).append( Constants.CHAR_DOT );
+        builder.append(column.getProperty()).append(" != null");
+        if (String.class.isAssignableFrom(column.getJavaType())) {
+            builder.append(" and ");
+            if (hasArgName) {
+                builder.append(argName).append(Constants.CHAR_DOT);
             }
-            builder.append( column.getProperty() ).append( " != ''" );
+            builder.append(column.getProperty()).append(" != ''");
         }
         return builder.toString();
     }
@@ -121,14 +121,14 @@ public final class ScriptUtil {
      * @param newLine   是否换行
      * @return if条件标签脚本
      */
-    public static String convertIfTag( final String condition, final String script, boolean newLine ) {
+    public static String convertIfTag(final String condition, final String script, boolean newLine) {
         String newScript;
-        if ( newLine ) {
+        if (newLine) {
             newScript = Constants.NEW_LINE + script + Constants.NEW_LINE;
         } else {
             newScript = script;
         }
-        return String.format( Constants.NEW_LINE + "<if test=\"%s\">%s</if>", condition, newScript );
+        return String.format(Constants.NEW_LINE + "<if test=\"%s\">%s</if>", condition, newScript);
     }
 
     /**
@@ -144,35 +144,35 @@ public final class ScriptUtil {
      * @param execute    执行类型
      * @return if标签脚本
      */
-    public static String convertIfTagWithNotNull( final String tableAlias, final ColumnWrapper column,
-                                                  final String argName, final boolean toValue,
-                                                  final boolean isQuery, final Symbol symbol, final Logic logic,
-                                                  final String separator, final Execute execute ) {
+    public static String convertIfTagWithNotNull(final String tableAlias, final ColumnWrapper column,
+                                                 final String argName, final boolean toValue,
+                                                 final boolean isQuery, final Symbol symbol, final Logic logic,
+                                                 final String separator, final Execute execute) {
         // 条件部分
-        StringBuilder condition = new StringBuilder( 45 );
-        boolean hasArgName = StringUtil.hasText( argName );
+        StringBuilder condition = new StringBuilder(45);
+        boolean hasArgName = StringUtil.hasText(argName);
         String property = column.getProperty();
-        if ( hasArgName ) {
-            condition.append( argName ).append( Constants.CHAR_DOT );
+        if (hasArgName) {
+            condition.append(argName).append(Constants.CHAR_DOT);
         }
-        condition.append( property ).append( " != null" );
-        if ( column.isCheckNotEmpty() && String.class.isAssignableFrom( column.getJavaType() ) ) {
-            condition.append( " and " );
-            if ( hasArgName ) {
-                condition.append( argName ).append( Constants.CHAR_DOT );
+        condition.append(property).append(" != null");
+        if (column.isCheckNotEmpty() && String.class.isAssignableFrom(column.getJavaType())) {
+            condition.append(" and ");
+            if (hasArgName) {
+                condition.append(argName).append(Constants.CHAR_DOT);
             }
-            condition.append( property ).append( " != ''" );
+            condition.append(property).append(" != ''");
         }
-        StringBuilder script = new StringBuilder( 45 );
-        if ( toValue ) {
-            if ( logic != null ) {
-                script.append( logic.getSegment() ).append( Constants.CHAR_SPACE );
+        StringBuilder script = new StringBuilder(45);
+        if (toValue) {
+            if (logic != null) {
+                script.append(logic.getSegment()).append(Constants.CHAR_SPACE);
             }
-            script.append( convertPartArg( isQuery ? tableAlias : null, column, argName, symbol, separator, execute ) );
+            script.append(convertPartArg(isQuery ? tableAlias : null, column, argName, symbol, separator, execute));
         } else {
-            script.append( column.getColumn() ).append( ", " ).append( Constants.NEW_LINE );
+            script.append(column.getColumn()).append(", ").append(Constants.NEW_LINE);
         }
-        return convertIfTag( condition.toString(), script.toString(), true );
+        return convertIfTag(condition.toString(), script.toString(), true);
     }
 
     /**
@@ -184,24 +184,24 @@ public final class ScriptUtil {
      * @param suffixOverrides 干掉最后一个
      * @return trim脚本
      */
-    public static String convertTrimTag( final String script, final String prefix, final String suffix,
-                                         final String prefixOverrides, final String suffixOverrides ) {
-        StringBuilder builder = new StringBuilder( 60 );
-        builder.append( "<trim" );
-        if ( StringUtil.hasText( prefix ) ) {
-            builder.append( " prefix=\"" ).append( prefix ).append( Constants.CHAR_QUOTE );
+    public static String convertTrimTag(final String script, final String prefix, final String suffix,
+                                        final String prefixOverrides, final String suffixOverrides) {
+        StringBuilder builder = new StringBuilder(60);
+        builder.append("<trim");
+        if (StringUtil.hasText(prefix)) {
+            builder.append(" prefix=\"").append(prefix).append(Constants.CHAR_QUOTE);
         }
-        if ( StringUtil.hasText( suffix ) ) {
-            builder.append( " suffix=\"" ).append( suffix ).append( Constants.CHAR_QUOTE );
+        if (StringUtil.hasText(suffix)) {
+            builder.append(" suffix=\"").append(suffix).append(Constants.CHAR_QUOTE);
         }
-        if ( StringUtil.hasText( prefixOverrides ) ) {
-            builder.append( " prefixOverrides=\"" ).append( prefixOverrides ).append( Constants.CHAR_QUOTE );
+        if (StringUtil.hasText(prefixOverrides)) {
+            builder.append(" prefixOverrides=\"").append(prefixOverrides).append(Constants.CHAR_QUOTE);
         }
-        if ( StringUtil.hasText( suffixOverrides ) ) {
-            builder.append( " suffixOverrides=\"" ).append( suffixOverrides ).append( Constants.CHAR_QUOTE );
+        if (StringUtil.hasText(suffixOverrides)) {
+            builder.append(" suffixOverrides=\"").append(suffixOverrides).append(Constants.CHAR_QUOTE);
         }
-        return builder.append( Constants.CHAR_GT ).append( Constants.NEW_LINE )
-                .append( script ).append( Constants.NEW_LINE ).append( "</trim>" ).toString();
+        return builder.append(Constants.CHAR_GT).append(Constants.NEW_LINE)
+                .append(script).append(Constants.NEW_LINE).append("</trim>").toString();
     }
 
     /**
@@ -224,8 +224,8 @@ public final class ScriptUtil {
      * @param otherwiseScript otherwise脚本
      * @return choose标签脚本
      */
-    public static String convertChooseTag( final String whenCondition, final String whenScript,
-                                           final String otherwiseScript ) {
+    public static String convertChooseTag(final String whenCondition, final String whenScript,
+                                          final String otherwiseScript) {
         return "<choose>" + Constants.NEW_LINE +
                 " <when test=\"" + whenCondition + Constants.CHAR_QUOTE + Constants.CHAR_GT + Constants.NEW_LINE +
                 "  " + whenScript + Constants.NEW_LINE +
@@ -240,7 +240,7 @@ public final class ScriptUtil {
      * @param script SQL脚本
      * @return where脚本标签
      */
-    public static String convertWhereTag( final String script ) {
+    public static String convertWhereTag(final String script) {
         return "<where>" + Constants.NEW_LINE + Constants.CHAR_SPACE +
                 script + Constants.NEW_LINE +
                 "</where>";
@@ -256,9 +256,9 @@ public final class ScriptUtil {
      * @param separator  分隔符
      * @return foreach脚本标签
      */
-    public static String convertForeachTag( final String script, final String collection, final String item,
-                                            final String open, final String close, final String separator ) {
-        return convertForeachTag( script, collection, null, item, open, close, separator );
+    public static String convertForeachTag(final String script, final String collection, final String item,
+                                           final String open, final String close, final String separator) {
+        return convertForeachTag(script, collection, null, item, open, close, separator);
     }
 
     /**
@@ -272,30 +272,30 @@ public final class ScriptUtil {
      * @param separator  分隔符
      * @return foreach脚本标签
      */
-    public static String convertForeachTag( final String script, final String collection, final String index,
-                                            final String item, final String open, final String close,
-                                            final String separator ) {
-        StringBuilder builder = new StringBuilder( "<foreach" );
-        if ( StringUtil.hasText( collection ) ) {
-            builder.append( " collection=\"" ).append( collection ).append( Constants.CHAR_QUOTE );
+    public static String convertForeachTag(final String script, final String collection, final String index,
+                                           final String item, final String open, final String close,
+                                           final String separator) {
+        StringBuilder builder = new StringBuilder("<foreach");
+        if (StringUtil.hasText(collection)) {
+            builder.append(" collection=\"").append(collection).append(Constants.CHAR_QUOTE);
         }
-        if ( StringUtil.hasText( index ) ) {
-            builder.append( " index=\"" ).append( index ).append( Constants.CHAR_QUOTE );
+        if (StringUtil.hasText(index)) {
+            builder.append(" index=\"").append(index).append(Constants.CHAR_QUOTE);
         }
-        if ( StringUtil.hasText( item ) ) {
-            builder.append( " item=\"" ).append( item ).append( Constants.CHAR_QUOTE );
+        if (StringUtil.hasText(item)) {
+            builder.append(" item=\"").append(item).append(Constants.CHAR_QUOTE);
         }
-        if ( StringUtil.hasText( open ) ) {
-            builder.append( " open=\"" ).append( open ).append( Constants.CHAR_QUOTE );
+        if (StringUtil.hasText(open)) {
+            builder.append(" open=\"").append(open).append(Constants.CHAR_QUOTE);
         }
-        if ( StringUtil.hasText( close ) ) {
-            builder.append( " close=\"" ).append( close ).append( Constants.CHAR_QUOTE );
+        if (StringUtil.hasText(close)) {
+            builder.append(" close=\"").append(close).append(Constants.CHAR_QUOTE);
         }
-        if ( StringUtil.hasText( separator ) ) {
-            builder.append( " separator=\"" ).append( separator ).append( Constants.CHAR_QUOTE );
+        if (StringUtil.hasText(separator)) {
+            builder.append(" separator=\"").append(separator).append(Constants.CHAR_QUOTE);
         }
-        return builder.append( Constants.CHAR_GT ).append( Constants.NEW_LINE )
-                .append( script ).append( "</foreach>" ).append( Constants.NEW_LINE ).toString();
+        return builder.append(Constants.CHAR_GT).append(Constants.NEW_LINE)
+                .append(script).append("</foreach>").append(Constants.NEW_LINE).toString();
     }
 
     /**
@@ -305,9 +305,9 @@ public final class ScriptUtil {
      * @param execute    执行类型
      * @return 参数字符串
      */
-    public static String convertPartArg( final String tableAlias, final ColumnWrapper column,
-                                         final Execute execute ) {
-        return convertPartArg( tableAlias, column, null, execute );
+    public static String convertPartArg(final String tableAlias, final ColumnWrapper column,
+                                        final Execute execute) {
+        return convertPartArg(tableAlias, column, null, execute);
     }
 
     /**
@@ -317,8 +317,8 @@ public final class ScriptUtil {
      * @param execute 执行类型
      * @return 参数字符串
      */
-    public static String convertPartArg( final ColumnWrapper column, final String argName, final Execute execute ) {
-        return convertPartArg( null, column, argName, Symbol.EQ, execute );
+    public static String convertPartArg(final ColumnWrapper column, final String argName, final Execute execute) {
+        return convertPartArg(null, column, argName, Symbol.EQ, execute);
     }
 
     /**
@@ -329,9 +329,9 @@ public final class ScriptUtil {
      * @param execute    执行类型
      * @return 参数字符串
      */
-    public static String convertPartArg( final String tableAlias, final ColumnWrapper column,
-                                         final String argName, final Execute execute ) {
-        return convertPartArg( tableAlias, column, argName, Symbol.EQ, execute );
+    public static String convertPartArg(final String tableAlias, final ColumnWrapper column,
+                                        final String argName, final Execute execute) {
+        return convertPartArg(tableAlias, column, argName, Symbol.EQ, execute);
     }
 
     /**
@@ -343,9 +343,9 @@ public final class ScriptUtil {
      * @param execute    执行类型
      * @return 参数字符串
      */
-    public static String convertPartArg( final String tableAlias, final ColumnWrapper column,
-                                         final String argName, final Symbol symbol, final Execute execute ) {
-        return convertPartArg( tableAlias, column, argName, symbol, null, execute );
+    public static String convertPartArg(final String tableAlias, final ColumnWrapper column,
+                                        final String argName, final Symbol symbol, final Execute execute) {
+        return convertPartArg(tableAlias, column, argName, symbol, null, execute);
     }
 
     /**
@@ -358,11 +358,11 @@ public final class ScriptUtil {
      * @param execute    执行类型
      * @return 参数字符串
      */
-    public static String convertPartArg( final String tableAlias, final ColumnWrapper column, final String argName,
-                                         final Symbol symbol, final String separator, final Execute execute ) {
-        return convertPartArg( tableAlias, column.getColumn(), argName, column.getProperty(), symbol,
+    public static String convertPartArg(final String tableAlias, final ColumnWrapper column, final String argName,
+                                        final Symbol symbol, final String separator, final Execute execute) {
+        return convertPartArg(tableAlias, column.getColumn(), argName, column.getProperty(), symbol,
                 column.getJdbcType(), column.getTypeHandler(), column.getJavaType(),
-                column.isUseJavaType(), separator, execute );
+                column.isUseJavaType(), separator, execute);
     }
 
     /**
@@ -397,32 +397,32 @@ public final class ScriptUtil {
      * @param execute       执行类型
      * @return 参数字符串
      */
-    public static String convertPartArg( final String tableAlias, final String column, final String argName,
-                                         final String property, final Symbol symbol, final JdbcType jdbcType,
-                                         final Class<?> typeHandler, final Class<?> javaType,
-                                         final boolean isUseJavaType, final String separator,
-                                         final Execute execute ) {
-        StringBuilder builder = new StringBuilder( 60 );
-        if ( execute != Execute.INSERT ) {
-            if ( StringUtil.hasText( tableAlias ) ) {
-                builder.append( tableAlias ).append( Constants.CHAR_DOT );
+    public static String convertPartArg(final String tableAlias, final String column, final String argName,
+                                        final String property, final Symbol symbol, final JdbcType jdbcType,
+                                        final Class<?> typeHandler, final Class<?> javaType,
+                                        final boolean isUseJavaType, final String separator,
+                                        final Execute execute) {
+        StringBuilder builder = new StringBuilder(60);
+        if (execute != Execute.INSERT) {
+            if (StringUtil.hasText(tableAlias)) {
+                builder.append(tableAlias).append(Constants.CHAR_DOT);
             }
-            builder.append( column ).append( Constants.CHAR_SPACE );
-            if ( symbol == null ) {
-                builder.append( Symbol.EQ.getSegment() );
+            builder.append(column).append(Constants.CHAR_SPACE);
+            if (symbol == null) {
+                builder.append(Symbol.EQ.getSegment());
             } else {
-                builder.append( symbol.getSegment() );
+                builder.append(symbol.getSegment());
             }
         }
-        builder.append( Constants.CHAR_SPACE );
-        if ( execute == Execute.NONE ) {
-            builder.append( safeJoint( "value" ) );
+        builder.append(Constants.CHAR_SPACE);
+        if (execute == Execute.NONE) {
+            builder.append(safeJoint("value"));
         } else {
-            builder.append( safeJoint( StringUtil.hasText( argName ) ? ( argName + Constants.CHAR_DOT ) : argName,
-                    property, concatIntactArg( javaType, jdbcType, typeHandler, isUseJavaType ) ) );
+            builder.append(safeJoint(StringUtil.hasText(argName) ? (argName + Constants.CHAR_DOT) : argName,
+                    property, concatIntactArg(javaType, jdbcType, typeHandler, isUseJavaType)));
         }
-        if ( StringUtil.hasText( separator ) ) {
-            builder.append( separator );
+        if (StringUtil.hasText(separator)) {
+            builder.append(separator);
         }
         return builder.toString();
     }
@@ -436,10 +436,10 @@ public final class ScriptUtil {
      * @param placeholders 参数值
      * @return 参数字符串
      */
-    public static String convertConditionArg( final String tableAlias, final ColumnWrapper column,
-                                              final Symbol symbol, final Logic logic, final String... placeholders ) {
-        return convertConditionArg( tableAlias, column.getColumn(), column.getJdbcType(),
-                column.getTypeHandler(), column.getJavaType(), column.isUseJavaType(), symbol, logic, placeholders );
+    public static String convertConditionArg(final String tableAlias, final ColumnWrapper column,
+                                             final Symbol symbol, final Logic logic, final String... placeholders) {
+        return convertConditionArg(tableAlias, column.getColumn(), column.getJdbcType(),
+                column.getTypeHandler(), column.getJavaType(), column.isUseJavaType(), symbol, logic, placeholders);
     }
 
     /**
@@ -451,10 +451,10 @@ public final class ScriptUtil {
      * @param placeholders 参数值
      * @return 参数字符串
      */
-    public static String convertConditionArg( final String tableAlias, final ColumnWrapper column,
-                                              final Symbol symbol, final Logic logic, final List<String> placeholders ) {
-        return convertConditionArg( tableAlias, column.getColumn(), column.getJdbcType(),
-                column.getTypeHandler(), column.getJavaType(), column.isUseJavaType(), symbol, logic, placeholders );
+    public static String convertConditionArg(final String tableAlias, final ColumnWrapper column,
+                                             final Symbol symbol, final Logic logic, final List<String> placeholders) {
+        return convertConditionArg(tableAlias, column.getColumn(), column.getJdbcType(),
+                column.getTypeHandler(), column.getJavaType(), column.isUseJavaType(), symbol, logic, placeholders);
     }
 
     /**
@@ -466,10 +466,10 @@ public final class ScriptUtil {
      * @param placeholders 参数值
      * @return 参数字符串
      */
-    public static String convertConditionArg( final String tableAlias, final String column,
-                                              final Symbol symbol, final Logic logic, final String... placeholders ) {
-        return convertConditionArg( tableAlias, column, null, null, null,
-                false, symbol, logic, placeholders );
+    public static String convertConditionArg(final String tableAlias, final String column,
+                                             final Symbol symbol, final Logic logic, final String... placeholders) {
+        return convertConditionArg(tableAlias, column, null, null, null,
+                false, symbol, logic, placeholders);
     }
 
     /**
@@ -481,10 +481,10 @@ public final class ScriptUtil {
      * @param placeholders 参数值
      * @return 参数字符串
      */
-    public static String convertConditionArg( final String tableAlias, final String column,
-                                              final Symbol symbol, final Logic logic, final List<String> placeholders ) {
-        return convertConditionArg( tableAlias, column, null, null, null,
-                false, symbol, logic, placeholders );
+    public static String convertConditionArg(final String tableAlias, final String column,
+                                             final Symbol symbol, final Logic logic, final List<String> placeholders) {
+        return convertConditionArg(tableAlias, column, null, null, null,
+                false, symbol, logic, placeholders);
     }
 
     /**
@@ -500,12 +500,12 @@ public final class ScriptUtil {
      * @param placeholders  参数值
      * @return 参数字符串
      */
-    public static String convertConditionArg( final String tableAlias, final String column,
-                                              final JdbcType jdbcType, final Class<?> typeHandler,
-                                              final Class<?> javaType, final boolean isUseJavaType,
-                                              final Symbol symbol, final Logic logic, final String... placeholders ) {
-        return convertConditionArg( tableAlias, column, jdbcType, typeHandler, javaType, isUseJavaType,
-                symbol, logic, ArrayUtil.toList( placeholders ) );
+    public static String convertConditionArg(final String tableAlias, final String column,
+                                             final JdbcType jdbcType, final Class<?> typeHandler,
+                                             final Class<?> javaType, final boolean isUseJavaType,
+                                             final Symbol symbol, final Logic logic, final String... placeholders) {
+        return convertConditionArg(tableAlias, column, jdbcType, typeHandler, javaType, isUseJavaType,
+                symbol, logic, ArrayUtil.toList(placeholders));
     }
 
 
@@ -522,27 +522,27 @@ public final class ScriptUtil {
      * @param placeholders  参数值
      * @return 参数字符串
      */
-    public static String convertConditionArg( final String tableAlias, final String column,
-                                              final JdbcType jdbcType, final Class<?> typeHandler,
-                                              final Class<?> javaType, final boolean isUseJavaType,
-                                              final Symbol symbol, final Logic logic, final List<String> placeholders ) {
-        StringBuilder builder = new StringBuilder( 60 );
-        if ( logic != null ) {
-            builder.append( logic.getSegment() ).append( Constants.CHAR_SPACE );
+    public static String convertConditionArg(final String tableAlias, final String column,
+                                             final JdbcType jdbcType, final Class<?> typeHandler,
+                                             final Class<?> javaType, final boolean isUseJavaType,
+                                             final Symbol symbol, final Logic logic, final List<String> placeholders) {
+        StringBuilder builder = new StringBuilder(60);
+        if (logic != null) {
+            builder.append(logic.getSegment()).append(Constants.CHAR_SPACE);
         }
-        if ( StringUtil.hasText( tableAlias ) ) {
-            builder.append( tableAlias ).append( Constants.CHAR_DOT );
+        if (StringUtil.hasText(tableAlias)) {
+            builder.append(tableAlias).append(Constants.CHAR_DOT);
         }
         Symbol realSymbol;
-        if ( symbol == null ) {
+        if (symbol == null) {
             realSymbol = Symbol.EQ;
         } else {
             realSymbol = symbol;
         }
-        builder.append( column ).append( Constants.CHAR_SPACE ).append( realSymbol.getSegment() )
-                .append( Constants.CHAR_SPACE );
-        if ( Symbol.filter( realSymbol ) && CollectionUtil.hasElement( placeholders ) ) {
-            switch ( symbol ) {
+        builder.append(column).append(Constants.CHAR_SPACE).append(realSymbol.getSegment())
+                .append(Constants.CHAR_SPACE);
+        if (Symbol.filter(realSymbol) && CollectionUtil.hasElement(placeholders)) {
+            switch (symbol) {
                 case EQ:
                 case NE:
                 case LT:
@@ -551,37 +551,37 @@ public final class ScriptUtil {
                 case GE:
                 case LIKE:
                 case NOT_LIKE:
-                    builder.append( safeJoint( placeholders.get( 0 ), concatIntactArg( javaType, jdbcType,
-                            typeHandler, isUseJavaType ) ) );
+                    builder.append(safeJoint(placeholders.get(0), concatIntactArg(javaType, jdbcType,
+                            typeHandler, isUseJavaType)));
                     break;
                 case IN:
                 case NOT_IN:
-                    builder.append( placeholders.stream().map( it -> safeJoint( it,
-                            concatIntactArg( javaType, jdbcType, typeHandler, isUseJavaType ) ) )
-                            .collect( Collectors.joining( ", ", "(", ")" ) ) );
+                    builder.append(placeholders.stream().map(it -> safeJoint(it,
+                            concatIntactArg(javaType, jdbcType, typeHandler, isUseJavaType)))
+                            .collect(Collectors.joining(", ", "(", ")")));
                     break;
                 case BETWEEN:
                 case NOT_BETWEEN:
-                    builder.append( placeholders.stream().limit( 2 ).map( it -> safeJoint( it,
-                            concatIntactArg( javaType, jdbcType, typeHandler, isUseJavaType ) ) )
-                            .collect( Collectors.joining( " AND " ) ) );
+                    builder.append(placeholders.stream().limit(2).map(it -> safeJoint(it,
+                            concatIntactArg(javaType, jdbcType, typeHandler, isUseJavaType)))
+                            .collect(Collectors.joining(" AND ")));
                     break;
             }
         }
         return builder.toString();
     }
 
-    public static String concatIntactArg( final Class<?> javaType, final JdbcType jdbcType,
-                                          final Class<?> typeHandler, final boolean isUseJavaType ) {
-        StringBuilder builder = new StringBuilder( 30 );
-        if ( jdbcType != null ) {
-            builder.append( ", jdbcType=" ).append( jdbcType.toString() );
+    public static String concatIntactArg(final Class<?> javaType, final JdbcType jdbcType,
+                                         final Class<?> typeHandler, final boolean isUseJavaType) {
+        StringBuilder builder = new StringBuilder(30);
+        if (jdbcType != null) {
+            builder.append(", jdbcType=").append(jdbcType.toString());
         }
-        if ( typeHandler != null ) {
-            builder.append( ", typeHandler=" ).append( typeHandler.getCanonicalName() );
+        if (typeHandler != null) {
+            builder.append(", typeHandler=").append(typeHandler.getCanonicalName());
         }
-        if ( isUseJavaType && javaType != null ) {
-            builder.append( ", javaType=" ).append( javaType.getCanonicalName() );
+        if (isUseJavaType && javaType != null) {
+            builder.append(", javaType=").append(javaType.getCanonicalName());
         }
         return builder.toString();
     }
@@ -591,8 +591,8 @@ public final class ScriptUtil {
      * @param column 字段包装对象
      * @return 查询字段
      */
-    public static String convertQueryArg( final ColumnWrapper column ) {
-        return convertQueryArg( null, column, null, false );
+    public static String convertQueryArg(final ColumnWrapper column) {
+        return convertQueryArg(null, column, null, false);
     }
 
     /**
@@ -603,16 +603,16 @@ public final class ScriptUtil {
      * @param apply      是否带上属性名
      * @return 查询字段
      */
-    public static String convertQueryArg( final String tableAlias, final ColumnWrapper column,
-                                          final String reference, final boolean apply ) {
+    public static String convertQueryArg(final String tableAlias, final ColumnWrapper column,
+                                         final String reference, final boolean apply) {
         String columnAlias;
-        if ( apply ) {
-            columnAlias = StringUtil.hasText( reference ) ? ( reference + Constants.CHAR_DOT + column.getProperty() )
+        if (apply) {
+            columnAlias = StringUtil.hasText(reference) ? (reference + Constants.CHAR_DOT + column.getProperty())
                     : column.getProperty();
         } else {
             columnAlias = null;
         }
-        return convertQueryArg( tableAlias, column.getColumn(), columnAlias );
+        return convertQueryArg(tableAlias, column.getColumn(), columnAlias);
     }
 
     /**
@@ -622,18 +622,18 @@ public final class ScriptUtil {
      * @param columnAlias 字段别名
      * @return 查询字段
      */
-    public static String convertQueryArg( final String tableAlias, final String column, final String columnAlias ) {
-        StringBuilder builder = new StringBuilder( 40 );
-        if ( StringUtil.hasText( tableAlias ) ) {
-            builder.append( tableAlias ).append( Constants.CHAR_DOT );
+    public static String convertQueryArg(final String tableAlias, final String column, final String columnAlias) {
+        StringBuilder builder = new StringBuilder(40);
+        if (StringUtil.hasText(tableAlias)) {
+            builder.append(tableAlias).append(Constants.CHAR_DOT);
         }
-        builder.append( column );
-        if ( StringUtil.hasText( columnAlias ) ) {
-            builder.append( Constants.CHAR_SPACE );
-            if ( columnAlias.contains( Constants.CHAR_DOT ) ) {
-                builder.append( Constants.CHAR_QUOTE ).append( columnAlias ).append( Constants.CHAR_QUOTE );
+        builder.append(column);
+        if (StringUtil.hasText(columnAlias)) {
+            builder.append(Constants.CHAR_SPACE);
+            if (columnAlias.contains(Constants.CHAR_DOT)) {
+                builder.append(Constants.CHAR_QUOTE).append(columnAlias).append(Constants.CHAR_QUOTE);
             } else {
-                builder.append( columnAlias );
+                builder.append(columnAlias);
             }
         }
         return builder.toString();
@@ -645,8 +645,8 @@ public final class ScriptUtil {
      * @param configuration MyBatis配置对象
      * @return 序列SQL
      */
-    public static String getSequenceScript( final Configuration configuration, ColumnWrapper column ) {
-        return getSequenceScript( MyBatisConfigCache.getDialect( configuration ), column.getSequenceName() );
+    public static String getSequenceScript(final Configuration configuration, ColumnWrapper column) {
+        return getSequenceScript(MyBatisConfigCache.getDialect(configuration), column.getSequenceName());
     }
 
     /**
@@ -655,7 +655,7 @@ public final class ScriptUtil {
      * @param sequenceName 序列名称
      * @return 序列SQL
      */
-    public static String getSequenceScript( final Dialect dialect, String sequenceName ) {
-        return SequenceKeyGenerator.getInstance( dialect ).toSqlString( sequenceName );
+    public static String getSequenceScript(final Dialect dialect, String sequenceName) {
+        return SequenceKeyGenerator.getInstance(dialect).toSqlString(sequenceName);
     }
 }

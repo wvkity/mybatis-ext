@@ -15,13 +15,13 @@ public abstract class AbstractGeneralDeleteMethod<T extends Provider> extends Ab
         implements ProviderBuilder<T> {
 
     @Override
-    public MappedStatement injectMappedStatement( TableWrapper table, Class<?> mapperInterface, Class<?> resultType ) {
-        return addDeleteMappedStatement( mapperInterface, resultType, table, target() );
+    public MappedStatement injectMappedStatement(TableWrapper table, Class<?> mapperInterface, Class<?> resultType) {
+        return addDeleteMappedStatement(mapperInterface, resultType, table, target());
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Override
     public T target() {
-        return ( T ) ProviderCache.newInstance( getClass() );
+        return (T) ProviderCache.newInstance(getClass());
     }
 }

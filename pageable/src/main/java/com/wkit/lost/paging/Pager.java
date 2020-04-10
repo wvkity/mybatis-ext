@@ -19,25 +19,16 @@ public class Pager extends AbstractPager {
      * 构造方法
      * @param page 当前页
      */
-    public Pager( String page ) {
-        super( page );
+    public Pager(String page) {
+        super(page);
     }
 
     /**
      * 构造方法
      * @param page 当前页
      */
-    public Pager( long page ) {
-        super( page );
-    }
-
-    /**
-     * 构造方法
-     * @param page 当前页
-     * @param size 每页数目
-     */
-    public Pager( String page, String size ) {
-        super( page, size );
+    public Pager(long page) {
+        super(page);
     }
 
     /**
@@ -45,7 +36,16 @@ public class Pager extends AbstractPager {
      * @param page 当前页
      * @param size 每页数目
      */
-    public Pager( long page, long size ) {
-        super( page, size );
+    public Pager(String page, String size) {
+        super(page, size);
+    }
+
+    /**
+     * 构造方法
+     * @param page 当前页
+     * @param size 每页数目
+     */
+    public Pager(long page, long size) {
+        super(page, size);
     }
 }

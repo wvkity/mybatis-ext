@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @param <E> 字段类型
  * @author wvkity
  */
-@SuppressWarnings( { "serial" } )
+@SuppressWarnings({"serial"})
 public abstract class AbstractQueryWrapper<T, E> extends AbstractWrapper<T, E> implements QueryWrapper<T> {
 
     /**
@@ -37,25 +37,25 @@ public abstract class AbstractQueryWrapper<T, E> extends AbstractWrapper<T, E> i
      * @param criteria 条件对象
      * @return 新的查询列包装对象
      */
-    public abstract AbstractQueryWrapper<?, ?> transform( Criteria<?> criteria );
+    public abstract AbstractQueryWrapper<?, ?> transform(Criteria<?> criteria);
 
     /**
      * 获取SQL片段
      * @param applyQuery 是否为查询语句
      * @return SQL片段
      */
-    public abstract String getSegment( boolean applyQuery );
+    public abstract String getSegment(boolean applyQuery);
 
     /**
      * 过滤空值元素
      * @param map 字段别名-字段集合
      * @return 字段别名-字段集合
      */
-    public static Map<String, String> filterNullValue( Map<String, String> map ) {
-        if ( CollectionUtil.hasElement( map ) ) {
-            return map.entrySet().stream().filter( it -> StringUtil.hasText( it.getValue() ) )
-                    .collect( Collectors.toMap( Map.Entry::getKey, Map.Entry::getValue,
-                            ( k1, k2 ) -> k2, LinkedHashMap::new ) );
+    public static Map<String, String> filterNullValue(Map<String, String> map) {
+        if (CollectionUtil.hasElement(map)) {
+            return map.entrySet().stream().filter(it -> StringUtil.hasText(it.getValue()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                            (k1, k2) -> k2, LinkedHashMap::new));
         }
         return map;
     }

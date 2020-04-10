@@ -17,19 +17,19 @@ public class UpdateNotWithLockingProvider extends AbstractProvider {
     @Override
     public String build() {
         ColumnWrapper primaryKey = table.getPrimaryKey();
-        if ( primaryKey == null ) {
+        if (primaryKey == null) {
             return Constants.CHAR_EMPTY;
         }
-        StringBuilder scriptBuilder = new StringBuilder( 200 );
+        StringBuilder scriptBuilder = new StringBuilder(200);
         Set<ColumnWrapper> columns = table.updatableColumns();
-        for ( ColumnWrapper it : columns ) {
-            scriptBuilder.append( ScriptUtil.convertPartArg( it, Constants.PARAM_ENTITY, Execute.REPLACE ) )
-                    .append( Constants.CHAR_COMMA );
+        for (ColumnWrapper it : columns) {
+            scriptBuilder.append(ScriptUtil.convertPartArg(it, Constants.PARAM_ENTITY, Execute.REPLACE))
+                    .append(Constants.CHAR_COMMA);
         }
         return update(
                 ScriptUtil.convertTrimTag(
-                        scriptBuilder.toString(), "SET", null, null, Constants.CHAR_COMMA ),
-                ( " WHERE " + ScriptUtil.convertPartArg( primaryKey, Constants.PARAM_ENTITY, Execute.REPLACE ) )
+                        scriptBuilder.toString(), "SET", null, null, Constants.CHAR_COMMA),
+                (" WHERE " + ScriptUtil.convertPartArg(primaryKey, Constants.PARAM_ENTITY, Execute.REPLACE))
         );
     }
 }

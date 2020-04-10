@@ -20,8 +20,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param property 属性
      * @return {@code this}
      */
-    default Chain query( Property<T, ?> property ) {
-        return query( lambdaToProperty( property ) );
+    default Chain query(Property<T, ?> property) {
+        return query(lambdaToProperty(property));
     }
 
     /**
@@ -29,7 +29,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param property 属性
      * @return {@code this}
      */
-    Chain query( String property );
+    Chain query(String property);
 
     /**
      * 添加查询列
@@ -37,8 +37,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columnAlias 列别名
      * @return {@code this}
      */
-    default Chain query( Property<T, ?> property, String columnAlias ) {
-        return query( lambdaToProperty( property ), columnAlias );
+    default Chain query(Property<T, ?> property, String columnAlias) {
+        return query(lambdaToProperty(property), columnAlias);
     }
 
     /**
@@ -47,14 +47,14 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columnAlias 列别名
      * @return {@code this}
      */
-    Chain query( String property, String columnAlias );
+    Chain query(String property, String columnAlias);
 
     /**
      * 添加查询列
      * @param column 列名
      * @return {@code this}
      */
-    Chain immediateQuery( String column );
+    Chain immediateQuery(String column);
 
     /**
      * 添加查询列
@@ -62,7 +62,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columnAlias 列别名
      * @return {@code this}
      */
-    Chain immediateQuery( String column, String columnAlias );
+    Chain immediateQuery(String column, String columnAlias);
 
     /**
      * 添加查询列
@@ -71,7 +71,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columnAlias 列别名
      * @return {@code this}
      */
-    Chain immediateQuery( String tableAlias, String column, String columnAlias );
+    Chain immediateQuery(String tableAlias, String column, String columnAlias);
 
     /**
      * 添加查询列
@@ -79,8 +79,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param property      属性
      * @return {@code this}
      */
-    default <E> Chain subQuery( String criteriaAlias, String property ) {
-        return subQuery( searchSubCriteria( criteriaAlias ), property );
+    default <E> Chain subQuery(String criteriaAlias, String property) {
+        return subQuery(searchSubCriteria(criteriaAlias), property);
     }
 
 
@@ -90,8 +90,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param property 属性
      * @return {@code this}
      */
-    default <E> Chain subQuery( SubCriteria<E> criteria, Property<E, ?> property ) {
-        return subQuery( criteria, criteria.lambdaToProperty( property ) );
+    default <E> Chain subQuery(SubCriteria<E> criteria, Property<E, ?> property) {
+        return subQuery(criteria, criteria.lambdaToProperty(property));
     }
 
     /**
@@ -100,7 +100,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param property 属性
      * @return {@code this}
      */
-    <E> Chain subQuery( SubCriteria<E> criteria, String property );
+    <E> Chain subQuery(SubCriteria<E> criteria, String property);
 
     /**
      * 添加查询列
@@ -109,8 +109,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columnAlias 列别名
      * @return {@code this}
      */
-    default <E> Chain subQuery( SubCriteria<E> criteria, Property<E, ?> property, String columnAlias ) {
-        return subQuery( criteria, criteria.lambdaToProperty( property ), columnAlias );
+    default <E> Chain subQuery(SubCriteria<E> criteria, Property<E, ?> property, String columnAlias) {
+        return subQuery(criteria, criteria.lambdaToProperty(property), columnAlias);
     }
 
 
@@ -121,16 +121,16 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columnAlias 列别名
      * @return {@code this}
      */
-    <E> Chain subQuery( SubCriteria<E> criteria, String property, String columnAlias );
+    <E> Chain subQuery(SubCriteria<E> criteria, String property, String columnAlias);
 
     /**
      * 添加查询列
      * @param properties 属性数组
      * @return {@code this}
      */
-    @SuppressWarnings( { "unchecked" } )
-    default Chain queries( Property<T, ?>... properties ) {
-        return queries( lambdaToProperties( properties ) );
+    @SuppressWarnings({"unchecked"})
+    default Chain queries(Property<T, ?>... properties) {
+        return queries(lambdaToProperties(properties));
     }
 
     /**
@@ -138,8 +138,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param properties 属性数组
      * @return {@code this}
      */
-    default Chain queries( String... properties ) {
-        return queries( ArrayUtil.toList( properties ) );
+    default Chain queries(String... properties) {
+        return queries(ArrayUtil.toList(properties));
     }
 
     /**
@@ -147,22 +147,22 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param properties 属性集合
      * @return {@code this}
      */
-    Chain queries( Collection<String> properties );
+    Chain queries(Collection<String> properties);
 
     /**
      * 添加查询列
      * @param properties 列别名-属性集合
      * @return {@code this}
      */
-    Chain queries( Map<String, String> properties );
+    Chain queries(Map<String, String> properties);
 
     /**
      * 添加查询列
      * @param columns 列名数组
      * @return {@code this}
      */
-    default Chain immediateQueries( String... columns ) {
-        return immediateQueries( ArrayUtil.toList( columns ) );
+    default Chain immediateQueries(String... columns) {
+        return immediateQueries(ArrayUtil.toList(columns));
     }
 
     /**
@@ -170,14 +170,14 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns 列名集合
      * @return {@code this}
      */
-    Chain immediateQueries( Collection<String> columns );
+    Chain immediateQueries(Collection<String> columns);
 
     /**
      * 添加查询列
      * @param columns 列别名-列名集合
      * @return {@code this}
      */
-    Chain immediateQueries( Map<String, String> columns );
+    Chain immediateQueries(Map<String, String> columns);
 
     /**
      * 添加查询列
@@ -185,7 +185,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns    列别名-列名集合
      * @return {@code this}
      */
-    Chain immediateQueries( String tableAlias, Map<String, String> columns );
+    Chain immediateQueries(String tableAlias, Map<String, String> columns);
 
     /**
      * 添加查询列
@@ -193,8 +193,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns    列名数组
      * @return {@code this}
      */
-    default Chain immediateQueriesWithAlias( String tableAlias, String... columns ) {
-        return immediateQueries( tableAlias, ArrayUtil.toList( columns ) );
+    default Chain immediateQueriesWithAlias(String tableAlias, String... columns) {
+        return immediateQueries(tableAlias, ArrayUtil.toList(columns));
     }
 
     /**
@@ -203,7 +203,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns    列名集合
      * @return {@code this}
      */
-    Chain immediateQueries( String tableAlias, Collection<String> columns );
+    Chain immediateQueries(String tableAlias, Collection<String> columns);
 
     /**
      * 添加子查询列
@@ -212,8 +212,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param <E>           实体类型
      * @return {@code this}
      */
-    default <E> Chain subQueries( String criteriaAlias, String... properties ) {
-        return subQueries( criteriaAlias, ArrayUtil.toList( properties ) );
+    default <E> Chain subQueries(String criteriaAlias, String... properties) {
+        return subQueries(criteriaAlias, ArrayUtil.toList(properties));
     }
 
     /**
@@ -223,8 +223,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param <E>           实体类型
      * @return {@code this}
      */
-    default <E> Chain subQueries( String criteriaAlias, Collection<String> properties ) {
-        return subQueries( searchSubCriteria( criteriaAlias ), properties );
+    default <E> Chain subQueries(String criteriaAlias, Collection<String> properties) {
+        return subQueries(searchSubCriteria(criteriaAlias), properties);
     }
 
     /**
@@ -234,9 +234,9 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param <E>        实体类型
      * @return {@code this}
      */
-    @SuppressWarnings( { "unchecked" } )
-    default <E> Chain subQueries( SubCriteria<E> criteria, Property<E, ?>... properties ) {
-        return subQueries( criteria, criteria.lambdaToProperties( properties ) );
+    @SuppressWarnings({"unchecked"})
+    default <E> Chain subQueries(SubCriteria<E> criteria, Property<E, ?>... properties) {
+        return subQueries(criteria, criteria.lambdaToProperties(properties));
     }
 
     /**
@@ -246,8 +246,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param <E>        实体类型
      * @return {@code this}
      */
-    default <E> Chain subQueries( SubCriteria<E> criteria, String... properties ) {
-        return subQueries( criteria, ArrayUtil.toList( properties ) );
+    default <E> Chain subQueries(SubCriteria<E> criteria, String... properties) {
+        return subQueries(criteria, ArrayUtil.toList(properties));
     }
 
     /**
@@ -257,7 +257,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param <E>        实体类型
      * @return {@code this}
      */
-    <E> Chain subQueries( SubCriteria<E> criteria, Collection<String> properties );
+    <E> Chain subQueries(SubCriteria<E> criteria, Collection<String> properties);
 
     /**
      * 添加子查询列
@@ -266,8 +266,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param <E>           实体类型
      * @return {@code this}
      */
-    default <E> Chain subQueries( String criteriaAlias, Map<String, String> properties ) {
-        return subQueries( searchSubCriteria( criteriaAlias ), properties );
+    default <E> Chain subQueries(String criteriaAlias, Map<String, String> properties) {
+        return subQueries(searchSubCriteria(criteriaAlias), properties);
     }
 
 
@@ -278,15 +278,15 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param <E>        实体类型
      * @return {@code this}
      */
-    <E> Chain subQueries( SubCriteria<E> criteria, Map<String, String> properties );
+    <E> Chain subQueries(SubCriteria<E> criteria, Map<String, String> properties);
 
     /**
      * 排除查询列
      * @param property 属性
      * @return {@code this}
      */
-    default Chain exclude( Property<T, ?> property ) {
-        return exclude( lambdaToProperty( property ) );
+    default Chain exclude(Property<T, ?> property) {
+        return exclude(lambdaToProperty(property));
     }
 
     /**
@@ -294,8 +294,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param property 属性
      * @return {@code this}
      */
-    default Chain exclude( String property ) {
-        return excludes( property );
+    default Chain exclude(String property) {
+        return excludes(property);
     }
 
     /**
@@ -303,9 +303,9 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param properties 属性数组
      * @return {@code this}
      */
-    @SuppressWarnings( { "unchecked" } )
-    default Chain excludes( Property<T, ?>... properties ) {
-        return excludes( lambdaToProperties( properties ) );
+    @SuppressWarnings({"unchecked"})
+    default Chain excludes(Property<T, ?>... properties) {
+        return excludes(lambdaToProperties(properties));
     }
 
     /**
@@ -313,8 +313,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param properties 属性数组
      * @return {@code this}
      */
-    default Chain excludes( String... properties ) {
-        return excludes( ArrayUtil.toList( properties ) );
+    default Chain excludes(String... properties) {
+        return excludes(ArrayUtil.toList(properties));
     }
 
     /**
@@ -322,15 +322,15 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param properties 属性集合
      * @return {@code this}
      */
-    Chain excludes( Collection<String> properties );
+    Chain excludes(Collection<String> properties);
 
     /**
      * 排除查询列
      * @param columns 列名数组
      * @return {@code this}
      */
-    default Chain immediateExcludes( String... columns ) {
-        return immediateExcludes( ArrayUtil.toList( columns ) );
+    default Chain immediateExcludes(String... columns) {
+        return immediateExcludes(ArrayUtil.toList(columns));
     }
 
     /**
@@ -338,7 +338,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns 列名集合
      * @return {@code this}
      */
-    Chain immediateExcludes( Collection<String> columns );
+    Chain immediateExcludes(Collection<String> columns);
 
     /**
      * 获取查询字段片段

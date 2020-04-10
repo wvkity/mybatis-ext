@@ -15,10 +15,10 @@ public class DeleteByIdProvider extends AbstractProvider {
     @Override
     public String build() {
         ColumnWrapper primaryKey = table.getPrimaryKey();
-        if ( primaryKey == null ) {
+        if (primaryKey == null) {
             return Constants.CHAR_EMPTY;
         }
-        return delete( " WHERE " + ScriptUtil.convertPartArg( primaryKey, null,
-                Execute.NONE ) );
+        return delete(" WHERE " + ScriptUtil.convertPartArg(primaryKey, null,
+                Execute.NONE));
     }
 }

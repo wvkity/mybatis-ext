@@ -36,7 +36,7 @@ import java.util.stream.Stream;
 public class DefaultInjector extends AbstractInjector {
 
     @Override
-    public Collection<Method> getMethodsForInject( Class<?> mapperInterface ) {
+    public Collection<Method> getMethodsForInject(Class<?> mapperInterface) {
         return Stream.of(
                 // insert
                 new Insert(),
@@ -65,6 +65,6 @@ public class DefaultInjector extends AbstractInjector {
                 new List(),
                 new ListByEntity(),
                 new ListByCriteria()
-        ).collect( Collectors.toList() );
+        ).collect(Collectors.toList());
     }
 }

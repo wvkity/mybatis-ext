@@ -119,7 +119,7 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param value    值
      * @param logic    逻辑符号
      */
-    ImmediateTemplate( String template, Object value, Logic logic ) {
+    ImmediateTemplate(String template, Object value, Logic logic) {
         this.value = value;
         this.template = template;
         this.logic = logic;
@@ -133,7 +133,7 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param template 模板
      * @param logic    逻辑符号
      */
-    ImmediateTemplate( String column, Object value, String template, Logic logic ) {
+    ImmediateTemplate(String column, Object value, String template, Logic logic) {
         this.column = column;
         this.value = value;
         this.template = template;
@@ -149,7 +149,7 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param template   模板
      * @param logic      逻辑符号
      */
-    ImmediateTemplate( String tableAlias, String column, Object value, String template, Logic logic ) {
+    ImmediateTemplate(String tableAlias, String column, Object value, String template, Logic logic) {
         this.tableAlias = tableAlias;
         this.column = column;
         this.value = value;
@@ -166,7 +166,7 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param template 模板
      * @param logic    逻辑符号
      */
-    ImmediateTemplate( Criteria<T> criteria, String column, Object value, String template, Logic logic ) {
+    ImmediateTemplate(Criteria<T> criteria, String column, Object value, String template, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.value = value;
@@ -182,7 +182,7 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param values   值
      * @param logic    逻辑符号
      */
-    ImmediateTemplate( String template, Collection<Object> values, Logic logic ) {
+    ImmediateTemplate(String template, Collection<Object> values, Logic logic) {
         this.values = values;
         this.template = template;
         this.logic = logic;
@@ -196,7 +196,7 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param template 模板
      * @param logic    逻辑符号
      */
-    ImmediateTemplate( String column, Collection<Object> values, String template, Logic logic ) {
+    ImmediateTemplate(String column, Collection<Object> values, String template, Logic logic) {
         this.column = column;
         this.values = values;
         this.template = template;
@@ -212,7 +212,7 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param template   模板
      * @param logic      逻辑符号
      */
-    ImmediateTemplate( String tableAlias, String column, Collection<Object> values, String template, Logic logic ) {
+    ImmediateTemplate(String tableAlias, String column, Collection<Object> values, String template, Logic logic) {
         this.tableAlias = tableAlias;
         this.column = column;
         this.values = values;
@@ -229,8 +229,8 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param template 模板
      * @param logic    逻辑符号
      */
-    ImmediateTemplate( Criteria<T> criteria, String column, Collection<Object> values,
-                       String template, Logic logic ) {
+    ImmediateTemplate(Criteria<T> criteria, String column, Collection<Object> values,
+                      String template, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.values = values;
@@ -245,7 +245,7 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param values   值
      * @param logic    逻辑符号
      */
-    ImmediateTemplate( String template, Map<String, Object> values, Logic logic ) {
+    ImmediateTemplate(String template, Map<String, Object> values, Logic logic) {
         this.mapValues = values;
         this.template = template;
         this.logic = logic;
@@ -259,7 +259,7 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param template 模板
      * @param logic    逻辑符号
      */
-    ImmediateTemplate( String column, Map<String, Object> values, String template, Logic logic ) {
+    ImmediateTemplate(String column, Map<String, Object> values, String template, Logic logic) {
         this.column = column;
         this.mapValues = values;
         this.template = template;
@@ -275,7 +275,7 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param template   模板
      * @param logic      逻辑符号
      */
-    ImmediateTemplate( String tableAlias, String column, Map<String, Object> values, String template, Logic logic ) {
+    ImmediateTemplate(String tableAlias, String column, Map<String, Object> values, String template, Logic logic) {
         this.tableAlias = tableAlias;
         this.column = column;
         this.mapValues = values;
@@ -292,8 +292,8 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param template 模板
      * @param logic    逻辑符号
      */
-    ImmediateTemplate( Criteria<T> criteria, String column, Map<String, Object> values,
-                       String template, Logic logic ) {
+    ImmediateTemplate(Criteria<T> criteria, String column, Map<String, Object> values,
+                      String template, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.mapValues = values;
@@ -304,34 +304,34 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
 
     @Override
     public String getSegment() {
-        StringBuilder builder = new StringBuilder( 60 );
-        builder.append( this.logic.getSegment() ).append( Constants.CHAR_SPACE );
+        StringBuilder builder = new StringBuilder(60);
+        builder.append(this.logic.getSegment()).append(Constants.CHAR_SPACE);
         String realTemplate;
-        if ( this.template.contains( COLUMN_PLACEHOLDER ) ) {
+        if (this.template.contains(COLUMN_PLACEHOLDER)) {
             String realAlias = this.criteria.getAlias();
-            String columnName = ( StringUtil.hasText( realAlias ) ? ( realAlias.trim() + "." ) : "" ) + this.column;
-            realTemplate = this.template.replaceAll( "\\" + COLUMN_PLACEHOLDER, columnName );
+            String columnName = (StringUtil.hasText(realAlias) ? (realAlias.trim() + ".") : "") + this.column;
+            realTemplate = this.template.replaceAll("\\" + COLUMN_PLACEHOLDER, columnName);
         } else {
             realTemplate = this.template;
         }
-        switch ( this.match ) {
+        switch (this.match) {
             // 单个参数
             case SINGLE:
-                builder.append( Formatter.format( realTemplate,
-                        ScriptUtil.safeJoint( defaultPlaceholder( this.value ) ) ) );
+                builder.append(Formatter.format(realTemplate,
+                        ScriptUtil.safeJoint(defaultPlaceholder(this.value))));
                 break;
             // 多个参数    
             case MULTIPLE:
-                builder.append( Formatter.format( realTemplate,
-                        this.values.stream().map( it -> ScriptUtil.safeJoint( defaultPlaceholder( it ) ) )
-                                .collect( Collectors.toList() ) ) );
+                builder.append(Formatter.format(realTemplate,
+                        this.values.stream().map(it -> ScriptUtil.safeJoint(defaultPlaceholder(it)))
+                                .collect(Collectors.toList())));
                 break;
             // Map参数    
             default:
-                builder.append( Formatter.format( realTemplate,
+                builder.append(Formatter.format(realTemplate,
                         this.mapValues.entrySet().parallelStream()
-                                .collect( Collectors.toMap( Map.Entry::getKey,
-                                        it -> ScriptUtil.safeJoint( defaultPlaceholder( it.getValue() ) ) ) ) ) );
+                                .collect(Collectors.toMap(Map.Entry::getKey,
+                                        it -> ScriptUtil.safeJoint(defaultPlaceholder(it.getValue()))))));
                 break;
         }
         return builder.toString();
@@ -344,8 +344,8 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String template, Object value ) {
-        return create( template, value, Logic.AND );
+    public static <T> ImmediateTemplate<T> create(String template, Object value) {
+        return create(template, value, Logic.AND);
     }
 
     /**
@@ -356,9 +356,9 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String template, Object value, Logic logic ) {
-        if ( hasText( template ) ) {
-            return new ImmediateTemplate<>( template, value, logic );
+    public static <T> ImmediateTemplate<T> create(String template, Object value, Logic logic) {
+        if (hasText(template)) {
+            return new ImmediateTemplate<>(template, value, logic);
         }
         return null;
     }
@@ -370,8 +370,8 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String template, Collection<Object> values ) {
-        return create( template, values, Logic.AND );
+    public static <T> ImmediateTemplate<T> create(String template, Collection<Object> values) {
+        return create(template, values, Logic.AND);
     }
 
     /**
@@ -382,9 +382,9 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String template, Collection<Object> values, Logic logic ) {
-        if ( hasText( template ) ) {
-            return new ImmediateTemplate<>( template, values, logic );
+    public static <T> ImmediateTemplate<T> create(String template, Collection<Object> values, Logic logic) {
+        if (hasText(template)) {
+            return new ImmediateTemplate<>(template, values, logic);
         }
         return null;
     }
@@ -396,8 +396,8 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String template, Map<String, Object> values ) {
-        return create( template, values, Logic.AND );
+    public static <T> ImmediateTemplate<T> create(String template, Map<String, Object> values) {
+        return create(template, values, Logic.AND);
     }
 
     /**
@@ -408,9 +408,9 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String template, Map<String, Object> values, Logic logic ) {
-        if ( hasText( template ) ) {
-            return new ImmediateTemplate<>( template, values, logic );
+    public static <T> ImmediateTemplate<T> create(String template, Map<String, Object> values, Logic logic) {
+        if (hasText(template)) {
+            return new ImmediateTemplate<>(template, values, logic);
         }
         return null;
     }
@@ -423,8 +423,8 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String column, Object value, String template ) {
-        return create( column, value, template, Logic.AND );
+    public static <T> ImmediateTemplate<T> create(String column, Object value, String template) {
+        return create(column, value, template, Logic.AND);
     }
 
     /**
@@ -436,9 +436,9 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String column, Object value, String template, Logic logic ) {
-        if ( hasText( column ) && hasText( template ) && template.contains( COLUMN_PLACEHOLDER ) ) {
-            return new ImmediateTemplate<>( column, value, template, logic );
+    public static <T> ImmediateTemplate<T> create(String column, Object value, String template, Logic logic) {
+        if (hasText(column) && hasText(template) && template.contains(COLUMN_PLACEHOLDER)) {
+            return new ImmediateTemplate<>(column, value, template, logic);
         }
         return null;
     }
@@ -451,8 +451,8 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String column, Collection<Object> values, String template ) {
-        return create( column, values, template, Logic.AND );
+    public static <T> ImmediateTemplate<T> create(String column, Collection<Object> values, String template) {
+        return create(column, values, template, Logic.AND);
     }
 
     /**
@@ -464,10 +464,10 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String column, Collection<Object> values,
-                                                   String template, Logic logic ) {
-        if ( hasText( column ) && hasText( template ) && template.contains( COLUMN_PLACEHOLDER ) ) {
-            return new ImmediateTemplate<>( column, values, template, logic );
+    public static <T> ImmediateTemplate<T> create(String column, Collection<Object> values,
+                                                  String template, Logic logic) {
+        if (hasText(column) && hasText(template) && template.contains(COLUMN_PLACEHOLDER)) {
+            return new ImmediateTemplate<>(column, values, template, logic);
         }
         return null;
     }
@@ -480,8 +480,8 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String column, Map<String, Object> values, String template ) {
-        return create( column, values, template, Logic.AND );
+    public static <T> ImmediateTemplate<T> create(String column, Map<String, Object> values, String template) {
+        return create(column, values, template, Logic.AND);
     }
 
     /**
@@ -493,10 +493,10 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String column, Map<String, Object> values,
-                                                   String template, Logic logic ) {
-        if ( hasText( column ) && hasText( template ) && template.contains( COLUMN_PLACEHOLDER ) ) {
-            return new ImmediateTemplate<>( column, values, template, logic );
+    public static <T> ImmediateTemplate<T> create(String column, Map<String, Object> values,
+                                                  String template, Logic logic) {
+        if (hasText(column) && hasText(template) && template.contains(COLUMN_PLACEHOLDER)) {
+            return new ImmediateTemplate<>(column, values, template, logic);
         }
         return null;
     }
@@ -510,9 +510,9 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String tableAlias, String column,
-                                                   Object value, String template ) {
-        return create( tableAlias, column, value, template, Logic.AND );
+    public static <T> ImmediateTemplate<T> create(String tableAlias, String column,
+                                                  Object value, String template) {
+        return create(tableAlias, column, value, template, Logic.AND);
     }
 
     /**
@@ -525,10 +525,10 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String tableAlias, String column,
-                                                   Object value, String template, Logic logic ) {
-        if ( hasText( column ) && hasText( template ) && template.contains( COLUMN_PLACEHOLDER ) ) {
-            return new ImmediateTemplate<>( tableAlias, column, value, template, logic );
+    public static <T> ImmediateTemplate<T> create(String tableAlias, String column,
+                                                  Object value, String template, Logic logic) {
+        if (hasText(column) && hasText(template) && template.contains(COLUMN_PLACEHOLDER)) {
+            return new ImmediateTemplate<>(tableAlias, column, value, template, logic);
         }
         return null;
     }
@@ -542,9 +542,9 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String tableAlias, String column,
-                                                   Collection<Object> values, String template ) {
-        return create( tableAlias, column, values, template, Logic.AND );
+    public static <T> ImmediateTemplate<T> create(String tableAlias, String column,
+                                                  Collection<Object> values, String template) {
+        return create(tableAlias, column, values, template, Logic.AND);
     }
 
     /**
@@ -557,11 +557,11 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String tableAlias, String column,
-                                                   Collection<Object> values, String template, Logic logic ) {
-        if ( hasText( column ) && hasText( template )
-                && template.contains( COLUMN_PLACEHOLDER ) ) {
-            return new ImmediateTemplate<>( tableAlias, column, values, template, logic );
+    public static <T> ImmediateTemplate<T> create(String tableAlias, String column,
+                                                  Collection<Object> values, String template, Logic logic) {
+        if (hasText(column) && hasText(template)
+                && template.contains(COLUMN_PLACEHOLDER)) {
+            return new ImmediateTemplate<>(tableAlias, column, values, template, logic);
         }
         return null;
     }
@@ -575,9 +575,9 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String tableAlias, String column,
-                                                   Map<String, Object> values, String template ) {
-        return create( tableAlias, column, values, template, Logic.AND );
+    public static <T> ImmediateTemplate<T> create(String tableAlias, String column,
+                                                  Map<String, Object> values, String template) {
+        return create(tableAlias, column, values, template, Logic.AND);
     }
 
     /**
@@ -590,10 +590,10 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( String tableAlias, String column,
-                                                   Map<String, Object> values, String template, Logic logic ) {
-        if ( hasText( column ) && hasText( template ) && template.contains( COLUMN_PLACEHOLDER ) ) {
-            return new ImmediateTemplate<>( tableAlias, column, values, template, logic );
+    public static <T> ImmediateTemplate<T> create(String tableAlias, String column,
+                                                  Map<String, Object> values, String template, Logic logic) {
+        if (hasText(column) && hasText(template) && template.contains(COLUMN_PLACEHOLDER)) {
+            return new ImmediateTemplate<>(tableAlias, column, values, template, logic);
         }
         return null;
     }
@@ -607,9 +607,9 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( Criteria<T> criteria, String column,
-                                                   Object value, String template ) {
-        return create( criteria, column, value, template, Logic.AND );
+    public static <T> ImmediateTemplate<T> create(Criteria<T> criteria, String column,
+                                                  Object value, String template) {
+        return create(criteria, column, value, template, Logic.AND);
     }
 
     /**
@@ -622,11 +622,11 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( Criteria<T> criteria, String column,
-                                                   Object value, String template, Logic logic ) {
-        if ( criteria != null && hasText( column ) && hasText( template )
-                && template.contains( COLUMN_PLACEHOLDER ) ) {
-            return new ImmediateTemplate<>( criteria, column, value, template, logic );
+    public static <T> ImmediateTemplate<T> create(Criteria<T> criteria, String column,
+                                                  Object value, String template, Logic logic) {
+        if (criteria != null && hasText(column) && hasText(template)
+                && template.contains(COLUMN_PLACEHOLDER)) {
+            return new ImmediateTemplate<>(criteria, column, value, template, logic);
         }
         return null;
     }
@@ -640,9 +640,9 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( Criteria<T> criteria, String column,
-                                                   Collection<Object> values, String template ) {
-        return create( criteria, column, values, template, Logic.AND );
+    public static <T> ImmediateTemplate<T> create(Criteria<T> criteria, String column,
+                                                  Collection<Object> values, String template) {
+        return create(criteria, column, values, template, Logic.AND);
     }
 
     /**
@@ -655,11 +655,11 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( Criteria<T> criteria, String column,
-                                                   Collection<Object> values, String template, Logic logic ) {
-        if ( criteria != null && hasText( column ) && hasText( template )
-                && template.contains( COLUMN_PLACEHOLDER ) ) {
-            return new ImmediateTemplate<>( criteria, column, values, template, logic );
+    public static <T> ImmediateTemplate<T> create(Criteria<T> criteria, String column,
+                                                  Collection<Object> values, String template, Logic logic) {
+        if (criteria != null && hasText(column) && hasText(template)
+                && template.contains(COLUMN_PLACEHOLDER)) {
+            return new ImmediateTemplate<>(criteria, column, values, template, logic);
         }
         return null;
     }
@@ -673,9 +673,9 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( Criteria<T> criteria, String column,
-                                                   Map<String, Object> values, String template ) {
-        return create( criteria, column, values, template, Logic.AND );
+    public static <T> ImmediateTemplate<T> create(Criteria<T> criteria, String column,
+                                                  Map<String, Object> values, String template) {
+        return create(criteria, column, values, template, Logic.AND);
     }
 
     /**
@@ -688,11 +688,11 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> create( Criteria<T> criteria, String column,
-                                                   Map<String, Object> values, String template, Logic logic ) {
-        if ( criteria != null && hasText( column ) && hasText( template )
-                && template.contains( COLUMN_PLACEHOLDER ) ) {
-            return new ImmediateTemplate<>( criteria, column, values, template, logic );
+    public static <T> ImmediateTemplate<T> create(Criteria<T> criteria, String column,
+                                                  Map<String, Object> values, String template, Logic logic) {
+        if (criteria != null && hasText(column) && hasText(template)
+                && template.contains(COLUMN_PLACEHOLDER)) {
+            return new ImmediateTemplate<>(criteria, column, values, template, logic);
         }
         return null;
     }

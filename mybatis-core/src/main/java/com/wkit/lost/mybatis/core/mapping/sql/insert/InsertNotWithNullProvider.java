@@ -19,18 +19,18 @@ public class InsertNotWithNullProvider extends AbstractProvider {
     public String build() {
         Set<ColumnWrapper> columns = table.insertableColumns();
         return insert(
-                ( "(" + ScriptUtil.convertTrimTag( columns.stream().map( it ->
-                                ScriptUtil.convertIfTagWithNotNull( null, it, Constants.PARAM_ENTITY,
+                ("(" + ScriptUtil.convertTrimTag(columns.stream().map(it ->
+                                ScriptUtil.convertIfTagWithNotNull(null, it, Constants.PARAM_ENTITY,
                                         false, false, null, null, ", ",
-                                        Execute.INSERT ) ).collect( Collectors.joining( "",
-                        Constants.NEW_LINE, Constants.NEW_LINE ) ), null, null,
-                        null, ", " ) + ")" ),
-                ( "(" + ScriptUtil.convertTrimTag( columns.stream().map( it ->
-                                ScriptUtil.convertIfTagWithNotNull( null, it, Constants.PARAM_ENTITY,
+                                        Execute.INSERT)).collect(Collectors.joining("",
+                        Constants.NEW_LINE, Constants.NEW_LINE)), null, null,
+                        null, ", ") + ")"),
+                ("(" + ScriptUtil.convertTrimTag(columns.stream().map(it ->
+                                ScriptUtil.convertIfTagWithNotNull(null, it, Constants.PARAM_ENTITY,
                                         true, false, null, null, ", ",
-                                        Execute.INSERT ) ).collect( Collectors.joining( "",
-                        Constants.NEW_LINE, Constants.NEW_LINE ) ), null, null,
-                        null, ", " ) + ")" )
+                                        Execute.INSERT)).collect(Collectors.joining("",
+                        Constants.NEW_LINE, Constants.NEW_LINE)), null, null,
+                        null, ", ") + ")")
         );
     }
 }

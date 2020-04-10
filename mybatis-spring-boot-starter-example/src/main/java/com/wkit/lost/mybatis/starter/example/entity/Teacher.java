@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @ToString
-@Accessors( chain = true )
+@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants
@@ -38,5 +38,5 @@ public class Teacher extends BaseEntity {
      * 所属年级
      */
     private Long gradeId;
-    
+
 }

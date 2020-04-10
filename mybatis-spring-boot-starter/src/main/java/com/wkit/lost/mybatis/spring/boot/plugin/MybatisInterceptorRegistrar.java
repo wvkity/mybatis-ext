@@ -20,33 +20,33 @@ import java.util.List;
 public class MybatisInterceptorRegistrar extends BeanDefinitionRegistrarSupport<InterceptorConfiguration> {
 
     @Override
-    public void registerBeanDefinitions( AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry ) {
-        Assert.notNull( annotationMetadata, "AnnotationMetadata must not be null!" );
-        Assert.notNull( registry, "BeanDefinitionRegistry must not be null!" );
-        registerBeanConfigurerAspectIfNecessary( registry );
-        super.registerBeanDefinitions( annotationMetadata, registry );
+    public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry) {
+        Assert.notNull(annotationMetadata, "AnnotationMetadata must not be null!");
+        Assert.notNull(registry, "BeanDefinitionRegistry must not be null!");
+        registerBeanConfigurerAspectIfNecessary(registry);
+        super.registerBeanDefinitions(annotationMetadata, registry);
     }
 
     @Override
-    protected AbstractBeanDefinition registerBeanDefinition( BeanDefinitionRegistry registry,
-                                                             InterceptorConfiguration configuration ) {
+    protected AbstractBeanDefinition registerBeanDefinition(BeanDefinitionRegistry registry,
+                                                            InterceptorConfiguration configuration) {
         List<InterceptorDefinition> plugins = configuration.interceptors();
-        if ( !plugins.isEmpty() ) {
-            for ( InterceptorDefinition plugin : plugins ) {
-                createBeanDefinition( registry, configuration, plugin.getBeanName(), plugin.getInterceptor() );
+        if (!plugins.isEmpty()) {
+            for (InterceptorDefinition plugin : plugins) {
+                createBeanDefinition(registry, configuration, plugin.getBeanName(), plugin.getInterceptor());
             }
         }
         return null;
     }
 
     @Override
-    protected InterceptorConfiguration getConfiguration( AnnotationMetadata annotationMetadata ) {
-        return new AnnotationInterceptorConfiguration( annotationMetadata, getAnnotation() );
+    protected InterceptorConfiguration getConfiguration(AnnotationMetadata annotationMetadata) {
+        return new AnnotationInterceptorConfiguration(annotationMetadata, getAnnotation());
     }
 
     @Override
-    protected BeanDefinitionBuilder setRegisterBeanAttributes( InterceptorConfiguration __,
-                                                               BeanDefinitionBuilder builder ) {
+    protected BeanDefinitionBuilder setRegisterBeanAttributes(InterceptorConfiguration __,
+                                                              BeanDefinitionBuilder builder) {
         return builder;
     }
 

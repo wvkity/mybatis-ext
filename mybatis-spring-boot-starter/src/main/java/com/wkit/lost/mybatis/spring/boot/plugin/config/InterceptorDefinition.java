@@ -32,16 +32,16 @@ public class InterceptorDefinition {
     private int order;
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) return true;
-        if ( !( o instanceof InterceptorDefinition ) ) return false;
-        InterceptorDefinition that = ( InterceptorDefinition ) o;
-        return Objects.equals( interceptor, that.interceptor ) &&
-                Objects.equals( beanName, that.beanName );
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InterceptorDefinition)) return false;
+        InterceptorDefinition that = (InterceptorDefinition) o;
+        return Objects.equals(interceptor, that.interceptor) &&
+                Objects.equals(beanName, that.beanName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( interceptor, beanName );
+        return Objects.hash(interceptor, beanName);
     }
 }

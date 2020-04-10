@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import java.util.Collection;
 
-@SuppressWarnings( { "serial" } )
+@SuppressWarnings({"serial"})
 public abstract class AbstractImmediateRangeExpression<T> extends ImmediateExpressionWrapper<T> {
 
     /**
@@ -18,7 +18,7 @@ public abstract class AbstractImmediateRangeExpression<T> extends ImmediateExpre
 
     @Override
     public String getSegment() {
-        return ScriptUtil.convertConditionArg( getAlias(), this.column,
-                this.symbol, this.logic, defaultPlaceholders( this.values ) );
+        return ScriptUtil.convertConditionArg(getAlias(), this.column,
+                this.symbol, this.logic, defaultPlaceholders(this.values));
     }
 }

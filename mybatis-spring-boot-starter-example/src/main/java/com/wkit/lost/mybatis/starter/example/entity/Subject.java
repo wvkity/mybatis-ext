@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 @Data
 @ToString
-@Accessors( chain = true )
+@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants

@@ -42,7 +42,7 @@ public class MyBatisResultSetWrapper extends ResultSetWrapper {
     private final List<String> simpleColumnNames = new ArrayList<>();
     private final Map<String, String> simpleMappedCache = new HashMap<>();
     private final Map<String, String> originalMappedCache = new HashMap<>();
-    private static final Pattern UPPER_UNDERSCORE_PATTERN = Pattern.compile( "[A-Z0-9_]+" );
+    private static final Pattern UPPER_UNDERSCORE_PATTERN = Pattern.compile("[A-Z0-9_]+");
 
     /**
      * 构造方法
@@ -50,42 +50,42 @@ public class MyBatisResultSetWrapper extends ResultSetWrapper {
      * @param configuration {@link Configuration}
      * @throws SQLException \n
      */
-    public MyBatisResultSetWrapper( ResultSet rs, Configuration configuration ) throws SQLException {
-        super( rs, configuration );
+    public MyBatisResultSetWrapper(ResultSet rs, Configuration configuration) throws SQLException {
+        super(rs, configuration);
         this.typeHandlerRegistry = configuration.getTypeHandlerRegistry();
         this.resultSet = rs;
         final ResultSetMetaData metaData = rs.getMetaData();
         final int columnCount = metaData.getColumnCount();
-        AtomicInteger sameNameIndex = new AtomicInteger( 1 );
-        for ( int i = 1; i <= columnCount; i++ ) {
-            String columnName = configuration.isUseColumnLabel() ? metaData.getColumnLabel( i ) : metaData.getColumnName( i );
+        AtomicInteger sameNameIndex = new AtomicInteger(1);
+        for (int i = 1; i <= columnCount; i++) {
+            String columnName = configuration.isUseColumnLabel() ? metaData.getColumnLabel(i) : metaData.getColumnName(i);
             // 替换存在()的列名
-            columnNames.add( columnName );
-            jdbcTypes.add( JdbcType.forCode( metaData.getColumnType( i ) ) );
-            classNames.add( metaData.getColumnClassName( i ) );
+            columnNames.add(columnName);
+            jdbcTypes.add(JdbcType.forCode(metaData.getColumnType(i)));
+            classNames.add(metaData.getColumnClassName(i));
             // 检查是否包含括号
-            boolean hasBracket = columnName.contains( "(" );
-            if ( hasBracket ) {
-                String simpleColumnName = columnName.replaceAll( "\\(.*\\)", "" );
+            boolean hasBracket = columnName.contains("(");
+            if (hasBracket) {
+                String simpleColumnName = columnName.replaceAll("\\(.*\\)", "");
                 // 检查是否存在同名
-                if ( simpleColumnNames.contains( simpleColumnName ) ) {
+                if (simpleColumnNames.contains(simpleColumnName)) {
                     simpleColumnName = simpleColumnName + "_" + sameNameIndex.incrementAndGet();
                 }
-                simpleColumnNames.add( simpleColumnName );
-                simpleMappedCache.put( columnName, simpleColumnName );
-                originalMappedCache.put( toUpperUnderscore( simpleColumnName ), columnName );
+                simpleColumnNames.add(simpleColumnName);
+                simpleMappedCache.put(columnName, simpleColumnName);
+                originalMappedCache.put(toUpperUnderscore(simpleColumnName), columnName);
             } else {
-                simpleColumnNames.add( columnName );
-                originalMappedCache.put( toUpperUnderscore( columnName ), columnName );
+                simpleColumnNames.add(columnName);
+                originalMappedCache.put(toUpperUnderscore(columnName), columnName);
             }
         }
     }
 
-    private String toUpperUnderscore( String string ) {
-        if ( UPPER_UNDERSCORE_PATTERN.matcher( string ).matches() ) {
+    private String toUpperUnderscore(String string) {
+        if (UPPER_UNDERSCORE_PATTERN.matcher(string).matches()) {
             return string;
         }
-        return CaseFormat.LOWER_CAMEL.to( CaseFormat.UPPER_UNDERSCORE, string );
+        return CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, string);
     }
 
     /**
@@ -106,7 +106,7 @@ public class MyBatisResultSetWrapper extends ResultSetWrapper {
      * {@inheritDoc}
      */
     public List<String> getClassNames() {
-        return Collections.unmodifiableList( classNames );
+        return Collections.unmodifiableList(classNames);
     }
 
     public List<JdbcType> getJdbcTypes() {
@@ -116,10 +116,10 @@ public class MyBatisResultSetWrapper extends ResultSetWrapper {
     /**
      * {@inheritDoc}
      */
-    public JdbcType getJdbcType( String columnName ) {
-        for ( int i = 0; i < columnNames.size(); i++ ) {
-            if ( columnNames.get( i ).equalsIgnoreCase( columnName ) ) {
-                return jdbcTypes.get( i );
+    public JdbcType getJdbcType(String columnName) {
+        for (int i = 0; i < columnNames.size(); i++) {
+            if (columnNames.get(i).equalsIgnoreCase(columnName)) {
+                return jdbcTypes.get(i);
             }
         }
         return null;
@@ -128,97 +128,97 @@ public class MyBatisResultSetWrapper extends ResultSetWrapper {
     /**
      * {@inheritDoc}
      */
-    public TypeHandler<?> getTypeHandler( Class<?> propertyType, String columnName ) {
+    public TypeHandler<?> getTypeHandler(Class<?> propertyType, String columnName) {
         TypeHandler<?> handler = null;
-        Map<Class<?>, TypeHandler<?>> columnHandlers = typeHandlerMap.get( columnName );
-        if ( columnHandlers == null ) {
+        Map<Class<?>, TypeHandler<?>> columnHandlers = typeHandlerMap.get(columnName);
+        if (columnHandlers == null) {
             columnHandlers = new HashMap<>();
-            typeHandlerMap.put( columnName, columnHandlers );
+            typeHandlerMap.put(columnName, columnHandlers);
         } else {
-            handler = columnHandlers.get( propertyType );
+            handler = columnHandlers.get(propertyType);
         }
-        if ( handler == null ) {
-            JdbcType jdbcType = getJdbcType( columnName );
-            handler = typeHandlerRegistry.getTypeHandler( propertyType, jdbcType );
+        if (handler == null) {
+            JdbcType jdbcType = getJdbcType(columnName);
+            handler = typeHandlerRegistry.getTypeHandler(propertyType, jdbcType);
             // Replicate logic of UnknownTypeHandler#resolveTypeHandler
             // See issue #59 comment 10
-            if ( handler == null || handler instanceof UnknownTypeHandler ) {
-                final int index = columnNames.indexOf( columnName );
-                final Class<?> javaType = resolveClass( classNames.get( index ) );
-                if ( javaType != null && jdbcType != null ) {
-                    handler = typeHandlerRegistry.getTypeHandler( javaType, jdbcType );
-                } else if ( javaType != null ) {
-                    handler = typeHandlerRegistry.getTypeHandler( javaType );
-                } else if ( jdbcType != null ) {
-                    handler = typeHandlerRegistry.getTypeHandler( jdbcType );
+            if (handler == null || handler instanceof UnknownTypeHandler) {
+                final int index = columnNames.indexOf(columnName);
+                final Class<?> javaType = resolveClass(classNames.get(index));
+                if (javaType != null && jdbcType != null) {
+                    handler = typeHandlerRegistry.getTypeHandler(javaType, jdbcType);
+                } else if (javaType != null) {
+                    handler = typeHandlerRegistry.getTypeHandler(javaType);
+                } else if (jdbcType != null) {
+                    handler = typeHandlerRegistry.getTypeHandler(jdbcType);
                 }
             }
-            if ( handler == null || handler instanceof UnknownTypeHandler ) {
+            if (handler == null || handler instanceof UnknownTypeHandler) {
                 handler = new ObjectTypeHandler();
             }
-            columnHandlers.put( propertyType, handler );
+            columnHandlers.put(propertyType, handler);
         }
         return handler;
     }
 
-    private Class<?> resolveClass( String className ) {
+    private Class<?> resolveClass(String className) {
         try {
             // #699 className could be null
-            if ( className != null ) {
-                return Resources.classForName( className );
+            if (className != null) {
+                return Resources.classForName(className);
             }
-        } catch ( ClassNotFoundException e ) {
+        } catch (ClassNotFoundException e) {
             // ignore
         }
         return null;
     }
 
-    private void loadMappedAndUnmappedColumnNames( ResultMap resultMap, String columnPrefix ) throws SQLException {
+    private void loadMappedAndUnmappedColumnNames(ResultMap resultMap, String columnPrefix) throws SQLException {
         List<String> mappedColumnNames = new ArrayList<>();
         List<String> unmappedColumnNames = new ArrayList<>();
-        final String upperColumnPrefix = columnPrefix == null ? null : columnPrefix.toUpperCase( Locale.ENGLISH );
-        final Set<String> mappedColumns = prependPrefixes( resultMap.getMappedColumns(), upperColumnPrefix );
-        for ( String columnName : columnNames ) {
-            final String upperColumnName = columnName.toUpperCase( Locale.ENGLISH );
-            if ( mappedColumns.contains( upperColumnName ) ) {
-                mappedColumnNames.add( upperColumnName );
+        final String upperColumnPrefix = columnPrefix == null ? null : columnPrefix.toUpperCase(Locale.ENGLISH);
+        final Set<String> mappedColumns = prependPrefixes(resultMap.getMappedColumns(), upperColumnPrefix);
+        for (String columnName : columnNames) {
+            final String upperColumnName = columnName.toUpperCase(Locale.ENGLISH);
+            if (mappedColumns.contains(upperColumnName)) {
+                mappedColumnNames.add(upperColumnName);
             } else {
-                unmappedColumnNames.add( columnName );
+                unmappedColumnNames.add(columnName);
             }
         }
-        mappedColumnNamesMap.put( getMapKey( resultMap, columnPrefix ), mappedColumnNames );
-        unMappedColumnNamesMap.put( getMapKey( resultMap, columnPrefix ), unmappedColumnNames );
+        mappedColumnNamesMap.put(getMapKey(resultMap, columnPrefix), mappedColumnNames);
+        unMappedColumnNamesMap.put(getMapKey(resultMap, columnPrefix), unmappedColumnNames);
     }
 
-    public List<String> getMappedColumnNames( ResultMap resultMap, String columnPrefix ) throws SQLException {
-        List<String> mappedColumnNames = mappedColumnNamesMap.get( getMapKey( resultMap, columnPrefix ) );
-        if ( mappedColumnNames == null ) {
-            loadMappedAndUnmappedColumnNames( resultMap, columnPrefix );
-            mappedColumnNames = mappedColumnNamesMap.get( getMapKey( resultMap, columnPrefix ) );
+    public List<String> getMappedColumnNames(ResultMap resultMap, String columnPrefix) throws SQLException {
+        List<String> mappedColumnNames = mappedColumnNamesMap.get(getMapKey(resultMap, columnPrefix));
+        if (mappedColumnNames == null) {
+            loadMappedAndUnmappedColumnNames(resultMap, columnPrefix);
+            mappedColumnNames = mappedColumnNamesMap.get(getMapKey(resultMap, columnPrefix));
         }
         return mappedColumnNames;
     }
 
-    public List<String> getUnmappedColumnNames( ResultMap resultMap, String columnPrefix ) throws SQLException {
-        List<String> unMappedColumnNames = unMappedColumnNamesMap.get( getMapKey( resultMap, columnPrefix ) );
-        if ( unMappedColumnNames == null ) {
-            loadMappedAndUnmappedColumnNames( resultMap, columnPrefix );
-            unMappedColumnNames = unMappedColumnNamesMap.get( getMapKey( resultMap, columnPrefix ) );
+    public List<String> getUnmappedColumnNames(ResultMap resultMap, String columnPrefix) throws SQLException {
+        List<String> unMappedColumnNames = unMappedColumnNamesMap.get(getMapKey(resultMap, columnPrefix));
+        if (unMappedColumnNames == null) {
+            loadMappedAndUnmappedColumnNames(resultMap, columnPrefix);
+            unMappedColumnNames = unMappedColumnNamesMap.get(getMapKey(resultMap, columnPrefix));
         }
         return unMappedColumnNames;
     }
 
-    private String getMapKey( ResultMap resultMap, String columnPrefix ) {
+    private String getMapKey(ResultMap resultMap, String columnPrefix) {
         return resultMap.getId() + ":" + columnPrefix;
     }
 
-    private Set<String> prependPrefixes( Set<String> columnNames, String prefix ) {
-        if ( columnNames == null || columnNames.isEmpty() || prefix == null || prefix.length() == 0 ) {
+    private Set<String> prependPrefixes(Set<String> columnNames, String prefix) {
+        if (columnNames == null || columnNames.isEmpty() || prefix == null || prefix.length() == 0) {
             return columnNames;
         }
         final Set<String> prefixed = new HashSet<>();
-        for ( String columnName : columnNames ) {
-            prefixed.add( prefix + columnName );
+        for (String columnName : columnNames) {
+            prefixed.add(prefix + columnName);
         }
         return prefixed;
     }

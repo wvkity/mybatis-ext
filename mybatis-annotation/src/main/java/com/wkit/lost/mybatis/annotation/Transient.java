@@ -10,8 +10,8 @@ import java.lang.annotation.Target;
 /**
  * 忽略映射到数据库表字段
  */
-@Target( ElementType.FIELD )
-@Retention( RetentionPolicy.RUNTIME )
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
 public @interface Transient {

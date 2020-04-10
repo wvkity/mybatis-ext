@@ -26,8 +26,8 @@ public final class FieldHandler {
      * @param entity 实体类
      * @return 属性列表
      */
-    public static List<FieldWrapper> parse( final FieldParser parser, final Class<?> entity ) {
-        return parser.parse( entity );
+    public static List<FieldWrapper> parse(final FieldParser parser, final Class<?> entity) {
+        return parser.parse(entity);
     }
 
     /**
@@ -36,8 +36,8 @@ public final class FieldHandler {
      * @param entity 实体类
      * @return 属性列表
      */
-    public static List<FieldWrapper> parseFromBeanInfo( final FieldParser parser, final Class<?> entity ) {
-        return parser.parseFromBeanInfo( entity );
+    public static List<FieldWrapper> parseFromBeanInfo(final FieldParser parser, final Class<?> entity) {
+        return parser.parseFromBeanInfo(entity);
     }
 
     /**
@@ -46,22 +46,22 @@ public final class FieldHandler {
      * @param entity 实体类
      * @return 属性列表
      */
-    public static List<FieldWrapper> merge( final FieldParser parser, final Class<?> entity ) {
-        List<FieldWrapper> fields = parse( parser, entity );
-        List<FieldWrapper> beanFields = parseFromBeanInfo( parser, entity );
+    public static List<FieldWrapper> merge(final FieldParser parser, final Class<?> entity) {
+        List<FieldWrapper> fields = parse(parser, entity);
+        List<FieldWrapper> beanFields = parseFromBeanInfo(parser, entity);
         Set<FieldWrapper> merged = new HashSet<>();
         Set<FieldWrapper> wrappers = fields.stream()
-                .peek( it ->
+                .peek(it ->
                         beanFields.stream()
-                                .filter( _it -> !merged.contains( _it )
-                                        && StringUtil.equals( _it.getName(), it.getName() ) )
-                                .findFirst().ifPresent( _it -> {
-                            it.copy( _it );
-                            merged.add( _it );
-                        } ) ).collect( Collectors.toCollection( LinkedHashSet::new ) );
-        if ( !beanFields.isEmpty() ) {
-            wrappers.addAll( beanFields.stream().filter( it -> !merged.contains( it ) ).collect( Collectors.toList() ) );
+                                .filter(_it -> !merged.contains(_it)
+                                        && StringUtil.equals(_it.getName(), it.getName()))
+                                .findFirst().ifPresent(_it -> {
+                            it.copy(_it);
+                            merged.add(_it);
+                        })).collect(Collectors.toCollection(LinkedHashSet::new));
+        if (!beanFields.isEmpty()) {
+            wrappers.addAll(beanFields.stream().filter(it -> !merged.contains(it)).collect(Collectors.toList()));
         }
-        return new ArrayList<>( wrappers );
+        return new ArrayList<>(wrappers);
     }
 }

@@ -34,25 +34,25 @@ public class SerializedLambda implements Serializable {
      * @param <R>    返回值类型
      * @return {@link SerializedLambda}对象
      */
-    public static <T, R> SerializedLambda convert( Property<T, R> lambda ) {
-        byte[] bytes = SerializationUtil.serialize( lambda );
-        try ( ObjectInputStream inputStream = new ObjectInputStream( new ByteArrayInputStream( bytes ) ) {
+    public static <T, R> SerializedLambda convert(Property<T, R> lambda) {
+        byte[] bytes = SerializationUtil.serialize(lambda);
+        try (ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(bytes)) {
             @Override
-            protected Class<?> resolveClass( ObjectStreamClass desc ) throws IOException, ClassNotFoundException {
-                Class<?> clazz = super.resolveClass( desc );
+            protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+                Class<?> clazz = super.resolveClass(desc);
                 return clazz == java.lang.invoke.SerializedLambda.class ? SerializedLambda.class : clazz;
             }
-        } ) {
-            return ( SerializedLambda ) inputStream.readObject();
-        } catch ( ClassNotFoundException | IOException e ) {
-            throw new MyBatisException( e.getMessage(), e );
+        }) {
+            return (SerializedLambda) inputStream.readObject();
+        } catch (ClassNotFoundException | IOException e) {
+            throw new MyBatisException(e.getMessage(), e);
         }
     }
 
     @Override
     public String toString() {
         return super.toString() +
-                this.implClass.replace( "/", "." ) +
+                this.implClass.replace("/", ".") +
                 "#" + this.implMethodName;
     }
 

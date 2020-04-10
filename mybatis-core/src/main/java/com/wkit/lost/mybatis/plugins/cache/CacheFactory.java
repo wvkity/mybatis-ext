@@ -20,26 +20,26 @@ public abstract class CacheFactory {
      * @param <V>        值类型
      * @return 缓存实例
      */
-    @SuppressWarnings( "unchecked" )
-    public static <K, V> Cache<K, V> createCache( String cacheClass, String prefix, Properties properties ) {
-        if ( StringUtil.isBlank( cacheClass ) || "false".equalsIgnoreCase( cacheClass ) ) {
+    @SuppressWarnings("unchecked")
+    public static <K, V> Cache<K, V> createCache(String cacheClass, String prefix, Properties properties) {
+        if (StringUtil.isBlank(cacheClass) || "false".equalsIgnoreCase(cacheClass)) {
             try {
-                Class.forName( "com.github.benmanes.caffeine.cache.Cache" );
-                return new CaffeineCache<>( properties, prefix );
-            } catch ( Exception e ) {
-                return new SimpleCache<>( properties, prefix );
+                Class.forName("com.github.benmanes.caffeine.cache.Cache");
+                return new CaffeineCache<>(properties, prefix);
+            } catch (Exception e) {
+                return new SimpleCache<>(properties, prefix);
             }
         } else {
-            Class<? extends Cache> clazz;
+            Class<? extends Cache<K, V>> clazz;
             try {
-                clazz = ( Class<? extends Cache> ) Class.forName( cacheClass );
+                clazz = (Class<? extends Cache<K, V>>) Class.forName(cacheClass);
                 try {
-                    return clazz.getDeclaredConstructor( Properties.class, String.class ).newInstance( properties, prefix );
-                } catch ( Exception e ) {
+                    return clazz.getDeclaredConstructor(Properties.class, String.class).newInstance(properties, prefix);
+                } catch (Exception e) {
                     return clazz.getDeclaredConstructor().newInstance();
                 }
-            } catch ( Exception e ) {
-                throw new MyBatisPluginException( "SQL cache instance creation failed - `" + cacheClass + "`: " + e, e );
+            } catch (Exception e) {
+                throw new MyBatisPluginException("SQL cache instance creation failed - `" + cacheClass + "`: " + e, e);
             }
 
         }

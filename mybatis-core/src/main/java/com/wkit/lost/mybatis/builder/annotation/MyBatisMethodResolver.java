@@ -10,14 +10,14 @@ public class MyBatisMethodResolver extends MethodResolver {
     private final MyBatisMapperAnnotationBuilder annotationBuilder;
     private final Method method;
 
-    public MyBatisMethodResolver( MapperAnnotationBuilder annotationBuilder, Method method ) {
-        super( annotationBuilder, method );
-        this.annotationBuilder = ( MyBatisMapperAnnotationBuilder ) annotationBuilder;
+    public MyBatisMethodResolver(MapperAnnotationBuilder annotationBuilder, Method method) {
+        super(annotationBuilder, method);
+        this.annotationBuilder = (MyBatisMapperAnnotationBuilder) annotationBuilder;
         this.method = method;
     }
 
     @Override
     public void resolve() {
-        annotationBuilder.parseStatement( method );
+        annotationBuilder.parseStatement(method);
     }
 }

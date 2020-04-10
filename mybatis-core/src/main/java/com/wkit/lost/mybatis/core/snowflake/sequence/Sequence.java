@@ -17,14 +17,14 @@ public interface Sequence {
      * @param id ID
      * @return 相关元素信息
      */
-    String parse( long id );
+    String parse(long id);
 
     /**
      * 生成唯一ID
      * @return 唯一ID
      */
     default String nextString() {
-        return String.valueOf( nextValue() );
+        return String.valueOf(nextValue());
     }
 
     /**
@@ -32,7 +32,7 @@ public interface Sequence {
      * @param id ID
      * @return 相关元素信息
      */
-    default String parse( String id ) {
-        return parse( Long.parseLong( id ) );
+    default String parse(String id) {
+        return parse(Long.parseLong(id));
     }
 }

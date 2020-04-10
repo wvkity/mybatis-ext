@@ -8,7 +8,7 @@ public class AggregationQuery<T> extends AbstractQueryWrapper<T, Aggregation> {
     private static final long serialVersionUID = 5643412018618027094L;
 
     @Override
-    public AbstractQueryWrapper<?, ?> transform( Criteria<?> criteria ) {
+    public AbstractQueryWrapper<?, ?> transform(Criteria<?> criteria) {
         return null;
     }
 
@@ -18,7 +18,7 @@ public class AggregationQuery<T> extends AbstractQueryWrapper<T, Aggregation> {
     }
 
     @Override
-    public String getSegment( boolean applyQuery ) {
+    public String getSegment(boolean applyQuery) {
         return null;
     }
 }

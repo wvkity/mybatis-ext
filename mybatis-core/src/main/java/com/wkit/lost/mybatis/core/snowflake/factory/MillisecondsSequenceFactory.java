@@ -6,14 +6,14 @@ import lombok.experimental.Accessors;
 import java.util.concurrent.TimeUnit;
 
 @Setter
-@Accessors( chain = true )
+@Accessors(chain = true)
 public class MillisecondsSequenceFactory extends ElasticSequenceFactory {
 
     public MillisecondsSequenceFactory() {
-        this( MILLIS_EPOCH_TIMESTAMP );
+        this(MILLIS_EPOCH_TIMESTAMP);
     }
 
-    public MillisecondsSequenceFactory( long epochTimestamp ) {
+    public MillisecondsSequenceFactory(long epochTimestamp) {
         super.timestampBits = 41;
         super.workerBits = 5;
         super.dataCenterBits = 5;

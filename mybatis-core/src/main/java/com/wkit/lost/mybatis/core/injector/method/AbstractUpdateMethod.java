@@ -18,10 +18,10 @@ public abstract class AbstractUpdateMethod extends AbstractMethod {
      * @param provider        SQL提供者
      * @return {@link MappedStatement}对象
      */
-    protected MappedStatement addUpdateMappedStatement( Class<?> mapperInterface, Class<?> __,
-                                                  TableWrapper table, Provider provider ) {
+    protected MappedStatement addUpdateMappedStatement(Class<?> mapperInterface, Class<?> __,
+                                                       TableWrapper table, Provider provider) {
         Class<?> entity = table.getEntity();
-        return addUpdateMappedStatement( mapperInterface, applyMethod(),
-                createSqlSource( createScriptBuilder( table, provider ), entity ), entity );
+        return addUpdateMappedStatement(mapperInterface, applyMethod(),
+                createSqlSource(createScriptBuilder(table, provider), entity), entity);
     }
 }

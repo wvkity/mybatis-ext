@@ -11,8 +11,8 @@ import java.lang.annotation.Target;
  * 雪花算法主键
  * @author wvkity
  */
-@Target( ElementType.FIELD )
-@Retention( RetentionPolicy.RUNTIME )
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
 public @interface SnowflakeSequence {

@@ -16,18 +16,18 @@ public class SessionFactoryInjector extends RootTestRunner {
     private SqlSessionFactory factory;
 
     @Test
-    @DisplayName( "测试SqlSessionFactory对象是否注入成功" )
+    @DisplayName("测试SqlSessionFactory对象是否注入成功")
     public void test() {
-        Assert.assertNotNull( "SqlSessionFactory对象注入失败", factory );
-        log.info( "注入的对象: {}", factory );
+        Assert.assertNotNull("SqlSessionFactory对象注入失败", factory);
+        log.info("注入的对象: {}", factory);
     }
 
 
     @Test
     public void test1() {
-        log.info( "{}", TestApp.class.toString() );
-        log.info( "{}", TestApp.class.getCanonicalName() );
-        log.info( "{}", com.wkit.lost.mybatis.starter.junit.inject.TestApp.class.toString() );
-        log.info( "{}", com.wkit.lost.mybatis.starter.junit.inject.TestApp.class.getCanonicalName() );
+        log.info("{}", TestApp.class.toString());
+        log.info("{}", TestApp.class.getCanonicalName());
+        log.info("{}", com.wkit.lost.mybatis.starter.junit.inject.TestApp.class.toString());
+        log.info("{}", com.wkit.lost.mybatis.starter.junit.inject.TestApp.class.getCanonicalName());
     }
 }

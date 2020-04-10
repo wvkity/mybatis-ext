@@ -8,17 +8,17 @@ import org.junit.jupiter.api.Test;
  */
 public class PagerTest {
 
-    private void println( Pageable pageable ) {
-        if ( pageable != null ) {
-            System.out.println( JSON.toJSONString( pageable, true ) );
+    private void println(Pageable pageable) {
+        if (pageable != null) {
+            System.out.println(JSON.toJSONString(pageable, true));
         }
     }
 
     @Test
     public void test() {
-        Pageable pager = new Pager( 4L );
-        pager.setRecord( 173 );
-        println( pager );
-        System.out.println( pager.offset() );
+        Pageable pager = new Pager(4L);
+        pager.setRecord(173);
+        println(pager);
+        System.out.println(pager.offset());
     }
 }

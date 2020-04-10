@@ -13,15 +13,15 @@ public class MixinUpdateNotWithNullProvider extends AbstractCriteriaProvider {
 
     @Override
     public String build() {
-        StringBuilder script = new StringBuilder( 200 );
+        StringBuilder script = new StringBuilder(200);
         Set<ColumnWrapper> columns = table.updatableColumns();
-        for ( ColumnWrapper it : columns ) {
-            script.append( ScriptUtil.convertIfTagWithNotNull( null, it, Constants.PARAM_ENTITY,
-                    true, false, Symbol.EQ, null, Constants.CHAR_COMMA, Execute.REPLACE ) );
+        for (ColumnWrapper it : columns) {
+            script.append(ScriptUtil.convertIfTagWithNotNull(null, it, Constants.PARAM_ENTITY,
+                    true, false, Symbol.EQ, null, Constants.CHAR_COMMA, Execute.REPLACE));
         }
         return update(
-                ScriptUtil.convertTrimTag( script.toString(), "SET", null,
-                        null, ", " ),
+                ScriptUtil.convertTrimTag(script.toString(), "SET", null,
+                        null, ", "),
                 getUpdateCondition()
         );
     }

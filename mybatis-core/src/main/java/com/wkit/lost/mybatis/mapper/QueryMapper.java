@@ -21,49 +21,49 @@ public interface QueryMapper<T, V> {
      * @param entity 指定对象
      * @return 1: 存在 | 0: 不存在
      */
-    int exists( @Param( Constants.PARAM_ENTITY ) T entity );
+    int exists(@Param(Constants.PARAM_ENTITY) T entity);
 
     /**
      * 根据主键查询记录是否存在
      * @param id 主键值
      * @return 1: 存在 | 0: 不存在
      */
-    int existsById( Serializable id );
+    int existsById(Serializable id);
 
     /**
      * 根据指定对象查询记录数
      * @param entity 指定对象
      * @return 记录数
      */
-    long count( @Param( Constants.PARAM_ENTITY ) T entity );
+    long count(@Param(Constants.PARAM_ENTITY) T entity);
 
     /**
      * 根据条件查询记录
      * @param id 主键
      * @return 对应数据
      */
-    Optional<V> selectOne( Serializable id );
+    Optional<V> selectOne(Serializable id);
 
     /**
      * 根据多个主键查询记录
      * @param idList 主键集合
      * @return 多条记录
      */
-    List<V> list( @Param( Constants.PARAM_PRIMARY_KEYS ) Collection<? extends Serializable> idList );
+    List<V> list(@Param(Constants.PARAM_PRIMARY_KEYS) Collection<? extends Serializable> idList);
 
     /**
      * 根据制定对象查询记录
      * @param entity 制定对象
      * @return 多条记录
      */
-    List<V> listByEntity( @Param( Constants.PARAM_ENTITY ) T entity );
+    List<V> listByEntity(@Param(Constants.PARAM_ENTITY) T entity);
 
     /**
      * 根据多个对象查询记录
      * @param entities 对象集合
      * @return 多条记录
      */
-    List<V> listByEntities( @Param( Constants.PARAM_ENTITIES ) Collection<T> entities );
+    List<V> listByEntities(@Param(Constants.PARAM_ENTITIES) Collection<T> entities);
 
     /**
      * 分页查询记录
@@ -71,6 +71,6 @@ public interface QueryMapper<T, V> {
      * @param pageable 分页对象
      * @return 多条记录
      */
-    List<V> pageableList( @Param( Constants.PARAM_ENTITY ) T entity,
-                          @Param( Constants.PARAM_PAGEABLE ) Pageable pageable );
+    List<V> pageableList(@Param(Constants.PARAM_ENTITY) T entity,
+                         @Param(Constants.PARAM_PAGEABLE) Pageable pageable);
 }

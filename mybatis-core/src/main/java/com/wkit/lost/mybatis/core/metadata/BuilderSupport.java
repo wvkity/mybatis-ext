@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 
 @Getter
 @Setter
-@Accessors( chain = true, fluent = true )
+@Accessors(chain = true, fluent = true)
 abstract class BuilderSupport {
 
     /**
@@ -42,10 +42,10 @@ abstract class BuilderSupport {
      * @return 命名策略模式
      */
     protected int namingMode() {
-        return Optional.ofNullable( this.namingStrategy ).map( it -> {
+        return Optional.ofNullable(this.namingStrategy).map(it -> {
             String namingType = it.name().toUpperCase();
-            return namingType.contains( "LOWERCASE" ) ? 0 : namingType.contains( "UPPERCASE" ) ? 1 : 2;
-        } ).orElse( 2 );
+            return namingType.contains("LOWERCASE") ? 0 : namingType.contains("UPPERCASE") ? 1 : 2;
+        }).orElse(2);
     }
 
     /**
@@ -53,8 +53,8 @@ abstract class BuilderSupport {
      * @param tableName 数据库表名
      * @return 新数据库表名
      */
-    protected String tableNameTransform( String tableName ) {
-        return this.physicalNamingStrategy.tableNameValueOf( tableName, this.namingStrategy );
+    protected String tableNameTransform(String tableName) {
+        return this.physicalNamingStrategy.tableNameValueOf(tableName, this.namingStrategy);
     }
 
     /**
@@ -62,8 +62,8 @@ abstract class BuilderSupport {
      * @param columnName 数据库表字段名
      * @return 新数据库表字段名
      */
-    protected String columnNameTransform( String columnName ) {
-        return this.physicalNamingStrategy.columnNameValueOf( columnName, this.namingStrategy );
+    protected String columnNameTransform(String columnName) {
+        return this.physicalNamingStrategy.columnNameValueOf(columnName, this.namingStrategy);
     }
 
     /**
@@ -73,8 +73,8 @@ abstract class BuilderSupport {
      * @param supplier 默认供给Lambda
      * @param <T>      泛型值类型
      */
-    protected <T> void ifPresent( Consumer<T> consumer, T value, Supplier<T> supplier ) {
-        ifPresent( consumer, value, supplier.get() );
+    protected <T> void ifPresent(Consumer<T> consumer, T value, Supplier<T> supplier) {
+        ifPresent(consumer, value, supplier.get());
     }
 
     /**
@@ -84,9 +84,9 @@ abstract class BuilderSupport {
      * @param defaultValue 默认值
      * @param <T>          泛型值类型
      */
-    protected <T> void ifPresent( Consumer<T> consumer, T value, T defaultValue ) {
+    protected <T> void ifPresent(Consumer<T> consumer, T value, T defaultValue) {
         final T realValue = value == null ? defaultValue : value;
-        consumer.accept( realValue );
+        consumer.accept(realValue);
     }
 
     /**
@@ -94,13 +94,13 @@ abstract class BuilderSupport {
      * @param configuration 自定义配置对象
      * @return {@code this}
      */
-    public BuilderSupport configuration( MyBatisCustomConfiguration configuration ) {
+    public BuilderSupport configuration(MyBatisCustomConfiguration configuration) {
         this.configuration = configuration;
-        if ( this.configuration == null ) {
+        if (this.configuration == null) {
             this.physicalNamingStrategy = DEFAULT_PHYSICAL_NAMING_STRATEGY;
         } else {
-            this.physicalNamingStrategy = Optional.ofNullable( this.configuration.getPhysicalNamingStrategy() )
-                    .orElse( DEFAULT_PHYSICAL_NAMING_STRATEGY );
+            this.physicalNamingStrategy = Optional.ofNullable(this.configuration.getPhysicalNamingStrategy())
+                    .orElse(DEFAULT_PHYSICAL_NAMING_STRATEGY);
         }
         return this;
     }

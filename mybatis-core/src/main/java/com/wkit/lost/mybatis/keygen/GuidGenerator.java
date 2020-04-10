@@ -16,6 +16,6 @@ public class GuidGenerator implements KeyGenerator {
 
     @Override
     public String value() {
-        return UUID.randomUUID().toString().replaceAll( "-", "" );
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 }

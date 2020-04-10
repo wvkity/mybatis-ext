@@ -19,28 +19,28 @@ import java.util.Set;
  */
 @Log4j2
 public class MetadataAuditingProcessor extends AbstractAuditingProcessor {
-    
+
     @Override
-    protected Object auditing( MappedStatement ms, MyBatisCustomConfiguration customConfiguration,
-                               MetadataAuditable auditable, Object parameter,
-                               TableWrapper table, boolean isInsertCommand, boolean isExecLogicDeleting ) {
-        if ( table != null ) {
-            return Optional.ofNullable( auditable ).map( it -> {
-                MetaObject metadata = ms.getConfiguration().newMetaObject( parameter );
-                if ( isInsertCommand && auditable.enableInsertedAuditable() ) {
+    protected Object auditing(MappedStatement ms, MyBatisCustomConfiguration customConfiguration,
+                              MetadataAuditable auditable, Object parameter,
+                              TableWrapper table, boolean isInsertCommand, boolean isExecLogicDeleting) {
+        if (table != null) {
+            return Optional.ofNullable(auditable).map(it -> {
+                MetaObject metadata = ms.getConfiguration().newMetaObject(parameter);
+                if (isInsertCommand && auditable.enableInsertedAuditable()) {
                     // 保存操作审计
-                    it.inserted( metadata );
-                } else if ( !isInsertCommand ) {
-                    if ( isExecLogicDeleting && it.enableDeletedAuditable() ) {
+                    it.inserted(metadata);
+                } else if (!isInsertCommand) {
+                    if (isExecLogicDeleting && it.enableDeletedAuditable()) {
                         // 逻辑删除操作审计(审计其他信息)
-                        it.deleted( metadata );
-                    } else if ( !isExecLogicDeleting && it.enableModifiedAuditable() ) {
+                        it.deleted(metadata);
+                    } else if (!isExecLogicDeleting && it.enableModifiedAuditable()) {
                         // 更新操作审计
-                        it.modified( metadata );
+                        it.modified(metadata);
                     }
                 }
                 return metadata.getOriginalObject();
-            } ).orElse( parameter );
+            }).orElse(parameter);
         }
         return parameter;
     }

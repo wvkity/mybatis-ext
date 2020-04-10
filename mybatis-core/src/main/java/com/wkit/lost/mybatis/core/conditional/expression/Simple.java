@@ -23,7 +23,7 @@ public class Simple<T> extends ColumnExpressionWrapper<T> {
      * @param symbol   条件符号
      * @param logic    逻辑符号
      */
-    Simple( Criteria<T> criteria, ColumnWrapper column, Object value, Symbol symbol, Logic logic ) {
+    Simple(Criteria<T> criteria, ColumnWrapper column, Object value, Symbol symbol, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.value = value;
@@ -39,8 +39,8 @@ public class Simple<T> extends ColumnExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 简单条件对象
      */
-    public static <T> Simple<T> create( Criteria<T> criteria, Property<T, ?> property, Object value ) {
-        return create( criteria, property, value, Symbol.EQ );
+    public static <T> Simple<T> create(Criteria<T> criteria, Property<T, ?> property, Object value) {
+        return create(criteria, property, value, Symbol.EQ);
     }
 
     /**
@@ -52,9 +52,9 @@ public class Simple<T> extends ColumnExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 简单条件对象
      */
-    public static <T> Simple<T> create( Criteria<T> criteria, Property<T, ?> property,
-                                        Object value, Logic logic ) {
-        return create( criteria, criteria.searchColumn( property ), value, Symbol.EQ, logic );
+    public static <T> Simple<T> create(Criteria<T> criteria, Property<T, ?> property,
+                                       Object value, Logic logic) {
+        return create(criteria, criteria.searchColumn(property), value, Symbol.EQ, logic);
     }
 
     /**
@@ -66,9 +66,9 @@ public class Simple<T> extends ColumnExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 简单条件对象
      */
-    public static <T> Simple<T> create( Criteria<T> criteria, Property<T, ?> property,
-                                        Object value, Symbol symbol ) {
-        return create( criteria, property, value, symbol, Logic.AND );
+    public static <T> Simple<T> create(Criteria<T> criteria, Property<T, ?> property,
+                                       Object value, Symbol symbol) {
+        return create(criteria, property, value, symbol, Logic.AND);
     }
 
     /**
@@ -81,10 +81,10 @@ public class Simple<T> extends ColumnExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 简单条件对象
      */
-    public static <T> Simple<T> create( Criteria<T> criteria, Property<T, ?> property, Object value,
-                                        Symbol symbol, Logic logic ) {
-        if ( criteria != null && property != null ) {
-            return create( criteria, criteria.searchColumn( property ), value, symbol, logic );
+    public static <T> Simple<T> create(Criteria<T> criteria, Property<T, ?> property, Object value,
+                                       Symbol symbol, Logic logic) {
+        if (criteria != null && property != null) {
+            return create(criteria, criteria.searchColumn(property), value, symbol, logic);
         }
         return null;
     }
@@ -97,8 +97,8 @@ public class Simple<T> extends ColumnExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 简单条件对象
      */
-    public static <T> Simple<T> create( Criteria<T> criteria, String property, Object value ) {
-        return create( criteria, property, value, Symbol.EQ );
+    public static <T> Simple<T> create(Criteria<T> criteria, String property, Object value) {
+        return create(criteria, property, value, Symbol.EQ);
     }
 
     /**
@@ -110,8 +110,8 @@ public class Simple<T> extends ColumnExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 简单条件对象
      */
-    public static <T> Simple<T> create( Criteria<T> criteria, String property, Object value, Logic logic ) {
-        return create( criteria, property, value, Symbol.EQ, logic );
+    public static <T> Simple<T> create(Criteria<T> criteria, String property, Object value, Logic logic) {
+        return create(criteria, property, value, Symbol.EQ, logic);
     }
 
     /**
@@ -123,8 +123,8 @@ public class Simple<T> extends ColumnExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 简单条件对象
      */
-    public static <T> Simple<T> create( Criteria<T> criteria, String property, Object value, Symbol symbol ) {
-        return create( criteria, property, value, symbol, Logic.AND );
+    public static <T> Simple<T> create(Criteria<T> criteria, String property, Object value, Symbol symbol) {
+        return create(criteria, property, value, symbol, Logic.AND);
     }
 
     /**
@@ -137,10 +137,10 @@ public class Simple<T> extends ColumnExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 简单条件对象
      */
-    public static <T> Simple<T> create( Criteria<T> criteria, String property, Object value,
-                                        Symbol symbol, Logic logic ) {
-        if ( criteria != null && hasText( property ) ) {
-            return create( criteria, criteria.searchColumn( property ), value, symbol, logic );
+    public static <T> Simple<T> create(Criteria<T> criteria, String property, Object value,
+                                       Symbol symbol, Logic logic) {
+        if (criteria != null && hasText(property)) {
+            return create(criteria, criteria.searchColumn(property), value, symbol, logic);
         }
         return null;
     }
@@ -153,8 +153,8 @@ public class Simple<T> extends ColumnExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 简单条件对象
      */
-    public static <T> Simple<T> create( Criteria<T> criteria, ColumnWrapper column, Object value ) {
-        return create( criteria, column, value, Symbol.EQ );
+    public static <T> Simple<T> create(Criteria<T> criteria, ColumnWrapper column, Object value) {
+        return create(criteria, column, value, Symbol.EQ);
     }
 
     /**
@@ -166,8 +166,8 @@ public class Simple<T> extends ColumnExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 简单条件对象
      */
-    public static <T> Simple<T> create( Criteria<T> criteria, ColumnWrapper column, Object value, Logic logic ) {
-        return create( criteria, column, value, Symbol.EQ, logic );
+    public static <T> Simple<T> create(Criteria<T> criteria, ColumnWrapper column, Object value, Logic logic) {
+        return create(criteria, column, value, Symbol.EQ, logic);
     }
 
     /**
@@ -179,8 +179,8 @@ public class Simple<T> extends ColumnExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 简单条件对象
      */
-    public static <T> Simple<T> create( Criteria<T> criteria, ColumnWrapper column, Object value, Symbol symbol ) {
-        return create( criteria, column, value, symbol, Logic.AND );
+    public static <T> Simple<T> create(Criteria<T> criteria, ColumnWrapper column, Object value, Symbol symbol) {
+        return create(criteria, column, value, symbol, Logic.AND);
     }
 
     /**
@@ -193,10 +193,10 @@ public class Simple<T> extends ColumnExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 简单条件对象
      */
-    public static <T> Simple<T> create( Criteria<T> criteria, ColumnWrapper column, Object value,
-                                        Symbol symbol, Logic logic ) {
-        if ( criteria != null && column != null ) {
-            return new Simple<>( criteria, column, value, symbol, logic );
+    public static <T> Simple<T> create(Criteria<T> criteria, ColumnWrapper column, Object value,
+                                       Symbol symbol, Logic logic) {
+        if (criteria != null && column != null) {
+            return new Simple<>(criteria, column, value, symbol, logic);
         }
         return null;
     }

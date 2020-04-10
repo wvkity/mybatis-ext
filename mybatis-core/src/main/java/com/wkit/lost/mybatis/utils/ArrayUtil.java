@@ -15,7 +15,7 @@ public class ArrayUtil {
      * @param target 待检测对象
      * @return boolean
      */
-    public static boolean isArray( final Object target ) {
+    public static boolean isArray(final Object target) {
         return target != null && target.getClass().isArray();
     }
 
@@ -26,7 +26,7 @@ public class ArrayUtil {
      * @return boolean
      */
     @SafeVarargs
-    public static <T> boolean isEmpty( final T... args ) {
+    public static <T> boolean isEmpty(final T... args) {
         return args == null || args.length == 0;
     }
 
@@ -35,13 +35,13 @@ public class ArrayUtil {
      * @param target 待检测数组对象
      * @return boolean
      */
-    public static boolean isEmpty( final Object target ) {
-        if ( target == null ) {
+    public static boolean isEmpty(final Object target) {
+        if (target == null) {
             return true;
-        } else if ( isArray( target ) ) {
-            return Array.getLength( target ) == 0;
+        } else if (isArray(target)) {
+            return Array.getLength(target) == 0;
         }
-        throw new IllegalArgumentException( "The argument provided is not an array object" );
+        throw new IllegalArgumentException("The argument provided is not an array object");
     }
 
     /**
@@ -49,9 +49,9 @@ public class ArrayUtil {
      * @param target 数组对象
      * @return 数组长度
      */
-    public static int length( final Object target ) {
-        if ( isArray( target ) ) {
-            return Array.getLength( target );
+    public static int length(final Object target) {
+        if (isArray(target)) {
+            return Array.getLength(target);
         }
         return 0;
     }
@@ -63,8 +63,8 @@ public class ArrayUtil {
      * @return 集合
      */
     @SafeVarargs
-    public static <T> ArrayList<T> toList( T... array ) {
-        return Optional.ofNullable( array ).map( it -> new ArrayList<>( Arrays.asList( it ) ) )
-                .orElse( new ArrayList<>(0) );
+    public static <T> ArrayList<T> toList(T... array) {
+        return Optional.ofNullable(array).map(it -> new ArrayList<>(Arrays.asList(it)))
+                .orElse(new ArrayList<>(0));
     }
 }

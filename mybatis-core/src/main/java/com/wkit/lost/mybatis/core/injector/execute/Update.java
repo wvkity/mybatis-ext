@@ -8,5 +8,5 @@ import com.wkit.lost.mybatis.core.mapping.sql.update.UpdateProvider;
  * @author wvkity
  */
 public class Update extends AbstractGeneralUpdateMethod<UpdateProvider> {
-    
+
 }

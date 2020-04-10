@@ -39,12 +39,12 @@ public abstract class AbstractMethod implements Method {
     protected LanguageDriver languageDriver;
 
     @Override
-    public void inject( MapperBuilderAssistant assistant, Class<?> mapperInterface, Class<?> resultType, TableWrapper table ) {
+    public void inject(MapperBuilderAssistant assistant, Class<?> mapperInterface, Class<?> resultType, TableWrapper table) {
         this.assistant = assistant;
         this.configuration = assistant.getConfiguration();
         this.languageDriver = this.configuration.getDefaultScriptingLanguageInstance();
         // 注入
-        this.injectMappedStatement( table, mapperInterface, resultType );
+        this.injectMappedStatement(table, mapperInterface, resultType);
     }
 
     /**
@@ -61,27 +61,27 @@ public abstract class AbstractMethod implements Method {
      * @param keyColumn       主键列
      * @return {@link MappedStatement}对象
      */
-    protected MappedStatement addMappedStatement( Class<?> mapperInterface, String id, SqlSource sqlSource,
-                                                  SqlCommandType commandType, Class<?> parameterType,
-                                                  String resultMap, Class<?> resultType, KeyGenerator keyGenerator,
-                                                  String keyProperty, String keyColumn ) {
+    protected MappedStatement addMappedStatement(Class<?> mapperInterface, String id, SqlSource sqlSource,
+                                                 SqlCommandType commandType, Class<?> parameterType,
+                                                 String resultMap, Class<?> resultType, KeyGenerator keyGenerator,
+                                                 String keyProperty, String keyColumn) {
         String realId;
-        if ( StringUtil.isBlank( id ) ) {
+        if (StringUtil.isBlank(id)) {
             realId = applyMethod();
         } else {
             realId = id;
         }
         String statementName = mapperInterface.getName() + "." + realId;
-        if ( hasMappedStatement( statementName ) ) {
-            log.warn( "The `{}` MappedStatement object has been loaded into the container by XML or SqlProvider configuration, " +
-                    "and the SQL injection is automatically ignored.", statementName );
-            return this.configuration.getMappedStatement( statementName, false );
+        if (hasMappedStatement(statementName)) {
+            log.warn("The `{}` MappedStatement object has been loaded into the container by XML or SqlProvider configuration, " +
+                    "and the SQL injection is automatically ignored.", statementName);
+            return this.configuration.getMappedStatement(statementName, false);
         }
         boolean isSelect = commandType == SqlCommandType.SELECT;
-        return this.assistant.addMappedStatement( realId, sqlSource, StatementType.PREPARED, commandType,
+        return this.assistant.addMappedStatement(realId, sqlSource, StatementType.PREPARED, commandType,
                 null, null, null, parameterType, resultMap, resultType,
                 null, !isSelect, isSelect, false, keyGenerator, keyProperty,
-                keyColumn, this.configuration.getDatabaseId(), this.languageDriver, null );
+                keyColumn, this.configuration.getDatabaseId(), this.languageDriver, null);
     }
 
     /**
@@ -95,11 +95,11 @@ public abstract class AbstractMethod implements Method {
      * @param keyColumn       主键列
      * @return {@link MappedStatement}对象
      */
-    protected MappedStatement addInsertMappedStatement( Class<?> mapperInterface, String id, SqlSource sqlSource,
-                                                        Class<?> parameterType, KeyGenerator keyGenerator,
-                                                        String keyProperty, String keyColumn ) {
-        return addMappedStatement( mapperInterface, id, sqlSource, SqlCommandType.INSERT, parameterType,
-                null, Integer.class, keyGenerator, keyProperty, keyColumn );
+    protected MappedStatement addInsertMappedStatement(Class<?> mapperInterface, String id, SqlSource sqlSource,
+                                                       Class<?> parameterType, KeyGenerator keyGenerator,
+                                                       String keyProperty, String keyColumn) {
+        return addMappedStatement(mapperInterface, id, sqlSource, SqlCommandType.INSERT, parameterType,
+                null, Integer.class, keyGenerator, keyProperty, keyColumn);
     }
 
     /**
@@ -110,10 +110,10 @@ public abstract class AbstractMethod implements Method {
      * @param parameterType   参数类型
      * @return {@link MappedStatement}对象
      */
-    protected MappedStatement addUpdateMappedStatement( Class<?> mapperInterface, String id, SqlSource sqlSource,
-                                                        Class<?> parameterType ) {
-        return addMappedStatement( mapperInterface, id, sqlSource, SqlCommandType.UPDATE, parameterType,
-                null, Integer.class, new NoKeyGenerator(), null, null );
+    protected MappedStatement addUpdateMappedStatement(Class<?> mapperInterface, String id, SqlSource sqlSource,
+                                                       Class<?> parameterType) {
+        return addMappedStatement(mapperInterface, id, sqlSource, SqlCommandType.UPDATE, parameterType,
+                null, Integer.class, new NoKeyGenerator(), null, null);
     }
 
     /**
@@ -124,10 +124,10 @@ public abstract class AbstractMethod implements Method {
      * @param parameterType   参数类型
      * @return {@link MappedStatement}对象
      */
-    protected MappedStatement addDeleteMappedStatement( Class<?> mapperInterface, String id, SqlSource sqlSource,
-                                                        Class<?> parameterType ) {
-        return addMappedStatement( mapperInterface, id, sqlSource, SqlCommandType.DELETE, parameterType,
-                null, Integer.class, new NoKeyGenerator(), null, null );
+    protected MappedStatement addDeleteMappedStatement(Class<?> mapperInterface, String id, SqlSource sqlSource,
+                                                       Class<?> parameterType) {
+        return addMappedStatement(mapperInterface, id, sqlSource, SqlCommandType.DELETE, parameterType,
+                null, Integer.class, new NoKeyGenerator(), null, null);
     }
 
     /**
@@ -140,10 +140,10 @@ public abstract class AbstractMethod implements Method {
      * @param __              表映射对象
      * @return {@link MappedStatement}对象
      */
-    protected MappedStatement addSelectMappedStatement( Class<?> mapperInterface, String id, SqlSource sqlSource,
-                                                        Class<?> parameterType, Class<?> resultType, TableWrapper __ ) {
-        return addMappedStatement( mapperInterface, id, sqlSource, SqlCommandType.SELECT, parameterType,
-                null, resultType, new NoKeyGenerator(), null, null );
+    protected MappedStatement addSelectMappedStatement(Class<?> mapperInterface, String id, SqlSource sqlSource,
+                                                       Class<?> parameterType, Class<?> resultType, TableWrapper __) {
+        return addMappedStatement(mapperInterface, id, sqlSource, SqlCommandType.SELECT, parameterType,
+                null, resultType, new NoKeyGenerator(), null, null);
     }
 
     /**
@@ -151,8 +151,8 @@ public abstract class AbstractMethod implements Method {
      * @param statementName 唯一名称
      * @return true: 存在 | false: 不存在
      */
-    protected boolean hasMappedStatement( final String statementName ) {
-        return this.configuration.hasStatement( statementName, false );
+    protected boolean hasMappedStatement(final String statementName) {
+        return this.configuration.hasStatement(statementName, false);
     }
 
     /**
@@ -161,8 +161,8 @@ public abstract class AbstractMethod implements Method {
      * @param provider SQL提供者
      * @return 脚本构建器
      */
-    protected ScriptBuilder createScriptBuilder( TableWrapper table, Provider provider ) {
-        return createScriptBuilder( null, table, provider );
+    protected ScriptBuilder createScriptBuilder(TableWrapper table, Provider provider) {
+        return createScriptBuilder(null, table, provider);
     }
 
     /**
@@ -172,8 +172,8 @@ public abstract class AbstractMethod implements Method {
      * @param provider SQL提供者
      * @return 脚本构建器
      */
-    protected ScriptBuilder createScriptBuilder( String alias, TableWrapper table, Provider provider ) {
-        return ScriptBuilderFactory.create( provider, table, table.getEntity(), alias );
+    protected ScriptBuilder createScriptBuilder(String alias, TableWrapper table, Provider provider) {
+        return ScriptBuilderFactory.create(provider, table, table.getEntity(), alias);
     }
 
     /**
@@ -182,8 +182,8 @@ public abstract class AbstractMethod implements Method {
      * @param parameterType 参数类型
      * @return {@link SqlSource}对象
      */
-    protected SqlSource createSqlSource( final ScriptBuilder builder, final Class<?> parameterType ) {
-        return createSqlSource( builder.build(), parameterType );
+    protected SqlSource createSqlSource(final ScriptBuilder builder, final Class<?> parameterType) {
+        return createSqlSource(builder.build(), parameterType);
     }
 
     /**
@@ -192,8 +192,8 @@ public abstract class AbstractMethod implements Method {
      * @param parameterType 参数类型
      * @return {@link SqlSource}对象
      */
-    protected SqlSource createSqlSource( final String script, final Class<?> parameterType ) {
-        return this.languageDriver.createSqlSource( this.configuration, script, parameterType );
+    protected SqlSource createSqlSource(final String script, final Class<?> parameterType) {
+        return this.languageDriver.createSqlSource(this.configuration, script, parameterType);
     }
 
     /**
@@ -201,7 +201,7 @@ public abstract class AbstractMethod implements Method {
      * @return 方法名
      */
     public String applyMethod() {
-        return StringUtil.getSimpleNameOfFirstLower( this.getClass() );
+        return StringUtil.getSimpleNameOfFirstLower(this.getClass());
     }
 
     /**
@@ -211,6 +211,6 @@ public abstract class AbstractMethod implements Method {
      * @param resultType      返回值
      * @return {@link MappedStatement}对象
      */
-    public abstract MappedStatement injectMappedStatement( final TableWrapper table,
-                                                           final Class<?> mapperInterface, final Class<?> resultType );
+    public abstract MappedStatement injectMappedStatement(final TableWrapper table,
+                                                          final Class<?> mapperInterface, final Class<?> resultType);
 }

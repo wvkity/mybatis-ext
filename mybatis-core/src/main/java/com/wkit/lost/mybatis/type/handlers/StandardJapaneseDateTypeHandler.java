@@ -17,30 +17,30 @@ import java.util.Optional;
  * {@link JapaneseDate}处理器
  * @author wvkity
  */
-@MappedTypes( JapaneseDate.class )
+@MappedTypes(JapaneseDate.class)
 public class StandardJapaneseDateTypeHandler extends BaseTypeHandler<JapaneseDate> {
 
     @Override
-    public void setNonNullParameter( PreparedStatement ps, int i, JapaneseDate parameter, JdbcType jdbcType ) throws SQLException {
-        ps.setDate( i, Optional.ofNullable( parameter ).map( time -> Date.valueOf( LocalDate.ofEpochDay( time.toEpochDay() ) ) ).orElse( null ) );
+    public void setNonNullParameter(PreparedStatement ps, int i, JapaneseDate parameter, JdbcType jdbcType) throws SQLException {
+        ps.setDate(i, Optional.ofNullable(parameter).map(time -> Date.valueOf(LocalDate.ofEpochDay(time.toEpochDay()))).orElse(null));
     }
 
     @Override
-    public JapaneseDate getNullableResult( ResultSet rs, String columnName ) throws SQLException {
-        return valueOf( rs.getDate( columnName ) );
+    public JapaneseDate getNullableResult(ResultSet rs, String columnName) throws SQLException {
+        return valueOf(rs.getDate(columnName));
     }
 
     @Override
-    public JapaneseDate getNullableResult( ResultSet rs, int columnIndex ) throws SQLException {
-        return valueOf( rs.getDate( columnIndex ) );
+    public JapaneseDate getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+        return valueOf(rs.getDate(columnIndex));
     }
 
     @Override
-    public JapaneseDate getNullableResult( CallableStatement cs, int columnIndex ) throws SQLException {
-        return valueOf( cs.getDate( columnIndex ) );
+    public JapaneseDate getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+        return valueOf(cs.getDate(columnIndex));
     }
 
-    private JapaneseDate valueOf( Date date ) {
-        return Optional.ofNullable( date ).map( time -> JapaneseDate.from( date.toLocalDate() ) ).orElse( null );
+    private JapaneseDate valueOf(Date date) {
+        return Optional.ofNullable(date).map(time -> JapaneseDate.from(date.toLocalDate())).orElse(null);
     }
 }

@@ -38,25 +38,16 @@ public class WrapPager<E> extends Pager {
      * 构造方法
      * @param page 当前页
      */
-    public WrapPager( String page ) {
-        super( page );
+    public WrapPager(String page) {
+        super(page);
     }
 
     /**
      * 构造方法
      * @param page 当前页
      */
-    public WrapPager( long page ) {
-        super( page );
-    }
-
-    /**
-     * 构造方法
-     * @param page 当前页
-     * @param size 每页数目
-     */
-    public WrapPager( String page, String size ) {
-        super( page, size );
+    public WrapPager(long page) {
+        super(page);
     }
 
     /**
@@ -64,8 +55,17 @@ public class WrapPager<E> extends Pager {
      * @param page 当前页
      * @param size 每页数目
      */
-    public WrapPager( long page, long size ) {
-        super( page, size );
+    public WrapPager(String page, String size) {
+        super(page, size);
+    }
+
+    /**
+     * 构造方法
+     * @param page 当前页
+     * @param size 每页数目
+     */
+    public WrapPager(long page, long size) {
+        super(page, size);
     }
 
     /**
@@ -73,16 +73,16 @@ public class WrapPager<E> extends Pager {
      * @param elements 元素数组
      * @return {@code this}
      */
-    @SuppressWarnings( "unchecked" )
-    public WrapPager<E> add( E... elements ) {
-        if ( elements == null || elements.length == 0 ) {
+    @SuppressWarnings("unchecked")
+    public WrapPager<E> add(E... elements) {
+        if (elements == null || elements.length == 0) {
             this.elements = null;
             this.empty = true;
         } else {
-            if ( this.elements == null ) {
-                this.elements = new ArrayList<>( elements.length );
+            if (this.elements == null) {
+                this.elements = new ArrayList<>(elements.length);
             }
-            this.elements.addAll( Arrays.asList( elements ) );
+            this.elements.addAll(Arrays.asList(elements));
             this.empty = false;
         }
         return this;
@@ -93,7 +93,7 @@ public class WrapPager<E> extends Pager {
      * @return {@code this}
      */
     public WrapPager<E> clear() {
-        if ( this.elements != null && !this.elements.isEmpty() ) {
+        if (this.elements != null && !this.elements.isEmpty()) {
             this.elements.clear();
             this.empty = true;
         }
@@ -104,7 +104,7 @@ public class WrapPager<E> extends Pager {
         return this.elements;
     }
 
-    public void setElements( List<E> elements ) {
+    public void setElements(List<E> elements) {
         this.elements = elements;
     }
 
@@ -117,7 +117,7 @@ public class WrapPager<E> extends Pager {
         return autoFill;
     }
 
-    public void autoFill( boolean autoFill ) {
+    public void autoFill(boolean autoFill) {
         this.autoFill = autoFill;
     }
 }

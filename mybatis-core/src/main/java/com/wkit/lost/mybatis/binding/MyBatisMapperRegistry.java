@@ -16,49 +16,49 @@ public class MyBatisMapperRegistry extends MapperRegistry {
     private final Map<Class<?>, MyBatisMapperProxyFactory<?>> knownMappers = new HashMap<>();
     private final MyBatisConfiguration config;
 
-    public MyBatisMapperRegistry( MyBatisConfiguration config ) {
-        super( config );
+    public MyBatisMapperRegistry(MyBatisConfiguration config) {
+        super(config);
         this.config = config;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Override
-    public <T> T getMapper( Class<T> type, SqlSession sqlSession ) {
-        final MyBatisMapperProxyFactory<T> mapperProxyFactory = ( MyBatisMapperProxyFactory<T> ) knownMappers.get( type );
-        if ( mapperProxyFactory == null ) {
-            throw new BindingException( "Type " + type + " is not known to the MapperRegistry." );
+    public <T> T getMapper(Class<T> type, SqlSession sqlSession) {
+        final MyBatisMapperProxyFactory<T> mapperProxyFactory = (MyBatisMapperProxyFactory<T>) knownMappers.get(type);
+        if (mapperProxyFactory == null) {
+            throw new BindingException("Type " + type + " is not known to the MapperRegistry.");
         }
         try {
-            return mapperProxyFactory.newInstance( sqlSession );
-        } catch ( Exception e ) {
-            throw new BindingException( "Error getting mapper instance. Cause: " + e, e );
+            return mapperProxyFactory.newInstance(sqlSession);
+        } catch (Exception e) {
+            throw new BindingException("Error getting mapper instance. Cause: " + e, e);
         }
     }
 
     @Override
-    public <T> boolean hasMapper( Class<T> type ) {
-        return this.knownMappers.containsKey( type );
+    public <T> boolean hasMapper(Class<T> type) {
+        return this.knownMappers.containsKey(type);
     }
 
     @Override
-    public <T> void addMapper( Class<T> type ) {
-        if ( type.isInterface() ) {
+    public <T> void addMapper(Class<T> type) {
+        if (type.isInterface()) {
             // 检查是否已注册
-            if ( this.hasMapper( type ) ) {
+            if (this.hasMapper(type)) {
                 return;
             }
             boolean loadCompleted = false;
             try {
-                this.knownMappers.put( type, new MyBatisMapperProxyFactory<>( type ) );
+                this.knownMappers.put(type, new MyBatisMapperProxyFactory<>(type));
                 // It's important that the type is added before the parser is run
                 // otherwise the binding may automatically be attempted by the
                 // mapper parser. If the type is already known, it won't try.
-                MyBatisMapperAnnotationBuilder parser = new MyBatisMapperAnnotationBuilder( config, type );
+                MyBatisMapperAnnotationBuilder parser = new MyBatisMapperAnnotationBuilder(config, type);
                 parser.parse();
                 loadCompleted = true;
             } finally {
-                if ( !loadCompleted ) {
-                    this.knownMappers.remove( type );
+                if (!loadCompleted) {
+                    this.knownMappers.remove(type);
                 }
             }
         }
@@ -69,7 +69,7 @@ public class MyBatisMapperRegistry extends MapperRegistry {
      */
     @Override
     public Collection<Class<?>> getMappers() {
-        return Collections.unmodifiableCollection( this.knownMappers.keySet() );
+        return Collections.unmodifiableCollection(this.knownMappers.keySet());
     }
 
 }

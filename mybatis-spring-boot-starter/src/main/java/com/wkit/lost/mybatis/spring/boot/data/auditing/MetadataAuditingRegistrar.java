@@ -19,7 +19,7 @@ import java.lang.annotation.Annotation;
  * 元数据审计处理器注册器
  * @author wvkity
  */
-@Order( 101 )
+@Order(101)
 class MetadataAuditingRegistrar extends BeanDefinitionRegistrarSupport<AuditingConfiguration> {
 
     private static final String AUDITOR_AWARE = "auditorAware";
@@ -31,37 +31,37 @@ class MetadataAuditingRegistrar extends BeanDefinitionRegistrarSupport<AuditingC
     private static final Class<?> REGISTER_ROOT_CLASS = MetadataAuditingHandler.class;
 
     @Override
-    public void registerBeanDefinitions( AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry ) {
-        Assert.notNull( annotationMetadata, "AnnotationMetadata must not be null!" );
-        Assert.notNull( registry, "BeanDefinitionRegistry must not be null!" );
-        registerBeanConfigurerAspectIfNecessary( registry );
-        super.registerBeanDefinitions( annotationMetadata, registry );
+    public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry) {
+        Assert.notNull(annotationMetadata, "AnnotationMetadata must not be null!");
+        Assert.notNull(registry, "BeanDefinitionRegistry must not be null!");
+        registerBeanConfigurerAspectIfNecessary(registry);
+        super.registerBeanDefinitions(annotationMetadata, registry);
     }
 
     @Override
-    protected AbstractBeanDefinition registerBeanDefinition( BeanDefinitionRegistry registry,
-                                                             AuditingConfiguration configuration ) {
-        return createBeanDefinition( registry, configuration, getBeanName(), REGISTER_ROOT_CLASS );
+    protected AbstractBeanDefinition registerBeanDefinition(BeanDefinitionRegistry registry,
+                                                            AuditingConfiguration configuration) {
+        return createBeanDefinition(registry, configuration, getBeanName(), REGISTER_ROOT_CLASS);
     }
 
     @Override
-    protected AuditingConfiguration getConfiguration( AnnotationMetadata annotationMetadata ) {
-        return new AnnotationAuditingConfiguration( annotationMetadata, getAnnotation() );
+    protected AuditingConfiguration getConfiguration(AnnotationMetadata annotationMetadata) {
+        return new AnnotationAuditingConfiguration(annotationMetadata, getAnnotation());
     }
 
     @Override
-    protected BeanDefinitionBuilder setRegisterBeanAttributes( AuditingConfiguration configuration,
-                                                               BeanDefinitionBuilder builder ) {
-        if ( StringUtils.hasText( configuration.getAuditorAwareRef() ) ) {
-            builder.addPropertyValue( AUDITOR_AWARE,
-                    createLazyInitTargetSourceBeanDefinition( configuration.getAuditorAwareRef() ) );
+    protected BeanDefinitionBuilder setRegisterBeanAttributes(AuditingConfiguration configuration,
+                                                              BeanDefinitionBuilder builder) {
+        if (StringUtils.hasText(configuration.getAuditorAwareRef())) {
+            builder.addPropertyValue(AUDITOR_AWARE,
+                    createLazyInitTargetSourceBeanDefinition(configuration.getAuditorAwareRef()));
         } else {
-            builder.setAutowireMode( AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE );
+            builder.setAutowireMode(AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE);
         }
-        builder.addPropertyValue( INSERTED, configuration.enableInserted() );
-        builder.addPropertyValue( MODIFIED, configuration.enableModified() );
-        builder.addPropertyValue( DELETED, configuration.enableDeleted() );
-        builder.addPropertyValue( AUTOMATIC, configuration.enableAutomatic() );
+        builder.addPropertyValue(INSERTED, configuration.enableInserted());
+        builder.addPropertyValue(MODIFIED, configuration.enableModified());
+        builder.addPropertyValue(DELETED, configuration.enableDeleted());
+        builder.addPropertyValue(AUTOMATIC, configuration.enableAutomatic());
         return builder;
     }
 

@@ -21,7 +21,7 @@ public class NotNull<T> extends AbstractEmptyExpression<T> {
      * @param column   字段包装对象
      * @param logic    逻辑符号
      */
-    NotNull( Criteria<T> criteria, ColumnWrapper column, Logic logic ) {
+    NotNull(Criteria<T> criteria, ColumnWrapper column, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.logic = logic;
@@ -35,8 +35,8 @@ public class NotNull<T> extends AbstractEmptyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotNull<T> create( Criteria<T> criteria, Property<T, ?> property ) {
-        return create( criteria, property, Logic.AND );
+    public static <T> NotNull<T> create(Criteria<T> criteria, Property<T, ?> property) {
+        return create(criteria, property, Logic.AND);
     }
 
     /**
@@ -47,9 +47,9 @@ public class NotNull<T> extends AbstractEmptyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotNull<T> create( Criteria<T> criteria, Property<T, ?> property, Logic logic ) {
-        if ( criteria != null && property != null ) {
-            return create( criteria, criteria.searchColumn( property ), logic );
+    public static <T> NotNull<T> create(Criteria<T> criteria, Property<T, ?> property, Logic logic) {
+        if (criteria != null && property != null) {
+            return create(criteria, criteria.searchColumn(property), logic);
         }
         return null;
     }
@@ -61,8 +61,8 @@ public class NotNull<T> extends AbstractEmptyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotNull<T> create( Criteria<T> criteria, String property ) {
-        return create( criteria, property, Logic.AND );
+    public static <T> NotNull<T> create(Criteria<T> criteria, String property) {
+        return create(criteria, property, Logic.AND);
     }
 
     /**
@@ -73,9 +73,9 @@ public class NotNull<T> extends AbstractEmptyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotNull<T> create( Criteria<T> criteria, String property, Logic logic ) {
-        if ( criteria != null && hasText( property ) ) {
-            return create( criteria, criteria.searchColumn( property ), logic );
+    public static <T> NotNull<T> create(Criteria<T> criteria, String property, Logic logic) {
+        if (criteria != null && hasText(property)) {
+            return create(criteria, criteria.searchColumn(property), logic);
         }
         return null;
     }
@@ -87,8 +87,8 @@ public class NotNull<T> extends AbstractEmptyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotNull<T> create( Criteria<T> criteria, ColumnWrapper column ) {
-        return create( criteria, column, Logic.AND );
+    public static <T> NotNull<T> create(Criteria<T> criteria, ColumnWrapper column) {
+        return create(criteria, column, Logic.AND);
     }
 
     /**
@@ -99,9 +99,9 @@ public class NotNull<T> extends AbstractEmptyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotNull<T> create( Criteria<T> criteria, ColumnWrapper column, Logic logic ) {
-        if ( criteria != null && column != null ) {
-            return new NotNull<>( criteria, column, logic );
+    public static <T> NotNull<T> create(Criteria<T> criteria, ColumnWrapper column, Logic logic) {
+        if (criteria != null && column != null) {
+            return new NotNull<>(criteria, column, logic);
         }
         return null;
     }

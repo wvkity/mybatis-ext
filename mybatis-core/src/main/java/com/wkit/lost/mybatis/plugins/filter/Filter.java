@@ -16,5 +16,5 @@ public interface Filter {
      * @param parameter 方法参数
      * @return boolean
      */
-    boolean filter( MappedStatement ms, Object parameter );
+    boolean filter(MappedStatement ms, Object parameter);
 }

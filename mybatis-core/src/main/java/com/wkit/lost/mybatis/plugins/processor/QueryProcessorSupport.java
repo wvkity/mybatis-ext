@@ -15,29 +15,29 @@ import org.apache.ibatis.session.RowBounds;
 public abstract class QueryProcessorSupport extends Processor {
 
     @Override
-    public Object intercept( Invocation invocation ) throws Throwable {
+    public Object intercept(Invocation invocation) throws Throwable {
         // 参数
         Object[] args = invocation.getArgs();
         int size = args.length;
-        MappedStatement ms = ( MappedStatement ) args[ 0 ];
-        Object parameter = args[ 1 ];
-        RowBounds rowBounds = ( RowBounds ) args[ 2 ];
-        ResultHandler<?> resultHandler = ( ResultHandler<?> ) args[ 3 ];
-        Executor executor = ( Executor ) invocation.getTarget();
+        MappedStatement ms = (MappedStatement) args[0];
+        Object parameter = args[1];
+        RowBounds rowBounds = (RowBounds) args[2];
+        ResultHandler<?> resultHandler = (ResultHandler<?>) args[3];
+        Executor executor = (Executor) invocation.getTarget();
         CacheKey cacheKey;
         BoundSql boundSql;
-        if ( size == 4 ) {
-            boundSql = ms.getBoundSql( parameter );
-            cacheKey = executor.createCacheKey( ms, parameter, rowBounds, boundSql );
+        if (size == 4) {
+            boundSql = ms.getBoundSql(parameter);
+            cacheKey = executor.createCacheKey(ms, parameter, rowBounds, boundSql);
         } else {
-            cacheKey = ( CacheKey ) args[ 4 ];
-            boundSql = ( BoundSql ) args[ 5 ];
+            cacheKey = (CacheKey) args[4];
+            boundSql = (BoundSql) args[5];
         }
-        if ( filter( ms, parameter ) ) {
-            return doProcess( invocation, executor, ms, parameter, rowBounds, resultHandler, cacheKey, boundSql );
+        if (filter(ms, parameter)) {
+            return doProcess(invocation, executor, ms, parameter, rowBounds, resultHandler, cacheKey, boundSql);
         } else {
             // 执行原查询
-            return executor.query( ms, parameter, rowBounds, resultHandler, cacheKey, boundSql );
+            return executor.query(ms, parameter, rowBounds, resultHandler, cacheKey, boundSql);
         }
     }
 
@@ -54,7 +54,7 @@ public abstract class QueryProcessorSupport extends Processor {
      * @return 结果
      * @throws Exception 异常信息
      */
-    public abstract Object doProcess( Invocation invocation, Executor executor, MappedStatement ms,
-                                      Object parameter, RowBounds rowBounds, ResultHandler<?> resultHandler,
-                                      CacheKey cacheKey, BoundSql boundSql ) throws Exception;
+    public abstract Object doProcess(Invocation invocation, Executor executor, MappedStatement ms,
+                                     Object parameter, RowBounds rowBounds, ResultHandler<?> resultHandler,
+                                     CacheKey cacheKey, BoundSql boundSql) throws Exception;
 }

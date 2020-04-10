@@ -15,8 +15,8 @@ public interface MetadataAuditable {
      * @param value    值
      * @return 当前对象
      */
-    default MetadataAuditable inserted( MetaObject metadata, String property, Object value ) {
-        return invoke( metadata, property, value, AuditMatching.INSERTED );
+    default MetadataAuditable inserted(MetaObject metadata, String property, Object value) {
+        return invoke(metadata, property, value, AuditMatching.INSERTED);
     }
 
     /**
@@ -26,8 +26,8 @@ public interface MetadataAuditable {
      * @param value    值
      * @return 当前对象
      */
-    default MetadataAuditable modified( MetaObject metadata, String property, Object value ) {
-        return invoke( metadata, property, value, AuditMatching.MODIFIED );
+    default MetadataAuditable modified(MetaObject metadata, String property, Object value) {
+        return invoke(metadata, property, value, AuditMatching.MODIFIED);
     }
 
     /**
@@ -37,8 +37,8 @@ public interface MetadataAuditable {
      * @param value    值
      * @return 当前对象
      */
-    default MetadataAuditable deleted( MetaObject metadata, String property, Object value ) {
-        return invoke( metadata, property, value, AuditMatching.DELETED );
+    default MetadataAuditable deleted(MetaObject metadata, String property, Object value) {
+        return invoke(metadata, property, value, AuditMatching.DELETED);
     }
 
     /**
@@ -48,7 +48,7 @@ public interface MetadataAuditable {
      * @param value    值
      * @return true: 是, false: 否
      */
-    boolean isAuditable( MetaObject metadata, String property, Object value );
+    boolean isAuditable(MetaObject metadata, String property, Object value);
 
     /**
      * 检查是否可审计
@@ -58,25 +58,25 @@ public interface MetadataAuditable {
      * @param matching 匹配类型
      * @return true: 是, false: 否
      */
-    boolean isAuditable( MetaObject metadata, String property, Object value, AuditMatching matching );
+    boolean isAuditable(MetaObject metadata, String property, Object value, AuditMatching matching);
 
     /**
      * 保存操作审计
      * @param metadata 元数据
      */
-    void inserted( MetaObject metadata );
+    void inserted(MetaObject metadata);
 
     /**
      * 更新操作审计
      * @param metadata 元数据
      */
-    void modified( MetaObject metadata );
+    void modified(MetaObject metadata);
 
     /**
      * 删除操作审计
      * @param metadata 元数据
      */
-    void deleted( MetaObject metadata );
+    void deleted(MetaObject metadata);
 
     /**
      * 填充值
@@ -85,7 +85,7 @@ public interface MetadataAuditable {
      * @param value    值
      * @return 当前对象
      */
-    MetadataAuditable invoke( MetaObject metadata, String property, Object value );
+    MetadataAuditable invoke(MetaObject metadata, String property, Object value);
 
     /**
      * 填充值
@@ -95,7 +95,7 @@ public interface MetadataAuditable {
      * @param matching 匹配类型
      * @return 当前对象
      */
-    MetadataAuditable invoke( MetaObject metadata, String property, Object value, AuditMatching matching );
+    MetadataAuditable invoke(MetaObject metadata, String property, Object value, AuditMatching matching);
 
     /**
      * 是否启用保存操作审计

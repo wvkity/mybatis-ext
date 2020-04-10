@@ -8,13 +8,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan( basePackages = { "com.wkit.lost.mybatis.starter.example.mapper" } )
+@MapperScan(basePackages = {"com.wkit.lost.mybatis.starter.example.mapper"})
 public class MyBatisConfigurer {
 
     //@Bean
     public SequenceProperties sequenceConfiguration() {
         SequenceProperties configuration = new SequenceProperties();
-        configuration.setWorkerId( 1L ).setDataCenterId( 3L );
+        configuration.setWorkerId(1L).setDataCenterId(3L);
         return configuration;
     }
 

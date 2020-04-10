@@ -20,7 +20,7 @@ public class IdEqual<T> extends ColumnExpressionWrapper<T> {
      * @param value    值
      * @param logic    逻辑符号
      */
-    IdEqual( Criteria<T> criteria, ColumnWrapper column, Object value, Logic logic ) {
+    IdEqual(Criteria<T> criteria, ColumnWrapper column, Object value, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.value = value;
@@ -34,8 +34,8 @@ public class IdEqual<T> extends ColumnExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 主键等于条件对象
      */
-    public static <T> IdEqual<T> create( Criteria<T> criteria, Object value ) {
-        return create( criteria, value, Logic.AND );
+    public static <T> IdEqual<T> create(Criteria<T> criteria, Object value) {
+        return create(criteria, value, Logic.AND);
     }
 
     /**
@@ -46,11 +46,11 @@ public class IdEqual<T> extends ColumnExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 主键等于条件对象
      */
-    public static <T> IdEqual<T> create( Criteria<T> criteria, Object value, Logic logic ) {
-        if ( criteria != null ) {
-            ColumnWrapper wrapper = loadIdColumn( criteria.getEntityClass() );
-            if ( wrapper != null ) {
-                return new IdEqual<>( criteria, wrapper, value, logic );
+    public static <T> IdEqual<T> create(Criteria<T> criteria, Object value, Logic logic) {
+        if (criteria != null) {
+            ColumnWrapper wrapper = loadIdColumn(criteria.getEntityClass());
+            if (wrapper != null) {
+                return new IdEqual<>(criteria, wrapper, value, logic);
             }
         }
         return null;

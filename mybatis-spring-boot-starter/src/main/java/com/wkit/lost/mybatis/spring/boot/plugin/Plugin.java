@@ -14,8 +14,8 @@ import java.lang.annotation.Target;
  */
 @Documented
 @Inherited
-@Target( {} )
-@Retention( RetentionPolicy.RUNTIME )
+@Target({})
+@Retention(RetentionPolicy.RUNTIME)
 public @interface Plugin {
 
     /**

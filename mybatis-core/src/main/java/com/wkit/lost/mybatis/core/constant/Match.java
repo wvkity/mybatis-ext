@@ -13,7 +13,7 @@ public enum Match implements Segment {
      */
     EXACT {
         @Override
-        public String getSegment( String value ) {
+        public String getSegment(String value) {
             return value;
         }
     },
@@ -23,7 +23,7 @@ public enum Match implements Segment {
      */
     START {
         @Override
-        public String getSegment( String value ) {
+        public String getSegment(String value) {
             return value + '%';
         }
     },
@@ -33,7 +33,7 @@ public enum Match implements Segment {
      */
     END {
         @Override
-        public String getSegment( String value ) {
+        public String getSegment(String value) {
             return '%' + value;
         }
     },
@@ -43,7 +43,7 @@ public enum Match implements Segment {
      */
     ANYWHERE {
         @Override
-        public String getSegment( String value ) {
+        public String getSegment(String value) {
             return '%' + value + '%';
         }
     };
@@ -59,6 +59,6 @@ public enum Match implements Segment {
      * @param value 值
      * @return SQL字符串
      */
-    public abstract String getSegment( String value );
+    public abstract String getSegment(String value);
 
 }

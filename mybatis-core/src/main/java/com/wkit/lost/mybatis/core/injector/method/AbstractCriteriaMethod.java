@@ -17,12 +17,12 @@ import org.apache.ibatis.mapping.MappedStatement;
 public abstract class AbstractCriteriaMethod<T extends Provider> extends AbstractMethod implements ProviderBuilder<T> {
 
     @Override
-    public MappedStatement injectMappedStatement( TableWrapper table, Class<?> mapperInterface, Class<?> resultType ) {
+    public MappedStatement injectMappedStatement(TableWrapper table, Class<?> mapperInterface, Class<?> resultType) {
         Class<?> entity = table.getEntity();
-        ScriptBuilder builder = ScriptBuilderFactory.create( target(), table, entity, table.getAlias() );
+        ScriptBuilder builder = ScriptBuilderFactory.create(target(), table, entity, table.getAlias());
         Class<?> returnType = getResultType();
-        return addSelectMappedStatement( mapperInterface, applyMethod(), createSqlSource( builder, entity ),
-                null, returnType == null ? resultType : returnType, table );
+        return addSelectMappedStatement(mapperInterface, applyMethod(), createSqlSource(builder, entity),
+                null, returnType == null ? resultType : returnType, table);
     }
 
     /**
@@ -33,9 +33,9 @@ public abstract class AbstractCriteriaMethod<T extends Provider> extends Abstrac
         return null;
     }
 
-    @SuppressWarnings( { "unchecked" } )
+    @SuppressWarnings({"unchecked"})
     @Override
     public T target() {
-        return ( T ) ProviderCache.newInstance( getClass() );
+        return (T) ProviderCache.newInstance(getClass());
     }
 }

@@ -18,30 +18,30 @@ public abstract class MetaObjectUtil {
 
     static {
         try {
-            Class.forName( "org.apache.ibatis.reflection.ReflectorFactory" );
-            Class<?> metaClass = Class.forName( "com.wkit.lost.mybatis.utils.MetaObjectWithReflectCache" );
-            method = metaClass.getDeclaredMethod( "forObject", Object.class );
-        } catch ( Exception e ) {
+            Class.forName("org.apache.ibatis.reflection.ReflectorFactory");
+            Class<?> metaClass = Class.forName("com.wkit.lost.mybatis.utils.MetaObjectWithReflectCache");
+            method = metaClass.getDeclaredMethod("forObject", Object.class);
+        } catch (Exception e) {
             try {
-                Class<?> metaClass = Class.forName( "org.apache.ibatis.reflection.SystemMetaObject" );
-                method = metaClass.getDeclaredMethod( "forObject", Object.class );
-            } catch ( Exception e1 ) {
+                Class<?> metaClass = Class.forName("org.apache.ibatis.reflection.SystemMetaObject");
+                method = metaClass.getDeclaredMethod("forObject", Object.class);
+            } catch (Exception e1) {
                 try {
-                    Class<?> metaClass = Class.forName( "org.apache.ibatis.reflection.MetaObject" );
-                    method = metaClass.getDeclaredMethod( "forObject", Object.class, ObjectFactory.class,
-                            ObjectWrapperFactory.class, ReflectorFactory.class );
-                } catch ( Exception e2 ) {
-                    throw new MyBatisException( e2 );
+                    Class<?> metaClass = Class.forName("org.apache.ibatis.reflection.MetaObject");
+                    method = metaClass.getDeclaredMethod("forObject", Object.class, ObjectFactory.class,
+                            ObjectWrapperFactory.class, ReflectorFactory.class);
+                } catch (Exception e2) {
+                    throw new MyBatisException(e2);
                 }
             }
         }
     }
 
-    public static MetaObject forObject( Object... args ) {
+    public static MetaObject forObject(Object... args) {
         try {
-            return ( MetaObject ) method.invoke( null, args );
-        } catch ( Exception e ) {
-            throw new MyBatisException( e );
+            return (MetaObject) method.invoke(null, args);
+        } catch (Exception e) {
+            throw new MyBatisException(e);
         }
     }
 }

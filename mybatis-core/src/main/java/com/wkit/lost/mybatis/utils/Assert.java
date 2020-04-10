@@ -11,9 +11,9 @@ public abstract class Assert {
      * @param target  待检测对象
      * @param message 异常信息
      */
-    public static void notNull( final Object target, final String message ) {
-        if ( target == null ) {
-            throw new IllegalArgumentException( message );
+    public static void notNull(final Object target, final String message) {
+        if (target == null) {
+            throw new IllegalArgumentException(message);
         }
     }
 
@@ -22,9 +22,9 @@ public abstract class Assert {
      * @param expression 表达式
      * @param message    异常信息
      */
-    public static void isTrue( final boolean expression, final String message ) {
-        if ( !expression ) {
-            throw new IllegalArgumentException( message );
+    public static void isTrue(final boolean expression, final String message) {
+        if (!expression) {
+            throw new IllegalArgumentException(message);
         }
     }
 }

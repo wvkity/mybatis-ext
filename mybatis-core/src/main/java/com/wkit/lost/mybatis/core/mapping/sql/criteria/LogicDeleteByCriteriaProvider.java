@@ -7,9 +7,9 @@ import com.wkit.lost.mybatis.core.mapping.sql.AbstractCriteriaProvider;
  * @author wvkity
  */
 public class LogicDeleteByCriteriaProvider extends AbstractCriteriaProvider {
-    
+
     @Override
     public String build() {
-        return logicDelete( getUpdateCondition() );
+        return logicDelete(getUpdateCondition());
     }
 }

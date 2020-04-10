@@ -21,9 +21,9 @@ import java.lang.annotation.Target;
  */
 @Documented
 @Inherited
-@Target( ElementType.TYPE )
-@Retention( RetentionPolicy.RUNTIME )
-@Import( { MetadataAuditingRegistrar.class, MetadataAuditingInterceptorRegistrar.class } )
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Import({MetadataAuditingRegistrar.class, MetadataAuditingInterceptorRegistrar.class})
 public @interface EnableMetadataAuditing {
 
     /**

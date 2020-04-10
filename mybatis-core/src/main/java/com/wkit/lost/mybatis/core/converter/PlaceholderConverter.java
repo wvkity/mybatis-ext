@@ -20,8 +20,8 @@ public interface PlaceholderConverter {
      * @param values 参数值
      * @return SQL字符串
      */
-    default String defaultPlaceholder( Object... values ) {
-        return placeholder( PLACEHOLDER_TEMPLATE, values );
+    default String defaultPlaceholder(Object... values) {
+        return placeholder(PLACEHOLDER_TEMPLATE, values);
     }
 
     /**
@@ -29,8 +29,8 @@ public interface PlaceholderConverter {
      * @param values 参数值
      * @return SQL字符串
      */
-    default ArrayList<String> defaultPlaceholders( Object... values ) {
-        return placeholders( PLACEHOLDER_TEMPLATE, values );
+    default ArrayList<String> defaultPlaceholders(Object... values) {
+        return placeholders(PLACEHOLDER_TEMPLATE, values);
     }
 
     /**
@@ -38,8 +38,8 @@ public interface PlaceholderConverter {
      * @param values 参数值
      * @return SQL字符串
      */
-    default ArrayList<String> defaultPlaceholders( Collection<Object> values ) {
-        return placeholders( PLACEHOLDER_TEMPLATE, values );
+    default ArrayList<String> defaultPlaceholders(Collection<Object> values) {
+        return placeholders(PLACEHOLDER_TEMPLATE, values);
     }
 
     /**
@@ -48,8 +48,8 @@ public interface PlaceholderConverter {
      * @param values   值
      * @return SQL字符串
      */
-    default String placeholder( String template, Object... values ) {
-        return placeholder( true, template, values );
+    default String placeholder(String template, Object... values) {
+        return placeholder(true, template, values);
     }
 
     /**
@@ -58,8 +58,8 @@ public interface PlaceholderConverter {
      * @param values   值
      * @return SQL字符串
      */
-    default ArrayList<String> placeholders( String template, Object... values ) {
-        return placeholders( template, Arrays.asList( values ) );
+    default ArrayList<String> placeholders(String template, Object... values) {
+        return placeholders(template, Arrays.asList(values));
     }
 
     /**
@@ -68,7 +68,7 @@ public interface PlaceholderConverter {
      * @param values   值
      * @return SQL字符串
      */
-    ArrayList<String> placeholders( String template, Collection<Object> values );
+    ArrayList<String> placeholders(String template, Collection<Object> values);
 
     /**
      * 参数值转占位符
@@ -77,5 +77,5 @@ public interface PlaceholderConverter {
      * @param values   值
      * @return SQL字符串
      */
-    String placeholder( boolean format, String template, Object... values );
+    String placeholder(boolean format, String template, Object... values);
 }

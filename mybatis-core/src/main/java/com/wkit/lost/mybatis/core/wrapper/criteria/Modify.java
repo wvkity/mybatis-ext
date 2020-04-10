@@ -7,5 +7,5 @@ public interface Modify<T, Chain extends Modify<T, Chain>> {
      * @param version 版本号
      * @return 当前对象
      */
-    Chain updateVersion( Object version );
+    Chain updateVersion(Object version);
 }

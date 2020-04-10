@@ -24,7 +24,7 @@ public class NotIn<T> extends AbstractRangeExpression<T> {
      * @param values   值
      * @param logic    逻辑符号
      */
-    NotIn( Criteria<T> criteria, ColumnWrapper column, Collection<Object> values, Logic logic ) {
+    NotIn(Criteria<T> criteria, ColumnWrapper column, Collection<Object> values, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.values = values;
@@ -40,9 +40,9 @@ public class NotIn<T> extends AbstractRangeExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotIn<T> create( Criteria<T> criteria, String property,
-                                       Collection<Object> values ) {
-        return create( criteria, property, values, Logic.AND );
+    public static <T> NotIn<T> create(Criteria<T> criteria, String property,
+                                      Collection<Object> values) {
+        return create(criteria, property, values, Logic.AND);
     }
 
     /**
@@ -54,9 +54,9 @@ public class NotIn<T> extends AbstractRangeExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotIn<T> create( Criteria<T> criteria, String property,
-                                       Collection<Object> values, Logic logic ) {
-        return create( criteria, criteria.searchColumn( property ), values, logic );
+    public static <T> NotIn<T> create(Criteria<T> criteria, String property,
+                                      Collection<Object> values, Logic logic) {
+        return create(criteria, criteria.searchColumn(property), values, logic);
     }
 
     /**
@@ -67,9 +67,9 @@ public class NotIn<T> extends AbstractRangeExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotIn<T> create( Criteria<T> criteria, Property<T, ?> property,
-                                       Collection<Object> values ) {
-        return create( criteria, property, values, Logic.AND );
+    public static <T> NotIn<T> create(Criteria<T> criteria, Property<T, ?> property,
+                                      Collection<Object> values) {
+        return create(criteria, property, values, Logic.AND);
     }
 
     /**
@@ -81,9 +81,9 @@ public class NotIn<T> extends AbstractRangeExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotIn<T> create( Criteria<T> criteria, Property<T, ?> property,
-                                       Collection<Object> values, Logic logic ) {
-        return create( criteria, criteria.searchColumn( property ), values, logic );
+    public static <T> NotIn<T> create(Criteria<T> criteria, Property<T, ?> property,
+                                      Collection<Object> values, Logic logic) {
+        return create(criteria, criteria.searchColumn(property), values, logic);
     }
 
     /**
@@ -94,9 +94,9 @@ public class NotIn<T> extends AbstractRangeExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotIn<T> create( Criteria<T> criteria, ColumnWrapper column,
-                                       Collection<Object> values ) {
-        return create( criteria, column, values, Logic.AND );
+    public static <T> NotIn<T> create(Criteria<T> criteria, ColumnWrapper column,
+                                      Collection<Object> values) {
+        return create(criteria, column, values, Logic.AND);
     }
 
     /**
@@ -108,10 +108,10 @@ public class NotIn<T> extends AbstractRangeExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotIn<T> create( Criteria<T> criteria, ColumnWrapper column,
-                                       Collection<Object> values, Logic logic ) {
-        if ( criteria != null && column != null ) {
-            return new NotIn<>( criteria, column, values, logic );
+    public static <T> NotIn<T> create(Criteria<T> criteria, ColumnWrapper column,
+                                      Collection<Object> values, Logic logic) {
+        if (criteria != null && column != null) {
+            return new NotIn<>(criteria, column, values, logic);
         }
         return null;
     }

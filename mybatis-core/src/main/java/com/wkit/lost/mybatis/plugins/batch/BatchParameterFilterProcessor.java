@@ -28,27 +28,27 @@ public class BatchParameterFilterProcessor extends Processor {
     private static final String VARIABLE_MAPPED_STATEMENT = "mappedStatement";
     private static final String VARIABLE_PARAMETER_OBJECT = "parameterObject";
     private static final Set<String> BATCH_METHODS =
-            Collections.unmodifiableSet( new HashSet<>( Arrays.asList( "batchInsert", "batchInsertNotWithAudit" ) ) );
+            Collections.unmodifiableSet(new HashSet<>(Arrays.asList("batchInsert", "batchInsertNotWithAudit")));
 
 
     @Override
-    public Object intercept( Invocation invocation ) throws Throwable {
+    public Object intercept(Invocation invocation) throws Throwable {
         Object target = invocation.getTarget();
-        if ( target instanceof DefaultParameterHandler ) {
-            DefaultParameterHandler handler = ( DefaultParameterHandler ) target;
-            MetaObject metadata = MetaObjectUtil.forObject( handler );
-            MappedStatement ms = ( MappedStatement ) metadata.getValue( VARIABLE_MAPPED_STATEMENT );
-            if ( ms.getSqlCommandType() == SqlCommandType.INSERT ) {
-                if ( metadata.hasGetter( VARIABLE_PARAMETER_OBJECT ) ) {
-                    Object parameterTarget = metadata.getValue( VARIABLE_PARAMETER_OBJECT );
-                    if ( parameterTarget instanceof BatchDataBeanWrapper
-                            || ( parameterTarget instanceof Map
-                            && ( ( Map<?, ?> ) parameterTarget ).getOrDefault( Constants.PARAM_BATCH_BEAN_WRAPPER,
-                            null ) instanceof BatchDataBeanWrapper ) ) {
-                        if ( metadata.hasGetter( VARIABLE_MAPPED_STATEMENT ) ) {
-                            Object msTarget = metadata.getValue( VARIABLE_MAPPED_STATEMENT );
-                            if ( msTarget instanceof MappedStatement ) {
-                                if ( filter( ms, invocation.getArgs()[ 0 ] ) ) {
+        if (target instanceof DefaultParameterHandler) {
+            DefaultParameterHandler handler = (DefaultParameterHandler) target;
+            MetaObject metadata = MetaObjectUtil.forObject(handler);
+            MappedStatement ms = (MappedStatement) metadata.getValue(VARIABLE_MAPPED_STATEMENT);
+            if (ms.getSqlCommandType() == SqlCommandType.INSERT) {
+                if (metadata.hasGetter(VARIABLE_PARAMETER_OBJECT)) {
+                    Object parameterTarget = metadata.getValue(VARIABLE_PARAMETER_OBJECT);
+                    if (parameterTarget instanceof BatchDataBeanWrapper
+                            || (parameterTarget instanceof Map
+                            && ((Map<?, ?>) parameterTarget).getOrDefault(Constants.PARAM_BATCH_BEAN_WRAPPER,
+                            null) instanceof BatchDataBeanWrapper)) {
+                        if (metadata.hasGetter(VARIABLE_MAPPED_STATEMENT)) {
+                            Object msTarget = metadata.getValue(VARIABLE_MAPPED_STATEMENT);
+                            if (msTarget instanceof MappedStatement) {
+                                if (filter(ms, invocation.getArgs()[0])) {
                                     return null;
                                 }
                             }
@@ -61,8 +61,8 @@ public class BatchParameterFilterProcessor extends Processor {
     }
 
     @Override
-    public boolean filter( MappedStatement ms, Object parameter ) {
+    public boolean filter(MappedStatement ms, Object parameter) {
         SqlCommandType exec = ms.getSqlCommandType();
-        return exec == SqlCommandType.INSERT && BATCH_METHODS.contains( execMethod( ms ) );
+        return exec == SqlCommandType.INSERT && BATCH_METHODS.contains(execMethod(ms));
     }
 }

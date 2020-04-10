@@ -41,7 +41,7 @@ public abstract class StringUtil {
      * @param source 待检测字符串
      * @return boolean
      */
-    public static boolean isEmpty( final CharSequence source ) {
+    public static boolean isEmpty(final CharSequence source) {
         return source == null || source.length() == 0;
     }
 
@@ -51,11 +51,11 @@ public abstract class StringUtil {
      * @return boolean
      * @since jdk.11
      */
-    public static boolean isBlank( final CharSequence source ) {
-        if ( !isEmpty( source ) ) {
+    public static boolean isBlank(final CharSequence source) {
+        if (!isEmpty(source)) {
             int size = source.length();
-            for ( int i = 0; i < size; i++ ) {
-                if ( !Character.isWhitespace( source.charAt( i ) ) ) {
+            for (int i = 0; i < size; i++) {
+                if (!Character.isWhitespace(source.charAt(i))) {
                     return false;
                 }
             }
@@ -69,8 +69,8 @@ public abstract class StringUtil {
      * @return boolean
      * @see #isBlank(CharSequence)
      */
-    public static boolean hasText( final CharSequence source ) {
-        return !isBlank( source );
+    public static boolean hasText(final CharSequence source) {
+        return !isBlank(source);
     }
 
     /**
@@ -78,8 +78,8 @@ public abstract class StringUtil {
      * @param target 待处理类
      * @return 首字母小写字符串
      */
-    public static String getSimpleNameOfFirstLower( final Class<?> target ) {
-        return target == null ? null : lowerCaseForFirstLetter( target.getSimpleName() );
+    public static String getSimpleNameOfFirstLower(final Class<?> target) {
+        return target == null ? null : lowerCaseForFirstLetter(target.getSimpleName());
     }
 
     /**
@@ -87,11 +87,11 @@ public abstract class StringUtil {
      * @param target 待处理类
      * @return 首字母大写字符串
      */
-    public static String getSimpleNameOfSplitFirstUpper( final Class<?> target ) {
-        if ( target == null ) {
+    public static String getSimpleNameOfSplitFirstUpper(final Class<?> target) {
+        if (target == null) {
             return null;
         }
-        return getSimpleNameOfSplitFirstUpper( target.getSimpleName() );
+        return getSimpleNameOfSplitFirstUpper(target.getSimpleName());
     }
 
     /**
@@ -99,18 +99,18 @@ public abstract class StringUtil {
      * @param value 待处理字符串
      * @return 首字母大写字符串
      */
-    public static String getSimpleNameOfSplitFirstUpper( final String value ) {
-        if ( value == null ) {
+    public static String getSimpleNameOfSplitFirstUpper(final String value) {
+        if (value == null) {
             return null;
         }
-        StringBuffer buffer = new StringBuffer( 10 );
-        buffer.append( Character.toUpperCase( value.charAt( 0 ) ) );
+        StringBuffer buffer = new StringBuffer(10);
+        buffer.append(Character.toUpperCase(value.charAt(0)));
         char[] array = value.toCharArray();
         int size = array.length;
-        for ( int i = 1; i < size; i++ ) {
-            char ch = array[ i ];
-            if ( Character.isUpperCase( ch ) ) {
-                buffer.append( ch );
+        for (int i = 1; i < size; i++) {
+            char ch = array[i];
+            if (Character.isUpperCase(ch)) {
+                buffer.append(ch);
             }
         }
         return buffer.toString();
@@ -121,12 +121,12 @@ public abstract class StringUtil {
      * @param value 待处理字符串
      * @return 首字母小写字符串
      */
-    public static String lowerCaseForFirstLetter( final String value ) {
-        if ( hasText( value ) ) {
-            if ( Character.isLowerCase( value.charAt( 0 ) ) ) {
+    public static String lowerCaseForFirstLetter(final String value) {
+        if (hasText(value)) {
+            if (Character.isLowerCase(value.charAt(0))) {
                 return value;
             } else {
-                return Character.toLowerCase( value.charAt( 0 ) ) + value.substring( 1 );
+                return Character.toLowerCase(value.charAt(0)) + value.substring(1);
             }
         }
         return value;
@@ -138,14 +138,14 @@ public abstract class StringUtil {
      * @param charset 编码
      * @return 编码后的字节数组
      */
-    public static byte[] toBytes( final CharSequence source, final Charset charset ) {
-        if ( source == null ) {
+    public static byte[] toBytes(final CharSequence source, final Charset charset) {
+        if (source == null) {
             return null;
         }
-        if ( charset == null ) {
-            return source.toString().getBytes( StandardCharsets.UTF_8 );
+        if (charset == null) {
+            return source.toString().getBytes(StandardCharsets.UTF_8);
         }
-        return source.toString().getBytes( charset );
+        return source.toString().getBytes(charset);
     }
 
     /**
@@ -153,8 +153,8 @@ public abstract class StringUtil {
      * @param bytes 字节数组
      * @return 字符串
      */
-    public static String toUtf8String( final byte[] bytes ) {
-        return toString( bytes, StandardCharsets.UTF_8 );
+    public static String toUtf8String(final byte[] bytes) {
+        return toString(bytes, StandardCharsets.UTF_8);
     }
 
     /**
@@ -162,8 +162,8 @@ public abstract class StringUtil {
      * @param source 待转换对象
      * @return 字符串
      */
-    public static String toUtf8String( final Object source ) {
-        return toString( source, StandardCharsets.UTF_8 );
+    public static String toUtf8String(final Object source) {
+        return toString(source, StandardCharsets.UTF_8);
     }
 
     /**
@@ -172,8 +172,8 @@ public abstract class StringUtil {
      * @param charset 编码
      * @return 字符串
      */
-    public static String toString( final Object source, final String charset ) {
-        return toString( source, Charset.forName( charset ) );
+    public static String toString(final Object source, final String charset) {
+        return toString(source, Charset.forName(charset));
     }
 
     /**
@@ -182,16 +182,16 @@ public abstract class StringUtil {
      * @param charset 编码
      * @return 字符串
      */
-    public static String toString( final Object source, final Charset charset ) {
-        if ( source == null ) {
+    public static String toString(final Object source, final Charset charset) {
+        if (source == null) {
             return null;
         }
-        if ( CharSequence.class.isAssignableFrom( source.getClass() ) ) {
+        if (CharSequence.class.isAssignableFrom(source.getClass())) {
             return source.toString();
-        } else if ( source instanceof byte[] ) {
-            return toString( ( byte[] ) source, charset );
-        } else if ( source.getClass().isArray() ) {
-            return Arrays.deepToString( ( Object[] ) source );
+        } else if (source instanceof byte[]) {
+            return toString((byte[]) source, charset);
+        } else if (source.getClass().isArray()) {
+            return Arrays.deepToString((Object[]) source);
         }
         return source.toString();
     }
@@ -202,14 +202,14 @@ public abstract class StringUtil {
      * @param charset 编码
      * @return 字符串
      */
-    public static String toString( final byte[] bytes, final Charset charset ) {
-        if ( bytes == null ) {
+    public static String toString(final byte[] bytes, final Charset charset) {
+        if (bytes == null) {
             return null;
         }
-        if ( charset == null ) {
-            return new String( bytes, StandardCharsets.UTF_8 );
+        if (charset == null) {
+            return new String(bytes, StandardCharsets.UTF_8);
         }
-        return new String( bytes, charset );
+        return new String(bytes, charset);
     }
 
     /**
@@ -218,59 +218,59 @@ public abstract class StringUtil {
      * @return 处理后的字符串
      * @since jdk.11
      */
-    public static String strip( final CharSequence source ) {
-        return strip( source, null );
+    public static String strip(final CharSequence source) {
+        return strip(source, null);
     }
 
-    public static String strip( final CharSequence source, String stripChars ) {
-        if ( isEmpty( source ) ) {
+    public static String strip(final CharSequence source, String stripChars) {
+        if (isEmpty(source)) {
             return source.toString();
         }
-        String newValue = stripStart( source, stripChars );
-        return stripEnd( newValue, stripChars );
+        String newValue = stripStart(source, stripChars);
+        return stripEnd(newValue, stripChars);
     }
 
-    public static String stripStart( final CharSequence source, String stripChars ) {
-        if ( isEmpty( source ) ) {
+    public static String stripStart(final CharSequence source, String stripChars) {
+        if (isEmpty(source)) {
             return source == null ? null : source.toString();
         }
         String value = source.toString();
         int size = value.length();
         int start = 0;
-        if ( stripChars == null ) {
-            while ( ( start != size ) && ( Character.isWhitespace( value.charAt( start ) ) ) ) {
+        if (stripChars == null) {
+            while ((start != size) && (Character.isWhitespace(value.charAt(start)))) {
                 start++;
             }
         } else {
-            if ( stripChars.isEmpty() ) {
+            if (stripChars.isEmpty()) {
                 return value;
             }
-            while ( ( start != size ) && ( stripChars.indexOf( value.charAt( start ) ) != -1 ) ) {
+            while ((start != size) && (stripChars.indexOf(value.charAt(start)) != -1)) {
                 start++;
             }
         }
-        return start == 0 ? value : value.substring( start );
+        return start == 0 ? value : value.substring(start);
     }
 
-    public static String stripEnd( final CharSequence source, String stripChars ) {
-        if ( isEmpty( source ) ) {
+    public static String stripEnd(final CharSequence source, String stripChars) {
+        if (isEmpty(source)) {
             return source == null ? null : source.toString();
         }
         String value = source.toString();
         int end = value.length();
-        if ( stripChars == null ) {
-            while ( ( end != 0 ) && ( Character.isWhitespace( value.charAt( end - 1 ) ) ) ) {
+        if (stripChars == null) {
+            while ((end != 0) && (Character.isWhitespace(value.charAt(end - 1)))) {
                 end--;
             }
         } else {
-            if ( stripChars.isEmpty() ) {
+            if (stripChars.isEmpty()) {
                 return value;
             }
-            while ( ( end != 0 ) && ( stripChars.indexOf( value.charAt( end - 1 ) ) != -1 ) ) {
+            while ((end != 0) && (stripChars.indexOf(value.charAt(end - 1)) != -1)) {
                 end--;
             }
         }
-        return value.substring( 0, end );
+        return value.substring(0, end);
     }
 
     /**
@@ -278,14 +278,14 @@ public abstract class StringUtil {
      * @param source 待转换字符串
      * @return 转换后的字符串
      */
-    public static String camelHumpToUnderline( final String source ) {
-        if ( hasText( source ) ) {
-            StringBuffer buffer = new StringBuffer( strip( source ) );
+    public static String camelHumpToUnderline(final String source) {
+        if (hasText(source)) {
+            StringBuffer buffer = new StringBuffer(strip(source));
             int i = 1;
             int max = buffer.length() - 1;
-            for ( ; i < max; i++ ) {
-                if ( isUnderscoreRequired( buffer.charAt( i - 1 ), buffer.charAt( i ), buffer.charAt( i + 1 ) ) ) {
-                    buffer.insert( i++, UNDERLINE );
+            for (; i < max; i++) {
+                if (isUnderscoreRequired(buffer.charAt(i - 1), buffer.charAt(i), buffer.charAt(i + 1))) {
+                    buffer.insert(i++, UNDERLINE);
                 }
             }
             return buffer.toString();
@@ -300,8 +300,8 @@ public abstract class StringUtil {
      * @param after   后一个字符
      * @return boolean
      */
-    public static boolean isUnderscoreRequired( final char before, final char current, final char after ) {
-        return Character.isLowerCase( before ) && Character.isUpperCase( current ) && Character.isLowerCase( after );
+    public static boolean isUnderscoreRequired(final char before, final char current, final char after) {
+        return Character.isLowerCase(before) && Character.isUpperCase(current) && Character.isLowerCase(after);
     }
 
     /**
@@ -310,8 +310,8 @@ public abstract class StringUtil {
      * @param last  待比较字符串
      * @return boolean
      */
-    public static boolean equals( final String first, final String last ) {
-        return Objects.equals( first, last );
+    public static boolean equals(final String first, final String last) {
+        return Objects.equals(first, last);
     }
 
     /**
@@ -321,8 +321,8 @@ public abstract class StringUtil {
      * @param defaultValue 默认值
      * @return 字符串
      */
-    public static String nvl( final String value, final String defaultValue ) {
-        return nvl( hasText( value ), value, defaultValue );
+    public static String nvl(final String value, final String defaultValue) {
+        return nvl(hasText(value), value, defaultValue);
     }
 
     /**
@@ -333,7 +333,7 @@ public abstract class StringUtil {
      * @param defaultValue 默认值
      * @return 字符串
      */
-    public static String nvl( final boolean expression, final String value, final String defaultValue ) {
+    public static String nvl(final boolean expression, final String value, final String defaultValue) {
         return expression ? value : defaultValue;
     }
 
@@ -346,14 +346,14 @@ public abstract class StringUtil {
      * @return 字符串
      * @see #format(String, Object...)
      */
-    public static String required( final String value, final String defaultValue, final String errorTemplate ) {
-        if ( hasText( value ) ) {
+    public static String required(final String value, final String defaultValue, final String errorTemplate) {
+        if (hasText(value)) {
             return value;
         }
-        if ( hasText( defaultValue ) ) {
+        if (hasText(defaultValue)) {
             return defaultValue;
         }
-        throw new NullPointerException( format( errorTemplate, defaultValue ) );
+        throw new NullPointerException(format(errorTemplate, defaultValue));
     }
 
     /**
@@ -361,8 +361,8 @@ public abstract class StringUtil {
      * @param value 字符串
      * @return true | false
      */
-    public static boolean toBoolean( final String value ) {
-        return !isBlank( value ) && ( "true".equals( value.toLowerCase( Locale.ROOT ) ) || "1".equals( value ) );
+    public static boolean toBoolean(final String value) {
+        return !isBlank(value) && ("true".equals(value.toLowerCase(Locale.ROOT)) || "1".equals(value));
     }
 
     /**
@@ -371,11 +371,11 @@ public abstract class StringUtil {
      * @param value 指定字符串
      * @return true: 包含 | false: 不包含
      */
-    public static boolean include( final String[] array, final String value ) {
-        if ( ArrayUtil.isEmpty( array ) || value == null ) {
+    public static boolean include(final String[] array, final String value) {
+        if (ArrayUtil.isEmpty(array) || value == null) {
             return false;
         }
-        return Arrays.asList( array ).contains( value );
+        return Arrays.asList(array).contains(value);
     }
 
     /**
@@ -386,14 +386,14 @@ public abstract class StringUtil {
      * @param values       值
      * @return 格式化后的字符串
      */
-    public static String transform( final String template, String startMatcher, String endMatcher, final Map<String, Object> values ) {
-        if ( StringUtil.isBlank( startMatcher ) ) {
+    public static String transform(final String template, String startMatcher, String endMatcher, final Map<String, Object> values) {
+        if (StringUtil.isBlank(startMatcher)) {
             startMatcher = "\\{";
         }
-        if ( StringUtil.isBlank( endMatcher ) ) {
+        if (StringUtil.isBlank(endMatcher)) {
             endMatcher = "\\}";
         }
-        return transform( template, startMatcher + "(.+?)" + endMatcher, values );
+        return transform(template, startMatcher + "(.+?)" + endMatcher, values);
     }
 
     /**
@@ -403,10 +403,10 @@ public abstract class StringUtil {
      * @param value    值
      * @return 格式化后的字符串
      */
-    public static String transform( final String template, final String key, final Object value ) {
-        Map<String, Object> values = new HashMap<>( 1 );
-        values.put( key, value );
-        return transform( template, DEFAULT_REPLACE_REGEX, values );
+    public static String transform(final String template, final String key, final Object value) {
+        Map<String, Object> values = new HashMap<>(1);
+        values.put(key, value);
+        return transform(template, DEFAULT_REPLACE_REGEX, values);
     }
 
     /**
@@ -416,29 +416,29 @@ public abstract class StringUtil {
      * @param values   值
      * @return 格式化后的字符串
      */
-    public static String transform( final String template, final String regex, final Map<String, Object> values ) {
-        if ( isBlank( template ) ) {
+    public static String transform(final String template, final String regex, final Map<String, Object> values) {
+        if (isBlank(template)) {
             return "";
         }
-        if ( isBlank( regex ) || CollectionUtil.isEmpty( values ) ) {
+        if (isBlank(regex) || CollectionUtil.isEmpty(values)) {
             return template;
         }
         try {
             StringBuffer buffer = new StringBuffer();
-            Pattern pattern = Pattern.compile( regex );
-            Matcher matcher = pattern.matcher( template );
-            while ( matcher.find() ) {
-                String key = matcher.group( 1 );
-                Object value = values.get( key );
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(template);
+            while (matcher.find()) {
+                String key = matcher.group(1);
+                Object value = values.get(key);
                 String realValue = "";
-                if ( value != null ) {
+                if (value != null) {
                     realValue = value.toString();
                 }
-                matcher.appendReplacement( buffer, realValue );
+                matcher.appendReplacement(buffer, realValue);
             }
-            matcher.appendTail( buffer );
+            matcher.appendTail(buffer);
             return buffer.toString();
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             // ignore
             e.printStackTrace();
         }
@@ -451,51 +451,51 @@ public abstract class StringUtil {
      * @param args     参数
      * @return 格式化后的字符串
      */
-    public static String format( final String template, final Object... args ) {
-        if ( isBlank( template ) || ArrayUtil.isEmpty( args ) ) {
+    public static String format(final String template, final Object... args) {
+        if (isBlank(template) || ArrayUtil.isEmpty(args)) {
             return template;
         }
         final int size = template.length();
-        StringBuilder buffer = new StringBuilder( size + 50 );
+        StringBuilder buffer = new StringBuilder(size + 50);
         int position = 0;
         int delimitIndex;
         int argIndex = 0;
         int argSize = args.length;
-        for ( ; argIndex < argSize; argIndex++ ) {
-            delimitIndex = template.indexOf( BRACES, position );
+        for (; argIndex < argSize; argIndex++) {
+            delimitIndex = template.indexOf(BRACES, position);
             // 检测是否存在占位符
-            if ( delimitIndex == -1 ) {
-                if ( position == 0 ) {
+            if (delimitIndex == -1) {
+                if (position == 0) {
                     return template;
                 } else {
-                    buffer.append( template, position, size );
+                    buffer.append(template, position, size);
                     return buffer.toString();
                 }
             } else {
                 // 检测是否存在转义符
-                if ( delimitIndex > 0 && template.charAt( delimitIndex - 1 ) == CharUtil.BACKSLASH ) {
+                if (delimitIndex > 0 && template.charAt(delimitIndex - 1) == CharUtil.BACKSLASH) {
                     // 检测是否为双转义符
-                    if ( delimitIndex > 1 && template.charAt( delimitIndex - 2 ) == CharUtil.BACKSLASH ) {
+                    if (delimitIndex > 1 && template.charAt(delimitIndex - 2) == CharUtil.BACKSLASH) {
                         // 占位符依然有效
-                        buffer.append( template, position, delimitIndex - 1 );
-                        buffer.append( toUtf8String( args[ argIndex ] ) );
+                        buffer.append(template, position, delimitIndex - 1);
+                        buffer.append(toUtf8String(args[argIndex]));
                         position = delimitIndex + 2;
                     } else {
                         // 占位符转义
                         argIndex--;
-                        buffer.append( template, position, delimitIndex - 1 );
-                        buffer.append( CharUtil.BRACE_START );
+                        buffer.append(template, position, delimitIndex - 1);
+                        buffer.append(CharUtil.BRACE_START);
                         position = delimitIndex + 1;
                     }
                 } else {
-                    buffer.append( template, position, delimitIndex );
-                    buffer.append( toUtf8String( args[ argIndex ] ) );
+                    buffer.append(template, position, delimitIndex);
+                    buffer.append(toUtf8String(args[argIndex]));
                     position = delimitIndex + 2;
                 }
             }
         }
         // 拼接剩余部分
-        buffer.append( template, position, size );
+        buffer.append(template, position, size);
         return buffer.toString();
     }
 }

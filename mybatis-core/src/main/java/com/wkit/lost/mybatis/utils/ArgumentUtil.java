@@ -16,22 +16,22 @@ public abstract class ArgumentUtil {
      * @param placeholder 占位字符串
      * @return 字符串
      */
-    public static String fill( ColumnWrapper column, String placeholder ) {
-        StringBuffer buffer = new StringBuffer( 60 );
-        buffer.append( "#{" ).append( placeholder );
-        if ( column != null ) {
+    public static String fill(ColumnWrapper column, String placeholder) {
+        StringBuffer buffer = new StringBuffer(60);
+        buffer.append("#{").append(placeholder);
+        if (column != null) {
             // 指定JDBC类型
-            Optional.ofNullable( column.getJdbcType() ).ifPresent( it -> buffer.append( ", jdbcType=" )
-                    .append( it.toString() ) );
+            Optional.ofNullable(column.getJdbcType()).ifPresent(it -> buffer.append(", jdbcType=")
+                    .append(it.toString()));
             // 指定Java类型
-            if ( column.isUseJavaType() && !column.getJavaType().isArray() ) {
-                buffer.append( ", javaType=" ).append( column.getJavaType().getCanonicalName() );
+            if (column.isUseJavaType() && !column.getJavaType().isArray()) {
+                buffer.append(", javaType=").append(column.getJavaType().getCanonicalName());
             }
             // 指定处理类型
-            Optional.ofNullable( column.getTypeHandler() ).ifPresent( it -> buffer.append( ", typeHandler=" )
-                    .append( it.getCanonicalName() ) );
+            Optional.ofNullable(column.getTypeHandler()).ifPresent(it -> buffer.append(", typeHandler=")
+                    .append(it.getCanonicalName()));
         }
-        buffer.append( "}" );
+        buffer.append("}");
         return buffer.toString();
     }
 }

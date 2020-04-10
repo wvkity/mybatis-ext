@@ -31,8 +31,8 @@ public abstract class CharUtil {
      * @param ch 待检测字符
      * @return boolean
      */
-    public static boolean isBlank( final char ch ) {
-        return isBlank( ( int ) ch );
+    public static boolean isBlank(final char ch) {
+        return isBlank((int) ch);
     }
 
     /**
@@ -40,7 +40,7 @@ public abstract class CharUtil {
      * @param codePoint 字符
      * @return boolean
      */
-    public static boolean isBlank( final int codePoint ) {
-        return Character.isWhitespace( codePoint ) || Character.isSpaceChar( codePoint ) || codePoint == '\ufeff' || codePoint == '\u202a';
+    public static boolean isBlank(final int codePoint) {
+        return Character.isWhitespace(codePoint) || Character.isSpaceChar(codePoint) || codePoint == '\ufeff' || codePoint == '\u202a';
     }
 }

@@ -19,12 +19,12 @@ public abstract class MetaObjectWithReflectCache {
     public static final ObjectWrapperFactory DEFAULT_OBJECT_WRAPPER_FACTORY = new MyBatisObjectWrapperFactory();
     public static final ReflectorFactory DEFAULT_REFLECTOR_FACTORY = new DefaultReflectorFactory();
 
-    public static MetaObject forObject( Object object ) {
+    public static MetaObject forObject(Object object) {
         try {
-            return MetaObject.forObject( object, DEFAULT_OBJECT_FACTORY,
-                    DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY );
-        } catch ( Exception e ) {
-            throw new MyBatisPluginException( e );
+            return MetaObject.forObject(object, DEFAULT_OBJECT_FACTORY,
+                    DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
+        } catch (Exception e) {
+            throw new MyBatisPluginException(e);
         }
     }
 }

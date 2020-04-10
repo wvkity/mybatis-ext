@@ -18,7 +18,7 @@ import java.text.MessageFormat;
  */
 @Getter
 @Setter
-@Accessors( chain = true, fluent = true )
+@Accessors(chain = true, fluent = true)
 public class ColumnBuilder extends BuilderSupport implements Builder<ColumnWrapper> {
 
     /**
@@ -213,20 +213,20 @@ public class ColumnBuilder extends BuilderSupport implements Builder<ColumnWrapp
     @Override
     public ColumnWrapper build() {
         String columnName = realColumnName();
-        ColumnWrapper wrapper = new ColumnWrapper( this.entity, this.field, this.property, columnName,
-                javaType, this.primaryKey );
-        wrapper.setJdbcType( this.jdbcType ).setTypeHandler( this.typeHandler ).setSequenceName( this.sequenceName );
-        wrapper.setUuid( this.uuid ).setIdentity( this.identity ).setSnowflakeSequence( this.snowflakeSequence );
-        wrapper.setSnowflakeSequenceString( this.snowflakeSequenceString ).setBlob( this.blob );
-        wrapper.setInsertable( this.insertable ).setUpdatable( this.updatable ).setUseJavaType( this.useJavaType );
-        wrapper.setCheckNotEmpty( this.checkNotEmpty ).setVersion( this.version ).setGenerator( this.generator );
-        wrapper.setExecuting( this.executing ).setCreatedDate( this.createdDate ).setCreatedUser( this.createdUser );
-        wrapper.setCreatedUserName( this.createdUserName ).setDeletedDate( this.deletedDate );
-        wrapper.setDeletedUser( this.deletedUser ).setDeletedUserName( this.deletedUserName );
-        wrapper.setLastModifiedDate( this.lastModifiedDate ).setLastModifiedUser( this.lastModifiedUser );
-        wrapper.setLastModifiedUserName( this.lastModifiedUserName ).setLogicDelete( this.logicDelete );
-        wrapper.setLogicDeletedTrueValue( this.logicDeletedTrueValue )
-                .setLogicDeletedFalseValue( this.logicDeletedFalseValue );
+        ColumnWrapper wrapper = new ColumnWrapper(this.entity, this.field, this.property, columnName,
+                javaType, this.primaryKey);
+        wrapper.setJdbcType(this.jdbcType).setTypeHandler(this.typeHandler).setSequenceName(this.sequenceName);
+        wrapper.setUuid(this.uuid).setIdentity(this.identity).setSnowflakeSequence(this.snowflakeSequence);
+        wrapper.setSnowflakeSequenceString(this.snowflakeSequenceString).setBlob(this.blob);
+        wrapper.setInsertable(this.insertable).setUpdatable(this.updatable).setUseJavaType(this.useJavaType);
+        wrapper.setCheckNotEmpty(this.checkNotEmpty).setVersion(this.version).setGenerator(this.generator);
+        wrapper.setExecuting(this.executing).setCreatedDate(this.createdDate).setCreatedUser(this.createdUser);
+        wrapper.setCreatedUserName(this.createdUserName).setDeletedDate(this.deletedDate);
+        wrapper.setDeletedUser(this.deletedUser).setDeletedUserName(this.deletedUserName);
+        wrapper.setLastModifiedDate(this.lastModifiedDate).setLastModifiedUser(this.lastModifiedUser);
+        wrapper.setLastModifiedUserName(this.lastModifiedUserName).setLogicDelete(this.logicDelete);
+        wrapper.setLogicDeletedTrueValue(this.logicDeletedTrueValue)
+                .setLogicDeletedFalseValue(this.logicDeletedFalseValue);
         return wrapper;
     }
 
@@ -237,26 +237,26 @@ public class ColumnBuilder extends BuilderSupport implements Builder<ColumnWrapp
     private String realColumnName() {
         String realName;
         String realColumnName;
-        if ( Ascii.isNullOrEmpty( this.column ) ) {
-            if ( this.autoAddIsPrefix && Boolean.class.isAssignableFrom( this.javaType ) ) {
-                realColumnName = "is" + Character.toUpperCase( this.property.charAt( 0 ) ) + this.property.substring( 1 );
+        if (Ascii.isNullOrEmpty(this.column)) {
+            if (this.autoAddIsPrefix && Boolean.class.isAssignableFrom(this.javaType)) {
+                realColumnName = "is" + Character.toUpperCase(this.property.charAt(0)) + this.property.substring(1);
             } else {
                 realColumnName = this.property;
             }
-            realName = columnNameTransform( realColumnName );
+            realName = columnNameTransform(realColumnName);
         } else {
             realName = this.column;
         }
         String keyWord = this.configuration.getWrapKeyWord();
-        if ( Ascii.hasText( keyWord ) && SqlKeyWords.containsWord( realName ) ) {
-            return MessageFormat.format( keyWord, realName );
+        if (Ascii.hasText(keyWord) && SqlKeyWords.containsWord(realName)) {
+            return MessageFormat.format(keyWord, realName);
         }
         return realName;
     }
 
     @Override
-    public ColumnBuilder configuration( MyBatisCustomConfiguration configuration ) {
-        super.configuration( configuration );
+    public ColumnBuilder configuration(MyBatisCustomConfiguration configuration) {
+        super.configuration(configuration);
         this.checkNotEmpty = this.configuration.isCheckNotEmpty();
         this.useJavaType = this.configuration.isUseJavaType();
         return this;
@@ -268,6 +268,6 @@ public class ColumnBuilder extends BuilderSupport implements Builder<ColumnWrapp
      */
     public boolean hasKeyGenerator() {
         return this.uuid || this.identity || this.snowflakeSequence
-                || this.snowflakeSequenceString || Ascii.hasText( this.generator );
+                || this.snowflakeSequenceString || Ascii.hasText(this.generator);
     }
 }

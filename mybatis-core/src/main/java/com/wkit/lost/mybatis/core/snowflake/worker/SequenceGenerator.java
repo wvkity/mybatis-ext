@@ -28,7 +28,7 @@ public final class SequenceGenerator {
      * @return 唯一ID
      */
     public static String nextString() {
-        return String.valueOf( nextValue() );
+        return String.valueOf(nextValue());
     }
 
     /**
@@ -36,8 +36,8 @@ public final class SequenceGenerator {
      * @param id 唯一ID
      * @return 唯一ID相关元素信息
      */
-    public static String parse( long id ) {
-        return SEQUENCE.parse( id );
+    public static String parse(long id) {
+        return SEQUENCE.parse(id);
     }
 
     /**
@@ -45,7 +45,7 @@ public final class SequenceGenerator {
      * @param id 唯一ID
      * @return 唯一ID相关元素信息
      */
-    public static String parse( String id ) {
-        return parse( Long.parseLong( id ) );
+    public static String parse(String id) {
+        return parse(Long.parseLong(id));
     }
 }

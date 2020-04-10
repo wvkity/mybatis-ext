@@ -18,34 +18,34 @@ public interface DeleteMapper<T> {
      * @param entity 指定对象
      * @return 受影响行数
      */
-    int delete( @Param( Constants.PARAM_ENTITY ) T entity );
+    int delete(@Param(Constants.PARAM_ENTITY) T entity);
 
     /**
      * 根据主键删除记录
      * @param id 主键
      * @return 受影响行数
      */
-    int deleteById( Serializable id );
+    int deleteById(Serializable id);
 
     /**
      * 逻辑删除
      * @param entity 实体
      * @return 受影响行数
      */
-    int logicDelete( @Param( Constants.PARAM_ENTITY ) T entity );
+    int logicDelete(@Param(Constants.PARAM_ENTITY) T entity);
 
     /**
      * 根据指定对象批量删除记录
      * @param entities 对象集合
      * @return 受影响行数
      */
-    int batchDelete( @Param( Constants.PARAM_ENTITIES ) Collection<T> entities );
+    int batchDelete(@Param(Constants.PARAM_ENTITIES) Collection<T> entities);
 
     /**
      * 根据主键批量删除记录
      * @param idList 主键集合
      * @return 受影响行数
      */
-    int batchDeleteById( @Param( Constants.PARAM_PRIMARY_KEYS ) List<? extends Serializable> idList );
+    int batchDeleteById(@Param(Constants.PARAM_PRIMARY_KEYS) List<? extends Serializable> idList);
 
 }

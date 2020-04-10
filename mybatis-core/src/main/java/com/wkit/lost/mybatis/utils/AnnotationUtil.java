@@ -28,8 +28,8 @@ public abstract class AnnotationUtil {
      * @param target 待检查对象
      * @return boolean
      */
-    public static boolean hasAnnotation( final Class<?> target ) {
-        return target != null && !ArrayUtil.isEmpty( target.getDeclaredAnnotations() );
+    public static boolean hasAnnotation(final Class<?> target) {
+        return target != null && !ArrayUtil.isEmpty(target.getDeclaredAnnotations());
     }
 
     /**
@@ -38,8 +38,8 @@ public abstract class AnnotationUtil {
      * @param annotationClass 注解类
      * @return boolean
      */
-    public static boolean isAnnotationPresent( final Class<?> target, final Class<? extends Annotation> annotationClass ) {
-        return annotationClass != null && hasAnnotation( target ) && target.isAnnotationPresent( annotationClass );
+    public static boolean isAnnotationPresent(final Class<?> target, final Class<? extends Annotation> annotationClass) {
+        return annotationClass != null && hasAnnotation(target) && target.isAnnotationPresent(annotationClass);
     }
 
     /**
@@ -48,8 +48,8 @@ public abstract class AnnotationUtil {
      * @param annotationClass 注解类
      * @return boolean
      */
-    public static boolean isAnnotationPresentForInterface( final Class<?> target, final Class<? extends Annotation> annotationClass ) {
-        return isAnnotationPresent( target, annotationClass ) && target.isInterface();
+    public static boolean isAnnotationPresentForInterface(final Class<?> target, final Class<? extends Annotation> annotationClass) {
+        return isAnnotationPresent(target, annotationClass) && target.isInterface();
     }
 
     /**
@@ -58,11 +58,11 @@ public abstract class AnnotationUtil {
      * @param annotationClassName 注解类名
      * @return boolean
      */
-    public static boolean isAnnotationPresent( final Class<?> target, final String annotationClassName ) {
-        if ( StringUtil.isBlank( annotationClassName ) ) {
+    public static boolean isAnnotationPresent(final Class<?> target, final String annotationClassName) {
+        if (StringUtil.isBlank(annotationClassName)) {
             return false;
         }
-        return getAnnotations( target ).stream().anyMatch( annotationClassName::equals );
+        return getAnnotations(target).stream().anyMatch(annotationClassName::equals);
     }
 
     /**
@@ -72,8 +72,8 @@ public abstract class AnnotationUtil {
      * @param annotationClassName 注解类名
      * @return boolean
      */
-    public static boolean isAnnotationPresent( final Class<?> target, final Class<? extends Annotation> annotationClass, final String annotationClassName ) {
-        return isAnnotationPresent( target, annotationClass ) || wrapAnnotation( getAnnotations( target ), annotationClassName );
+    public static boolean isAnnotationPresent(final Class<?> target, final Class<? extends Annotation> annotationClass, final String annotationClassName) {
+        return isAnnotationPresent(target, annotationClass) || wrapAnnotation(getAnnotations(target), annotationClassName);
     }
 
     /**
@@ -82,8 +82,8 @@ public abstract class AnnotationUtil {
      * @param annotationClass 注解类
      * @return boolean
      */
-    public static boolean isAnnotationPresent( final Field field, final Class<? extends Annotation> annotationClass ) {
-        return annotationClass != null && field.isAnnotationPresent( annotationClass );
+    public static boolean isAnnotationPresent(final Field field, final Class<? extends Annotation> annotationClass) {
+        return annotationClass != null && field.isAnnotationPresent(annotationClass);
     }
 
     /**
@@ -92,8 +92,8 @@ public abstract class AnnotationUtil {
      * @param annotationClassName 注解类名
      * @return boolean
      */
-    public static boolean isAnnotationPresent( final Field field, final String annotationClassName ) {
-        return wrapAnnotation( getAnnotations( field ), annotationClassName );
+    public static boolean isAnnotationPresent(final Field field, final String annotationClassName) {
+        return wrapAnnotation(getAnnotations(field), annotationClassName);
     }
 
     /**
@@ -107,8 +107,8 @@ public abstract class AnnotationUtil {
      * @see #getAnnotations(Field)
      * @see #wrapAnnotation(Set, String)
      */
-    public static boolean isAnnotationPresent( final Field field, final Class<? extends Annotation> annotationClass, final String annotationClassName ) {
-        return isAnnotationPresent( field, annotationClass ) || wrapAnnotation( getAnnotations( field ), annotationClassName );
+    public static boolean isAnnotationPresent(final Field field, final Class<? extends Annotation> annotationClass, final String annotationClassName) {
+        return isAnnotationPresent(field, annotationClass) || wrapAnnotation(getAnnotations(field), annotationClassName);
     }
 
     /**
@@ -117,8 +117,8 @@ public abstract class AnnotationUtil {
      * @param annotationClass 注解类名
      * @return boolean
      */
-    public static boolean isAnnotationPresent( final Method method, final Class<? extends Annotation> annotationClass ) {
-        return annotationClass != null && method.isAnnotationPresent( annotationClass );
+    public static boolean isAnnotationPresent(final Method method, final Class<? extends Annotation> annotationClass) {
+        return annotationClass != null && method.isAnnotationPresent(annotationClass);
     }
 
     /**
@@ -127,8 +127,8 @@ public abstract class AnnotationUtil {
      * @param annotationClassName 注解类名
      * @return boolean
      */
-    public static boolean isAnnotationPresent( final Method method, final String annotationClassName ) {
-        return wrapAnnotation( getAnnotations( method ), annotationClassName );
+    public static boolean isAnnotationPresent(final Method method, final String annotationClassName) {
+        return wrapAnnotation(getAnnotations(method), annotationClassName);
     }
 
     /**
@@ -142,8 +142,8 @@ public abstract class AnnotationUtil {
      * @see #getAnnotations(Method)
      * @see #wrapAnnotation(Set, String)
      */
-    public static boolean isAnnotationPresent( final Method method, final Class<? extends Annotation> annotationClass, final String annotationClassName ) {
-        return isAnnotationPresent( method, annotationClass ) || wrapAnnotation( getAnnotations( method ), annotationClassName );
+    public static boolean isAnnotationPresent(final Method method, final Class<? extends Annotation> annotationClass, final String annotationClassName) {
+        return isAnnotationPresent(method, annotationClass) || wrapAnnotation(getAnnotations(method), annotationClassName);
     }
 
     /**
@@ -152,8 +152,8 @@ public abstract class AnnotationUtil {
      * @param annotationClassName 注解类名
      * @return boolean
      */
-    public static boolean wrapAnnotation( final Set<String> annotations, final String annotationClassName ) {
-        return annotations != null && !annotations.isEmpty() && annotations.contains( annotationClassName );
+    public static boolean wrapAnnotation(final Set<String> annotations, final String annotationClassName) {
+        return annotations != null && !annotations.isEmpty() && annotations.contains(annotationClassName);
     }
 
     /**
@@ -161,8 +161,8 @@ public abstract class AnnotationUtil {
      * @param field {@link Field}
      * @return 注解类名列表
      */
-    public static Set<String> getAnnotations( final Field field ) {
-        return field == null ? null : toSetString( field.getDeclaredAnnotations() );
+    public static Set<String> getAnnotations(final Field field) {
+        return field == null ? null : toSetString(field.getDeclaredAnnotations());
     }
 
     /**
@@ -170,8 +170,8 @@ public abstract class AnnotationUtil {
      * @param method {@link Method}
      * @return boolean
      */
-    public static Set<String> getAnnotations( final Method method ) {
-        return method == null ? null : toSetString( method.getDeclaredAnnotations() );
+    public static Set<String> getAnnotations(final Method method) {
+        return method == null ? null : toSetString(method.getDeclaredAnnotations());
     }
 
     /**
@@ -179,8 +179,8 @@ public abstract class AnnotationUtil {
      * @param target 指定的类
      * @return 注解类名
      */
-    public static Set<String> getAnnotations( final Class<?> target ) {
-        return hasAnnotation( target ) ? toSetString( target.getAnnotations() ) : new HashSet<>( 0 );
+    public static Set<String> getAnnotations(final Class<?> target) {
+        return hasAnnotation(target) ? toSetString(target.getAnnotations()) : new HashSet<>(0);
     }
 
     /**
@@ -188,49 +188,49 @@ public abstract class AnnotationUtil {
      * @param annotations 注解数组
      * @return 类名集合
      */
-    private static Set<String> toSetString( final Annotation... annotations ) {
-        return ArrayUtil.isEmpty( annotations ) ? new HashSet<>( 0 ) : Arrays.stream( annotations )
-                .filter( Objects::nonNull )
-                .map( Annotation::annotationType )
-                .map( Class::getCanonicalName )
-                .collect( Collectors.toCollection( HashSet::new ) );
+    private static Set<String> toSetString(final Annotation... annotations) {
+        return ArrayUtil.isEmpty(annotations) ? new HashSet<>(0) : Arrays.stream(annotations)
+                .filter(Objects::nonNull)
+                .map(Annotation::annotationType)
+                .map(Class::getCanonicalName)
+                .collect(Collectors.toCollection(HashSet::new));
     }
 
-    @SuppressWarnings( "unchecked" )
-    public static AnnotationMetadata getAnnotationMetaObject( Class<?> target, String annotationClass ) {
-        if ( target != null && !Ascii.isNullOrEmpty( annotationClass ) ) {
+    @SuppressWarnings("unchecked")
+    public static AnnotationMetadata getAnnotationMetaObject(Class<?> target, String annotationClass) {
+        if (target != null && !Ascii.isNullOrEmpty(annotationClass)) {
             try {
-                Class<? extends Annotation> clazz = ( Class<? extends Annotation> ) Class.forName( annotationClass );
-                return getAnnotationMetaObject( target.getAnnotation( clazz ) );
-            } catch ( Exception e ) {
-                log.warn( "Cannot resolve entity class `{}` annotation `{}`: {}", target.getName(), annotationClass, e );
+                Class<? extends Annotation> clazz = (Class<? extends Annotation>) Class.forName(annotationClass);
+                return getAnnotationMetaObject(target.getAnnotation(clazz));
+            } catch (Exception e) {
+                log.warn("Cannot resolve entity class `{}` annotation `{}`: {}", target.getName(), annotationClass, e);
             }
         }
-        return new AnnotationMetadata( new HashMap<>( 0 ) );
+        return new AnnotationMetadata(new HashMap<>(0));
     }
 
-    @SuppressWarnings( "unchecked" )
-    public static AnnotationMetadata getAnnotationMetaObject( Field target, String annotationClass ) {
-        if ( target != null && StringUtil.hasText( annotationClass ) ) {
+    @SuppressWarnings("unchecked")
+    public static AnnotationMetadata getAnnotationMetaObject(Field target, String annotationClass) {
+        if (target != null && StringUtil.hasText(annotationClass)) {
             try {
-                Class<? extends Annotation> clazz = ( Class<? extends Annotation> ) Class.forName( annotationClass );
-                return getAnnotationMetaObject( target.getAnnotation( clazz ) );
-            } catch ( Exception e ) {
-                log.warn( "Unable to parse attributes `{}` annotation `{}`: {}", target.getName(), annotationClass, e );
+                Class<? extends Annotation> clazz = (Class<? extends Annotation>) Class.forName(annotationClass);
+                return getAnnotationMetaObject(target.getAnnotation(clazz));
+            } catch (Exception e) {
+                log.warn("Unable to parse attributes `{}` annotation `{}`: {}", target.getName(), annotationClass, e);
             }
         }
-        return new AnnotationMetadata( new HashMap<>( 0 ) );
+        return new AnnotationMetadata(new HashMap<>(0));
     }
 
-    @SuppressWarnings( "unchecked" )
-    public static AnnotationMetadata getAnnotationMetaObject( Annotation annotation ) {
-        if ( annotation != null ) {
-            MetaObject metaObject = SystemMetaObject.forObject( annotation );
-            Object value = metaObject.getValue( "h.memberValues" );
-            if ( value instanceof Map ) {
-                return new AnnotationMetadata( ( Map<String, Object> ) value );
+    @SuppressWarnings("unchecked")
+    public static AnnotationMetadata getAnnotationMetaObject(Annotation annotation) {
+        if (annotation != null) {
+            MetaObject metaObject = SystemMetaObject.forObject(annotation);
+            Object value = metaObject.getValue("h.memberValues");
+            if (value instanceof Map) {
+                return new AnnotationMetadata((Map<String, Object>) value);
             }
         }
-        return new AnnotationMetadata( new HashMap<>( 0 ) );
+        return new AnnotationMetadata(new HashMap<>(0));
     }
 }

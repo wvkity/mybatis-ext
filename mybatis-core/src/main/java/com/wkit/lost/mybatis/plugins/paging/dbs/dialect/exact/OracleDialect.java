@@ -14,17 +14,17 @@ import java.util.Map;
 public class OracleDialect extends AbstractPageableDialect {
 
     @Override
-    public Object processPageableParameter( MappedStatement statement, Map<String, Object> parameter, BoundSql boundSql, CacheKey cacheKey, Long rowStart, Long rowEnd, Long offset ) {
-        parameter.put( OFFSET_PARAMETER, rowEnd );
-        parameter.put( LIMIT_PARAMETER, rowStart );
-        cacheKey.update( rowEnd );
-        cacheKey.update( rowStart );
-        handleParameter( statement, boundSql, rowStart, rowEnd );
+    public Object processPageableParameter(MappedStatement statement, Map<String, Object> parameter, BoundSql boundSql, CacheKey cacheKey, Long rowStart, Long rowEnd, Long offset) {
+        parameter.put(OFFSET_PARAMETER, rowEnd);
+        parameter.put(LIMIT_PARAMETER, rowStart);
+        cacheKey.update(rowEnd);
+        cacheKey.update(rowStart);
+        handleParameter(statement, boundSql, rowStart, rowEnd);
         return parameter;
     }
 
     @Override
-    public String generateCorrespondPageableSql( String sql, CacheKey cacheKey, Long rowStart, Long rowEnd, Long pageSize ) {
+    public String generateCorrespondPageableSql(String sql, CacheKey cacheKey, Long rowStart, Long rowEnd, Long pageSize) {
         return "SELECT * FROM ( " +
                 "SELECT TAB_PAGE.*, ROWNUM ROW_ID FROM ( " +
                 sql +

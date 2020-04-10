@@ -19,12 +19,12 @@ public class BeanRegisterApplicationTest extends RootTestRunner {
     @Test
     public void sequenceTest() {
         long id = sequence.nextValue();
-        log.info( "ID = {}", id );
-        log.info( "ID 信息: {}", sequence.parse( id ) );
+        log.info("ID = {}", id);
+        log.info("ID 信息: {}", sequence.parse(id));
     }
 
     @Test
     public void interceptorTest() {
-        log.info( "pageable interceptor info: {}", pageableInterceptor );
+        log.info("pageable interceptor info: {}", pageableInterceptor);
     }
 }

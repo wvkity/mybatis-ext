@@ -12,19 +12,19 @@ public class MapperParserException extends RuntimeException {
         super();
     }
 
-    public MapperParserException( String message ) {
-        super( message );
+    public MapperParserException(String message) {
+        super(message);
     }
 
-    public MapperParserException( Throwable cause ) {
-        super( cause );
+    public MapperParserException(Throwable cause) {
+        super(cause);
     }
 
-    public MapperParserException( String message, Throwable cause ) {
-        super( message, cause );
+    public MapperParserException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public MapperParserException( String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace ) {
-        super( message, cause, enableSuppression, writableStackTrace );
+    public MapperParserException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

@@ -19,8 +19,8 @@ public class ImmediateEqual<T> extends ImmediateSimple<T> {
      * @param value  值
      * @param logic  逻辑符号
      */
-    ImmediateEqual( String column, Object value, Logic logic ) {
-        super( column, value, Symbol.EQ, logic );
+    ImmediateEqual(String column, Object value, Logic logic) {
+        super(column, value, Symbol.EQ, logic);
     }
 
     /**
@@ -30,8 +30,8 @@ public class ImmediateEqual<T> extends ImmediateSimple<T> {
      * @param value      值
      * @param logic      逻辑符号
      */
-    ImmediateEqual( String tableAlias, String column, Object value, Logic logic ) {
-        super( tableAlias, column, value, Symbol.EQ, logic );
+    ImmediateEqual(String tableAlias, String column, Object value, Logic logic) {
+        super(tableAlias, column, value, Symbol.EQ, logic);
     }
 
     /**
@@ -41,8 +41,8 @@ public class ImmediateEqual<T> extends ImmediateSimple<T> {
      * @param value    值
      * @param logic    逻辑符号
      */
-    ImmediateEqual( Criteria<T> criteria, String column, Object value, Logic logic ) {
-        super( criteria, column, value, Symbol.EQ, logic );
+    ImmediateEqual(Criteria<T> criteria, String column, Object value, Logic logic) {
+        super(criteria, column, value, Symbol.EQ, logic);
     }
 
     /**
@@ -52,8 +52,8 @@ public class ImmediateEqual<T> extends ImmediateSimple<T> {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> create( String column, Object value ) {
-        return create( column, value, Logic.AND );
+    public static <T> ImmediateEqual<T> create(String column, Object value) {
+        return create(column, value, Logic.AND);
     }
 
     /**
@@ -64,9 +64,9 @@ public class ImmediateEqual<T> extends ImmediateSimple<T> {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> create( String column, Object value, Logic logic ) {
-        if ( hasText( column ) ) {
-            return new ImmediateEqual<>( column, value, logic );
+    public static <T> ImmediateEqual<T> create(String column, Object value, Logic logic) {
+        if (hasText(column)) {
+            return new ImmediateEqual<>(column, value, logic);
         }
         return null;
     }
@@ -79,8 +79,8 @@ public class ImmediateEqual<T> extends ImmediateSimple<T> {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> create( String tableAlias, String column, Object value ) {
-        return create( tableAlias, column, value, Logic.AND );
+    public static <T> ImmediateEqual<T> create(String tableAlias, String column, Object value) {
+        return create(tableAlias, column, value, Logic.AND);
     }
 
     /**
@@ -92,9 +92,9 @@ public class ImmediateEqual<T> extends ImmediateSimple<T> {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> create( String tableAlias, String column, Object value, Logic logic ) {
-        if ( hasText( column ) ) {
-            return new ImmediateEqual<>( tableAlias, column, value, logic );
+    public static <T> ImmediateEqual<T> create(String tableAlias, String column, Object value, Logic logic) {
+        if (hasText(column)) {
+            return new ImmediateEqual<>(tableAlias, column, value, logic);
         }
         return null;
     }
@@ -107,8 +107,8 @@ public class ImmediateEqual<T> extends ImmediateSimple<T> {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> create( Criteria<T> criteria, String column, Object value ) {
-        return create( criteria, column, value, Logic.AND );
+    public static <T> ImmediateEqual<T> create(Criteria<T> criteria, String column, Object value) {
+        return create(criteria, column, value, Logic.AND);
     }
 
     /**
@@ -120,9 +120,9 @@ public class ImmediateEqual<T> extends ImmediateSimple<T> {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> create( Criteria<T> criteria, String column, Object value, Logic logic ) {
-        if ( hasText( column ) ) {
-            return new ImmediateEqual<>( criteria, column, value, logic );
+    public static <T> ImmediateEqual<T> create(Criteria<T> criteria, String column, Object value, Logic logic) {
+        if (hasText(column)) {
+            return new ImmediateEqual<>(criteria, column, value, logic);
         }
         return null;
     }

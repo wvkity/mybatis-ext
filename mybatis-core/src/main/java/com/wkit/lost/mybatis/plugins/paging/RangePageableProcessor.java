@@ -32,28 +32,28 @@ public class RangePageableProcessor extends PagingProcessor {
     }
 
     @Override
-    public Object doProcess( Invocation invocation, Executor executor, MappedStatement ms, Object parameter,
-                             RowBounds rowBounds, ResultHandler<?> resultHandler, CacheKey cacheKey,
-                             BoundSql boundSql ) throws Exception {
+    public Object doProcess(Invocation invocation, Executor executor, MappedStatement ms, Object parameter,
+                            RowBounds rowBounds, ResultHandler<?> resultHandler, CacheKey cacheKey,
+                            BoundSql boundSql) throws Exception {
         try {
             // 检查代理对象是否存在
             validateDialectExists();
             // 检查是否需要执行
             List<?> result;
-            if ( this.factory.filter( ms, parameter, rowBounds ) ) {
+            if (this.factory.filter(ms, parameter, rowBounds)) {
                 // 执行分段查询
-                result = Executors.executeQueryPageableOfCustom( this.factory, executor, ms, parameter,
-                        rowBounds, resultHandler, boundSql, cacheKey );
+                result = Executors.executeQueryPageableOfCustom(this.factory, executor, ms, parameter,
+                        rowBounds, resultHandler, boundSql, cacheKey);
             } else {
                 // 执行原查询
-                result = executor.query( ms, parameter, rowBounds, resultHandler, cacheKey, boundSql );
+                result = executor.query(ms, parameter, rowBounds, resultHandler, cacheKey, boundSql);
             }
-            return factory.executePagingOnAfter( result, parameter, rowBounds );
-        } catch ( Exception e ) {
-            log.warn( "Limit query plug-in failed to execute: `{}` -- {}", ms.getId(), e );
+            return factory.executePagingOnAfter(result, parameter, rowBounds);
+        } catch (Exception e) {
+            log.warn("Limit query plug-in failed to execute: `{}` -- {}", ms.getId(), e);
             throw e;
         } finally {
-            Optional.ofNullable( this.factory ).ifPresent( Dialect::completed );
+            Optional.ofNullable(this.factory).ifPresent(Dialect::completed);
         }
     }
 }

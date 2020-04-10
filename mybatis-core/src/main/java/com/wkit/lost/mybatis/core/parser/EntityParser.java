@@ -14,5 +14,5 @@ public interface EntityParser {
      * @param builder 数据库表构建器
      * @return 解析实体-数据库表映射对象
      */
-    TableWrapper parse( final TableBuilder builder );
+    TableWrapper parse(final TableBuilder builder);
 }

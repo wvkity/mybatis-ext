@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-@Accessors( chain = true )
+@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class BaseEntity implements Serializable {
@@ -26,7 +26,7 @@ public abstract class BaseEntity implements Serializable {
      * 删除标识
      */
     @LogicDeletion
-    @Column( name = "IS_DELETED" )
+    @Column(name = "IS_DELETED")
     private Boolean deleted;
 
     /**

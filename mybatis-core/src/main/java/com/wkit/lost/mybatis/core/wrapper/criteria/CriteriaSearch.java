@@ -12,7 +12,7 @@ public interface CriteriaSearch {
      * @param <E>        泛型类型
      * @return {@link SubCriteria}
      */
-    <E> SubCriteria<E> searchSubCriteria( String tableAlias );
+    <E> SubCriteria<E> searchSubCriteria(String tableAlias);
 
     /**
      * 搜索子查询条件对象
@@ -20,7 +20,7 @@ public interface CriteriaSearch {
      * @param <E>    泛型类型
      * @return {@link SubCriteria}
      */
-    <E> SubCriteria<E> searchSubCriteria( Class<E> entity );
+    <E> SubCriteria<E> searchSubCriteria(Class<E> entity);
 
     /**
      * 搜索子查询条件对象
@@ -29,6 +29,6 @@ public interface CriteriaSearch {
      * @param <E>             泛型类型
      * @return {@link SubCriteria}
      */
-    <E> SubCriteria<E> searchSubCriteria( String subTempTabAlias, Class<E> entity );
+    <E> SubCriteria<E> searchSubCriteria(String subTempTabAlias, Class<E> entity);
 
 }

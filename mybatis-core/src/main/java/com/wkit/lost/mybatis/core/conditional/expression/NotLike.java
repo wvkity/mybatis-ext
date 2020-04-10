@@ -23,7 +23,7 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param value    值
      * @param logic    逻辑符号
      */
-    NotLike( Criteria<T> criteria, ColumnWrapper column, Object value, Logic logic ) {
+    NotLike(Criteria<T> criteria, ColumnWrapper column, Object value, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.value = value;
@@ -39,7 +39,7 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param match    匹配模式
      * @param logic    逻辑符号
      */
-    NotLike( Criteria<T> criteria, ColumnWrapper column, Object value, Match match, Logic logic ) {
+    NotLike(Criteria<T> criteria, ColumnWrapper column, Object value, Match match, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.value = value;
@@ -56,7 +56,7 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param escape   转义字符
      * @param logic    逻辑符号
      */
-    NotLike( Criteria<T> criteria, ColumnWrapper column, Object value, Character escape, Logic logic ) {
+    NotLike(Criteria<T> criteria, ColumnWrapper column, Object value, Character escape, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.value = value;
@@ -74,7 +74,7 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param escape   转义字符
      * @param logic    逻辑符号
      */
-    NotLike( Criteria<T> criteria, ColumnWrapper column, Object value, Match match, Character escape, Logic logic ) {
+    NotLike(Criteria<T> criteria, ColumnWrapper column, Object value, Match match, Character escape, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.value = value;
@@ -93,8 +93,8 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, Property<T, ?> property, Object value ) {
-        return create( criteria, property, value, Logic.AND );
+    public static <T> NotLike<T> create(Criteria<T> criteria, Property<T, ?> property, Object value) {
+        return create(criteria, property, value, Logic.AND);
     }
 
     /**
@@ -106,8 +106,8 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, Property<T, ?> property, Object value, Logic logic ) {
-        return create( criteria, criteria.searchColumn( property ), value, logic );
+    public static <T> NotLike<T> create(Criteria<T> criteria, Property<T, ?> property, Object value, Logic logic) {
+        return create(criteria, criteria.searchColumn(property), value, logic);
     }
 
     /**
@@ -118,8 +118,8 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, String property, Object value ) {
-        return create( criteria, property, value, Logic.AND );
+    public static <T> NotLike<T> create(Criteria<T> criteria, String property, Object value) {
+        return create(criteria, property, value, Logic.AND);
     }
 
     /**
@@ -131,9 +131,9 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, String property, Object value, Logic logic ) {
-        if ( criteria != null && hasText( property ) ) {
-            return create( criteria, criteria.searchColumn( property ), value, logic );
+    public static <T> NotLike<T> create(Criteria<T> criteria, String property, Object value, Logic logic) {
+        if (criteria != null && hasText(property)) {
+            return create(criteria, criteria.searchColumn(property), value, logic);
         }
         return null;
     }
@@ -146,8 +146,8 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, ColumnWrapper column, Object value ) {
-        return create( criteria, column, value, Logic.AND );
+    public static <T> NotLike<T> create(Criteria<T> criteria, ColumnWrapper column, Object value) {
+        return create(criteria, column, value, Logic.AND);
     }
 
     /**
@@ -159,9 +159,9 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, ColumnWrapper column, Object value, Logic logic ) {
-        if ( criteria != null && column != null ) {
-            return new NotLike<>( criteria, column, value, logic );
+    public static <T> NotLike<T> create(Criteria<T> criteria, ColumnWrapper column, Object value, Logic logic) {
+        if (criteria != null && column != null) {
+            return new NotLike<>(criteria, column, value, logic);
         }
         return null;
     }
@@ -175,8 +175,8 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, Property<T, ?> property, Object value, Match match ) {
-        return create( criteria, property, value, match, Logic.AND );
+    public static <T> NotLike<T> create(Criteria<T> criteria, Property<T, ?> property, Object value, Match match) {
+        return create(criteria, property, value, match, Logic.AND);
     }
 
     /**
@@ -189,9 +189,9 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, Property<T, ?> property, Object value,
-                                         Match match, Logic logic ) {
-        return create( criteria, criteria.searchColumn( property ), value, match, logic );
+    public static <T> NotLike<T> create(Criteria<T> criteria, Property<T, ?> property, Object value,
+                                        Match match, Logic logic) {
+        return create(criteria, criteria.searchColumn(property), value, match, logic);
     }
 
     /**
@@ -203,8 +203,8 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, String property, Object value, Match match ) {
-        return create( criteria, property, value, match, Logic.AND );
+    public static <T> NotLike<T> create(Criteria<T> criteria, String property, Object value, Match match) {
+        return create(criteria, property, value, match, Logic.AND);
     }
 
     /**
@@ -217,10 +217,10 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, String property, Object value,
-                                         Match match, Logic logic ) {
-        if ( criteria != null && hasText( property ) ) {
-            return create( criteria, criteria.searchColumn( property ), value, match, logic );
+    public static <T> NotLike<T> create(Criteria<T> criteria, String property, Object value,
+                                        Match match, Logic logic) {
+        if (criteria != null && hasText(property)) {
+            return create(criteria, criteria.searchColumn(property), value, match, logic);
         }
         return null;
     }
@@ -234,9 +234,9 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, ColumnWrapper column, Object value,
-                                         Match match ) {
-        return create( criteria, column, value, match, Logic.AND );
+    public static <T> NotLike<T> create(Criteria<T> criteria, ColumnWrapper column, Object value,
+                                        Match match) {
+        return create(criteria, column, value, match, Logic.AND);
     }
 
     /**
@@ -249,10 +249,10 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, ColumnWrapper column, Object value,
-                                         Match match, Logic logic ) {
-        if ( criteria != null && column != null ) {
-            return new NotLike<>( criteria, column, value, match, logic );
+    public static <T> NotLike<T> create(Criteria<T> criteria, ColumnWrapper column, Object value,
+                                        Match match, Logic logic) {
+        if (criteria != null && column != null) {
+            return new NotLike<>(criteria, column, value, match, logic);
         }
         return null;
     }
@@ -267,8 +267,8 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, Property<T, ?> property, Object value, Character escape ) {
-        return create( criteria, property, value, escape, Logic.AND );
+    public static <T> NotLike<T> create(Criteria<T> criteria, Property<T, ?> property, Object value, Character escape) {
+        return create(criteria, property, value, escape, Logic.AND);
     }
 
     /**
@@ -281,9 +281,9 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, Property<T, ?> property, Object value,
-                                         Character escape, Logic logic ) {
-        return create( criteria, criteria.searchColumn( property ), value, escape, logic );
+    public static <T> NotLike<T> create(Criteria<T> criteria, Property<T, ?> property, Object value,
+                                        Character escape, Logic logic) {
+        return create(criteria, criteria.searchColumn(property), value, escape, logic);
     }
 
     /**
@@ -295,8 +295,8 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, String property, Object value, Character escape ) {
-        return create( criteria, property, value, escape, Logic.AND );
+    public static <T> NotLike<T> create(Criteria<T> criteria, String property, Object value, Character escape) {
+        return create(criteria, property, value, escape, Logic.AND);
     }
 
     /**
@@ -309,10 +309,10 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, String property, Object value,
-                                         Character escape, Logic logic ) {
-        if ( criteria != null && hasText( property ) ) {
-            return create( criteria, criteria.searchColumn( property ), value, escape, logic );
+    public static <T> NotLike<T> create(Criteria<T> criteria, String property, Object value,
+                                        Character escape, Logic logic) {
+        if (criteria != null && hasText(property)) {
+            return create(criteria, criteria.searchColumn(property), value, escape, logic);
         }
         return null;
     }
@@ -326,8 +326,8 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, ColumnWrapper column, Object value, Character escape ) {
-        return create( criteria, column, value, escape, Logic.AND );
+    public static <T> NotLike<T> create(Criteria<T> criteria, ColumnWrapper column, Object value, Character escape) {
+        return create(criteria, column, value, escape, Logic.AND);
     }
 
     /**
@@ -340,10 +340,10 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, ColumnWrapper column, Object value,
-                                         Character escape, Logic logic ) {
-        if ( criteria != null && column != null ) {
-            return new NotLike<>( criteria, column, value, escape, logic );
+    public static <T> NotLike<T> create(Criteria<T> criteria, ColumnWrapper column, Object value,
+                                        Character escape, Logic logic) {
+        if (criteria != null && column != null) {
+            return new NotLike<>(criteria, column, value, escape, logic);
         }
         return null;
     }
@@ -358,9 +358,9 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, Property<T, ?> property, Object value,
-                                         Match match, Character escape ) {
-        return create( criteria, property, value, match, escape, Logic.AND );
+    public static <T> NotLike<T> create(Criteria<T> criteria, Property<T, ?> property, Object value,
+                                        Match match, Character escape) {
+        return create(criteria, property, value, match, escape, Logic.AND);
     }
 
     /**
@@ -374,9 +374,9 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, Property<T, ?> property, Object value,
-                                         Match match, Character escape, Logic logic ) {
-        return create( criteria, criteria.searchColumn( property ), value, match, escape, logic );
+    public static <T> NotLike<T> create(Criteria<T> criteria, Property<T, ?> property, Object value,
+                                        Match match, Character escape, Logic logic) {
+        return create(criteria, criteria.searchColumn(property), value, match, escape, logic);
     }
 
     /**
@@ -389,9 +389,9 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, String property, Object value,
-                                         Match match, Character escape ) {
-        return create( criteria, property, value, match, escape, Logic.AND );
+    public static <T> NotLike<T> create(Criteria<T> criteria, String property, Object value,
+                                        Match match, Character escape) {
+        return create(criteria, property, value, match, escape, Logic.AND);
     }
 
     /**
@@ -405,10 +405,10 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, String property, Object value,
-                                         Match match, Character escape, Logic logic ) {
-        if ( criteria != null && hasText( property ) ) {
-            return create( criteria, criteria.searchColumn( property ), value, match, escape, logic );
+    public static <T> NotLike<T> create(Criteria<T> criteria, String property, Object value,
+                                        Match match, Character escape, Logic logic) {
+        if (criteria != null && hasText(property)) {
+            return create(criteria, criteria.searchColumn(property), value, match, escape, logic);
         }
         return null;
     }
@@ -423,9 +423,9 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, ColumnWrapper column, Object value,
-                                         Match match, Character escape ) {
-        return create( criteria, column, value, match, escape, Logic.AND );
+    public static <T> NotLike<T> create(Criteria<T> criteria, ColumnWrapper column, Object value,
+                                        Match match, Character escape) {
+        return create(criteria, column, value, match, escape, Logic.AND);
     }
 
     /**
@@ -439,10 +439,10 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotLike<T> create( Criteria<T> criteria, ColumnWrapper column, Object value,
-                                         Match match, Character escape, Logic logic ) {
-        if ( criteria != null && column != null ) {
-            return new NotLike<>( criteria, column, value, match, escape, logic );
+    public static <T> NotLike<T> create(Criteria<T> criteria, ColumnWrapper column, Object value,
+                                        Match match, Character escape, Logic logic) {
+        if (criteria != null && column != null) {
+            return new NotLike<>(criteria, column, value, match, escape, logic);
         }
         return null;
     }

@@ -100,10 +100,10 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      */
     @Override
     public void afterPropertiesSet() throws Exception {
-        notNull( dataSource, "Property `dataSource` is required" );
-        notNull( sqlSessionFactoryBuilder, "Property `sqlSessionBuilder` is required" );
-        state( ( configuration == null && configLocation == null ) || !( configuration != null && configLocation != null ),
-                "Property `configuration` and 'configLocation` can not specified with together" );
+        notNull(dataSource, "Property `dataSource` is required");
+        notNull(sqlSessionFactoryBuilder, "Property `sqlSessionBuilder` is required");
+        state((configuration == null && configLocation == null) || !(configuration != null && configLocation != null),
+                "Property `configuration` and 'configLocation` can not specified with together");
         this.sqlSessionFactory = buildSqlSessionFactory();
     }
 
@@ -120,149 +120,149 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
         final MyBatisConfiguration targetConfiguration;
         // 
         MyBatisXMLConfigBuilder xmlConfigBuilder;
-        if ( this.configuration != null ) {
+        if (this.configuration != null) {
             targetConfiguration = configuration;
-            if ( targetConfiguration.getVariables() == null ) {
-                targetConfiguration.setVariables( this.configurationProperties );
-            } else if ( this.configurationProperties != null ) {
-                targetConfiguration.getVariables().putAll( this.configurationProperties );
+            if (targetConfiguration.getVariables() == null) {
+                targetConfiguration.setVariables(this.configurationProperties);
+            } else if (this.configurationProperties != null) {
+                targetConfiguration.getVariables().putAll(this.configurationProperties);
             }
             xmlConfigBuilder = null;
-        } else if ( this.configLocation != null ) {
-            xmlConfigBuilder = new MyBatisXMLConfigBuilder( this.configLocation.getInputStream(), null, this.configurationProperties );
+        } else if (this.configLocation != null) {
+            xmlConfigBuilder = new MyBatisXMLConfigBuilder(this.configLocation.getInputStream(), null, this.configurationProperties);
             targetConfiguration = xmlConfigBuilder.getConfiguration();
         } else {
-            log.debug( "{}", "Property 'configuration' or 'configLocation' not specified, using default MyBatis Configuration" );
+            log.debug("{}", "Property 'configuration' or 'configLocation' not specified, using default MyBatis Configuration");
             targetConfiguration = new MyBatisConfiguration();
-            Optional.ofNullable( this.configurationProperties ).ifPresent( targetConfiguration::setVariables );
+            Optional.ofNullable(this.configurationProperties).ifPresent(targetConfiguration::setVariables);
             xmlConfigBuilder = null;
         }
-        Optional.ofNullable( this.objectFactory ).ifPresent( targetConfiguration::setObjectFactory );
-        Optional.ofNullable( this.objectWrapperFactory ).ifPresent( targetConfiguration::setObjectWrapperFactory );
-        Optional.ofNullable( this.vfs ).ifPresent( targetConfiguration::setVfsImpl );
+        Optional.ofNullable(this.objectFactory).ifPresent(targetConfiguration::setObjectFactory);
+        Optional.ofNullable(this.objectWrapperFactory).ifPresent(targetConfiguration::setObjectWrapperFactory);
+        Optional.ofNullable(this.vfs).ifPresent(targetConfiguration::setVfsImpl);
 
-        if ( hasLength( this.typeAliasesPackage ) ) {
-            scanClasses( this.typeAliasesPackage, this.typeAliasesSuperType )
-                    .forEach( targetConfiguration.getTypeAliasRegistry()::registerAlias );
+        if (hasLength(this.typeAliasesPackage)) {
+            scanClasses(this.typeAliasesPackage, this.typeAliasesSuperType)
+                    .forEach(targetConfiguration.getTypeAliasRegistry()::registerAlias);
         }
 
         // 自定义枚举类型注册
-        if ( hasLength( this.typeEnumsPackage ) ) {
-            Set<Class<?>> typeEnumsClasses = scanClasses( this.typeEnumsPackage, Class.class );
-            if ( !CollectionUtils.isEmpty( typeEnumsClasses ) ) {
+        if (hasLength(this.typeEnumsPackage)) {
+            Set<Class<?>> typeEnumsClasses = scanClasses(this.typeEnumsPackage, Class.class);
+            if (!CollectionUtils.isEmpty(typeEnumsClasses)) {
                 TypeHandlerRegistry typeHandlerRegistry = this.configuration.getTypeHandlerRegistry();
                 String customClassName = EnumTypeHandler.class.getCanonicalName();
                 String originalClassName = EnumOrdinalTypeHandler.class.getCanonicalName();
-                for ( Class<?> clazz : typeEnumsClasses ) {
-                    if ( clazz.isEnum() ) {
-                        if ( EnumSupport.class.isAssignableFrom( clazz ) ) {
+                for (Class<?> clazz : typeEnumsClasses) {
+                    if (clazz.isEnum()) {
+                        if (EnumSupport.class.isAssignableFrom(clazz)) {
                             // 自定义EnumTypeHandler注册
-                            typeHandlerRegistry.register( clazz.getName(), customClassName );
+                            typeHandlerRegistry.register(clazz.getName(), customClassName);
                         } else {
                             // 原生EnumOrdinalTypeHandler注册
-                            typeHandlerRegistry.register( clazz.getName(), originalClassName );
+                            typeHandlerRegistry.register(clazz.getName(), originalClassName);
                         }
                     }
                 }
             }
         }
 
-        if ( !isEmpty( this.typeAliases ) ) {
-            Stream.of( this.typeAliases ).forEach( typeAlias -> {
-                targetConfiguration.getTypeAliasRegistry().registerAlias( typeAlias );
-                log.debug( "Registered type alias: `{}`", typeAlias );
-            } );
+        if (!isEmpty(this.typeAliases)) {
+            Stream.of(this.typeAliases).forEach(typeAlias -> {
+                targetConfiguration.getTypeAliasRegistry().registerAlias(typeAlias);
+                log.debug("Registered type alias: `{}`", typeAlias);
+            });
         }
 
-        if ( this.customConfiguration == null ) {
+        if (this.customConfiguration == null) {
             this.customConfiguration = MyBatisConfigCache.defaults();
         }
-        targetConfiguration.setCustomConfiguration( this.customConfiguration );
+        targetConfiguration.setCustomConfiguration(this.customConfiguration);
 
-        if ( !isEmpty( this.plugins ) ) {
-            Stream.of( this.plugins ).forEach( plugin -> {
-                targetConfiguration.addInterceptor( plugin );
-                log.debug( "Registered plugin: `${}`", plugin );
-            } );
+        if (!isEmpty(this.plugins)) {
+            Stream.of(this.plugins).forEach(plugin -> {
+                targetConfiguration.addInterceptor(plugin);
+                log.debug("Registered plugin: `${}`", plugin);
+            });
         }
 
-        if ( hasLength( this.typeHandlersPackage ) ) {
-            scanClasses( this.typeAliasesPackage, TypeHandler.class ).stream()
-                    .filter( clazz -> !clazz.isInterface() )
-                    .filter( clazz -> !Modifier.isAbstract( clazz.getModifiers() ) )
-                    .filter( clazz -> ClassUtils.getConstructorIfAvailable( clazz ) != null )
-                    .forEach( targetConfiguration.getTypeHandlerRegistry()::register );
+        if (hasLength(this.typeHandlersPackage)) {
+            scanClasses(this.typeAliasesPackage, TypeHandler.class).stream()
+                    .filter(clazz -> !clazz.isInterface())
+                    .filter(clazz -> !Modifier.isAbstract(clazz.getModifiers()))
+                    .filter(clazz -> ClassUtils.getConstructorIfAvailable(clazz) != null)
+                    .forEach(targetConfiguration.getTypeHandlerRegistry()::register);
         }
 
         // 注册JDK8+ time api(JSR-310)
-        if ( targetConfiguration.getTypeHandlerRegistry()
-                .getMappingTypeHandler( StandardOffsetDateTimeTypeHandler.class ) == null ) {
-            Optional.of( scanClasses( "com.wkit.lost.mybatis.type", TypeHandler.class ) ).ifPresent( classes ->
-                    classes.stream().filter( clazz -> !clazz.isInterface() )
-                            .filter( clazz -> !Modifier.isAbstract( clazz.getModifiers() ) )
-                            .filter( clazz -> ClassUtils.getConstructorIfAvailable( clazz ) != null )
-                            .forEach( targetConfiguration.getTypeHandlerRegistry()::register ) );
+        if (targetConfiguration.getTypeHandlerRegistry()
+                .getMappingTypeHandler(StandardOffsetDateTimeTypeHandler.class) == null) {
+            Optional.of(scanClasses("com.wkit.lost.mybatis.type", TypeHandler.class)).ifPresent(classes ->
+                    classes.stream().filter(clazz -> !clazz.isInterface())
+                            .filter(clazz -> !Modifier.isAbstract(clazz.getModifiers()))
+                            .filter(clazz -> ClassUtils.getConstructorIfAvailable(clazz) != null)
+                            .forEach(targetConfiguration.getTypeHandlerRegistry()::register));
         }
 
 
-        if ( !isEmpty( this.typeHandlers ) ) {
-            Stream.of( this.typeHandlers ).forEach( typeHandler -> {
-                targetConfiguration.getTypeHandlerRegistry().register( typeHandler );
-                log.debug( "Registered type handler: `{}`", typeHandler );
-            } );
+        if (!isEmpty(this.typeHandlers)) {
+            Stream.of(this.typeHandlers).forEach(typeHandler -> {
+                targetConfiguration.getTypeHandlerRegistry().register(typeHandler);
+                log.debug("Registered type handler: `{}`", typeHandler);
+            });
         }
 
         //fix #64 set databaseId before parse mapper xml
-        if ( this.databaseIdProvider != null ) {
+        if (this.databaseIdProvider != null) {
             try {
-                targetConfiguration.setDatabaseId( this.databaseIdProvider.getDatabaseId( this.dataSource ) );
-            } catch ( SQLException e ) {
-                throw new NestedIOException( "Failed getting a databaseId", e );
+                targetConfiguration.setDatabaseId(this.databaseIdProvider.getDatabaseId(this.dataSource));
+            } catch (SQLException e) {
+                throw new NestedIOException("Failed getting a databaseId", e);
             }
         }
 
-        Optional.ofNullable( this.cache ).ifPresent( targetConfiguration::addCache );
+        Optional.ofNullable(this.cache).ifPresent(targetConfiguration::addCache);
 
-        if ( xmlConfigBuilder != null ) {
+        if (xmlConfigBuilder != null) {
             try {
                 xmlConfigBuilder.parse();
-                log.debug( "Parsed configuration file: `{}`", this.configLocation );
-            } catch ( Exception e ) {
-                throw new NestedIOException( "Failed to parse config resource: " + this.configLocation, e );
+                log.debug("Parsed configuration file: `{}`", this.configLocation);
+            } catch (Exception e) {
+                throw new NestedIOException("Failed to parse config resource: " + this.configLocation, e);
             } finally {
                 ErrorContext.instance().reset();
             }
         }
-        targetConfiguration.setEnvironment( new Environment( this.environment,
+        targetConfiguration.setEnvironment(new Environment(this.environment,
                 this.transactionFactory == null ? new SpringManagedTransactionFactory() : this.transactionFactory,
-                this.dataSource ) );
+                this.dataSource));
         // 自定义操作(针对MyBatisCache)
-        customConfiguration.cacheSelf( targetConfiguration );
-        if ( this.mapperLocations != null ) {
-            if ( this.mapperLocations.length == 0 ) {
-                log.warn( "{}", "Property 'mapperLocations' was specified but matching resources are not found." );
+        customConfiguration.cacheSelf(targetConfiguration);
+        if (this.mapperLocations != null) {
+            if (this.mapperLocations.length == 0) {
+                log.warn("{}", "Property 'mapperLocations' was specified but matching resources are not found.");
             } else {
-                for ( Resource mapperLocation : this.mapperLocations ) {
-                    if ( mapperLocation == null ) {
+                for (Resource mapperLocation : this.mapperLocations) {
+                    if (mapperLocation == null) {
                         continue;
                     }
                     try {
-                        XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder( mapperLocation.getInputStream(),
-                                targetConfiguration, mapperLocation.toString(), targetConfiguration.getSqlFragments() );
+                        XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(mapperLocation.getInputStream(),
+                                targetConfiguration, mapperLocation.toString(), targetConfiguration.getSqlFragments());
                         xmlMapperBuilder.parse();
-                    } catch ( Exception e ) {
-                        throw new NestedIOException( "Failed to parse mapping resource: '" + mapperLocation + "'", e );
+                    } catch (Exception e) {
+                        throw new NestedIOException("Failed to parse mapping resource: '" + mapperLocation + "'", e);
                     } finally {
                         ErrorContext.instance().reset();
                     }
-                    log.debug( "Parsed mapper file: `{}`", mapperLocation );
+                    log.debug("Parsed mapper file: `{}`", mapperLocation);
                 }
             }
         } else {
-            log.debug( "{}", "Property 'mapperLocations' was not specified." );
+            log.debug("{}", "Property 'mapperLocations' was not specified.");
         }
-        SqlSessionFactory factory = this.sqlSessionFactoryBuilder.build( targetConfiguration );
-        customConfiguration.setSqlSessionFactory( factory );
+        SqlSessionFactory factory = this.sqlSessionFactoryBuilder.build(targetConfiguration);
+        customConfiguration.setSqlSessionFactory(factory);
         return factory;
     }
 
@@ -271,7 +271,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      */
     @Override
     public SqlSessionFactory getObject() throws Exception {
-        if ( this.sqlSessionFactory == null ) {
+        if (this.sqlSessionFactory == null) {
             afterPropertiesSet();
         }
         return this.sqlSessionFactory;
@@ -294,28 +294,28 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
     }
 
     @Override
-    public void onApplicationEvent( ApplicationEvent event ) {
-        if ( failFast && event instanceof ContextRefreshedEvent ) {
+    public void onApplicationEvent(ApplicationEvent event) {
+        if (failFast && event instanceof ContextRefreshedEvent) {
             // fail-fast -> check all statements are completed
             this.sqlSessionFactory.getConfiguration().getMappedStatementNames();
         }
     }
 
-    private Set<Class<?>> scanClasses( String packagePatterns, Class<?> assignableType ) throws IOException {
+    private Set<Class<?>> scanClasses(String packagePatterns, Class<?> assignableType) throws IOException {
         Set<Class<?>> classes = new HashSet<>();
-        String[] packagePatternArray = tokenizeToStringArray( packagePatterns, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS );
-        for ( String packagePattern : packagePatternArray ) {
-            Resource[] resources = RESOURCE_PATTERN_RESOLVER.getResources( ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
-                    ClassUtils.convertClassNameToResourcePath( packagePattern ) + "/**/*.class" );
-            for ( Resource resource : resources ) {
+        String[] packagePatternArray = tokenizeToStringArray(packagePatterns, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
+        for (String packagePattern : packagePatternArray) {
+            Resource[] resources = RESOURCE_PATTERN_RESOLVER.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
+                    ClassUtils.convertClassNameToResourcePath(packagePattern) + "/**/*.class");
+            for (Resource resource : resources) {
                 try {
-                    ClassMetadata classMetadata = METADATA_READER_FACTORY.getMetadataReader( resource ).getClassMetadata();
-                    Class<?> clazz = Resources.classForName( classMetadata.getClassName() );
-                    if ( assignableType == null || assignableType.isAssignableFrom( clazz ) ) {
-                        classes.add( clazz );
+                    ClassMetadata classMetadata = METADATA_READER_FACTORY.getMetadataReader(resource).getClassMetadata();
+                    Class<?> clazz = Resources.classForName(classMetadata.getClassName());
+                    if (assignableType == null || assignableType.isAssignableFrom(clazz)) {
+                        classes.add(clazz);
                     }
-                } catch ( Throwable e ) {
-                    log.warn( "Cannot load the `{}`. Cause by {}", resource, e.toString() );
+                } catch (Throwable e) {
+                    log.warn("Cannot load the `{}`. Cause by {}", resource, e.toString());
                 }
             }
         }
@@ -327,7 +327,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * @param objectFactory a custom ObjectFactory
      * @since 1.1.2
      */
-    public void setObjectFactory( ObjectFactory objectFactory ) {
+    public void setObjectFactory(ObjectFactory objectFactory) {
         this.objectFactory = objectFactory;
     }
 
@@ -336,7 +336,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * @param objectWrapperFactory a specified ObjectWrapperFactory
      * @since 1.1.2
      */
-    public void setObjectWrapperFactory( ObjectWrapperFactory objectWrapperFactory ) {
+    public void setObjectWrapperFactory(ObjectWrapperFactory objectWrapperFactory) {
         this.objectWrapperFactory = objectWrapperFactory;
     }
 
@@ -355,7 +355,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * @param databaseIdProvider a DatabaseIdProvider
      * @since 1.1.0
      */
-    public void setDatabaseIdProvider( DatabaseIdProvider databaseIdProvider ) {
+    public void setDatabaseIdProvider(DatabaseIdProvider databaseIdProvider) {
         this.databaseIdProvider = databaseIdProvider;
     }
 
@@ -371,7 +371,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * Sets the VFS.
      * @param vfs a VFS
      */
-    public void setVfs( Class<? extends VFS> vfs ) {
+    public void setVfs(Class<? extends VFS> vfs) {
         this.vfs = vfs;
     }
 
@@ -387,7 +387,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * Sets the Cache.
      * @param cache a Cache
      */
-    public void setCache( Cache cache ) {
+    public void setCache(Cache cache) {
         this.cache = cache;
     }
 
@@ -396,7 +396,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * @param plugins list of plugins
      * @since 1.0.1
      */
-    public void setPlugins( Interceptor[] plugins ) {
+    public void setPlugins(Interceptor[] plugins) {
         this.plugins = plugins;
     }
 
@@ -406,7 +406,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * @param typeAliasesPackage package to scan for domain objects
      * @since 1.0.1
      */
-    public void setTypeAliasesPackage( String typeAliasesPackage ) {
+    public void setTypeAliasesPackage(String typeAliasesPackage) {
         this.typeAliasesPackage = typeAliasesPackage;
     }
 
@@ -416,7 +416,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * @param typeAliasesSuperType super class for domain objects
      * @since 1.1.2
      */
-    public void setTypeAliasesSuperType( Class<?> typeAliasesSuperType ) {
+    public void setTypeAliasesSuperType(Class<?> typeAliasesSuperType) {
         this.typeAliasesSuperType = typeAliasesSuperType;
     }
 
@@ -426,7 +426,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * @param typeHandlersPackage package to scan for type handlers
      * @since 1.0.1
      */
-    public void setTypeHandlersPackage( String typeHandlersPackage ) {
+    public void setTypeHandlersPackage(String typeHandlersPackage) {
         this.typeHandlersPackage = typeHandlersPackage;
     }
 
@@ -435,7 +435,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * @param typeHandlers Type handler list
      * @since 1.0.1
      */
-    public void setTypeHandlers( TypeHandler<?>[] typeHandlers ) {
+    public void setTypeHandlers(TypeHandler<?>[] typeHandlers) {
         this.typeHandlers = typeHandlers;
     }
 
@@ -444,7 +444,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * @param typeAliases Type aliases list
      * @since 1.0.1
      */
-    public void setTypeAliases( Class<?>[] typeAliases ) {
+    public void setTypeAliases(Class<?>[] typeAliases) {
         this.typeAliases = typeAliases;
     }
 
@@ -455,7 +455,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * @param failFast enable failFast
      * @since 1.0.1
      */
-    public void setFailFast( boolean failFast ) {
+    public void setFailFast(boolean failFast) {
         this.failFast = failFast;
     }
 
@@ -464,7 +464,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * "WEB-INF/mybatis-configuration.xml".
      * @param configLocation a location the MyBatis config file
      */
-    public void setConfigLocation( Resource configLocation ) {
+    public void setConfigLocation(Resource configLocation) {
         this.configLocation = configLocation;
     }
 
@@ -473,7 +473,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * @param configuration MyBatis configuration
      * @since 1.3.0
      */
-    public void setConfiguration( MyBatisConfiguration configuration ) {
+    public void setConfiguration(MyBatisConfiguration configuration) {
         this.configuration = configuration;
     }
 
@@ -486,7 +486,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * resource patterns here: e.g. "classpath*:sqlmap/*-mapper.xml".
      * @param mapperLocations location of MyBatis mapper files
      */
-    public void setMapperLocations( Resource[] mapperLocations ) {
+    public void setMapperLocations(Resource[] mapperLocations) {
         this.mapperLocations = mapperLocations;
     }
 
@@ -496,7 +496,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * resolve placeholders in the config file.
      * @param sqlSessionFactoryProperties optional properties for the SqlSessionFactory
      */
-    public void setConfigurationProperties( Properties sqlSessionFactoryProperties ) {
+    public void setConfigurationProperties(Properties sqlSessionFactoryProperties) {
         this.configurationProperties = sqlSessionFactoryProperties;
     }
 
@@ -515,13 +515,13 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * passed in, it will be unwrapped to extract its target {@code DataSource}.
      * @param dataSource a JDBC {@code DataSource}
      */
-    public void setDataSource( DataSource dataSource ) {
-        if ( dataSource instanceof TransactionAwareDataSourceProxy ) {
+    public void setDataSource(DataSource dataSource) {
+        if (dataSource instanceof TransactionAwareDataSourceProxy) {
             // If we got a TransactionAwareDataSourceProxy, we need to perform
             // transactions for its underlying target DataSource, else data
             // access code won't see properly exposed transactions (i.e.
             // transactions for the target DataSource).
-            this.dataSource = ( ( TransactionAwareDataSourceProxy ) dataSource ).getTargetDataSource();
+            this.dataSource = ((TransactionAwareDataSourceProxy) dataSource).getTargetDataSource();
         } else {
             this.dataSource = dataSource;
         }
@@ -534,7 +534,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * default, {@code SqlSessionFactoryBuilder} creates {@code DefaultSqlSessionFactory} instances.
      * @param sqlSessionFactoryBuilder a SqlSessionFactoryBuilder
      */
-    public void setSqlSessionFactoryBuilder( SqlSessionFactoryBuilder sqlSessionFactoryBuilder ) {
+    public void setSqlSessionFactoryBuilder(SqlSessionFactoryBuilder sqlSessionFactoryBuilder) {
         this.sqlSessionFactoryBuilder = sqlSessionFactoryBuilder;
     }
 
@@ -551,7 +551,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * @param transactionFactory the MyBatis TransactionFactory
      * @see SpringManagedTransactionFactory
      */
-    public void setTransactionFactory( TransactionFactory transactionFactory ) {
+    public void setTransactionFactory(TransactionFactory transactionFactory) {
         this.transactionFactory = transactionFactory;
     }
 
@@ -561,15 +561,15 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
      * {@code SqlSessionFactoryBean.class.getSimpleName()}.
      * @param environment the environment name
      */
-    public void setEnvironment( String environment ) {
+    public void setEnvironment(String environment) {
         this.environment = environment;
     }
 
-    public void setTypeEnumsPackage( String typeEnumsPackage ) {
+    public void setTypeEnumsPackage(String typeEnumsPackage) {
         this.typeEnumsPackage = typeEnumsPackage;
     }
 
-    public void setCustomConfiguration( MyBatisCustomConfiguration customConfiguration ) {
+    public void setCustomConfiguration(MyBatisCustomConfiguration customConfiguration) {
         this.customConfiguration = customConfiguration;
     }
 }

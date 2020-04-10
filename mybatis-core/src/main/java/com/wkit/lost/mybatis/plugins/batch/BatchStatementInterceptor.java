@@ -15,26 +15,26 @@ import java.util.Properties;
  * 批量保存拦截器
  * @author wvkity
  */
-@Intercepts( {
-        @Signature( type = StatementHandler.class, method = "update", args = { Statement.class } ),
-        @Signature( type = StatementHandler.class, method = "batch", args = { Statement.class } )
-} )
+@Intercepts({
+        @Signature(type = StatementHandler.class, method = "update", args = {Statement.class}),
+        @Signature(type = StatementHandler.class, method = "batch", args = {Statement.class})
+})
 public class BatchStatementInterceptor implements Interceptor {
 
     private final Processor processor = new BatchStatementProcessor();
 
     @Override
-    public Object intercept( Invocation invocation ) throws Throwable {
-        return processor.intercept( invocation );
+    public Object intercept(Invocation invocation) throws Throwable {
+        return processor.intercept(invocation);
     }
 
     @Override
-    public Object plugin( Object target ) {
-        return Plugin.wrap( target, this );
+    public Object plugin(Object target) {
+        return Plugin.wrap(target, this);
     }
 
     @Override
-    public void setProperties( Properties properties ) {
-        processor.setProperties( properties );
+    public void setProperties(Properties properties) {
+        processor.setProperties(properties);
     }
 }

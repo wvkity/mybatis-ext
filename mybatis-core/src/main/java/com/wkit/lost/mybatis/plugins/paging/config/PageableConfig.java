@@ -29,46 +29,46 @@ public class PageableConfig {
      * @param rowBounds 分页参数
      * @return 分页对象
      */
-    @SuppressWarnings( "unchecked" )
-    public Pageable getPageable( Object parameter, RowBounds rowBounds ) {
+    @SuppressWarnings("unchecked")
+    public Pageable getPageable(Object parameter, RowBounds rowBounds) {
         // 从线程中获取
         Pageable pageable = ThreadLocalPageable.getPageable();
-        if ( pageable != null ) {
+        if (pageable != null) {
             return pageable;
         }
         // 检测参数类型
-        if ( parameter instanceof Pageable ) {
-            pageable = ( Pageable ) parameter;
-        } else if ( parameter instanceof Map ) {
+        if (parameter instanceof Pageable) {
+            pageable = (Pageable) parameter;
+        } else if (parameter instanceof Map) {
             // 从map参数列表中加载
-            Map<String, Object> map = ( Map<String, Object> ) parameter;
-            boolean flag = map.containsKey( "pageable" ) && Optional.ofNullable( map.get( "pageable" ) )
-                    .map( Object::getClass )
-                    .map( Pageable.class::isAssignableFrom )
-                    .orElse( false );
-            if ( flag ) {
-                pageable = ( Pageable ) map.get( "pageable" );
+            Map<String, Object> map = (Map<String, Object>) parameter;
+            boolean flag = map.containsKey("pageable") && Optional.ofNullable(map.get("pageable"))
+                    .map(Object::getClass)
+                    .map(Pageable.class::isAssignableFrom)
+                    .orElse(false);
+            if (flag) {
+                pageable = (Pageable) map.get("pageable");
             } else {
-                for ( Object arg : map.values() ) {
-                    if ( arg instanceof Pageable ) {
-                        pageable = ( Pageable ) arg;
+                for (Object arg : map.values()) {
+                    if (arg instanceof Pageable) {
+                        pageable = (Pageable) arg;
                         break;
                     }
                 }
             }
         } else {
-            pageable = PageableUtil.getPageable( parameter );
+            pageable = PageableUtil.getPageable(parameter);
         }
-        if ( pageable == null && this.offsetAsPage ) {
-            if ( rowBounds != RowBounds.DEFAULT ) {
+        if (pageable == null && this.offsetAsPage) {
+            if (rowBounds != RowBounds.DEFAULT) {
                 long offset = rowBounds.getOffset();
                 long size = rowBounds.getLimit();
-                long page = size != 0 ? ( long ) Math.ceil( ( ( double ) ( offset + size ) / size ) ) : 0;
-                pageable = new Pager( page, size );
+                long page = size != 0 ? (long) Math.ceil(((double) (offset + size) / size)) : 0;
+                pageable = new Pager(page, size);
             }
         }
-        if ( pageable != null ) {
-            ThreadLocalPageable.setPageable( pageable );
+        if (pageable != null) {
+            ThreadLocalPageable.setPageable(pageable);
         }
         return pageable;
     }
@@ -77,8 +77,8 @@ public class PageableConfig {
      * 设置属性
      * @param props {@link Properties}
      */
-    public void setProperties( Properties props ) {
-        this.offsetAsPage = StringUtil.toBoolean( props.getProperty( "offsetAsPage" ) );
+    public void setProperties(Properties props) {
+        this.offsetAsPage = StringUtil.toBoolean(props.getProperty("offsetAsPage"));
     }
 
 }

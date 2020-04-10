@@ -24,10 +24,10 @@ public class AggregationOrder<T> extends AbstractOrderWrapper<T, Aggregation> {
      * @param aggregations 聚合函数集合
      * @param ascending    排序方式(是否为ASC排序)
      */
-    private AggregationOrder( boolean ascending, Collection<Aggregation> aggregations ) {
+    private AggregationOrder(boolean ascending, Collection<Aggregation> aggregations) {
         this.ascending = ascending;
-        if ( CollectionUtil.hasElement( aggregations ) ) {
-            this.columns.addAll( aggregations.stream().filter( Objects::nonNull ).collect( Collectors.toList() ) );
+        if (CollectionUtil.hasElement(aggregations)) {
+            this.columns.addAll(aggregations.stream().filter(Objects::nonNull).collect(Collectors.toList()));
         }
     }
 
@@ -37,8 +37,8 @@ public class AggregationOrder<T> extends AbstractOrderWrapper<T, Aggregation> {
      * @param <T>          泛型类型
      * @return 排序对象
      */
-    public static <T> AggregationOrder<T> asc( Aggregation... aggregations ) {
-        return asc( ArrayUtil.toList( aggregations ) );
+    public static <T> AggregationOrder<T> asc(Aggregation... aggregations) {
+        return asc(ArrayUtil.toList(aggregations));
     }
 
     /**
@@ -48,8 +48,8 @@ public class AggregationOrder<T> extends AbstractOrderWrapper<T, Aggregation> {
      * @param <T>      泛型类型
      * @return 排序对象
      */
-    public static <T> AggregationOrder<T> asc( Criteria<T> criteria, String... aliases ) {
-        return asc( criteria, ArrayUtil.toList( aliases ) );
+    public static <T> AggregationOrder<T> asc(Criteria<T> criteria, String... aliases) {
+        return asc(criteria, ArrayUtil.toList(aliases));
     }
 
     /**
@@ -59,9 +59,9 @@ public class AggregationOrder<T> extends AbstractOrderWrapper<T, Aggregation> {
      * @param <T>      泛型类型
      * @return 排序对象
      */
-    public static <T> AggregationOrder<T> asc( Criteria<T> criteria, List<String> aliases ) {
-        if ( CollectionUtil.hasElement( aliases ) ) {
-            return asc( aliases.stream().map( criteria::getAggregate ).collect( Collectors.toList() ) );
+    public static <T> AggregationOrder<T> asc(Criteria<T> criteria, List<String> aliases) {
+        if (CollectionUtil.hasElement(aliases)) {
+            return asc(aliases.stream().map(criteria::getAggregate).collect(Collectors.toList()));
         }
         return null;
     }
@@ -72,8 +72,8 @@ public class AggregationOrder<T> extends AbstractOrderWrapper<T, Aggregation> {
      * @param <T>          泛型类型
      * @return 排序对象
      */
-    public static <T> AggregationOrder<T> asc( List<Aggregation> aggregations ) {
-        return new AggregationOrder<>( true, aggregations );
+    public static <T> AggregationOrder<T> asc(List<Aggregation> aggregations) {
+        return new AggregationOrder<>(true, aggregations);
     }
 
     /**
@@ -82,8 +82,8 @@ public class AggregationOrder<T> extends AbstractOrderWrapper<T, Aggregation> {
      * @param <T>          泛型类型
      * @return 排序对象
      */
-    public static <T> AggregationOrder<T> desc( Aggregation... aggregations ) {
-        return desc( ArrayUtil.toList( aggregations ) );
+    public static <T> AggregationOrder<T> desc(Aggregation... aggregations) {
+        return desc(ArrayUtil.toList(aggregations));
     }
 
     /**
@@ -92,8 +92,8 @@ public class AggregationOrder<T> extends AbstractOrderWrapper<T, Aggregation> {
      * @param <T>          泛型类型
      * @return 排序对象
      */
-    public static <T> AggregationOrder<T> desc( List<Aggregation> aggregations ) {
-        return new AggregationOrder<>( false, aggregations );
+    public static <T> AggregationOrder<T> desc(List<Aggregation> aggregations) {
+        return new AggregationOrder<>(false, aggregations);
     }
 
     /**
@@ -103,8 +103,8 @@ public class AggregationOrder<T> extends AbstractOrderWrapper<T, Aggregation> {
      * @param <T>      泛型类型
      * @return 排序对象
      */
-    public static <T> AggregationOrder<T> desc( Criteria<T> criteria, String... aliases ) {
-        return desc( criteria, ArrayUtil.toList( aliases ) );
+    public static <T> AggregationOrder<T> desc(Criteria<T> criteria, String... aliases) {
+        return desc(criteria, ArrayUtil.toList(aliases));
     }
 
     /**
@@ -114,9 +114,9 @@ public class AggregationOrder<T> extends AbstractOrderWrapper<T, Aggregation> {
      * @param <T>      泛型类型
      * @return 排序对象
      */
-    public static <T> AggregationOrder<T> desc( Criteria<T> criteria, List<String> aliases ) {
-        if ( CollectionUtil.hasElement( aliases ) ) {
-            return desc( aliases.stream().map( criteria::getAggregate ).collect( Collectors.toList() ) );
+    public static <T> AggregationOrder<T> desc(Criteria<T> criteria, List<String> aliases) {
+        if (CollectionUtil.hasElement(aliases)) {
+            return desc(aliases.stream().map(criteria::getAggregate).collect(Collectors.toList()));
         }
         return null;
     }
@@ -124,10 +124,10 @@ public class AggregationOrder<T> extends AbstractOrderWrapper<T, Aggregation> {
 
     @Override
     public String getSegment() {
-        if ( notEmpty() ) {
+        if (notEmpty()) {
             String orderMode = ascending ? " ASC" : " DESC";
-            return this.columns.stream().map( it -> it.toOrderSegment() + orderMode )
-                    .collect( Collectors.joining( ", " ) );
+            return this.columns.stream().map(it -> it.toOrderSegment() + orderMode)
+                    .collect(Collectors.joining(", "));
         }
         return "";
     }

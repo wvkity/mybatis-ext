@@ -11,6 +11,6 @@ public class TimestampProvider extends AbstractProvider {
 
     @Override
     public Timestamp getNow() {
-        return Timestamp.from( Instant.now() );
+        return Timestamp.from(Instant.now());
     }
 }

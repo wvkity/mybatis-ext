@@ -30,23 +30,23 @@ import java.util.stream.Stream;
 public class DefaultFieldParser implements FieldParser {
 
     @Override
-    public List<FieldWrapper> parse( Class<?> entity ) {
-        return recursivelyRead( new ArrayList<>(), entity, 0 );
+    public List<FieldWrapper> parse(Class<?> entity) {
+        return recursivelyRead(new ArrayList<>(), entity, 0);
     }
 
     @Override
-    public List<FieldWrapper> parseFromBeanInfo( Class<?> entity ) {
+    public List<FieldWrapper> parseFromBeanInfo(Class<?> entity) {
         BeanInfo beanInfo;
         try {
-            beanInfo = Introspector.getBeanInfo( entity );
-        } catch ( IntrospectionException e ) {
-            throw new MapperParserException( StringUtil.format( "Failed to get bean information of `{}` " +
-                    "class: `{}`", entity.getCanonicalName(), e.getMessage() ), e );
+            beanInfo = Introspector.getBeanInfo(entity);
+        } catch (IntrospectionException e) {
+            throw new MapperParserException(StringUtil.format("Failed to get bean information of `{}` " +
+                    "class: `{}`", entity.getCanonicalName(), e.getMessage()), e);
         }
         PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
-        return ArrayUtil.isEmpty( descriptors ) ? new ArrayList<>( 0 ) : new ArrayList<>(
-                Stream.of( descriptors ).filter( this::filter ).map( this::convert )
-                        .collect( Collectors.toCollection( LinkedHashSet::new ) ) );
+        return ArrayUtil.isEmpty(descriptors) ? new ArrayList<>(0) : new ArrayList<>(
+                Stream.of(descriptors).filter(this::filter).map(this::convert)
+                        .collect(Collectors.toCollection(LinkedHashSet::new)));
     }
 
     /**
@@ -56,21 +56,21 @@ public class DefaultFieldParser implements FieldParser {
      * @param level    级别(标识是否为父类: [1+: true])
      * @return 属性集合
      */
-    protected List<FieldWrapper> recursivelyRead( List<FieldWrapper> wrappers, final Class<?> entity, int level ) {
+    protected List<FieldWrapper> recursivelyRead(List<FieldWrapper> wrappers, final Class<?> entity, int level) {
         Field[] array = entity.getDeclaredFields();
-        if ( !ArrayUtil.isEmpty( array ) ) {
-            List<Field> fields = Stream.of( array ).filter( this::filter )
-                    .collect( Collectors.toCollection( ArrayList::new ) );
-            for ( int i = 0, size = fields.size(); i < size; i++ ) {
-                addTo( wrappers, fields.get( i ), level, i );
+        if (!ArrayUtil.isEmpty(array)) {
+            List<Field> fields = Stream.of(array).filter(this::filter)
+                    .collect(Collectors.toCollection(ArrayList::new));
+            for (int i = 0, size = fields.size(); i < size; i++) {
+                addTo(wrappers, fields.get(i), level, i);
             }
         }
         // 基类
         Class<?> superClass = entity.getSuperclass();
-        if ( superClass != null && !Object.class.equals( superClass )
-                && ( AnnotationUtil.isAnnotationPresent( superClass, Entity.class, JavaxPersistence.ENTITY )
-                || ( !Map.class.isAssignableFrom( superClass ) && !Collection.class.isAssignableFrom( superClass ) ) ) ) {
-            return recursivelyRead( wrappers, superClass, ++level );
+        if (superClass != null && !Object.class.equals(superClass)
+                && (AnnotationUtil.isAnnotationPresent(superClass, Entity.class, JavaxPersistence.ENTITY)
+                || (!Map.class.isAssignableFrom(superClass) && !Collection.class.isAssignableFrom(superClass)))) {
+            return recursivelyRead(wrappers, superClass, ++level);
         }
         return wrappers;
     }
@@ -80,11 +80,11 @@ public class DefaultFieldParser implements FieldParser {
      * @param field 属性
      * @return true/false
      */
-    protected boolean filter( final Field field ) {
+    protected boolean filter(final Field field) {
         return field != null
-                && !Modifier.isStatic( field.getModifiers() )
-                && !Modifier.isTransient( field.getModifiers() )
-                && !AnnotationUtil.isAnnotationPresent( field, Transient.class, JavaxPersistence.TRANSIENT );
+                && !Modifier.isStatic(field.getModifiers())
+                && !Modifier.isTransient(field.getModifiers())
+                && !AnnotationUtil.isAnnotationPresent(field, Transient.class, JavaxPersistence.TRANSIENT);
     }
 
     /**
@@ -92,8 +92,8 @@ public class DefaultFieldParser implements FieldParser {
      * @param descriptor 属性描述
      * @return true/false
      */
-    protected boolean filter( final PropertyDescriptor descriptor ) {
-        return descriptor != null && !"class".equals( descriptor.getName() );
+    protected boolean filter(final PropertyDescriptor descriptor) {
+        return descriptor != null && !"class".equals(descriptor.getName());
     }
 
     /**
@@ -103,11 +103,11 @@ public class DefaultFieldParser implements FieldParser {
      * @param level    级别
      * @param index    索引
      */
-    protected void addTo( final List<FieldWrapper> wrappers, final Field field, final int level, final int index ) {
-        if ( level == 0 ) {
-            wrappers.add( convert( field ) );
+    protected void addTo(final List<FieldWrapper> wrappers, final Field field, final int level, final int index) {
+        if (level == 0) {
+            wrappers.add(convert(field));
         } else {
-            wrappers.add( index, convert( field ) );
+            wrappers.add(index, convert(field));
         }
     }
 
@@ -116,8 +116,8 @@ public class DefaultFieldParser implements FieldParser {
      * @param field 属性对象
      * @return {@link FieldWrapper}对象
      */
-    protected FieldWrapper convert( final Field field ) {
-        return new FieldWrapper( field );
+    protected FieldWrapper convert(final Field field) {
+        return new FieldWrapper(field);
     }
 
     /**
@@ -125,7 +125,7 @@ public class DefaultFieldParser implements FieldParser {
      * @param descriptor 属性描述
      * @return 属性信息
      */
-    protected FieldWrapper convert( final PropertyDescriptor descriptor ) {
-        return new FieldWrapper( null, descriptor );
+    protected FieldWrapper convert(final PropertyDescriptor descriptor) {
+        return new FieldWrapper(null, descriptor);
     }
 }

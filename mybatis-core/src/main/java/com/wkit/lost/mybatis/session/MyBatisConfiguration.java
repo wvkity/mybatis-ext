@@ -51,9 +51,9 @@ import java.time.chrono.JapaneseDate;
  */
 public class MyBatisConfiguration extends Configuration {
 
-    private static final Log log = LogFactory.getLog( MyBatisConfiguration.class );
+    private static final Log log = LogFactory.getLog(MyBatisConfiguration.class);
 
-    protected final MyBatisMapperRegistry myBatisMapperRegistry = new MyBatisMapperRegistry( this );
+    protected final MyBatisMapperRegistry myBatisMapperRegistry = new MyBatisMapperRegistry(this);
 
     /**
      * 自定义配置
@@ -64,43 +64,43 @@ public class MyBatisConfiguration extends Configuration {
 
     public MyBatisConfiguration() {
         super();
-        setDefaultScriptingLanguage( MyBatisXMLLanguageDriver.class );
+        setDefaultScriptingLanguage(MyBatisXMLLanguageDriver.class);
         // registry JDK8+ time api(JSR-310)
         TypeHandlerRegistry typeHandlerRegistry = this.getTypeHandlerRegistry();
-        typeHandlerRegistry.register( Instant.class, StandardInstantTypeHandler.class );
-        typeHandlerRegistry.register( JapaneseDate.class, StandardJapaneseDateTypeHandler.class );
-        typeHandlerRegistry.register( LocalDateTime.class, StandardLocalDateTimeTypeHandler.class );
-        typeHandlerRegistry.register( LocalDate.class, StandardLocalDateTypeHandler.class );
-        typeHandlerRegistry.register( LocalTime.class, StandardLocalTimeTypeHandler.class );
-        typeHandlerRegistry.register( OffsetDateTime.class, StandardOffsetDateTimeTypeHandler.class );
-        typeHandlerRegistry.register( OffsetTime.class, StandardOffsetTimeTypeHandler.class );
-        typeHandlerRegistry.register( ZonedDateTime.class, StandardZonedDateTimeTypeHandler.class );
+        typeHandlerRegistry.register(Instant.class, StandardInstantTypeHandler.class);
+        typeHandlerRegistry.register(JapaneseDate.class, StandardJapaneseDateTypeHandler.class);
+        typeHandlerRegistry.register(LocalDateTime.class, StandardLocalDateTimeTypeHandler.class);
+        typeHandlerRegistry.register(LocalDate.class, StandardLocalDateTypeHandler.class);
+        typeHandlerRegistry.register(LocalTime.class, StandardLocalTimeTypeHandler.class);
+        typeHandlerRegistry.register(OffsetDateTime.class, StandardOffsetDateTimeTypeHandler.class);
+        typeHandlerRegistry.register(OffsetTime.class, StandardOffsetTimeTypeHandler.class);
+        typeHandlerRegistry.register(ZonedDateTime.class, StandardZonedDateTimeTypeHandler.class);
         // 设置ObjectWrapperFactory对象
         this.objectWrapperFactory = new MyBatisObjectWrapperFactory();
         // 默认开启驼峰转换
-        this.setMapUnderscoreToCamelCase( true );
+        this.setMapUnderscoreToCamelCase(true);
     }
 
-    public MyBatisConfiguration( Environment environment ) {
+    public MyBatisConfiguration(Environment environment) {
         this();
         this.environment = environment;
     }
 
     @Override
-    public void addMappedStatement( MappedStatement ms ) {
-        if ( mappedStatements.containsKey( ms.getId() ) ) {
+    public void addMappedStatement(MappedStatement ms) {
+        if (mappedStatements.containsKey(ms.getId())) {
             // log.warn( "Mapper `" + ms.getId() + "` is ignored, because is's exists, maybe from xml file." );
             return;
         }
-        super.addMappedStatement( ms );
+        super.addMappedStatement(ms);
     }
 
     @Override
-    public void setDefaultScriptingLanguage( Class<? extends LanguageDriver> driver ) {
-        if ( driver == null ) {
+    public void setDefaultScriptingLanguage(Class<? extends LanguageDriver> driver) {
+        if (driver == null) {
             driver = MyBatisXMLLanguageDriver.class;
         }
-        super.setDefaultScriptingLanguage( driver );
+        super.setDefaultScriptingLanguage(driver);
     }
 
     public MyBatisMapperRegistry getMyBatisMapperRegistry() {
@@ -108,56 +108,56 @@ public class MyBatisConfiguration extends Configuration {
     }
 
     @Override
-    public <T> void addMapper( Class<T> type ) {
-        this.myBatisMapperRegistry.addMapper( type );
+    public <T> void addMapper(Class<T> type) {
+        this.myBatisMapperRegistry.addMapper(type);
     }
 
     @Override
-    public void addMappers( String packageName, Class<?> superType ) {
-        this.myBatisMapperRegistry.addMappers( packageName, superType );
+    public void addMappers(String packageName, Class<?> superType) {
+        this.myBatisMapperRegistry.addMappers(packageName, superType);
     }
 
     @Override
-    public void addMappers( String packageName ) {
-        this.myBatisMapperRegistry.addMappers( packageName );
+    public void addMappers(String packageName) {
+        this.myBatisMapperRegistry.addMappers(packageName);
     }
 
     @Override
-    public <T> T getMapper( Class<T> type, SqlSession sqlSession ) {
-        return this.myBatisMapperRegistry.getMapper( type, sqlSession );
+    public <T> T getMapper(Class<T> type, SqlSession sqlSession) {
+        return this.myBatisMapperRegistry.getMapper(type, sqlSession);
     }
 
     @Override
-    public boolean hasMapper( Class<?> type ) {
-        return this.myBatisMapperRegistry.hasMapper( type );
+    public boolean hasMapper(Class<?> type) {
+        return this.myBatisMapperRegistry.hasMapper(type);
     }
 
     @Override
-    public ResultSetHandler newResultSetHandler( Executor executor, MappedStatement mappedStatement,
-                                                 RowBounds rowBounds, ParameterHandler parameterHandler,
-                                                 ResultHandler resultHandler, BoundSql boundSql ) {
-        ResultSetHandler resultSetHandler = new MyBatisResultSetHandler( executor, mappedStatement,
-                parameterHandler, resultHandler, boundSql, rowBounds );
-        resultSetHandler = ( ResultSetHandler ) interceptorChain.pluginAll( resultSetHandler );
+    public ResultSetHandler newResultSetHandler(Executor executor, MappedStatement mappedStatement,
+                                                RowBounds rowBounds, ParameterHandler parameterHandler,
+                                                ResultHandler resultHandler, BoundSql boundSql) {
+        ResultSetHandler resultSetHandler = new MyBatisResultSetHandler(executor, mappedStatement,
+                parameterHandler, resultHandler, boundSql, rowBounds);
+        resultSetHandler = (ResultSetHandler) interceptorChain.pluginAll(resultSetHandler);
         return resultSetHandler;
     }
 
     @Override
-    public Executor newExecutor( Transaction transaction, ExecutorType executorType ) {
+    public Executor newExecutor(Transaction transaction, ExecutorType executorType) {
         executorType = executorType == null ? defaultExecutorType : executorType;
         executorType = executorType == null ? ExecutorType.SIMPLE : executorType;
         Executor executor;
-        if ( ExecutorType.BATCH == executorType ) {
-            executor = new MyBatisBatchExecutor( this, transaction );
-        } else if ( ExecutorType.REUSE == executorType ) {
-            executor = new MyBatisReuseExecutor( this, transaction );
+        if (ExecutorType.BATCH == executorType) {
+            executor = new MyBatisBatchExecutor(this, transaction);
+        } else if (ExecutorType.REUSE == executorType) {
+            executor = new MyBatisReuseExecutor(this, transaction);
         } else {
-            executor = new MyBatisSimpleExecutor( this, transaction );
+            executor = new MyBatisSimpleExecutor(this, transaction);
         }
-        if ( cacheEnabled ) {
-            executor = new CachingExecutor( executor );
+        if (cacheEnabled) {
+            executor = new CachingExecutor(executor);
         }
-        executor = ( Executor ) interceptorChain.pluginAll( executor );
+        executor = (Executor) interceptorChain.pluginAll(executor);
         return executor;
     }
 }

@@ -20,7 +20,7 @@ public class ImmediateBetween<T> extends AbstractImmediateBetweenExpression<T> {
      * @param end    结束值
      * @param logic  逻辑符号
      */
-    ImmediateBetween( String column, Object begin, Object end, Logic logic ) {
+    ImmediateBetween(String column, Object begin, Object end, Logic logic) {
         this.column = column;
         this.begin = begin;
         this.end = end;
@@ -36,7 +36,7 @@ public class ImmediateBetween<T> extends AbstractImmediateBetweenExpression<T> {
      * @param end        结束值
      * @param logic      逻辑符号
      */
-    ImmediateBetween( String tableAlias, String column, Object begin, Object end, Logic logic ) {
+    ImmediateBetween(String tableAlias, String column, Object begin, Object end, Logic logic) {
         this.tableAlias = tableAlias;
         this.column = column;
         this.begin = begin;
@@ -53,7 +53,7 @@ public class ImmediateBetween<T> extends AbstractImmediateBetweenExpression<T> {
      * @param end      结束值
      * @param logic    逻辑符号
      */
-    ImmediateBetween( Criteria<T> criteria, String column, Object begin, Object end, Logic logic ) {
+    ImmediateBetween(Criteria<T> criteria, String column, Object begin, Object end, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.begin = begin;
@@ -70,8 +70,8 @@ public class ImmediateBetween<T> extends AbstractImmediateBetweenExpression<T> {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateBetween<T> create( String column, Object begin, Object end ) {
-        return create( column, begin, end, Logic.AND );
+    public static <T> ImmediateBetween<T> create(String column, Object begin, Object end) {
+        return create(column, begin, end, Logic.AND);
     }
 
     /**
@@ -83,9 +83,9 @@ public class ImmediateBetween<T> extends AbstractImmediateBetweenExpression<T> {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateBetween<T> create( String column, Object begin, Object end, Logic logic ) {
-        if ( hasText( column ) ) {
-            return new ImmediateBetween<>( column, begin, end, logic );
+    public static <T> ImmediateBetween<T> create(String column, Object begin, Object end, Logic logic) {
+        if (hasText(column)) {
+            return new ImmediateBetween<>(column, begin, end, logic);
         }
         return null;
     }
@@ -99,8 +99,8 @@ public class ImmediateBetween<T> extends AbstractImmediateBetweenExpression<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateBetween<T> create( String tableAlias, String column, Object begin, Object end ) {
-        return create( tableAlias, column, begin, end, Logic.AND );
+    public static <T> ImmediateBetween<T> create(String tableAlias, String column, Object begin, Object end) {
+        return create(tableAlias, column, begin, end, Logic.AND);
     }
 
     /**
@@ -113,10 +113,10 @@ public class ImmediateBetween<T> extends AbstractImmediateBetweenExpression<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateBetween<T> create( String tableAlias, String column, Object begin,
-                                                  Object end, Logic logic ) {
-        if ( hasText( column ) ) {
-            return new ImmediateBetween<>( tableAlias, column, begin, end, logic );
+    public static <T> ImmediateBetween<T> create(String tableAlias, String column, Object begin,
+                                                 Object end, Logic logic) {
+        if (hasText(column)) {
+            return new ImmediateBetween<>(tableAlias, column, begin, end, logic);
         }
         return null;
     }
@@ -130,8 +130,8 @@ public class ImmediateBetween<T> extends AbstractImmediateBetweenExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateBetween<T> create( Criteria<T> criteria, String column, Object begin, Object end ) {
-        return create( criteria, column, begin, end, Logic.AND );
+    public static <T> ImmediateBetween<T> create(Criteria<T> criteria, String column, Object begin, Object end) {
+        return create(criteria, column, begin, end, Logic.AND);
     }
 
     /**
@@ -144,10 +144,10 @@ public class ImmediateBetween<T> extends AbstractImmediateBetweenExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateBetween<T> create( Criteria<T> criteria, String column, Object begin,
-                                                  Object end, Logic logic ) {
-        if ( criteria != null && hasText( column ) ) {
-            return new ImmediateBetween<>( criteria, column, begin, end, logic );
+    public static <T> ImmediateBetween<T> create(Criteria<T> criteria, String column, Object begin,
+                                                 Object end, Logic logic) {
+        if (criteria != null && hasText(column)) {
+            return new ImmediateBetween<>(criteria, column, begin, end, logic);
         }
         return null;
     }

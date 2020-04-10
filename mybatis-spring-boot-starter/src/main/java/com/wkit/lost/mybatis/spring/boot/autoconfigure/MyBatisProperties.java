@@ -21,8 +21,8 @@ import java.util.stream.Stream;
  * @author wvkity
  */
 @Data
-@Accessors( chain = true )
-@ConfigurationProperties( prefix = "lost.mybatis", ignoreInvalidFields = true )
+@Accessors(chain = true)
+@ConfigurationProperties(prefix = "lost.mybatis", ignoreInvalidFields = true)
 public class MyBatisProperties {
 
     private static final ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
@@ -35,7 +35,7 @@ public class MyBatisProperties {
     /**
      * MyBatis接口映射文件位置
      */
-    private String[] mapperLocations = new String[]{ "classpath*:/mybatis/mapper/**/*.xml" };
+    private String[] mapperLocations = new String[]{"classpath*:/mybatis/mapper/**/*.xml"};
 
     /**
      * 类型别名包(分隔符: [,|;|\t|\n])
@@ -85,16 +85,16 @@ public class MyBatisProperties {
     private MyBatisCustomConfiguration customConfiguration;
 
     public Resource[] resolveMapperLocations() {
-        return Stream.of( Optional.ofNullable( this.mapperLocations ).orElse( new String[ 0 ] ) )
-                .flatMap( location -> Stream.of( getResources( location ) ) )
-                .toArray( Resource[]::new );
+        return Stream.of(Optional.ofNullable(this.mapperLocations).orElse(new String[0]))
+                .flatMap(location -> Stream.of(getResources(location)))
+                .toArray(Resource[]::new);
     }
 
-    private Resource[] getResources( String location ) {
+    private Resource[] getResources(String location) {
         try {
-            return resourceResolver.getResources( location );
-        } catch ( IOException e ) {
-            return new Resource[ 0 ];
+            return resourceResolver.getResources(location);
+        } catch (IOException e) {
+            return new Resource[0];
         }
     }
 }

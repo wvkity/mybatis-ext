@@ -10,12 +10,12 @@ public interface WithNoLockReplace {
      * @param originalSql 原SQL
      * @return 替换后的SQL
      */
-    String replace( String originalSql );
+    String replace(String originalSql);
 
     /**
      * 还原替换的SQL
      * @param replacementSql 替换的SQL
      * @return 原SQL
      */
-    String restore( String replacementSql );
+    String restore(String replacementSql);
 }

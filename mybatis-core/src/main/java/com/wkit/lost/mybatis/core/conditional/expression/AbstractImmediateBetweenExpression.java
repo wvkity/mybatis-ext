@@ -4,7 +4,7 @@ import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 import lombok.Getter;
 import lombok.Setter;
 
-@SuppressWarnings( { "serial" } )
+@SuppressWarnings({"serial"})
 public abstract class AbstractImmediateBetweenExpression<T> extends ImmediateExpressionWrapper<T> {
 
     /**
@@ -23,7 +23,7 @@ public abstract class AbstractImmediateBetweenExpression<T> extends ImmediateExp
 
     @Override
     public String getSegment() {
-        return ScriptUtil.convertConditionArg( getAlias(), this.column,
-                this.symbol, this.logic, defaultPlaceholder( this.begin ), defaultPlaceholder( this.end ) );
+        return ScriptUtil.convertConditionArg(getAlias(), this.column,
+                this.symbol, this.logic, defaultPlaceholder(this.begin), defaultPlaceholder(this.end));
     }
 }

@@ -32,7 +32,7 @@ public class MyBatisConfigCache {
     /**
      * 接口注册
      */
-    private static final Map<String, Set<String>> MAPPER_INTERFACE_CACHE = new ConcurrentHashMap<>( 128 );
+    private static final Map<String, Set<String>> MAPPER_INTERFACE_CACHE = new ConcurrentHashMap<>(128);
 
     /**
      * 默认配置
@@ -45,8 +45,8 @@ public class MyBatisConfigCache {
      */
     public static MyBatisCustomConfiguration defaults() {
         MyBatisCustomConfiguration config = new MyBatisCustomConfiguration();
-        config.setDialect( Dialect.MYSQL );
-        config.setStrategy( NamingStrategy.CAMEL_HUMP_UPPERCASE );
+        config.setDialect(Dialect.MYSQL);
+        config.setStrategy(NamingStrategy.CAMEL_HUMP_UPPERCASE);
         return config;
     }
 
@@ -55,14 +55,14 @@ public class MyBatisConfigCache {
      * @param configuration MyBatis配置
      * @return {@link MyBatisConfigCache}
      */
-    public static MyBatisCustomConfiguration getCustomConfiguration( final Configuration configuration ) {
-        if ( configuration == null ) {
-            throw new MapperException( "The configuration object cannot be empty. You need initialize Configuration." );
+    public static MyBatisCustomConfiguration getCustomConfiguration(final Configuration configuration) {
+        if (configuration == null) {
+            throw new MapperException("The configuration object cannot be empty. You need initialize Configuration.");
         }
-        if ( configuration instanceof MyBatisConfiguration ) {
-            return ( ( MyBatisConfiguration ) configuration ).getCustomConfiguration();
+        if (configuration instanceof MyBatisConfiguration) {
+            return ((MyBatisConfiguration) configuration).getCustomConfiguration();
         }
-        return getCustomConfiguration( configuration.toString() );
+        return getCustomConfiguration(configuration.toString());
     }
 
     /**
@@ -70,12 +70,12 @@ public class MyBatisConfigCache {
      * @param mark MyBatis配置标识
      * @return {@link MyBatisConfigCache}
      */
-    public static MyBatisCustomConfiguration getCustomConfiguration( final String mark ) {
-        MyBatisCustomConfiguration cache = CONFIGURATION_CACHE.get( mark );
-        if ( cache == null ) {
-            CONFIGURATION_CACHE.putIfAbsent( mark, DEFAULT_CONFIG );
-            log.debug( "MyBatis custom configuration initializing: `{}`", DEFAULT_CONFIG );
-            return CONFIGURATION_CACHE.get( mark );
+    public static MyBatisCustomConfiguration getCustomConfiguration(final String mark) {
+        MyBatisCustomConfiguration cache = CONFIGURATION_CACHE.get(mark);
+        if (cache == null) {
+            CONFIGURATION_CACHE.putIfAbsent(mark, DEFAULT_CONFIG);
+            log.debug("MyBatis custom configuration initializing: `{}`", DEFAULT_CONFIG);
+            return CONFIGURATION_CACHE.get(mark);
         }
         return cache;
     }
@@ -85,15 +85,15 @@ public class MyBatisConfigCache {
      * @param configuration       MyBatis配置
      * @param customConfiguration 自定义全局配置
      */
-    public static void cacheCustomConfiguration( final Configuration configuration, MyBatisCustomConfiguration customConfiguration ) {
-        if ( configuration == null || customConfiguration == null ) {
-            throw new MyBatisException( "Mybatis configuration object cannot be empty, please initialize it first" );
+    public static void cacheCustomConfiguration(final Configuration configuration, MyBatisCustomConfiguration customConfiguration) {
+        if (configuration == null || customConfiguration == null) {
+            throw new MyBatisException("Mybatis configuration object cannot be empty, please initialize it first");
         }
-        if ( configuration instanceof MyBatisConfiguration ) {
+        if (configuration instanceof MyBatisConfiguration) {
             // 覆盖原有的自定义配置
-            ( ( MyBatisConfiguration ) configuration ).setCustomConfiguration( customConfiguration );
+            ((MyBatisConfiguration) configuration).setCustomConfiguration(customConfiguration);
         } else {
-            CONFIGURATION_CACHE.put( configuration.toString(), customConfiguration );
+            CONFIGURATION_CACHE.put(configuration.toString(), customConfiguration);
         }
     }
 
@@ -102,15 +102,15 @@ public class MyBatisConfigCache {
      * @param configuration   配置对象
      * @param mapperInterface 接口
      */
-    public static void registryMapperInterface( final Configuration configuration, final Class<?> mapperInterface ) {
+    public static void registryMapperInterface(final Configuration configuration, final Class<?> mapperInterface) {
         String mark = configuration.toString();
-        Set<String> cache = MAPPER_INTERFACE_CACHE.get( mark );
-        if ( cache != null ) {
-            cache.add( mapperInterface.getName() );
+        Set<String> cache = MAPPER_INTERFACE_CACHE.get(mark);
+        if (cache != null) {
+            cache.add(mapperInterface.getName());
         } else {
             Set<String> newCache = new ConcurrentSkipListSet<>();
-            newCache.add( mapperInterface.getName() );
-            MAPPER_INTERFACE_CACHE.putIfAbsent( mark, newCache );
+            newCache.add(mapperInterface.getName());
+            MAPPER_INTERFACE_CACHE.putIfAbsent(mark, newCache);
         }
     }
 
@@ -119,14 +119,14 @@ public class MyBatisConfigCache {
      * @param configuration MyBatis配置对象
      * @return Mapper接口注册缓存信息
      */
-    public static Set<String> getMapperInterfaceCache( final Configuration configuration ) {
+    public static Set<String> getMapperInterfaceCache(final Configuration configuration) {
         String mark = configuration.toString();
-        Set<String> cache = MAPPER_INTERFACE_CACHE.get( mark );
-        if ( cache != null ) {
+        Set<String> cache = MAPPER_INTERFACE_CACHE.get(mark);
+        if (cache != null) {
             return cache;
         } else {
-            MAPPER_INTERFACE_CACHE.putIfAbsent( mark, new ConcurrentSkipListSet<>() );
-            return MAPPER_INTERFACE_CACHE.get( mark );
+            MAPPER_INTERFACE_CACHE.putIfAbsent(mark, new ConcurrentSkipListSet<>());
+            return MAPPER_INTERFACE_CACHE.get(mark);
         }
     }
 
@@ -135,14 +135,14 @@ public class MyBatisConfigCache {
      * @param configuration 配置信息
      * @return {@link Injector}
      */
-    public static Injector getInjector( final Configuration configuration ) {
-        MyBatisCustomConfiguration customConfiguration = getCustomConfiguration( configuration );
+    public static Injector getInjector(final Configuration configuration) {
+        MyBatisCustomConfiguration customConfiguration = getCustomConfiguration(configuration);
         Injector injector = customConfiguration.getInjector();
-        if ( injector != null ) {
+        if (injector != null) {
             return injector;
         } else {
             Injector instance = new DefaultInjector();
-            customConfiguration.setInjector( instance );
+            customConfiguration.setInjector(instance);
             return instance;
         }
     }
@@ -152,13 +152,13 @@ public class MyBatisConfigCache {
      * @param assistant       构建器
      * @param mapperInterface Mapper接口
      */
-    public static void inject( final MapperBuilderAssistant assistant, Class<?> mapperInterface ) {
+    public static void inject(final MapperBuilderAssistant assistant, Class<?> mapperInterface) {
         Configuration configuration = assistant.getConfiguration();
-        Optional.ofNullable( getCustomConfiguration( configuration ).getBaseMapperClass() ).ifPresent( it -> {
-            if ( it.isAssignableFrom( mapperInterface ) ) {
-                getInjector( configuration ).inject( assistant, mapperInterface );
+        Optional.ofNullable(getCustomConfiguration(configuration).getBaseMapperClass()).ifPresent(it -> {
+            if (it.isAssignableFrom(mapperInterface)) {
+                getInjector(configuration).inject(assistant, mapperInterface);
             }
-        } );
+        });
     }
 
     /**
@@ -166,7 +166,7 @@ public class MyBatisConfigCache {
      * @param configuration 配置对象
      * @return 数据类型
      */
-    public static Dialect getDialect( final Configuration configuration ) {
-        return getCustomConfiguration( configuration ).getDialect();
+    public static Dialect getDialect(final Configuration configuration) {
+        return getCustomConfiguration(configuration).getDialect();
     }
 }

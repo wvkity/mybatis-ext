@@ -17,29 +17,29 @@ public interface SaveService<T> {
      * @param entity 待保存对象
      * @return 受影响行数
      */
-    int save( final T entity );
+    int save(final T entity);
 
     /**
      * 保存记录
      * @param entity 待保存对象
      * @return 受影响行数
      */
-    int saveNotWithNull( final T entity );
+    int saveNotWithNull(final T entity);
 
     /**
      * 批量保存
      * @param entities 待保存对象集合
      * @return 受影响行数
      */
-    @SuppressWarnings( { "unchecked" } )
-    int batchSave( T... entities );
+    @SuppressWarnings({"unchecked"})
+    int batchSave(T... entities);
 
     /**
      * 批量保存
      * @param entities 待保存对象集合
      * @return 受影响行数
      */
-    int batchSave( final Collection<T> entities );
+    int batchSave(final Collection<T> entities);
 
     /**
      * 批量保存
@@ -47,29 +47,29 @@ public interface SaveService<T> {
      * @param batchSize 批量大小
      * @return 受影响行数
      */
-    int batchSave( final Collection<T> entities, int batchSize );
+    int batchSave(final Collection<T> entities, int batchSize);
 
     /**
      * 批量保存
      * @param wrapper 包装对象
      * @return 受影响行数
      */
-    int batchSave( final BatchDataBeanWrapper<T> wrapper );
+    int batchSave(final BatchDataBeanWrapper<T> wrapper);
 
     /**
      * 批量保存(不自动审计)
      * @param entities 待保存对象集合
      * @return 受影响行数
      */
-    @SuppressWarnings( { "unchecked" } )
-    int batchSaveNotWithAudit( T... entities );
+    @SuppressWarnings({"unchecked"})
+    int batchSaveNotWithAudit(T... entities);
 
     /**
      * 批量保存(不自动审计)
      * @param entities 待保存对象集合
      * @return 受影响行数
      */
-    int batchSaveNotWithAudit( final Collection<T> entities );
+    int batchSaveNotWithAudit(final Collection<T> entities);
 
     /**
      * 批量保存(不自动审计)
@@ -77,14 +77,14 @@ public interface SaveService<T> {
      * @param batchSize 批量大小
      * @return 受影响行数
      */
-    int batchSaveNotWithAudit( final Collection<T> entities, int batchSize );
+    int batchSaveNotWithAudit(final Collection<T> entities, int batchSize);
 
     /**
      * 批量保存(不自动审计)
      * @param wrapper 包装对象
      * @return 受影响行数
      */
-    int batchSaveNotWithAudit( final BatchDataBeanWrapper<T> wrapper );
+    int batchSaveNotWithAudit(final BatchDataBeanWrapper<T> wrapper);
 
     /**
      * 批量保存
@@ -92,8 +92,8 @@ public interface SaveService<T> {
      * @return 受影响行数
      * @see #embeddedBatchSave(Collection, int)
      */
-    @SuppressWarnings( { "unchecked" } )
-    int embeddedBatchSave( T... entities );
+    @SuppressWarnings({"unchecked"})
+    int embeddedBatchSave(T... entities);
 
     /**
      * 批量保存
@@ -101,7 +101,7 @@ public interface SaveService<T> {
      * @return 受影响行数
      * @see #embeddedBatchSave(Collection, int)
      */
-    int embeddedBatchSave( Collection<T> entities );
+    int embeddedBatchSave(Collection<T> entities);
 
     /**
      * 批量保存
@@ -124,7 +124,7 @@ public interface SaveService<T> {
      * @see #batchSaveNotWithAudit(Collection, int)
      * @see #batchSaveNotWithAudit(BatchDataBeanWrapper)
      */
-    int embeddedBatchSave( Collection<T> entities, int batchSize );
+    int embeddedBatchSave(Collection<T> entities, int batchSize);
 
     /**
      * 批量保存
@@ -132,8 +132,8 @@ public interface SaveService<T> {
      * @return 受影响行数
      * @see #embeddedBatchSaveNotWithNull(Collection, int)
      */
-    @SuppressWarnings( { "unchecked" } )
-    int embeddedBatchSaveNotWithNull( T... entities );
+    @SuppressWarnings({"unchecked"})
+    int embeddedBatchSaveNotWithNull(T... entities);
 
     /**
      * 批量保存
@@ -141,7 +141,7 @@ public interface SaveService<T> {
      * @return 受影响行数
      * @see #embeddedBatchSaveNotWithNull(Collection, int)
      */
-    int embeddedBatchSaveNotWithNull( Collection<T> entities );
+    int embeddedBatchSaveNotWithNull(Collection<T> entities);
 
     /**
      * 批量保存
@@ -164,6 +164,6 @@ public interface SaveService<T> {
      * @see #batchSaveNotWithAudit(Collection, int)
      * @see #batchSaveNotWithAudit(BatchDataBeanWrapper)
      */
-    int embeddedBatchSaveNotWithNull( Collection<T> entities, int batchSize );
+    int embeddedBatchSaveNotWithNull(Collection<T> entities, int batchSize);
 
 }

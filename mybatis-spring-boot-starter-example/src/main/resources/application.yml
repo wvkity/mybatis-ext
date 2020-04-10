@@ -51,11 +51,11 @@ lost:
       primary-key: snowflake_sequence
       jdbc-type-auto-mapping: true
       dialect: mysql
-      #plugins:
+        #plugins:
         #- com.wkit.lost.mybatis.plugins.data.auditing.MetadataAuditingInterceptor
         #- com.wkit.lost.mybatis.plugins.locking.OptimisticLockingInterceptor
         #- com.wkit.lost.mybatis.plugins.paging.PageableInterceptor
-        #- com.wkit.lost.mybatis.plugins.paging.RangePageableInterceptor
+      #- com.wkit.lost.mybatis.plugins.paging.RangePageableInterceptor
       #logic-deleted-property: deleted
       boolean-property-auto-add-is-prefix: true
       auto-register-builtin-plugin: true

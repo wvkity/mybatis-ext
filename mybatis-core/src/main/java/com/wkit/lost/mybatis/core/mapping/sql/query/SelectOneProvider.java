@@ -16,10 +16,10 @@ public class SelectOneProvider extends AbstractProvider {
     @Override
     public String build() {
         ColumnWrapper primaryKey = table.getPrimaryKey();
-        if ( primaryKey == null ) {
+        if (primaryKey == null) {
             return "";
         }
-        return select( table.columns().stream().map( ScriptUtil::convertQueryArg ).collect( Collectors.joining( ", " ) ),
-                ( "WHERE " + ScriptUtil.convertPartArg( null, primaryKey, Execute.NONE ) ) );
+        return select(table.columns().stream().map(ScriptUtil::convertQueryArg).collect(Collectors.joining(", ")),
+                ("WHERE " + ScriptUtil.convertPartArg(null, primaryKey, Execute.NONE)));
     }
 }

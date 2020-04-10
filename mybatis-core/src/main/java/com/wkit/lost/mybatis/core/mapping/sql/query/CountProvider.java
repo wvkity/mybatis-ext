@@ -19,10 +19,10 @@ public class CountProvider extends AbstractProvider {
     @Override
     public String build() {
         ColumnWrapper primaryKey = table.getPrimaryKey();
-        String script = primaryKey == null ? "COUNT(*) COUNT" : ( "COUNT(" + primaryKey.getColumn() + ") COUNT" );
-        return select( script, ScriptUtil.convertWhereTag( table.columns().stream().map( it ->
-                ScriptUtil.convertIfTagWithNotNull( null, it, Constants.PARAM_ENTITY, true,
-                        false, Symbol.EQ, Logic.AND, Constants.CHAR_EMPTY, Execute.REPLACE ) )
-                .collect( Collectors.joining( Constants.CHAR_EMPTY, NEW_LINE, NEW_LINE ) ) ) );
+        String script = primaryKey == null ? "COUNT(*) COUNT" : ("COUNT(" + primaryKey.getColumn() + ") COUNT");
+        return select(script, ScriptUtil.convertWhereTag(table.columns().stream().map(it ->
+                ScriptUtil.convertIfTagWithNotNull(null, it, Constants.PARAM_ENTITY, true,
+                        false, Symbol.EQ, Logic.AND, Constants.CHAR_EMPTY, Execute.REPLACE))
+                .collect(Collectors.joining(Constants.CHAR_EMPTY, NEW_LINE, NEW_LINE))));
     }
 }

@@ -8,5 +8,5 @@ import com.wkit.lost.mybatis.core.mapping.sql.update.UpdateNotWithLockingProvide
  * @author wvkity
  */
 public class UpdateNotWithLocking extends AbstractGeneralUpdateMethod<UpdateNotWithLockingProvider> {
-    
+
 }

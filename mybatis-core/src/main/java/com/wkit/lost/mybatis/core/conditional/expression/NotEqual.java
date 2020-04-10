@@ -22,8 +22,8 @@ public class NotEqual<T> extends Simple<T> {
      * @param value    值
      * @param logic    逻辑符号
      */
-    NotEqual( Criteria<T> criteria, ColumnWrapper column, Object value, Logic logic ) {
-        super( criteria, column, value, Symbol.NE, logic );
+    NotEqual(Criteria<T> criteria, ColumnWrapper column, Object value, Logic logic) {
+        super(criteria, column, value, Symbol.NE, logic);
     }
 
     /**
@@ -34,8 +34,8 @@ public class NotEqual<T> extends Simple<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotEqual<T> create( Criteria<T> criteria, Property<T, ?> property, Object value ) {
-        return create( criteria, property, value, Logic.AND );
+    public static <T> NotEqual<T> create(Criteria<T> criteria, Property<T, ?> property, Object value) {
+        return create(criteria, property, value, Logic.AND);
     }
 
     /**
@@ -47,9 +47,9 @@ public class NotEqual<T> extends Simple<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotEqual<T> create( Criteria<T> criteria, Property<T, ?> property, Object value, Logic logic ) {
-        if ( criteria != null && property != null ) {
-            return create( criteria, criteria.searchColumn( property ), value, logic );
+    public static <T> NotEqual<T> create(Criteria<T> criteria, Property<T, ?> property, Object value, Logic logic) {
+        if (criteria != null && property != null) {
+            return create(criteria, criteria.searchColumn(property), value, logic);
         }
         return null;
     }
@@ -62,8 +62,8 @@ public class NotEqual<T> extends Simple<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotEqual<T> create( Criteria<T> criteria, String property, Object value ) {
-        return create( criteria, property, value, Logic.AND );
+    public static <T> NotEqual<T> create(Criteria<T> criteria, String property, Object value) {
+        return create(criteria, property, value, Logic.AND);
     }
 
     /**
@@ -75,9 +75,9 @@ public class NotEqual<T> extends Simple<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotEqual<T> create( Criteria<T> criteria, String property, Object value, Logic logic ) {
-        if ( criteria != null && hasText( property ) ) {
-            return create( criteria, criteria.searchColumn( property ), value, logic );
+    public static <T> NotEqual<T> create(Criteria<T> criteria, String property, Object value, Logic logic) {
+        if (criteria != null && hasText(property)) {
+            return create(criteria, criteria.searchColumn(property), value, logic);
         }
         return null;
     }
@@ -90,8 +90,8 @@ public class NotEqual<T> extends Simple<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotEqual<T> create( Criteria<T> criteria, ColumnWrapper column, Object value ) {
-        return create( criteria, column, value, Logic.AND );
+    public static <T> NotEqual<T> create(Criteria<T> criteria, ColumnWrapper column, Object value) {
+        return create(criteria, column, value, Logic.AND);
     }
 
     /**
@@ -103,9 +103,9 @@ public class NotEqual<T> extends Simple<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotEqual<T> create( Criteria<T> criteria, ColumnWrapper column, Object value, Logic logic ) {
-        if ( criteria != null && column != null ) {
-            return new NotEqual<>( criteria, column, value, logic );
+    public static <T> NotEqual<T> create(Criteria<T> criteria, ColumnWrapper column, Object value, Logic logic) {
+        if (criteria != null && column != null) {
+            return new NotEqual<>(criteria, column, value, logic);
         }
         return null;
     }

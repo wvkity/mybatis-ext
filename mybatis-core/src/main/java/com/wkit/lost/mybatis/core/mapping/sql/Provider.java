@@ -15,5 +15,5 @@ public interface Provider {
      * @param alias  表别名
      * @return SQL语句
      */
-    String build( final TableWrapper table, final Class<?> entity, final String alias );
+    String build(final TableWrapper table, final Class<?> entity, final String alias);
 }

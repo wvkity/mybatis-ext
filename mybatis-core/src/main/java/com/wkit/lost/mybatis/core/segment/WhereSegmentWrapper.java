@@ -17,16 +17,16 @@ public class WhereSegmentWrapper extends AbstractSegment<Criterion<?>> {
 
     @Override
     public String getSegment() {
-        if ( isNotEmpty() ) {
-            List<String> conditions = new ArrayList<>( this.segments.size() );
-            for ( Segment it : this.segments ) {
+        if (isNotEmpty()) {
+            List<String> conditions = new ArrayList<>(this.segments.size());
+            for (Segment it : this.segments) {
                 String condition = it.getSegment();
-                if ( StringUtil.hasText( condition ) ) {
-                    conditions.add( condition );
+                if (StringUtil.hasText(condition)) {
+                    conditions.add(condition);
                 }
             }
-            if ( !conditions.isEmpty() ) {
-                return String.join( " ", conditions ).trim();
+            if (!conditions.isEmpty()) {
+                return String.join(" ", conditions).trim();
             }
         }
         return Constants.CHAR_EMPTY;

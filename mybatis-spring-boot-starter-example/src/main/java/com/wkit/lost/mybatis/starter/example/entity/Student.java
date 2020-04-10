@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @ToString
-@Accessors( chain = true )
+@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants
@@ -63,5 +63,5 @@ public class Student extends BaseEntity {
      * 电子邮件
      */
     private String email;
-    
+
 }

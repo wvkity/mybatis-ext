@@ -15,12 +15,12 @@ public class ExistsProvider extends AbstractProvider {
     @Override
     public String build() {
         ColumnWrapper primaryKey = table.getPrimaryKey();
-        String script = "CASE WHEN COUNT(" + ( primaryKey == null ? "*" : primaryKey.getColumn() ) + ") > 0 " +
+        String script = "CASE WHEN COUNT(" + (primaryKey == null ? "*" : primaryKey.getColumn()) + ") > 0 " +
                 "THEN 1 ELSE 0 END COUNT";
-        return select( script, ScriptUtil.convertWhereTag( table.columns().stream().map( it ->
-                ScriptUtil.convertIfTagWithNotNull( null, it, Constants.PARAM_ENTITY,
-                        true, true, Symbol.EQ, Logic.AND, Constants.CHAR_EMPTY, Execute.REPLACE ) )
-                .collect( Collectors.joining( Constants.CHAR_EMPTY, NEW_LINE, NEW_LINE ) ) ) );
+        return select(script, ScriptUtil.convertWhereTag(table.columns().stream().map(it ->
+                ScriptUtil.convertIfTagWithNotNull(null, it, Constants.PARAM_ENTITY,
+                        true, true, Symbol.EQ, Logic.AND, Constants.CHAR_EMPTY, Execute.REPLACE))
+                .collect(Collectors.joining(Constants.CHAR_EMPTY, NEW_LINE, NEW_LINE))));
 
     }
 }

@@ -14,10 +14,10 @@ public abstract class AbstractDeleteMethod extends AbstractMethod {
      * @param provider        SQL提供者
      * @return {@link MappedStatement}对象
      */
-    protected MappedStatement addDeleteMappedStatement( Class<?> mapperInterface, Class<?> __,
-                                                        TableWrapper table, Provider provider ) {
+    protected MappedStatement addDeleteMappedStatement(Class<?> mapperInterface, Class<?> __,
+                                                       TableWrapper table, Provider provider) {
         Class<?> entity = table.getEntity();
-        return addDeleteMappedStatement( mapperInterface, applyMethod(),
-                createSqlSource( createScriptBuilder( table, provider ), entity ), null );
+        return addDeleteMappedStatement(mapperInterface, applyMethod(),
+                createSqlSource(createScriptBuilder(table, provider), entity), null);
     }
 }

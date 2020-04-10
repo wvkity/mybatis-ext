@@ -9,7 +9,7 @@ public class PageableDialectDelegate extends RangePageableDialectDelegate {
 
     @Override
     public AbstractPageableDialect getDelegate() {
-        AbstractDialect dialect = Optional.ofNullable( this.delegate ).orElse( delegateThreadLocal.get() );
-        return ( AbstractPageableDialect ) Optional.ofNullable( dialect ).orElse( null );
+        AbstractDialect dialect = Optional.ofNullable(this.delegate).orElse(delegateThreadLocal.get());
+        return (AbstractPageableDialect) Optional.ofNullable(dialect).orElse(null);
     }
 }

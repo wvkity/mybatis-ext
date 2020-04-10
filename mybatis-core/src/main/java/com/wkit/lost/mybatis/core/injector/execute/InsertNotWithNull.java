@@ -12,7 +12,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 public class InsertNotWithNull extends AbstractInsertMethod {
 
     @Override
-    public MappedStatement injectMappedStatement( TableWrapper table, Class<?> mapperInterface, Class<?> resultType ) {
-        return addInsertMappedStatement( mapperInterface, resultType, table, new InsertNotWithNullProvider() );
+    public MappedStatement injectMappedStatement(TableWrapper table, Class<?> mapperInterface, Class<?> resultType) {
+        return addInsertMappedStatement(mapperInterface, resultType, table, new InsertNotWithNullProvider());
     }
 }

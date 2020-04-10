@@ -13,7 +13,7 @@ public interface UpdateService<T> {
      * @param entity 指定对象
      * @return 受影响行数
      */
-    int update( final T entity );
+    int update(final T entity);
 
     /**
      * 根据主键更新记录
@@ -21,7 +21,7 @@ public interface UpdateService<T> {
      * @param entity 指定对象
      * @return 受影响行数
      */
-    int updateNotWithNull( final T entity );
+    int updateNotWithNull(final T entity);
 
     /**
      * 根据主键更新记录(主键为条件，更新所有字段[updatable=true])
@@ -29,7 +29,7 @@ public interface UpdateService<T> {
      * @param entity 指定对象
      * @return 受影响行数
      */
-    int updateNotWithLocking( final T entity );
+    int updateNotWithLocking(final T entity);
 
     /**
      * 根据主键更新记录(主键为条件，更新可选字段[updatable=true])
@@ -37,5 +37,5 @@ public interface UpdateService<T> {
      * @param entity 指定对象
      * @return 受影响行数
      */
-    int updateNotWithNullAndLocking( final T entity );
+    int updateNotWithNullAndLocking(final T entity);
 }

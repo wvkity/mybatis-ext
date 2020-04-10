@@ -24,7 +24,7 @@ public final class PropertyMappingCache {
     /**
      * 字段缓存
      */
-    private static final Map<String, Map<String, ColumnWrapper>> COLUMN_CACHE = new ConcurrentHashMap<>( 64 );
+    private static final Map<String, Map<String, ColumnWrapper>> COLUMN_CACHE = new ConcurrentHashMap<>(64);
 
     /**
      * Lambda缓存
@@ -35,10 +35,10 @@ public final class PropertyMappingCache {
      * 构建实体-表字段映射缓存
      * @param table 表映射对象
      */
-    public static void build( final TableWrapper table ) {
-        Optional.ofNullable( table )
-                .filter( it -> Objects.nonNull( it.getEntity() ) )
-                .ifPresent( it -> COLUMN_CACHE.putIfAbsent( it.getEntity().toString(), it.columnMappings() ) );
+    public static void build(final TableWrapper table) {
+        Optional.ofNullable(table)
+                .filter(it -> Objects.nonNull(it.getEntity()))
+                .ifPresent(it -> COLUMN_CACHE.putIfAbsent(it.getEntity().toString(), it.columnMappings()));
     }
 
     /**
@@ -47,9 +47,9 @@ public final class PropertyMappingCache {
      * @param <T>      实体类型
      * @return 属性名
      */
-    public static <T> String lambdaToProperty( final Property<T, ?> property ) {
-        return methodToProperty( Optional.ofNullable( parse( property ) )
-                .map( SerializedLambda::getImplMethodName ).orElse( null ) );
+    public static <T> String lambdaToProperty(final Property<T, ?> property) {
+        return methodToProperty(Optional.ofNullable(parse(property))
+                .map(SerializedLambda::getImplMethodName).orElse(null));
     }
 
     /**
@@ -57,9 +57,9 @@ public final class PropertyMappingCache {
      * @param methodName 方法名
      * @return 属性
      */
-    public static String methodToProperty( final String methodName ) {
-        if ( Ascii.hasText( methodName ) ) {
-            return PropertyNamer.methodToProperty( methodName );
+    public static String methodToProperty(final String methodName) {
+        if (Ascii.hasText(methodName)) {
+            return PropertyNamer.methodToProperty(methodName);
         }
         return null;
     }
@@ -70,14 +70,14 @@ public final class PropertyMappingCache {
      * @param <T>      泛型类型
      * @return Lambda对象
      */
-    public static <T> SerializedLambda parse( final Property<T, ?> property ) {
+    public static <T> SerializedLambda parse(final Property<T, ?> property) {
         Class<?> clazz = property.getClass();
-        return Optional.ofNullable( FUNCTION_CACHE.getOrDefault( clazz, null ) )
-                .map( WeakReference::get ).orElseGet( () -> {
-                    SerializedLambda func = SerializedLambda.convert( property );
-                    FUNCTION_CACHE.putIfAbsent( clazz, new WeakReference<>( func ) );
-                    return FUNCTION_CACHE.get( clazz ).get();
-                } );
+        return Optional.ofNullable(FUNCTION_CACHE.getOrDefault(clazz, null))
+                .map(WeakReference::get).orElseGet(() -> {
+                    SerializedLambda func = SerializedLambda.convert(property);
+                    FUNCTION_CACHE.putIfAbsent(clazz, new WeakReference<>(func));
+                    return FUNCTION_CACHE.get(clazz).get();
+                });
     }
 
     /**
@@ -85,7 +85,7 @@ public final class PropertyMappingCache {
      * @param klass 实体类
      * @return 字段映射集合
      */
-    public static Map<String, ColumnWrapper> columnCache( final Class<?> klass ) {
-        return klass == null ? null : COLUMN_CACHE.getOrDefault( klass.toString(), null );
+    public static Map<String, ColumnWrapper> columnCache(final Class<?> klass) {
+        return klass == null ? null : COLUMN_CACHE.getOrDefault(klass.toString(), null);
     }
 }

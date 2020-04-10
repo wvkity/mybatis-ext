@@ -22,12 +22,12 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Table( name = "SYS_USER" )
+@Table(name = "SYS_USER")
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-@Accessors( chain = true )
+@Accessors(chain = true)
 public class User implements Serializable {
 
     private static final long serialVersionUID = -2937196426923756731L;

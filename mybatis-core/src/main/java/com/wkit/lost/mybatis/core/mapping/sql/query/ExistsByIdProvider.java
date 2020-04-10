@@ -15,11 +15,11 @@ public class ExistsByIdProvider extends AbstractProvider {
     @Override
     public String build() {
         ColumnWrapper primaryKey = table.getPrimaryKey();
-        if ( primaryKey == null ) {
+        if (primaryKey == null) {
             return Constants.CHAR_EMPTY;
         }
         String script = "CASE WHEN COUNT(" + primaryKey.getColumn() + ") > 0 THEN 1 ELSE 0 END COUNT";
-        return select( script, " WHERE " + ScriptUtil.convertPartArg( primaryKey,
-                null, Execute.NONE ) );
+        return select(script, " WHERE " + ScriptUtil.convertPartArg(primaryKey,
+                null, Execute.NONE));
     }
 }

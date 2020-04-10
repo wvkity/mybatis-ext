@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import java.util.Collection;
 
-@SuppressWarnings( { "serial" } )
+@SuppressWarnings({"serial"})
 public abstract class AbstractRangeExpression<T> extends ColumnExpressionWrapper<T> {
 
     /**
@@ -18,7 +18,7 @@ public abstract class AbstractRangeExpression<T> extends ColumnExpressionWrapper
 
     @Override
     public String getSegment() {
-        return ScriptUtil.convertConditionArg( getAlias(), this.column,
-                this.symbol, this.logic, defaultPlaceholders( this.values ) );
+        return ScriptUtil.convertConditionArg(getAlias(), this.column,
+                this.symbol, this.logic, defaultPlaceholders(this.values));
     }
 }

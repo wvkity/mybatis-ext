@@ -22,32 +22,32 @@ public class PageableUtil {
     private static boolean hasRequest;
     private static Class<?> requestClass;
     private static Method getParameterMap;
-    private static final Map<String, String> PARAMETERS = new HashMap<>( 6, 1 );
+    private static final Map<String, String> PARAMETERS = new HashMap<>(6, 1);
 
     static {
         try {
-            requestClass = Class.forName( "javax.servlet.ServletRequest" );
-            getParameterMap = requestClass.getMethod( "getParameterMap" );
+            requestClass = Class.forName("javax.servlet.ServletRequest");
+            getParameterMap = requestClass.getMethod("getParameterMap");
             hasRequest = true;
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             hasRequest = false;
         }
-        PARAMETERS.put( "page", "page" );
-        PARAMETERS.put( "size", "size" );
-        PARAMETERS.put( "orderBy", "orderBy" );
+        PARAMETERS.put("page", "page");
+        PARAMETERS.put("size", "size");
+        PARAMETERS.put("orderBy", "orderBy");
     }
 
 
-    public static Pageable getPageable( Object parameter ) {
-        if ( hasRequest && requestClass.isAssignableFrom( parameter.getClass() ) ) {
+    public static Pageable getPageable(Object parameter) {
+        if (hasRequest && requestClass.isAssignableFrom(parameter.getClass())) {
             try {
-                MetaObject metaObject = SystemMetaObject.forObject( getParameterMap.invoke( parameter ) );
-                Object pageValue = getParamValue( metaObject, "page" );
-                Object sizeValue = getParamValue( metaObject, "size" );
-                if ( pageValue != null ) {
-                    return new Pager( String.valueOf( pageValue ), String.valueOf( sizeValue ) );
+                MetaObject metaObject = SystemMetaObject.forObject(getParameterMap.invoke(parameter));
+                Object pageValue = getParamValue(metaObject, "page");
+                Object sizeValue = getParamValue(metaObject, "size");
+                if (pageValue != null) {
+                    return new Pager(String.valueOf(pageValue), String.valueOf(sizeValue));
                 }
-            } catch ( Exception e ) {
+            } catch (Exception e) {
                 // ignore
             }
         }
@@ -60,16 +60,16 @@ public class PageableUtil {
      * @param paramName  参数名
      * @return 值
      */
-    protected static Object getParamValue( MetaObject metaObject, String paramName ) {
-        String supported = PARAMETERS.get( paramName );
-        if ( supported != null && metaObject.hasGetter( supported ) ) {
-            Object value = metaObject.getValue( supported );
-            if ( ArrayUtil.isArray( value ) ) {
-                Object[] values = ( Object[] ) value;
-                if ( ArrayUtil.isEmpty( values ) ) {
+    protected static Object getParamValue(MetaObject metaObject, String paramName) {
+        String supported = PARAMETERS.get(paramName);
+        if (supported != null && metaObject.hasGetter(supported)) {
+            Object value = metaObject.getValue(supported);
+            if (ArrayUtil.isArray(value)) {
+                Object[] values = (Object[]) value;
+                if (ArrayUtil.isEmpty(values)) {
                     return null;
                 } else {
-                    return values[ 0 ];
+                    return values[0];
                 }
             }
             return value;

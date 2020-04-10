@@ -18,10 +18,10 @@ public class DefaultUserService extends AbstractServiceExecutor<UserMapper, User
 
     private final GradeService gradeService;
 
-    @Transactional( rollbackFor = Exception.class )
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public int testSave( Grade grade, List<User> users ) {
-        gradeService.save( grade );
-        return embeddedBatchSave( users );
+    public int testSave(Grade grade, List<User> users) {
+        gradeService.save(grade);
+        return embeddedBatchSave(users);
     }
 }

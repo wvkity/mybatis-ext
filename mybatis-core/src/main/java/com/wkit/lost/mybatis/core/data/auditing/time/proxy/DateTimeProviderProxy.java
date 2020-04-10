@@ -22,17 +22,17 @@ public class DateTimeProviderProxy implements InvocationHandler {
      * 构造方法
      * @param target 目标对象
      */
-    public DateTimeProviderProxy( AbstractProvider target ) {
+    public DateTimeProviderProxy(AbstractProvider target) {
         this.target = target;
     }
 
     public DateTimeProvider getTarget() {
-        return ( DateTimeProvider ) Proxy.newProxyInstance( target.getClass().getClassLoader(),
-                AbstractProvider.class.getInterfaces(), this );
+        return (DateTimeProvider) Proxy.newProxyInstance(target.getClass().getClassLoader(),
+                AbstractProvider.class.getInterfaces(), this);
     }
 
     @Override
-    public Object invoke( Object proxy, Method method, Object[] args ) throws Throwable {
-        return method.invoke( target, args );
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        return method.invoke(target, args);
     }
 }

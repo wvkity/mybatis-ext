@@ -15,7 +15,7 @@ interface UpdateMapper<T> {
      * @param entity 指定对象
      * @return 受影响行数
      */
-    int update( @Param( Constants.PARAM_ENTITY ) T entity );
+    int update(@Param(Constants.PARAM_ENTITY) T entity);
 
     /**
      * 根据主键非空更新记录(主键为条件，更新可选字段[updatable=true])
@@ -23,19 +23,19 @@ interface UpdateMapper<T> {
      * @param entity 指定对象
      * @return 受影响行数
      */
-    int updateNotWithNull( @Param( Constants.PARAM_ENTITY ) T entity );
+    int updateNotWithNull(@Param(Constants.PARAM_ENTITY) T entity);
 
     /**
      * 根据主键不带乐观锁条件更新记录(主键为条件，更新所有字段[updatable=true])
      * @param entity 指定对象
      * @return 受影响行数
      */
-    int updateNotWithLocking( @Param( Constants.PARAM_ENTITY ) T entity );
+    int updateNotWithLocking(@Param(Constants.PARAM_ENTITY) T entity);
 
     /**
      * 根据主键不带乐观锁条件非空更新记录(主键为条件，更新可选字段[updatable=true])
      * @param entity 指定对象
      * @return 受影响行数
      */
-    int updateNotWithNullAndLocking( @Param( Constants.PARAM_ENTITY ) T entity );
+    int updateNotWithNullAndLocking(@Param(Constants.PARAM_ENTITY) T entity);
 }

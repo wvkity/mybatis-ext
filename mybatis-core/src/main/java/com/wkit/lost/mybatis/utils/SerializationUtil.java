@@ -29,8 +29,8 @@ public abstract class SerializationUtil {
      * @param <T>    类型
      * @return 新的对象
      */
-    public static <T extends Serializable> T clone( final T object ) {
-        if ( object == null ) {
+    public static <T extends Serializable> T clone(final T object) {
+        if (object == null) {
             return null;
         }
         final String objectData = "";
@@ -42,12 +42,12 @@ public abstract class SerializationUtil {
      * @param object       对象
      * @param outputStream 输出流对象
      */
-    public static void serialize( final Serializable object, final OutputStream outputStream ) {
-        isTrue( outputStream != null, "The OutputStream must not be null" );
-        try ( ObjectOutputStream out = new ObjectOutputStream( outputStream ) ) {
-            out.writeObject( object );
-        } catch ( IOException e ) {
-            throw new SerializationException( e );
+    public static void serialize(final Serializable object, final OutputStream outputStream) {
+        isTrue(outputStream != null, "The OutputStream must not be null");
+        try (ObjectOutputStream out = new ObjectOutputStream(outputStream)) {
+            out.writeObject(object);
+        } catch (IOException e) {
+            throw new SerializationException(e);
         }
     }
 
@@ -56,9 +56,9 @@ public abstract class SerializationUtil {
      * @param object 对象
      * @return 内存字节流
      */
-    public static byte[] serialize( final Serializable object ) {
-        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream( 512 );
-        serialize( object, outputStream );
+    public static byte[] serialize(final Serializable object) {
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(512);
+        serialize(object, outputStream);
         return outputStream.toByteArray();
     }
 
@@ -68,13 +68,13 @@ public abstract class SerializationUtil {
      * @param <T>         类型
      * @return 反序列化对象
      */
-    @SuppressWarnings( "unchecked" )
-    public static <T> T deserialize( final InputStream inputStream ) {
-        isTrue( inputStream != null, "The InputStream must not be null" );
-        try ( ObjectInputStream in = new ObjectInputStream( inputStream ) ) {
-            return ( T ) in.readObject();
-        } catch ( IOException | ClassNotFoundException e ) {
-            throw new SerializationException( e );
+    @SuppressWarnings("unchecked")
+    public static <T> T deserialize(final InputStream inputStream) {
+        isTrue(inputStream != null, "The InputStream must not be null");
+        try (ObjectInputStream in = new ObjectInputStream(inputStream)) {
+            return (T) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new SerializationException(e);
         }
     }
 
@@ -84,9 +84,9 @@ public abstract class SerializationUtil {
      * @param <T>        类型
      * @return 反序列化对象
      */
-    public static <T> T deserialize( final byte[] objectData ) {
-        isTrue( objectData != null, "The byte[] must not be null" );
-        return deserialize( new ByteArrayInputStream( objectData ) );
+    public static <T> T deserialize(final byte[] objectData) {
+        isTrue(objectData != null, "The byte[] must not be null");
+        return deserialize(new ByteArrayInputStream(objectData));
     }
 
 
@@ -95,15 +95,15 @@ public abstract class SerializationUtil {
         private static final Map<String, Class<?>> PRIMITIVE_TYPE_CACHE = new HashMap<>();
 
         static {
-            PRIMITIVE_TYPE_CACHE.put( "byte", byte.class );
-            PRIMITIVE_TYPE_CACHE.put( "short", short.class );
-            PRIMITIVE_TYPE_CACHE.put( "int", int.class );
-            PRIMITIVE_TYPE_CACHE.put( "long", long.class );
-            PRIMITIVE_TYPE_CACHE.put( "float", float.class );
-            PRIMITIVE_TYPE_CACHE.put( "double", double.class );
-            PRIMITIVE_TYPE_CACHE.put( "boolean", boolean.class );
-            PRIMITIVE_TYPE_CACHE.put( "char", char.class );
-            PRIMITIVE_TYPE_CACHE.put( "void", void.class );
+            PRIMITIVE_TYPE_CACHE.put("byte", byte.class);
+            PRIMITIVE_TYPE_CACHE.put("short", short.class);
+            PRIMITIVE_TYPE_CACHE.put("int", int.class);
+            PRIMITIVE_TYPE_CACHE.put("long", long.class);
+            PRIMITIVE_TYPE_CACHE.put("float", float.class);
+            PRIMITIVE_TYPE_CACHE.put("double", double.class);
+            PRIMITIVE_TYPE_CACHE.put("boolean", boolean.class);
+            PRIMITIVE_TYPE_CACHE.put("char", char.class);
+            PRIMITIVE_TYPE_CACHE.put("void", void.class);
         }
 
         private final ClassLoader classLoader;
@@ -115,22 +115,22 @@ public abstract class SerializationUtil {
          * @throws IOException if an I/O error occurs while reading stream header.
          * @see ObjectInputStream
          */
-        public ClassLoaderAwareObjectInputStream( InputStream in, ClassLoader classLoader ) throws IOException {
-            super( in );
+        public ClassLoaderAwareObjectInputStream(InputStream in, ClassLoader classLoader) throws IOException {
+            super(in);
             this.classLoader = classLoader;
         }
 
         @Override
-        protected Class<?> resolveClass( ObjectStreamClass desc ) throws ClassNotFoundException {
+        protected Class<?> resolveClass(ObjectStreamClass desc) throws ClassNotFoundException {
             final String name = desc.getName();
             try {
-                return Class.forName( name, false, classLoader );
-            } catch ( ClassNotFoundException e ) {
+                return Class.forName(name, false, classLoader);
+            } catch (ClassNotFoundException e) {
                 try {
-                    return Class.forName( name, false, Thread.currentThread().getContextClassLoader() );
-                } catch ( ClassNotFoundException ex ) {
-                    final Class<?> clazz = PRIMITIVE_TYPE_CACHE.get( name );
-                    if ( clazz != null ) {
+                    return Class.forName(name, false, Thread.currentThread().getContextClassLoader());
+                } catch (ClassNotFoundException ex) {
+                    final Class<?> clazz = PRIMITIVE_TYPE_CACHE.get(name);
+                    if (clazz != null) {
                         return clazz;
                     }
                     throw ex;
@@ -139,9 +139,9 @@ public abstract class SerializationUtil {
         }
     }
 
-    public static void isTrue( final boolean expression, final String message, final Object... values ) {
-        if ( !expression ) {
-            throw new IllegalArgumentException( String.format( message, values ) );
+    public static void isTrue(final boolean expression, final String message, final Object... values) {
+        if (!expression) {
+            throw new IllegalArgumentException(String.format(message, values));
         }
     }
 }

@@ -15,17 +15,17 @@ import java.time.LocalDateTime;
 /**
  * 成绩信息
  */
-@Table( catalog = "STUDENT_MANAGEMENT" )
+@Table(catalog = "STUDENT_MANAGEMENT")
 @Data
 @ToString
-@Accessors( chain = true )
+@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
 public class Result extends BaseEntity {
     private static final long serialVersionUID = -127005466439690613L;
-    
+
     /**
      * 学生ID(学号)
      */

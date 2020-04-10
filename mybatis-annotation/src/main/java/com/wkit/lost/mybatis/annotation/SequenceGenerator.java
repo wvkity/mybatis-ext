@@ -10,8 +10,8 @@ import java.lang.annotation.Target;
 /**
  * @author wvkity
  */
-@Target( ElementType.FIELD )
-@Retention( RetentionPolicy.RUNTIME )
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
 public @interface SequenceGenerator {

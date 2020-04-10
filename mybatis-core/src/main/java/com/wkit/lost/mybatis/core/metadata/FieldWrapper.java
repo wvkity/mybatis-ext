@@ -24,7 +24,7 @@ import java.util.Optional;
 @Setter
 @ToString
 @EqualsAndHashCode
-@Accessors( chain = true )
+@Accessors(chain = true)
 public class FieldWrapper {
 
     /**
@@ -56,7 +56,7 @@ public class FieldWrapper {
      * 构造方法
      * @param field 属性
      */
-    public FieldWrapper( Field field ) {
+    public FieldWrapper(Field field) {
         this.field = field;
         this.name = field.getName();
         this.javaType = field.getType();
@@ -67,15 +67,15 @@ public class FieldWrapper {
      * @param field      属性
      * @param descriptor 属性描述
      */
-    public FieldWrapper( Field field, PropertyDescriptor descriptor ) {
-        if ( field != null ) {
+    public FieldWrapper(Field field, PropertyDescriptor descriptor) {
+        if (field != null) {
             this.field = field;
             this.name = field.getName();
             this.javaType = field.getType();
         } else {
             this.field = null;
         }
-        if ( descriptor != null ) {
+        if (descriptor != null) {
             this.name = descriptor.getName();
             this.javaType = descriptor.getPropertyType();
             this.getter = descriptor.getReadMethod();
@@ -87,8 +87,8 @@ public class FieldWrapper {
      * 复制部分属性信息
      * @param other 其他属性对象
      */
-    public void copy( final FieldWrapper other ) {
-        if ( other != null ) {
+    public void copy(final FieldWrapper other) {
+        if (other != null) {
             this.name = other.getName();
             this.javaType = other.getJavaType();
             this.getter = other.getGetter();
@@ -102,14 +102,14 @@ public class FieldWrapper {
      * @param otherAnnotationClass 注解全类名
      * @return true: 是, false: 否
      */
-    public boolean isAnnotationPresent( final Class<? extends Annotation> annotationClass,
-                                        final String otherAnnotationClass ) {
-        return ( this.field != null && AnnotationUtil.isAnnotationPresent( field, annotationClass,
-                otherAnnotationClass ) )
-                || ( this.setter != null && AnnotationUtil.isAnnotationPresent( this.setter, annotationClass,
-                otherAnnotationClass ) )
-                || ( this.getter != null && AnnotationUtil.isAnnotationPresent( this.getter, annotationClass,
-                otherAnnotationClass ) );
+    public boolean isAnnotationPresent(final Class<? extends Annotation> annotationClass,
+                                       final String otherAnnotationClass) {
+        return (this.field != null && AnnotationUtil.isAnnotationPresent(field, annotationClass,
+                otherAnnotationClass))
+                || (this.setter != null && AnnotationUtil.isAnnotationPresent(this.setter, annotationClass,
+                otherAnnotationClass))
+                || (this.getter != null && AnnotationUtil.isAnnotationPresent(this.getter, annotationClass,
+                otherAnnotationClass));
     }
 
     /**
@@ -117,8 +117,8 @@ public class FieldWrapper {
      * @param annotationClass 注解类
      * @return true: 是, false: 否
      */
-    public boolean isAnnotationPresent( final Class<? extends Annotation> annotationClass ) {
-        return isAnnotationPresent( annotationClass, null );
+    public boolean isAnnotationPresent(final Class<? extends Annotation> annotationClass) {
+        return isAnnotationPresent(annotationClass, null);
     }
 
     /**
@@ -126,8 +126,8 @@ public class FieldWrapper {
      * @param annotationClass 注解全类名
      * @return true: 是, false: 否
      */
-    public boolean isAnnotationPresent( final String annotationClass ) {
-        return isAnnotationPresent( null, annotationClass );
+    public boolean isAnnotationPresent(final String annotationClass) {
+        return isAnnotationPresent(null, annotationClass);
     }
 
     /**
@@ -135,7 +135,7 @@ public class FieldWrapper {
      * @return true: 是, false: 否
      */
     public boolean isAnnotationPresentOfPrimaryKey() {
-        return isAnnotationPresent( Id.class, JavaxPersistence.ID ) || isAnnotationPresent( SnowflakeSequence.class );
+        return isAnnotationPresent(Id.class, JavaxPersistence.ID) || isAnnotationPresent(SnowflakeSequence.class);
     }
 
     /**
@@ -144,12 +144,12 @@ public class FieldWrapper {
      * @param <T>             注解泛型
      * @return 注解实例
      */
-    public <T extends Annotation> T getAnnotation( final Class<T> annotationClass ) {
-        if ( this.field != null ) {
-            return Optional.ofNullable( field.getAnnotation( annotationClass ) )
-                    .orElse( Optional.ofNullable( this.setter != null ? setter.getAnnotation( annotationClass ) : null )
-                            .orElse( Optional.ofNullable( this.getter != null ? getter.getAnnotation( annotationClass ) : null )
-                                    .orElse( null ) ) );
+    public <T extends Annotation> T getAnnotation(final Class<T> annotationClass) {
+        if (this.field != null) {
+            return Optional.ofNullable(field.getAnnotation(annotationClass))
+                    .orElse(Optional.ofNullable(this.setter != null ? setter.getAnnotation(annotationClass) : null)
+                            .orElse(Optional.ofNullable(this.getter != null ? getter.getAnnotation(annotationClass) : null)
+                                    .orElse(null)));
         }
         return null;
     }

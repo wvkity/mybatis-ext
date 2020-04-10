@@ -14,20 +14,20 @@ public class UpdateNotWithNullAndLockingProvider extends AbstractProvider {
     @Override
     public String build() {
         ColumnWrapper primaryKey = table.getPrimaryKey();
-        if ( primaryKey == null ) {
+        if (primaryKey == null) {
             return Constants.CHAR_EMPTY;
         }
-        StringBuilder script = new StringBuilder( 200 );
+        StringBuilder script = new StringBuilder(200);
         Set<ColumnWrapper> columns = table.updatableColumns();
-        for ( ColumnWrapper it : columns ) {
-            script.append( ScriptUtil.convertIfTagWithNotNull( null, it,
+        for (ColumnWrapper it : columns) {
+            script.append(ScriptUtil.convertIfTagWithNotNull(null, it,
                     Constants.PARAM_ENTITY, true, false, Symbol.EQ,
-                    null, Constants.CHAR_COMMA, Execute.REPLACE ) );
+                    null, Constants.CHAR_COMMA, Execute.REPLACE));
         }
         return update(
-                ScriptUtil.convertTrimTag( script.toString(), "SET", null,
-                        null, Constants.CHAR_COMMA ),
-                ( " WHERE " + ScriptUtil.convertPartArg( primaryKey, Constants.PARAM_ENTITY, Execute.REPLACE ) )
+                ScriptUtil.convertTrimTag(script.toString(), "SET", null,
+                        null, Constants.CHAR_COMMA),
+                (" WHERE " + ScriptUtil.convertPartArg(primaryKey, Constants.PARAM_ENTITY, Execute.REPLACE))
         );
     }
 }

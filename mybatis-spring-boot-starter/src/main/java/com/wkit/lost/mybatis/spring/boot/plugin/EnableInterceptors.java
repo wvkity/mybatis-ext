@@ -27,9 +27,9 @@ import java.lang.annotation.Target;
  */
 @Documented
 @Inherited
-@Target( ElementType.TYPE )
-@Retention( RetentionPolicy.RUNTIME )
-@Import( { MybatisInterceptorRegistrar.class } )
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Import({MybatisInterceptorRegistrar.class})
 public @interface EnableInterceptors {
 
     /**
@@ -37,9 +37,9 @@ public @interface EnableInterceptors {
      * @return 拦截器列表
      */
     Plugin[] value() default {
-            @Plugin( value = OptimisticLockingInterceptor.class, order = 24 ),
-            @Plugin( value = PageableInterceptor.class, order = 25 ),
-            @Plugin( value = RangePageableInterceptor.class, order = 26 )
+            @Plugin(value = OptimisticLockingInterceptor.class, order = 24),
+            @Plugin(value = PageableInterceptor.class, order = 25),
+            @Plugin(value = RangePageableInterceptor.class, order = 26)
     };
 
     /**

@@ -5,7 +5,7 @@ import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 import lombok.Getter;
 import lombok.Setter;
 
-@SuppressWarnings( { "serial" } )
+@SuppressWarnings({"serial"})
 public abstract class AbstractFuzzyExpression<T> extends ColumnExpressionWrapper<T> {
 
     /**
@@ -24,12 +24,12 @@ public abstract class AbstractFuzzyExpression<T> extends ColumnExpressionWrapper
 
     @Override
     public String getSegment() {
-        StringBuilder builder = new StringBuilder( 60 );
-        builder.append( ScriptUtil.convertConditionArg( getAlias(), this.column,
+        StringBuilder builder = new StringBuilder(60);
+        builder.append(ScriptUtil.convertConditionArg(getAlias(), this.column,
                 this.symbol, this.logic, defaultPlaceholder(
-                        this.match.getSegment( this.value != null ? String.valueOf( this.value ) : "" ) ) ) );
-        if ( escape != null ) {
-            builder.append( " ESCAPE " ).append( "'" ).append( escape ).append( "'" );
+                        this.match.getSegment(this.value != null ? String.valueOf(this.value) : ""))));
+        if (escape != null) {
+            builder.append(" ESCAPE ").append("'").append(escape).append("'");
         }
         return builder.toString();
     }

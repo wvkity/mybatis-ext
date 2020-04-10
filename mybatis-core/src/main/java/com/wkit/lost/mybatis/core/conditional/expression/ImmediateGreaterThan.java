@@ -19,8 +19,8 @@ public class ImmediateGreaterThan<T> extends ImmediateSimple<T> {
      * @param value  值
      * @param logic  逻辑符号
      */
-    ImmediateGreaterThan( String column, Object value, Logic logic ) {
-        super( column, value, Symbol.GT, logic );
+    ImmediateGreaterThan(String column, Object value, Logic logic) {
+        super(column, value, Symbol.GT, logic);
     }
 
     /**
@@ -30,8 +30,8 @@ public class ImmediateGreaterThan<T> extends ImmediateSimple<T> {
      * @param value      值
      * @param logic      逻辑符号
      */
-    ImmediateGreaterThan( String tableAlias, String column, Object value, Logic logic ) {
-        super( tableAlias, column, value, Symbol.GT, logic );
+    ImmediateGreaterThan(String tableAlias, String column, Object value, Logic logic) {
+        super(tableAlias, column, value, Symbol.GT, logic);
     }
 
     /**
@@ -41,8 +41,8 @@ public class ImmediateGreaterThan<T> extends ImmediateSimple<T> {
      * @param value    值
      * @param logic    逻辑符号
      */
-    ImmediateGreaterThan( Criteria<T> criteria, String column, Object value, Logic logic ) {
-        super( criteria, column, value, Symbol.GT, logic );
+    ImmediateGreaterThan(Criteria<T> criteria, String column, Object value, Logic logic) {
+        super(criteria, column, value, Symbol.GT, logic);
     }
 
     /**
@@ -52,8 +52,8 @@ public class ImmediateGreaterThan<T> extends ImmediateSimple<T> {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThan<T> create( String column, Object value ) {
-        return create( column, value, Logic.AND );
+    public static <T> ImmediateGreaterThan<T> create(String column, Object value) {
+        return create(column, value, Logic.AND);
     }
 
     /**
@@ -64,9 +64,9 @@ public class ImmediateGreaterThan<T> extends ImmediateSimple<T> {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThan<T> create( String column, Object value, Logic logic ) {
-        if ( hasText( column ) ) {
-            return new ImmediateGreaterThan<>( column, value, logic );
+    public static <T> ImmediateGreaterThan<T> create(String column, Object value, Logic logic) {
+        if (hasText(column)) {
+            return new ImmediateGreaterThan<>(column, value, logic);
         }
         return null;
     }
@@ -79,8 +79,8 @@ public class ImmediateGreaterThan<T> extends ImmediateSimple<T> {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThan<T> create( String tableAlias, String column, Object value ) {
-        return create( tableAlias, column, value, Logic.AND );
+    public static <T> ImmediateGreaterThan<T> create(String tableAlias, String column, Object value) {
+        return create(tableAlias, column, value, Logic.AND);
     }
 
     /**
@@ -92,9 +92,9 @@ public class ImmediateGreaterThan<T> extends ImmediateSimple<T> {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThan<T> create( String tableAlias, String column, Object value, Logic logic ) {
-        if ( hasText( column ) ) {
-            return new ImmediateGreaterThan<>( tableAlias, column, value, logic );
+    public static <T> ImmediateGreaterThan<T> create(String tableAlias, String column, Object value, Logic logic) {
+        if (hasText(column)) {
+            return new ImmediateGreaterThan<>(tableAlias, column, value, logic);
         }
         return null;
     }
@@ -107,8 +107,8 @@ public class ImmediateGreaterThan<T> extends ImmediateSimple<T> {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThan<T> create( Criteria<T> criteria, String column, Object value ) {
-        return create( criteria, column, value, Logic.AND );
+    public static <T> ImmediateGreaterThan<T> create(Criteria<T> criteria, String column, Object value) {
+        return create(criteria, column, value, Logic.AND);
     }
 
     /**
@@ -120,9 +120,9 @@ public class ImmediateGreaterThan<T> extends ImmediateSimple<T> {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThan<T> create( Criteria<T> criteria, String column, Object value, Logic logic ) {
-        if ( hasText( column ) ) {
-            return new ImmediateGreaterThan<>( criteria, column, value, logic );
+    public static <T> ImmediateGreaterThan<T> create(Criteria<T> criteria, String column, Object value, Logic logic) {
+        if (hasText(column)) {
+            return new ImmediateGreaterThan<>(criteria, column, value, logic);
         }
         return null;
     }

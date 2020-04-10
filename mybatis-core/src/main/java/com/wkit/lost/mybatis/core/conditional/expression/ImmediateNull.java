@@ -18,7 +18,7 @@ public class ImmediateNull<T> extends AbstractImmediateEmptyExpression<T> {
      * @param column 字段
      * @param logic  逻辑符号
      */
-    ImmediateNull( String column, Logic logic ) {
+    ImmediateNull(String column, Logic logic) {
         this.column = column;
         this.logic = logic;
         this.symbol = Symbol.NULL;
@@ -30,7 +30,7 @@ public class ImmediateNull<T> extends AbstractImmediateEmptyExpression<T> {
      * @param column     字段
      * @param logic      逻辑符号
      */
-    ImmediateNull( String tableAlias, String column, Logic logic ) {
+    ImmediateNull(String tableAlias, String column, Logic logic) {
         this.column = column;
         this.logic = logic;
         this.tableAlias = tableAlias;
@@ -43,7 +43,7 @@ public class ImmediateNull<T> extends AbstractImmediateEmptyExpression<T> {
      * @param column   字段
      * @param logic    逻辑符号
      */
-    ImmediateNull( Criteria<T> criteria, String column, Logic logic ) {
+    ImmediateNull(Criteria<T> criteria, String column, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.logic = logic;
@@ -56,8 +56,8 @@ public class ImmediateNull<T> extends AbstractImmediateEmptyExpression<T> {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNull<T> create( String column ) {
-        return create( column, Logic.AND );
+    public static <T> ImmediateNull<T> create(String column) {
+        return create(column, Logic.AND);
     }
 
     /**
@@ -67,9 +67,9 @@ public class ImmediateNull<T> extends AbstractImmediateEmptyExpression<T> {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNull<T> create( String column, Logic logic ) {
-        if ( hasText( column ) ) {
-            return new ImmediateNull<>( column, logic );
+    public static <T> ImmediateNull<T> create(String column, Logic logic) {
+        if (hasText(column)) {
+            return new ImmediateNull<>(column, logic);
         }
         return null;
     }
@@ -81,8 +81,8 @@ public class ImmediateNull<T> extends AbstractImmediateEmptyExpression<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNull<T> create( String tableAlias, String column ) {
-        return create( tableAlias, column, Logic.AND );
+    public static <T> ImmediateNull<T> create(String tableAlias, String column) {
+        return create(tableAlias, column, Logic.AND);
     }
 
     /**
@@ -93,9 +93,9 @@ public class ImmediateNull<T> extends AbstractImmediateEmptyExpression<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNull<T> create( String tableAlias, String column, Logic logic ) {
-        if ( hasText( column ) ) {
-            return new ImmediateNull<>( tableAlias, column, logic );
+    public static <T> ImmediateNull<T> create(String tableAlias, String column, Logic logic) {
+        if (hasText(column)) {
+            return new ImmediateNull<>(tableAlias, column, logic);
         }
         return null;
     }
@@ -107,8 +107,8 @@ public class ImmediateNull<T> extends AbstractImmediateEmptyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNull<T> create( Criteria<T> criteria, String column ) {
-        return create( criteria, column, Logic.AND );
+    public static <T> ImmediateNull<T> create(Criteria<T> criteria, String column) {
+        return create(criteria, column, Logic.AND);
     }
 
     /**
@@ -119,9 +119,9 @@ public class ImmediateNull<T> extends AbstractImmediateEmptyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNull<T> create( Criteria<T> criteria, String column, Logic logic ) {
-        if ( criteria != null && hasText( column ) ) {
-            return new ImmediateNull<>( criteria, column, logic );
+    public static <T> ImmediateNull<T> create(Criteria<T> criteria, String column, Logic logic) {
+        if (criteria != null && hasText(column)) {
+            return new ImmediateNull<>(criteria, column, logic);
         }
         return null;
     }

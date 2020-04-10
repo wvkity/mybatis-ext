@@ -18,10 +18,10 @@ public abstract class PluginUtil {
      * @param target 目标对象
      * @return 真实处理对象
      */
-    public static Object getRealTarget( final Object target ) {
-        if ( Proxy.isProxyClass( target.getClass() ) ) {
-            MetaObject metaObject = SystemMetaObject.forObject( target );
-            return getRealTarget( metaObject.getValue( "h.target" ) );
+    public static Object getRealTarget(final Object target) {
+        if (Proxy.isProxyClass(target.getClass())) {
+            MetaObject metaObject = SystemMetaObject.forObject(target);
+            return getRealTarget(metaObject.getValue("h.target"));
         }
         return target;
     }
@@ -33,14 +33,14 @@ public abstract class PluginUtil {
      * @param <T>       参数类型
      * @return 参数
      */
-    @SuppressWarnings( "unchecked" )
-    public static <T> T getParameter( Object parameter, String key ) {
-        if ( Ascii.hasText( key ) && parameter instanceof Map ) {
-            Map<String, Object> paramMap = ( Map<String, Object> ) parameter;
-            if ( paramMap.containsKey( key ) ) {
-                Object value = paramMap.get( key );
-                if ( value != null ) {
-                    return ( T ) value;
+    @SuppressWarnings("unchecked")
+    public static <T> T getParameter(Object parameter, String key) {
+        if (Ascii.hasText(key) && parameter instanceof Map) {
+            Map<String, Object> paramMap = (Map<String, Object>) parameter;
+            if (paramMap.containsKey(key)) {
+                Object value = paramMap.get(key);
+                if (value != null) {
+                    return (T) value;
                 }
             }
         }

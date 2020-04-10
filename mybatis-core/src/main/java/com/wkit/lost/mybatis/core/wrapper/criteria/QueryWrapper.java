@@ -14,7 +14,7 @@ public interface QueryWrapper<T, Chain extends QueryWrapper<T, Chain>> extends Q
      * @param <E>   泛型类型
      * @return {@link ForeignCriteria}对象
      */
-    <E> ForeignCriteria<E> searchForeign( String alias );
+    <E> ForeignCriteria<E> searchForeign(String alias);
 
     /**
      * 搜索{@link ForeignCriteria}对象
@@ -22,7 +22,7 @@ public interface QueryWrapper<T, Chain extends QueryWrapper<T, Chain>> extends Q
      * @param <E>    泛型类型
      * @return {@link ForeignCriteria}对象
      */
-    <E> ForeignCriteria<E> searchForeign( Class<E> entity );
+    <E> ForeignCriteria<E> searchForeign(Class<E> entity);
 
     /**
      * 搜索{@link ForeignCriteria}对象
@@ -31,7 +31,7 @@ public interface QueryWrapper<T, Chain extends QueryWrapper<T, Chain>> extends Q
      * @param <E>    泛型类型
      * @return {@link ForeignCriteria}对象
      */
-    <E> ForeignCriteria<E> searchForeign( String alias, Class<E> entity );
+    <E> ForeignCriteria<E> searchForeign(String alias, Class<E> entity);
 
     /**
      * 使用内置表别名
@@ -44,7 +44,7 @@ public interface QueryWrapper<T, Chain extends QueryWrapper<T, Chain>> extends Q
      * @param alias 表别名
      * @return {@code this}
      */
-    Chain useAlias( final String alias );
+    Chain useAlias(final String alias);
 
     /**
      * 设置范围
@@ -52,8 +52,8 @@ public interface QueryWrapper<T, Chain extends QueryWrapper<T, Chain>> extends Q
      * @param end 结束行
      * @return {@code this}
      */
-    default Chain range( long end ) {
-        return range( 0, end );
+    default Chain range(long end) {
+        return range(0, end);
     }
 
     /**
@@ -63,7 +63,7 @@ public interface QueryWrapper<T, Chain extends QueryWrapper<T, Chain>> extends Q
      * @param end   结束行
      * @return {@code this}
      */
-    Chain range( long start, long end );
+    Chain range(long start, long end);
 
     /**
      * 设置范围
@@ -73,5 +73,5 @@ public interface QueryWrapper<T, Chain extends QueryWrapper<T, Chain>> extends Q
      * @param size      每页数目
      * @return {@code this}
      */
-    Chain range( long pageStart, long pageEnd, long size );
+    Chain range(long pageStart, long pageEnd, long size);
 }

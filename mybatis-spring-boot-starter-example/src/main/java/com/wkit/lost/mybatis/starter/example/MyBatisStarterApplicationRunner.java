@@ -12,22 +12,22 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@EnableMetadataAuditing( automatic = true )
+@EnableMetadataAuditing(automatic = true)
 @EnableInterceptors
 //( interceptors = { @Plugin( value = SystemBuiltinAuditingInterceptor.class, order = 33 ) } )
 @EnableTransactionManagement
 @EnableConfigurationProperties
 @SpringBootApplication
 @EnableAsync
-@EnableAspectJAutoProxy( proxyTargetClass = true )
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class MyBatisStarterApplicationRunner implements CommandLineRunner {
 
     @Override
-    public void run( String... args ) throws Exception {
-        System.out.println( "mybatis example started success." );
+    public void run(String... args) throws Exception {
+        System.out.println("mybatis example started success.");
     }
 
-    public static void main( String[] args ) {
-        SpringApplication.run( MyBatisStarterApplicationRunner.class, args );
+    public static void main(String[] args) {
+        SpringApplication.run(MyBatisStarterApplicationRunner.class, args);
     }
 }

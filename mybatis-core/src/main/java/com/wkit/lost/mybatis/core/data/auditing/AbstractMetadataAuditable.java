@@ -23,33 +23,33 @@ abstract class AbstractMetadataAuditable implements MetadataAuditable {
     }
 
     @Override
-    public boolean isAuditable( MetaObject metadata, String property, Object value ) {
-        return Optional.ofNullable( getTable( metadata ) ).map( it ->
-                it.search( property ).map( column -> column.isAuditable()
-                        && column.getJavaType().isAssignableFrom( value.getClass() ) )
-                        .orElse( false ) ).orElse( false );
+    public boolean isAuditable(MetaObject metadata, String property, Object value) {
+        return Optional.ofNullable(getTable(metadata)).map(it ->
+                it.search(property).map(column -> column.isAuditable()
+                        && column.getJavaType().isAssignableFrom(value.getClass()))
+                        .orElse(false)).orElse(false);
     }
 
     @Override
-    public boolean isAuditable( MetaObject metadata, String property, Object value, AuditMatching matching ) {
-        return Optional.ofNullable( getTable( metadata ) )
-                .map( it -> it.search( property )
-                        .map( column -> column.isAuditable( matching )
-                                && column.getJavaType().isAssignableFrom( value.getClass() ) )
-                        .orElse( false ) ).orElse( false );
+    public boolean isAuditable(MetaObject metadata, String property, Object value, AuditMatching matching) {
+        return Optional.ofNullable(getTable(metadata))
+                .map(it -> it.search(property)
+                        .map(column -> column.isAuditable(matching)
+                                && column.getJavaType().isAssignableFrom(value.getClass()))
+                        .orElse(false)).orElse(false);
     }
 
     @Override
-    public MetadataAuditable invoke( MetaObject metadata, String property, Object value ) {
-        if ( metadata != null && value != null ) {
-            if ( metadata.hasGetter( property ) && metadata.hasSetter( property ) ) {
-                if ( isEmpty( metadata, property ) && isAuditable( metadata, property, value ) ) {
-                    metadata.setValue( property, value );
+    public MetadataAuditable invoke(MetaObject metadata, String property, Object value) {
+        if (metadata != null && value != null) {
+            if (metadata.hasGetter(property) && metadata.hasSetter(property)) {
+                if (isEmpty(metadata, property) && isAuditable(metadata, property, value)) {
+                    metadata.setValue(property, value);
                 }
-            } else if ( metadata.hasGetter( Constants.PARAM_ENTITY ) ) {
-                Object entity = metadata.getValue( Constants.PARAM_ENTITY );
-                if ( entity != null ) {
-                    return invoke( MetaObjectUtil.forObject( entity ), property, value );
+            } else if (metadata.hasGetter(Constants.PARAM_ENTITY)) {
+                Object entity = metadata.getValue(Constants.PARAM_ENTITY);
+                if (entity != null) {
+                    return invoke(MetaObjectUtil.forObject(entity), property, value);
                 }
             }
         }
@@ -57,16 +57,16 @@ abstract class AbstractMetadataAuditable implements MetadataAuditable {
     }
 
     @Override
-    public MetadataAuditable invoke( MetaObject metadata, String property, Object value, AuditMatching matching ) {
-        if ( metadata != null && value != null ) {
-            if ( metadata.hasGetter( property ) && metadata.hasSetter( property ) ) {
-                if ( isEmpty( metadata, property ) && isAuditable( metadata, property, value, matching ) ) {
-                    metadata.setValue( property, value );
+    public MetadataAuditable invoke(MetaObject metadata, String property, Object value, AuditMatching matching) {
+        if (metadata != null && value != null) {
+            if (metadata.hasGetter(property) && metadata.hasSetter(property)) {
+                if (isEmpty(metadata, property) && isAuditable(metadata, property, value, matching)) {
+                    metadata.setValue(property, value);
                 }
-            } else if ( metadata.hasGetter( Constants.PARAM_ENTITY ) ) {
-                Object entity = metadata.getValue( Constants.PARAM_ENTITY );
-                if ( entity != null ) {
-                    return invoke( MetaObjectUtil.forObject( entity ), property, value, matching );
+            } else if (metadata.hasGetter(Constants.PARAM_ENTITY)) {
+                Object entity = metadata.getValue(Constants.PARAM_ENTITY);
+                if (entity != null) {
+                    return invoke(MetaObjectUtil.forObject(entity), property, value, matching);
                 }
             }
         }
@@ -79,9 +79,9 @@ abstract class AbstractMetadataAuditable implements MetadataAuditable {
      * @param column   字段映射对象
      * @param matching 匹配模式
      */
-    protected void dateTimeAuditing( MetaObject metadata, ColumnWrapper column, AuditMatching matching ) {
-        dateTimeAuditing( metadata, column.getProperty(),
-                DateTimeProviderFactory.ProviderBuilder.create().target( column.getJavaType() ).build(), matching );
+    protected void dateTimeAuditing(MetaObject metadata, ColumnWrapper column, AuditMatching matching) {
+        dateTimeAuditing(metadata, column.getProperty(),
+                DateTimeProviderFactory.ProviderBuilder.create().target(column.getJavaType()).build(), matching);
     }
 
     /**
@@ -91,9 +91,9 @@ abstract class AbstractMetadataAuditable implements MetadataAuditable {
      * @param provider 时间提供者
      * @param matching 匹配模式
      */
-    protected void dateTimeAuditing( MetaObject metadata, String property,
-                                     DateTimeProvider provider, AuditMatching matching ) {
-        Optional.ofNullable( provider ).ifPresent( it -> invoke( metadata, property, it.getNow(), matching ) );
+    protected void dateTimeAuditing(MetaObject metadata, String property,
+                                    DateTimeProvider provider, AuditMatching matching) {
+        Optional.ofNullable(provider).ifPresent(it -> invoke(metadata, property, it.getNow(), matching));
     }
 
     /**
@@ -101,13 +101,13 @@ abstract class AbstractMetadataAuditable implements MetadataAuditable {
      * @param metadata 元数据
      * @return 表信息
      */
-    TableWrapper getTable( MetaObject metadata ) {
-        if ( metadata != null ) {
-            TableWrapper table = TableHandler.getTable( metadata.getOriginalObject().getClass() );
-            if ( table == null && metadata.hasGetter( Constants.PARAM_ENTITY ) ) {
-                Object entity = metadata.getValue( Constants.PARAM_ENTITY );
-                if ( entity != null ) {
-                    return getTable( MetaObjectUtil.forObject( entity ) );
+    TableWrapper getTable(MetaObject metadata) {
+        if (metadata != null) {
+            TableWrapper table = TableHandler.getTable(metadata.getOriginalObject().getClass());
+            if (table == null && metadata.hasGetter(Constants.PARAM_ENTITY)) {
+                Object entity = metadata.getValue(Constants.PARAM_ENTITY);
+                if (entity != null) {
+                    return getTable(MetaObjectUtil.forObject(entity));
                 }
             }
             return table;
@@ -121,9 +121,9 @@ abstract class AbstractMetadataAuditable implements MetadataAuditable {
      * @param property 属性
      * @return 字段信息
      */
-    Optional<ColumnWrapper> search( MetaObject metadata, String property ) {
-        return Optional.ofNullable( getTable( metadata ) )
-                .flatMap( it -> it.search( property ) );
+    Optional<ColumnWrapper> search(MetaObject metadata, String property) {
+        return Optional.ofNullable(getTable(metadata))
+                .flatMap(it -> it.search(property));
     }
 
     /**
@@ -132,12 +132,12 @@ abstract class AbstractMetadataAuditable implements MetadataAuditable {
      * @param property 属性
      * @return true: 是, false: 否
      */
-    boolean isEmpty( MetaObject metadata, String property ) {
-        if ( Ascii.hasText( property ) ) {
-            return Optional.ofNullable( metadata )
-                    .filter( it -> it.hasGetter( property ) )
-                    .map( it -> Objects.isNull( it.getValue( property ) ) )
-                    .orElse( false );
+    boolean isEmpty(MetaObject metadata, String property) {
+        if (Ascii.hasText(property)) {
+            return Optional.ofNullable(metadata)
+                    .filter(it -> it.hasGetter(property))
+                    .map(it -> Objects.isNull(it.getValue(property)))
+                    .orElse(false);
         }
         return false;
     }

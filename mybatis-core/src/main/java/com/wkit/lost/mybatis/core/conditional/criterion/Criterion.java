@@ -22,7 +22,7 @@ public interface Criterion<T> extends Segment {
      * @param criteria {@link Criteria}对象
      * @return {@code this}
      */
-    Criterion<T> criteria( Criteria<?> criteria );
+    Criterion<T> criteria(Criteria<?> criteria);
 
     /**
      * 获取属性值
@@ -35,12 +35,12 @@ public interface Criterion<T> extends Segment {
      * @param logic 操作连接类型
      * @return {@code this}
      */
-    Criterion<T> logic( Logic logic );
+    Criterion<T> logic(Logic logic);
 
     /**
      * 设置值
      * @param value 值
      * @return {@code this}
      */
-    Criterion<T> value( Object value );
+    Criterion<T> value(Object value);
 }

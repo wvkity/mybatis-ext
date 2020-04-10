@@ -20,18 +20,18 @@ public final class ColumnConvert {
      * @param argName 参数
      * @return 条件字符串
      */
-    public static String convertToTestCondition( final ColumnWrapper column, final String argName ) {
+    public static String convertToTestCondition(final ColumnWrapper column, final String argName) {
         StringBuilder builder = new StringBuilder();
-        if ( Ascii.hasText( argName ) ) {
-            builder.append( argName ).append( "." );
+        if (Ascii.hasText(argName)) {
+            builder.append(argName).append(".");
         }
-        builder.append( column.getProperty() ).append( " != null" );
-        if ( column.getJavaType() == String.class ) {
-            builder.append( " and " );
-            if ( Ascii.hasText( argName ) ) {
-                builder.append( argName ).append( "." );
+        builder.append(column.getProperty()).append(" != null");
+        if (column.getJavaType() == String.class) {
+            builder.append(" and ");
+            if (Ascii.hasText(argName)) {
+                builder.append(argName).append(".");
             }
-            builder.append( column.getProperty() ).append( " != ''" );
+            builder.append(column.getProperty()).append(" != ''");
         }
         return builder.toString();
     }
@@ -42,8 +42,8 @@ public final class ColumnConvert {
      * @return 字符串
      * @see #convertToArg(ColumnWrapper, Execute, String, String, String, String)
      */
-    public String convertToInsertArg( final ColumnWrapper column ) {
-        return convertToArg( column, Execute.INSERT );
+    public String convertToInsertArg(final ColumnWrapper column) {
+        return convertToArg(column, Execute.INSERT);
     }
 
     /**
@@ -53,8 +53,8 @@ public final class ColumnConvert {
      * @return 字符串
      * @see #convertToArg(ColumnWrapper, Execute, String, String, String, String)
      */
-    public static String convertToArg( final ColumnWrapper column, final Execute execute ) {
-        return convertToArg( column, execute, null, null, null, null );
+    public static String convertToArg(final ColumnWrapper column, final Execute execute) {
+        return convertToArg(column, execute, null, null, null, null);
     }
 
     /**
@@ -64,8 +64,8 @@ public final class ColumnConvert {
      * @param argName 参数名称 [可选]
      * @return 字符串
      */
-    public static String convertToArg( final ColumnWrapper column, final Execute execute, final String argName ) {
-        return convertToArg( column, execute, argName, null, null, null );
+    public static String convertToArg(final ColumnWrapper column, final Execute execute, final String argName) {
+        return convertToArg(column, execute, argName, null, null, null);
     }
 
     /**
@@ -77,9 +77,9 @@ public final class ColumnConvert {
      * @return 字符串
      * @see #convertToArg(ColumnWrapper, Execute, String, String, String, String)
      */
-    public static String convertToArg( final ColumnWrapper column, final Execute execute,
-                                       final String argName, final String alias ) {
-        return convertToArg( column, execute, argName, alias, null, null );
+    public static String convertToArg(final ColumnWrapper column, final Execute execute,
+                                      final String argName, final String alias) {
+        return convertToArg(column, execute, argName, alias, null, null);
     }
 
     /**
@@ -92,9 +92,9 @@ public final class ColumnConvert {
      * @return 字符串
      * @see #convertToArg(ColumnWrapper, Execute, String, String, String, String)
      */
-    public static String convertToArg( final ColumnWrapper column, final Execute execute, final String argName,
-                                       final String alias, String operator ) {
-        return convertToArg( column, execute, argName, alias, operator, null );
+    public static String convertToArg(final ColumnWrapper column, final Execute execute, final String argName,
+                                      final String alias, String operator) {
+        return convertToArg(column, execute, argName, alias, operator, null);
     }
 
 
@@ -124,35 +124,35 @@ public final class ColumnConvert {
      * @param separator 分隔符 [可选]
      * @return 字符串
      */
-    public static String convertToArg( final ColumnWrapper column, final Execute execute, final String argName,
-                                       final String alias, String operator, String separator ) {
-        StringBuffer buffer = new StringBuffer( 60 );
-        if ( execute != Execute.INSERT ) {
+    public static String convertToArg(final ColumnWrapper column, final Execute execute, final String argName,
+                                      final String alias, String operator, String separator) {
+        StringBuffer buffer = new StringBuffer(60);
+        if (execute != Execute.INSERT) {
             // 别名
-            if ( StringUtil.hasText( alias ) ) {
-                buffer.append( alias ).append( "." );
+            if (StringUtil.hasText(alias)) {
+                buffer.append(alias).append(".");
             }
             // 操作符[=, >, <, ...]
-            if ( StringUtil.isBlank( operator ) ) {
+            if (StringUtil.isBlank(operator)) {
                 operator = Symbol.EQ.getSegment();
             }
             // 字段
-            buffer.append( column.getColumn() ).append( " " ).append( operator );
+            buffer.append(column.getColumn()).append(" ").append(operator);
         }
-        buffer.append( " #{" );
+        buffer.append(" #{");
         // 参数属性名
-        if ( execute == Execute.NONE ) {
-            buffer.append( "value" );
+        if (execute == Execute.NONE) {
+            buffer.append("value");
         } else {
-            if ( StringUtil.hasText( argName ) ) {
-                buffer.append( argName ).append( "." );
+            if (StringUtil.hasText(argName)) {
+                buffer.append(argName).append(".");
             }
-            buffer.append( column.getProperty() );
+            buffer.append(column.getProperty());
         }
-        appendValue( column, buffer );
-        buffer.append( "}" );
-        if ( StringUtil.hasText( separator ) ) {
-            buffer.append( separator );
+        appendValue(column, buffer);
+        buffer.append("}");
+        if (StringUtil.hasText(separator)) {
+            buffer.append(separator);
         }
         return buffer.toString();
     }
@@ -165,19 +165,19 @@ public final class ColumnConvert {
      * @param apply      是否带上属性名
      * @return 字符串
      */
-    public static String convertToQueryArg( final ColumnWrapper column, final String tableAlias,
-                                            final String reference, final boolean apply ) {
-        StringBuilder buffer = new StringBuilder( 60 );
-        if ( StringUtil.hasText( tableAlias ) ) {
-            buffer.append( tableAlias ).append( "." );
+    public static String convertToQueryArg(final ColumnWrapper column, final String tableAlias,
+                                           final String reference, final boolean apply) {
+        StringBuilder buffer = new StringBuilder(60);
+        if (StringUtil.hasText(tableAlias)) {
+            buffer.append(tableAlias).append(".");
         }
-        buffer.append( column.getColumn() );
-        if ( apply ) {
-            buffer.append( " " );
-            if ( StringUtil.hasText( reference ) ) {
-                buffer.append( "\"" ).append( reference ).append( "." ).append( column.getProperty() ).append( "\"" );
+        buffer.append(column.getColumn());
+        if (apply) {
+            buffer.append(" ");
+            if (StringUtil.hasText(reference)) {
+                buffer.append("\"").append(reference).append(".").append(column.getProperty()).append("\"");
             } else {
-                buffer.append( column.getProperty() );
+                buffer.append(column.getProperty());
             }
         }
         return buffer.toString();
@@ -190,18 +190,18 @@ public final class ColumnConvert {
      * @param tableAlias  表别名
      * @return 字符串
      */
-    public static String convertToQueryArg( final String column, final String columnAlias, final String tableAlias ) {
-        StringBuilder buffer = new StringBuilder( 40 );
-        if ( StringUtil.hasText( tableAlias ) ) {
-            buffer.append( tableAlias ).append( "." );
+    public static String convertToQueryArg(final String column, final String columnAlias, final String tableAlias) {
+        StringBuilder buffer = new StringBuilder(40);
+        if (StringUtil.hasText(tableAlias)) {
+            buffer.append(tableAlias).append(".");
         }
-        buffer.append( column );
-        if ( StringUtil.hasText( columnAlias ) ) {
-            buffer.append( " " );
-            if ( columnAlias.contains( "." ) ) {
-                buffer.append( "\"" ).append( columnAlias ).append( "\"" );
+        buffer.append(column);
+        if (StringUtil.hasText(columnAlias)) {
+            buffer.append(" ");
+            if (columnAlias.contains(".")) {
+                buffer.append("\"").append(columnAlias).append("\"");
             } else {
-                buffer.append( columnAlias );
+                buffer.append(columnAlias);
             }
         }
         return buffer.toString();
@@ -216,28 +216,28 @@ public final class ColumnConvert {
      * @param join                  连接符
      * @return SQL字符串
      */
-    public static String convertToCustomArg( final ColumnWrapper column, final String paramValuePlaceHolder,
-                                             final String alias, Symbol operator, String join ) {
-        StringBuffer buffer = new StringBuffer( 60 );
-        if ( StringUtil.hasText( join ) ) {
-            buffer.append( join ).append( " " );
+    public static String convertToCustomArg(final ColumnWrapper column, final String paramValuePlaceHolder,
+                                            final String alias, Symbol operator, String join) {
+        StringBuffer buffer = new StringBuffer(60);
+        if (StringUtil.hasText(join)) {
+            buffer.append(join).append(" ");
         }
         // 别名
-        if ( StringUtil.hasText( alias ) ) {
-            buffer.append( alias ).append( "." );
+        if (StringUtil.hasText(alias)) {
+            buffer.append(alias).append(".");
         }
         // 操作符[=, >, <, ...]
-        if ( operator == null ) {
+        if (operator == null) {
             operator = Symbol.EQ;
         }
         // 字段
-        buffer.append( column.getColumn() ).append( " " ).append( operator.getSegment() );
-        if ( Symbol.filter( operator ) ) {
-            buffer.append( " #{" );
+        buffer.append(column.getColumn()).append(" ").append(operator.getSegment());
+        if (Symbol.filter(operator)) {
+            buffer.append(" #{");
             // 参数属性名
-            buffer.append( paramValuePlaceHolder );
-            appendValue( column, buffer );
-            buffer.append( "}" );
+            buffer.append(paramValuePlaceHolder);
+            appendValue(column, buffer);
+            buffer.append("}");
         }
         return buffer.toString();
     }
@@ -251,43 +251,43 @@ public final class ColumnConvert {
      * @param join                  连接符
      * @return SQL字符串
      */
-    public static String convertToCustomArg( final String column, final String paramValuePlaceHolder,
-                                             final String alias, Symbol operator, String join ) {
-        StringBuilder buffer = new StringBuilder( 40 );
-        if ( StringUtil.hasText( join ) ) {
-            buffer.append( join ).append( " " );
+    public static String convertToCustomArg(final String column, final String paramValuePlaceHolder,
+                                            final String alias, Symbol operator, String join) {
+        StringBuilder buffer = new StringBuilder(40);
+        if (StringUtil.hasText(join)) {
+            buffer.append(join).append(" ");
         }
         // 别名
-        if ( StringUtil.hasText( alias ) ) {
-            buffer.append( alias ).append( "." );
+        if (StringUtil.hasText(alias)) {
+            buffer.append(alias).append(".");
         }
         // 操作符[=, >, <, ...]
-        if ( operator == null ) {
+        if (operator == null) {
             operator = Symbol.EQ;
         }
         // 字段
-        buffer.append( column ).append( " " ).append( operator.getSegment() );
-        buffer.append( " #{" ).append( paramValuePlaceHolder ).append( "}" );
+        buffer.append(column).append(" ").append(operator.getSegment());
+        buffer.append(" #{").append(paramValuePlaceHolder).append("}");
         return buffer.toString();
     }
 
-    private static void appendValue( ColumnWrapper column, StringBuffer buffer ) {
+    private static void appendValue(ColumnWrapper column, StringBuffer buffer) {
         JdbcType jdbcType = column.getJdbcType();
         Class<?> javaType = column.getJavaType();
         Class<?> typeHandler = column.getTypeHandler();
         boolean useJavaType = column.isUseJavaType();
-        if ( buffer != null ) {
+        if (buffer != null) {
             // 指定JDBC类型
-            if ( jdbcType != null ) {
-                buffer.append( ", jdbcType=" ).append( jdbcType.toString() );
+            if (jdbcType != null) {
+                buffer.append(", jdbcType=").append(jdbcType.toString());
             }
             // 指定类型处理器
-            if ( typeHandler != null ) {
-                buffer.append( ", typeHandler=" ).append( typeHandler.getCanonicalName() );
+            if (typeHandler != null) {
+                buffer.append(", typeHandler=").append(typeHandler.getCanonicalName());
             }
             // 指定Java类型
-            if ( useJavaType && !javaType.isArray() ) {
-                buffer.append( ", javaType=" ).append( javaType.getCanonicalName() );
+            if (useJavaType && !javaType.isArray()) {
+                buffer.append(", javaType=").append(javaType.getCanonicalName());
             }
         }
     }
@@ -298,8 +298,8 @@ public final class ColumnConvert {
      * @param configuration MyBatis配置对象
      * @return 序列SQL
      */
-    public static String getSequenceScript( final Configuration configuration, ColumnWrapper column ) {
-        return getSequenceScript( MyBatisConfigCache.getDialect( configuration ), column.getSequenceName() );
+    public static String getSequenceScript(final Configuration configuration, ColumnWrapper column) {
+        return getSequenceScript(MyBatisConfigCache.getDialect(configuration), column.getSequenceName());
     }
 
     /**
@@ -308,7 +308,7 @@ public final class ColumnConvert {
      * @param sequenceName 序列名称
      * @return 序列SQL
      */
-    public static String getSequenceScript( final Dialect dialect, String sequenceName ) {
-        return SequenceKeyGenerator.getInstance( dialect ).toSqlString( sequenceName );
+    public static String getSequenceScript(final Dialect dialect, String sequenceName) {
+        return SequenceKeyGenerator.getInstance(dialect).toSqlString(sequenceName);
     }
 }

@@ -12,8 +12,8 @@ import java.lang.annotation.Target;
  * <p>默认采用驼峰转下划线大写</p>
  * @author wvkity
  */
-@Target( { ElementType.TYPE } )
-@Retention( RetentionPolicy.RUNTIME )
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
 public @interface Naming {

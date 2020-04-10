@@ -11,8 +11,8 @@ import java.lang.annotation.Target;
  * 实体注解
  * @author wvkity
  */
-@Target( ElementType.TYPE )
-@Retention( RetentionPolicy.RUNTIME )
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
 public @interface Entity {

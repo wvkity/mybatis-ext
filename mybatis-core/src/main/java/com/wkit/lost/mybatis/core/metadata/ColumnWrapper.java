@@ -17,10 +17,10 @@ import org.apache.ibatis.type.TypeHandler;
  * @author wvkity
  */
 @Getter
-@Setter( AccessLevel.PACKAGE )
+@Setter(AccessLevel.PACKAGE)
 @ToString
 @EqualsAndHashCode
-@Accessors( chain = true )
+@Accessors(chain = true)
 public class ColumnWrapper {
 
     /**
@@ -208,8 +208,8 @@ public class ColumnWrapper {
      * @param javaType   Java类型
      * @param primaryKey 是否为主键
      */
-    public ColumnWrapper( Class<?> entity, FieldWrapper field, String property,
-                          String column, Class<?> javaType, boolean primaryKey ) {
+    public ColumnWrapper(Class<?> entity, FieldWrapper field, String property,
+                         String column, Class<?> javaType, boolean primaryKey) {
         this.entity = entity;
         this.field = field;
         this.property = property;
@@ -223,7 +223,7 @@ public class ColumnWrapper {
      * @return 数据库表映射对象
      */
     public TableWrapper table() {
-        return TableHandler.getTable( this.entity );
+        return TableHandler.getTable(this.entity);
     }
 
     /**
@@ -231,7 +231,7 @@ public class ColumnWrapper {
      * @return true: 是, false: 否
      */
     public boolean isAuditable() {
-        return ( this.insertable || this.updatable ) && !primaryKey && !logicDelete;
+        return (this.insertable || this.updatable) && !primaryKey && !logicDelete;
     }
 
     /**
@@ -239,8 +239,8 @@ public class ColumnWrapper {
      * @param matching 审计类型
      * @return true: 是, false: 否
      */
-    public boolean isAuditable( AuditMatching matching ) {
-        switch ( matching ) {
+    public boolean isAuditable(AuditMatching matching) {
+        switch (matching) {
             case INSERTED:
                 return this.insertable && this.insertedAuditable();
             case MODIFIED:

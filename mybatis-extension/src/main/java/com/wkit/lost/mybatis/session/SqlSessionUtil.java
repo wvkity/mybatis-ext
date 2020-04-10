@@ -23,9 +23,9 @@ public final class SqlSessionUtil {
      * @param clazz 实体类
      * @return {@link SqlSessionFactory}
      */
-    public static SqlSessionFactory getSqlSessionFactory( Class<?> clazz ) {
-        return Optional.ofNullable( TableHandler.getConfiguration( clazz ) )
-                .map( SqlSessionUtil::getSqlSessionFactory ).orElse( null );
+    public static SqlSessionFactory getSqlSessionFactory(Class<?> clazz) {
+        return Optional.ofNullable(TableHandler.getConfiguration(clazz))
+                .map(SqlSessionUtil::getSqlSessionFactory).orElse(null);
     }
 
     /**
@@ -33,9 +33,9 @@ public final class SqlSessionUtil {
      * @param configuration {@link Configuration}
      * @return {@link SqlSessionFactory}
      */
-    public static SqlSessionFactory getSqlSessionFactory( Configuration configuration ) {
-        return Optional.ofNullable( MyBatisConfigCache.getCustomConfiguration( configuration ) )
-                .map( MyBatisCustomConfiguration::getSqlSessionFactory ).orElse( null );
+    public static SqlSessionFactory getSqlSessionFactory(Configuration configuration) {
+        return Optional.ofNullable(MyBatisConfigCache.getCustomConfiguration(configuration))
+                .map(MyBatisCustomConfiguration::getSqlSessionFactory).orElse(null);
     }
 
     /**
@@ -43,8 +43,8 @@ public final class SqlSessionUtil {
      * @param clazz 实体类
      * @return {@link SqlSession}
      */
-    public static SqlSession batchSession( Class<?> clazz ) {
-        return openSession( clazz, ExecutorType.BATCH );
+    public static SqlSession batchSession(Class<?> clazz) {
+        return openSession(clazz, ExecutorType.BATCH);
     }
 
     /**
@@ -53,9 +53,9 @@ public final class SqlSessionUtil {
      * @param executorType 执行类行
      * @return {@link SqlSession}
      */
-    public static SqlSession openSession( Class<?> clazz, ExecutorType executorType ) {
-        return Optional.ofNullable( TableHandler.getConfiguration( clazz ) )
-                .map( it -> openSession( it, executorType ) ).orElse( null );
+    public static SqlSession openSession(Class<?> clazz, ExecutorType executorType) {
+        return Optional.ofNullable(TableHandler.getConfiguration(clazz))
+                .map(it -> openSession(it, executorType)).orElse(null);
     }
 
     /**
@@ -64,16 +64,16 @@ public final class SqlSessionUtil {
      * @param executorType  执行类行
      * @return {@link SqlSession}
      */
-    public static SqlSession openSession( Configuration configuration, ExecutorType executorType ) {
-        if ( configuration != null ) {
-            if ( executorType == null ) {
+    public static SqlSession openSession(Configuration configuration, ExecutorType executorType) {
+        if (configuration != null) {
+            if (executorType == null) {
                 executorType = ExecutorType.SIMPLE;
             }
             try {
-                SqlSessionFactory factory = getSqlSessionFactory( configuration );
+                SqlSessionFactory factory = getSqlSessionFactory(configuration);
                 // 创建session
-                return getSqlSession( factory, executorType, null );
-            } catch ( Exception e ) {
+                return getSqlSession(factory, executorType, null);
+            } catch (Exception e) {
                 // ignore
             }
         }
@@ -85,8 +85,8 @@ public final class SqlSessionUtil {
      * @param session {@link SqlSession}
      * @param clazz   实体类
      */
-    public static void closeSession( SqlSession session, Class<?> clazz ) {
-        closeSession( session, getSqlSessionFactory( clazz ) );
+    public static void closeSession(SqlSession session, Class<?> clazz) {
+        closeSession(session, getSqlSessionFactory(clazz));
     }
 
     /**
@@ -94,7 +94,7 @@ public final class SqlSessionUtil {
      * @param session        {@link SqlSession}
      * @param sessionFactory {@link SqlSessionFactory}
      */
-    public static void closeSession( SqlSession session, SqlSessionFactory sessionFactory ) {
-        SqlSessionUtils.closeSqlSession( session, sessionFactory );
+    public static void closeSession(SqlSession session, SqlSessionFactory sessionFactory) {
+        SqlSessionUtils.closeSqlSession(session, sessionFactory);
     }
 }

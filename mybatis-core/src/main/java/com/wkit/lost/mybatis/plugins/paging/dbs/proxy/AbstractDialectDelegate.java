@@ -81,35 +81,35 @@ public abstract class AbstractDialectDelegate {
 
     static {
         // MYSQL
-        register( "MYSQL", MySqlDialect.class );
+        register("MYSQL", MySqlDialect.class);
         // MARIADB
-        register( "MARIADB", MySqlDialect.class );
+        register("MARIADB", MySqlDialect.class);
         // SQLITE
-        register( "SQLITE", MySqlDialect.class );
+        register("SQLITE", MySqlDialect.class);
         // ORACLE
-        register( "ORACLE", OracleDialect.class );
+        register("ORACLE", OracleDialect.class);
         // DM(达梦)
-        register( "DM", OracleDialect.class );
+        register("DM", OracleDialect.class);
         // SQL SERVER
-        register( "SQLSERVER", SqlServerDialect.class );
+        register("SQLSERVER", SqlServerDialect.class);
         // SQL SERVER 2012 OR LATER
-        register( "SQLSERVERLATER", SqlServer2012LaterDialect.class );
+        register("SQLSERVERLATER", SqlServer2012LaterDialect.class);
         // DERBY
-        register( "DERBY", SqlServer2012LaterDialect.class );
+        register("DERBY", SqlServer2012LaterDialect.class);
         // DB2
-        register( "DB2", Db2Dialect.class );
+        register("DB2", Db2Dialect.class);
         // POSTGRE
-        register( "POSTGRESQL", HsqldbDialect.class );
+        register("POSTGRESQL", HsqldbDialect.class);
         // H2
-        register( "H2", HsqldbDialect.class );
+        register("H2", HsqldbDialect.class);
         // HSQLDB
-        register( "HSQLDB", HsqldbDialect.class );
+        register("HSQLDB", HsqldbDialect.class);
         // PHONEIX
-        register( "PHONEIX", HsqldbDialect.class );
+        register("PHONEIX", HsqldbDialect.class);
         // INFORMIX
-        register( "INFORMIX", InformixDialect.class );
+        register("INFORMIX", InformixDialect.class);
         // INFORMIX-SQLI
-        register( "INFORMIXSQLI", InformixDialect.class );
+        register("INFORMIXSQLI", InformixDialect.class);
     }
 
     /**
@@ -117,8 +117,8 @@ public abstract class AbstractDialectDelegate {
      * @param alias        别名
      * @param dialectClass 数据库分页方言类
      */
-    public static void register( final String alias, Class<? extends Dialect> dialectClass ) {
-        DIALECT_ALIAS_REGISTRY.put( alias, dialectClass );
+    public static void register(final String alias, Class<? extends Dialect> dialectClass) {
+        DIALECT_ALIAS_REGISTRY.put(alias, dialectClass);
     }
 
     /**
@@ -126,21 +126,21 @@ public abstract class AbstractDialectDelegate {
      * @param prefix    前缀
      * @param statement {@link MappedStatement}
      */
-    public void initDialect( MappedStatement statement, String prefix ) {
-        if ( this.delegate == null ) {
-            if ( this.autoRuntimeDialect ) {
-                getDialect( statement, prefix );
+    public void initDialect(MappedStatement statement, String prefix) {
+        if (this.delegate == null) {
+            if (this.autoRuntimeDialect) {
+                getDialect(statement, prefix);
             } else {
-                delegateThreadLocal.set( getDialect( statement, prefix ) );
+                delegateThreadLocal.set(getDialect(statement, prefix));
             }
         }
     }
 
-    private AbstractDialect getDialect( MappedStatement statement, String prefix ) {
-        if ( this.autoRuntimeDialect ) {
-            return getDialectFromJdbcUrl( statement, prefix );
+    private AbstractDialect getDialect(MappedStatement statement, String prefix) {
+        if (this.autoRuntimeDialect) {
+            return getDialectFromJdbcUrl(statement, prefix);
         }
-        return getDialectFromSpecified( statement, prefix );
+        return getDialectFromSpecified(statement, prefix);
     }
 
     /**
@@ -148,19 +148,19 @@ public abstract class AbstractDialectDelegate {
      * @param dialectClazz 方言别名或全类名
      * @return 方言对象
      */
-    private AbstractDialect initDialect( final String dialectClazz ) {
-        if ( Ascii.isNullOrEmpty( dialectClazz ) ) {
-            throw new MyBatisPluginException( "The corresponding database dialect identifier must be specified." );
+    private AbstractDialect initDialect(final String dialectClazz) {
+        if (Ascii.isNullOrEmpty(dialectClazz)) {
+            throw new MyBatisPluginException("The corresponding database dialect identifier must be specified.");
         }
         try {
-            Class<?> clazz = transform( dialectClazz );
-            if ( !AbstractDialect.class.isAssignableFrom( clazz ) ) {
-                throw new MyBatisPluginException( "The current plug-in must inherit the `" +
-                        AbstractDialect.class.getName() + "` abstract class and implement the corresponding methods" );
+            Class<?> clazz = transform(dialectClazz);
+            if (!AbstractDialect.class.isAssignableFrom(clazz)) {
+                throw new MyBatisPluginException("The current plug-in must inherit the `" +
+                        AbstractDialect.class.getName() + "` abstract class and implement the corresponding methods");
             }
-            return ( AbstractDialect ) clazz.getDeclaredConstructor().newInstance();
-        } catch ( Exception e ) {
-            throw new MyBatisPluginException( "Failed to initialize database dialect object: " + e.getMessage(), e );
+            return (AbstractDialect) clazz.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            throw new MyBatisPluginException("Failed to initialize database dialect object: " + e.getMessage(), e);
         }
     }
 
@@ -170,28 +170,28 @@ public abstract class AbstractDialectDelegate {
      * @param prefix    key前缀
      * @return 分页方言对象
      */
-    private AbstractDialect getDialectFromJdbcUrl( MappedStatement statement, String prefix ) {
-        String jdbcUrl = getJdbcUrlFromDataSource( statement.getConfiguration().getEnvironment().getDataSource() );
-        String key = prefix.toUpperCase( Locale.ENGLISH ) + jdbcUrl.toUpperCase( Locale.ENGLISH );
-        if ( JDBC_DIALECT_CACHE.containsKey( key ) ) {
-            return JDBC_DIALECT_CACHE.get( key );
+    private AbstractDialect getDialectFromJdbcUrl(MappedStatement statement, String prefix) {
+        String jdbcUrl = getJdbcUrlFromDataSource(statement.getConfiguration().getEnvironment().getDataSource());
+        String key = prefix.toUpperCase(Locale.ENGLISH) + jdbcUrl.toUpperCase(Locale.ENGLISH);
+        if (JDBC_DIALECT_CACHE.containsKey(key)) {
+            return JDBC_DIALECT_CACHE.get(key);
         }
         try {
             lock.lock();
-            if ( JDBC_DIALECT_CACHE.containsKey( key ) ) {
-                return JDBC_DIALECT_CACHE.get( key );
+            if (JDBC_DIALECT_CACHE.containsKey(key)) {
+                return JDBC_DIALECT_CACHE.get(key);
             }
-            String dialectAlias = getDialectAliasFromJdbc( jdbcUrl.toUpperCase( Locale.ENGLISH ) );
-            if ( dialectAlias == null ) {
-                throw new MyBatisPluginException( "The plug-in does not currently support the current database or " +
-                        "cannot recognize the current database type." );
+            String dialectAlias = getDialectAliasFromJdbc(jdbcUrl.toUpperCase(Locale.ENGLISH));
+            if (dialectAlias == null) {
+                throw new MyBatisPluginException("The plug-in does not currently support the current database or " +
+                        "cannot recognize the current database type.");
             }
-            AbstractDialect instance = initDialect( dialectAlias );
-            instance.setProperties( this.properties );
-            JDBC_DIALECT_CACHE.put( key, instance );
+            AbstractDialect instance = initDialect(dialectAlias);
+            instance.setProperties(this.properties);
+            JDBC_DIALECT_CACHE.put(key, instance);
             return instance;
-        } catch ( Exception e ) {
-            throw new MyBatisPluginException( e );
+        } catch (Exception e) {
+            throw new MyBatisPluginException(e);
         } finally {
             lock.unlock();
         }
@@ -203,33 +203,33 @@ public abstract class AbstractDialectDelegate {
      * @param prefix    key前缀
      * @return 方言对象
      */
-    private AbstractDialect getDialectFromSpecified( MappedStatement statement, String prefix ) {
-        String dialectAlias = Optional.ofNullable( this.dbDialect )
-                .orElse( Optional.ofNullable( MyBatisConfigCache.getCustomConfiguration( statement.getConfiguration() ) )
-                        .map( MyBatisCustomConfiguration::getDialect )
-                        .map( Enum::name )
-                        .orElse( "UNDEFINED" ) );
-        if ( !"UNDEFINED".equalsIgnoreCase( dialectAlias ) ) {
-            String key = prefix.toUpperCase( Locale.ENGLISH ) + dialectAlias.toUpperCase( Locale.ENGLISH );
-            if ( SPECIFIED_DIALECT_CACHE.containsKey( key ) ) {
-                return SPECIFIED_DIALECT_CACHE.get( key );
+    private AbstractDialect getDialectFromSpecified(MappedStatement statement, String prefix) {
+        String dialectAlias = Optional.ofNullable(this.dbDialect)
+                .orElse(Optional.ofNullable(MyBatisConfigCache.getCustomConfiguration(statement.getConfiguration()))
+                        .map(MyBatisCustomConfiguration::getDialect)
+                        .map(Enum::name)
+                        .orElse("UNDEFINED"));
+        if (!"UNDEFINED".equalsIgnoreCase(dialectAlias)) {
+            String key = prefix.toUpperCase(Locale.ENGLISH) + dialectAlias.toUpperCase(Locale.ENGLISH);
+            if (SPECIFIED_DIALECT_CACHE.containsKey(key)) {
+                return SPECIFIED_DIALECT_CACHE.get(key);
             }
             try {
                 lock.lock();
-                if ( SPECIFIED_DIALECT_CACHE.containsKey( key ) ) {
-                    return SPECIFIED_DIALECT_CACHE.get( key );
+                if (SPECIFIED_DIALECT_CACHE.containsKey(key)) {
+                    return SPECIFIED_DIALECT_CACHE.get(key);
                 }
-                AbstractDialect instance = initDialect( dialectAlias );
-                instance.setProperties( this.properties );
-                SPECIFIED_DIALECT_CACHE.put( key, instance );
+                AbstractDialect instance = initDialect(dialectAlias);
+                instance.setProperties(this.properties);
+                SPECIFIED_DIALECT_CACHE.put(key, instance);
                 return instance;
-            } catch ( Exception e ) {
-                throw new MyBatisPluginException( e );
+            } catch (Exception e) {
+                throw new MyBatisPluginException(e);
             } finally {
                 lock.unlock();
             }
         } else {
-            return getDialectFromJdbcUrl( statement, prefix );
+            return getDialectFromJdbcUrl(statement, prefix);
         }
     }
 
@@ -238,18 +238,18 @@ public abstract class AbstractDialectDelegate {
      * @param dataSource 数据源
      * @return JDBC URL
      */
-    private String getJdbcUrlFromDataSource( DataSource dataSource ) {
+    private String getJdbcUrlFromDataSource(DataSource dataSource) {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
             return connection.getMetaData().getURL();
-        } catch ( SQLException e ) {
-            throw new MyBatisPluginException( e );
+        } catch (SQLException e) {
+            throw new MyBatisPluginException(e);
         } finally {
-            if ( connection != null && this.autoReleaseConnect ) {
+            if (connection != null && this.autoReleaseConnect) {
                 try {
                     connection.close();
-                } catch ( Exception e ) {
+                } catch (Exception e) {
                     // ignore
                 }
             }
@@ -261,13 +261,13 @@ public abstract class AbstractDialectDelegate {
      * @param jdbcUrl JDBC URL
      * @return 数据库方言
      */
-    private String getDialectAliasFromJdbc( String jdbcUrl ) {
+    private String getDialectAliasFromJdbc(String jdbcUrl) {
         return DIALECT_ALIAS_REGISTRY.keySet()
                 .parallelStream()
-                .map( value -> value.toUpperCase( Locale.ENGLISH ) )
-                .filter( value -> jdbcUrl.contains( "JDBC:" + value + ":" ) )
+                .map(value -> value.toUpperCase(Locale.ENGLISH))
+                .filter(value -> jdbcUrl.contains("JDBC:" + value + ":"))
                 .findAny()
-                .orElse( null );
+                .orElse(null);
     }
 
     /**
@@ -276,25 +276,25 @@ public abstract class AbstractDialectDelegate {
      * @return 类对象
      * @throws ClassNotFoundException \n
      */
-    private Class<?> transform( final String dialectClassName ) throws ClassNotFoundException {
-        if ( DIALECT_ALIAS_REGISTRY.containsKey( dialectClassName.toUpperCase( Locale.ENGLISH ) ) ) {
-            return DIALECT_ALIAS_REGISTRY.get( dialectClassName.toUpperCase( Locale.ENGLISH ) );
+    private Class<?> transform(final String dialectClassName) throws ClassNotFoundException {
+        if (DIALECT_ALIAS_REGISTRY.containsKey(dialectClassName.toUpperCase(Locale.ENGLISH))) {
+            return DIALECT_ALIAS_REGISTRY.get(dialectClassName.toUpperCase(Locale.ENGLISH));
         }
-        return Class.forName( dialectClassName );
+        return Class.forName(dialectClassName);
     }
 
     /**
      * 设置属性
      * @param props {@link Properties}
      */
-    public void setProperties( Properties props ) {
+    public void setProperties(Properties props) {
         this.properties = props;
-        this.dbDialect = Optional.ofNullable( props.getProperty( "dialect" ) )
-                .filter( Ascii::hasText ).orElse( null );
-        this.autoRuntimeDialect = Optional.ofNullable( props.getProperty( "autoRuntimeDialect" ) )
-                .map( Ascii::toBool ).orElse( false );
-        Optional.ofNullable( props.getProperty( "autoReleaseConnect" ) )
-                .ifPresent( release -> this.autoReleaseConnect = Ascii.toBool( release ) );
+        this.dbDialect = Optional.ofNullable(props.getProperty("dialect"))
+                .filter(Ascii::hasText).orElse(null);
+        this.autoRuntimeDialect = Optional.ofNullable(props.getProperty("autoRuntimeDialect"))
+                .map(Ascii::toBool).orElse(false);
+        Optional.ofNullable(props.getProperty("autoReleaseConnect"))
+                .ifPresent(release -> this.autoReleaseConnect = Ascii.toBool(release));
     }
 
     /**

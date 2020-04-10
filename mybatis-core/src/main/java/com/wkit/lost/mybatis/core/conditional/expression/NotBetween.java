@@ -23,7 +23,7 @@ public class NotBetween<T> extends AbstractBetweenExpression<T> {
      * @param end      结束值
      * @param logic    逻辑符号
      */
-    NotBetween( Criteria<T> criteria, ColumnWrapper column, Object begin, Object end, Logic logic ) {
+    NotBetween(Criteria<T> criteria, ColumnWrapper column, Object begin, Object end, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.begin = begin;
@@ -42,9 +42,9 @@ public class NotBetween<T> extends AbstractBetweenExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotBetween<T> create( Criteria<T> criteria, Property<T, ?> property, Object begin,
-                                            Object end ) {
-        return create( criteria, property, begin, end, Logic.AND );
+    public static <T> NotBetween<T> create(Criteria<T> criteria, Property<T, ?> property, Object begin,
+                                           Object end) {
+        return create(criteria, property, begin, end, Logic.AND);
     }
 
     /**
@@ -57,10 +57,10 @@ public class NotBetween<T> extends AbstractBetweenExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotBetween<T> create( Criteria<T> criteria, Property<T, ?> property, Object begin,
-                                            Object end, Logic logic ) {
-        if ( criteria != null && property != null ) {
-            return create( criteria, criteria.searchColumn( property ), begin, end, logic );
+    public static <T> NotBetween<T> create(Criteria<T> criteria, Property<T, ?> property, Object begin,
+                                           Object end, Logic logic) {
+        if (criteria != null && property != null) {
+            return create(criteria, criteria.searchColumn(property), begin, end, logic);
         }
         return null;
     }
@@ -74,9 +74,9 @@ public class NotBetween<T> extends AbstractBetweenExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotBetween<T> create( Criteria<T> criteria, String property, Object begin,
-                                            Object end ) {
-        return create( criteria, property, begin, end, Logic.AND );
+    public static <T> NotBetween<T> create(Criteria<T> criteria, String property, Object begin,
+                                           Object end) {
+        return create(criteria, property, begin, end, Logic.AND);
     }
 
     /**
@@ -89,10 +89,10 @@ public class NotBetween<T> extends AbstractBetweenExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotBetween<T> create( Criteria<T> criteria, String property, Object begin,
-                                            Object end, Logic logic ) {
-        if ( criteria != null && hasText( property ) ) {
-            return create( criteria, criteria.searchColumn( property ), begin, end, logic );
+    public static <T> NotBetween<T> create(Criteria<T> criteria, String property, Object begin,
+                                           Object end, Logic logic) {
+        if (criteria != null && hasText(property)) {
+            return create(criteria, criteria.searchColumn(property), begin, end, logic);
         }
         return null;
     }
@@ -106,8 +106,8 @@ public class NotBetween<T> extends AbstractBetweenExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotBetween<T> create( Criteria<T> criteria, ColumnWrapper column, Object begin, Object end ) {
-        return create( criteria, column, begin, end, Logic.AND );
+    public static <T> NotBetween<T> create(Criteria<T> criteria, ColumnWrapper column, Object begin, Object end) {
+        return create(criteria, column, begin, end, Logic.AND);
     }
 
     /**
@@ -120,10 +120,10 @@ public class NotBetween<T> extends AbstractBetweenExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> NotBetween<T> create( Criteria<T> criteria, ColumnWrapper column, Object begin,
-                                            Object end, Logic logic ) {
-        if ( criteria != null && column != null ) {
-            return new NotBetween<>( criteria, column, begin, end, logic );
+    public static <T> NotBetween<T> create(Criteria<T> criteria, ColumnWrapper column, Object begin,
+                                           Object end, Logic logic) {
+        if (criteria != null && column != null) {
+            return new NotBetween<>(criteria, column, begin, end, logic);
         }
         return null;
     }

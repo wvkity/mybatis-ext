@@ -18,10 +18,10 @@ public class InsertProvider extends AbstractProvider {
     @Override
     public String build() {
         Set<ColumnWrapper> columns = table.insertableColumns();
-        return insert( columns.stream().map( ColumnWrapper::getColumn )
-                        .collect( Collectors.joining( ", ", "(", ")" ) ),
-                columns.stream().map( it ->
-                        ScriptUtil.convertPartArg( it, Constants.PARAM_ENTITY, Execute.INSERT ) )
-                        .collect( Collectors.joining( ", ", "(", ")" ) ) );
+        return insert(columns.stream().map(ColumnWrapper::getColumn)
+                        .collect(Collectors.joining(", ", "(", ")")),
+                columns.stream().map(it ->
+                        ScriptUtil.convertPartArg(it, Constants.PARAM_ENTITY, Execute.INSERT))
+                        .collect(Collectors.joining(", ", "(", ")")));
     }
 }

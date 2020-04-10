@@ -19,7 +19,7 @@ public enum SqlTemplate {
      */
     INSERT {
         @Override
-        protected String getSegment( String tableName ) {
+        protected String getSegment(String tableName) {
             return "INSERT INTO " + tableName + " %s VALUES %s";
         }
     },
@@ -32,7 +32,7 @@ public enum SqlTemplate {
      */
     DELETE {
         @Override
-        protected String getSegment( String tableName ) {
+        protected String getSegment(String tableName) {
             return "DELETE FROM " + tableName + "%s%s";
         }
     },
@@ -45,7 +45,7 @@ public enum SqlTemplate {
      */
     UPDATE {
         @Override
-        protected String getSegment( String tableName ) {
+        protected String getSegment(String tableName) {
             return "UPDATE " + tableName + "%s%s";
         }
     },
@@ -58,7 +58,7 @@ public enum SqlTemplate {
      */
     SELECT {
         @Override
-        protected String getSegment( String tableName ) {
+        protected String getSegment(String tableName) {
             return "SELECT %s FROM " + tableName + " %s";
         }
     },
@@ -68,9 +68,9 @@ public enum SqlTemplate {
      */
     SELECT_CRITERIA {
         @Override
-        protected String getSegment( String tableName ) {
+        protected String getSegment(String tableName) {
             return "SELECT <![CDATA[%s]]> FROM " +
-                    ScriptUtil.unSafeJoint( Constants.PARAM_CRITERIA + ".tableName" ) + " %s";
+                    ScriptUtil.unSafeJoint(Constants.PARAM_CRITERIA + ".tableName") + " %s";
         }
     };
 
@@ -80,16 +80,16 @@ public enum SqlTemplate {
      * @param __    表别名
      * @return SQL语句
      */
-    public String getSegment( final TableWrapper table, final String __ ) {
+    public String getSegment(final TableWrapper table, final String __) {
         String catalog = table.getCatalog();
         String schema = table.getSchema();
         String tableName = table.getName();
-        if ( StringUtil.hasText( schema ) ) {
-            return getSegment( schema + "." + tableName );
-        } else if ( StringUtil.hasText( catalog ) ) {
-            return getSegment( catalog + "." + tableName );
+        if (StringUtil.hasText(schema)) {
+            return getSegment(schema + "." + tableName);
+        } else if (StringUtil.hasText(catalog)) {
+            return getSegment(catalog + "." + tableName);
         }
-        return getSegment( table.getName() );
+        return getSegment(table.getName());
     }
 
     /**
@@ -97,5 +97,5 @@ public enum SqlTemplate {
      * @param tableName 表名
      * @return SQL语句
      */
-    protected abstract String getSegment( final String tableName );
+    protected abstract String getSegment(final String tableName);
 }

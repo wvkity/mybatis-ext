@@ -33,15 +33,15 @@ public class DateTimeProviderFactory {
     private static final Map<Class<?>, Class<? extends AbstractProvider>> DATE_TIME_PROVIDER_CACHE = new ConcurrentHashMap<>();
 
     static {
-        DATE_TIME_PROVIDER_CACHE.put( Date.class, DateProvider.class );
-        DATE_TIME_PROVIDER_CACHE.put( Timestamp.class, TimestampProvider.class );
-        DATE_TIME_PROVIDER_CACHE.put( LocalDate.class, LocalDateProvider.class );
-        DATE_TIME_PROVIDER_CACHE.put( LocalTime.class, LocalTimeProvider.class );
-        DATE_TIME_PROVIDER_CACHE.put( LocalDateTime.class, LocalDateTimeProvider.class );
-        DATE_TIME_PROVIDER_CACHE.put( OffsetTime.class, OffsetTimeProvider.class );
-        DATE_TIME_PROVIDER_CACHE.put( OffsetDateTime.class, OffsetDateTimeProvider.class );
-        DATE_TIME_PROVIDER_CACHE.put( Instant.class, InstantProvider.class );
-        DATE_TIME_PROVIDER_CACHE.put( ZonedDateTime.class, ZonedDateTimeProvider.class );
+        DATE_TIME_PROVIDER_CACHE.put(Date.class, DateProvider.class);
+        DATE_TIME_PROVIDER_CACHE.put(Timestamp.class, TimestampProvider.class);
+        DATE_TIME_PROVIDER_CACHE.put(LocalDate.class, LocalDateProvider.class);
+        DATE_TIME_PROVIDER_CACHE.put(LocalTime.class, LocalTimeProvider.class);
+        DATE_TIME_PROVIDER_CACHE.put(LocalDateTime.class, LocalDateTimeProvider.class);
+        DATE_TIME_PROVIDER_CACHE.put(OffsetTime.class, OffsetTimeProvider.class);
+        DATE_TIME_PROVIDER_CACHE.put(OffsetDateTime.class, OffsetDateTimeProvider.class);
+        DATE_TIME_PROVIDER_CACHE.put(Instant.class, InstantProvider.class);
+        DATE_TIME_PROVIDER_CACHE.put(ZonedDateTime.class, ZonedDateTimeProvider.class);
     }
 
     /**
@@ -69,24 +69,24 @@ public class DateTimeProviderFactory {
             return new ProviderBuilder();
         }
 
-        public ProviderBuilder target( Class<?> target ) {
+        public ProviderBuilder target(Class<?> target) {
             this.target = target;
             return this;
         }
 
         @Override
         public DateTimeProvider build() {
-            return Optional.ofNullable( getProviderClass( this.target ) )
-                    .flatMap( it -> Optional.ofNullable( newInstance( it ) )
-                            .map( instance -> new DateTimeProviderProxy( instance ).getTarget() ) )
-                    .orElse( null );
+            return Optional.ofNullable(getProviderClass(this.target))
+                    .flatMap(it -> Optional.ofNullable(newInstance(it))
+                            .map(instance -> new DateTimeProviderProxy(instance).getTarget()))
+                    .orElse(null);
         }
 
-        private <T> T newInstance( Class<T> clazz ) {
-            if ( clazz != null ) {
+        private <T> T newInstance(Class<T> clazz) {
+            if (clazz != null) {
                 try {
                     return clazz.getDeclaredConstructor().newInstance();
-                } catch ( Exception e ) {
+                } catch (Exception e) {
                     // ignore
                 }
             }
@@ -99,13 +99,13 @@ public class DateTimeProviderFactory {
      * @param target        目标类型
      * @param providerClass 提供者类型
      */
-    public static void register( Class<?> target, Class<? extends AbstractProvider> providerClass ) {
-        if ( target != null && providerClass != null ) {
-            DATE_TIME_PROVIDER_CACHE.put( target, providerClass );
+    public static void register(Class<?> target, Class<? extends AbstractProvider> providerClass) {
+        if (target != null && providerClass != null) {
+            DATE_TIME_PROVIDER_CACHE.put(target, providerClass);
         }
     }
 
-    public static Class<? extends AbstractProvider> getProviderClass( Class<?> target ) {
-        return DATE_TIME_PROVIDER_CACHE.getOrDefault( target, null );
+    public static Class<? extends AbstractProvider> getProviderClass(Class<?> target) {
+        return DATE_TIME_PROVIDER_CACHE.getOrDefault(target, null);
     }
 }

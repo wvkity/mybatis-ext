@@ -51,42 +51,42 @@ public class BatchStatementProcessor extends Processor {
     private static final String METHOD_BATCH = "batch";
 
     private static final Set<String> BATCH_METHODS =
-            Collections.unmodifiableSet( new HashSet<>( Arrays.asList( "batchInsert", "batchInsertNotWithAudit" ) ) );
+            Collections.unmodifiableSet(new HashSet<>(Arrays.asList("batchInsert", "batchInsertNotWithAudit")));
 
-    @SuppressWarnings( { "unchecked" } )
+    @SuppressWarnings({"unchecked"})
     @Override
-    public Object intercept( Invocation invocation ) throws Throwable {
+    public Object intercept(Invocation invocation) throws Throwable {
         Object target = invocation.getTarget();
         Method method = invocation.getMethod();
-        if ( target instanceof RoutingStatementHandler ) {
-            RoutingStatementHandler rsh = ( RoutingStatementHandler ) target;
-            MetaObject rshMetadata = MetaObjectUtil.forObject( rsh );
-            if ( rshMetadata.hasGetter( VARIABLE_DELEGATE ) ) {
-                Object delegateTarget = rshMetadata.getValue( VARIABLE_DELEGATE );
-                if ( delegateTarget instanceof PreparedStatementHandler ) {
-                    PreparedStatementHandler psh = ( PreparedStatementHandler ) delegateTarget;
-                    MetaObject pshMetadata = MetaObjectUtil.forObject( psh );
+        if (target instanceof RoutingStatementHandler) {
+            RoutingStatementHandler rsh = (RoutingStatementHandler) target;
+            MetaObject rshMetadata = MetaObjectUtil.forObject(rsh);
+            if (rshMetadata.hasGetter(VARIABLE_DELEGATE)) {
+                Object delegateTarget = rshMetadata.getValue(VARIABLE_DELEGATE);
+                if (delegateTarget instanceof PreparedStatementHandler) {
+                    PreparedStatementHandler psh = (PreparedStatementHandler) delegateTarget;
+                    MetaObject pshMetadata = MetaObjectUtil.forObject(psh);
                     BoundSql boundSql = psh.getBoundSql();
                     Object methodParameterTarget = boundSql.getParameterObject();
-                    if ( methodParameterTarget instanceof Map ) {
-                        methodParameterTarget = ( ( Map<?, ?> ) methodParameterTarget )
-                                .getOrDefault( Constants.PARAM_BATCH_BEAN_WRAPPER, null );
+                    if (methodParameterTarget instanceof Map) {
+                        methodParameterTarget = ((Map<?, ?>) methodParameterTarget)
+                                .getOrDefault(Constants.PARAM_BATCH_BEAN_WRAPPER, null);
                     }
-                    if ( methodParameterTarget instanceof BatchDataBeanWrapper ) {
-                        if ( pshMetadata.hasGetter( VARIABLE_MAPPED_STATEMENT ) ) {
+                    if (methodParameterTarget instanceof BatchDataBeanWrapper) {
+                        if (pshMetadata.hasGetter(VARIABLE_MAPPED_STATEMENT)) {
                             MappedStatement ms =
-                                    ( MappedStatement ) pshMetadata.getValue( VARIABLE_MAPPED_STATEMENT );
-                            PreparedStatement ps = ( PreparedStatement ) invocation.getArgs()[ 0 ];
-                            if ( filter( ms, ps ) ) {
-                                Executor executor = ( Executor ) pshMetadata.getValue( VARIABLE_EXECUTOR );
-                                if ( canExecBatch( executor, method ) ) {
-                                    BatchDataBeanWrapper<Object> wrapper = ( BatchDataBeanWrapper<Object> ) methodParameterTarget;
-                                    KeyGeneratorType keyGeneratorType = parseKeyGeneratorType( ms );
+                                    (MappedStatement) pshMetadata.getValue(VARIABLE_MAPPED_STATEMENT);
+                            PreparedStatement ps = (PreparedStatement) invocation.getArgs()[0];
+                            if (filter(ms, ps)) {
+                                Executor executor = (Executor) pshMetadata.getValue(VARIABLE_EXECUTOR);
+                                if (canExecBatch(executor, method)) {
+                                    BatchDataBeanWrapper<Object> wrapper = (BatchDataBeanWrapper<Object>) methodParameterTarget;
+                                    KeyGeneratorType keyGeneratorType = parseKeyGeneratorType(ms);
                                     // 提前生成主键值
-                                    if ( keyGeneratorType == KeyGeneratorType.BEFORE ) {
-                                        generatePrimaryKeyValue( ps, psh, pshMetadata, wrapper, ms, keyGeneratorType );
+                                    if (keyGeneratorType == KeyGeneratorType.BEFORE) {
+                                        generatePrimaryKeyValue(ps, psh, pshMetadata, wrapper, ms, keyGeneratorType);
                                     }
-                                    executeBatch( ms, wrapper, ps, boundSql, keyGeneratorType );
+                                    executeBatch(ms, wrapper, ps, boundSql, keyGeneratorType);
                                     return wrapper.getAffectedRowCount();
                                 }
                             }
@@ -99,9 +99,9 @@ public class BatchStatementProcessor extends Processor {
     }
 
     @Override
-    public boolean filter( MappedStatement ms, Object parameter ) {
+    public boolean filter(MappedStatement ms, Object parameter) {
         SqlCommandType exec = ms.getSqlCommandType();
-        return exec == SqlCommandType.INSERT && BATCH_METHODS.contains( execMethod( ms ) );
+        return exec == SqlCommandType.INSERT && BATCH_METHODS.contains(execMethod(ms));
     }
 
     /**
@@ -110,9 +110,9 @@ public class BatchStatementProcessor extends Processor {
      * @param method   执行方法
      * @return true: 是, false: 否
      */
-    private boolean canExecBatch( Executor executor, Method method ) {
-        return METHOD_UPDATE.equals( method.getName() )
-                || ( executor instanceof BatchExecutor && METHOD_BATCH.equals( method.getName() ) );
+    private boolean canExecBatch(Executor executor, Method method) {
+        return METHOD_UPDATE.equals(method.getName())
+                || (executor instanceof BatchExecutor && METHOD_BATCH.equals(method.getName()));
     }
 
     /**
@@ -120,14 +120,14 @@ public class BatchStatementProcessor extends Processor {
      * @param ms {@link MappedStatement}
      * @return {@link KeyGeneratorType}
      */
-    private KeyGeneratorType parseKeyGeneratorType( MappedStatement ms ) {
+    private KeyGeneratorType parseKeyGeneratorType(MappedStatement ms) {
         KeyGenerator keyGenerator = ms.getKeyGenerator();
         KeyGeneratorType keyGeneratorType = KeyGeneratorType.NONE;
-        if ( keyGenerator instanceof SelectKeyGenerator ) {
-            MetaObject skgMetadata = MetaObjectUtil.forObject( keyGenerator );
-            boolean execBefore = ( boolean ) skgMetadata.getValue( VARIABLE_EXECUTE_BEFORE );
+        if (keyGenerator instanceof SelectKeyGenerator) {
+            MetaObject skgMetadata = MetaObjectUtil.forObject(keyGenerator);
+            boolean execBefore = (boolean) skgMetadata.getValue(VARIABLE_EXECUTE_BEFORE);
             keyGeneratorType = execBefore ? KeyGeneratorType.BEFORE : KeyGeneratorType.AFTER;
-        } else if ( keyGenerator instanceof Jdbc3KeyGenerator ) {
+        } else if (keyGenerator instanceof Jdbc3KeyGenerator) {
             keyGeneratorType = KeyGeneratorType.AFTER;
         }
         return keyGeneratorType;
@@ -142,13 +142,13 @@ public class BatchStatementProcessor extends Processor {
      * @param ms          {@link MappedStatement}对象
      * @param ___         主键生成方式
      */
-    protected void generatePrimaryKeyValue( PreparedStatement ps, PreparedStatementHandler __,
-                                            MetaObject pshMetadata, BatchDataBeanWrapper<Object> wrapper,
-                                            MappedStatement ms, KeyGeneratorType ___ ) {
-        Executor executor = ( Executor ) pshMetadata.getValue( VARIABLE_EXECUTOR );
+    protected void generatePrimaryKeyValue(PreparedStatement ps, PreparedStatementHandler __,
+                                           MetaObject pshMetadata, BatchDataBeanWrapper<Object> wrapper,
+                                           MappedStatement ms, KeyGeneratorType ___) {
+        Executor executor = (Executor) pshMetadata.getValue(VARIABLE_EXECUTOR);
         KeyGenerator keyGenerator = ms.getKeyGenerator();
-        for ( Object param : wrapper.getData() ) {
-            keyGenerator.processBefore( executor, ms, ps, param );
+        for (Object param : wrapper.getData()) {
+            keyGenerator.processBefore(executor, ms, ps, param);
         }
     }
 
@@ -162,25 +162,25 @@ public class BatchStatementProcessor extends Processor {
      * @return 受影响行数
      * @throws SQLException SQL异常
      */
-    protected int executeBatch( MappedStatement ms, BatchDataBeanWrapper<Object> wrapper,
-                                PreparedStatement ps, BoundSql boundSql, KeyGeneratorType keyGeneratorType ) throws SQLException {
+    protected int executeBatch(MappedStatement ms, BatchDataBeanWrapper<Object> wrapper,
+                               PreparedStatement ps, BoundSql boundSql, KeyGeneratorType keyGeneratorType) throws SQLException {
         int batchSize = wrapper.getBatchSize();
         Collection<Object> data = wrapper.getData();
-        List<Object> batchParams = new ArrayList<>( batchSize );
-        for ( Object object : data ) {
+        List<Object> batchParams = new ArrayList<>(batchSize);
+        for (Object object : data) {
             Map<String, Object> paramMap = new MapperMethod.ParamMap<>();
-            paramMap.put( Constants.PARAM_ENTITY, object );
-            DefaultParameterHandler handler = new MyBatisDefaultParameterHandler( ms, paramMap, boundSql );
-            handler.setParameters( ps );
+            paramMap.put(Constants.PARAM_ENTITY, object);
+            DefaultParameterHandler handler = new MyBatisDefaultParameterHandler(ms, paramMap, boundSql);
+            handler.setParameters(ps);
             ps.addBatch();
-            batchParams.add( object );
-            if ( batchParams.size() == batchSize ) {
-                executeBatch( ms, ps, wrapper, keyGeneratorType, batchParams );
+            batchParams.add(object);
+            if (batchParams.size() == batchSize) {
+                executeBatch(ms, ps, wrapper, keyGeneratorType, batchParams);
                 batchParams.clear();
             }
         }
-        if ( batchParams.size() % batchSize != 0 ) {
-            executeBatch( ms, ps, wrapper, keyGeneratorType, batchParams );
+        if (batchParams.size() % batchSize != 0) {
+            executeBatch(ms, ps, wrapper, keyGeneratorType, batchParams);
         }
         return 0;
     }
@@ -194,19 +194,19 @@ public class BatchStatementProcessor extends Processor {
      * @param batchParams      待保存对象
      * @throws SQLException SQL异常
      */
-    protected void executeBatch( MappedStatement ms, PreparedStatement ps, BatchDataBeanWrapper<Object> wrapper,
-                                 KeyGeneratorType keyGeneratorType, List<Object> batchParams ) throws SQLException {
+    protected void executeBatch(MappedStatement ms, PreparedStatement ps, BatchDataBeanWrapper<Object> wrapper,
+                                KeyGeneratorType keyGeneratorType, List<Object> batchParams) throws SQLException {
         int[] batchResult = ps.executeBatch();
-        wrapper.addRowCounts( batchResult );
-        if ( keyGeneratorType == KeyGeneratorType.AFTER ) {
+        wrapper.addRowCounts(batchResult);
+        if (keyGeneratorType == KeyGeneratorType.AFTER) {
             String[] keyProperties = ms.getKeyProperties();
-            if ( keyProperties != null && keyProperties.length > 0 ) {
-                String keyProperty = keyProperties[ 0 ];
+            if (keyProperties != null && keyProperties.length > 0) {
+                String keyProperty = keyProperties[0];
                 ResultSet resultSet = ps.getGeneratedKeys();
-                List<Object> keys = getGeneratedKeys( resultSet );
+                List<Object> keys = getGeneratedKeys(resultSet);
                 Configuration configuration = ms.getConfiguration();
-                for ( int i = 0, size = keys.size(); i < size; i++ ) {
-                    setValue( configuration, batchParams.get( i ), keyProperty, keys.get( i ) );
+                for (int i = 0, size = keys.size(); i < size; i++) {
+                    setValue(configuration, batchParams.get(i), keyProperty, keys.get(i));
                 }
             }
         }
@@ -218,10 +218,10 @@ public class BatchStatementProcessor extends Processor {
      * @return 主键集合
      * @throws SQLException SQL异常
      */
-    protected List<Object> getGeneratedKeys( ResultSet resultSet ) throws SQLException {
+    protected List<Object> getGeneratedKeys(ResultSet resultSet) throws SQLException {
         List<Object> list = new ArrayList<>();
-        while ( resultSet.next() ) {
-            list.add( resultSet.getObject( 1 ) );
+        while (resultSet.next()) {
+            list.add(resultSet.getObject(1));
         }
         return list;
     }
@@ -233,15 +233,15 @@ public class BatchStatementProcessor extends Processor {
      * @param primaryKeyProperty 主键属性
      * @param value              值
      */
-    protected void setValue( Configuration configuration, Object param, String primaryKeyProperty, Object value ) {
-        MetaObject metadata = configuration.newMetaObject( param );
-        Class<?> primaryKeyType = metadata.getSetterType( primaryKeyProperty );
-        if ( primaryKeyType == Integer.class || primaryKeyType == int.class ) {
-            metadata.setValue( primaryKeyProperty, ( ( Number ) value ).intValue() );
-        } else if ( primaryKeyType == Long.class || primaryKeyType == long.class ) {
-            metadata.setValue( primaryKeyProperty, ( ( Number ) value ).longValue() );
+    protected void setValue(Configuration configuration, Object param, String primaryKeyProperty, Object value) {
+        MetaObject metadata = configuration.newMetaObject(param);
+        Class<?> primaryKeyType = metadata.getSetterType(primaryKeyProperty);
+        if (primaryKeyType == Integer.class || primaryKeyType == int.class) {
+            metadata.setValue(primaryKeyProperty, ((Number) value).intValue());
+        } else if (primaryKeyType == Long.class || primaryKeyType == long.class) {
+            metadata.setValue(primaryKeyProperty, ((Number) value).longValue());
         } else {
-            metadata.setValue( primaryKeyProperty, value );
+            metadata.setValue(primaryKeyProperty, value);
         }
     }
 }

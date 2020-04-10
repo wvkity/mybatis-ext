@@ -13,12 +13,12 @@ public interface Cache<K, V> {
      * @param key 键
      * @return 值
      */
-    V get( K key );
+    V get(K key);
 
     /**
      * 保存值
      * @param key   键
      * @param value 值
      */
-    void put( K key, V value );
+    void put(K key, V value);
 }

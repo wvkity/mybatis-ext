@@ -18,7 +18,7 @@ public interface Pageable extends Serializable {
      * 设置当前页
      * @param page 当前页码
      */
-    void setPage( long page );
+    void setPage(long page);
 
     /**
      * 获取每页数目
@@ -30,7 +30,7 @@ public interface Pageable extends Serializable {
      * 设置每页数目
      * @param size 每页数目
      */
-    void setSize( long size );
+    void setSize(long size);
 
     /**
      * 获取记录数
@@ -42,7 +42,7 @@ public interface Pageable extends Serializable {
      * 设置记录数
      * @param record 记录数
      */
-    void setRecord( long record );
+    void setRecord(long record);
 
     /**
      * 获取总页数
@@ -60,7 +60,7 @@ public interface Pageable extends Serializable {
      * 设置显示页码数
      * @param visible 页码数
      */
-    void setVisible( long visible );
+    void setVisible(long visible);
 
     /**
      * 分页段

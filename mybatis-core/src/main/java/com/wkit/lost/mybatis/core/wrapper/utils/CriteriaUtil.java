@@ -28,11 +28,11 @@ public final class CriteriaUtil {
      * @param <T>        泛型类型
      * @return 字段集合
      */
-    public static <T> List<ColumnWrapper> propertyToColumn( Criteria<T> criteria, Collection<String> properties ) {
-        return CollectionUtil.hasElement( properties ) ? properties.stream()
-                .filter( StringUtil::hasText )
-                .map( criteria::searchColumn )
-                .collect( Collectors.toList() ) : new ArrayList<>( 0 );
+    public static <T> List<ColumnWrapper> propertyToColumn(Criteria<T> criteria, Collection<String> properties) {
+        return CollectionUtil.hasElement(properties) ? properties.stream()
+                .filter(StringUtil::hasText)
+                .map(criteria::searchColumn)
+                .collect(Collectors.toList()) : new ArrayList<>(0);
     }
 
     /**
@@ -42,10 +42,10 @@ public final class CriteriaUtil {
      * @param <T>        泛型类型
      * @return 字段集合
      */
-    public static <T> List<ColumnWrapper> lambdaToColumn( Criteria<T> criteria, Collection<Property<T, ?>> properties ) {
-        return CollectionUtil.hasElement( properties ) ? properties.stream()
-                .filter( Objects::nonNull )
-                .map( criteria::searchColumn )
-                .collect( Collectors.toList() ) : new ArrayList<>( 0 );
+    public static <T> List<ColumnWrapper> lambdaToColumn(Criteria<T> criteria, Collection<Property<T, ?>> properties) {
+        return CollectionUtil.hasElement(properties) ? properties.stream()
+                .filter(Objects::nonNull)
+                .map(criteria::searchColumn)
+                .collect(Collectors.toList()) : new ArrayList<>(0);
     }
 }

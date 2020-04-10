@@ -15,8 +15,8 @@ public abstract class CollectionUtil {
      * @param target     对象
      * @return boolean
      */
-    public static boolean notContains( final Collection<?> collection, final Object target ) {
-        return collection != null && target != null && !collection.contains( target );
+    public static boolean notContains(final Collection<?> collection, final Object target) {
+        return collection != null && target != null && !collection.contains(target);
     }
 
     /**
@@ -25,7 +25,7 @@ public abstract class CollectionUtil {
      * @param <E>    集合类型
      * @return boolean
      */
-    public static <E> boolean isEmpty( final Collection<E> target ) {
+    public static <E> boolean isEmpty(final Collection<E> target) {
         return target == null || target.isEmpty();
     }
 
@@ -35,8 +35,8 @@ public abstract class CollectionUtil {
      * @param <E>    集合类型
      * @return boolean
      */
-    public static <E> boolean hasElement( final Collection<E> target ) {
-        return !isEmpty( target );
+    public static <E> boolean hasElement(final Collection<E> target) {
+        return !isEmpty(target);
     }
 
     /**
@@ -46,7 +46,7 @@ public abstract class CollectionUtil {
      * @param <V>    值类型
      * @return boolean
      */
-    public static <K, V> boolean isEmpty( final Map<K, V> target ) {
+    public static <K, V> boolean isEmpty(final Map<K, V> target) {
         return target == null || target.isEmpty();
     }
 
@@ -57,7 +57,7 @@ public abstract class CollectionUtil {
      * @param <V>    值类型
      * @return boolean
      */
-    public static <K, V> boolean hasElement( final Map<K, V> target ) {
-        return !isEmpty( target );
+    public static <K, V> boolean hasElement(final Map<K, V> target) {
+        return !isEmpty(target);
     }
 }

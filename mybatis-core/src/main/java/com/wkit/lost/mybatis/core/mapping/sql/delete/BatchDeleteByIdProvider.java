@@ -14,11 +14,11 @@ public class BatchDeleteByIdProvider extends AbstractProvider {
     @Override
     public String build() {
         ColumnWrapper primaryKey = table.getPrimaryKey();
-        if ( primaryKey == null ) {
+        if (primaryKey == null) {
             return Constants.CHAR_EMPTY;
         }
-        return delete( " WHERE " + primaryKey.getColumn() + " IN " +
-                ScriptUtil.convertForeachTag( "#{item}" + Constants.NEW_LINE,
-                        Constants.PARAM_PRIMARY_KEYS, "item", "(", ")", Constants.CHAR_COMMA ) );
+        return delete(" WHERE " + primaryKey.getColumn() + " IN " +
+                ScriptUtil.convertForeachTag("#{item}" + Constants.NEW_LINE,
+                        Constants.PARAM_PRIMARY_KEYS, "item", "(", ")", Constants.CHAR_COMMA));
     }
 }

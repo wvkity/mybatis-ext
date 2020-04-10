@@ -34,10 +34,10 @@ public class BitsAllocator {
     @Getter
     private final int dataCenterIdShift;
 
-    public BitsAllocator( int timestampBits, int workerIdBits, int dataCenterIdBits, int sequenceBits ) {
+    public BitsAllocator(int timestampBits, int workerIdBits, int dataCenterIdBits, int sequenceBits) {
         int allocateTotalBits = signBits + timestampBits + workerIdBits + dataCenterIdBits + sequenceBits;
-        if ( allocateTotalBits > TOTAL_BITS ) {
-            throw new SnowflakeException( "allocate not enough 64 bits." );
+        if (allocateTotalBits > TOTAL_BITS) {
+            throw new SnowflakeException("allocate not enough 64 bits.");
         }
         // 初始化
         this.timestampBits = timestampBits;
@@ -46,17 +46,17 @@ public class BitsAllocator {
         this.sequenceBits = sequenceBits;
 
         // 初始化最大值
-        this.maxDeltaTime = ~( -1L << timestampBits );
-        this.maxWorkerId = ~( -1L << workerIdBits );
-        this.maxDataCenterId = ~( -1L << dataCenterIdBits );
-        this.maxSequence = ~( -1L << sequenceBits );
+        this.maxDeltaTime = ~(-1L << timestampBits);
+        this.maxWorkerId = ~(-1L << workerIdBits);
+        this.maxDataCenterId = ~(-1L << dataCenterIdBits);
+        this.maxSequence = ~(-1L << sequenceBits);
 
         this.timestampShift = workerIdBits + dataCenterIdBits + sequenceBits;
         this.dataCenterIdShift = sequenceBits + workerIdBits;
         this.workerIdShift = sequenceBits;
     }
 
-    public long allocate( long deltaTime, long workerId, long dataCenterId, long sequence ) {
-        return ( deltaTime << timestampShift ) | ( dataCenterId << dataCenterIdShift ) | ( workerId << workerIdShift ) | sequence;
+    public long allocate(long deltaTime, long workerId, long dataCenterId, long sequence) {
+        return (deltaTime << timestampShift) | (dataCenterId << dataCenterIdShift) | (workerId << workerIdShift) | sequence;
     }
 }

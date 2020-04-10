@@ -168,7 +168,7 @@ public enum Symbol implements Segment {
         }
     };
 
-    public static boolean filter( Symbol symbol ) {
+    public static boolean filter(Symbol symbol) {
         return symbol != NULL && symbol != NOT_NULL && symbol != EXISTS && symbol != NOT_EXISTS;
     }
 }

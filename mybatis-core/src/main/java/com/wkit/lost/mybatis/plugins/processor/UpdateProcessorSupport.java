@@ -12,18 +12,18 @@ import org.apache.ibatis.plugin.Invocation;
 public abstract class UpdateProcessorSupport extends Processor {
 
     @Override
-    public Object intercept( Invocation invocation ) throws Throwable {
+    public Object intercept(Invocation invocation) throws Throwable {
         Object[] args = invocation.getArgs();
-        MappedStatement ms = ( MappedStatement ) args[ 0 ];
-        Object parameter = args[ 1 ];
-        return doProceed( invocation, ms, parameter );
+        MappedStatement ms = (MappedStatement) args[0];
+        Object parameter = args[1];
+        return doProceed(invocation, ms, parameter);
     }
 
     @Override
-    public boolean filter( MappedStatement ms, Object parameter ) {
+    public boolean filter(MappedStatement ms, Object parameter) {
         SqlCommandType exec = ms.getSqlCommandType();
-        return ( exec == SqlCommandType.INSERT || exec == SqlCommandType.UPDATE ) && parameter != null
-                && !( PrimitiveRegistry.isPrimitiveOrWrapper( parameter ) || parameter.getClass() == String.class );
+        return (exec == SqlCommandType.INSERT || exec == SqlCommandType.UPDATE) && parameter != null
+                && !(PrimitiveRegistry.isPrimitiveOrWrapper(parameter) || parameter.getClass() == String.class);
     }
 
     /**
@@ -34,5 +34,5 @@ public abstract class UpdateProcessorSupport extends Processor {
      * @return 方法执行结果
      * @throws Throwable 异常信息
      */
-    protected abstract Object doProceed( Invocation invocation, MappedStatement ms, Object parameter ) throws Throwable;
+    protected abstract Object doProceed(Invocation invocation, MappedStatement ms, Object parameter) throws Throwable;
 }

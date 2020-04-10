@@ -9,7 +9,7 @@ public class DefaultWorkerAssigner implements WorkerAssigner {
     private long workerId;
     private long dataCenterId;
 
-    public DefaultWorkerAssigner( long workerId, long dataCenterId ) {
+    public DefaultWorkerAssigner(long workerId, long dataCenterId) {
         this.workerId = workerId;
         this.dataCenterId = dataCenterId;
     }

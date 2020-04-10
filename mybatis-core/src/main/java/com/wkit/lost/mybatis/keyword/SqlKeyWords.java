@@ -38,7 +38,7 @@ public class SqlKeyWords {
 
     static {
         // region 数据库关键字数组
-        String[] words = { "A", //$NON-NLS-1$
+        String[] words = {"A", //$NON-NLS-1$
                 "ABORT", //$NON-NLS-1$
                 "ABS", //$NON-NLS-1$
                 "ABSOLUTE", //$NON-NLS-1$
@@ -954,8 +954,8 @@ public class SqlKeyWords {
         };
         // endregion
 
-        RESERVED_WORDS = new HashSet<>( words.length );
-        RESERVED_WORDS.addAll( Arrays.asList( words ) );
+        RESERVED_WORDS = new HashSet<>(words.length);
+        RESERVED_WORDS.addAll(Arrays.asList(words));
     }
 
     /**
@@ -969,7 +969,7 @@ public class SqlKeyWords {
      * @param word 关键字
      * @return boolean
      */
-    public static boolean containsWord( String word ) {
-        return StringUtil.hasText( word ) && RESERVED_WORDS.contains( word );
+    public static boolean containsWord(String word) {
+        return StringUtil.hasText(word) && RESERVED_WORDS.contains(word);
     }
 }

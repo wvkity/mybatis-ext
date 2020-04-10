@@ -15,12 +15,12 @@ public interface FieldParser {
      * @param entity 实体类
      * @return 属性列表
      */
-    List<FieldWrapper> parse( final Class<?> entity );
+    List<FieldWrapper> parse(final Class<?> entity);
 
     /**
      * 从BeanInfo中解析实体属性
      * @param entity 实体类
      * @return 属性列表
      */
-    List<FieldWrapper> parseFromBeanInfo( final Class<?> entity );
+    List<FieldWrapper> parseFromBeanInfo(final Class<?> entity);
 }

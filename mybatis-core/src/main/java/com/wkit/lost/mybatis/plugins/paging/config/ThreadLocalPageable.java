@@ -25,11 +25,11 @@ public class ThreadLocalPageable {
      * 缓存分页对象
      * @param pageable 分页对象
      */
-    public static void setPageable( Pageable pageable ) {
-        if ( pageable == null ) {
+    public static void setPageable(Pageable pageable) {
+        if (pageable == null) {
             remove();
         } else {
-            THREAD_LOCAL_PAGEABLE.set( pageable );
+            THREAD_LOCAL_PAGEABLE.set(pageable);
         }
     }
 

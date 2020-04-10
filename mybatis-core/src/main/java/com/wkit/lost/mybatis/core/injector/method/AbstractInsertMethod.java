@@ -30,37 +30,37 @@ public abstract class AbstractInsertMethod extends AbstractMethod {
      * @param statementId {@link MappedStatement}-ID
      * @return {@link KeyGenerator}
      */
-    protected KeyGenerator createKeyGenerator( TableWrapper table, String statementId ) {
+    protected KeyGenerator createKeyGenerator(TableWrapper table, String statementId) {
         ColumnWrapper primaryKey = table.getPrimaryKey();
         KeyGenerator keyGenerator = new NoKeyGenerator();
         // 序列
         String id = statementId + SelectKeyGenerator.SELECT_KEY_SUFFIX;
         // 检查是否存在主键
-        if ( primaryKey != null ) {
-            if ( primaryKey.isIdentity() ) {
+        if (primaryKey != null) {
+            if (primaryKey.isIdentity()) {
                 // 自增(数据库自动实现)
                 keyGenerator = new Jdbc3KeyGenerator();
-                this.configuration.setUseGeneratedKeys( true );
-            } else if ( StringUtil.hasText( primaryKey.getSequenceName() ) ) {
+                this.configuration.setUseGeneratedKeys(true);
+            } else if (StringUtil.hasText(primaryKey.getSequenceName())) {
                 // 创建selectKey映射
                 StatementType statementType = StatementType.PREPARED;
                 String keyProperty = primaryKey.getProperty();
                 String keyColumn = primaryKey.getColumn();
-                SqlSource sqlSource = languageDriver.createSqlSource( this.configuration,
-                        ScriptUtil.getSequenceScript( this.configuration, primaryKey ), null );
-                this.assistant.addMappedStatement( id, sqlSource, statementType, SqlCommandType.SELECT,
+                SqlSource sqlSource = languageDriver.createSqlSource(this.configuration,
+                        ScriptUtil.getSequenceScript(this.configuration, primaryKey), null);
+                this.assistant.addMappedStatement(id, sqlSource, statementType, SqlCommandType.SELECT,
                         null, null, null, null, null,
                         primaryKey.getJavaType(), null, false, false,
                         false, new NoKeyGenerator(), keyProperty, keyColumn, null,
-                        this.languageDriver, null );
-                id = this.assistant.applyCurrentNamespace( id, false );
-                MappedStatement ms = this.assistant.getConfiguration().getMappedStatement( id, false );
+                        this.languageDriver, null);
+                id = this.assistant.applyCurrentNamespace(id, false);
+                MappedStatement ms = this.assistant.getConfiguration().getMappedStatement(id, false);
                 // 根据<selectKey>标签获取主键
-                keyGenerator = new SelectKeyGenerator( ms, Optional.ofNullable( primaryKey.getExecuting() )
-                        .map( Executing::value ).orElse( false ) );
+                keyGenerator = new SelectKeyGenerator(ms, Optional.ofNullable(primaryKey.getExecuting())
+                        .map(Executing::value).orElse(false));
                 // useGeneratorKeys = true
-                this.assistant.getConfiguration().addKeyGenerator( id, keyGenerator );
-                this.assistant.getConfiguration().setUseGeneratedKeys( true );
+                this.assistant.getConfiguration().addKeyGenerator(id, keyGenerator);
+                this.assistant.getConfiguration().setUseGeneratedKeys(true);
             }
         }
         return keyGenerator;
@@ -74,15 +74,15 @@ public abstract class AbstractInsertMethod extends AbstractMethod {
      * @param provider        SQL提供者
      * @return {@link MappedStatement}对象
      */
-    protected MappedStatement addInsertMappedStatement( Class<?> mapperInterface, Class<?> __,
-                                                        TableWrapper table, Provider provider ) {
-        KeyGenerator keyGenerator = createKeyGenerator( table, ( mapperInterface.getName() + "." + applyMethod() ) );
+    protected MappedStatement addInsertMappedStatement(Class<?> mapperInterface, Class<?> __,
+                                                       TableWrapper table, Provider provider) {
+        KeyGenerator keyGenerator = createKeyGenerator(table, (mapperInterface.getName() + "." + applyMethod()));
         ColumnWrapper primary = table.getPrimaryKey();
         boolean hasPrimaryKey = primary != null;
         Class<?> entity = table.getEntity();
-        ScriptBuilder scriptBuilder = createScriptBuilder( table, provider );
-        return addInsertMappedStatement( mapperInterface, applyMethod(), createSqlSource( scriptBuilder, entity ),
+        ScriptBuilder scriptBuilder = createScriptBuilder(table, provider);
+        return addInsertMappedStatement(mapperInterface, applyMethod(), createSqlSource(scriptBuilder, entity),
                 entity, keyGenerator, hasPrimaryKey ? primary.getProperty() : null, hasPrimaryKey ?
-                        primary.getColumn() : null );
+                        primary.getColumn() : null);
     }
 }

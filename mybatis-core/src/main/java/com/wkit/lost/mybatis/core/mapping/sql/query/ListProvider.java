@@ -16,12 +16,12 @@ public class ListProvider extends AbstractProvider {
     @Override
     public String build() {
         ColumnWrapper primaryKey = table.getPrimaryKey();
-        if ( primaryKey == null ) {
+        if (primaryKey == null) {
             return "";
         }
-        return select( table.columns().stream().map( ScriptUtil::convertQueryArg )
-                .collect( Collectors.joining( ", " ) ), ( "WHERE " + primaryKey.getColumn() + " IN " +
-                NEW_LINE + ScriptUtil.convertForeachTag( Constants.ARG_HASH_ITEM, Constants.PARAM_PRIMARY_KEYS,
-                Constants.ARG_ITEM, Constants.CHAR_BRACKET_LEFT, Constants.CHAR_BRACKET_RIGHT, ", " ) ) );
+        return select(table.columns().stream().map(ScriptUtil::convertQueryArg)
+                .collect(Collectors.joining(", ")), ("WHERE " + primaryKey.getColumn() + " IN " +
+                NEW_LINE + ScriptUtil.convertForeachTag(Constants.ARG_HASH_ITEM, Constants.PARAM_PRIMARY_KEYS,
+                Constants.ARG_ITEM, Constants.CHAR_BRACKET_LEFT, Constants.CHAR_BRACKET_RIGHT, ", ")));
     }
 }

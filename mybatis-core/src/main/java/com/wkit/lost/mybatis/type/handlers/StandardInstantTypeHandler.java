@@ -16,30 +16,30 @@ import java.util.Optional;
  * {@link Instant}处理器
  * @author wvkity
  */
-@MappedTypes( Instant.class )
+@MappedTypes(Instant.class)
 public class StandardInstantTypeHandler extends BaseTypeHandler<Instant> {
 
     @Override
-    public void setNonNullParameter( PreparedStatement ps, int i, Instant parameter, JdbcType jdbcType ) throws SQLException {
-        ps.setTimestamp( i, Optional.ofNullable( parameter ).map( Timestamp::from ).orElse( null ) );
+    public void setNonNullParameter(PreparedStatement ps, int i, Instant parameter, JdbcType jdbcType) throws SQLException {
+        ps.setTimestamp(i, Optional.ofNullable(parameter).map(Timestamp::from).orElse(null));
     }
 
     @Override
-    public Instant getNullableResult( ResultSet rs, String columnName ) throws SQLException {
-        return valueOf( rs.getTimestamp( columnName ) );
+    public Instant getNullableResult(ResultSet rs, String columnName) throws SQLException {
+        return valueOf(rs.getTimestamp(columnName));
     }
 
     @Override
-    public Instant getNullableResult( ResultSet rs, int columnIndex ) throws SQLException {
-        return valueOf( rs.getTimestamp( columnIndex ) );
+    public Instant getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+        return valueOf(rs.getTimestamp(columnIndex));
     }
 
     @Override
-    public Instant getNullableResult( CallableStatement cs, int columnIndex ) throws SQLException {
-        return valueOf( cs.getTimestamp( columnIndex ) );
+    public Instant getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+        return valueOf(cs.getTimestamp(columnIndex));
     }
 
-    private Instant valueOf( Timestamp timestamp ) {
-        return Optional.ofNullable( timestamp ).map( Timestamp::toInstant ).orElse( null );
+    private Instant valueOf(Timestamp timestamp) {
+        return Optional.ofNullable(timestamp).map(Timestamp::toInstant).orElse(null);
     }
 }

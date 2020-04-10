@@ -29,19 +29,19 @@ public class SpringBootVFS extends VFS {
      * {@inheritDoc}
      */
     @Override
-    protected List<String> list( URL url, String forPath ) throws IOException {
-        Resource[] resources = resourceResolver.getResources( "classpath*:" + forPath + "/**/*.class" );
-        return Stream.of( resources ).map( resource -> preserveSubpackageName( resource, forPath ) ).collect( Collectors.toList() );
+    protected List<String> list(URL url, String forPath) throws IOException {
+        Resource[] resources = resourceResolver.getResources("classpath*:" + forPath + "/**/*.class");
+        return Stream.of(resources).map(resource -> preserveSubpackageName(resource, forPath)).collect(Collectors.toList());
     }
 
-    private static String preserveSubpackageName( final Resource resource, final String rootPath ) {
+    private static String preserveSubpackageName(final Resource resource, final String rootPath) {
         try {
             URI uri = resource.getURI();
             final String uriStr = uri.toString();
-            final int start = uriStr.indexOf( rootPath );
-            return uriStr.substring( start );
-        } catch ( IOException e ) {
-            throw new RuntimeException( e.getMessage(), e );
+            final int start = uriStr.indexOf(rootPath);
+            return uriStr.substring(start);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 }

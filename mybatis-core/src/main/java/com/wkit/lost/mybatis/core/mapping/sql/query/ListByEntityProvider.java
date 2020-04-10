@@ -19,10 +19,10 @@ public class ListByEntityProvider extends AbstractProvider {
     @Override
     public String build() {
         return select(
-                table.columns().stream().map( ColumnWrapper::getColumn ).collect( Collectors.joining( ", " ) ),
-                ScriptUtil.convertWhereTag( table.columns().stream().map( it ->
-                        ScriptUtil.convertIfTagWithNotNull( null, it, Constants.PARAM_ENTITY, true,
-                                false, Symbol.EQ, Logic.AND, Constants.CHAR_EMPTY, Execute.REPLACE ) )
-                        .collect( Collectors.joining( Constants.CHAR_EMPTY, NEW_LINE, NEW_LINE ) ) ) );
+                table.columns().stream().map(ColumnWrapper::getColumn).collect(Collectors.joining(", ")),
+                ScriptUtil.convertWhereTag(table.columns().stream().map(it ->
+                        ScriptUtil.convertIfTagWithNotNull(null, it, Constants.PARAM_ENTITY, true,
+                                false, Symbol.EQ, Logic.AND, Constants.CHAR_EMPTY, Execute.REPLACE))
+                        .collect(Collectors.joining(Constants.CHAR_EMPTY, NEW_LINE, NEW_LINE))));
     }
 }

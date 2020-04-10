@@ -54,42 +54,42 @@ public class OriginalSqlForCountParser {
     private static final Set<String> AGGREGATE_FUNCTION_CACHE = new HashSet<>();
 
     static {
-        TABLE_ALIAS = new Alias( "TABLE_RECORD" );
-        TABLE_ALIAS.setUseAs( false );
+        TABLE_ALIAS = new Alias("TABLE_RECORD");
+        TABLE_ALIAS.setUseAs(false);
         // 聚合函数列表
-        AGGREGATE_FUNCTION_CACHE.add( "APPROX_COUNT_DISTINCT" );
-        AGGREGATE_FUNCTION_CACHE.add( "ARRAY_AGG" );
-        AGGREGATE_FUNCTION_CACHE.add( "AVG" );
-        AGGREGATE_FUNCTION_CACHE.add( "BIT_" );
-        AGGREGATE_FUNCTION_CACHE.add( "BOOL_" );
-        AGGREGATE_FUNCTION_CACHE.add( "CHECKSUM_AGG" );
-        AGGREGATE_FUNCTION_CACHE.add( "COLLECT" );
-        AGGREGATE_FUNCTION_CACHE.add( "CORR" );
-        AGGREGATE_FUNCTION_CACHE.add( "COUNT" );
-        AGGREGATE_FUNCTION_CACHE.add( "COVAR" );
-        AGGREGATE_FUNCTION_CACHE.add( "CUME_DIST" );
-        AGGREGATE_FUNCTION_CACHE.add( "DENSE_RANK" );
-        AGGREGATE_FUNCTION_CACHE.add( "EVERY" );
-        AGGREGATE_FUNCTION_CACHE.add( "FIRST" );
-        AGGREGATE_FUNCTION_CACHE.add( "GROUP" );
-        AGGREGATE_FUNCTION_CACHE.add( "JSON_" );
-        AGGREGATE_FUNCTION_CACHE.add( "LAST" );
-        AGGREGATE_FUNCTION_CACHE.add( "LISTAGG" );
-        AGGREGATE_FUNCTION_CACHE.add( "MAX" );
-        AGGREGATE_FUNCTION_CACHE.add( "MEDIAN" );
-        AGGREGATE_FUNCTION_CACHE.add( "MIN" );
-        AGGREGATE_FUNCTION_CACHE.add( "PERCENT_" );
-        AGGREGATE_FUNCTION_CACHE.add( "RANK" );
-        AGGREGATE_FUNCTION_CACHE.add( "REGR_" );
-        AGGREGATE_FUNCTION_CACHE.add( "SELECTIVITY" );
-        AGGREGATE_FUNCTION_CACHE.add( "STATS_" );
-        AGGREGATE_FUNCTION_CACHE.add( "STD" );
-        AGGREGATE_FUNCTION_CACHE.add( "STRING_AGG" );
-        AGGREGATE_FUNCTION_CACHE.add( "SUM" );
-        AGGREGATE_FUNCTION_CACHE.add( "SYS_OP_ZONE_ID" );
-        AGGREGATE_FUNCTION_CACHE.add( "SYS_XMLAGG" );
-        AGGREGATE_FUNCTION_CACHE.add( "VAR" );
-        AGGREGATE_FUNCTION_CACHE.add( "XMLAGG" );
+        AGGREGATE_FUNCTION_CACHE.add("APPROX_COUNT_DISTINCT");
+        AGGREGATE_FUNCTION_CACHE.add("ARRAY_AGG");
+        AGGREGATE_FUNCTION_CACHE.add("AVG");
+        AGGREGATE_FUNCTION_CACHE.add("BIT_");
+        AGGREGATE_FUNCTION_CACHE.add("BOOL_");
+        AGGREGATE_FUNCTION_CACHE.add("CHECKSUM_AGG");
+        AGGREGATE_FUNCTION_CACHE.add("COLLECT");
+        AGGREGATE_FUNCTION_CACHE.add("CORR");
+        AGGREGATE_FUNCTION_CACHE.add("COUNT");
+        AGGREGATE_FUNCTION_CACHE.add("COVAR");
+        AGGREGATE_FUNCTION_CACHE.add("CUME_DIST");
+        AGGREGATE_FUNCTION_CACHE.add("DENSE_RANK");
+        AGGREGATE_FUNCTION_CACHE.add("EVERY");
+        AGGREGATE_FUNCTION_CACHE.add("FIRST");
+        AGGREGATE_FUNCTION_CACHE.add("GROUP");
+        AGGREGATE_FUNCTION_CACHE.add("JSON_");
+        AGGREGATE_FUNCTION_CACHE.add("LAST");
+        AGGREGATE_FUNCTION_CACHE.add("LISTAGG");
+        AGGREGATE_FUNCTION_CACHE.add("MAX");
+        AGGREGATE_FUNCTION_CACHE.add("MEDIAN");
+        AGGREGATE_FUNCTION_CACHE.add("MIN");
+        AGGREGATE_FUNCTION_CACHE.add("PERCENT_");
+        AGGREGATE_FUNCTION_CACHE.add("RANK");
+        AGGREGATE_FUNCTION_CACHE.add("REGR_");
+        AGGREGATE_FUNCTION_CACHE.add("SELECTIVITY");
+        AGGREGATE_FUNCTION_CACHE.add("STATS_");
+        AGGREGATE_FUNCTION_CACHE.add("STD");
+        AGGREGATE_FUNCTION_CACHE.add("STRING_AGG");
+        AGGREGATE_FUNCTION_CACHE.add("SUM");
+        AGGREGATE_FUNCTION_CACHE.add("SYS_OP_ZONE_ID");
+        AGGREGATE_FUNCTION_CACHE.add("SYS_XMLAGG");
+        AGGREGATE_FUNCTION_CACHE.add("VAR");
+        AGGREGATE_FUNCTION_CACHE.add("XMLAGG");
     }
 
     /**
@@ -97,8 +97,8 @@ public class OriginalSqlForCountParser {
      * @param originalSql 原SQL
      * @return 总记录数SQL
      */
-    public String smartTransform( final String originalSql ) {
-        return smartTransform( originalSql, "0" );
+    public String smartTransform(final String originalSql) {
+        return smartTransform(originalSql, "0");
     }
 
     /**
@@ -107,28 +107,28 @@ public class OriginalSqlForCountParser {
      * @param columnName  字段名称
      * @return 总记录数SQL
      */
-    public String smartTransform( final String originalSql, String columnName ) {
-        if ( originalSql.contains( KEEP_ORDER_BY ) ) {
-            return transformSimpleRecordSql( originalSql, columnName );
+    public String smartTransform(final String originalSql, String columnName) {
+        if (originalSql.contains(KEEP_ORDER_BY)) {
+            return transformSimpleRecordSql(originalSql, columnName);
         }
         Statement stmt;
         try {
-            stmt = CCJSqlParserUtil.parse( originalSql );
-        } catch ( Exception e ) {
-            return transformSimpleRecordSql( originalSql, columnName );
+            stmt = CCJSqlParserUtil.parse(originalSql);
+        } catch (Exception e) {
+            return transformSimpleRecordSql(originalSql, columnName);
         }
-        Select select = ( Select ) stmt;
+        Select select = (Select) stmt;
         SelectBody selectBody = select.getSelectBody();
         try {
             // 处理body移除order by
-            processSelectBodyForRemoveOrderBy( selectBody );
-        } catch ( Exception e ) {
-            return transformSimpleRecordSql( originalSql, columnName );
+            processSelectBodyForRemoveOrderBy(selectBody);
+        } catch (Exception e) {
+            return transformSimpleRecordSql(originalSql, columnName);
         }
         // 处理WithItem
-        processWithItemsListForRemoveOrderBy( select.getWithItemsList() );
+        processWithItemsListForRemoveOrderBy(select.getWithItemsList());
         // 转换成查询总记录数SQL
-        transformToQueryRecordSql( select, columnName );
+        transformToQueryRecordSql(select, columnName);
         return select.toString();
     }
 
@@ -136,19 +136,19 @@ public class OriginalSqlForCountParser {
      * // 处理SelectBody移除order by
      * @param selectBody {@link SelectBody}对象
      */
-    public void processSelectBodyForRemoveOrderBy( SelectBody selectBody ) {
-        if ( selectBody instanceof PlainSelect ) {
-            processPlainSelectForRemoveOrderBy( ( PlainSelect ) selectBody );
-        } else if ( selectBody instanceof WithItem ) {
-            WithItem withItem = ( WithItem ) selectBody;
-            Optional.ofNullable( withItem.getSelectBody() ).ifPresent( this::processSelectBodyForRemoveOrderBy );
+    public void processSelectBodyForRemoveOrderBy(SelectBody selectBody) {
+        if (selectBody instanceof PlainSelect) {
+            processPlainSelectForRemoveOrderBy((PlainSelect) selectBody);
+        } else if (selectBody instanceof WithItem) {
+            WithItem withItem = (WithItem) selectBody;
+            Optional.ofNullable(withItem.getSelectBody()).ifPresent(this::processSelectBodyForRemoveOrderBy);
         } else {
-            SetOperationList operationList = ( SetOperationList ) selectBody;
-            if ( CollectionUtil.hasElement( operationList.getSelects() ) ) {
-                operationList.getSelects().forEach( this::processSelectBodyForRemoveOrderBy );
+            SetOperationList operationList = (SetOperationList) selectBody;
+            if (CollectionUtil.hasElement(operationList.getSelects())) {
+                operationList.getSelects().forEach(this::processSelectBodyForRemoveOrderBy);
             }
-            if ( notHasOrderByParameters( operationList.getOrderByElements() ) ) {
-                operationList.setOrderByElements( null );
+            if (notHasOrderByParameters(operationList.getOrderByElements())) {
+                operationList.setOrderByElements(null);
             }
         }
     }
@@ -157,17 +157,17 @@ public class OriginalSqlForCountParser {
      * 处理{@link PlainSelect}类型的{@link SelectBody}对象
      * @param plainSelect {@link PlainSelect}
      */
-    public void processPlainSelectForRemoveOrderBy( PlainSelect plainSelect ) {
-        if ( notHasOrderByParameters( plainSelect.getOrderByElements() ) ) {
-            plainSelect.setOrderByElements( null );
+    public void processPlainSelectForRemoveOrderBy(PlainSelect plainSelect) {
+        if (notHasOrderByParameters(plainSelect.getOrderByElements())) {
+            plainSelect.setOrderByElements(null);
         }
-        Optional.ofNullable( plainSelect.getFromItem() ).ifPresent( this::processFromItem );
-        if ( CollectionUtil.hasElement( plainSelect.getJoins() ) ) {
+        Optional.ofNullable(plainSelect.getFromItem()).ifPresent(this::processFromItem);
+        if (CollectionUtil.hasElement(plainSelect.getJoins())) {
             plainSelect.getJoins()
                     .stream()
-                    .filter( Objects::nonNull )
-                    .map( Join::getRightItem )
-                    .forEach( this::processFromItem );
+                    .filter(Objects::nonNull)
+                    .map(Join::getRightItem)
+                    .forEach(this::processFromItem);
         }
     }
 
@@ -177,7 +177,7 @@ public class OriginalSqlForCountParser {
      * @param columnName  字段名
      * @return 总记录数SQL
      */
-    public String transformSimpleRecordSql( final String originalSql, String columnName ) {
+    public String transformSimpleRecordSql(final String originalSql, String columnName) {
         return "SELECT COUNT(" + columnName +
                 ") RECORD FROM (" +
                 originalSql + ") TMP_TAB_RECORD";
@@ -187,21 +187,21 @@ public class OriginalSqlForCountParser {
      * 处理子查询
      * @param fromItem {@link FromItem}
      */
-    public void processFromItem( FromItem fromItem ) {
-        if ( fromItem instanceof SubJoin ) {
-            SubJoin subJoin = ( SubJoin ) fromItem;
-            if ( CollectionUtil.hasElement( subJoin.getJoinList() ) ) {
-                subJoin.getJoinList().forEach( join -> processFromItem( join.getRightItem() ) );
+    public void processFromItem(FromItem fromItem) {
+        if (fromItem instanceof SubJoin) {
+            SubJoin subJoin = (SubJoin) fromItem;
+            if (CollectionUtil.hasElement(subJoin.getJoinList())) {
+                subJoin.getJoinList().forEach(join -> processFromItem(join.getRightItem()));
             }
-            Optional.ofNullable( subJoin.getLeft() ).ifPresent( this::processFromItem );
-        } else if ( fromItem instanceof SubSelect ) {
-            SubSelect subSelect = ( SubSelect ) fromItem;
-            Optional.ofNullable( subSelect.getSelectBody() ).ifPresent( this::processSelectBodyForRemoveOrderBy );
-        } else if ( fromItem instanceof LateralSubSelect ) {
-            LateralSubSelect lateralSubSelect = ( LateralSubSelect ) fromItem;
-            Optional.ofNullable( lateralSubSelect.getSubSelect() )
-                    .map( SubSelect::getSelectBody )
-                    .ifPresent( this::processSelectBodyForRemoveOrderBy );
+            Optional.ofNullable(subJoin.getLeft()).ifPresent(this::processFromItem);
+        } else if (fromItem instanceof SubSelect) {
+            SubSelect subSelect = (SubSelect) fromItem;
+            Optional.ofNullable(subSelect.getSelectBody()).ifPresent(this::processSelectBodyForRemoveOrderBy);
+        } else if (fromItem instanceof LateralSubSelect) {
+            LateralSubSelect lateralSubSelect = (LateralSubSelect) fromItem;
+            Optional.ofNullable(lateralSubSelect.getSubSelect())
+                    .map(SubSelect::getSelectBody)
+                    .ifPresent(this::processSelectBodyForRemoveOrderBy);
         }
     }
 
@@ -209,9 +209,9 @@ public class OriginalSqlForCountParser {
      * 处理{@link WithItem}移除order by
      * @param withItems {@link WithItem}集合
      */
-    public void processWithItemsListForRemoveOrderBy( List<WithItem> withItems ) {
-        if ( CollectionUtil.hasElement( withItems ) ) {
-            withItems.forEach( this::processSelectBodyForRemoveOrderBy );
+    public void processWithItemsListForRemoveOrderBy(List<WithItem> withItems) {
+        if (CollectionUtil.hasElement(withItems)) {
+            withItems.forEach(this::processSelectBodyForRemoveOrderBy);
         }
     }
 
@@ -220,59 +220,59 @@ public class OriginalSqlForCountParser {
      * @param select     {@link Select}对象
      * @param columnName 字段名
      */
-    public void transformToQueryRecordSql( Select select, String columnName ) {
+    public void transformToQueryRecordSql(Select select, String columnName) {
         SelectBody selectBody = select.getSelectBody();
         // 简化总记录数SQL
         List<SelectItem> RECORD_ITEM = new ArrayList<>();
-        RECORD_ITEM.add( new SelectExpressionItem( new Column( "COUNT(" + columnName + ")" ) ) );
-        if ( selectBody instanceof PlainSelect && isSimpleQueryRecord( ( PlainSelect ) selectBody ) ) {
-            ( ( PlainSelect ) selectBody ).setSelectItems( RECORD_ITEM );
+        RECORD_ITEM.add(new SelectExpressionItem(new Column("COUNT(" + columnName + ")")));
+        if (selectBody instanceof PlainSelect && isSimpleQueryRecord((PlainSelect) selectBody)) {
+            ((PlainSelect) selectBody).setSelectItems(RECORD_ITEM);
         } else {
             PlainSelect plainSelect = new PlainSelect();
             SubSelect subSelect = new SubSelect();
-            subSelect.setSelectBody( selectBody );
-            subSelect.setAlias( TABLE_ALIAS );
-            plainSelect.setFromItem( subSelect );
-            plainSelect.setSelectItems( RECORD_ITEM );
-            select.setSelectBody( plainSelect );
+            subSelect.setSelectBody(selectBody);
+            subSelect.setAlias(TABLE_ALIAS);
+            plainSelect.setFromItem(subSelect);
+            plainSelect.setSelectItems(RECORD_ITEM);
+            select.setSelectBody(plainSelect);
         }
     }
 
-    public boolean isSimpleQueryRecord( PlainSelect plainSelect ) {
+    public boolean isSimpleQueryRecord(PlainSelect plainSelect) {
         // 检查是否包含group by
-        if ( plainSelect.getGroupBy() != null ) {
+        if (plainSelect.getGroupBy() != null) {
             return false;
         }
         // 包含DISTINCT
-        if ( plainSelect.getDistinct() != null ) {
+        if (plainSelect.getDistinct() != null) {
             return false;
         }
-        for ( SelectItem item : plainSelect.getSelectItems() ) {
+        for (SelectItem item : plainSelect.getSelectItems()) {
             // 检查列中是否包含参数
-            if ( item.toString().contains( "?" ) ) {
+            if (item.toString().contains("?")) {
                 return false;
             }
             // 检查是否包含聚合函数
-            if ( item instanceof SelectExpressionItem ) {
-                Expression expression = ( ( SelectExpressionItem ) item ).getExpression();
-                if ( expression instanceof Function ) {
-                    String name = ( ( Function ) expression ).getName();
-                    if ( StringUtil.hasText( name ) ) {
-                        String NAME = name.toUpperCase( Locale.ROOT );
-                        if ( IGNORE_FUNCTION_CACHE.contains( NAME ) ) {
+            if (item instanceof SelectExpressionItem) {
+                Expression expression = ((SelectExpressionItem) item).getExpression();
+                if (expression instanceof Function) {
+                    String name = ((Function) expression).getName();
+                    if (StringUtil.hasText(name)) {
+                        String NAME = name.toUpperCase(Locale.ROOT);
+                        if (IGNORE_FUNCTION_CACHE.contains(NAME)) {
                             // ignore
                             continue;
                         }
-                        if ( NOT_THROUGH_FUNCTION_CACHE.contains( NAME ) ) {
+                        if (NOT_THROUGH_FUNCTION_CACHE.contains(NAME)) {
                             return false;
                         } else {
-                            for ( String function : AGGREGATE_FUNCTION_CACHE ) {
-                                if ( NAME.startsWith( function ) ) {
-                                    NOT_THROUGH_FUNCTION_CACHE.add( NAME );
+                            for (String function : AGGREGATE_FUNCTION_CACHE) {
+                                if (NAME.startsWith(function)) {
+                                    NOT_THROUGH_FUNCTION_CACHE.add(NAME);
                                     return false;
                                 }
                             }
-                            IGNORE_FUNCTION_CACHE.add( NAME );
+                            IGNORE_FUNCTION_CACHE.add(NAME);
                         }
                     }
                 }
@@ -286,10 +286,10 @@ public class OriginalSqlForCountParser {
      * @param orderByElements {@link OrderByElement}集合
      * @return true: 不存在 | false: 存在
      */
-    public boolean notHasOrderByParameters( List<OrderByElement> orderByElements ) {
-        if ( CollectionUtil.hasElement( orderByElements ) ) {
-            for ( OrderByElement element : orderByElements ) {
-                if ( element.toString().contains( "?" ) ) {
+    public boolean notHasOrderByParameters(List<OrderByElement> orderByElements) {
+        if (CollectionUtil.hasElement(orderByElements)) {
+            for (OrderByElement element : orderByElements) {
+                if (element.toString().contains("?")) {
                     return false;
                 }
             }

@@ -22,24 +22,24 @@ public abstract class AbstractPageableDialect extends AbstractDialect implements
     }
 
     @Override
-    public boolean beforeOfQueryRecord( MappedStatement statement, Object parameter, RowBounds rowBounds ) {
-        return Optional.ofNullable( getPageable() ).map( pageable -> pageable.getSize() > 0 ).orElse( false );
+    public boolean beforeOfQueryRecord(MappedStatement statement, Object parameter, RowBounds rowBounds) {
+        return Optional.ofNullable(getPageable()).map(pageable -> pageable.getSize() > 0).orElse(false);
     }
 
     @Override
-    public boolean executePagingOnBefore( MappedStatement statement, Object parameter, RowBounds rowBounds ) {
-        if ( isLimit() ) {
-            return super.executePagingOnBefore( statement, parameter, rowBounds );
+    public boolean executePagingOnBefore(MappedStatement statement, Object parameter, RowBounds rowBounds) {
+        if (isLimit()) {
+            return super.executePagingOnBefore(statement, parameter, rowBounds);
         } else {
-            return Optional.ofNullable( getPageable() ).map( pageable -> pageable.getSize() > 0 ).orElse( false );
+            return Optional.ofNullable(getPageable()).map(pageable -> pageable.getSize() > 0).orElse(false);
         }
     }
 
     @Override
-    public boolean afterOfQueryRecord( long records, Object parameter, RowBounds rowBounds ) {
+    public boolean afterOfQueryRecord(long records, Object parameter, RowBounds rowBounds) {
         Pageable pageable = getPageable();
-        pageable.setRecord( records );
-        if ( pageable.getSize() < 0 ) {
+        pageable.setRecord(records);
+        if (pageable.getSize() < 0) {
             return false;
         }
         return pageable.hasNext();

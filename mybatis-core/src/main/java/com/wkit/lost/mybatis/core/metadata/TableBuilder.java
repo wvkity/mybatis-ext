@@ -22,7 +22,7 @@ import java.util.Set;
  */
 @Getter
 @Setter
-@Accessors( chain = true, fluent = true )
+@Accessors(chain = true, fluent = true)
 public class TableBuilder extends BuilderSupport implements Builder<TableWrapper> {
 
     /**
@@ -98,46 +98,46 @@ public class TableBuilder extends BuilderSupport implements Builder<TableWrapper
     /**
      * 所有字段
      */
-    @Getter( AccessLevel.NONE )
+    @Getter(AccessLevel.NONE)
     private Set<ColumnBuilder> columns = new LinkedHashSet<>();
 
     @Override
     public TableWrapper build() {
         int mode = namingMode();
         // 数据库表名前缀
-        String realPrefix = Optional.ofNullable( Ascii.isNullOrEmpty( this.prefix ) ?
-                configuration.getTablePrefix() : this.prefix ).map( it -> mode == 0 ?
-                it.toLowerCase( Locale.ENGLISH ) : mode == 1 ? it.toUpperCase( Locale.ENGLISH ) : it )
-                .orElse( "" );
+        String realPrefix = Optional.ofNullable(Ascii.isNullOrEmpty(this.prefix) ?
+                configuration.getTablePrefix() : this.prefix).map(it -> mode == 0 ?
+                it.toLowerCase(Locale.ENGLISH) : mode == 1 ? it.toUpperCase(Locale.ENGLISH) : it)
+                .orElse("");
         // 数据表名
-        String realName = realPrefix + Optional.ofNullable( Ascii.isNullOrEmpty( this.name ) ?
-                this.entity.getSimpleName() : this.name ).map( this::tableNameTransform ).orElse( "" );
-        TableWrapper wrapper = new TableWrapper( this.entity, realName );
-        wrapper.setNamespace( this.namespace ).setPrefix( realPrefix );
-        ifPresent( wrapper::setCatalog, this.catalog, this.configuration.getCatalog() );
-        ifPresent( wrapper::setSchema, this.schema, this.configuration.getSchema() );
-        wrapper.setEnableLogicDeleted( this.enableLogicDeleted );
+        String realName = realPrefix + Optional.ofNullable(Ascii.isNullOrEmpty(this.name) ?
+                this.entity.getSimpleName() : this.name).map(this::tableNameTransform).orElse("");
+        TableWrapper wrapper = new TableWrapper(this.entity, realName);
+        wrapper.setNamespace(this.namespace).setPrefix(realPrefix);
+        ifPresent(wrapper::setCatalog, this.catalog, this.configuration.getCatalog());
+        ifPresent(wrapper::setSchema, this.schema, this.configuration.getSchema());
+        wrapper.setEnableLogicDeleted(this.enableLogicDeleted);
         // 创建字段对象
-        if ( !columns.isEmpty() ) {
-            for ( ColumnBuilder builder : columns ) {
+        if (!columns.isEmpty()) {
+            for (ColumnBuilder builder : columns) {
                 ColumnWrapper column = builder.build();
-                if ( column.isPrimaryKey() && wrapper.getPrimaryKey() == null ) {
+                if (column.isPrimaryKey() && wrapper.getPrimaryKey() == null) {
                     // 主键
-                    wrapper.setPrimaryKey( column ).setPrimaryKeyProperty( column.getProperty() );
-                } else if ( column.isLogicDelete() && wrapper.getLogicDeletedColumn() == null ) {
+                    wrapper.setPrimaryKey(column).setPrimaryKeyProperty(column.getProperty());
+                } else if (column.isLogicDelete() && wrapper.getLogicDeletedColumn() == null) {
                     // 逻辑删除标识列
-                    wrapper.setLogicDeletedColumn( column );
-                } else if ( column.isVersion() && wrapper.getOptimisticLockingColumn() == null ) {
+                    wrapper.setLogicDeletedColumn(column);
+                } else if (column.isVersion() && wrapper.getOptimisticLockingColumn() == null) {
                     // 乐观锁列
-                    wrapper.setOptimisticLockingColumn( column );
+                    wrapper.setOptimisticLockingColumn(column);
                 }
-                wrapper.addColumn( column );
+                wrapper.addColumn(column);
             }
         }
         // 初始化
         wrapper.initDefinition();
         // 构建缓存
-        PropertyMappingCache.build( wrapper );
+        PropertyMappingCache.build(wrapper);
         return wrapper;
     }
 
@@ -154,10 +154,10 @@ public class TableBuilder extends BuilderSupport implements Builder<TableWrapper
      * @return 属性解析器
      */
     public FieldParser fieldParser() {
-        return Optional.ofNullable( this.configuration )
-                .map( MyBatisCustomConfiguration::getFieldParser )
-                .filter( Objects::nonNull )
-                .orElse( DEFAULT_FIELD_PARSER );
+        return Optional.ofNullable(this.configuration)
+                .map(MyBatisCustomConfiguration::getFieldParser)
+                .filter(Objects::nonNull)
+                .orElse(DEFAULT_FIELD_PARSER);
     }
 
     /**
@@ -165,8 +165,8 @@ public class TableBuilder extends BuilderSupport implements Builder<TableWrapper
      * @return true: 是, false: 否
      */
     public boolean isEnableMethodAnnotation() {
-        return Optional.ofNullable( this.configuration ).map( MyBatisCustomConfiguration::isEnableMethodAnnotation )
-                .orElse( false );
+        return Optional.ofNullable(this.configuration).map(MyBatisCustomConfiguration::isEnableMethodAnnotation)
+                .orElse(false);
     }
 
     /**
@@ -174,17 +174,17 @@ public class TableBuilder extends BuilderSupport implements Builder<TableWrapper
      * @param entity 实体类
      * @return {@code this}
      */
-    public TableBuilder entity( Class<?> entity ) {
-        if ( entity == null ) {
-            throw new MapperParserException( "The entity class parameter cannot be empty." );
+    public TableBuilder entity(Class<?> entity) {
+        if (entity == null) {
+            throw new MapperParserException("The entity class parameter cannot be empty.");
         }
         this.entity = entity;
         return this;
     }
 
     @Override
-    public TableBuilder configuration( MyBatisCustomConfiguration configuration ) {
-        super.configuration( configuration );
+    public TableBuilder configuration(MyBatisCustomConfiguration configuration) {
+        super.configuration(configuration);
         return this;
     }
 
@@ -201,8 +201,8 @@ public class TableBuilder extends BuilderSupport implements Builder<TableWrapper
      * @param builder 字段构建器
      * @return {@code this}
      */
-    public TableBuilder addColumn( ColumnBuilder builder ) {
-        this.columns.add( builder );
+    public TableBuilder addColumn(ColumnBuilder builder) {
+        this.columns.add(builder);
         return this;
     }
 

@@ -17,21 +17,21 @@ public class NamingStrategyUtil {
      * @param strategy 命名策略
      * @return 新的字符串
      */
-    public static String valueOf( String name, NamingStrategy strategy ) {
-        if ( strategy == null ) {
+    public static String valueOf(String name, NamingStrategy strategy) {
+        if (strategy == null) {
             strategy = NamingStrategy.CAMEL_HUMP_UPPERCASE;
         }
-        switch ( strategy ) {
+        switch (strategy) {
             case LOWERCASE:
-                return name.toLowerCase( Locale.ENGLISH );
+                return name.toLowerCase(Locale.ENGLISH);
             case UPPERCASE:
-                return name.toUpperCase( Locale.ENGLISH );
+                return name.toUpperCase(Locale.ENGLISH);
             case CAMEL_HUMP:
-                return CaseFormat.LOWER_CAMEL.to( CaseFormat.LOWER_CAMEL_UNDERSCORE, name );
+                return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_CAMEL_UNDERSCORE, name);
             case CAMEL_HUMP_LOWERCASE:
-                return CaseFormat.LOWER_CAMEL.to( CaseFormat.LOWER_UNDERSCORE, name );
+                return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name);
             case CAMEL_HUMP_UPPERCASE:
-                return CaseFormat.LOWER_CAMEL.to( CaseFormat.UPPER_UNDERSCORE, name );
+                return CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, name);
             case NORMAL:
             default:
                 return name;

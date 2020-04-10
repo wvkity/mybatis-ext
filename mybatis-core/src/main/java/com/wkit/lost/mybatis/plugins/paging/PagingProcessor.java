@@ -35,32 +35,32 @@ abstract class PagingProcessor extends QueryProcessorSupport {
     protected String dialectClass;
 
     @Override
-    public void setProperties( Properties properties ) {
-        switch ( getMode() ) {
+    public void setProperties(Properties properties) {
+        switch (getMode()) {
             case RANGE:
-                this.dialectClass = properties.getProperty( "limitDelegate" );
+                this.dialectClass = properties.getProperty("limitDelegate");
                 break;
             case PAGEABLE:
-                this.dialectClass = properties.getProperty( "pageableDelegate" );
+                this.dialectClass = properties.getProperty("pageableDelegate");
                 break;
             default:
         }
         this.properties = properties;
-        if ( Ascii.isNullOrEmpty( this.dialectClass ) ) {
+        if (Ascii.isNullOrEmpty(this.dialectClass)) {
             this.dialectClass = getDefaultDialect();
         }
-        this.factory = ( Dialect ) ClassUtil.newInstance( this.dialectClass );
-        if ( factory == null ) {
-            throw new IllegalArgumentException( "Failed to initialize database dialect based on the specified class name: `" + this.dialectClass + "`" );
+        this.factory = (Dialect) ClassUtil.newInstance(this.dialectClass);
+        if (factory == null) {
+            throw new IllegalArgumentException("Failed to initialize database dialect based on the specified class name: `" + this.dialectClass + "`");
         }
-        this.factory.setProperties( properties );
+        this.factory.setProperties(properties);
     }
 
     @Override
-    public boolean filter( MappedStatement ms, Object parameter ) {
-        Criteria<?> criteria = getCriteria( parameter );
-        Pageable pageable = getPageable( parameter );
-        return pageable == null && Optional.ofNullable( criteria ).map( Criteria::isRange ).orElse( false );
+    public boolean filter(MappedStatement ms, Object parameter) {
+        Criteria<?> criteria = getCriteria(parameter);
+        Pageable pageable = getPageable(parameter);
+        return pageable == null && Optional.ofNullable(criteria).map(Criteria::isRange).orElse(false);
     }
 
     /**
@@ -68,8 +68,8 @@ abstract class PagingProcessor extends QueryProcessorSupport {
      * @param parameter 参数
      * @return {@link Criteria}
      */
-    protected Criteria<?> getCriteria( Object parameter ) {
-        return getParameter( parameter, Constants.PARAM_CRITERIA, Criteria.class );
+    protected Criteria<?> getCriteria(Object parameter) {
+        return getParameter(parameter, Constants.PARAM_CRITERIA, Criteria.class);
     }
 
     /**
@@ -77,8 +77,8 @@ abstract class PagingProcessor extends QueryProcessorSupport {
      * @param parameter 参数
      * @return 「{@link Pageable}
      */
-    protected Pageable getPageable( Object parameter ) {
-        return getParameter( parameter, Constants.PARAM_PAGEABLE, Pageable.class );
+    protected Pageable getPageable(Object parameter) {
+        return getParameter(parameter, Constants.PARAM_PAGEABLE, Pageable.class);
     }
 
     /**
@@ -89,17 +89,17 @@ abstract class PagingProcessor extends QueryProcessorSupport {
      * @param <T>       泛型类型
      * @return 指定类型参数
      */
-    @SuppressWarnings( { "unchecked" } )
-    protected <T> T getParameter( Object parameter, String key, Class<T> clazz ) {
-        if ( parameter != null && clazz != null && Ascii.hasText( key ) ) {
-            if ( clazz.isAssignableFrom( parameter.getClass() ) ) {
-                return ( T ) parameter;
+    @SuppressWarnings({"unchecked"})
+    protected <T> T getParameter(Object parameter, String key, Class<T> clazz) {
+        if (parameter != null && clazz != null && Ascii.hasText(key)) {
+            if (clazz.isAssignableFrom(parameter.getClass())) {
+                return (T) parameter;
             }
-            if ( parameter instanceof Map ) {
-                Map<String, Object> paramMap = ( Map<String, Object> ) parameter;
-                if ( !paramMap.isEmpty() ) {
-                    return ( T ) Optional.ofNullable( paramMap.getOrDefault( key, null ) )
-                            .filter( it -> clazz.isAssignableFrom( it.getClass() ) ).orElse( null );
+            if (parameter instanceof Map) {
+                Map<String, Object> paramMap = (Map<String, Object>) parameter;
+                if (!paramMap.isEmpty()) {
+                    return (T) Optional.ofNullable(paramMap.getOrDefault(key, null))
+                            .filter(it -> clazz.isAssignableFrom(it.getClass())).orElse(null);
                 }
             }
         }
@@ -110,11 +110,11 @@ abstract class PagingProcessor extends QueryProcessorSupport {
      * 检查数据库方言是否创建
      */
     protected void validateDialectExists() {
-        if ( this.factory == null ) {
-            if ( this.lock.tryLock() ) {
+        if (this.factory == null) {
+            if (this.lock.tryLock()) {
                 try {
-                    if ( this.factory == null ) {
-                        this.setProperties( new Properties() );
+                    if (this.factory == null) {
+                        this.setProperties(new Properties());
                     }
                 } finally {
                     this.lock.unlock();

@@ -23,16 +23,16 @@ import java.util.stream.Collectors;
  * @author wvkity
  */
 @Getter
-@Setter( AccessLevel.PACKAGE )
+@Setter(AccessLevel.PACKAGE)
 @ToString
 @EqualsAndHashCode
-@Accessors( chain = true )
+@Accessors(chain = true)
 public class TableWrapper {
 
     /**
      * 属性-字段包装对象缓存(只读)
      */
-    @Getter( AccessLevel.NONE )
+    @Getter(AccessLevel.NONE)
     private Map<String, ColumnWrapper> PROPERTY_COLUMN_CACHE;
 
     /**
@@ -103,7 +103,7 @@ public class TableWrapper {
     /**
      * 所有字段
      */
-    @Getter( AccessLevel.NONE )
+    @Getter(AccessLevel.NONE)
     private Set<ColumnWrapper> columns = new LinkedHashSet<>();
 
     /**
@@ -111,7 +111,7 @@ public class TableWrapper {
      * @param entity 实体类
      * @param name   表名
      */
-    public TableWrapper( Class<?> entity, String name ) {
+    public TableWrapper(Class<?> entity, String name) {
         this.entity = entity;
         this.name = name;
     }
@@ -121,9 +121,9 @@ public class TableWrapper {
      * @param column 字段映射对象
      * @return {@code this}
      */
-    TableWrapper addColumn( ColumnWrapper column ) {
-        if ( column != null ) {
-            this.columns.add( column );
+    TableWrapper addColumn(ColumnWrapper column) {
+        if (column != null) {
+            this.columns.add(column);
         }
         return this;
     }
@@ -133,7 +133,7 @@ public class TableWrapper {
      * @return 数据库表字段
      */
     public Set<ColumnWrapper> columns() {
-        return new LinkedHashSet<>( this.columns );
+        return new LinkedHashSet<>(this.columns);
     }
 
     /**
@@ -141,7 +141,7 @@ public class TableWrapper {
      * @return 可保存字段集合
      */
     public Set<ColumnWrapper> insertableColumns() {
-        return filtrate( ColumnWrapper::isInsertable );
+        return filtrate(ColumnWrapper::isInsertable);
     }
 
     /**
@@ -149,7 +149,7 @@ public class TableWrapper {
      * @return 可更新字段集合
      */
     public Set<ColumnWrapper> updatableColumns() {
-        return filtrate( ColumnWrapper::isUpdatable );
+        return filtrate(ColumnWrapper::isUpdatable);
     }
 
     /**
@@ -158,7 +158,7 @@ public class TableWrapper {
      */
     public Set<ColumnWrapper> updatableColumnsExcludeLocking() {
         return this.optimisticLockingColumn == null ? updatableColumns() :
-                filtrate( it -> it.isUpdatable() && !it.isVersion() );
+                filtrate(it -> it.isUpdatable() && !it.isVersion());
     }
 
     /**
@@ -166,7 +166,7 @@ public class TableWrapper {
      * @return 保存操作自动审计字段集合
      */
     public Set<ColumnWrapper> insertedAuditableColumns() {
-        return auditableColumns( AuditMatching.INSERTED );
+        return auditableColumns(AuditMatching.INSERTED);
     }
 
     /**
@@ -174,7 +174,7 @@ public class TableWrapper {
      * @return 更新操作自动审计字段集合
      */
     public Set<ColumnWrapper> modifiedAuditableColumns() {
-        return auditableColumns( AuditMatching.MODIFIED );
+        return auditableColumns(AuditMatching.MODIFIED);
     }
 
     /**
@@ -182,7 +182,7 @@ public class TableWrapper {
      * @return 删除操作自动审计字段集合
      */
     public Set<ColumnWrapper> deletedAuditableColumns() {
-        return auditableColumns( AuditMatching.DELETED );
+        return auditableColumns(AuditMatching.DELETED);
     }
 
     /**
@@ -190,7 +190,7 @@ public class TableWrapper {
      * @return 非删除审计字段集合
      */
     public Set<ColumnWrapper> excludeDeletedAuditableColumns() {
-        return filtrate( it -> !it.deletedAuditable() );
+        return filtrate(it -> !it.deletedAuditable());
     }
 
     /**
@@ -198,8 +198,8 @@ public class TableWrapper {
      * @param matching 审计类型
      * @return 字段集合
      */
-    private Set<ColumnWrapper> auditableColumns( AuditMatching matching ) {
-        return filtrate( it -> it.isAuditable( matching ) );
+    private Set<ColumnWrapper> auditableColumns(AuditMatching matching) {
+        return filtrate(it -> it.isAuditable(matching));
     }
 
     /**
@@ -207,19 +207,19 @@ public class TableWrapper {
      * @param filter 过滤Lambda对象
      * @return 字段集合
      */
-    private Set<ColumnWrapper> filtrate( Predicate<ColumnWrapper> filter ) {
-        return this.columns.stream().filter( filter ).collect( Collectors.toCollection( LinkedHashSet::new ) );
+    private Set<ColumnWrapper> filtrate(Predicate<ColumnWrapper> filter) {
+        return this.columns.stream().filter(filter).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     /**
      * 初始化定义信息
      */
     void initDefinition() {
-        if ( this.columns != null && !this.columns.isEmpty() && this.PROPERTY_COLUMN_CACHE == null ) {
-            this.PROPERTY_COLUMN_CACHE = Collections.unmodifiableMap( this.columns.stream().collect(
-                    Collectors.toMap( ColumnWrapper::getProperty, Function.identity() ) ) );
+        if (this.columns != null && !this.columns.isEmpty() && this.PROPERTY_COLUMN_CACHE == null) {
+            this.PROPERTY_COLUMN_CACHE = Collections.unmodifiableMap(this.columns.stream().collect(
+                    Collectors.toMap(ColumnWrapper::getProperty, Function.identity())));
         } else {
-            this.PROPERTY_COLUMN_CACHE = Collections.unmodifiableMap( new HashMap<>( 0 ) );
+            this.PROPERTY_COLUMN_CACHE = Collections.unmodifiableMap(new HashMap<>(0));
         }
     }
 
@@ -236,9 +236,9 @@ public class TableWrapper {
      * @param property 属性
      * @return 字段信息
      */
-    public Optional<ColumnWrapper> search( String property ) {
-        return Optional.ofNullable( property ).flatMap( value -> this.columns.parallelStream()
-                .filter( column -> column.getProperty().equals( property ) ).findAny() );
+    public Optional<ColumnWrapper> search(String property) {
+        return Optional.ofNullable(property).flatMap(value -> this.columns.parallelStream()
+                .filter(column -> column.getProperty().equals(property)).findAny());
     }
 
     /**
@@ -246,7 +246,7 @@ public class TableWrapper {
      * @param method 方法名
      * @return statement
      */
-    public String getSqlStatement( final String method ) {
+    public String getSqlStatement(final String method) {
         return this.namespace + "." + method;
     }
 

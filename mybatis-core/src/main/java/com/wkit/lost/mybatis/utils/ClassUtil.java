@@ -19,10 +19,10 @@ public abstract class ClassUtil {
     private static final Set<String> PROXY_CACHE = new HashSet<>();
 
     static {
-        PROXY_CACHE.add( CGLIB_PROXY );
-        PROXY_CACHE.add( JAVASSIST_PROXY );
-        PROXY_CACHE.add( SPRING_CGLIB_PROXY );
-        PROXY_CACHE.add( MYBATIS_PROXY );
+        PROXY_CACHE.add(CGLIB_PROXY);
+        PROXY_CACHE.add(JAVASSIST_PROXY);
+        PROXY_CACHE.add(SPRING_CGLIB_PROXY);
+        PROXY_CACHE.add(MYBATIS_PROXY);
     }
 
     /**
@@ -30,12 +30,12 @@ public abstract class ClassUtil {
      * @param clazz 待检查类
      * @return true: 是 | false: 否
      */
-    public static boolean isProxy( final Class<?> clazz ) {
-        return clazz != null && Optional.ofNullable( clazz.getInterfaces() )
-                .map( Arrays::stream )
-                .map( Object::getClass )
-                .map( Class::getName )
-                .filter( PROXY_CACHE::contains )
+    public static boolean isProxy(final Class<?> clazz) {
+        return clazz != null && Optional.ofNullable(clazz.getInterfaces())
+                .map(Arrays::stream)
+                .map(Object::getClass)
+                .map(Class::getName)
+                .filter(PROXY_CACHE::contains)
                 .isPresent();
     }
 
@@ -44,8 +44,8 @@ public abstract class ClassUtil {
      * @param clazz 指定类
      * @return 具体类
      */
-    public static Class<?> getRealClass( Class<?> clazz ) {
-        return isProxy( clazz ) ? clazz.getSuperclass() : clazz;
+    public static Class<?> getRealClass(Class<?> clazz) {
+        return isProxy(clazz) ? clazz.getSuperclass() : clazz;
     }
 
     /**
@@ -53,7 +53,7 @@ public abstract class ClassUtil {
      * @param target 类
      * @return 类全名
      */
-    public static String getCanonicalName( final Class<?> target ) {
+    public static String getCanonicalName(final Class<?> target) {
         return target == null ? null : target.getCanonicalName();
     }
 
@@ -63,8 +63,8 @@ public abstract class ClassUtil {
      * @param target 目标类型
      * @return boolean
      */
-    public static boolean isAssignableFrom( final Class<?> source, final Class<?> target ) {
-        return source != null && target != null && source.isAssignableFrom( target );
+    public static boolean isAssignableFrom(final Class<?> source, final Class<?> target) {
+        return source != null && target != null && source.isAssignableFrom(target);
     }
 
     /**
@@ -73,12 +73,12 @@ public abstract class ClassUtil {
      * @param objects 值
      * @return boolean
      */
-    public static boolean isAssignableFrom( final Class<?> target, final Object... objects ) {
-        if ( target == null || ArrayUtil.isEmpty( objects ) ) {
+    public static boolean isAssignableFrom(final Class<?> target, final Object... objects) {
+        if (target == null || ArrayUtil.isEmpty(objects)) {
             return false;
         }
-        for ( Object object : objects ) {
-            if ( object != null && isAssignableFrom( target, object.getClass() ) ) {
+        for (Object object : objects) {
+            if (object != null && isAssignableFrom(target, object.getClass())) {
                 return true;
             }
         }
@@ -91,8 +91,8 @@ public abstract class ClassUtil {
      * @param index  索引
      * @return {@link Class}泛型
      */
-    public static Class<?> getGenericType( final Class<?> target, final int index ) {
-        return getGenericType( target.getGenericSuperclass(), index );
+    public static Class<?> getGenericType(final Class<?> target, final int index) {
+        return getGenericType(target.getGenericSuperclass(), index);
     }
 
     /**
@@ -101,19 +101,19 @@ public abstract class ClassUtil {
      * @param index       索引
      * @return {@link Class}泛型
      */
-    public static Class<?> getGenericType( final Type genericType, final int index ) {
-        if ( !( genericType instanceof ParameterizedType ) ) {
+    public static Class<?> getGenericType(final Type genericType, final int index) {
+        if (!(genericType instanceof ParameterizedType)) {
             return Object.class;
         }
-        Type[] types = ( ( ParameterizedType ) genericType ).getActualTypeArguments();
-        if ( index > types.length || index < 0 ) {
+        Type[] types = ((ParameterizedType) genericType).getActualTypeArguments();
+        if (index > types.length || index < 0) {
             return Object.class;
         }
-        Type type = types[ index ];
-        if ( !( type instanceof Class ) ) {
+        Type type = types[index];
+        if (!(type instanceof Class)) {
             return Object.class;
         }
-        return ( Class<?> ) type;
+        return (Class<?>) type;
     }
 
     /**
@@ -121,11 +121,11 @@ public abstract class ClassUtil {
      * @param className 类名
      * @return 实例
      */
-    public static Object newInstance( final String className ) {
+    public static Object newInstance(final String className) {
         try {
-            Class<?> clazz = Class.forName( className );
-            return newInstance( clazz );
-        } catch ( Exception e ) {
+            Class<?> clazz = Class.forName(className);
+            return newInstance(clazz);
+        } catch (Exception e) {
             // ignore
         }
         return null;
@@ -138,7 +138,7 @@ public abstract class ClassUtil {
      * @return 实例
      * @throws Exception \n
      */
-    public static <T> T newInstance( Class<T> clazz ) throws Exception {
+    public static <T> T newInstance(Class<T> clazz) throws Exception {
         return clazz.getDeclaredConstructor().newInstance();
     }
 }

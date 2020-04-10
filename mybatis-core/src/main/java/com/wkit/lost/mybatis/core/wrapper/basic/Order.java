@@ -29,14 +29,14 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param columns   字段集合
      * @param ascending 排序方式(是否为ASC排序)
      */
-    private Order( Criteria<T> criteria, boolean ascending, Collection<ColumnWrapper> columns ) {
-        if ( criteria == null ) {
-            throw new MyBatisException( "The Criteria object cannot be empty" );
+    private Order(Criteria<T> criteria, boolean ascending, Collection<ColumnWrapper> columns) {
+        if (criteria == null) {
+            throw new MyBatisException("The Criteria object cannot be empty");
         }
         this.criteria = criteria;
         this.ascending = ascending;
-        if ( CollectionUtil.hasElement( columns ) ) {
-            this.columns.addAll( columns.stream().filter( Objects::nonNull ).collect( Collectors.toList() ) );
+        if (CollectionUtil.hasElement(columns)) {
+            this.columns.addAll(columns.stream().filter(Objects::nonNull).collect(Collectors.toList()));
         }
     }
 
@@ -48,8 +48,8 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @return 排序对象
      */
     @SafeVarargs
-    public static <T> Order<T> asc( Criteria<T> criteria, Property<T, ?>... properties ) {
-        return new Order<>( criteria, true, CriteriaUtil.lambdaToColumn( criteria, ArrayUtil.toList( properties ) ) );
+    public static <T> Order<T> asc(Criteria<T> criteria, Property<T, ?>... properties) {
+        return new Order<>(criteria, true, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }
 
     /**
@@ -59,8 +59,8 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    public static <T> Order<T> asc( Criteria<T> criteria, String... properties ) {
-        return asc( criteria, ArrayUtil.toList( properties ) );
+    public static <T> Order<T> asc(Criteria<T> criteria, String... properties) {
+        return asc(criteria, ArrayUtil.toList(properties));
     }
 
     /**
@@ -70,9 +70,9 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    public static <T> Order<T> asc( Criteria<T> criteria, List<String> properties ) {
-        return new Order<>( criteria, true,
-                CriteriaUtil.propertyToColumn( criteria, distinct( properties ) ) );
+    public static <T> Order<T> asc(Criteria<T> criteria, List<String> properties) {
+        return new Order<>(criteria, true,
+                CriteriaUtil.propertyToColumn(criteria, distinct(properties)));
     }
 
     /**
@@ -83,10 +83,10 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    @SuppressWarnings( { "unchecked" } )
-    public static <T, E> Order<T> asc( String alias, AbstractQueryCriteriaWrapper<E> master,
-                                       String... properties ) {
-        return asc( master.searchForeign( alias ), ArrayUtil.toList( properties ) );
+    @SuppressWarnings({"unchecked"})
+    public static <T, E> Order<T> asc(String alias, AbstractQueryCriteriaWrapper<E> master,
+                                      String... properties) {
+        return asc(master.searchForeign(alias), ArrayUtil.toList(properties));
     }
 
     /**
@@ -99,12 +99,12 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @return 排序对象
      */
     @SafeVarargs
-    @SuppressWarnings( { "unchecked" } )
-    public static <T, E> Order<E> asc( String alias,
-                                       AbstractQueryCriteriaWrapper<T> master,
-                                       Property<E, ?>... properties ) {
-        Criteria<E> criteria = master.searchForeign( alias );
-        return new Order<>( criteria, true, CriteriaUtil.lambdaToColumn( criteria, ArrayUtil.toList( properties ) ) );
+    @SuppressWarnings({"unchecked"})
+    public static <T, E> Order<E> asc(String alias,
+                                      AbstractQueryCriteriaWrapper<T> master,
+                                      Property<E, ?>... properties) {
+        Criteria<E> criteria = master.searchForeign(alias);
+        return new Order<>(criteria, true, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }
 
     /**
@@ -115,64 +115,64 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    @SuppressWarnings( { "unchecked" } )
-    public static <T, E> Order<T> asc( String alias,
+    @SuppressWarnings({"unchecked"})
+    public static <T, E> Order<T> asc(String alias,
+                                      AbstractQueryCriteriaWrapper<E> master,
+                                      List<String> properties) {
+        return asc(master.searchForeign(alias), properties);
+    }
+
+    /**
+     * DESC排序
+     * @param criteria   查询对象
+     * @param properties 属性
+     * @param <T>        泛型类型
+     * @return 排序对象
+     */
+    @SafeVarargs
+    public static <T> Order<T> desc(Criteria<T> criteria, Property<T, ?>... properties) {
+        return new Order<>(criteria, false, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
+    }
+
+    /**
+     * DESC排序
+     * @param criteria   查询对象
+     * @param properties 属性
+     * @param <T>        泛型类型
+     * @return 排序对象
+     */
+    public static <T> Order<T> desc(Criteria<T> criteria, String... properties) {
+        return desc(criteria, ArrayUtil.toList(properties));
+    }
+
+    /**
+     * DESC排序
+     * @param criteria   查询对象
+     * @param properties 属性
+     * @param <T>        泛型类型
+     * @return 排序对象
+     */
+    public static <T> Order<T> desc(Criteria<T> criteria, List<String> properties) {
+        return new Order<>(criteria, false,
+                CriteriaUtil.propertyToColumn(criteria, distinct(properties)));
+    }
+
+    /**
+     * DESC排序
+     * @param alias      联表对象别名
+     * @param master     主查询对象
+     * @param properties 属性
+     * @param <T>        泛型类型
+     * @param <E>        泛型类型
+     * @return 排序对象
+     */
+    @SafeVarargs
+    @SuppressWarnings({"unchecked"})
+    public static <T, E> Order<E> desc(String alias,
                                        AbstractQueryCriteriaWrapper<E> master,
-                                       List<String> properties ) {
-        return asc( master.searchForeign( alias ), properties );
-    }
-
-    /**
-     * DESC排序
-     * @param criteria   查询对象
-     * @param properties 属性
-     * @param <T>        泛型类型
-     * @return 排序对象
-     */
-    @SafeVarargs
-    public static <T> Order<T> desc( Criteria<T> criteria, Property<T, ?>... properties ) {
-        return new Order<>( criteria, false, CriteriaUtil.lambdaToColumn( criteria, ArrayUtil.toList( properties ) ) );
-    }
-
-    /**
-     * DESC排序
-     * @param criteria   查询对象
-     * @param properties 属性
-     * @param <T>        泛型类型
-     * @return 排序对象
-     */
-    public static <T> Order<T> desc( Criteria<T> criteria, String... properties ) {
-        return desc( criteria, ArrayUtil.toList( properties ) );
-    }
-
-    /**
-     * DESC排序
-     * @param criteria   查询对象
-     * @param properties 属性
-     * @param <T>        泛型类型
-     * @return 排序对象
-     */
-    public static <T> Order<T> desc( Criteria<T> criteria, List<String> properties ) {
-        return new Order<>( criteria, false,
-                CriteriaUtil.propertyToColumn( criteria, distinct( properties ) ) );
-    }
-
-    /**
-     * DESC排序
-     * @param alias      联表对象别名
-     * @param master     主查询对象
-     * @param properties 属性
-     * @param <T>        泛型类型
-     * @param <E>        泛型类型
-     * @return 排序对象
-     */
-    @SafeVarargs
-    @SuppressWarnings( { "unchecked" } )
-    public static <T, E> Order<E> desc( String alias,
-                                        AbstractQueryCriteriaWrapper<E> master,
-                                        Property<E, ?>... properties ) {
-        Criteria<E> criteria = master.searchForeign( alias );
-        return new Order<>( criteria, false, CriteriaUtil.lambdaToColumn( criteria, ArrayUtil.toList( properties ) ) );
+                                       Property<E, ?>... properties) {
+        Criteria<E> criteria = master.searchForeign(alias);
+        return new Order<>(criteria, false, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }
 
     /**
@@ -183,10 +183,10 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    @SuppressWarnings( { "unchecked" } )
-    public static <T, E> Order<T> desc( String alias, AbstractQueryCriteriaWrapper<E> master,
-                                        String... properties ) {
-        return desc( master.searchForeign( alias ), properties );
+    @SuppressWarnings({"unchecked"})
+    public static <T, E> Order<T> desc(String alias, AbstractQueryCriteriaWrapper<E> master,
+                                       String... properties) {
+        return desc(master.searchForeign(alias), properties);
     }
 
     /**
@@ -197,19 +197,19 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    @SuppressWarnings( { "unchecked" } )
-    public static <T, E> Order<T> desc( String alias, AbstractQueryCriteriaWrapper<E> master,
-                                        List<String> properties ) {
-        return desc( master.searchForeign( alias ), properties );
+    @SuppressWarnings({"unchecked"})
+    public static <T, E> Order<T> desc(String alias, AbstractQueryCriteriaWrapper<E> master,
+                                       List<String> properties) {
+        return desc(master.searchForeign(alias), properties);
     }
 
     @Override
     public String getSegment() {
-        if ( notEmpty() ) {
+        if (notEmpty()) {
             String orderMode = ascending ? " ASC" : " DESC";
-            String realAlias = this.criteria != null && criteria.isEnableAlias() ? ( criteria.getAlias() + "." ) : "";
-            return this.columns.stream().map( it -> realAlias + it.getColumn() + orderMode )
-                    .collect( Collectors.joining( ", " ) );
+            String realAlias = this.criteria != null && criteria.isEnableAlias() ? (criteria.getAlias() + ".") : "";
+            return this.columns.stream().map(it -> realAlias + it.getColumn() + orderMode)
+                    .collect(Collectors.joining(", "));
         }
         return "";
     }

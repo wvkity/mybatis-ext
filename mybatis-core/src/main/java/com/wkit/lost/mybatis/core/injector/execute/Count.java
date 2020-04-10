@@ -12,7 +12,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 public class Count extends AbstractGeneralQueryMethod<CountProvider> {
 
     @Override
-    public MappedStatement injectMappedStatement( TableWrapper table, Class<?> mapperInterface, Class<?> resultType ) {
-        return super.injectMappedStatement( table, mapperInterface, Long.class );
+    public MappedStatement injectMappedStatement(TableWrapper table, Class<?> mapperInterface, Class<?> resultType) {
+        return super.injectMappedStatement(table, mapperInterface, Long.class);
     }
 }

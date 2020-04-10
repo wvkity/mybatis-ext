@@ -11,8 +11,8 @@ import java.lang.annotation.Target;
  * 字段注解
  * @author wvkity
  */
-@Target( ElementType.FIELD )
-@Retention( RetentionPolicy.RUNTIME )
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
 public @interface Column {

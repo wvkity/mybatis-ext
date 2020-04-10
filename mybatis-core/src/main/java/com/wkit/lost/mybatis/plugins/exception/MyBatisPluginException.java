@@ -12,19 +12,19 @@ public class MyBatisPluginException extends RuntimeException {
         super();
     }
 
-    public MyBatisPluginException( String message ) {
-        super( message );
+    public MyBatisPluginException(String message) {
+        super(message);
     }
 
-    public MyBatisPluginException( Throwable cause ) {
-        super( cause );
+    public MyBatisPluginException(Throwable cause) {
+        super(cause);
     }
 
-    public MyBatisPluginException( String message, Throwable cause ) {
-        super( message, cause );
+    public MyBatisPluginException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public MyBatisPluginException( String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace ) {
-        super( message, cause, enableSuppression, writableStackTrace );
+    public MyBatisPluginException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

@@ -25,43 +25,43 @@ public class SimpleCache<K, V> implements Cache<K, V> {
      * @param properties 配置
      * @param prefix     前缀
      */
-    @SuppressWarnings( "unchecked" )
-    public SimpleCache( Properties properties, String prefix ) {
-        CacheBuilder cacheBuilder = new CacheBuilder( "SQL_CACHE" );
-        String typeClass = properties.getProperty( prefix + ".typeClass" );
-        if ( StringUtil.hasText( typeClass ) ) {
+    @SuppressWarnings("unchecked")
+    public SimpleCache(Properties properties, String prefix) {
+        CacheBuilder cacheBuilder = new CacheBuilder("SQL_CACHE");
+        String typeClass = properties.getProperty(prefix + ".typeClass");
+        if (StringUtil.hasText(typeClass)) {
             try {
-                cacheBuilder.implementation( ( Class<? extends org.apache.ibatis.cache.Cache> ) Class.forName( typeClass ) );
-            } catch ( ClassNotFoundException e ) {
-                cacheBuilder.implementation( PerpetualCache.class );
+                cacheBuilder.implementation((Class<? extends org.apache.ibatis.cache.Cache>) Class.forName(typeClass));
+            } catch (ClassNotFoundException e) {
+                cacheBuilder.implementation(PerpetualCache.class);
             }
         } else {
-            cacheBuilder.implementation( PerpetualCache.class );
+            cacheBuilder.implementation(PerpetualCache.class);
         }
-        String evictionClass = properties.getProperty( prefix + ".evictionClass" );
-        if ( StringUtil.hasText( evictionClass ) ) {
+        String evictionClass = properties.getProperty(prefix + ".evictionClass");
+        if (StringUtil.hasText(evictionClass)) {
             try {
-                cacheBuilder.addDecorator( ( Class<? extends org.apache.ibatis.cache.Cache> ) Class.forName( evictionClass ) );
-            } catch ( ClassNotFoundException e ) {
-                cacheBuilder.addDecorator( FifoCache.class );
+                cacheBuilder.addDecorator((Class<? extends org.apache.ibatis.cache.Cache>) Class.forName(evictionClass));
+            } catch (ClassNotFoundException e) {
+                cacheBuilder.addDecorator(FifoCache.class);
             }
         } else {
-            cacheBuilder.addDecorator( FifoCache.class );
+            cacheBuilder.addDecorator(FifoCache.class);
         }
-        Optional.ofNullable( properties.getProperty( prefix + ".flushInterval" ) ).ifPresent( value -> cacheBuilder.clearInterval( Long.parseLong( value ) ) );
-        Optional.ofNullable( properties.getProperty( prefix + ".size" ) ).ifPresent( value -> cacheBuilder.size( Integer.parseInt( value ) ) );
-        cacheBuilder.properties( properties );
+        Optional.ofNullable(properties.getProperty(prefix + ".flushInterval")).ifPresent(value -> cacheBuilder.clearInterval(Long.parseLong(value)));
+        Optional.ofNullable(properties.getProperty(prefix + ".size")).ifPresent(value -> cacheBuilder.size(Integer.parseInt(value)));
+        cacheBuilder.properties(properties);
         CACHE = cacheBuilder.build();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Override
-    public V get( K key ) {
-        return ( V ) Optional.ofNullable( CACHE.getObject( key ) ).orElse( null );
+    public V get(K key) {
+        return (V) Optional.ofNullable(CACHE.getObject(key)).orElse(null);
     }
 
     @Override
-    public void put( K key, V value ) {
-        CACHE.putObject( key, value );
+    public void put(K key, V value) {
+        CACHE.putObject(key, value);
     }
 }

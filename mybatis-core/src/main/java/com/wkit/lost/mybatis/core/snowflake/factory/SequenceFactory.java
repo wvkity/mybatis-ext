@@ -20,7 +20,7 @@ public interface SequenceFactory {
      * @param workerAssigner 分配器
      * @return ID序列实例
      */
-    Sequence build( WorkerAssigner workerAssigner );
+    Sequence build(WorkerAssigner workerAssigner);
 
     /**
      * 构建ID序列
@@ -28,5 +28,5 @@ public interface SequenceFactory {
      * @param dataCenterId 数据中心ID
      * @return ID序列
      */
-    Sequence build( long workerId, long dataCenterId );
+    Sequence build(long workerId, long dataCenterId);
 }

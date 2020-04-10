@@ -25,26 +25,26 @@ import java.util.Set;
 public abstract class AbstractInjector implements Injector {
 
     @Override
-    public void inject( MapperBuilderAssistant assistant, Class<?> mapperInterface ) {
-        Type[] genericTypes = getGenericTypes( mapperInterface );
-        Class<?> entityClass = getGenericType( genericTypes, 0 );
-        if ( entityClass != null ) {
+    public void inject(MapperBuilderAssistant assistant, Class<?> mapperInterface) {
+        Type[] genericTypes = getGenericTypes(mapperInterface);
+        Class<?> entityClass = getGenericType(genericTypes, 0);
+        if (entityClass != null) {
             String interfaceName = mapperInterface.toString();
-            Set<String> mapperRegistryCache = MyBatisConfigCache.getMapperInterfaceCache( assistant.getConfiguration() );
-            if ( !mapperRegistryCache.contains( interfaceName ) ) {
-                Collection<Method> methods = getMethodsForInject( mapperInterface );
-                if ( CollectionUtil.hasElement( methods ) ) {
+            Set<String> mapperRegistryCache = MyBatisConfigCache.getMapperInterfaceCache(assistant.getConfiguration());
+            if (!mapperRegistryCache.contains(interfaceName)) {
+                Collection<Method> methods = getMethodsForInject(mapperInterface);
+                if (CollectionUtil.hasElement(methods)) {
                     // 拦截解析实体-表映射
-                    TableWrapper table = TableHandler.parse( assistant, entityClass );
+                    TableWrapper table = TableHandler.parse(assistant, entityClass);
                     // 获取返回值类型
-                    int index = MapperExecutor.class.isAssignableFrom( mapperInterface ) ? 0 : 1;
-                    Class<?> resultType = index == 0 ? entityClass : getGenericType( genericTypes, index );
+                    int index = MapperExecutor.class.isAssignableFrom(mapperInterface) ? 0 : 1;
+                    Class<?> resultType = index == 0 ? entityClass : getGenericType(genericTypes, index);
                     // 注入方法
-                    methods.forEach( it -> it.inject( assistant, mapperInterface, resultType, table ) );
+                    methods.forEach(it -> it.inject(assistant, mapperInterface, resultType, table));
                 } else {
-                    log.warn( "No effective injection method was found" );
+                    log.warn("No effective injection method was found");
                 }
-                mapperRegistryCache.add( interfaceName );
+                mapperRegistryCache.add(interfaceName);
             }
         }
     }
@@ -55,12 +55,12 @@ public abstract class AbstractInjector implements Injector {
      * @param index        索引
      * @return 泛型实体类
      */
-    public Class<?> getGenericType( Type[] genericTypes, int index ) {
-        if ( ArrayUtil.isEmpty( genericTypes ) || index < 0 || index > genericTypes.length ) {
+    public Class<?> getGenericType(Type[] genericTypes, int index) {
+        if (ArrayUtil.isEmpty(genericTypes) || index < 0 || index > genericTypes.length) {
             return null;
         }
-        Type target = genericTypes[ index ];
-        return target == null ? null : ( Class<?> ) target;
+        Type target = genericTypes[index];
+        return target == null ? null : (Class<?>) target;
     }
 
     /**
@@ -68,13 +68,13 @@ public abstract class AbstractInjector implements Injector {
      * @param mapperInterface Mapper接口
      * @return 泛型数组
      */
-    public Type[] getGenericTypes( final Class<?> mapperInterface ) {
+    public Type[] getGenericTypes(final Class<?> mapperInterface) {
         Type[] interfaces = mapperInterface.getGenericInterfaces();
-        for ( Type type : interfaces ) {
-            if ( type instanceof ParameterizedType ) {
-                Type[] genericTypes = ( ( ParameterizedType ) type ).getActualTypeArguments();
-                for ( Type it : genericTypes ) {
-                    if ( !( it instanceof TypeVariable ) && !( it instanceof WildcardType ) ) {
+        for (Type type : interfaces) {
+            if (type instanceof ParameterizedType) {
+                Type[] genericTypes = ((ParameterizedType) type).getActualTypeArguments();
+                for (Type it : genericTypes) {
+                    if (!(it instanceof TypeVariable) && !(it instanceof WildcardType)) {
                         return genericTypes;
                     }
                     break;
@@ -90,5 +90,5 @@ public abstract class AbstractInjector implements Injector {
      * @param mapperInterface Mapper接口
      * @return 方法列表
      */
-    public abstract Collection<Method> getMethodsForInject( final Class<?> mapperInterface );
+    public abstract Collection<Method> getMethodsForInject(final Class<?> mapperInterface);
 }

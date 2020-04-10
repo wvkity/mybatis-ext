@@ -71,7 +71,7 @@ public class QueryManager implements Segment {
      * 构造方法
      * @param criteria 条件对象
      */
-    public QueryManager( AbstractQueryCriteriaWrapper<?> criteria ) {
+    public QueryManager(AbstractQueryCriteriaWrapper<?> criteria) {
         this.criteria = criteria;
     }
 
@@ -80,8 +80,8 @@ public class QueryManager implements Segment {
      * @param wrappers 查询列包装对象数组
      * @return 当前对象
      */
-    public QueryManager add( AbstractQueryWrapper<?, ?>... wrappers ) {
-        return add( ArrayUtil.toList( wrappers ) );
+    public QueryManager add(AbstractQueryWrapper<?, ?>... wrappers) {
+        return add(ArrayUtil.toList(wrappers));
     }
 
     /**
@@ -89,15 +89,15 @@ public class QueryManager implements Segment {
      * @param wrappers 查询列包装对象集合
      * @return 当前对象
      */
-    public QueryManager add( Collection<? extends AbstractQueryWrapper<?, ?>> wrappers ) {
-        if ( CollectionUtil.hasElement( wrappers ) ) {
-            List<? extends AbstractQueryWrapper<?, ?>> its = wrappers.stream().filter( Objects::nonNull )
-                    .collect( Collectors.toList() );
-            if ( !its.isEmpty() ) {
-                if ( this.wrappers == null ) {
-                    this.wrappers = new ArrayList<>( calCapacity( its.size(), LIST_CAPACITY, LIST_CRITICAL ) );
+    public QueryManager add(Collection<? extends AbstractQueryWrapper<?, ?>> wrappers) {
+        if (CollectionUtil.hasElement(wrappers)) {
+            List<? extends AbstractQueryWrapper<?, ?>> its = wrappers.stream().filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            if (!its.isEmpty()) {
+                if (this.wrappers == null) {
+                    this.wrappers = new ArrayList<>(calCapacity(its.size(), LIST_CAPACITY, LIST_CRITICAL));
                 }
-                this.wrappers.addAll( its );
+                this.wrappers.addAll(its);
                 this.cached = false;
             }
         }
@@ -109,8 +109,8 @@ public class QueryManager implements Segment {
      * @param properties 属性数组
      * @return 当前对象
      */
-    public QueryManager excludes( String... properties ) {
-        return excludes( ArrayUtil.toList( properties ) );
+    public QueryManager excludes(String... properties) {
+        return excludes(ArrayUtil.toList(properties));
     }
 
     /**
@@ -118,13 +118,13 @@ public class QueryManager implements Segment {
      * @param properties 属性集合
      * @return 当前对象
      */
-    public QueryManager excludes( Collection<String> properties ) {
-        Set<String> its = distinct( properties );
-        if ( !its.isEmpty() ) {
-            if ( this.excludeProperties == null ) {
-                this.excludeProperties = new HashSet<>( calCapacity( its.size(), MAP_CAPACITY, MAP_CRITICAL ) );
+    public QueryManager excludes(Collection<String> properties) {
+        Set<String> its = distinct(properties);
+        if (!its.isEmpty()) {
+            if (this.excludeProperties == null) {
+                this.excludeProperties = new HashSet<>(calCapacity(its.size(), MAP_CAPACITY, MAP_CRITICAL));
             }
-            this.excludeProperties.addAll( its );
+            this.excludeProperties.addAll(its);
             this.cached = false;
         }
         return this;
@@ -135,8 +135,8 @@ public class QueryManager implements Segment {
      * @param columns 列名数组
      * @return 当前对象
      */
-    public QueryManager immediateExcludes( String... columns ) {
-        return immediateExcludes( ArrayUtil.toList( columns ) );
+    public QueryManager immediateExcludes(String... columns) {
+        return immediateExcludes(ArrayUtil.toList(columns));
     }
 
     /**
@@ -144,13 +144,13 @@ public class QueryManager implements Segment {
      * @param columns 列名集合
      * @return 当前对象
      */
-    public QueryManager immediateExcludes( Collection<String> columns ) {
-        Set<String> its = distinct( columns );
-        if ( !its.isEmpty() ) {
-            if ( this.excludeColumns == null ) {
-                this.excludeColumns = new HashSet<>( calCapacity( its.size(), MAP_CAPACITY, MAP_CRITICAL ) );
+    public QueryManager immediateExcludes(Collection<String> columns) {
+        Set<String> its = distinct(columns);
+        if (!its.isEmpty()) {
+            if (this.excludeColumns == null) {
+                this.excludeColumns = new HashSet<>(calCapacity(its.size(), MAP_CAPACITY, MAP_CRITICAL));
             }
-            this.excludeColumns.addAll( its );
+            this.excludeColumns.addAll(its);
             this.cached = false;
         }
         return this;
@@ -161,19 +161,19 @@ public class QueryManager implements Segment {
      * @return 查询列集合
      */
     public List<AbstractQueryWrapper<?, ?>> getQueries() {
-        if ( cached ) {
-            return new ArrayList<>( this._wrappers );
+        if (cached) {
+            return new ArrayList<>(this._wrappers);
         }
         List<AbstractQueryWrapper<?, ?>> queries;
-        if ( CollectionUtil.hasElement( wrappers ) ) {
-            queries = wrappers.stream().filter( it -> {
-                if ( it instanceof Query ) {
-                    return accept( ( ( Query<?> ) it ).getProperty(), this.excludeProperties, false );
-                } else if ( it instanceof ImmediateQuery ) {
-                    return accept( ( ( ImmediateQuery<?> ) it ).getColumn(), this.excludeColumns, true );
+        if (CollectionUtil.hasElement(wrappers)) {
+            queries = wrappers.stream().filter(it -> {
+                if (it instanceof Query) {
+                    return accept(((Query<?>) it).getProperty(), this.excludeProperties, false);
+                } else if (it instanceof ImmediateQuery) {
+                    return accept(((ImmediateQuery<?>) it).getColumn(), this.excludeColumns, true);
                 }
                 return true;
-            } ).collect( Collectors.toList() );
+            }).collect(Collectors.toList());
         } else {
             /*if ( criteria instanceof ForeignSubCriteria || criteria instanceof SubCriteria ) {
                 if ( criteria.isFetch() ) {
@@ -196,19 +196,19 @@ public class QueryManager implements Segment {
                 ).map( it -> Query.Single.query( criteria, it ) ).collect( Collectors.toList() );
             }*/
             // 获取所有列
-            Set<ColumnWrapper> columnWrappers = TableHandler.getTable( criteria.getEntityClass() ).columns();
-            queries = columnWrappers.stream().filter( it ->
-                    accept( it.getProperty(), this.excludeProperties, false )
-                            && accept( it.getColumn(), this.excludeColumns, true )
-            ).map( it -> Query.Single.query( criteria, it ) ).collect( Collectors.toList() );
+            Set<ColumnWrapper> columnWrappers = TableHandler.getTable(criteria.getEntityClass()).columns();
+            queries = columnWrappers.stream().filter(it ->
+                    accept(it.getProperty(), this.excludeProperties, false)
+                            && accept(it.getColumn(), this.excludeColumns, true)
+            ).map(it -> Query.Single.query(criteria, it)).collect(Collectors.toList());
             //queries = loop( criteria );
         }
         this._wrappers = queries;
         this.cached = true;
-        return new ArrayList<>( this._wrappers );
+        return new ArrayList<>(this._wrappers);
     }
 
-    private List<AbstractQueryWrapper<?, ?>> loop( AbstractQueryCriteriaWrapper<?> criteria ) {
+    private List<AbstractQueryWrapper<?, ?>> loop(AbstractQueryCriteriaWrapper<?> criteria) {
         /*if ( criteria instanceof ForeignSubCriteria ) {
             // 子查询联表
             ForeignSubCriteria<?> fsc = ( ForeignSubCriteria<?> ) criteria;
@@ -246,16 +246,16 @@ public class QueryManager implements Segment {
         } else {
             return build( criteria );
         }*/
-        return new ArrayList<>( 0 );
+        return new ArrayList<>(0);
     }
 
-    private List<AbstractQueryWrapper<?, ?>> build( Criteria<?> criteria ) {
+    private List<AbstractQueryWrapper<?, ?>> build(Criteria<?> criteria) {
         // 获取所有列
-        Set<ColumnWrapper> columnWrappers = TableHandler.getTable( criteria.getEntityClass() ).columns();
-        return columnWrappers.stream().filter( it ->
-                accept( it.getProperty(), this.excludeProperties, false )
-                        && accept( it.getColumn(), this.excludeColumns, true )
-        ).map( it -> Query.Single.query( criteria, it ) ).collect( Collectors.toList() );
+        Set<ColumnWrapper> columnWrappers = TableHandler.getTable(criteria.getEntityClass()).columns();
+        return columnWrappers.stream().filter(it ->
+                accept(it.getProperty(), this.excludeProperties, false)
+                        && accept(it.getColumn(), this.excludeColumns, true)
+        ).map(it -> Query.Single.query(criteria, it)).collect(Collectors.toList());
     }
 
     /**
@@ -268,10 +268,10 @@ public class QueryManager implements Segment {
 
     @Override
     public String getSegment() {
-        if ( cached && StringUtil.hasText( this.sqlSegment ) ) {
+        if (cached && StringUtil.hasText(this.sqlSegment)) {
             return this.sqlSegment;
         }
-        this.sqlSegment = getSegment( true );
+        this.sqlSegment = getSegment(true);
         return this.sqlSegment;
     }
 
@@ -280,9 +280,9 @@ public class QueryManager implements Segment {
      * @param applyQuery 是否为查询语句
      * @return SQL片段
      */
-    public String getSegment( boolean applyQuery ) {
-        return getQueries().stream().map( it -> it.getSegment( applyQuery ) )
-                .filter( StringUtil::hasText ).collect( Collectors.joining( ", " ) );
+    public String getSegment(boolean applyQuery) {
+        return getQueries().stream().map(it -> it.getSegment(applyQuery))
+                .filter(StringUtil::hasText).collect(Collectors.joining(", "));
     }
 
     /**
@@ -292,14 +292,14 @@ public class QueryManager implements Segment {
      * @param ignoreCase 是否忽略大小写比较
      * @return true: 否, false: 是
      */
-    private boolean accept( String target, Collection<String> wrappers, boolean ignoreCase ) {
-        if ( CollectionUtil.isEmpty( wrappers ) ) {
+    private boolean accept(String target, Collection<String> wrappers, boolean ignoreCase) {
+        if (CollectionUtil.isEmpty(wrappers)) {
             return true;
         }
-        if ( ignoreCase ) {
-            return wrappers.parallelStream().noneMatch( it -> it.equalsIgnoreCase( target ) );
+        if (ignoreCase) {
+            return wrappers.parallelStream().noneMatch(it -> it.equalsIgnoreCase(target));
         } else {
-            return wrappers.parallelStream().noneMatch( it -> it.equals( target ) );
+            return wrappers.parallelStream().noneMatch(it -> it.equals(target));
         }
     }
 
@@ -308,9 +308,9 @@ public class QueryManager implements Segment {
      * @param values 字符串集合
      * @return 新的字符串集合
      */
-    private Set<String> distinct( Collection<String> values ) {
-        return CollectionUtil.isEmpty( values ) ? new HashSet<>( 0 ) :
-                values.stream().filter( StringUtil::hasText ).collect( Collectors.toSet() );
+    private Set<String> distinct(Collection<String> values) {
+        return CollectionUtil.isEmpty(values) ? new HashSet<>(0) :
+                values.stream().filter(StringUtil::hasText).collect(Collectors.toSet());
     }
 
     /**
@@ -320,15 +320,15 @@ public class QueryManager implements Segment {
      * @param critical        临界值
      * @return 容器大小
      */
-    private int calCapacity( int size, int defaultCapacity, int critical ) {
-        if ( size < defaultCapacity ) {
+    private int calCapacity(int size, int defaultCapacity, int critical) {
+        if (size < defaultCapacity) {
             int rem = size % defaultCapacity;
-            return rem > critical ? ( defaultCapacity * 3 / 2 ) : defaultCapacity;
+            return rem > critical ? (defaultCapacity * 3 / 2) : defaultCapacity;
         } else {
             int multiple = size / defaultCapacity;
             int rem = size % defaultCapacity;
-            return multiple * defaultCapacity + ( rem > critical ? ( defaultCapacity * 3 / 2 )
-                    : defaultCapacity );
+            return multiple * defaultCapacity + (rem > critical ? (defaultCapacity * 3 / 2)
+                    : defaultCapacity);
         }
     }
 }

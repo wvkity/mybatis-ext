@@ -25,54 +25,54 @@ public class InsertApplication extends RootTestRunner {
     @Test
     public void singleInsertTest() {
         Grade grade = new Grade();
-        grade.setName( "S1" ).setCreatedUserId( DEF_SYS_USER_ID ).setCreatedUserName( DEF_SYS_USER_NAME )
-                .setGmtCreated( LocalDateTime.now() );
-        int result = gradeService.save( grade );
-        log.info( "执行结果: {}", result );
+        grade.setName("S1").setCreatedUserId(DEF_SYS_USER_ID).setCreatedUserName(DEF_SYS_USER_NAME)
+                .setGmtCreated(LocalDateTime.now());
+        int result = gradeService.save(grade);
+        log.info("执行结果: {}", result);
     }
 
     @Test
     public void singleInsertWithNotNullTest() {
         Grade grade = new Grade();
-        grade.setName( "S2" ).setCreatedUserId( DEF_SYS_USER_ID ).setCreatedUserName( DEF_SYS_USER_NAME )
-                .setGmtCreated( LocalDateTime.now() );
-        int result = gradeService.saveNotWithNull( grade );
-        log.info( "执行结果: {}", result );
+        grade.setName("S2").setCreatedUserId(DEF_SYS_USER_ID).setCreatedUserName(DEF_SYS_USER_NAME)
+                .setGmtCreated(LocalDateTime.now());
+        int result = gradeService.saveNotWithNull(grade);
+        log.info("执行结果: {}", result);
     }
-    
+
     @Test
     public void saveTest() {
         User user = new User();
-        user.setUserName( "兮兮" ).setPassword( "123456test" )
-                .setState( 1 ).setScore( 88 ).setSex( 1 ).setVersion( 1 ).setDeleted( false );
-        int result = userService.save( user );
-        log.info( "执行结果: {}", result );
+        user.setUserName("兮兮").setPassword("123456test")
+                .setState(1).setScore(88).setSex(1).setVersion(1).setDeleted(false);
+        int result = userService.save(user);
+        log.info("执行结果: {}", result);
     }
 
     @Test
     public void batchInsertTest() {
         Grade grade = new Grade();
-        grade.setName( "S1" ).setCreatedUserId( DEF_SYS_USER_ID ).setCreatedUserName( DEF_SYS_USER_NAME )
-                .setGmtCreated( LocalDateTime.now() );
+        grade.setName("S1").setCreatedUserId(DEF_SYS_USER_ID).setCreatedUserName(DEF_SYS_USER_NAME)
+                .setGmtCreated(LocalDateTime.now());
         Grade g2 = new Grade();
-        g2.setName( "S3" ).setCreatedUserId( DEF_SYS_USER_ID )
-                .setCreatedUserName( DEF_SYS_USER_NAME ).setGmtCreated( LocalDateTime.now() );
-        List<Grade> list = ArrayUtil.toList( grade, g2 );
-        int result = gradeService.batchSave( list );
-        log.info( "执行结果: {}", result );
+        g2.setName("S3").setCreatedUserId(DEF_SYS_USER_ID)
+                .setCreatedUserName(DEF_SYS_USER_NAME).setGmtCreated(LocalDateTime.now());
+        List<Grade> list = ArrayUtil.toList(grade, g2);
+        int result = gradeService.batchSave(list);
+        log.info("执行结果: {}", result);
     }
 
     @Test
     public void batchInsertNotWithAuditTest() {
         Grade grade = new Grade();
-        grade.setName( "S4" ).setCreatedUserId( DEF_SYS_USER_ID ).setCreatedUserName( DEF_SYS_USER_NAME )
-                .setGmtCreated( LocalDateTime.now() );
+        grade.setName("S4").setCreatedUserId(DEF_SYS_USER_ID).setCreatedUserName(DEF_SYS_USER_NAME)
+                .setGmtCreated(LocalDateTime.now());
         Grade g2 = new Grade();
-        g2.setName( "S5" ).setCreatedUserId( DEF_SYS_USER_ID )
-                .setCreatedUserName( DEF_SYS_USER_NAME ).setGmtCreated( LocalDateTime.now() );
-        List<Grade> list = ArrayUtil.toList( grade, g2 );
-        int result = gradeService.batchSaveNotWithAudit( list );
-        log.info( "执行结果: {}", result );
-        log.info( "执行后的数据: {}", JSON.toJSONString( list, true ) );
+        g2.setName("S5").setCreatedUserId(DEF_SYS_USER_ID)
+                .setCreatedUserName(DEF_SYS_USER_NAME).setGmtCreated(LocalDateTime.now());
+        List<Grade> list = ArrayUtil.toList(grade, g2);
+        int result = gradeService.batchSaveNotWithAudit(list);
+        log.info("执行结果: {}", result);
+        log.info("执行后的数据: {}", JSON.toJSONString(list, true));
     }
 }

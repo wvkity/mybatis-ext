@@ -17,5 +17,5 @@ public interface Method {
      * @param resultType      返回值类型
      * @param table           表包装对象
      */
-    void inject( MapperBuilderAssistant assistant, Class<?> mapperInterface, Class<?> resultType, TableWrapper table );
+    void inject(MapperBuilderAssistant assistant, Class<?> mapperInterface, Class<?> resultType, TableWrapper table);
 }

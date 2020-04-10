@@ -23,8 +23,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param value    值
      * @return {@code this}
      */
-    default Chain template( String template, P property, Object value ) {
-        return template( template, lambdaToProperty( property ), value );
+    default Chain template(String template, P property, Object value) {
+        return template(template, lambdaToProperty(property), value);
     }
 
     /**
@@ -34,7 +34,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param value    值
      * @return {@code this}
      */
-    Chain template( String template, String property, Object value );
+    Chain template(String template, String property, Object value);
 
     /**
      * TEMPLATE
@@ -43,8 +43,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param value    值
      * @return {@code this}
      */
-    default Chain orTemplate( String template, P property, Object value ) {
-        return orTemplate( template, lambdaToProperty( property ), value );
+    default Chain orTemplate(String template, P property, Object value) {
+        return orTemplate(template, lambdaToProperty(property), value);
     }
 
     /**
@@ -54,7 +54,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param value    值
      * @return {@code this}
      */
-    Chain orTemplate( String template, String property, Object value );
+    Chain orTemplate(String template, String property, Object value);
 
     /**
      * TEMPLATE
@@ -63,8 +63,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain template( String template, P property, Object... values ) {
-        return template( template, property, ArrayUtil.toList( values ) );
+    default Chain template(String template, P property, Object... values) {
+        return template(template, property, ArrayUtil.toList(values));
     }
 
     /**
@@ -74,8 +74,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain template( String template, P property, Collection<Object> values ) {
-        return template( template, lambdaToProperty( property ), values );
+    default Chain template(String template, P property, Collection<Object> values) {
+        return template(template, lambdaToProperty(property), values);
     }
 
     /**
@@ -85,8 +85,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain template( String template, String property, Object... values ) {
-        return template( template, property, ArrayUtil.toList( values ) );
+    default Chain template(String template, String property, Object... values) {
+        return template(template, property, ArrayUtil.toList(values));
     }
 
     /**
@@ -96,7 +96,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    Chain template( String template, String property, Collection<Object> values );
+    Chain template(String template, String property, Collection<Object> values);
 
     /**
      * TEMPLATE
@@ -105,8 +105,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain orTemplate( String template, P property, Object... values ) {
-        return orTemplate( template, property, ArrayUtil.toList( values ) );
+    default Chain orTemplate(String template, P property, Object... values) {
+        return orTemplate(template, property, ArrayUtil.toList(values));
     }
 
     /**
@@ -116,8 +116,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain orTemplate( String template, P property, Collection<Object> values ) {
-        return orTemplate( template, lambdaToProperty( property ), values );
+    default Chain orTemplate(String template, P property, Collection<Object> values) {
+        return orTemplate(template, lambdaToProperty(property), values);
     }
 
     /**
@@ -127,8 +127,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain orTemplate( String template, String property, Object... values ) {
-        return orTemplate( template, property, ArrayUtil.toList( values ) );
+    default Chain orTemplate(String template, String property, Object... values) {
+        return orTemplate(template, property, ArrayUtil.toList(values));
     }
 
     /**
@@ -138,7 +138,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    Chain orTemplate( String template, String property, Collection<Object> values );
+    Chain orTemplate(String template, String property, Collection<Object> values);
 
     /**
      * TEMPLATE
@@ -147,8 +147,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain template( String template, P property, Map<String, Object> values ) {
-        return template( template, lambdaToProperty( property ), values );
+    default Chain template(String template, P property, Map<String, Object> values) {
+        return template(template, lambdaToProperty(property), values);
     }
 
     /**
@@ -158,7 +158,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    Chain template( String template, String property, Map<String, Object> values );
+    Chain template(String template, String property, Map<String, Object> values);
 
     /**
      * TEMPLATE
@@ -167,8 +167,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain orTemplate( String template, P property, Map<String, Object> values ) {
-        return orTemplate( template, lambdaToProperty( property ), values );
+    default Chain orTemplate(String template, P property, Map<String, Object> values) {
+        return orTemplate(template, lambdaToProperty(property), values);
     }
 
     /**
@@ -178,7 +178,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    Chain orTemplate( String template, String property, Map<String, Object> values );
+    Chain orTemplate(String template, String property, Map<String, Object> values);
 
     /**
      * TEMPLATE
@@ -186,7 +186,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param value    值
      * @return {@code this}
      */
-    Chain immediateTemplate( String template, Object value );
+    Chain immediateTemplate(String template, Object value);
 
     /**
      * TEMPLATE
@@ -194,8 +194,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain immediateTemplate( String template, Object... values ) {
-        return immediateTemplate( template, ArrayUtil.toList( values ) );
+    default Chain immediateTemplate(String template, Object... values) {
+        return immediateTemplate(template, ArrayUtil.toList(values));
     }
 
     /**
@@ -204,7 +204,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    Chain immediateTemplate( String template, Collection<Object> values );
+    Chain immediateTemplate(String template, Collection<Object> values);
 
     /**
      * TEMPLATE
@@ -212,79 +212,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    Chain immediateTemplate( String template, Map<String, Object> values );
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param column   字段
-     * @param value    值
-     * @return {@code this}
-     */
-    Chain immediateTemplate( String template, String column, Object value );
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param column   字段
-     * @param values   值
-     * @return {@code this}
-     */
-    default Chain immediateTemplate( String template, String column, Object... values ) {
-        return immediateTemplate( template, column, ArrayUtil.toList( values ) );
-    }
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param column   字段
-     * @param values   值
-     * @return {@code this}
-     */
-    Chain immediateTemplate( String template, String column, Collection<Object> values );
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param column   字段
-     * @param values   值
-     * @return {@code this}
-     */
-    Chain immediateTemplate( String template, String column, Map<String, Object> values );
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param value    值
-     * @return {@code this}
-     */
-    Chain orImmediateTemplate( String template, Object value );
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param values   值
-     * @return {@code this}
-     */
-    default Chain orImmediateTemplate( String template, Object... values ) {
-        return orImmediateTemplate( template, ArrayUtil.toList( values ) );
-    }
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param values   值
-     * @return {@code this}
-     */
-    Chain orImmediateTemplate( String template, Collection<Object> values );
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param values   值
-     * @return {@code this}
-     */
-    Chain orImmediateTemplate( String template, Map<String, Object> values );
+    Chain immediateTemplate(String template, Map<String, Object> values);
 
     /**
      * TEMPLATE
@@ -293,7 +221,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param value    值
      * @return {@code this}
      */
-    Chain orImmediateTemplate( String template, String column, Object value );
+    Chain immediateTemplate(String template, String column, Object value);
 
     /**
      * TEMPLATE
@@ -302,8 +230,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain orImmediateTemplate( String template, String column, Object... values ) {
-        return orImmediateTemplate( template, column, ArrayUtil.toList( values ) );
+    default Chain immediateTemplate(String template, String column, Object... values) {
+        return immediateTemplate(template, column, ArrayUtil.toList(values));
     }
 
     /**
@@ -313,7 +241,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    Chain orImmediateTemplate( String template, String column, Collection<Object> values );
+    Chain immediateTemplate(String template, String column, Collection<Object> values);
 
     /**
      * TEMPLATE
@@ -322,6 +250,78 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    Chain orImmediateTemplate( String template, String column, Map<String, Object> values );
+    Chain immediateTemplate(String template, String column, Map<String, Object> values);
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param value    值
+     * @return {@code this}
+     */
+    Chain orImmediateTemplate(String template, Object value);
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @return {@code this}
+     */
+    default Chain orImmediateTemplate(String template, Object... values) {
+        return orImmediateTemplate(template, ArrayUtil.toList(values));
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @return {@code this}
+     */
+    Chain orImmediateTemplate(String template, Collection<Object> values);
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @return {@code this}
+     */
+    Chain orImmediateTemplate(String template, Map<String, Object> values);
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param value    值
+     * @return {@code this}
+     */
+    Chain orImmediateTemplate(String template, String column, Object value);
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param values   值
+     * @return {@code this}
+     */
+    default Chain orImmediateTemplate(String template, String column, Object... values) {
+        return orImmediateTemplate(template, column, ArrayUtil.toList(values));
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param values   值
+     * @return {@code this}
+     */
+    Chain orImmediateTemplate(String template, String column, Collection<Object> values);
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param values   值
+     * @return {@code this}
+     */
+    Chain orImmediateTemplate(String template, String column, Map<String, Object> values);
 
 }

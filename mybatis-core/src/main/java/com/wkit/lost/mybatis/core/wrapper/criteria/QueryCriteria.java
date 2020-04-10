@@ -13,7 +13,7 @@ public class QueryCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
      * 构造方法
      * @param entityClass 实体类
      */
-    public QueryCriteria( Class<T> entityClass ) {
+    public QueryCriteria(Class<T> entityClass) {
         this.entityClass = entityClass;
         this.inits();
     }
@@ -23,7 +23,7 @@ public class QueryCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
      * @param entityClass 实体类
      * @param alias       表别名
      */
-    public QueryCriteria( Class<T> entityClass, String alias ) {
+    public QueryCriteria(Class<T> entityClass, String alias) {
         this.entityClass = entityClass;
         this.tableAlias = alias;
         this.inits();

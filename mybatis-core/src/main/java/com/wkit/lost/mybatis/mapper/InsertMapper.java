@@ -18,14 +18,14 @@ public interface InsertMapper<T> {
      * @param entity 待保存对象
      * @return 受影响行数
      */
-    int insert( @Param( Constants.PARAM_ENTITY ) T entity );
+    int insert(@Param(Constants.PARAM_ENTITY) T entity);
 
     /**
      * 保存记录
      * @param entity 待保存对象
      * @return 受影响行数
      */
-    int insertNotWithNull( @Param( Constants.PARAM_ENTITY ) T entity );
+    int insertNotWithNull(@Param(Constants.PARAM_ENTITY) T entity);
 
     /**
      * 批量保存记录
@@ -33,7 +33,7 @@ public interface InsertMapper<T> {
      * @param dataWrapper 待保存包装对象
      * @return 受影响行数
      */
-    int batchInsert( @Param( Constants.PARAM_BATCH_BEAN_WRAPPER ) BatchDataBeanWrapper<T> dataWrapper );
+    int batchInsert(@Param(Constants.PARAM_BATCH_BEAN_WRAPPER) BatchDataBeanWrapper<T> dataWrapper);
 
     /**
      * 批量保存记录
@@ -41,6 +41,6 @@ public interface InsertMapper<T> {
      * @param dataWrapper 待保存包装对象
      * @return 受影响行数
      */
-    int batchInsertNotWithAudit( @Param( Constants.PARAM_BATCH_BEAN_WRAPPER ) BatchDataBeanWrapper<T> dataWrapper );
+    int batchInsertNotWithAudit(@Param(Constants.PARAM_BATCH_BEAN_WRAPPER) BatchDataBeanWrapper<T> dataWrapper);
 
 }

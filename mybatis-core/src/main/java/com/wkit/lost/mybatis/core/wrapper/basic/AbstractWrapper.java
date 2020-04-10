@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @param <E> 字段类型
  * @author wvkity
  */
-@SuppressWarnings( { "serial" } )
+@SuppressWarnings({"serial"})
 public abstract class AbstractWrapper<T, E> implements Segment {
 
     /**
@@ -43,8 +43,8 @@ public abstract class AbstractWrapper<T, E> implements Segment {
      * @return 字段集合
      */
     public Set<E> getColumns() {
-        return notEmpty() ? Collections.unmodifiableSet( this.columns ) :
-                Collections.unmodifiableSet( new LinkedHashSet<>( 0 ) );
+        return notEmpty() ? Collections.unmodifiableSet(this.columns) :
+                Collections.unmodifiableSet(new LinkedHashSet<>(0));
     }
 
     /**
@@ -52,8 +52,8 @@ public abstract class AbstractWrapper<T, E> implements Segment {
      * @param values 字符串集合
      * @return Set字符串集合
      */
-    public static Set<String> distinct( Collection<String> values ) {
-        return CollectionUtil.isEmpty( values ) ? new LinkedHashSet<>( 0 )
-                : values.stream().filter( StringUtil::hasText ).collect( Collectors.toCollection( LinkedHashSet::new ) );
+    public static Set<String> distinct(Collection<String> values) {
+        return CollectionUtil.isEmpty(values) ? new LinkedHashSet<>(0)
+                : values.stream().filter(StringUtil::hasText).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }

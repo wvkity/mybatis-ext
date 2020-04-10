@@ -6,7 +6,7 @@ package com.wkit.lost.mybatis.core.wrapper.basic;
  * @param <E> 字段类型
  * @author wvkity
  */
-@SuppressWarnings( { "serial" } )
+@SuppressWarnings({"serial"})
 public abstract class AbstractGroupWrapper<T, E> extends AbstractWrapper<T, E> implements GroupWrapper<E> {
 
 }
