@@ -2,23 +2,23 @@ package com.wkit.lost.mybatis.core.conditional;
 
 import com.wkit.lost.mybatis.core.conditional.expression.Between;
 import com.wkit.lost.mybatis.core.conditional.expression.Equal;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectBetween;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectEqual;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectGreaterThan;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectGreaterThanOrEqual;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectIn;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectLessThan;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectLessThanOrEqual;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectLike;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectNotBetween;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectNotEqual;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectNotIn;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectNotLike;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectNull;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectTemplate;
 import com.wkit.lost.mybatis.core.conditional.expression.GreaterThan;
 import com.wkit.lost.mybatis.core.conditional.expression.GreaterThanOrEqual;
 import com.wkit.lost.mybatis.core.conditional.expression.IdEqual;
-import com.wkit.lost.mybatis.core.conditional.expression.ImmediateBetween;
-import com.wkit.lost.mybatis.core.conditional.expression.ImmediateEqual;
-import com.wkit.lost.mybatis.core.conditional.expression.ImmediateGreaterThan;
-import com.wkit.lost.mybatis.core.conditional.expression.ImmediateGreaterThanOrEqual;
-import com.wkit.lost.mybatis.core.conditional.expression.ImmediateIn;
-import com.wkit.lost.mybatis.core.conditional.expression.ImmediateLessThan;
-import com.wkit.lost.mybatis.core.conditional.expression.ImmediateLessThanOrEqual;
-import com.wkit.lost.mybatis.core.conditional.expression.ImmediateLike;
-import com.wkit.lost.mybatis.core.conditional.expression.ImmediateNotBetween;
-import com.wkit.lost.mybatis.core.conditional.expression.ImmediateNotEqual;
-import com.wkit.lost.mybatis.core.conditional.expression.ImmediateNotIn;
-import com.wkit.lost.mybatis.core.conditional.expression.ImmediateNotLike;
-import com.wkit.lost.mybatis.core.conditional.expression.ImmediateNull;
-import com.wkit.lost.mybatis.core.conditional.expression.ImmediateTemplate;
 import com.wkit.lost.mybatis.core.conditional.expression.In;
 import com.wkit.lost.mybatis.core.conditional.expression.LessThan;
 import com.wkit.lost.mybatis.core.conditional.expression.LessThanOrEqual;
@@ -128,8 +128,8 @@ public final class Restrictions {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> immediateEq(String column, Object value) {
-        return immediateEq(column, value, Logic.AND);
+    public static <T> DirectEqual<T> directEq(String column, Object value) {
+        return directEq(column, value, Logic.AND);
     }
 
     /**
@@ -140,8 +140,8 @@ public final class Restrictions {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> immediateEq(String column, Object value, Logic logic) {
-        return ImmediateEqual.create(column, value, logic);
+    public static <T> DirectEqual<T> directEq(String column, Object value, Logic logic) {
+        return DirectEqual.create(column, value, logic);
     }
 
     /**
@@ -152,8 +152,8 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> immediateEq(String tableAlias, String column, Object value) {
-        return immediateEq(tableAlias, column, value, Logic.AND);
+    public static <T> DirectEqual<T> directEq(String tableAlias, String column, Object value) {
+        return directEq(tableAlias, column, value, Logic.AND);
     }
 
     /**
@@ -165,9 +165,9 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> immediateEq(String tableAlias, String column,
-                                                    Object value, Logic logic) {
-        return ImmediateEqual.create(tableAlias, column, value, logic);
+    public static <T> DirectEqual<T> directEq(String tableAlias, String column,
+                                                 Object value, Logic logic) {
+        return DirectEqual.create(tableAlias, column, value, logic);
     }
 
     /**
@@ -178,8 +178,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> immediateEq(Criteria<T> criteria, String column, Object value) {
-        return immediateEq(criteria, column, value, Logic.AND);
+    public static <T> DirectEqual<T> directEq(Criteria<T> criteria, String column, Object value) {
+        return directEq(criteria, column, value, Logic.AND);
     }
 
     /**
@@ -191,9 +191,9 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateEqual<T> immediateEq(Criteria<T> criteria, String column,
-                                                    Object value, Logic logic) {
-        return ImmediateEqual.create(criteria, column, value, logic);
+    public static <T> DirectEqual<T> directEq(Criteria<T> criteria, String column,
+                                                 Object value, Logic logic) {
+        return DirectEqual.create(criteria, column, value, logic);
     }
 
     /**
@@ -253,8 +253,8 @@ public final class Restrictions {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotEqual<T> immediateNe(String column, Object value) {
-        return immediateNe(column, value, Logic.AND);
+    public static <T> DirectNotEqual<T> directNe(String column, Object value) {
+        return directNe(column, value, Logic.AND);
     }
 
     /**
@@ -265,8 +265,8 @@ public final class Restrictions {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotEqual<T> immediateNe(String column, Object value, Logic logic) {
-        return ImmediateNotEqual.create(column, value, logic);
+    public static <T> DirectNotEqual<T> directNe(String column, Object value, Logic logic) {
+        return DirectNotEqual.create(column, value, logic);
     }
 
     /**
@@ -277,8 +277,8 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotEqual<T> immediateNe(String tableAlias, String column, Object value) {
-        return immediateNe(tableAlias, column, value, Logic.AND);
+    public static <T> DirectNotEqual<T> directNe(String tableAlias, String column, Object value) {
+        return directNe(tableAlias, column, value, Logic.AND);
     }
 
     /**
@@ -290,9 +290,9 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotEqual<T> immediateNe(String tableAlias, String column,
-                                                       Object value, Logic logic) {
-        return ImmediateNotEqual.create(tableAlias, column, value, logic);
+    public static <T> DirectNotEqual<T> directNe(String tableAlias, String column,
+                                                    Object value, Logic logic) {
+        return DirectNotEqual.create(tableAlias, column, value, logic);
     }
 
     /**
@@ -303,8 +303,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotEqual<T> immediateNe(Criteria<T> criteria, String column, Object value) {
-        return immediateNe(criteria, column, value, Logic.AND);
+    public static <T> DirectNotEqual<T> directNe(Criteria<T> criteria, String column, Object value) {
+        return directNe(criteria, column, value, Logic.AND);
     }
 
     /**
@@ -316,9 +316,9 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotEqual<T> immediateNe(Criteria<T> criteria, String column,
-                                                       Object value, Logic logic) {
-        return ImmediateNotEqual.create(criteria, column, value, logic);
+    public static <T> DirectNotEqual<T> directNe(Criteria<T> criteria, String column,
+                                                    Object value, Logic logic) {
+        return DirectNotEqual.create(criteria, column, value, logic);
     }
 
     /**
@@ -378,8 +378,8 @@ public final class Restrictions {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThan<T> immediateLt(String column, Object value) {
-        return immediateLt(column, value, Logic.AND);
+    public static <T> DirectLessThan<T> directLt(String column, Object value) {
+        return directLt(column, value, Logic.AND);
     }
 
     /**
@@ -390,8 +390,8 @@ public final class Restrictions {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThan<T> immediateLt(String column, Object value, Logic logic) {
-        return ImmediateLessThan.create(column, value, logic);
+    public static <T> DirectLessThan<T> directLt(String column, Object value, Logic logic) {
+        return DirectLessThan.create(column, value, logic);
     }
 
     /**
@@ -402,8 +402,8 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThan<T> immediateLt(String tableAlias, String column, Object value) {
-        return immediateLt(tableAlias, column, value, Logic.AND);
+    public static <T> DirectLessThan<T> directLt(String tableAlias, String column, Object value) {
+        return directLt(tableAlias, column, value, Logic.AND);
     }
 
     /**
@@ -415,9 +415,9 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThan<T> immediateLt(String tableAlias, String column,
-                                                       Object value, Logic logic) {
-        return ImmediateLessThan.create(tableAlias, column, value, logic);
+    public static <T> DirectLessThan<T> directLt(String tableAlias, String column,
+                                                    Object value, Logic logic) {
+        return DirectLessThan.create(tableAlias, column, value, logic);
     }
 
     /**
@@ -428,8 +428,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThan<T> immediateLt(Criteria<T> criteria, String column, Object value) {
-        return immediateLt(criteria, column, value, Logic.AND);
+    public static <T> DirectLessThan<T> directLt(Criteria<T> criteria, String column, Object value) {
+        return directLt(criteria, column, value, Logic.AND);
     }
 
     /**
@@ -441,9 +441,9 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThan<T> immediateLt(Criteria<T> criteria, String column,
-                                                       Object value, Logic logic) {
-        return ImmediateLessThan.create(criteria, column, value, logic);
+    public static <T> DirectLessThan<T> directLt(Criteria<T> criteria, String column,
+                                                    Object value, Logic logic) {
+        return DirectLessThan.create(criteria, column, value, logic);
     }
 
     /**
@@ -504,8 +504,8 @@ public final class Restrictions {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThanOrEqual<T> immediateLe(String column, Object value) {
-        return immediateLe(column, value, Logic.AND);
+    public static <T> DirectLessThanOrEqual<T> directLe(String column, Object value) {
+        return directLe(column, value, Logic.AND);
     }
 
     /**
@@ -516,8 +516,8 @@ public final class Restrictions {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThanOrEqual<T> immediateLe(String column, Object value, Logic logic) {
-        return ImmediateLessThanOrEqual.create(column, value, logic);
+    public static <T> DirectLessThanOrEqual<T> directLe(String column, Object value, Logic logic) {
+        return DirectLessThanOrEqual.create(column, value, logic);
     }
 
     /**
@@ -528,8 +528,8 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThanOrEqual<T> immediateLe(String tableAlias, String column, Object value) {
-        return immediateLe(tableAlias, column, value, Logic.AND);
+    public static <T> DirectLessThanOrEqual<T> directLe(String tableAlias, String column, Object value) {
+        return directLe(tableAlias, column, value, Logic.AND);
     }
 
     /**
@@ -541,9 +541,9 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThanOrEqual<T> immediateLe(String tableAlias, String column,
-                                                              Object value, Logic logic) {
-        return ImmediateLessThanOrEqual.create(tableAlias, column, value, logic);
+    public static <T> DirectLessThanOrEqual<T> directLe(String tableAlias, String column,
+                                                           Object value, Logic logic) {
+        return DirectLessThanOrEqual.create(tableAlias, column, value, logic);
     }
 
     /**
@@ -554,8 +554,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThanOrEqual<T> immediateLe(Criteria<T> criteria, String column, Object value) {
-        return immediateLe(criteria, column, value, Logic.AND);
+    public static <T> DirectLessThanOrEqual<T> directLe(Criteria<T> criteria, String column, Object value) {
+        return directLe(criteria, column, value, Logic.AND);
     }
 
     /**
@@ -567,9 +567,9 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThanOrEqual<T> immediateLe(Criteria<T> criteria, String column,
-                                                              Object value, Logic logic) {
-        return ImmediateLessThanOrEqual.create(criteria, column, value, logic);
+    public static <T> DirectLessThanOrEqual<T> directLe(Criteria<T> criteria, String column,
+                                                           Object value, Logic logic) {
+        return DirectLessThanOrEqual.create(criteria, column, value, logic);
     }
 
     /**
@@ -629,8 +629,8 @@ public final class Restrictions {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThan<T> immediateGt(String column, Object value) {
-        return immediateGt(column, value, Logic.AND);
+    public static <T> DirectGreaterThan<T> directGt(String column, Object value) {
+        return directGt(column, value, Logic.AND);
     }
 
     /**
@@ -641,8 +641,8 @@ public final class Restrictions {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThan<T> immediateGt(String column, Object value, Logic logic) {
-        return ImmediateGreaterThan.create(column, value, logic);
+    public static <T> DirectGreaterThan<T> directGt(String column, Object value, Logic logic) {
+        return DirectGreaterThan.create(column, value, logic);
     }
 
     /**
@@ -653,8 +653,8 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThan<T> immediateGt(String tableAlias, String column, Object value) {
-        return immediateGt(tableAlias, column, value, Logic.AND);
+    public static <T> DirectGreaterThan<T> directGt(String tableAlias, String column, Object value) {
+        return directGt(tableAlias, column, value, Logic.AND);
     }
 
     /**
@@ -666,9 +666,9 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThan<T> immediateGt(String tableAlias, String column,
-                                                          Object value, Logic logic) {
-        return ImmediateGreaterThan.create(tableAlias, column, value, logic);
+    public static <T> DirectGreaterThan<T> directGt(String tableAlias, String column,
+                                                       Object value, Logic logic) {
+        return DirectGreaterThan.create(tableAlias, column, value, logic);
     }
 
     /**
@@ -679,8 +679,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThan<T> immediateGt(Criteria<T> criteria, String column, Object value) {
-        return immediateGt(criteria, column, value, Logic.AND);
+    public static <T> DirectGreaterThan<T> directGt(Criteria<T> criteria, String column, Object value) {
+        return directGt(criteria, column, value, Logic.AND);
     }
 
     /**
@@ -692,9 +692,9 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThan<T> immediateGt(Criteria<T> criteria, String column,
-                                                          Object value, Logic logic) {
-        return ImmediateGreaterThan.create(criteria, column, value, logic);
+    public static <T> DirectGreaterThan<T> directGt(Criteria<T> criteria, String column,
+                                                       Object value, Logic logic) {
+        return DirectGreaterThan.create(criteria, column, value, logic);
     }
 
     /**
@@ -754,8 +754,8 @@ public final class Restrictions {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThanOrEqual<T> immediateGe(String column, Object value) {
-        return immediateGe(column, value, Logic.AND);
+    public static <T> DirectGreaterThanOrEqual<T> directGe(String column, Object value) {
+        return directGe(column, value, Logic.AND);
     }
 
     /**
@@ -766,8 +766,8 @@ public final class Restrictions {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThanOrEqual<T> immediateGe(String column, Object value, Logic logic) {
-        return ImmediateGreaterThanOrEqual.create(column, value, logic);
+    public static <T> DirectGreaterThanOrEqual<T> directGe(String column, Object value, Logic logic) {
+        return DirectGreaterThanOrEqual.create(column, value, logic);
     }
 
     /**
@@ -778,8 +778,8 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThanOrEqual<T> immediateGe(String tableAlias, String column, Object value) {
-        return immediateGe(tableAlias, column, value, Logic.AND);
+    public static <T> DirectGreaterThanOrEqual<T> directGe(String tableAlias, String column, Object value) {
+        return directGe(tableAlias, column, value, Logic.AND);
     }
 
     /**
@@ -791,9 +791,9 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThanOrEqual<T> immediateGe(String tableAlias, String column,
-                                                                 Object value, Logic logic) {
-        return ImmediateGreaterThanOrEqual.create(tableAlias, column, value, logic);
+    public static <T> DirectGreaterThanOrEqual<T> directGe(String tableAlias, String column,
+                                                              Object value, Logic logic) {
+        return DirectGreaterThanOrEqual.create(tableAlias, column, value, logic);
     }
 
     /**
@@ -804,8 +804,8 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThanOrEqual<T> immediateGe(Criteria<T> criteria, String column, Object value) {
-        return immediateGe(criteria, column, value, Logic.AND);
+    public static <T> DirectGreaterThanOrEqual<T> directGe(Criteria<T> criteria, String column, Object value) {
+        return directGe(criteria, column, value, Logic.AND);
     }
 
     /**
@@ -817,9 +817,9 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateGreaterThanOrEqual<T> immediateGe(Criteria<T> criteria, String column,
-                                                                 Object value, Logic logic) {
-        return ImmediateGreaterThanOrEqual.create(criteria, column, value, logic);
+    public static <T> DirectGreaterThanOrEqual<T> directGe(Criteria<T> criteria, String column,
+                                                              Object value, Logic logic) {
+        return DirectGreaterThanOrEqual.create(criteria, column, value, logic);
     }
 
     // endregion
@@ -879,8 +879,8 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNull<T> immediateIsNull(String tableAlias, String column) {
-        return immediateIsNull(tableAlias, column, Logic.AND);
+    public static <T> DirectNull<T> directIsNull(String tableAlias, String column) {
+        return directIsNull(tableAlias, column, Logic.AND);
     }
 
     /**
@@ -891,8 +891,8 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNull<T> immediateIsNull(String tableAlias, String column, Logic logic) {
-        return ImmediateNull.create(tableAlias, column, logic);
+    public static <T> DirectNull<T> directIsNull(String tableAlias, String column, Logic logic) {
+        return DirectNull.create(tableAlias, column, logic);
     }
 
     /**
@@ -902,8 +902,8 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNull<T> immediateIsNull(Criteria<T> criteria, String column) {
-        return immediateIsNull(criteria, column, Logic.AND);
+    public static <T> DirectNull<T> directIsNull(Criteria<T> criteria, String column) {
+        return directIsNull(criteria, column, Logic.AND);
     }
 
     /**
@@ -914,8 +914,8 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNull<T> immediateIsNull(Criteria<T> criteria, String column, Logic logic) {
-        return ImmediateNull.create(criteria, column, logic);
+    public static <T> DirectNull<T> directIsNull(Criteria<T> criteria, String column, Logic logic) {
+        return DirectNull.create(criteria, column, logic);
     }
 
     /**
@@ -971,8 +971,8 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNull<T> immediateNotNull(String tableAlias, String column) {
-        return immediateNotNull(tableAlias, column, Logic.AND);
+    public static <T> DirectNull<T> directNotNull(String tableAlias, String column) {
+        return directNotNull(tableAlias, column, Logic.AND);
     }
 
     /**
@@ -983,8 +983,8 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNull<T> immediateNotNull(String tableAlias, String column, Logic logic) {
-        return ImmediateNull.create(tableAlias, column, logic);
+    public static <T> DirectNull<T> directNotNull(String tableAlias, String column, Logic logic) {
+        return DirectNull.create(tableAlias, column, logic);
     }
 
     /**
@@ -994,8 +994,8 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNull<T> immediateNotNull(Criteria<T> criteria, String column) {
-        return immediateNotNull(criteria, column, Logic.AND);
+    public static <T> DirectNull<T> directNotNull(Criteria<T> criteria, String column) {
+        return directNotNull(criteria, column, Logic.AND);
     }
 
     /**
@@ -1006,8 +1006,8 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNull<T> immediateNotNull(Criteria<T> criteria, String column, Logic logic) {
-        return ImmediateNull.create(criteria, column, logic);
+    public static <T> DirectNull<T> directNotNull(Criteria<T> criteria, String column, Logic logic) {
+        return DirectNull.create(criteria, column, logic);
     }
 
     // endregion
@@ -1046,8 +1046,8 @@ public final class Restrictions {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateIn<T> immediateIn(String column, Collection<Object> values) {
-        return immediateIn(column, values, Logic.AND);
+    public static <T> DirectIn<T> directIn(String column, Collection<Object> values) {
+        return directIn(column, values, Logic.AND);
     }
 
     /**
@@ -1058,8 +1058,8 @@ public final class Restrictions {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateIn<T> immediateIn(String column, Collection<Object> values, Logic logic) {
-        return ImmediateIn.create(column, values, logic);
+    public static <T> DirectIn<T> directIn(String column, Collection<Object> values, Logic logic) {
+        return DirectIn.create(column, values, logic);
     }
 
     /**
@@ -1070,8 +1070,8 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateIn<T> immediateIn(String tableAlias, String column, Collection<Object> values) {
-        return immediateIn(tableAlias, column, values, Logic.AND);
+    public static <T> DirectIn<T> directIn(String tableAlias, String column, Collection<Object> values) {
+        return directIn(tableAlias, column, values, Logic.AND);
     }
 
     /**
@@ -1083,9 +1083,9 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateIn<T> immediateIn(String tableAlias, String column,
-                                                 Collection<Object> values, Logic logic) {
-        return ImmediateIn.create(tableAlias, column, values, logic);
+    public static <T> DirectIn<T> directIn(String tableAlias, String column,
+                                              Collection<Object> values, Logic logic) {
+        return DirectIn.create(tableAlias, column, values, logic);
     }
 
     /**
@@ -1096,9 +1096,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateIn<T> immediateIn(Criteria<T> criteria, String column,
-                                                 Collection<Object> values) {
-        return immediateIn(criteria, column, values, Logic.AND);
+    public static <T> DirectIn<T> directIn(Criteria<T> criteria, String column,
+                                              Collection<Object> values) {
+        return directIn(criteria, column, values, Logic.AND);
     }
 
     /**
@@ -1110,9 +1110,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateIn<T> immediateIn(Criteria<T> criteria, String column,
-                                                 Collection<Object> values, Logic logic) {
-        return ImmediateIn.create(criteria, column, values, logic);
+    public static <T> DirectIn<T> directIn(Criteria<T> criteria, String column,
+                                              Collection<Object> values, Logic logic) {
+        return DirectIn.create(criteria, column, values, logic);
     }
 
     /**
@@ -1148,8 +1148,8 @@ public final class Restrictions {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotIn<T> immediateNotIn(String column, Collection<Object> values) {
-        return immediateNotIn(column, values, Logic.AND);
+    public static <T> DirectNotIn<T> directNotIn(String column, Collection<Object> values) {
+        return directNotIn(column, values, Logic.AND);
     }
 
     /**
@@ -1160,8 +1160,8 @@ public final class Restrictions {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotIn<T> immediateNotIn(String column, Collection<Object> values, Logic logic) {
-        return ImmediateNotIn.create(column, values, logic);
+    public static <T> DirectNotIn<T> directNotIn(String column, Collection<Object> values, Logic logic) {
+        return DirectNotIn.create(column, values, logic);
     }
 
     /**
@@ -1172,9 +1172,9 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotIn<T> immediateNotIn(String tableAlias, String column,
-                                                       Collection<Object> values) {
-        return immediateNotIn(tableAlias, column, values, Logic.AND);
+    public static <T> DirectNotIn<T> directNotIn(String tableAlias, String column,
+                                                    Collection<Object> values) {
+        return directNotIn(tableAlias, column, values, Logic.AND);
     }
 
     /**
@@ -1186,9 +1186,9 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotIn<T> immediateNotIn(String tableAlias, String column,
-                                                       Collection<Object> values, Logic logic) {
-        return ImmediateNotIn.create(tableAlias, column, values, logic);
+    public static <T> DirectNotIn<T> directNotIn(String tableAlias, String column,
+                                                    Collection<Object> values, Logic logic) {
+        return DirectNotIn.create(tableAlias, column, values, logic);
     }
 
     /**
@@ -1199,9 +1199,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotIn<T> immediateNotIn(Criteria<T> criteria, String column,
-                                                       Collection<Object> values) {
-        return immediateNotIn(criteria, column, values, Logic.AND);
+    public static <T> DirectNotIn<T> directNotIn(Criteria<T> criteria, String column,
+                                                    Collection<Object> values) {
+        return directNotIn(criteria, column, values, Logic.AND);
     }
 
     /**
@@ -1213,9 +1213,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotIn<T> immediateNotIn(Criteria<T> criteria, String column,
-                                                       Collection<Object> values, Logic logic) {
-        return ImmediateNotIn.create(criteria, column, values, logic);
+    public static <T> DirectNotIn<T> directNotIn(Criteria<T> criteria, String column,
+                                                    Collection<Object> values, Logic logic) {
+        return DirectNotIn.create(criteria, column, values, logic);
     }
 
     /**
@@ -1282,8 +1282,8 @@ public final class Restrictions {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateBetween<T> immediateBetween(String column, Object begin, Object end) {
-        return immediateBetween(column, begin, end, Logic.AND);
+    public static <T> DirectBetween<T> directBetween(String column, Object begin, Object end) {
+        return directBetween(column, begin, end, Logic.AND);
     }
 
     /**
@@ -1295,9 +1295,9 @@ public final class Restrictions {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateBetween<T> immediateBetween(String column, Object begin,
-                                                           Object end, Logic logic) {
-        return ImmediateBetween.create(column, begin, end, logic);
+    public static <T> DirectBetween<T> directBetween(String column, Object begin,
+                                                        Object end, Logic logic) {
+        return DirectBetween.create(column, begin, end, logic);
     }
 
     /**
@@ -1309,9 +1309,9 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateBetween<T> immediateBetween(String tableAlias, String column,
-                                                           Object begin, Object end) {
-        return immediateBetween(tableAlias, column, begin, end, Logic.AND);
+    public static <T> DirectBetween<T> directBetween(String tableAlias, String column,
+                                                        Object begin, Object end) {
+        return directBetween(tableAlias, column, begin, end, Logic.AND);
     }
 
     /**
@@ -1324,9 +1324,9 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateBetween<T> immediateBetween(String tableAlias, String column, Object begin,
-                                                           Object end, Logic logic) {
-        return ImmediateBetween.create(tableAlias, column, begin, end, logic);
+    public static <T> DirectBetween<T> directBetween(String tableAlias, String column, Object begin,
+                                                        Object end, Logic logic) {
+        return DirectBetween.create(tableAlias, column, begin, end, logic);
     }
 
     /**
@@ -1338,8 +1338,8 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateBetween<T> immediateBetween(Criteria<T> criteria, String column, Object begin, Object end) {
-        return immediateBetween(criteria, column, begin, end, Logic.AND);
+    public static <T> DirectBetween<T> directBetween(Criteria<T> criteria, String column, Object begin, Object end) {
+        return directBetween(criteria, column, begin, end, Logic.AND);
     }
 
     /**
@@ -1352,9 +1352,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateBetween<T> immediateBetween(Criteria<T> criteria, String column, Object begin,
-                                                           Object end, Logic logic) {
-        return ImmediateBetween.create(criteria, column, begin, end, logic);
+    public static <T> DirectBetween<T> directBetween(Criteria<T> criteria, String column, Object begin,
+                                                        Object end, Logic logic) {
+        return DirectBetween.create(criteria, column, begin, end, logic);
     }
 
     /**
@@ -1408,8 +1408,8 @@ public final class Restrictions {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotBetween<T> immediateNotBetween(String column, Object begin, Object end) {
-        return immediateNotBetween(column, begin, end, Logic.AND);
+    public static <T> DirectNotBetween<T> directNotBetween(String column, Object begin, Object end) {
+        return directNotBetween(column, begin, end, Logic.AND);
     }
 
     /**
@@ -1421,9 +1421,9 @@ public final class Restrictions {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotBetween<T> immediateNotBetween(String column, Object begin,
-                                                                 Object end, Logic logic) {
-        return ImmediateNotBetween.create(column, begin, end, logic);
+    public static <T> DirectNotBetween<T> directNotBetween(String column, Object begin,
+                                                              Object end, Logic logic) {
+        return DirectNotBetween.create(column, begin, end, logic);
     }
 
     /**
@@ -1435,9 +1435,9 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotBetween<T> immediateNotBetween(String tableAlias, String column,
-                                                                 Object begin, Object end) {
-        return immediateNotBetween(tableAlias, column, begin, end, Logic.AND);
+    public static <T> DirectNotBetween<T> directNotBetween(String tableAlias, String column,
+                                                              Object begin, Object end) {
+        return directNotBetween(tableAlias, column, begin, end, Logic.AND);
     }
 
     /**
@@ -1450,9 +1450,9 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotBetween<T> immediateNotBetween(String tableAlias, String column, Object begin,
-                                                                 Object end, Logic logic) {
-        return ImmediateNotBetween.create(tableAlias, column, begin, end, logic);
+    public static <T> DirectNotBetween<T> directNotBetween(String tableAlias, String column, Object begin,
+                                                              Object end, Logic logic) {
+        return DirectNotBetween.create(tableAlias, column, begin, end, logic);
     }
 
     /**
@@ -1464,9 +1464,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotBetween<T> immediateNotBetween(Criteria<T> criteria, String column,
-                                                                 Object begin, Object end) {
-        return immediateNotBetween(criteria, column, begin, end, Logic.AND);
+    public static <T> DirectNotBetween<T> directNotBetween(Criteria<T> criteria, String column,
+                                                              Object begin, Object end) {
+        return directNotBetween(criteria, column, begin, end, Logic.AND);
     }
 
     /**
@@ -1479,9 +1479,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotBetween<T> immediateNotBetween(Criteria<T> criteria, String column, Object begin,
-                                                                 Object end, Logic logic) {
-        return ImmediateNotBetween.create(criteria, column, begin, end, logic);
+    public static <T> DirectNotBetween<T> directNotBetween(Criteria<T> criteria, String column, Object begin,
+                                                              Object end, Logic logic) {
+        return DirectNotBetween.create(criteria, column, begin, end, logic);
     }
 
     // endregion
@@ -1720,8 +1720,8 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateLike<T> immediateLike(String tableAlias, String column, Object value) {
-        return immediateLike(tableAlias, column, value, Logic.AND);
+    public static <T> DirectLike<T> directLike(String tableAlias, String column, Object value) {
+        return directLike(tableAlias, column, value, Logic.AND);
     }
 
     /**
@@ -1733,9 +1733,9 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateLike<T> immediateLike(String tableAlias, String column,
-                                                     Object value, Logic logic) {
-        return ImmediateLike.create(tableAlias, column, value, logic);
+    public static <T> DirectLike<T> directLike(String tableAlias, String column,
+                                                  Object value, Logic logic) {
+        return DirectLike.create(tableAlias, column, value, logic);
     }
 
     /**
@@ -1747,243 +1747,13 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateLike<T> immediateLike(String tableAlias, String column, Object value,
-                                                     Match match) {
-        return immediateLike(tableAlias, column, value, match, Logic.AND);
+    public static <T> DirectLike<T> directLike(String tableAlias, String column, Object value,
+                                                  Match match) {
+        return directLike(tableAlias, column, value, match, Logic.AND);
     }
 
     /**
      * LIKE
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param value      值
-     * @param match      匹配模式
-     * @param logic      逻辑符号
-     * @param <T>        实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateLike<T> immediateLike(String tableAlias, String column, Object value,
-                                                     Match match, Logic logic) {
-        return ImmediateLike.create(tableAlias, column, value, match, logic);
-    }
-
-    /**
-     * LIKE
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param value      值
-     * @param escape     转义字符
-     * @param <T>        实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateLike<T> immediateLike(String tableAlias, String column, Object value,
-                                                     Character escape) {
-        return immediateLike(tableAlias, column, value, escape, Logic.AND);
-    }
-
-    /**
-     * LIKE
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param value      值
-     * @param escape     转义字符
-     * @param logic      逻辑符号
-     * @param <T>        实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateLike<T> immediateLike(String tableAlias, String column, Object value,
-                                                     Character escape, Logic logic) {
-        return ImmediateLike.create(tableAlias, column, value, escape, logic);
-    }
-
-
-    /**
-     * LIKE
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param value      值
-     * @param match      匹配模式
-     * @param escape     转义字符
-     * @param <T>        实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateLike<T> immediateLike(String tableAlias, String column, Object value,
-                                                     Match match, Character escape) {
-        return immediateLike(tableAlias, column, value, match, escape, Logic.AND);
-    }
-
-    /**
-     * LIKE
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param value      值
-     * @param match      匹配模式
-     * @param escape     转义字符
-     * @param logic      逻辑符号
-     * @param <T>        实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateLike<T> immediateLike(String tableAlias, String column, Object value,
-                                                     Match match, Character escape, Logic logic) {
-        return ImmediateLike.create(tableAlias, column, value, match, escape, logic);
-    }
-
-    /**
-     * LIKE
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateLike<T> immediateLike(Criteria<T> criteria, String column, Object value) {
-        return immediateLike(criteria, column, value, Logic.AND);
-    }
-
-    /**
-     * LIKE
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param value    值
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateLike<T> immediateLike(Criteria<T> criteria, String column,
-                                                     Object value, Logic logic) {
-        return ImmediateLike.create(criteria, column, value, logic);
-    }
-
-    /**
-     * LIKE
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param value    值
-     * @param match    匹配模式
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateLike<T> immediateLike(Criteria<T> criteria, String column, Object value,
-                                                     Match match) {
-        return immediateLike(criteria, column, value, match, Logic.AND);
-    }
-
-    /**
-     * LIKE
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param value    值
-     * @param match    匹配模式
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateLike<T> immediateLike(Criteria<T> criteria, String column, Object value,
-                                                     Match match, Logic logic) {
-        return ImmediateLike.create(criteria, column, value, match, logic);
-    }
-
-    /**
-     * LIKE
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param value    值
-     * @param escape   转义字符
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateLike<T> immediateLike(Criteria<T> criteria, String column, Object value,
-                                                     Character escape) {
-        return immediateLike(criteria, column, value, escape, Logic.AND);
-    }
-
-    /**
-     * LIKE
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param value    值
-     * @param escape   转义字符
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateLike<T> immediateLike(Criteria<T> criteria, String column, Object value,
-                                                     Character escape, Logic logic) {
-        return ImmediateLike.create(criteria, column, value, escape, logic);
-    }
-
-
-    /**
-     * LIKE
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param value    值
-     * @param match    匹配模式
-     * @param escape   转义字符
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateLike<T> immediateLike(Criteria<T> criteria, String column, Object value,
-                                                     Match match, Character escape) {
-        return immediateLike(criteria, column, value, match, escape, Logic.AND);
-    }
-
-    /**
-     * LIKE
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param value    值
-     * @param match    匹配模式
-     * @param escape   转义字符
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateLike<T> immediateLike(Criteria<T> criteria, String column, Object value,
-                                                     Match match, Character escape, Logic logic) {
-        return ImmediateLike.create(criteria, column, value, match, escape, logic);
-    }
-
-    /**
-     * NOT LIKE
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param <T>        实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateNotLike<T> immediateNotLike(String tableAlias, String column, Object value) {
-        return immediateNotLike(tableAlias, column, value, Logic.AND);
-    }
-
-    /**
-     * NOT LIKE
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param value      值
-     * @param logic      逻辑符号
-     * @param <T>        实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateNotLike<T> immediateNotLike(String tableAlias, String column,
-                                                           Object value, Logic logic) {
-        return ImmediateNotLike.create(tableAlias, column, value, logic);
-    }
-
-    /**
-     * NOT LIKE
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param value      值
-     * @param match      匹配模式
-     * @param <T>        实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateNotLike<T> immediateNotLike(String tableAlias, String column, Object value,
-                                                           Match match) {
-        return immediateNotLike(tableAlias, column, value, match, Logic.AND);
-    }
-
-    /**
-     * NOT LIKE
      * @param tableAlias 表别名
      * @param column     字段
      * @param value      值
@@ -1992,13 +1762,13 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotLike<T> immediateNotLike(String tableAlias, String column, Object value,
-                                                           Match match, Logic logic) {
-        return ImmediateNotLike.create(tableAlias, column, value, match, logic);
+    public static <T> DirectLike<T> directLike(String tableAlias, String column, Object value,
+                                                  Match match, Logic logic) {
+        return DirectLike.create(tableAlias, column, value, match, logic);
     }
 
     /**
-     * NOT LIKE
+     * LIKE
      * @param tableAlias 表别名
      * @param column     字段
      * @param value      值
@@ -2006,13 +1776,13 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotLike<T> immediateNotLike(String tableAlias, String column, Object value,
-                                                           Character escape) {
-        return immediateNotLike(tableAlias, column, value, escape, Logic.AND);
+    public static <T> DirectLike<T> directLike(String tableAlias, String column, Object value,
+                                                  Character escape) {
+        return directLike(tableAlias, column, value, escape, Logic.AND);
     }
 
     /**
-     * NOT LIKE
+     * LIKE
      * @param tableAlias 表别名
      * @param column     字段
      * @param value      值
@@ -2021,14 +1791,14 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotLike<T> immediateNotLike(String tableAlias, String column, Object value,
-                                                           Character escape, Logic logic) {
-        return ImmediateNotLike.create(tableAlias, column, value, escape, logic);
+    public static <T> DirectLike<T> directLike(String tableAlias, String column, Object value,
+                                                  Character escape, Logic logic) {
+        return DirectLike.create(tableAlias, column, value, escape, logic);
     }
 
 
     /**
-     * NOT LIKE
+     * LIKE
      * @param tableAlias 表别名
      * @param column     字段
      * @param value      值
@@ -2037,13 +1807,13 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotLike<T> immediateNotLike(String tableAlias, String column, Object value,
-                                                           Match match, Character escape) {
-        return immediateNotLike(tableAlias, column, value, match, escape, Logic.AND);
+    public static <T> DirectLike<T> directLike(String tableAlias, String column, Object value,
+                                                  Match match, Character escape) {
+        return directLike(tableAlias, column, value, match, escape, Logic.AND);
     }
 
     /**
-     * NOT LIKE
+     * LIKE
      * @param tableAlias 表别名
      * @param column     字段
      * @param value      值
@@ -2053,9 +1823,239 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotLike<T> immediateNotLike(String tableAlias, String column, Object value,
-                                                           Match match, Character escape, Logic logic) {
-        return ImmediateNotLike.create(tableAlias, column, value, match, escape, logic);
+    public static <T> DirectLike<T> directLike(String tableAlias, String column, Object value,
+                                                  Match match, Character escape, Logic logic) {
+        return DirectLike.create(tableAlias, column, value, match, escape, logic);
+    }
+
+    /**
+     * LIKE
+     * @param criteria 条件包装对象
+     * @param column   字段
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectLike<T> directLike(Criteria<T> criteria, String column, Object value) {
+        return directLike(criteria, column, value, Logic.AND);
+    }
+
+    /**
+     * LIKE
+     * @param criteria 条件包装对象
+     * @param column   字段
+     * @param value    值
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectLike<T> directLike(Criteria<T> criteria, String column,
+                                                  Object value, Logic logic) {
+        return DirectLike.create(criteria, column, value, logic);
+    }
+
+    /**
+     * LIKE
+     * @param criteria 条件包装对象
+     * @param column   字段
+     * @param value    值
+     * @param match    匹配模式
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectLike<T> directLike(Criteria<T> criteria, String column, Object value,
+                                                  Match match) {
+        return directLike(criteria, column, value, match, Logic.AND);
+    }
+
+    /**
+     * LIKE
+     * @param criteria 条件包装对象
+     * @param column   字段
+     * @param value    值
+     * @param match    匹配模式
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectLike<T> directLike(Criteria<T> criteria, String column, Object value,
+                                                  Match match, Logic logic) {
+        return DirectLike.create(criteria, column, value, match, logic);
+    }
+
+    /**
+     * LIKE
+     * @param criteria 条件包装对象
+     * @param column   字段
+     * @param value    值
+     * @param escape   转义字符
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectLike<T> directLike(Criteria<T> criteria, String column, Object value,
+                                                  Character escape) {
+        return directLike(criteria, column, value, escape, Logic.AND);
+    }
+
+    /**
+     * LIKE
+     * @param criteria 条件包装对象
+     * @param column   字段
+     * @param value    值
+     * @param escape   转义字符
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectLike<T> directLike(Criteria<T> criteria, String column, Object value,
+                                                  Character escape, Logic logic) {
+        return DirectLike.create(criteria, column, value, escape, logic);
+    }
+
+
+    /**
+     * LIKE
+     * @param criteria 条件包装对象
+     * @param column   字段
+     * @param value    值
+     * @param match    匹配模式
+     * @param escape   转义字符
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectLike<T> directLike(Criteria<T> criteria, String column, Object value,
+                                                  Match match, Character escape) {
+        return directLike(criteria, column, value, match, escape, Logic.AND);
+    }
+
+    /**
+     * LIKE
+     * @param criteria 条件包装对象
+     * @param column   字段
+     * @param value    值
+     * @param match    匹配模式
+     * @param escape   转义字符
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectLike<T> directLike(Criteria<T> criteria, String column, Object value,
+                                                  Match match, Character escape, Logic logic) {
+        return DirectLike.create(criteria, column, value, match, escape, logic);
+    }
+
+    /**
+     * NOT LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param <T>        实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectNotLike<T> directNotLike(String tableAlias, String column, Object value) {
+        return directNotLike(tableAlias, column, value, Logic.AND);
+    }
+
+    /**
+     * NOT LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param value      值
+     * @param logic      逻辑符号
+     * @param <T>        实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectNotLike<T> directNotLike(String tableAlias, String column,
+                                                        Object value, Logic logic) {
+        return DirectNotLike.create(tableAlias, column, value, logic);
+    }
+
+    /**
+     * NOT LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param value      值
+     * @param match      匹配模式
+     * @param <T>        实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectNotLike<T> directNotLike(String tableAlias, String column, Object value,
+                                                        Match match) {
+        return directNotLike(tableAlias, column, value, match, Logic.AND);
+    }
+
+    /**
+     * NOT LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param value      值
+     * @param match      匹配模式
+     * @param logic      逻辑符号
+     * @param <T>        实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectNotLike<T> directNotLike(String tableAlias, String column, Object value,
+                                                        Match match, Logic logic) {
+        return DirectNotLike.create(tableAlias, column, value, match, logic);
+    }
+
+    /**
+     * NOT LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param value      值
+     * @param escape     转义字符
+     * @param <T>        实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectNotLike<T> directNotLike(String tableAlias, String column, Object value,
+                                                        Character escape) {
+        return directNotLike(tableAlias, column, value, escape, Logic.AND);
+    }
+
+    /**
+     * NOT LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param value      值
+     * @param escape     转义字符
+     * @param logic      逻辑符号
+     * @param <T>        实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectNotLike<T> directNotLike(String tableAlias, String column, Object value,
+                                                        Character escape, Logic logic) {
+        return DirectNotLike.create(tableAlias, column, value, escape, logic);
+    }
+
+
+    /**
+     * NOT LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param value      值
+     * @param match      匹配模式
+     * @param escape     转义字符
+     * @param <T>        实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectNotLike<T> directNotLike(String tableAlias, String column, Object value,
+                                                        Match match, Character escape) {
+        return directNotLike(tableAlias, column, value, match, escape, Logic.AND);
+    }
+
+    /**
+     * NOT LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param value      值
+     * @param match      匹配模式
+     * @param escape     转义字符
+     * @param logic      逻辑符号
+     * @param <T>        实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectNotLike<T> directNotLike(String tableAlias, String column, Object value,
+                                                        Match match, Character escape, Logic logic) {
+        return DirectNotLike.create(tableAlias, column, value, match, escape, logic);
     }
 
     /**
@@ -2065,8 +2065,8 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotLike<T> immediateNotLike(Criteria<T> criteria, String column, Object value) {
-        return immediateNotLike(criteria, column, value, Logic.AND);
+    public static <T> DirectNotLike<T> directNotLike(Criteria<T> criteria, String column, Object value) {
+        return directNotLike(criteria, column, value, Logic.AND);
     }
 
     /**
@@ -2078,9 +2078,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotLike<T> immediateNotLike(Criteria<T> criteria, String column,
-                                                           Object value, Logic logic) {
-        return ImmediateNotLike.create(criteria, column, value, logic);
+    public static <T> DirectNotLike<T> directNotLike(Criteria<T> criteria, String column,
+                                                        Object value, Logic logic) {
+        return DirectNotLike.create(criteria, column, value, logic);
     }
 
     /**
@@ -2092,9 +2092,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotLike<T> immediateNotLike(Criteria<T> criteria, String column, Object value,
-                                                           Match match) {
-        return immediateNotLike(criteria, column, value, match, Logic.AND);
+    public static <T> DirectNotLike<T> directNotLike(Criteria<T> criteria, String column, Object value,
+                                                        Match match) {
+        return directNotLike(criteria, column, value, match, Logic.AND);
     }
 
     /**
@@ -2107,9 +2107,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotLike<T> immediateNotLike(Criteria<T> criteria, String column, Object value,
-                                                           Match match, Logic logic) {
-        return ImmediateNotLike.create(criteria, column, value, match, logic);
+    public static <T> DirectNotLike<T> directNotLike(Criteria<T> criteria, String column, Object value,
+                                                        Match match, Logic logic) {
+        return DirectNotLike.create(criteria, column, value, match, logic);
     }
 
     /**
@@ -2121,9 +2121,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotLike<T> immediateNotLike(Criteria<T> criteria, String column, Object value,
-                                                           Character escape) {
-        return immediateNotLike(criteria, column, value, escape, Logic.AND);
+    public static <T> DirectNotLike<T> directNotLike(Criteria<T> criteria, String column, Object value,
+                                                        Character escape) {
+        return directNotLike(criteria, column, value, escape, Logic.AND);
     }
 
     /**
@@ -2136,9 +2136,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotLike<T> immediateNotLike(Criteria<T> criteria, String column, Object value,
-                                                           Character escape, Logic logic) {
-        return ImmediateNotLike.create(criteria, column, value, escape, logic);
+    public static <T> DirectNotLike<T> directNotLike(Criteria<T> criteria, String column, Object value,
+                                                        Character escape, Logic logic) {
+        return DirectNotLike.create(criteria, column, value, escape, logic);
     }
 
     /**
@@ -2151,9 +2151,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotLike<T> immediateNotLike(Criteria<T> criteria, String column, Object value,
-                                                           Match match, Character escape) {
-        return immediateNotLike(criteria, column, value, match, escape, Logic.AND);
+    public static <T> DirectNotLike<T> directNotLike(Criteria<T> criteria, String column, Object value,
+                                                        Match match, Character escape) {
+        return directNotLike(criteria, column, value, match, escape, Logic.AND);
     }
 
     /**
@@ -2167,9 +2167,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotLike<T> immediateNotLike(Criteria<T> criteria, String column, Object value,
-                                                           Match match, Character escape, Logic logic) {
-        return ImmediateNotLike.create(criteria, column, value, match, escape, logic);
+    public static <T> DirectNotLike<T> directNotLike(Criteria<T> criteria, String column, Object value,
+                                                        Match match, Character escape, Logic logic) {
+        return DirectNotLike.create(criteria, column, value, match, escape, logic);
     }
 
     // endregion
@@ -2357,8 +2357,8 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> immediateTemplate(String template, Object value) {
-        return immediateTemplate(template, value, Logic.AND);
+    public static <T> DirectTemplate<T> directTemplate(String template, Object value) {
+        return directTemplate(template, value, Logic.AND);
     }
 
     /**
@@ -2369,8 +2369,8 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> immediateTemplate(String template, Object value, Logic logic) {
-        return ImmediateTemplate.create(template, value, logic);
+    public static <T> DirectTemplate<T> directTemplate(String template, Object value, Logic logic) {
+        return DirectTemplate.create(template, value, logic);
     }
 
     /**
@@ -2380,32 +2380,8 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> immediateTemplate(String template, Collection<Object> values) {
-        return immediateTemplate(template, values, Logic.AND);
-    }
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param values   值
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateTemplate<T> immediateTemplate(String template, Collection<Object> values,
-                                                             Logic logic) {
-        return ImmediateTemplate.create(template, values, logic);
-    }
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param values   值
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateTemplate<T> immediateTemplate(String template, Map<String, Object> values) {
-        return immediateTemplate(template, values, Logic.AND);
+    public static <T> DirectTemplate<T> directTemplate(String template, Collection<Object> values) {
+        return directTemplate(template, values, Logic.AND);
     }
 
     /**
@@ -2416,9 +2392,33 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> immediateTemplate(String template, Map<String, Object> values,
-                                                             Logic logic) {
-        return ImmediateTemplate.create(template, values, logic);
+    public static <T> DirectTemplate<T> directTemplate(String template, Collection<Object> values,
+                                                          Logic logic) {
+        return DirectTemplate.create(template, values, logic);
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectTemplate<T> directTemplate(String template, Map<String, Object> values) {
+        return directTemplate(template, values, Logic.AND);
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectTemplate<T> directTemplate(String template, Map<String, Object> values,
+                                                          Logic logic) {
+        return DirectTemplate.create(template, values, logic);
     }
 
 
@@ -2431,9 +2431,9 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> immediateTemplate(String tableAlias, String column,
-                                                             Object value, String template) {
-        return immediateTemplate(tableAlias, column, value, template, Logic.AND);
+    public static <T> DirectTemplate<T> directTemplate(String tableAlias, String column,
+                                                          Object value, String template) {
+        return directTemplate(tableAlias, column, value, template, Logic.AND);
     }
 
     /**
@@ -2446,9 +2446,9 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> immediateTemplate(String tableAlias, String column,
-                                                             Object value, String template, Logic logic) {
-        return ImmediateTemplate.create(tableAlias, column, value, template, logic);
+    public static <T> DirectTemplate<T> directTemplate(String tableAlias, String column,
+                                                          Object value, String template, Logic logic) {
+        return DirectTemplate.create(tableAlias, column, value, template, logic);
     }
 
     /**
@@ -2460,39 +2460,9 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> immediateTemplate(String tableAlias, String column,
-                                                             Collection<Object> values, String template) {
-        return immediateTemplate(tableAlias, column, values, template, Logic.AND);
-    }
-
-    /**
-     * TEMPLATE
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param values     值
-     * @param template   模板
-     * @param logic      逻辑符号
-     * @param <T>        实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateTemplate<T> immediateTemplate(String tableAlias, String column,
-                                                             Collection<Object> values, String template,
-                                                             Logic logic) {
-        return ImmediateTemplate.create(tableAlias, column, values, template, logic);
-    }
-
-    /**
-     * TEMPLATE
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param values     值
-     * @param template   模板
-     * @param <T>        实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateTemplate<T> immediateTemplate(String tableAlias, String column,
-                                                             Map<String, Object> values, String template) {
-        return immediateTemplate(tableAlias, column, values, template, Logic.AND);
+    public static <T> DirectTemplate<T> directTemplate(String tableAlias, String column,
+                                                          Collection<Object> values, String template) {
+        return directTemplate(tableAlias, column, values, template, Logic.AND);
     }
 
     /**
@@ -2505,10 +2475,40 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> immediateTemplate(String tableAlias, String column,
-                                                             Map<String, Object> values, String template,
-                                                             Logic logic) {
-        return ImmediateTemplate.create(tableAlias, column, values, template, logic);
+    public static <T> DirectTemplate<T> directTemplate(String tableAlias, String column,
+                                                          Collection<Object> values, String template,
+                                                          Logic logic) {
+        return DirectTemplate.create(tableAlias, column, values, template, logic);
+    }
+
+    /**
+     * TEMPLATE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param values     值
+     * @param template   模板
+     * @param <T>        实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectTemplate<T> directTemplate(String tableAlias, String column,
+                                                          Map<String, Object> values, String template) {
+        return directTemplate(tableAlias, column, values, template, Logic.AND);
+    }
+
+    /**
+     * TEMPLATE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param values     值
+     * @param template   模板
+     * @param logic      逻辑符号
+     * @param <T>        实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectTemplate<T> directTemplate(String tableAlias, String column,
+                                                          Map<String, Object> values, String template,
+                                                          Logic logic) {
+        return DirectTemplate.create(tableAlias, column, values, template, logic);
     }
 
 
@@ -2521,9 +2521,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> immediateTemplate(Criteria<T> criteria, String column,
-                                                             Object value, String template) {
-        return immediateTemplate(criteria, column, value, template, Logic.AND);
+    public static <T> DirectTemplate<T> directTemplate(Criteria<T> criteria, String column,
+                                                          Object value, String template) {
+        return directTemplate(criteria, column, value, template, Logic.AND);
     }
 
     /**
@@ -2536,9 +2536,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> immediateTemplate(Criteria<T> criteria, String column,
-                                                             Object value, String template, Logic logic) {
-        return ImmediateTemplate.create(criteria, column, value, template, logic);
+    public static <T> DirectTemplate<T> directTemplate(Criteria<T> criteria, String column,
+                                                          Object value, String template, Logic logic) {
+        return DirectTemplate.create(criteria, column, value, template, logic);
     }
 
     /**
@@ -2550,39 +2550,9 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> immediateTemplate(Criteria<T> criteria, String column,
-                                                             Collection<Object> values, String template) {
-        return immediateTemplate(criteria, column, values, template, Logic.AND);
-    }
-
-    /**
-     * TEMPLATE
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateTemplate<T> immediateTemplate(Criteria<T> criteria, String column,
-                                                             Collection<Object> values, String template,
-                                                             Logic logic) {
-        return ImmediateTemplate.create(criteria, column, values, template, logic);
-    }
-
-    /**
-     * TEMPLATE
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param values   值
-     * @param template 模板
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> ImmediateTemplate<T> immediateTemplate(Criteria<T> criteria, String column,
-                                                             Map<String, Object> values, String template) {
-        return immediateTemplate(criteria, column, values, template, Logic.AND);
+    public static <T> DirectTemplate<T> directTemplate(Criteria<T> criteria, String column,
+                                                          Collection<Object> values, String template) {
+        return directTemplate(criteria, column, values, template, Logic.AND);
     }
 
     /**
@@ -2595,10 +2565,40 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateTemplate<T> immediateTemplate(Criteria<T> criteria, String column,
-                                                             Map<String, Object> values, String template,
-                                                             Logic logic) {
-        return ImmediateTemplate.create(criteria, column, values, template, logic);
+    public static <T> DirectTemplate<T> directTemplate(Criteria<T> criteria, String column,
+                                                          Collection<Object> values, String template,
+                                                          Logic logic) {
+        return DirectTemplate.create(criteria, column, values, template, logic);
+    }
+
+    /**
+     * TEMPLATE
+     * @param criteria 条件包装对象
+     * @param column   字段
+     * @param values   值
+     * @param template 模板
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectTemplate<T> directTemplate(Criteria<T> criteria, String column,
+                                                          Map<String, Object> values, String template) {
+        return directTemplate(criteria, column, values, template, Logic.AND);
+    }
+
+    /**
+     * TEMPLATE
+     * @param criteria 条件包装对象
+     * @param column   字段
+     * @param values   值
+     * @param template 模板
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> DirectTemplate<T> directTemplate(Criteria<T> criteria, String column,
+                                                          Map<String, Object> values, String template,
+                                                          Logic logic) {
+        return DirectTemplate.create(criteria, column, values, template, logic);
     }
 
     // endregion

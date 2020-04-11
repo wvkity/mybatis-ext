@@ -47,7 +47,7 @@ public interface NullWrapper<Chain extends NullWrapper<Chain, P>, P> extends Lam
      * @param column 字段
      * @return {@code this}
      */
-    Chain immediateIsNull(String column);
+    Chain directIsNull(String column);
 
     /**
      * IS NULL
@@ -55,14 +55,14 @@ public interface NullWrapper<Chain extends NullWrapper<Chain, P>, P> extends Lam
      * @param column     字段
      * @return {@code this}
      */
-    Chain immediateIsNull(String tableAlias, String column);
+    Chain directIsNull(String tableAlias, String column);
 
     /**
      * 或IS NULL
      * @param column 字段
      * @return {@code this}
      */
-    Chain orImmediateIsNull(String column);
+    Chain orDirectIsNull(String column);
 
     /**
      * 或IS NULL
@@ -70,7 +70,7 @@ public interface NullWrapper<Chain extends NullWrapper<Chain, P>, P> extends Lam
      * @param column     字段
      * @return {@code this}
      */
-    Chain orImmediateIsNull(String tableAlias, String column);
+    Chain orDirectIsNull(String tableAlias, String column);
 
     /**
      * IS NULL
@@ -109,7 +109,7 @@ public interface NullWrapper<Chain extends NullWrapper<Chain, P>, P> extends Lam
      * @param column 字段
      * @return {@code this}
      */
-    Chain immediateNotNull(String column);
+    Chain directNotNull(String column);
 
     /**
      * IS NULL
@@ -117,14 +117,14 @@ public interface NullWrapper<Chain extends NullWrapper<Chain, P>, P> extends Lam
      * @param column     字段
      * @return {@code this}
      */
-    Chain immediateNotNull(String tableAlias, String column);
+    Chain directNotNull(String tableAlias, String column);
 
     /**
      * 或IS NULL
      * @param column 字段
      * @return {@code this}
      */
-    Chain orImmediateNotNull(String column);
+    Chain orDirectNotNull(String column);
 
     /**
      * 或IS NULL
@@ -132,6 +132,6 @@ public interface NullWrapper<Chain extends NullWrapper<Chain, P>, P> extends Lam
      * @param column     字段
      * @return {@code this}
      */
-    Chain orImmediateNotNull(String tableAlias, String column);
+    Chain orDirectNotNull(String tableAlias, String column);
 
 }

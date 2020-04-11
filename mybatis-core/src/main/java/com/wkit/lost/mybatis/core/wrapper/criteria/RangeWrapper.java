@@ -95,8 +95,8 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param values 值
      * @return {@code this}
      */
-    default Chain immediateIn(String column, Object... values) {
-        return immediateIn(column, ArrayUtil.toList(values));
+    default Chain directIn(String column, Object... values) {
+        return directIn(column, ArrayUtil.toList(values));
     }
 
     /**
@@ -105,7 +105,7 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param values 值
      * @return {@code this}
      */
-    Chain immediateIn(String column, Collection<Object> values);
+    Chain directIn(String column, Collection<Object> values);
 
 
     /**
@@ -115,8 +115,8 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param values     值
      * @return {@code this}
      */
-    default Chain immediateIn(String tableAlias, String column, Object... values) {
-        return immediateIn(tableAlias, column, ArrayUtil.toList(values));
+    default Chain directIn(String tableAlias, String column, Object... values) {
+        return directIn(tableAlias, column, ArrayUtil.toList(values));
     }
 
     /**
@@ -126,7 +126,7 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param values     值
      * @return {@code this}
      */
-    Chain immediateIn(String tableAlias, String column, Collection<Object> values);
+    Chain directIn(String tableAlias, String column, Collection<Object> values);
 
     /**
      * 或IN
@@ -134,8 +134,8 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param values 值
      * @return {@code this}
      */
-    default Chain orImmediateIn(String column, Object... values) {
-        return orImmediateIn(column, ArrayUtil.toList(values));
+    default Chain orDirectIn(String column, Object... values) {
+        return orDirectIn(column, ArrayUtil.toList(values));
     }
 
     /**
@@ -144,7 +144,7 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param values 值
      * @return {@code this}
      */
-    Chain orImmediateIn(String column, Collection<Object> values);
+    Chain orDirectIn(String column, Collection<Object> values);
 
     /**
      * 或IN
@@ -153,8 +153,8 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param values     值
      * @return {@code this}
      */
-    default Chain orImmediateIn(String tableAlias, String column, Object... values) {
-        return orImmediateIn(tableAlias, column, ArrayUtil.toList(values));
+    default Chain orDirectIn(String tableAlias, String column, Object... values) {
+        return orDirectIn(tableAlias, column, ArrayUtil.toList(values));
     }
 
     /**
@@ -164,7 +164,7 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param values     值
      * @return {@code this}
      */
-    Chain orImmediateIn(String tableAlias, String column, Collection<Object> values);
+    Chain orDirectIn(String tableAlias, String column, Collection<Object> values);
 
     /**
      * NOT IN
@@ -248,8 +248,8 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param values 值
      * @return {@code this}
      */
-    default Chain immediateNotIn(String column, Object... values) {
-        return immediateNotIn(column, ArrayUtil.toList(values));
+    default Chain directNotIn(String column, Object... values) {
+        return directNotIn(column, ArrayUtil.toList(values));
     }
 
     /**
@@ -258,7 +258,7 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param values 值
      * @return {@code this}
      */
-    Chain immediateNotIn(String column, Collection<Object> values);
+    Chain directNotIn(String column, Collection<Object> values);
 
 
     /**
@@ -268,8 +268,8 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param values     值
      * @return {@code this}
      */
-    default Chain immediateNotIn(String tableAlias, String column, Object... values) {
-        return immediateNotIn(tableAlias, column, ArrayUtil.toList(values));
+    default Chain directNotIn(String tableAlias, String column, Object... values) {
+        return directNotIn(tableAlias, column, ArrayUtil.toList(values));
     }
 
     /**
@@ -279,7 +279,7 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param values     值
      * @return {@code this}
      */
-    Chain immediateNotIn(String tableAlias, String column, Collection<Object> values);
+    Chain directNotIn(String tableAlias, String column, Collection<Object> values);
 
     /**
      * 或NOT IN
@@ -287,8 +287,8 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param values 值
      * @return {@code this}
      */
-    default Chain orImmediateNotIn(String column, Object... values) {
-        return orImmediateNotIn(column, ArrayUtil.toList(values));
+    default Chain orDirectNotIn(String column, Object... values) {
+        return orDirectNotIn(column, ArrayUtil.toList(values));
     }
 
     /**
@@ -297,7 +297,7 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param values 值
      * @return {@code this}
      */
-    Chain orImmediateNotIn(String column, Collection<Object> values);
+    Chain orDirectNotIn(String column, Collection<Object> values);
 
     /**
      * 或NOT IN
@@ -306,8 +306,8 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param values     值
      * @return {@code this}
      */
-    default Chain orImmediateNotIn(String tableAlias, String column, Object... values) {
-        return orImmediateNotIn(tableAlias, column, ArrayUtil.toList(values));
+    default Chain orDirectNotIn(String tableAlias, String column, Object... values) {
+        return orDirectNotIn(tableAlias, column, ArrayUtil.toList(values));
     }
 
     /**
@@ -317,7 +317,7 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param values     值
      * @return {@code this}
      */
-    Chain orImmediateNotIn(String tableAlias, String column, Collection<Object> values);
+    Chain orDirectNotIn(String tableAlias, String column, Collection<Object> values);
 
     /**
      * BETWEEN
@@ -366,7 +366,7 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param end    结束值
      * @return {@code this}
      */
-    Chain immediateBetween(String column, Object begin, Object end);
+    Chain directBetween(String column, Object begin, Object end);
 
     /**
      * BETWEEN
@@ -376,7 +376,7 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param end        结束值
      * @return {@code this}
      */
-    Chain immediateBetween(String tableAlias, String column, Object begin, Object end);
+    Chain directBetween(String tableAlias, String column, Object begin, Object end);
 
     /**
      * BETWEEN
@@ -385,7 +385,7 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param end    结束值
      * @return {@code this}
      */
-    Chain orImmediateBetween(String column, Object begin, Object end);
+    Chain orDirectBetween(String column, Object begin, Object end);
 
     /**
      * BETWEEN
@@ -395,7 +395,7 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param end        结束值
      * @return {@code this}
      */
-    Chain orImmediateBetween(String tableAlias, String column, Object begin, Object end);
+    Chain orDirectBetween(String tableAlias, String column, Object begin, Object end);
 
     /**
      * NOT BETWEEN
@@ -444,7 +444,7 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param end    结束值
      * @return {@code this}
      */
-    Chain immediateNotBetween(String column, Object begin, Object end);
+    Chain directNotBetween(String column, Object begin, Object end);
 
     /**
      * NOT BETWEEN
@@ -454,7 +454,7 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param end        结束值
      * @return {@code this}
      */
-    Chain immediateNotBetween(String tableAlias, String column, Object begin, Object end);
+    Chain directNotBetween(String tableAlias, String column, Object begin, Object end);
 
     /**
      * NOT BETWEEN
@@ -463,7 +463,7 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param end    结束值
      * @return {@code this}
      */
-    Chain orImmediateNotBetween(String column, Object begin, Object end);
+    Chain orDirectNotBetween(String column, Object begin, Object end);
 
     /**
      * NOT BETWEEN
@@ -473,6 +473,6 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param end        结束值
      * @return {@code this}
      */
-    Chain orImmediateNotBetween(String tableAlias, String column, Object begin, Object end);
+    Chain orDirectNotBetween(String tableAlias, String column, Object begin, Object end);
 
 }

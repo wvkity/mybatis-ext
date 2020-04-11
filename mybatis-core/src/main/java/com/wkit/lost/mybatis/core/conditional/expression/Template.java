@@ -72,13 +72,14 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
     /**
      * 匹配模式
      */
-    private TemplateMatch match;
+    @Getter
+    private final TemplateMatch match;
 
     /**
      * 模板
      */
     @Getter
-    private String template;
+    private final String template;
 
     /**
      * 值

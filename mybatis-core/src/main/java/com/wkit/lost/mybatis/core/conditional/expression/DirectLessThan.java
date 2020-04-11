@@ -9,7 +9,7 @@ import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
  * @param <T> 泛型类型
  * @author wvkity
  */
-public class ImmediateLessThan<T> extends ImmediateSimple<T> {
+public class DirectLessThan<T> extends DirectSimple<T> {
 
     private static final long serialVersionUID = -3489226776472857369L;
 
@@ -19,7 +19,7 @@ public class ImmediateLessThan<T> extends ImmediateSimple<T> {
      * @param value  值
      * @param logic  逻辑符号
      */
-    ImmediateLessThan(String column, Object value, Logic logic) {
+    DirectLessThan(String column, Object value, Logic logic) {
         super(column, value, Symbol.LT, logic);
     }
 
@@ -30,7 +30,7 @@ public class ImmediateLessThan<T> extends ImmediateSimple<T> {
      * @param value      值
      * @param logic      逻辑符号
      */
-    ImmediateLessThan(String tableAlias, String column, Object value, Logic logic) {
+    DirectLessThan(String tableAlias, String column, Object value, Logic logic) {
         super(tableAlias, column, value, Symbol.LT, logic);
     }
 
@@ -41,7 +41,7 @@ public class ImmediateLessThan<T> extends ImmediateSimple<T> {
      * @param value    值
      * @param logic    逻辑符号
      */
-    ImmediateLessThan(Criteria<T> criteria, String column, Object value, Logic logic) {
+    DirectLessThan(Criteria<T> criteria, String column, Object value, Logic logic) {
         super(criteria, column, value, Symbol.LT, logic);
     }
 
@@ -52,7 +52,7 @@ public class ImmediateLessThan<T> extends ImmediateSimple<T> {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThan<T> create(String column, Object value) {
+    public static <T> DirectLessThan<T> create(String column, Object value) {
         return create(column, value, Logic.AND);
     }
 
@@ -64,9 +64,9 @@ public class ImmediateLessThan<T> extends ImmediateSimple<T> {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThan<T> create(String column, Object value, Logic logic) {
+    public static <T> DirectLessThan<T> create(String column, Object value, Logic logic) {
         if (hasText(column)) {
-            return new ImmediateLessThan<>(column, value, logic);
+            return new DirectLessThan<>(column, value, logic);
         }
         return null;
     }
@@ -79,7 +79,7 @@ public class ImmediateLessThan<T> extends ImmediateSimple<T> {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThan<T> create(String tableAlias, String column, Object value) {
+    public static <T> DirectLessThan<T> create(String tableAlias, String column, Object value) {
         return create(tableAlias, column, value, Logic.AND);
     }
 
@@ -92,9 +92,9 @@ public class ImmediateLessThan<T> extends ImmediateSimple<T> {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThan<T> create(String tableAlias, String column, Object value, Logic logic) {
+    public static <T> DirectLessThan<T> create(String tableAlias, String column, Object value, Logic logic) {
         if (hasText(column)) {
-            return new ImmediateLessThan<>(tableAlias, column, value, logic);
+            return new DirectLessThan<>(tableAlias, column, value, logic);
         }
         return null;
     }
@@ -107,7 +107,7 @@ public class ImmediateLessThan<T> extends ImmediateSimple<T> {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThan<T> create(Criteria<T> criteria, String column, Object value) {
+    public static <T> DirectLessThan<T> create(Criteria<T> criteria, String column, Object value) {
         return create(criteria, column, value, Logic.AND);
     }
 
@@ -120,9 +120,9 @@ public class ImmediateLessThan<T> extends ImmediateSimple<T> {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateLessThan<T> create(Criteria<T> criteria, String column, Object value, Logic logic) {
+    public static <T> DirectLessThan<T> create(Criteria<T> criteria, String column, Object value, Logic logic) {
         if (hasText(column)) {
-            return new ImmediateLessThan<>(criteria, column, value, logic);
+            return new DirectLessThan<>(criteria, column, value, logic);
         }
         return null;
     }

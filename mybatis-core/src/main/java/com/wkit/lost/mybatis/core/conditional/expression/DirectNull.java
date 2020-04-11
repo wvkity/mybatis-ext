@@ -5,23 +5,23 @@ import com.wkit.lost.mybatis.core.constant.Symbol;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 
 /**
- * IS NOT NULL条件
+ * IS NULL条件
  * @param <T> 实体类型
  * @author wvkity
  */
-public class ImmediateNotNull<T> extends AbstractImmediateEmptyExpression<T> {
+public class DirectNull<T> extends AbstractDirectEmptyExpression<T> {
 
-    private static final long serialVersionUID = 1242960702230360913L;
+    private static final long serialVersionUID = -4663604933639152009L;
 
     /**
      * 构造方法
      * @param column 字段
      * @param logic  逻辑符号
      */
-    ImmediateNotNull(String column, Logic logic) {
+    DirectNull(String column, Logic logic) {
         this.column = column;
         this.logic = logic;
-        this.symbol = Symbol.NOT_NULL;
+        this.symbol = Symbol.NULL;
     }
 
     /**
@@ -30,11 +30,11 @@ public class ImmediateNotNull<T> extends AbstractImmediateEmptyExpression<T> {
      * @param column     字段
      * @param logic      逻辑符号
      */
-    ImmediateNotNull(String tableAlias, String column, Logic logic) {
+    DirectNull(String tableAlias, String column, Logic logic) {
         this.column = column;
         this.logic = logic;
         this.tableAlias = tableAlias;
-        this.symbol = Symbol.NOT_NULL;
+        this.symbol = Symbol.NULL;
     }
 
     /**
@@ -43,7 +43,7 @@ public class ImmediateNotNull<T> extends AbstractImmediateEmptyExpression<T> {
      * @param column   字段
      * @param logic    逻辑符号
      */
-    ImmediateNotNull(Criteria<T> criteria, String column, Logic logic) {
+    DirectNull(Criteria<T> criteria, String column, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.logic = logic;
@@ -51,77 +51,77 @@ public class ImmediateNotNull<T> extends AbstractImmediateEmptyExpression<T> {
     }
 
     /**
-     * 创建IS NOT NULL条件对象
+     * 创建IS NULL条件对象
      * @param column 字段
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotNull<T> create(String column) {
+    public static <T> DirectNull<T> create(String column) {
         return create(column, Logic.AND);
     }
 
     /**
-     * 创建IS NOT NULL条件对象
+     * 创建IS NULL条件对象
      * @param column 字段
      * @param logic  逻辑符号
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotNull<T> create(String column, Logic logic) {
+    public static <T> DirectNull<T> create(String column, Logic logic) {
         if (hasText(column)) {
-            return new ImmediateNotNull<>(column, logic);
+            return new DirectNull<>(column, logic);
         }
         return null;
     }
 
     /**
-     * 创建IS NOT NULL条件对象
+     * 创建IS NULL条件对象
      * @param tableAlias 表别名
      * @param column     字段
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotNull<T> create(String tableAlias, String column) {
+    public static <T> DirectNull<T> create(String tableAlias, String column) {
         return create(tableAlias, column, Logic.AND);
     }
 
     /**
-     * 创建IS NOT NULL条件对象
+     * 创建IS NULL条件对象
      * @param tableAlias 表别名
      * @param column     字段
      * @param logic      逻辑符号
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotNull<T> create(String tableAlias, String column, Logic logic) {
+    public static <T> DirectNull<T> create(String tableAlias, String column, Logic logic) {
         if (hasText(column)) {
-            return new ImmediateNotNull<>(tableAlias, column, logic);
+            return new DirectNull<>(tableAlias, column, logic);
         }
         return null;
     }
 
     /**
-     * 创建IS NOT NULL条件对象
+     * 创建IS NULL条件对象
      * @param criteria 条件包装对象
      * @param column   字段
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotNull<T> create(Criteria<T> criteria, String column) {
+    public static <T> DirectNull<T> create(Criteria<T> criteria, String column) {
         return create(criteria, column, Logic.AND);
     }
 
     /**
-     * 创建IS NOT NULL条件对象
+     * 创建IS NULL条件对象
      * @param criteria 条件包装对象
      * @param column   字段
      * @param logic    逻辑符号
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> ImmediateNotNull<T> create(Criteria<T> criteria, String column, Logic logic) {
+    public static <T> DirectNull<T> create(Criteria<T> criteria, String column, Logic logic) {
         if (criteria != null && hasText(column)) {
-            return new ImmediateNotNull<>(criteria, column, logic);
+            return new DirectNull<>(criteria, column, logic);
         }
         return null;
     }

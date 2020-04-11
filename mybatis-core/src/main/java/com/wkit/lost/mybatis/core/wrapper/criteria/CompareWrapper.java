@@ -141,7 +141,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value  值
      * @return {@code this}
      */
-    Chain immediateEq(String column, Object value);
+    Chain directEq(String column, Object value);
 
     /**
      * 等于
@@ -151,11 +151,11 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param v2 值2
      * @return {@code this}
      */
-    default Chain immediateEq(String c1, Object v1, String c2, Object v2) {
+    default Chain directEq(String c1, Object v1, String c2, Object v2) {
         Map<String, Object> columns = new HashMap<>(2);
         columns.put(c1, v1);
         columns.put(c2, v2);
-        return immediateEq(columns);
+        return directEq(columns);
     }
 
     /**
@@ -168,12 +168,12 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param v3 值3
      * @return {@code this}
      */
-    default Chain immediateEq(String c1, Object v1, String c2, Object v2, String c3, Object v3) {
+    default Chain directEq(String c1, Object v1, String c2, Object v2, String c3, Object v3) {
         Map<String, Object> columns = new HashMap<>(3);
         columns.put(c1, v1);
         columns.put(c2, v2);
         columns.put(c3, v3);
-        return immediateEq(columns);
+        return directEq(columns);
     }
 
     /**
@@ -181,7 +181,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param columns 字段-值集合
      * @return {@code this}
      */
-    Chain immediateEq(Map<String, Object> columns);
+    Chain directEq(Map<String, Object> columns);
 
     /**
      * 等于
@@ -190,7 +190,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value      值
      * @return {@code this}
      */
-    Chain immediateEq(String tableAlias, String column, Object value);
+    Chain directEq(String tableAlias, String column, Object value);
 
     /**
      * 等于
@@ -201,11 +201,11 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param v2         值2
      * @return {@code this}
      */
-    default Chain immediateEq(String tableAlias, String c1, Object v1, String c2, Object v2) {
+    default Chain directEq(String tableAlias, String c1, Object v1, String c2, Object v2) {
         Map<String, Object> columns = new HashMap<>(2);
         columns.put(c1, v1);
         columns.put(c2, v2);
-        return immediateEq(tableAlias, columns);
+        return directEq(tableAlias, columns);
     }
 
     /**
@@ -219,12 +219,12 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param v3         值3
      * @return {@code this}
      */
-    default Chain immediateEq(String tableAlias, String c1, Object v1, String c2, Object v2, String c3, Object v3) {
+    default Chain directEq(String tableAlias, String c1, Object v1, String c2, Object v2, String c3, Object v3) {
         Map<String, Object> columns = new HashMap<>(3);
         columns.put(c1, v1);
         columns.put(c2, v2);
         columns.put(c3, v3);
-        return immediateEq(tableAlias, columns);
+        return directEq(tableAlias, columns);
     }
 
     /**
@@ -233,7 +233,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param columns    字段-值集合
      * @return {@code this}
      */
-    Chain immediateEq(String tableAlias, Map<String, Object> columns);
+    Chain directEq(String tableAlias, Map<String, Object> columns);
 
     /**
      * 或等于
@@ -241,7 +241,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value  值
      * @return {@code this}
      */
-    Chain orImmediateEq(String column, Object value);
+    Chain orDirectEq(String column, Object value);
 
     /**
      * 或等于
@@ -250,7 +250,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value      值
      * @return {@code this}
      */
-    Chain orImmediateEq(String tableAlias, String column, Object value);
+    Chain orDirectEq(String tableAlias, String column, Object value);
 
     /**
      * 不等于
@@ -294,7 +294,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value  值
      * @return {@code this}
      */
-    Chain immediateNe(String column, Object value);
+    Chain directNe(String column, Object value);
 
     /**
      * 不等于
@@ -303,7 +303,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value      值
      * @return {@code this}
      */
-    Chain immediateNe(String tableAlias, String column, Object value);
+    Chain directNe(String tableAlias, String column, Object value);
 
     /**
      * 或不等于
@@ -311,7 +311,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value  值
      * @return {@code this}
      */
-    Chain orImmediateNe(String column, Object value);
+    Chain orDirectNe(String column, Object value);
 
     /**
      * 或不等于
@@ -320,7 +320,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value      值
      * @return {@code this}
      */
-    Chain orImmediateNe(String tableAlias, String column, Object value);
+    Chain orDirectNe(String tableAlias, String column, Object value);
 
     /**
      * 小于
@@ -364,7 +364,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value  值
      * @return {@code this}
      */
-    Chain immediateLt(String column, Object value);
+    Chain directLt(String column, Object value);
 
     /**
      * 小于
@@ -373,7 +373,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value      值
      * @return {@code this}
      */
-    Chain immediateLt(String tableAlias, String column, Object value);
+    Chain directLt(String tableAlias, String column, Object value);
 
     /**
      * 或小于
@@ -381,7 +381,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value  值
      * @return {@code this}
      */
-    Chain orImmediateLt(String column, Object value);
+    Chain orDirectLt(String column, Object value);
 
     /**
      * 或小于
@@ -390,7 +390,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value      值
      * @return {@code this}
      */
-    Chain orImmediateLt(String tableAlias, String column, Object value);
+    Chain orDirectLt(String tableAlias, String column, Object value);
 
     /**
      * 小于等于
@@ -434,7 +434,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value  值
      * @return {@code this}
      */
-    Chain immediateLe(String column, Object value);
+    Chain directLe(String column, Object value);
 
     /**
      * 小于等于
@@ -443,7 +443,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value      值
      * @return {@code this}
      */
-    Chain immediateLe(String tableAlias, String column, Object value);
+    Chain directLe(String tableAlias, String column, Object value);
 
     /**
      * 或小于等于
@@ -451,7 +451,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value  值
      * @return {@code this}
      */
-    Chain orImmediateLe(String column, Object value);
+    Chain orDirectLe(String column, Object value);
 
     /**
      * 或小于等于
@@ -460,7 +460,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value      值
      * @return {@code this}
      */
-    Chain orImmediateLe(String tableAlias, String column, Object value);
+    Chain orDirectLe(String tableAlias, String column, Object value);
 
     /**
      * 小于
@@ -504,7 +504,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value  值
      * @return {@code this}
      */
-    Chain immediateGt(String column, Object value);
+    Chain directGt(String column, Object value);
 
     /**
      * 小于
@@ -513,7 +513,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value      值
      * @return {@code this}
      */
-    Chain immediateGt(String tableAlias, String column, Object value);
+    Chain directGt(String tableAlias, String column, Object value);
 
     /**
      * 或小于
@@ -521,7 +521,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value  值
      * @return {@code this}
      */
-    Chain orImmediateGt(String column, Object value);
+    Chain orDirectGt(String column, Object value);
 
     /**
      * 或小于
@@ -530,7 +530,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value      值
      * @return {@code this}
      */
-    Chain orImmediateGt(String tableAlias, String column, Object value);
+    Chain orDirectGt(String tableAlias, String column, Object value);
 
     /**
      * 小于
@@ -574,7 +574,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value  值
      * @return {@code this}
      */
-    Chain immediateGe(String column, Object value);
+    Chain directGe(String column, Object value);
 
     /**
      * 小于
@@ -583,7 +583,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value      值
      * @return {@code this}
      */
-    Chain immediateGe(String tableAlias, String column, Object value);
+    Chain directGe(String tableAlias, String column, Object value);
 
     /**
      * 或小于
@@ -591,7 +591,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value  值
      * @return {@code this}
      */
-    Chain orImmediateGe(String column, Object value);
+    Chain orDirectGe(String column, Object value);
 
     /**
      * 或小于
@@ -600,7 +600,7 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value      值
      * @return {@code this}
      */
-    Chain orImmediateGe(String tableAlias, String column, Object value);
+    Chain orDirectGe(String tableAlias, String column, Object value);
 
 }
 

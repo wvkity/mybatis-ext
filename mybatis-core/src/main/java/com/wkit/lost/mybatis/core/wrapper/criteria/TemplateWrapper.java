@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
+import com.wkit.lost.mybatis.core.conditional.expression.DirectTemplate;
 import com.wkit.lost.mybatis.core.lambda.LambdaConverter;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 
@@ -12,7 +13,7 @@ import java.util.Map;
  * @param <P>     Lambda类
  * @author wvkity
  * @see com.wkit.lost.mybatis.core.conditional.expression.Template
- * @see com.wkit.lost.mybatis.core.conditional.expression.ImmediateTemplate
+ * @see DirectTemplate
  */
 public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> extends LambdaConverter<P> {
 
@@ -186,7 +187,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param value    值
      * @return {@code this}
      */
-    Chain immediateTemplate(String template, Object value);
+    Chain directTemplate(String template, Object value);
 
     /**
      * TEMPLATE
@@ -194,8 +195,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain immediateTemplate(String template, Object... values) {
-        return immediateTemplate(template, ArrayUtil.toList(values));
+    default Chain directTemplate(String template, Object... values) {
+        return directTemplate(template, ArrayUtil.toList(values));
     }
 
     /**
@@ -204,7 +205,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    Chain immediateTemplate(String template, Collection<Object> values);
+    Chain directTemplate(String template, Collection<Object> values);
 
     /**
      * TEMPLATE
@@ -212,7 +213,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    Chain immediateTemplate(String template, Map<String, Object> values);
+    Chain directTemplate(String template, Map<String, Object> values);
 
     /**
      * TEMPLATE
@@ -221,7 +222,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param value    值
      * @return {@code this}
      */
-    Chain immediateTemplate(String template, String column, Object value);
+    Chain directTemplate(String template, String column, Object value);
 
     /**
      * TEMPLATE
@@ -230,8 +231,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain immediateTemplate(String template, String column, Object... values) {
-        return immediateTemplate(template, column, ArrayUtil.toList(values));
+    default Chain directTemplate(String template, String column, Object... values) {
+        return directTemplate(template, column, ArrayUtil.toList(values));
     }
 
     /**
@@ -241,7 +242,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    Chain immediateTemplate(String template, String column, Collection<Object> values);
+    Chain directTemplate(String template, String column, Collection<Object> values);
 
     /**
      * TEMPLATE
@@ -250,7 +251,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    Chain immediateTemplate(String template, String column, Map<String, Object> values);
+    Chain directTemplate(String template, String column, Map<String, Object> values);
 
     /**
      * TEMPLATE
@@ -258,7 +259,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param value    值
      * @return {@code this}
      */
-    Chain orImmediateTemplate(String template, Object value);
+    Chain orDirectTemplate(String template, Object value);
 
     /**
      * TEMPLATE
@@ -266,8 +267,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain orImmediateTemplate(String template, Object... values) {
-        return orImmediateTemplate(template, ArrayUtil.toList(values));
+    default Chain orDirectTemplate(String template, Object... values) {
+        return orDirectTemplate(template, ArrayUtil.toList(values));
     }
 
     /**
@@ -276,7 +277,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    Chain orImmediateTemplate(String template, Collection<Object> values);
+    Chain orDirectTemplate(String template, Collection<Object> values);
 
     /**
      * TEMPLATE
@@ -284,7 +285,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    Chain orImmediateTemplate(String template, Map<String, Object> values);
+    Chain orDirectTemplate(String template, Map<String, Object> values);
 
     /**
      * TEMPLATE
@@ -293,7 +294,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param value    值
      * @return {@code this}
      */
-    Chain orImmediateTemplate(String template, String column, Object value);
+    Chain orDirectTemplate(String template, String column, Object value);
 
     /**
      * TEMPLATE
@@ -302,8 +303,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain orImmediateTemplate(String template, String column, Object... values) {
-        return orImmediateTemplate(template, column, ArrayUtil.toList(values));
+    default Chain orDirectTemplate(String template, String column, Object... values) {
+        return orDirectTemplate(template, column, ArrayUtil.toList(values));
     }
 
     /**
@@ -313,7 +314,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    Chain orImmediateTemplate(String template, String column, Collection<Object> values);
+    Chain orDirectTemplate(String template, String column, Collection<Object> values);
 
     /**
      * TEMPLATE
@@ -322,6 +323,6 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    Chain orImmediateTemplate(String template, String column, Map<String, Object> values);
+    Chain orDirectTemplate(String template, String column, Map<String, Object> values);
 
 }

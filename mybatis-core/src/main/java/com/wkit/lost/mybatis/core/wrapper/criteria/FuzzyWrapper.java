@@ -496,8 +496,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value  值
      * @return {@code this}
      */
-    default Chain immediateLike(String column, Object value) {
-        return immediateLike(column, value, null);
+    default Chain directLike(String column, Object value) {
+        return directLike(column, value, null);
     }
 
     /**
@@ -507,7 +507,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape 转义字符
      * @return {@code this}
      */
-    Chain immediateLike(String column, Object value, Character escape);
+    Chain directLike(String column, Object value, Character escape);
 
     /**
      * LIKE
@@ -516,88 +516,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value      值
      * @return {@code this}
      */
-    default Chain immediateLike(String tableAlias, String column, Object value) {
-        return immediateLike(tableAlias, column, value, null);
-    }
-
-    /**
-     * LIKE
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param value      值
-     * @param escape     转义字符
-     * @return {@code this}
-     */
-    Chain immediateLike(String tableAlias, String column, Object value, Character escape);
-
-    /**
-     * 或LIKE
-     * @param column 字段
-     * @param value  值
-     * @return {@code this}
-     */
-    default Chain orImmediateLike(String column, Object value) {
-        return orImmediateLike(column, value, null);
-    }
-
-    /**
-     * 或LIKE
-     * @param column 字段
-     * @param value  值
-     * @param escape 转义字符
-     * @return {@code this}
-     */
-    Chain orImmediateLike(String column, Object value, Character escape);
-
-    /**
-     * 或LIKE
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param value      值
-     * @return {@code this}
-     */
-    default Chain orImmediateLike(String tableAlias, String column, Object value) {
-        return orImmediateLike(tableAlias, column, value, null);
-    }
-
-    /**
-     * 或LIKE
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param value      值
-     * @param escape     转义字符
-     * @return {@code this}
-     */
-    Chain orImmediateLike(String tableAlias, String column, Object value, Character escape);
-
-    /**
-     * LIKE
-     * @param column 字段
-     * @param value  值
-     * @return {@code this}
-     */
-    default Chain immediateLikeLeft(String column, Object value) {
-        return immediateLikeLeft(column, value, null);
-    }
-
-    /**
-     * LIKE
-     * @param column 字段
-     * @param value  值
-     * @param escape 转义字符
-     * @return {@code this}
-     */
-    Chain immediateLikeLeft(String column, Object value, Character escape);
-
-    /**
-     * LIKE
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param value      值
-     * @return {@code this}
-     */
-    default Chain immediateLikeLeft(String tableAlias, String column, Object value) {
-        return immediateLikeLeft(tableAlias, column, value, null);
+    default Chain directLike(String tableAlias, String column, Object value) {
+        return directLike(tableAlias, column, value, null);
     }
 
     /**
@@ -608,7 +528,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape     转义字符
      * @return {@code this}
      */
-    Chain immediateLikeLeft(String tableAlias, String column, Object value, Character escape);
+    Chain directLike(String tableAlias, String column, Object value, Character escape);
 
     /**
      * 或LIKE
@@ -616,8 +536,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value  值
      * @return {@code this}
      */
-    default Chain orImmediateLikeLeft(String column, Object value) {
-        return orImmediateLikeLeft(column, value, null);
+    default Chain orDirectLike(String column, Object value) {
+        return orDirectLike(column, value, null);
     }
 
     /**
@@ -627,7 +547,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape 转义字符
      * @return {@code this}
      */
-    Chain orImmediateLikeLeft(String column, Object value, Character escape);
+    Chain orDirectLike(String column, Object value, Character escape);
 
     /**
      * 或LIKE
@@ -636,8 +556,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value      值
      * @return {@code this}
      */
-    default Chain orImmediateLikeLeft(String tableAlias, String column, Object value) {
-        return orImmediateLikeLeft(tableAlias, column, value, null);
+    default Chain orDirectLike(String tableAlias, String column, Object value) {
+        return orDirectLike(tableAlias, column, value, null);
     }
 
     /**
@@ -648,7 +568,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape     转义字符
      * @return {@code this}
      */
-    Chain orImmediateLikeLeft(String tableAlias, String column, Object value, Character escape);
+    Chain orDirectLike(String tableAlias, String column, Object value, Character escape);
 
     /**
      * LIKE
@@ -656,8 +576,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value  值
      * @return {@code this}
      */
-    default Chain immediateLikeRight(String column, Object value) {
-        return immediateLikeRight(column, value, null);
+    default Chain directLikeLeft(String column, Object value) {
+        return directLikeLeft(column, value, null);
     }
 
     /**
@@ -667,7 +587,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape 转义字符
      * @return {@code this}
      */
-    Chain immediateLikeRight(String column, Object value, Character escape);
+    Chain directLikeLeft(String column, Object value, Character escape);
 
     /**
      * LIKE
@@ -676,8 +596,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value      值
      * @return {@code this}
      */
-    default Chain immediateLikeRight(String tableAlias, String column, Object value) {
-        return immediateLikeRight(tableAlias, column, value, null);
+    default Chain directLikeLeft(String tableAlias, String column, Object value) {
+        return directLikeLeft(tableAlias, column, value, null);
     }
 
     /**
@@ -688,7 +608,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape     转义字符
      * @return {@code this}
      */
-    Chain immediateLikeRight(String tableAlias, String column, Object value, Character escape);
+    Chain directLikeLeft(String tableAlias, String column, Object value, Character escape);
 
     /**
      * 或LIKE
@@ -696,8 +616,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value  值
      * @return {@code this}
      */
-    default Chain orImmediateLikeRight(String column, Object value) {
-        return orImmediateLikeRight(column, value, null);
+    default Chain orDirectLikeLeft(String column, Object value) {
+        return orDirectLikeLeft(column, value, null);
     }
 
     /**
@@ -707,7 +627,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape 转义字符
      * @return {@code this}
      */
-    Chain orImmediateLikeRight(String column, Object value, Character escape);
+    Chain orDirectLikeLeft(String column, Object value, Character escape);
 
     /**
      * 或LIKE
@@ -716,8 +636,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value      值
      * @return {@code this}
      */
-    default Chain orImmediateLikeRight(String tableAlias, String column, Object value) {
-        return orImmediateLikeRight(tableAlias, column, value, null);
+    default Chain orDirectLikeLeft(String tableAlias, String column, Object value) {
+        return orDirectLikeLeft(tableAlias, column, value, null);
     }
 
     /**
@@ -728,7 +648,87 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape     转义字符
      * @return {@code this}
      */
-    Chain orImmediateLikeRight(String tableAlias, String column, Object value, Character escape);
+    Chain orDirectLikeLeft(String tableAlias, String column, Object value, Character escape);
+
+    /**
+     * LIKE
+     * @param column 字段
+     * @param value  值
+     * @return {@code this}
+     */
+    default Chain directLikeRight(String column, Object value) {
+        return directLikeRight(column, value, null);
+    }
+
+    /**
+     * LIKE
+     * @param column 字段
+     * @param value  值
+     * @param escape 转义字符
+     * @return {@code this}
+     */
+    Chain directLikeRight(String column, Object value, Character escape);
+
+    /**
+     * LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param value      值
+     * @return {@code this}
+     */
+    default Chain directLikeRight(String tableAlias, String column, Object value) {
+        return directLikeRight(tableAlias, column, value, null);
+    }
+
+    /**
+     * LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param value      值
+     * @param escape     转义字符
+     * @return {@code this}
+     */
+    Chain directLikeRight(String tableAlias, String column, Object value, Character escape);
+
+    /**
+     * 或LIKE
+     * @param column 字段
+     * @param value  值
+     * @return {@code this}
+     */
+    default Chain orDirectLikeRight(String column, Object value) {
+        return orDirectLikeRight(column, value, null);
+    }
+
+    /**
+     * 或LIKE
+     * @param column 字段
+     * @param value  值
+     * @param escape 转义字符
+     * @return {@code this}
+     */
+    Chain orDirectLikeRight(String column, Object value, Character escape);
+
+    /**
+     * 或LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param value      值
+     * @return {@code this}
+     */
+    default Chain orDirectLikeRight(String tableAlias, String column, Object value) {
+        return orDirectLikeRight(tableAlias, column, value, null);
+    }
+
+    /**
+     * 或LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param value      值
+     * @param escape     转义字符
+     * @return {@code this}
+     */
+    Chain orDirectLikeRight(String tableAlias, String column, Object value, Character escape);
 
     /**
      * NOT LIKE
@@ -736,8 +736,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value  值
      * @return {@code this}
      */
-    default Chain immediateNotLike(String column, Object value) {
-        return immediateNotLike(column, value, null);
+    default Chain directNotLike(String column, Object value) {
+        return directNotLike(column, value, null);
     }
 
     /**
@@ -747,7 +747,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape 转义字符
      * @return {@code this}
      */
-    Chain immediateNotLike(String column, Object value, Character escape);
+    Chain directNotLike(String column, Object value, Character escape);
 
     /**
      * NOT LIKE
@@ -756,8 +756,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value      值
      * @return {@code this}
      */
-    default Chain immediateNotLike(String tableAlias, String column, Object value) {
-        return immediateNotLike(tableAlias, column, value, null);
+    default Chain directNotLike(String tableAlias, String column, Object value) {
+        return directNotLike(tableAlias, column, value, null);
     }
 
     /**
@@ -768,7 +768,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape     转义字符
      * @return {@code this}
      */
-    Chain immediateNotLike(String tableAlias, String column, Object value, Character escape);
+    Chain directNotLike(String tableAlias, String column, Object value, Character escape);
 
     /**
      * 或NOT LIKE
@@ -776,8 +776,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value  值
      * @return {@code this}
      */
-    default Chain orImmediateNotLike(String column, Object value) {
-        return orImmediateNotLike(column, value, null);
+    default Chain orDirectNotLike(String column, Object value) {
+        return orDirectNotLike(column, value, null);
     }
 
     /**
@@ -787,7 +787,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape 转义字符
      * @return {@code this}
      */
-    Chain orImmediateNotLike(String column, Object value, Character escape);
+    Chain orDirectNotLike(String column, Object value, Character escape);
 
     /**
      * 或NOT LIKE
@@ -796,8 +796,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value      值
      * @return {@code this}
      */
-    default Chain orImmediateNotLike(String tableAlias, String column, Object value) {
-        return orImmediateNotLike(tableAlias, column, value, null);
+    default Chain orDirectNotLike(String tableAlias, String column, Object value) {
+        return orDirectNotLike(tableAlias, column, value, null);
     }
 
     /**
@@ -808,7 +808,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape     转义字符
      * @return {@code this}
      */
-    Chain orImmediateNotLike(String tableAlias, String column, Object value, Character escape);
+    Chain orDirectNotLike(String tableAlias, String column, Object value, Character escape);
 
     /**
      * NOT LIKE
@@ -816,8 +816,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value  值
      * @return {@code this}
      */
-    default Chain immediateNotLikeLeft(String column, Object value) {
-        return immediateNotLikeLeft(column, value, null);
+    default Chain directNotLikeLeft(String column, Object value) {
+        return directNotLikeLeft(column, value, null);
     }
 
     /**
@@ -827,7 +827,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape 转义字符
      * @return {@code this}
      */
-    Chain immediateNotLikeLeft(String column, Object value, Character escape);
+    Chain directNotLikeLeft(String column, Object value, Character escape);
 
     /**
      * NOT LIKE
@@ -836,8 +836,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value      值
      * @return {@code this}
      */
-    default Chain immediateNotLikeLeft(String tableAlias, String column, Object value) {
-        return immediateNotLikeLeft(tableAlias, column, value, null);
+    default Chain directNotLikeLeft(String tableAlias, String column, Object value) {
+        return directNotLikeLeft(tableAlias, column, value, null);
     }
 
     /**
@@ -848,7 +848,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape     转义字符
      * @return {@code this}
      */
-    Chain immediateNotLikeLeft(String tableAlias, String column, Object value, Character escape);
+    Chain directNotLikeLeft(String tableAlias, String column, Object value, Character escape);
 
     /**
      * 或NOT LIKE
@@ -856,8 +856,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value  值
      * @return {@code this}
      */
-    default Chain orImmediateNotLikeLeft(String column, Object value) {
-        return orImmediateNotLikeLeft(column, value, null);
+    default Chain orDirectNotLikeLeft(String column, Object value) {
+        return orDirectNotLikeLeft(column, value, null);
     }
 
     /**
@@ -867,7 +867,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape 转义字符
      * @return {@code this}
      */
-    Chain orImmediateNotLikeLeft(String column, Object value, Character escape);
+    Chain orDirectNotLikeLeft(String column, Object value, Character escape);
 
     /**
      * 或NOT LIKE
@@ -876,8 +876,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value      值
      * @return {@code this}
      */
-    default Chain orImmediateNotLikeLeft(String tableAlias, String column, Object value) {
-        return orImmediateNotLikeLeft(tableAlias, column, value, null);
+    default Chain orDirectNotLikeLeft(String tableAlias, String column, Object value) {
+        return orDirectNotLikeLeft(tableAlias, column, value, null);
     }
 
     /**
@@ -888,7 +888,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape     转义字符
      * @return {@code this}
      */
-    Chain orImmediateNotLikeLeft(String tableAlias, String column, Object value, Character escape);
+    Chain orDirectNotLikeLeft(String tableAlias, String column, Object value, Character escape);
 
     /**
      * NOT LIKE
@@ -896,8 +896,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value  值
      * @return {@code this}
      */
-    default Chain immediateNotLikeRight(String column, Object value) {
-        return immediateNotLikeRight(column, value, null);
+    default Chain directNotLikeRight(String column, Object value) {
+        return directNotLikeRight(column, value, null);
     }
 
     /**
@@ -907,7 +907,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape 转义字符
      * @return {@code this}
      */
-    Chain immediateNotLikeRight(String column, Object value, Character escape);
+    Chain directNotLikeRight(String column, Object value, Character escape);
 
     /**
      * NOT LIKE
@@ -916,8 +916,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value      值
      * @return {@code this}
      */
-    default Chain immediateNotLikeRight(String tableAlias, String column, Object value) {
-        return immediateNotLikeRight(tableAlias, column, value, null);
+    default Chain directNotLikeRight(String tableAlias, String column, Object value) {
+        return directNotLikeRight(tableAlias, column, value, null);
     }
 
     /**
@@ -928,7 +928,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape     转义字符
      * @return {@code this}
      */
-    Chain immediateNotLikeRight(String tableAlias, String column, Object value, Character escape);
+    Chain directNotLikeRight(String tableAlias, String column, Object value, Character escape);
 
     /**
      * 或NOT LIKE
@@ -936,8 +936,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value  值
      * @return {@code this}
      */
-    default Chain orImmediateNotLikeRight(String column, Object value) {
-        return orImmediateNotLikeRight(column, value, null);
+    default Chain orDirectNotLikeRight(String column, Object value) {
+        return orDirectNotLikeRight(column, value, null);
     }
 
     /**
@@ -947,7 +947,7 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape 转义字符
      * @return {@code this}
      */
-    Chain orImmediateNotLikeRight(String column, Object value, Character escape);
+    Chain orDirectNotLikeRight(String column, Object value, Character escape);
 
     /**
      * 或NOT LIKE
@@ -956,8 +956,8 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param value      值
      * @return {@code this}
      */
-    default Chain orImmediateNotLikeRight(String tableAlias, String column, Object value) {
-        return orImmediateNotLikeRight(tableAlias, column, value, null);
+    default Chain orDirectNotLikeRight(String tableAlias, String column, Object value) {
+        return orDirectNotLikeRight(tableAlias, column, value, null);
     }
 
     /**
@@ -968,6 +968,6 @@ public interface FuzzyWrapper<Chain extends FuzzyWrapper<Chain, P>, P> extends L
      * @param escape     转义字符
      * @return {@code this}
      */
-    Chain orImmediateNotLikeRight(String tableAlias, String column, Object value, Character escape);
+    Chain orDirectNotLikeRight(String tableAlias, String column, Object value, Character escape);
 
 }

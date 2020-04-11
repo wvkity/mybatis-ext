@@ -9,7 +9,7 @@ import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
  * @param <T> 实体类型
  * @author wvkity
  */
-public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
+public class DirectSimple<T> extends DirectExpressionWrapper<T> {
 
     private static final long serialVersionUID = 5549482113181211099L;
 
@@ -20,7 +20,7 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param symbol 条件符号
      * @param logic  逻辑符号
      */
-    ImmediateSimple(String column, Object value, Symbol symbol, Logic logic) {
+    DirectSimple(String column, Object value, Symbol symbol, Logic logic) {
         this.column = column;
         this.value = value;
         this.symbol = symbol;
@@ -35,7 +35,7 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param symbol     条件符号
      * @param logic      逻辑符号
      */
-    ImmediateSimple(String tableAlias, String column, Object value, Symbol symbol, Logic logic) {
+    DirectSimple(String tableAlias, String column, Object value, Symbol symbol, Logic logic) {
         this.tableAlias = tableAlias;
         this.column = column;
         this.value = value;
@@ -51,7 +51,7 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param symbol   条件符号
      * @param logic    逻辑符号
      */
-    ImmediateSimple(Criteria<T> criteria, String column, Object value, Symbol symbol, Logic logic) {
+    DirectSimple(Criteria<T> criteria, String column, Object value, Symbol symbol, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.value = value;
@@ -66,7 +66,7 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create(String column, Object value) {
+    public static <T> DirectSimple<T> create(String column, Object value) {
         return create(column, value, Symbol.EQ);
     }
 
@@ -78,7 +78,7 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create(String column, Object value, Logic logic) {
+    public static <T> DirectSimple<T> create(String column, Object value, Logic logic) {
         return create(column, value, Symbol.EQ, logic);
     }
 
@@ -90,7 +90,7 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create(String column, Object value, Symbol symbol) {
+    public static <T> DirectSimple<T> create(String column, Object value, Symbol symbol) {
         return create(column, value, symbol, Logic.AND);
     }
 
@@ -103,9 +103,9 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>    泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create(String column, Object value, Symbol symbol, Logic logic) {
+    public static <T> DirectSimple<T> create(String column, Object value, Symbol symbol, Logic logic) {
         if (hasText(column)) {
-            return new ImmediateSimple<>(column, value, symbol, logic);
+            return new DirectSimple<>(column, value, symbol, logic);
         }
         return null;
     }
@@ -118,7 +118,7 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create(String tableAlias, String column, Object value) {
+    public static <T> DirectSimple<T> create(String tableAlias, String column, Object value) {
         return create(tableAlias, column, value, Symbol.EQ);
     }
 
@@ -131,7 +131,7 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create(String tableAlias, String column, Object value, Logic logic) {
+    public static <T> DirectSimple<T> create(String tableAlias, String column, Object value, Logic logic) {
         return create(tableAlias, column, value, Symbol.EQ, logic);
     }
 
@@ -144,7 +144,7 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create(String tableAlias, String column, Object value, Symbol symbol) {
+    public static <T> DirectSimple<T> create(String tableAlias, String column, Object value, Symbol symbol) {
         return create(tableAlias, column, value, symbol, Logic.AND);
     }
 
@@ -158,10 +158,10 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create(String tableAlias, String column, Object value,
-                                                Symbol symbol, Logic logic) {
+    public static <T> DirectSimple<T> create(String tableAlias, String column, Object value,
+                                             Symbol symbol, Logic logic) {
         if (hasText(column)) {
-            return new ImmediateSimple<>(tableAlias, column, value, symbol, logic);
+            return new DirectSimple<>(tableAlias, column, value, symbol, logic);
         }
         return null;
     }
@@ -174,7 +174,7 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create(Criteria<T> criteria, String column, Object value) {
+    public static <T> DirectSimple<T> create(Criteria<T> criteria, String column, Object value) {
         return create(criteria, column, value, Symbol.EQ);
     }
 
@@ -187,7 +187,7 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create(Criteria<T> criteria, String column, Object value, Logic logic) {
+    public static <T> DirectSimple<T> create(Criteria<T> criteria, String column, Object value, Logic logic) {
         return create(criteria, column, value, Symbol.EQ, logic);
     }
 
@@ -200,8 +200,8 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create(Criteria<T> criteria, String column, Object value,
-                                                Symbol symbol) {
+    public static <T> DirectSimple<T> create(Criteria<T> criteria, String column, Object value,
+                                             Symbol symbol) {
         return create(criteria, column, value, symbol, Logic.AND);
     }
 
@@ -215,10 +215,10 @@ public class ImmediateSimple<T> extends ImmediateExpressionWrapper<T> {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> ImmediateSimple<T> create(Criteria<T> criteria, String column, Object value,
-                                                Symbol symbol, Logic logic) {
+    public static <T> DirectSimple<T> create(Criteria<T> criteria, String column, Object value,
+                                             Symbol symbol, Logic logic) {
         if (hasText(column)) {
-            return new ImmediateSimple<>(criteria, column, value, symbol, logic);
+            return new DirectSimple<>(criteria, column, value, symbol, logic);
         }
         return null;
     }

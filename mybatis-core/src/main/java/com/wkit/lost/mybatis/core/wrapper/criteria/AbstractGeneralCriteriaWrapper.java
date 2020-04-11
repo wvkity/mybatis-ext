@@ -232,41 +232,41 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public Chain immediateEq(String column, Object value) {
-        return add(Restrictions.immediateEq(this, column, value));
+    public Chain directEq(String column, Object value) {
+        return add(Restrictions.directEq(this, column, value));
     }
 
     @Override
-    public Chain immediateEq(Map<String, Object> columns) {
+    public Chain directEq(Map<String, Object> columns) {
         if (CollectionUtil.isEmpty(columns)) {
             return this.context;
         }
         return add(columns.entrySet().stream().filter(it -> StringUtil.hasText(it.getKey())).map(it ->
-                Restrictions.immediateEq(this, it.getKey(), it.getValue())).collect(Collectors.toList()));
+                Restrictions.directEq(this, it.getKey(), it.getValue())).collect(Collectors.toList()));
     }
 
     @Override
-    public Chain immediateEq(String tableAlias, String column, Object value) {
-        return add(Restrictions.immediateEq(tableAlias, column, value));
+    public Chain directEq(String tableAlias, String column, Object value) {
+        return add(Restrictions.directEq(tableAlias, column, value));
     }
 
     @Override
-    public Chain immediateEq(String tableAlias, Map<String, Object> columns) {
+    public Chain directEq(String tableAlias, Map<String, Object> columns) {
         if (CollectionUtil.isEmpty(columns)) {
             return this.context;
         }
         return add(columns.entrySet().stream().filter(it -> StringUtil.hasText(it.getKey())).map(it ->
-                Restrictions.immediateEq(tableAlias, it.getKey(), it.getValue())).collect(Collectors.toList()));
+                Restrictions.directEq(tableAlias, it.getKey(), it.getValue())).collect(Collectors.toList()));
     }
 
     @Override
-    public Chain orImmediateEq(String column, Object value) {
-        return add(Restrictions.immediateEq(this, column, value, Logic.OR));
+    public Chain orDirectEq(String column, Object value) {
+        return add(Restrictions.directEq(this, column, value, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateEq(String tableAlias, String column, Object value) {
-        return add(Restrictions.immediateEq(tableAlias, column, value, Logic.OR));
+    public Chain orDirectEq(String tableAlias, String column, Object value) {
+        return add(Restrictions.directEq(tableAlias, column, value, Logic.OR));
     }
 
     @Override
@@ -280,23 +280,23 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public Chain immediateNe(String column, Object value) {
-        return add(Restrictions.immediateNe(this, column, value));
+    public Chain directNe(String column, Object value) {
+        return add(Restrictions.directNe(this, column, value));
     }
 
     @Override
-    public Chain immediateNe(String tableAlias, String column, Object value) {
-        return add(Restrictions.immediateNe(tableAlias, column, value));
+    public Chain directNe(String tableAlias, String column, Object value) {
+        return add(Restrictions.directNe(tableAlias, column, value));
     }
 
     @Override
-    public Chain orImmediateNe(String column, Object value) {
-        return add(Restrictions.immediateNe(this, column, value, Logic.OR));
+    public Chain orDirectNe(String column, Object value) {
+        return add(Restrictions.directNe(this, column, value, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateNe(String tableAlias, String column, Object value) {
-        return add(Restrictions.immediateNe(tableAlias, column, value, Logic.OR));
+    public Chain orDirectNe(String tableAlias, String column, Object value) {
+        return add(Restrictions.directNe(tableAlias, column, value, Logic.OR));
     }
 
     @Override
@@ -310,23 +310,23 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public Chain immediateLt(String column, Object value) {
-        return add(Restrictions.immediateLt(this, column, value));
+    public Chain directLt(String column, Object value) {
+        return add(Restrictions.directLt(this, column, value));
     }
 
     @Override
-    public Chain immediateLt(String tableAlias, String column, Object value) {
-        return add(Restrictions.immediateLt(tableAlias, column, value));
+    public Chain directLt(String tableAlias, String column, Object value) {
+        return add(Restrictions.directLt(tableAlias, column, value));
     }
 
     @Override
-    public Chain orImmediateLt(String column, Object value) {
-        return add(Restrictions.immediateLt(this, column, value, Logic.OR));
+    public Chain orDirectLt(String column, Object value) {
+        return add(Restrictions.directLt(this, column, value, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateLt(String tableAlias, String column, Object value) {
-        return add(Restrictions.immediateLt(tableAlias, column, value, Logic.OR));
+    public Chain orDirectLt(String tableAlias, String column, Object value) {
+        return add(Restrictions.directLt(tableAlias, column, value, Logic.OR));
     }
 
     @Override
@@ -340,23 +340,23 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public Chain immediateLe(String column, Object value) {
-        return add(Restrictions.immediateLe(this, column, value));
+    public Chain directLe(String column, Object value) {
+        return add(Restrictions.directLe(this, column, value));
     }
 
     @Override
-    public Chain immediateLe(String tableAlias, String column, Object value) {
-        return add(Restrictions.immediateLe(tableAlias, column, value));
+    public Chain directLe(String tableAlias, String column, Object value) {
+        return add(Restrictions.directLe(tableAlias, column, value));
     }
 
     @Override
-    public Chain orImmediateLe(String column, Object value) {
-        return add(Restrictions.immediateLe(this, column, value, Logic.OR));
+    public Chain orDirectLe(String column, Object value) {
+        return add(Restrictions.directLe(this, column, value, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateLe(String tableAlias, String column, Object value) {
-        return add(Restrictions.immediateLe(tableAlias, column, value, Logic.OR));
+    public Chain orDirectLe(String tableAlias, String column, Object value) {
+        return add(Restrictions.directLe(tableAlias, column, value, Logic.OR));
     }
 
     @Override
@@ -370,23 +370,23 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public Chain immediateGt(String column, Object value) {
-        return add(Restrictions.immediateGt(this, column, value, Logic.OR));
+    public Chain directGt(String column, Object value) {
+        return add(Restrictions.directGt(this, column, value, Logic.OR));
     }
 
     @Override
-    public Chain immediateGt(String tableAlias, String column, Object value) {
-        return add(Restrictions.immediateGt(tableAlias, column, value));
+    public Chain directGt(String tableAlias, String column, Object value) {
+        return add(Restrictions.directGt(tableAlias, column, value));
     }
 
     @Override
-    public Chain orImmediateGt(String column, Object value) {
-        return add(Restrictions.immediateGt(this, column, value, Logic.OR));
+    public Chain orDirectGt(String column, Object value) {
+        return add(Restrictions.directGt(this, column, value, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateGt(String tableAlias, String column, Object value) {
-        return add(Restrictions.immediateGt(tableAlias, column, value, Logic.OR));
+    public Chain orDirectGt(String tableAlias, String column, Object value) {
+        return add(Restrictions.directGt(tableAlias, column, value, Logic.OR));
     }
 
     @Override
@@ -400,23 +400,23 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public Chain immediateGe(String column, Object value) {
-        return add(Restrictions.immediateGe(this, column, value));
+    public Chain directGe(String column, Object value) {
+        return add(Restrictions.directGe(this, column, value));
     }
 
     @Override
-    public Chain immediateGe(String tableAlias, String column, Object value) {
-        return add(Restrictions.immediateGe(tableAlias, column, value));
+    public Chain directGe(String tableAlias, String column, Object value) {
+        return add(Restrictions.directGe(tableAlias, column, value));
     }
 
     @Override
-    public Chain orImmediateGe(String column, Object value) {
-        return add(Restrictions.immediateGe(this, column, value, Logic.OR));
+    public Chain orDirectGe(String column, Object value) {
+        return add(Restrictions.directGe(this, column, value, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateGe(String tableAlias, String column, Object value) {
-        return add(Restrictions.immediateGe(tableAlias, column, value, Logic.OR));
+    public Chain orDirectGe(String tableAlias, String column, Object value) {
+        return add(Restrictions.directGe(tableAlias, column, value, Logic.OR));
     }
 
     // endregion
@@ -434,23 +434,23 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public Chain immediateIsNull(String column) {
-        return add(Restrictions.immediateIsNull(this, column));
+    public Chain directIsNull(String column) {
+        return add(Restrictions.directIsNull(this, column));
     }
 
     @Override
-    public Chain immediateIsNull(String tableAlias, String column) {
-        return add(Restrictions.immediateIsNull(tableAlias, column));
+    public Chain directIsNull(String tableAlias, String column) {
+        return add(Restrictions.directIsNull(tableAlias, column));
     }
 
     @Override
-    public Chain orImmediateIsNull(String column) {
-        return add(Restrictions.immediateIsNull(this, column, Logic.OR));
+    public Chain orDirectIsNull(String column) {
+        return add(Restrictions.directIsNull(this, column, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateIsNull(String tableAlias, String column) {
-        return add(Restrictions.immediateIsNull(tableAlias, column, Logic.OR));
+    public Chain orDirectIsNull(String tableAlias, String column) {
+        return add(Restrictions.directIsNull(tableAlias, column, Logic.OR));
     }
 
     @Override
@@ -464,23 +464,23 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public Chain immediateNotNull(String column) {
-        return add(Restrictions.immediateNotNull(this, column));
+    public Chain directNotNull(String column) {
+        return add(Restrictions.directNotNull(this, column));
     }
 
     @Override
-    public Chain immediateNotNull(String tableAlias, String column) {
-        return add(Restrictions.immediateNotNull(tableAlias, column));
+    public Chain directNotNull(String tableAlias, String column) {
+        return add(Restrictions.directNotNull(tableAlias, column));
     }
 
     @Override
-    public Chain orImmediateNotNull(String column) {
-        return add(Restrictions.immediateNotNull(this, column, Logic.OR));
+    public Chain orDirectNotNull(String column) {
+        return add(Restrictions.directNotNull(this, column, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateNotNull(String tableAlias, String column) {
-        return add(Restrictions.immediateNotNull(tableAlias, column, Logic.OR));
+    public Chain orDirectNotNull(String tableAlias, String column) {
+        return add(Restrictions.directNotNull(tableAlias, column, Logic.OR));
     }
 
     // endregion
@@ -498,23 +498,23 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public Chain immediateIn(String column, Collection<Object> values) {
-        return add(Restrictions.immediateIn(this, column, values));
+    public Chain directIn(String column, Collection<Object> values) {
+        return add(Restrictions.directIn(this, column, values));
     }
 
     @Override
-    public Chain immediateIn(String tableAlias, String column, Collection<Object> values) {
-        return add(Restrictions.immediateIn(tableAlias, column, values));
+    public Chain directIn(String tableAlias, String column, Collection<Object> values) {
+        return add(Restrictions.directIn(tableAlias, column, values));
     }
 
     @Override
-    public Chain orImmediateIn(String column, Collection<Object> values) {
-        return add(Restrictions.immediateIn(this, column, values, Logic.OR));
+    public Chain orDirectIn(String column, Collection<Object> values) {
+        return add(Restrictions.directIn(this, column, values, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateIn(String tableAlias, String column, Collection<Object> values) {
-        return add(Restrictions.immediateIn(tableAlias, column, values, Logic.OR));
+    public Chain orDirectIn(String tableAlias, String column, Collection<Object> values) {
+        return add(Restrictions.directIn(tableAlias, column, values, Logic.OR));
     }
 
     @Override
@@ -528,23 +528,23 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public Chain immediateNotIn(String column, Collection<Object> values) {
-        return add(Restrictions.immediateNotIn(this, column, values));
+    public Chain directNotIn(String column, Collection<Object> values) {
+        return add(Restrictions.directNotIn(this, column, values));
     }
 
     @Override
-    public Chain immediateNotIn(String tableAlias, String column, Collection<Object> values) {
-        return add(Restrictions.immediateNotIn(tableAlias, column, values));
+    public Chain directNotIn(String tableAlias, String column, Collection<Object> values) {
+        return add(Restrictions.directNotIn(tableAlias, column, values));
     }
 
     @Override
-    public Chain orImmediateNotIn(String column, Collection<Object> values) {
-        return add(Restrictions.immediateNotIn(this, column, values, Logic.OR));
+    public Chain orDirectNotIn(String column, Collection<Object> values) {
+        return add(Restrictions.directNotIn(this, column, values, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateNotIn(String tableAlias, String column, Collection<Object> values) {
-        return add(Restrictions.immediateNotIn(tableAlias, column, values, Logic.OR));
+    public Chain orDirectNotIn(String tableAlias, String column, Collection<Object> values) {
+        return add(Restrictions.directNotIn(tableAlias, column, values, Logic.OR));
     }
 
     @Override
@@ -558,23 +558,23 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public Chain immediateBetween(String column, Object begin, Object end) {
-        return add(Restrictions.immediateBetween(this, column, begin, end));
+    public Chain directBetween(String column, Object begin, Object end) {
+        return add(Restrictions.directBetween(this, column, begin, end));
     }
 
     @Override
-    public Chain immediateBetween(String tableAlias, String column, Object begin, Object end) {
-        return add(Restrictions.immediateBetween(tableAlias, column, begin, end));
+    public Chain directBetween(String tableAlias, String column, Object begin, Object end) {
+        return add(Restrictions.directBetween(tableAlias, column, begin, end));
     }
 
     @Override
-    public Chain orImmediateBetween(String column, Object begin, Object end) {
-        return add(Restrictions.immediateBetween(this, column, begin, end, Logic.OR));
+    public Chain orDirectBetween(String column, Object begin, Object end) {
+        return add(Restrictions.directBetween(this, column, begin, end, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateBetween(String tableAlias, String column, Object begin, Object end) {
-        return add(Restrictions.immediateBetween(tableAlias, column, begin, end, Logic.OR));
+    public Chain orDirectBetween(String tableAlias, String column, Object begin, Object end) {
+        return add(Restrictions.directBetween(tableAlias, column, begin, end, Logic.OR));
     }
 
     @Override
@@ -588,23 +588,23 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public Chain immediateNotBetween(String column, Object begin, Object end) {
-        return add(Restrictions.immediateNotBetween(this, column, begin, end));
+    public Chain directNotBetween(String column, Object begin, Object end) {
+        return add(Restrictions.directNotBetween(this, column, begin, end));
     }
 
     @Override
-    public Chain immediateNotBetween(String tableAlias, String column, Object begin, Object end) {
-        return add(Restrictions.immediateNotBetween(tableAlias, column, begin, end));
+    public Chain directNotBetween(String tableAlias, String column, Object begin, Object end) {
+        return add(Restrictions.directNotBetween(tableAlias, column, begin, end));
     }
 
     @Override
-    public Chain orImmediateNotBetween(String column, Object begin, Object end) {
-        return add(Restrictions.immediateNotBetween(this, column, begin, end, Logic.OR));
+    public Chain orDirectNotBetween(String column, Object begin, Object end) {
+        return add(Restrictions.directNotBetween(this, column, begin, end, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateNotBetween(String tableAlias, String column, Object begin, Object end) {
-        return add(Restrictions.immediateNotBetween(tableAlias, column, begin, end, Logic.OR));
+    public Chain orDirectNotBetween(String tableAlias, String column, Object begin, Object end) {
+        return add(Restrictions.directNotBetween(tableAlias, column, begin, end, Logic.OR));
     }
 
     // endregion
@@ -672,123 +672,123 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public Chain immediateLike(String column, Object value, Character escape) {
-        return add(Restrictions.immediateLike(this, column, value, escape));
+    public Chain directLike(String column, Object value, Character escape) {
+        return add(Restrictions.directLike(this, column, value, escape));
     }
 
     @Override
-    public Chain immediateLike(String tableAlias, String column, Object value, Character escape) {
-        return add(Restrictions.immediateLike(tableAlias, column, value, escape));
+    public Chain directLike(String tableAlias, String column, Object value, Character escape) {
+        return add(Restrictions.directLike(tableAlias, column, value, escape));
     }
 
     @Override
-    public Chain orImmediateLike(String column, Object value, Character escape) {
-        return add(Restrictions.immediateLike(this, column, value, escape, Logic.OR));
+    public Chain orDirectLike(String column, Object value, Character escape) {
+        return add(Restrictions.directLike(this, column, value, escape, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateLike(String tableAlias, String column, Object value, Character escape) {
-        return add(Restrictions.immediateLike(tableAlias, column, value, escape, Logic.OR));
+    public Chain orDirectLike(String tableAlias, String column, Object value, Character escape) {
+        return add(Restrictions.directLike(tableAlias, column, value, escape, Logic.OR));
     }
 
     @Override
-    public Chain immediateLikeLeft(String column, Object value, Character escape) {
-        return add(Restrictions.immediateLike(this, column, value, Match.END, escape));
+    public Chain directLikeLeft(String column, Object value, Character escape) {
+        return add(Restrictions.directLike(this, column, value, Match.END, escape));
     }
 
     @Override
-    public Chain immediateLikeLeft(String tableAlias, String column, Object value, Character escape) {
-        return add(Restrictions.immediateLike(tableAlias, column, value, Match.END, escape));
+    public Chain directLikeLeft(String tableAlias, String column, Object value, Character escape) {
+        return add(Restrictions.directLike(tableAlias, column, value, Match.END, escape));
     }
 
     @Override
-    public Chain orImmediateLikeLeft(String column, Object value, Character escape) {
-        return add(Restrictions.immediateLike(this, column, value, Match.END, escape, Logic.OR));
+    public Chain orDirectLikeLeft(String column, Object value, Character escape) {
+        return add(Restrictions.directLike(this, column, value, Match.END, escape, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateLikeLeft(String tableAlias, String column, Object value, Character escape) {
-        return add(Restrictions.immediateLike(tableAlias, column, value, Match.END, escape, Logic.OR));
+    public Chain orDirectLikeLeft(String tableAlias, String column, Object value, Character escape) {
+        return add(Restrictions.directLike(tableAlias, column, value, Match.END, escape, Logic.OR));
     }
 
     @Override
-    public Chain immediateLikeRight(String column, Object value, Character escape) {
-        return add(Restrictions.immediateLike(this, column, value, Match.START, escape));
+    public Chain directLikeRight(String column, Object value, Character escape) {
+        return add(Restrictions.directLike(this, column, value, Match.START, escape));
     }
 
     @Override
-    public Chain immediateLikeRight(String tableAlias, String column, Object value, Character escape) {
-        return add(Restrictions.immediateLike(tableAlias, column, value, Match.START, escape));
+    public Chain directLikeRight(String tableAlias, String column, Object value, Character escape) {
+        return add(Restrictions.directLike(tableAlias, column, value, Match.START, escape));
     }
 
     @Override
-    public Chain orImmediateLikeRight(String column, Object value, Character escape) {
-        return add(Restrictions.immediateLike(this, column, value, Match.START, escape, Logic.OR));
+    public Chain orDirectLikeRight(String column, Object value, Character escape) {
+        return add(Restrictions.directLike(this, column, value, Match.START, escape, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateLikeRight(String tableAlias, String column, Object value, Character escape) {
-        return add(Restrictions.immediateLike(tableAlias, column, value, Match.START, escape, Logic.OR));
+    public Chain orDirectLikeRight(String tableAlias, String column, Object value, Character escape) {
+        return add(Restrictions.directLike(tableAlias, column, value, Match.START, escape, Logic.OR));
     }
 
     @Override
-    public Chain immediateNotLike(String column, Object value, Character escape) {
-        return add(Restrictions.immediateNotLike(this, column, value, escape));
+    public Chain directNotLike(String column, Object value, Character escape) {
+        return add(Restrictions.directNotLike(this, column, value, escape));
     }
 
     @Override
-    public Chain immediateNotLike(String tableAlias, String column, Object value, Character escape) {
-        return add(Restrictions.immediateNotLike(tableAlias, column, value, escape));
+    public Chain directNotLike(String tableAlias, String column, Object value, Character escape) {
+        return add(Restrictions.directNotLike(tableAlias, column, value, escape));
     }
 
     @Override
-    public Chain orImmediateNotLike(String column, Object value, Character escape) {
-        return add(Restrictions.immediateNotLike(this, column, value, escape, Logic.OR));
+    public Chain orDirectNotLike(String column, Object value, Character escape) {
+        return add(Restrictions.directNotLike(this, column, value, escape, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateNotLike(String tableAlias, String column, Object value, Character escape) {
-        return add(Restrictions.immediateNotLike(tableAlias, column, value, escape, Logic.OR));
+    public Chain orDirectNotLike(String tableAlias, String column, Object value, Character escape) {
+        return add(Restrictions.directNotLike(tableAlias, column, value, escape, Logic.OR));
     }
 
     @Override
-    public Chain immediateNotLikeLeft(String column, Object value, Character escape) {
-        return add(Restrictions.immediateNotLike(this, column, value, Match.END, escape));
+    public Chain directNotLikeLeft(String column, Object value, Character escape) {
+        return add(Restrictions.directNotLike(this, column, value, Match.END, escape));
     }
 
     @Override
-    public Chain immediateNotLikeLeft(String tableAlias, String column, Object value, Character escape) {
-        return add(Restrictions.immediateNotLike(tableAlias, column, value, Match.END, escape));
+    public Chain directNotLikeLeft(String tableAlias, String column, Object value, Character escape) {
+        return add(Restrictions.directNotLike(tableAlias, column, value, Match.END, escape));
     }
 
     @Override
-    public Chain orImmediateNotLikeLeft(String column, Object value, Character escape) {
-        return add(Restrictions.immediateNotLike(this, column, value, Match.END, escape, Logic.OR));
+    public Chain orDirectNotLikeLeft(String column, Object value, Character escape) {
+        return add(Restrictions.directNotLike(this, column, value, Match.END, escape, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateNotLikeLeft(String tableAlias, String column, Object value, Character escape) {
-        return add(Restrictions.immediateNotLike(tableAlias, column, value, Match.END, escape, Logic.OR));
+    public Chain orDirectNotLikeLeft(String tableAlias, String column, Object value, Character escape) {
+        return add(Restrictions.directNotLike(tableAlias, column, value, Match.END, escape, Logic.OR));
     }
 
     @Override
-    public Chain immediateNotLikeRight(String column, Object value, Character escape) {
-        return add(Restrictions.immediateNotLike(this, column, value, Match.START, escape));
+    public Chain directNotLikeRight(String column, Object value, Character escape) {
+        return add(Restrictions.directNotLike(this, column, value, Match.START, escape));
     }
 
     @Override
-    public Chain immediateNotLikeRight(String tableAlias, String column, Object value, Character escape) {
-        return add(Restrictions.immediateNotLike(tableAlias, column, value, Match.START, escape));
+    public Chain directNotLikeRight(String tableAlias, String column, Object value, Character escape) {
+        return add(Restrictions.directNotLike(tableAlias, column, value, Match.START, escape));
     }
 
     @Override
-    public Chain orImmediateNotLikeRight(String column, Object value, Character escape) {
-        return add(Restrictions.immediateNotLike(this, column, value, Match.START, escape, Logic.OR));
+    public Chain orDirectNotLikeRight(String column, Object value, Character escape) {
+        return add(Restrictions.directNotLike(this, column, value, Match.START, escape, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateNotLikeRight(String tableAlias, String column, Object value, Character escape) {
-        return add(Restrictions.immediateNotLike(tableAlias, column, value, Match.START, escape, Logic.OR));
+    public Chain orDirectNotLikeRight(String tableAlias, String column, Object value, Character escape) {
+        return add(Restrictions.directNotLike(tableAlias, column, value, Match.START, escape, Logic.OR));
     }
 
     // endregion
@@ -826,63 +826,63 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public Chain immediateTemplate(String template, Object value) {
-        return add(Restrictions.immediateTemplate(template, value));
+    public Chain directTemplate(String template, Object value) {
+        return add(Restrictions.directTemplate(template, value));
     }
 
     @Override
-    public Chain immediateTemplate(String template, Collection<Object> values) {
-        return add(Restrictions.immediateTemplate(template, values));
+    public Chain directTemplate(String template, Collection<Object> values) {
+        return add(Restrictions.directTemplate(template, values));
     }
 
     @Override
-    public Chain immediateTemplate(String template, Map<String, Object> values) {
-        return add(Restrictions.immediateTemplate(template, values));
+    public Chain directTemplate(String template, Map<String, Object> values) {
+        return add(Restrictions.directTemplate(template, values));
     }
 
     @Override
-    public Chain immediateTemplate(String template, String column, Object value) {
-        return add(Restrictions.immediateTemplate(this, column, value, template));
+    public Chain directTemplate(String template, String column, Object value) {
+        return add(Restrictions.directTemplate(this, column, value, template));
     }
 
     @Override
-    public Chain immediateTemplate(String template, String column, Collection<Object> values) {
-        return add(Restrictions.immediateTemplate(this, column, values, template));
+    public Chain directTemplate(String template, String column, Collection<Object> values) {
+        return add(Restrictions.directTemplate(this, column, values, template));
     }
 
     @Override
-    public Chain immediateTemplate(String template, String column, Map<String, Object> values) {
-        return add(Restrictions.immediateTemplate(this, column, values, template));
+    public Chain directTemplate(String template, String column, Map<String, Object> values) {
+        return add(Restrictions.directTemplate(this, column, values, template));
     }
 
     @Override
-    public Chain orImmediateTemplate(String template, Object value) {
-        return add(Restrictions.immediateTemplate(template, value, Logic.OR));
+    public Chain orDirectTemplate(String template, Object value) {
+        return add(Restrictions.directTemplate(template, value, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateTemplate(String template, Collection<Object> values) {
-        return add(Restrictions.immediateTemplate(template, values, Logic.OR));
+    public Chain orDirectTemplate(String template, Collection<Object> values) {
+        return add(Restrictions.directTemplate(template, values, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateTemplate(String template, Map<String, Object> values) {
-        return add(Restrictions.immediateTemplate(template, values, Logic.OR));
+    public Chain orDirectTemplate(String template, Map<String, Object> values) {
+        return add(Restrictions.directTemplate(template, values, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateTemplate(String template, String column, Object value) {
-        return add(Restrictions.immediateTemplate(this, column, value, template, Logic.OR));
+    public Chain orDirectTemplate(String template, String column, Object value) {
+        return add(Restrictions.directTemplate(this, column, value, template, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateTemplate(String template, String column, Collection<Object> values) {
-        return add(Restrictions.immediateTemplate(this, column, values, template, Logic.OR));
+    public Chain orDirectTemplate(String template, String column, Collection<Object> values) {
+        return add(Restrictions.directTemplate(this, column, values, template, Logic.OR));
     }
 
     @Override
-    public Chain orImmediateTemplate(String template, String column, Map<String, Object> values) {
-        return add(Restrictions.immediateTemplate(this, column, values, template, Logic.OR));
+    public Chain orDirectTemplate(String template, String column, Map<String, Object> values) {
+        return add(Restrictions.directTemplate(this, column, values, template, Logic.OR));
     }
 
     // endregion

@@ -4,21 +4,26 @@ import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Collection;
-
 @SuppressWarnings({"serial"})
-public abstract class AbstractImmediateRangeExpression<T> extends ImmediateExpressionWrapper<T> {
+public abstract class AbstractDirectBetweenExpression<T> extends DirectExpressionWrapper<T> {
 
     /**
-     * 值
+     * 开始值
      */
     @Getter
     @Setter
-    protected Collection<Object> values;
+    protected Object begin;
+
+    /**
+     * 结束值
+     */
+    @Getter
+    @Setter
+    protected Object end;
 
     @Override
     public String getSegment() {
         return ScriptUtil.convertConditionArg(getAlias(), this.column,
-                this.symbol, this.logic, defaultPlaceholders(this.values));
+                this.symbol, this.logic, defaultPlaceholder(this.begin), defaultPlaceholder(this.end));
     }
 }
