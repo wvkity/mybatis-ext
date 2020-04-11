@@ -3,8 +3,6 @@ package com.wkit.lost.mybatis.core.injector.method;
 import com.wkit.lost.mybatis.core.mapping.script.ScriptBuilder;
 import com.wkit.lost.mybatis.core.mapping.script.ScriptBuilderFactory;
 import com.wkit.lost.mybatis.core.mapping.sql.Provider;
-import com.wkit.lost.mybatis.core.mapping.sql.ProviderBuilder;
-import com.wkit.lost.mybatis.core.mapping.sql.ProviderCache;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import org.apache.ibatis.mapping.MappedStatement;
 
@@ -14,7 +12,7 @@ import org.apache.ibatis.mapping.MappedStatement;
  * @author wvkity
  * @see com.wkit.lost.mybatis.core.wrapper.criteria.Criteria
  */
-public abstract class AbstractCriteriaMethod<T extends Provider> extends AbstractMethod implements ProviderBuilder<T> {
+public abstract class AbstractGeneralCriteriaMethod<T extends Provider> extends AbstractGeneralMethod<T> {
 
     @Override
     public MappedStatement injectMappedStatement(TableWrapper table, Class<?> mapperInterface, Class<?> resultType) {
@@ -33,9 +31,4 @@ public abstract class AbstractCriteriaMethod<T extends Provider> extends Abstrac
         return null;
     }
 
-    @SuppressWarnings({"unchecked"})
-    @Override
-    public T target() {
-        return (T) ProviderCache.newInstance(getClass());
-    }
 }

@@ -3,6 +3,8 @@ package com.wkit.lost.mybatis.core.injector.method;
 import com.wkit.lost.mybatis.annotation.extension.Executing;
 import com.wkit.lost.mybatis.core.mapping.script.ScriptBuilder;
 import com.wkit.lost.mybatis.core.mapping.sql.Provider;
+import com.wkit.lost.mybatis.core.mapping.sql.ProviderBuilder;
+import com.wkit.lost.mybatis.core.mapping.sql.ProviderCache;
 import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
@@ -19,10 +21,10 @@ import org.apache.ibatis.mapping.StatementType;
 import java.util.Optional;
 
 /**
- * 抽象插入方法映射注入器
- * @author wvkity
+ * 抽象通用方法注入
+ * @param <T> SQL提供类
  */
-public abstract class AbstractInsertMethod extends AbstractMethod {
+public abstract class AbstractGeneralMethod<T extends Provider> extends AbstractMethod implements ProviderBuilder<T> {
 
     /**
      * 创建主键生成器
@@ -84,5 +86,56 @@ public abstract class AbstractInsertMethod extends AbstractMethod {
         return addInsertMappedStatement(mapperInterface, applyMethod(), createSqlSource(scriptBuilder, entity),
                 entity, keyGenerator, hasPrimaryKey ? primary.getProperty() : null, hasPrimaryKey ?
                         primary.getColumn() : null);
+    }
+    
+    /**
+     * 添加删除{@link MappedStatement}对象到MyBatis容器中
+     * @param mapperInterface 接口
+     * @param __              返回值类型
+     * @param table           表对象
+     * @param provider        SQL提供者
+     * @return {@link MappedStatement}对象
+     */
+    protected MappedStatement addDeleteMappedStatement(Class<?> mapperInterface, Class<?> __,
+                                                       TableWrapper table, Provider provider) {
+        Class<?> entity = table.getEntity();
+        return addDeleteMappedStatement(mapperInterface, applyMethod(),
+                createSqlSource(createScriptBuilder(table, provider), entity), null);
+    }
+
+    /**
+     * 添加更新{@link MappedStatement}对象到MyBatis容器中
+     * @param mapperInterface 接口
+     * @param __              返回值类型
+     * @param table           表对象
+     * @param provider        SQL提供者
+     * @return {@link MappedStatement}对象
+     */
+    protected MappedStatement addUpdateMappedStatement(Class<?> mapperInterface, Class<?> __,
+                                                       TableWrapper table, Provider provider) {
+        Class<?> entity = table.getEntity();
+        return addUpdateMappedStatement(mapperInterface, applyMethod(),
+                createSqlSource(createScriptBuilder(table, provider), entity), entity);
+    }
+
+    /**
+     * 添加查询{@link MappedStatement}对象到MyBatis容器中
+     * @param mapperInterface 接口
+     * @param table           表对象
+     * @param resultType      返回值类型
+     * @param provider        SQL提供者
+     * @return {@link MappedStatement}对象
+     */
+    protected MappedStatement addSelectMappedStatement(Class<?> mapperInterface, Class<?> resultType,
+                                                       TableWrapper table, Provider provider) {
+        Class<?> entity = table.getEntity();
+        return addSelectMappedStatement(mapperInterface, applyMethod(), createSqlSource(
+                createScriptBuilder(table, provider), entity), entity, resultType, table);
+    }
+
+    @SuppressWarnings({"unchecked"})
+    @Override
+    public T target() {
+        return (T) ProviderCache.newInstance(getClass());
     }
 }
