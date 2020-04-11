@@ -2,9 +2,10 @@ package com.wkit.lost.mybatis.core.mapping.sql;
 
 import com.wkit.lost.mybatis.utils.ClassUtil;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.WeakHashMap;
 
 /**
  *
@@ -14,7 +15,8 @@ public final class ProviderCache {
     private ProviderCache() {
     }
 
-    private static final Map<String, Class<? extends Provider>> PROVIDER_CACHE = new ConcurrentHashMap<>(32);
+    private static final Map<String, Class<? extends Provider>> PROVIDER_CACHE =
+            Collections.synchronizedMap(new WeakHashMap<>(32));
 
     @SuppressWarnings({"unchecked"})
     public static Class<? extends Provider> getTarget(final Class<?> klass) {
