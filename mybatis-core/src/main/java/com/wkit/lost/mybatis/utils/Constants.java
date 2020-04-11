@@ -102,4 +102,5 @@ public interface Constants {
     String SPACE_OR_SPACE = " OR ";
     String AND = "AND";
     String AND_SPACE = "AND ";
+    String STAR = "*";
 }

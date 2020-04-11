@@ -7,7 +7,7 @@ import com.wkit.lost.mybatis.plugins.paging.dbs.sql.OriginalSqlForCountParser;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.MetaObjectUtil;
 import com.wkit.lost.paging.Pageable;
-import com.wkit.lost.paging.WrapPager;
+import com.wkit.lost.paging.PagerWrap;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -115,10 +115,10 @@ public abstract class AbstractDialect implements Dialect {
     @Override
     public <E> Object executePagingOnAfter(List<E> result, Object parameter, RowBounds rowBounds) {
         Pageable pageable = ThreadLocalPageable.getPageable();
-        if (pageable instanceof WrapPager) {
-            WrapPager<E> pager = (WrapPager<E>) pageable;
-            if (pager.autoFill()) {
-                pager.setElements(result);
+        if (pageable instanceof PagerWrap) {
+            PagerWrap<E> pager = (PagerWrap<E>) pageable;
+            if (pager.autoFilling()) {
+                pager.setData(result);
             }
         }
         return result;

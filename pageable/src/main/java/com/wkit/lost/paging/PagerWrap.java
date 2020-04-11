@@ -8,14 +8,14 @@ import java.util.List;
  * 泛型分页
  * @author wvkity
  */
-public class WrapPager<E> extends Pager {
+public class PagerWrap<E> extends Pager {
 
     private static final long serialVersionUID = 3752141957648406085L;
 
     /**
      * 元素
      */
-    private List<E> elements;
+    private List<E> data;
 
     /**
      * 是否为空
@@ -25,12 +25,12 @@ public class WrapPager<E> extends Pager {
     /**
      * 分页查询时是否自动填充元素
      */
-    private boolean autoFill = false;
+    private boolean autoFilling = true;
 
     /**
      * 构造方法
      */
-    public WrapPager() {
+    public PagerWrap() {
         super();
     }
 
@@ -38,7 +38,7 @@ public class WrapPager<E> extends Pager {
      * 构造方法
      * @param page 当前页
      */
-    public WrapPager(String page) {
+    public PagerWrap(String page) {
         super(page);
     }
 
@@ -46,7 +46,7 @@ public class WrapPager<E> extends Pager {
      * 构造方法
      * @param page 当前页
      */
-    public WrapPager(long page) {
+    public PagerWrap(long page) {
         super(page);
     }
 
@@ -55,7 +55,7 @@ public class WrapPager<E> extends Pager {
      * @param page 当前页
      * @param size 每页数目
      */
-    public WrapPager(String page, String size) {
+    public PagerWrap(String page, String size) {
         super(page, size);
     }
 
@@ -64,7 +64,7 @@ public class WrapPager<E> extends Pager {
      * @param page 当前页
      * @param size 每页数目
      */
-    public WrapPager(long page, long size) {
+    public PagerWrap(long page, long size) {
         super(page, size);
     }
 
@@ -74,15 +74,15 @@ public class WrapPager<E> extends Pager {
      * @return {@code this}
      */
     @SuppressWarnings("unchecked")
-    public WrapPager<E> add(E... elements) {
+    public PagerWrap<E> add(E... elements) {
         if (elements == null || elements.length == 0) {
-            this.elements = null;
+            this.data = null;
             this.empty = true;
         } else {
-            if (this.elements == null) {
-                this.elements = new ArrayList<>(elements.length);
+            if (this.data == null) {
+                this.data = new ArrayList<>(elements.length);
             }
-            this.elements.addAll(Arrays.asList(elements));
+            this.data.addAll(Arrays.asList(elements));
             this.empty = false;
         }
         return this;
@@ -92,32 +92,32 @@ public class WrapPager<E> extends Pager {
      * 清空元素
      * @return {@code this}
      */
-    public WrapPager<E> clear() {
-        if (this.elements != null && !this.elements.isEmpty()) {
-            this.elements.clear();
+    public PagerWrap<E> clear() {
+        if (this.data != null && !this.data.isEmpty()) {
+            this.data.clear();
             this.empty = true;
         }
         return this;
     }
 
-    public List<E> getElements() {
-        return this.elements;
+    public List<E> getData() {
+        return this.data;
     }
 
-    public void setElements(List<E> elements) {
-        this.elements = elements;
+    public void setData(List<E> data) {
+        this.data = data;
     }
 
     public boolean isEmpty() {
-        this.empty = this.elements == null || this.elements.isEmpty();
+        this.empty = this.data == null || this.data.isEmpty();
         return this.empty;
     }
 
-    public boolean autoFill() {
-        return autoFill;
+    public boolean autoFilling() {
+        return autoFilling;
     }
 
-    public void autoFill(boolean autoFill) {
-        this.autoFill = autoFill;
+    public void autoFilling(boolean autoFilling) {
+        this.autoFilling = autoFilling;
     }
 }

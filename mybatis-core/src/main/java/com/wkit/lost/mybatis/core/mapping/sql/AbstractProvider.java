@@ -83,8 +83,7 @@ public abstract class AbstractProvider implements Provider {
      * @return SQL语句
      */
     protected String criteriaQuery(final String conditionSegment) {
-        return criteriaQuery(ScriptUtil.unSafeJoint(Constants.PARAM_CRITERIA, ".querySegment"),
-                conditionSegment);
+        return criteriaQuery(ScriptUtil.unSafeJoint(Constants.PARAM_CRITERIA, ".querySegment"), conditionSegment);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.wkit.lost.mybatis.core.injector;
 
+import com.wkit.lost.mybatis.core.injector.execute.ArrayList;
 import com.wkit.lost.mybatis.core.injector.execute.BatchDelete;
 import com.wkit.lost.mybatis.core.injector.execute.BatchDeleteById;
 import com.wkit.lost.mybatis.core.injector.execute.BatchInsert;
@@ -9,6 +10,7 @@ import com.wkit.lost.mybatis.core.injector.execute.Delete;
 import com.wkit.lost.mybatis.core.injector.execute.DeleteByCriteria;
 import com.wkit.lost.mybatis.core.injector.execute.DeleteById;
 import com.wkit.lost.mybatis.core.injector.execute.Exists;
+import com.wkit.lost.mybatis.core.injector.execute.ExistsByCriteria;
 import com.wkit.lost.mybatis.core.injector.execute.ExistsById;
 import com.wkit.lost.mybatis.core.injector.execute.Insert;
 import com.wkit.lost.mybatis.core.injector.execute.InsertNotWithNull;
@@ -18,7 +20,11 @@ import com.wkit.lost.mybatis.core.injector.execute.ListByEntities;
 import com.wkit.lost.mybatis.core.injector.execute.ListByEntity;
 import com.wkit.lost.mybatis.core.injector.execute.LogicDelete;
 import com.wkit.lost.mybatis.core.injector.execute.LogicDeleteByCriteria;
+import com.wkit.lost.mybatis.core.injector.execute.MapList;
 import com.wkit.lost.mybatis.core.injector.execute.MixinUpdateNotWithNull;
+import com.wkit.lost.mybatis.core.injector.execute.ObjectList;
+import com.wkit.lost.mybatis.core.injector.execute.PageableList;
+import com.wkit.lost.mybatis.core.injector.execute.PageableListByCriteria;
 import com.wkit.lost.mybatis.core.injector.execute.SelectOne;
 import com.wkit.lost.mybatis.core.injector.execute.Update;
 import com.wkit.lost.mybatis.core.injector.execute.UpdateNotWithLocking;
@@ -62,11 +68,17 @@ public class DefaultInjector extends AbstractInjector {
                 new Count(),
                 new Exists(),
                 new ExistsById(),
+                new ExistsByCriteria(),
                 new SelectOne(),
                 new List(),
+                new ObjectList(),
+                new ArrayList(),
+                new MapList(),
                 new ListByEntity(),
                 new ListByEntities(),
-                new ListByCriteria()
+                new ListByCriteria(),
+                new PageableList(),
+                new PageableListByCriteria()
         ).collect(Collectors.toList());
     }
 }

@@ -17,12 +17,12 @@ public class ListByEntitiesProvider extends AbstractProvider {
 
     @Override
     public String build() {
-        String script = table.columns().stream().map(it -> ScriptUtil.convertIfTagWithNotNull(null, it,
-                ITEM, true, false, Symbol.EQ, Logic.AND, EMPTY, Execute.REPLACE)).collect(Collectors.joining(EMPTY));
-        return select(
-                table.columns().stream().map(ColumnWrapper::getColumn).collect(Collectors.joining(COMMA_SPACE)),
+        String script = table.columns().stream().map(it -> ScriptUtil.convertIfTagWithNotNull(null, it, ITEM,
+                true, false, Symbol.EQ, Logic.AND, EMPTY, Execute.REPLACE)).collect(Collectors.joining(EMPTY));
+        return select(table.columns().stream().map(ColumnWrapper::getColumn).collect(Collectors.joining(COMMA_SPACE)),
                 ScriptUtil.convertWhereTag(ScriptUtil.convertTrimTag(ScriptUtil.convertForeachTag((BRACKET_LEFT +
-                        NEW_LINE + ScriptUtil.convertTrimTag(script, null, null, AND_SPACE, null) + NEW_LINE +
-                        BRACKET_RIGHT), PARAM_ENTITIES, ITEM, null, null, SPACE_OR_SPACE), null, null, OR_SPACE, null)));
+                                NEW_LINE + ScriptUtil.convertTrimTag(script, null, null, AND_SPACE, null) + NEW_LINE +
+                                BRACKET_RIGHT), PARAM_ENTITIES, ITEM, null, null, SPACE_OR_SPACE), null, null, OR_SPACE,
+                        null)));
     }
 }
