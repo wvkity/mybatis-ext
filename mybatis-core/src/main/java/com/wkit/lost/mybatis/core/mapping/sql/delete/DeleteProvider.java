@@ -19,7 +19,7 @@ public class DeleteProvider extends AbstractProvider {
     public String build() {
         return delete(ScriptUtil.convertWhereTag(table.columns().stream().map(it ->
                 ScriptUtil.convertIfTagWithNotNull(null, it, Constants.PARAM_ENTITY,
-                        true, false, Symbol.EQ, Logic.AND, Constants.CHAR_EMPTY,
-                        Execute.REPLACE)).collect(Collectors.joining(Constants.CHAR_EMPTY))));
+                        true, false, Symbol.EQ, Logic.AND, Constants.EMPTY,
+                        Execute.REPLACE)).collect(Collectors.joining(Constants.EMPTY))));
     }
 }

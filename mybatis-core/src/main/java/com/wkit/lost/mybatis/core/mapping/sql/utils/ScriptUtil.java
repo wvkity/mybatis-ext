@@ -86,13 +86,13 @@ public final class ScriptUtil {
         StringBuilder builder = new StringBuilder();
         boolean hasArgName = StringUtil.hasText(argName);
         if (hasArgName) {
-            builder.append(argName).append(Constants.CHAR_DOT);
+            builder.append(argName).append(Constants.DOT);
         }
         builder.append(column.getProperty()).append(" != null");
         if (String.class.isAssignableFrom(column.getJavaType())) {
             builder.append(" and ");
             if (hasArgName) {
-                builder.append(argName).append(Constants.CHAR_DOT);
+                builder.append(argName).append(Constants.DOT);
             }
             builder.append(column.getProperty()).append(" != ''");
         }
@@ -153,20 +153,20 @@ public final class ScriptUtil {
         boolean hasArgName = StringUtil.hasText(argName);
         String property = column.getProperty();
         if (hasArgName) {
-            condition.append(argName).append(Constants.CHAR_DOT);
+            condition.append(argName).append(Constants.DOT);
         }
         condition.append(property).append(" != null");
         if (column.isCheckNotEmpty() && String.class.isAssignableFrom(column.getJavaType())) {
             condition.append(" and ");
             if (hasArgName) {
-                condition.append(argName).append(Constants.CHAR_DOT);
+                condition.append(argName).append(Constants.DOT);
             }
             condition.append(property).append(" != ''");
         }
         StringBuilder script = new StringBuilder(45);
         if (toValue) {
             if (logic != null) {
-                script.append(logic.getSegment()).append(Constants.CHAR_SPACE);
+                script.append(logic.getSegment()).append(Constants.SPACE);
             }
             script.append(convertPartArg(isQuery ? tableAlias : null, column, argName, symbol, separator, execute));
         } else {
@@ -200,7 +200,7 @@ public final class ScriptUtil {
         if (StringUtil.hasText(suffixOverrides)) {
             builder.append(" suffixOverrides=\"").append(suffixOverrides).append(Constants.CHAR_QUOTE);
         }
-        return builder.append(Constants.CHAR_GT).append(Constants.NEW_LINE)
+        return builder.append(Constants.GT).append(Constants.NEW_LINE)
                 .append(script).append(Constants.NEW_LINE).append("</trim>").toString();
     }
 
@@ -227,7 +227,7 @@ public final class ScriptUtil {
     public static String convertChooseTag(final String whenCondition, final String whenScript,
                                           final String otherwiseScript) {
         return "<choose>" + Constants.NEW_LINE +
-                " <when test=\"" + whenCondition + Constants.CHAR_QUOTE + Constants.CHAR_GT + Constants.NEW_LINE +
+                " <when test=\"" + whenCondition + Constants.CHAR_QUOTE + Constants.GT + Constants.NEW_LINE +
                 "  " + whenScript + Constants.NEW_LINE +
                 " </when>" + Constants.NEW_LINE +
                 " <otherwise>" + "  " + otherwiseScript + Constants.NEW_LINE +
@@ -241,7 +241,7 @@ public final class ScriptUtil {
      * @return where脚本标签
      */
     public static String convertWhereTag(final String script) {
-        return "<where>" + Constants.NEW_LINE + Constants.CHAR_SPACE +
+        return "<where>" + Constants.NEW_LINE + Constants.SPACE +
                 script + Constants.NEW_LINE +
                 "</where>";
     }
@@ -294,7 +294,7 @@ public final class ScriptUtil {
         if (StringUtil.hasText(separator)) {
             builder.append(" separator=\"").append(separator).append(Constants.CHAR_QUOTE);
         }
-        return builder.append(Constants.CHAR_GT).append(Constants.NEW_LINE)
+        return builder.append(Constants.GT).append(Constants.NEW_LINE)
                 .append(script).append("</foreach>").append(Constants.NEW_LINE).toString();
     }
 
@@ -405,20 +405,20 @@ public final class ScriptUtil {
         StringBuilder builder = new StringBuilder(60);
         if (execute != Execute.INSERT) {
             if (StringUtil.hasText(tableAlias)) {
-                builder.append(tableAlias).append(Constants.CHAR_DOT);
+                builder.append(tableAlias).append(Constants.DOT);
             }
-            builder.append(column).append(Constants.CHAR_SPACE);
+            builder.append(column).append(Constants.SPACE);
             if (symbol == null) {
                 builder.append(Symbol.EQ.getSegment());
             } else {
                 builder.append(symbol.getSegment());
             }
         }
-        builder.append(Constants.CHAR_SPACE);
+        builder.append(Constants.SPACE);
         if (execute == Execute.NONE) {
             builder.append(safeJoint("value"));
         } else {
-            builder.append(safeJoint(StringUtil.hasText(argName) ? (argName + Constants.CHAR_DOT) : argName,
+            builder.append(safeJoint(StringUtil.hasText(argName) ? (argName + Constants.DOT) : argName,
                     property, concatIntactArg(javaType, jdbcType, typeHandler, isUseJavaType)));
         }
         if (StringUtil.hasText(separator)) {
@@ -528,10 +528,10 @@ public final class ScriptUtil {
                                              final Symbol symbol, final Logic logic, final List<String> placeholders) {
         StringBuilder builder = new StringBuilder(60);
         if (logic != null) {
-            builder.append(logic.getSegment()).append(Constants.CHAR_SPACE);
+            builder.append(logic.getSegment()).append(Constants.SPACE);
         }
         if (StringUtil.hasText(tableAlias)) {
-            builder.append(tableAlias).append(Constants.CHAR_DOT);
+            builder.append(tableAlias).append(Constants.DOT);
         }
         Symbol realSymbol;
         if (symbol == null) {
@@ -539,8 +539,8 @@ public final class ScriptUtil {
         } else {
             realSymbol = symbol;
         }
-        builder.append(column).append(Constants.CHAR_SPACE).append(realSymbol.getSegment())
-                .append(Constants.CHAR_SPACE);
+        builder.append(column).append(Constants.SPACE).append(realSymbol.getSegment())
+                .append(Constants.SPACE);
         if (Symbol.filter(realSymbol) && CollectionUtil.hasElement(placeholders)) {
             switch (symbol) {
                 case EQ:
@@ -607,7 +607,7 @@ public final class ScriptUtil {
                                          final String reference, final boolean apply) {
         String columnAlias;
         if (apply) {
-            columnAlias = StringUtil.hasText(reference) ? (reference + Constants.CHAR_DOT + column.getProperty())
+            columnAlias = StringUtil.hasText(reference) ? (reference + Constants.DOT + column.getProperty())
                     : column.getProperty();
         } else {
             columnAlias = null;
@@ -625,12 +625,12 @@ public final class ScriptUtil {
     public static String convertQueryArg(final String tableAlias, final String column, final String columnAlias) {
         StringBuilder builder = new StringBuilder(40);
         if (StringUtil.hasText(tableAlias)) {
-            builder.append(tableAlias).append(Constants.CHAR_DOT);
+            builder.append(tableAlias).append(Constants.DOT);
         }
         builder.append(column);
         if (StringUtil.hasText(columnAlias)) {
-            builder.append(Constants.CHAR_SPACE);
-            if (columnAlias.contains(Constants.CHAR_DOT)) {
+            builder.append(Constants.SPACE);
+            if (columnAlias.contains(Constants.DOT)) {
                 builder.append(Constants.CHAR_QUOTE).append(columnAlias).append(Constants.CHAR_QUOTE);
             } else {
                 builder.append(columnAlias);

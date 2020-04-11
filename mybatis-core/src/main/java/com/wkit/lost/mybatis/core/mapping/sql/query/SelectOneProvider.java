@@ -17,9 +17,9 @@ public class SelectOneProvider extends AbstractProvider {
     public String build() {
         ColumnWrapper primaryKey = table.getPrimaryKey();
         if (primaryKey == null) {
-            return "";
+            return EMPTY;
         }
-        return select(table.columns().stream().map(ScriptUtil::convertQueryArg).collect(Collectors.joining(", ")),
+        return select(table.columns().stream().map(ScriptUtil::convertQueryArg).collect(Collectors.joining(COMMA_SPACE)),
                 ("WHERE " + ScriptUtil.convertPartArg(null, primaryKey, Execute.NONE)));
     }
 }

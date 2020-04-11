@@ -20,6 +20,6 @@ public class LogicDeleteProvider extends AbstractLogicDeleteProvider {
         return logicDelete(ScriptUtil.convertWhereTag(table.excludeDeletedAuditableColumns().stream().map(it ->
                 ScriptUtil.convertIfTagWithNotNull(null, it, Constants.PARAM_ENTITY, true,
                         false, Symbol.EQ, Logic.AND, null, Execute.REPLACE)
-        ).collect(Collectors.joining(Constants.CHAR_EMPTY, NEW_LINE, NEW_LINE))));
+        ).collect(Collectors.joining(Constants.EMPTY, NEW_LINE, NEW_LINE))));
     }
 }

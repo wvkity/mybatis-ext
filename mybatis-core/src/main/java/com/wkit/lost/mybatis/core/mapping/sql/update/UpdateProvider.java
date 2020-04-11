@@ -6,7 +6,6 @@ import com.wkit.lost.mybatis.core.constant.Symbol;
 import com.wkit.lost.mybatis.core.mapping.sql.AbstractProvider;
 import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
-import com.wkit.lost.mybatis.utils.Constants;
 
 import java.util.Set;
 
@@ -21,14 +20,12 @@ public class UpdateProvider extends AbstractProvider {
         ColumnWrapper lockingColumn = table.getOptimisticLockingColumn();
         ColumnWrapper primaryKey = table.getPrimaryKey();
         if (primaryKey == null && lockingColumn == null) {
-            return Constants.CHAR_EMPTY;
+            return EMPTY;
         }
         Set<ColumnWrapper> columns = table.updatableColumnsExcludeLocking();
         StringBuilder scriptBuilder = new StringBuilder(200);
         for (ColumnWrapper it : columns) {
-            scriptBuilder.append(Constants.CHAR_SPACE)
-                    .append(ScriptUtil.convertPartArg(it, Constants.PARAM_ENTITY, Execute.REPLACE))
-                    .append(Constants.CHAR_COMMA);
+            scriptBuilder.append(SPACE).append(ScriptUtil.convertPartArg(it, PARAM_ENTITY, Execute.REPLACE)).append(COMMA);
         }
         // 乐观锁
         if (lockingColumn != null) {
@@ -37,19 +34,13 @@ public class UpdateProvider extends AbstractProvider {
         // 条件
         StringBuilder conditionBuilder = new StringBuilder(80);
         if (primaryKey != null) {
-            conditionBuilder.append(Constants.CHAR_SPACE).append(ScriptUtil.convertPartArg(primaryKey,
-                    Constants.PARAM_ENTITY, Execute.REPLACE));
+            conditionBuilder.append(SPACE).append(ScriptUtil.convertPartArg(primaryKey, PARAM_ENTITY, Execute.REPLACE));
         }
         if (lockingColumn != null) {
-            conditionBuilder.append(Constants.NEW_LINE).append(ScriptUtil.convertIfTagWithNotNull(null,
-                    lockingColumn, Constants.PARAM_ENTITY, true, false, Symbol.EQ,
-                    Logic.AND, Constants.CHAR_EMPTY, Execute.REPLACE));
+            conditionBuilder.append(NEW_LINE).append(ScriptUtil.convertIfTagWithNotNull(null, lockingColumn,
+                    PARAM_ENTITY, true, false, Symbol.EQ, Logic.AND, EMPTY, Execute.REPLACE));
         }
-        return update(
-                ScriptUtil.convertTrimTag(scriptBuilder.toString(), "SET", null,
-                        null, Constants.CHAR_COMMA),
-                ScriptUtil.convertTrimTag(conditionBuilder.toString(), "WHERE", null,
-                        "AND |OR ", null)
-        );
+        return update(ScriptUtil.convertTrimTag(scriptBuilder.toString(), "SET", null, null, COMMA),
+                ScriptUtil.convertTrimTag(conditionBuilder.toString(), "WHERE", null, "AND |OR ", null));
     }
 }

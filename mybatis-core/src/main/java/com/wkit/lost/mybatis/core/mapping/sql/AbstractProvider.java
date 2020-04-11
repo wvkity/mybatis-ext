@@ -13,11 +13,6 @@ import lombok.Getter;
 public abstract class AbstractProvider implements Provider {
 
     /**
-     * 换行符
-     */
-    protected static final String NEW_LINE = Constants.NEW_LINE;
-
-    /**
      * 实体类
      */
     @Getter
@@ -126,7 +121,7 @@ public abstract class AbstractProvider implements Provider {
             condition.append(" and ").append(Constants.PARAM_OPTIMISTIC_LOCKING_KEY).append(" != ''");
         }
         // 脚本
-        String script = Constants.CHAR_SPACE + column.getColumn() + " = " +
+        String script = Constants.SPACE + column.getColumn() + " = " +
                 ScriptUtil.safeJoint(Constants.PARAM_OPTIMISTIC_LOCKING_KEY,
                         ScriptUtil.concatIntactArg(column.getJavaType(), column.getJdbcType(),
                                 column.getTypeHandler(), column.isUseJavaType()));

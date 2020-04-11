@@ -1043,11 +1043,11 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     public String getAlias() {
         if (this.enableAlias) {
             if (StringUtil.hasText(this.tableAlias)) {
-                return Constants.CHAR_SPACE + this.tableAlias;
+                return Constants.SPACE + this.tableAlias;
             }
-            return Constants.CHAR_SPACE + this.builtinAlias;
+            return Constants.SPACE + this.builtinAlias;
         }
-        return Constants.CHAR_EMPTY;
+        return Constants.EMPTY;
     }
 
     @Override
@@ -1074,7 +1074,7 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
             }
             return condition;
         }
-        return Constants.CHAR_EMPTY;
+        return Constants.EMPTY;
     }
     // endregion
 }

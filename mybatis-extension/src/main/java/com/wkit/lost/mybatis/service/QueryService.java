@@ -76,7 +76,7 @@ public interface QueryService<T, V> {
      * @param entities 对象集合
      * @return 多条记录
      */
-    List<V> listByEntities(Collection<T> entities);
+    List<V> list(List<T> entities);
 
     /**
      * 分页查询记录

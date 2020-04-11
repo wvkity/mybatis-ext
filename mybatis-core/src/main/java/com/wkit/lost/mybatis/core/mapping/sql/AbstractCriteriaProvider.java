@@ -1,7 +1,6 @@
 package com.wkit.lost.mybatis.core.mapping.sql;
 
 import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
-import com.wkit.lost.mybatis.utils.Constants;
 
 /**
  * Criteria相关SQL构件器
@@ -15,11 +14,10 @@ public abstract class AbstractCriteriaProvider extends AbstractLogicDeleteProvid
      */
     protected String getQueryCondition() {
         return NEW_LINE + ScriptUtil.convertIfTag(CRITERIA_HAS_CONDITION_SEGMENT,
-                ScriptUtil.unSafeJoint(Constants.PARAM_CRITERIA, ".whereSegment"), true) + NEW_LINE;
+                ScriptUtil.unSafeJoint(PARAM_CRITERIA, ".whereSegment"), true) + NEW_LINE;
     }
 
     protected String getUpdateCondition() {
-        return NEW_LINE + ScriptUtil.convertIfTag(CRITERIA_HAS_CONDITION_SEGMENT,
-                CRITERIA_WHERE_SEGMENT, true) + NEW_LINE;
+        return NEW_LINE + ScriptUtil.convertIfTag(CRITERIA_HAS_CONDITION_SEGMENT, CRITERIA_WHERE_SEGMENT, true) + NEW_LINE;
     }
 }

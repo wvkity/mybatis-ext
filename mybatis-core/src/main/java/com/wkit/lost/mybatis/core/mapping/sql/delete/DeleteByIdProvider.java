@@ -16,7 +16,7 @@ public class DeleteByIdProvider extends AbstractProvider {
     public String build() {
         ColumnWrapper primaryKey = table.getPrimaryKey();
         if (primaryKey == null) {
-            return Constants.CHAR_EMPTY;
+            return Constants.EMPTY;
         }
         return delete(" WHERE " + ScriptUtil.convertPartArg(primaryKey, null,
                 Execute.NONE));

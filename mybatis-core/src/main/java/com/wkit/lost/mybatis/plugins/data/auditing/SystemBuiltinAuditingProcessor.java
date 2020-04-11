@@ -111,17 +111,15 @@ public class SystemBuiltinAuditingProcessor extends AbstractAuditingProcessor {
                         "have a logical deletion property");
             }
             Class<?> javaType = logicDeletionColumn.getJavaType();
-            String logicDeletedProperty = logicDeletionColumn.getProperty();
-            Object logicDeleteValue = logicDeletionColumn.getLogicDeletedTrueValue();
-            Object logicNotDeleteValue = logicDeletionColumn.getLogicDeletedFalseValue();
+            String deletedProperty = logicDeletionColumn.getProperty();
+            Object deletedValue = logicDeletionColumn.getLogicDeletedTrueValue();
+            Object notDeletedValue = logicDeletionColumn.getLogicDeletedFalseValue();
             // 注入逻辑删除值
-            metadata.setValue(Constants.PARAM_LOGIC_DELETED_AUDITING_KEY, logicDeleteValue);
+            metadata.setValue(Constants.PARAM_LOGIC_DELETED_AUDITING_KEY, deletedValue);
             // 创建实例
-            MetaObject injectMetadata = injectEntityIfNecessary(metadata, table, logicDeletedProperty,
-                    logicNotDeleteValue);
+            MetaObject injectMetadata = injectEntityIfNecessary(metadata, table, deletedProperty, notDeletedValue);
             // 注入值
-            Optional.ofNullable(injectMetadata).ifPresent(it -> injectEntityPropertyValue(it, logicDeletedProperty,
-                    logicNotDeleteValue));
+            Optional.ofNullable(injectMetadata).ifPresent(it -> injectEntityPropertyValue(it, deletedProperty, notDeletedValue));
         }
     }
 

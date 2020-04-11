@@ -349,11 +349,11 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
     @SuppressWarnings("unchecked")
     @Override
     public List<V> list(T... entities) {
-        return ArrayUtil.isEmpty(entities) ? new ArrayList<>() : listByEntities(Arrays.asList(entities));
+        return ArrayUtil.isEmpty(entities) ? new ArrayList<>() : list(Arrays.asList(entities));
     }
 
     @Override
-    public List<V> listByEntities(Collection<T> entities) {
+    public List<V> list(List<T> entities) {
         List<T> list = Optional.ofNullable(entities)
                 .orElse(new ArrayList<>())
                 .stream()

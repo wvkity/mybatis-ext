@@ -14,6 +14,7 @@ import com.wkit.lost.mybatis.core.injector.execute.Insert;
 import com.wkit.lost.mybatis.core.injector.execute.InsertNotWithNull;
 import com.wkit.lost.mybatis.core.injector.execute.List;
 import com.wkit.lost.mybatis.core.injector.execute.ListByCriteria;
+import com.wkit.lost.mybatis.core.injector.execute.ListByEntities;
 import com.wkit.lost.mybatis.core.injector.execute.ListByEntity;
 import com.wkit.lost.mybatis.core.injector.execute.LogicDelete;
 import com.wkit.lost.mybatis.core.injector.execute.LogicDeleteByCriteria;
@@ -64,6 +65,7 @@ public class DefaultInjector extends AbstractInjector {
                 new SelectOne(),
                 new List(),
                 new ListByEntity(),
+                new ListByEntities(),
                 new ListByCriteria()
         ).collect(Collectors.toList());
     }

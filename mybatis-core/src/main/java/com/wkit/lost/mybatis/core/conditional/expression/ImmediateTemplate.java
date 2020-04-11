@@ -305,7 +305,7 @@ public class ImmediateTemplate<T> extends ImmediateExpressionWrapper<T> {
     @Override
     public String getSegment() {
         StringBuilder builder = new StringBuilder(60);
-        builder.append(this.logic.getSegment()).append(Constants.CHAR_SPACE);
+        builder.append(this.logic.getSegment()).append(Constants.SPACE);
         String realTemplate;
         if (this.template.contains(COLUMN_PLACEHOLDER)) {
             String realAlias = this.criteria.getAlias();

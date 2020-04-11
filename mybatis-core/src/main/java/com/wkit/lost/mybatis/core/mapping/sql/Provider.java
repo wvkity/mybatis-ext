@@ -1,12 +1,13 @@
 package com.wkit.lost.mybatis.core.mapping.sql;
 
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
+import com.wkit.lost.mybatis.utils.Constants;
 
 /**
  * SQL构建器
  * @author wvkity
  */
-public interface Provider {
+public interface Provider extends Constants {
 
     /**
      * 构建SQL语句

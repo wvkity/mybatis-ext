@@ -29,6 +29,6 @@ public class WhereSegmentWrapper extends AbstractSegment<Criterion<?>> {
                 return String.join(" ", conditions).trim();
             }
         }
-        return Constants.CHAR_EMPTY;
+        return Constants.EMPTY;
     }
 }

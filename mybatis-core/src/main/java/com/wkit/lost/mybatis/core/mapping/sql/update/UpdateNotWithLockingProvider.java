@@ -4,7 +4,6 @@ import com.wkit.lost.mybatis.core.constant.Execute;
 import com.wkit.lost.mybatis.core.mapping.sql.AbstractProvider;
 import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
-import com.wkit.lost.mybatis.utils.Constants;
 
 import java.util.Set;
 
@@ -18,18 +17,14 @@ public class UpdateNotWithLockingProvider extends AbstractProvider {
     public String build() {
         ColumnWrapper primaryKey = table.getPrimaryKey();
         if (primaryKey == null) {
-            return Constants.CHAR_EMPTY;
+            return EMPTY;
         }
         StringBuilder scriptBuilder = new StringBuilder(200);
         Set<ColumnWrapper> columns = table.updatableColumns();
         for (ColumnWrapper it : columns) {
-            scriptBuilder.append(ScriptUtil.convertPartArg(it, Constants.PARAM_ENTITY, Execute.REPLACE))
-                    .append(Constants.CHAR_COMMA);
+            scriptBuilder.append(ScriptUtil.convertPartArg(it, PARAM_ENTITY, Execute.REPLACE)).append(COMMA);
         }
-        return update(
-                ScriptUtil.convertTrimTag(
-                        scriptBuilder.toString(), "SET", null, null, Constants.CHAR_COMMA),
-                (" WHERE " + ScriptUtil.convertPartArg(primaryKey, Constants.PARAM_ENTITY, Execute.REPLACE))
-        );
+        return update(ScriptUtil.convertTrimTag(scriptBuilder.toString(), "SET", null, null, COMMA),
+                (" WHERE " + ScriptUtil.convertPartArg(primaryKey, PARAM_ENTITY, Execute.REPLACE)));
     }
 }
