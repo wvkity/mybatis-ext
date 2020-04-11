@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * @param <T> 泛型类型
  * @author wvkity
  */
-public class ImmediateGroup<T> extends AbstractGroupWrapper<T, String> {
+public class DirectGroup<T> extends AbstractGroupWrapper<T, String> {
 
     private static final long serialVersionUID = -579446881939269926L;
 
@@ -25,7 +25,7 @@ public class ImmediateGroup<T> extends AbstractGroupWrapper<T, String> {
      * @param alias   表别名
      * @param columns 字段集合
      */
-    private ImmediateGroup(String alias, Collection<String> columns) {
+    private DirectGroup(String alias, Collection<String> columns) {
         this.alias = alias;
         this.columns = distinct(columns);
     }
@@ -36,7 +36,7 @@ public class ImmediateGroup<T> extends AbstractGroupWrapper<T, String> {
      * @param <T>     泛型类型
      * @return 分组对象
      */
-    public static <T> ImmediateGroup<T> group(String... columns) {
+    public static <T> DirectGroup<T> group(String... columns) {
         return groupWithAlias(null, ArrayUtil.toList(columns));
     }
 
@@ -46,7 +46,7 @@ public class ImmediateGroup<T> extends AbstractGroupWrapper<T, String> {
      * @param <T>     泛型类型
      * @return 分组对象
      */
-    public static <T> ImmediateGroup<T> group(Collection<String> columns) {
+    public static <T> DirectGroup<T> group(Collection<String> columns) {
         return groupWithAlias(null, columns);
     }
 
@@ -57,7 +57,7 @@ public class ImmediateGroup<T> extends AbstractGroupWrapper<T, String> {
      * @param <T>     泛型类型
      * @return 分组对象
      */
-    public static <T> ImmediateGroup<T> groupWithAlias(String alias, String... columns) {
+    public static <T> DirectGroup<T> groupWithAlias(String alias, String... columns) {
         return groupWithAlias(alias, ArrayUtil.toList(columns));
     }
 
@@ -68,8 +68,8 @@ public class ImmediateGroup<T> extends AbstractGroupWrapper<T, String> {
      * @param <T>     泛型类型
      * @return 分组对象
      */
-    public static <T> ImmediateGroup<T> groupWithAlias(String alias, Collection<String> columns) {
-        return new ImmediateGroup<>(alias, columns);
+    public static <T> DirectGroup<T> groupWithAlias(String alias, Collection<String> columns) {
+        return new DirectGroup<>(alias, columns);
     }
 
     @Override

@@ -5,8 +5,6 @@ import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.core.wrapper.criteria.AbstractQueryCriteriaWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
-import com.wkit.lost.mybatis.core.wrapper.criteria.ForeignSubCriteria;
-import com.wkit.lost.mybatis.core.wrapper.criteria.SubCriteria;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
@@ -35,7 +33,7 @@ public class QueryManager implements Segment {
     /**
      * 条件对象
      */
-    private AbstractQueryCriteriaWrapper<?> criteria;
+    private final AbstractQueryCriteriaWrapper<?> criteria;
 
     /**
      * 查询列容器
@@ -135,8 +133,8 @@ public class QueryManager implements Segment {
      * @param columns 列名数组
      * @return 当前对象
      */
-    public QueryManager immediateExcludes(String... columns) {
-        return immediateExcludes(ArrayUtil.toList(columns));
+    public QueryManager directExcludes(String... columns) {
+        return directExcludes(ArrayUtil.toList(columns));
     }
 
     /**
@@ -144,7 +142,7 @@ public class QueryManager implements Segment {
      * @param columns 列名集合
      * @return 当前对象
      */
-    public QueryManager immediateExcludes(Collection<String> columns) {
+    public QueryManager directExcludes(Collection<String> columns) {
         Set<String> its = distinct(columns);
         if (!its.isEmpty()) {
             if (this.excludeColumns == null) {
@@ -169,8 +167,8 @@ public class QueryManager implements Segment {
             queries = wrappers.stream().filter(it -> {
                 if (it instanceof Query) {
                     return accept(((Query<?>) it).getProperty(), this.excludeProperties, false);
-                } else if (it instanceof ImmediateQuery) {
-                    return accept(((ImmediateQuery<?>) it).getColumn(), this.excludeColumns, true);
+                } else if (it instanceof DirectQuery) {
+                    return accept(((DirectQuery<?>) it).getColumn(), this.excludeColumns, true);
                 }
                 return true;
             }).collect(Collectors.toList());

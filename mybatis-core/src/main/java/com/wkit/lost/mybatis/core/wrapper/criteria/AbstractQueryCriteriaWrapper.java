@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
 import com.wkit.lost.mybatis.core.constant.Range;
-import com.wkit.lost.mybatis.core.wrapper.basic.ImmediateQuery;
+import com.wkit.lost.mybatis.core.wrapper.basic.DirectQuery;
 import com.wkit.lost.mybatis.core.wrapper.basic.Query;
 import com.wkit.lost.mybatis.core.wrapper.basic.QueryManager;
 import lombok.Getter;
@@ -104,20 +104,20 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> immediateQuery(String column) {
-        this.queryManager.add(ImmediateQuery.Single.query(this, column, null));
+    public AbstractQueryCriteriaWrapper<T> directQuery(String column) {
+        this.queryManager.add(DirectQuery.Single.query(this, column, null));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> immediateQuery(String column, String columnAlias) {
-        this.queryManager.add(ImmediateQuery.Single.query(column, columnAlias));
+    public AbstractQueryCriteriaWrapper<T> directQuery(String column, String columnAlias) {
+        this.queryManager.add(DirectQuery.Single.query(column, columnAlias));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> immediateQuery(String tableAlias, String column, String columnAlias) {
-        this.queryManager.add(ImmediateQuery.Single.query(tableAlias, column, columnAlias));
+    public AbstractQueryCriteriaWrapper<T> directQuery(String tableAlias, String column, String columnAlias) {
+        this.queryManager.add(DirectQuery.Single.query(tableAlias, column, columnAlias));
         return this;
     }
 
@@ -144,26 +144,26 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> immediateQueries(Collection<String> columns) {
-        this.queryManager.add(ImmediateQuery.Multi.query(this, columns));
+    public AbstractQueryCriteriaWrapper<T> directQueries(Collection<String> columns) {
+        this.queryManager.add(DirectQuery.Multi.query(this, columns));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> immediateQueries(Map<String, String> columns) {
-        this.queryManager.add(ImmediateQuery.Multi.query(this, columns));
+    public AbstractQueryCriteriaWrapper<T> directQueries(Map<String, String> columns) {
+        this.queryManager.add(DirectQuery.Multi.query(this, columns));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> immediateQueries(String tableAlias, Map<String, String> columns) {
-        this.queryManager.add(ImmediateQuery.Multi.query(tableAlias, columns));
+    public AbstractQueryCriteriaWrapper<T> directQueries(String tableAlias, Map<String, String> columns) {
+        this.queryManager.add(DirectQuery.Multi.query(tableAlias, columns));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> immediateQueries(String tableAlias, Collection<String> columns) {
-        this.queryManager.add(ImmediateQuery.Multi.query(tableAlias, columns));
+    public AbstractQueryCriteriaWrapper<T> directQueries(String tableAlias, Collection<String> columns) {
+        this.queryManager.add(DirectQuery.Multi.query(tableAlias, columns));
         return this;
     }
 
@@ -184,7 +184,7 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> immediateExcludes(Collection<String> columns) {
+    public AbstractQueryCriteriaWrapper<T> directExcludes(Collection<String> columns) {
         this.queryManager.excludes(columns);
         return this;
     }

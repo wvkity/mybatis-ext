@@ -63,7 +63,7 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
             String columnName = StringUtil.hasText(this.columnAlias) ? this.columnAlias :
                     (this.criteria != null && this.criteria.isColumnAliasAutoMapping() ?
                             this.column.getProperty() : this.column.getColumn());
-            return ImmediateQuery.Single.query(it, columnName, null);
+            return DirectQuery.Single.query(it, columnName, null);
         }).orElse(null);
     }
 

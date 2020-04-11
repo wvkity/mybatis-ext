@@ -54,7 +54,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param column 列名
      * @return {@code this}
      */
-    Chain immediateQuery(String column);
+    Chain directQuery(String column);
 
     /**
      * 添加查询列
@@ -62,7 +62,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columnAlias 列别名
      * @return {@code this}
      */
-    Chain immediateQuery(String column, String columnAlias);
+    Chain directQuery(String column, String columnAlias);
 
     /**
      * 添加查询列
@@ -71,7 +71,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columnAlias 列别名
      * @return {@code this}
      */
-    Chain immediateQuery(String tableAlias, String column, String columnAlias);
+    Chain directQuery(String tableAlias, String column, String columnAlias);
 
     /**
      * 添加查询列
@@ -161,8 +161,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns 列名数组
      * @return {@code this}
      */
-    default Chain immediateQueries(String... columns) {
-        return immediateQueries(ArrayUtil.toList(columns));
+    default Chain directQueries(String... columns) {
+        return directQueries(ArrayUtil.toList(columns));
     }
 
     /**
@@ -170,14 +170,14 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns 列名集合
      * @return {@code this}
      */
-    Chain immediateQueries(Collection<String> columns);
+    Chain directQueries(Collection<String> columns);
 
     /**
      * 添加查询列
      * @param columns 列别名-列名集合
      * @return {@code this}
      */
-    Chain immediateQueries(Map<String, String> columns);
+    Chain directQueries(Map<String, String> columns);
 
     /**
      * 添加查询列
@@ -185,7 +185,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns    列别名-列名集合
      * @return {@code this}
      */
-    Chain immediateQueries(String tableAlias, Map<String, String> columns);
+    Chain directQueries(String tableAlias, Map<String, String> columns);
 
     /**
      * 添加查询列
@@ -193,8 +193,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns    列名数组
      * @return {@code this}
      */
-    default Chain immediateQueriesWithAlias(String tableAlias, String... columns) {
-        return immediateQueries(tableAlias, ArrayUtil.toList(columns));
+    default Chain directQueriesWithAlias(String tableAlias, String... columns) {
+        return directQueries(tableAlias, ArrayUtil.toList(columns));
     }
 
     /**
@@ -203,7 +203,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns    列名集合
      * @return {@code this}
      */
-    Chain immediateQueries(String tableAlias, Collection<String> columns);
+    Chain directQueries(String tableAlias, Collection<String> columns);
 
     /**
      * 添加子查询列
@@ -329,8 +329,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns 列名数组
      * @return {@code this}
      */
-    default Chain immediateExcludes(String... columns) {
-        return immediateExcludes(ArrayUtil.toList(columns));
+    default Chain directExcludes(String... columns) {
+        return directExcludes(ArrayUtil.toList(columns));
     }
 
     /**
@@ -338,7 +338,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns 列名集合
      * @return {@code this}
      */
-    Chain immediateExcludes(Collection<String> columns);
+    Chain directExcludes(Collection<String> columns);
 
     /**
      * 获取查询字段片段

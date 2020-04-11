@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * @param <T> 实体类型
  * @author wvkity
  */
-public class ImmediateOrder<T> extends AbstractOrderWrapper<T, String> {
+public class DirectOrder<T> extends AbstractOrderWrapper<T, String> {
 
     private static final long serialVersionUID = 7837358423348936221L;
 
@@ -28,7 +28,7 @@ public class ImmediateOrder<T> extends AbstractOrderWrapper<T, String> {
      * @param ascending 排序方式(是否为ASC排序)
      * @param columns   字段集合
      */
-    public ImmediateOrder(String alias, boolean ascending, Collection<String> columns) {
+    public DirectOrder(String alias, boolean ascending, Collection<String> columns) {
         this.alias = alias;
         this.ascending = ascending;
         this.columns = distinct(columns);
@@ -40,8 +40,8 @@ public class ImmediateOrder<T> extends AbstractOrderWrapper<T, String> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    public static <T> ImmediateOrder<T> asc(String... properties) {
-        return new ImmediateOrder<>(null, true, ArrayUtil.toList(properties));
+    public static <T> DirectOrder<T> asc(String... properties) {
+        return new DirectOrder<>(null, true, ArrayUtil.toList(properties));
     }
 
     /**
@@ -51,8 +51,8 @@ public class ImmediateOrder<T> extends AbstractOrderWrapper<T, String> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    public static <T> ImmediateOrder<T> ascWithAlias(String alias, String... properties) {
-        return new ImmediateOrder<>(alias, true, ArrayUtil.toList(properties));
+    public static <T> DirectOrder<T> ascWithAlias(String alias, String... properties) {
+        return new DirectOrder<>(alias, true, ArrayUtil.toList(properties));
     }
 
     /**
@@ -61,8 +61,8 @@ public class ImmediateOrder<T> extends AbstractOrderWrapper<T, String> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    public static <T> ImmediateOrder<T> desc(String... properties) {
-        return new ImmediateOrder<>(null, false, ArrayUtil.toList(properties));
+    public static <T> DirectOrder<T> desc(String... properties) {
+        return new DirectOrder<>(null, false, ArrayUtil.toList(properties));
     }
 
     /**
@@ -72,8 +72,8 @@ public class ImmediateOrder<T> extends AbstractOrderWrapper<T, String> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    public static <T> ImmediateOrder<T> descWithAlias(String alias, String... properties) {
-        return new ImmediateOrder<>(alias, false, ArrayUtil.toList(properties));
+    public static <T> DirectOrder<T> descWithAlias(String alias, String... properties) {
+        return new DirectOrder<>(alias, false, ArrayUtil.toList(properties));
     }
 
     @Override
