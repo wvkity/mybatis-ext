@@ -21,6 +21,13 @@ public interface CriteriaService<T, V> {
     boolean exists(Criteria<T> criteria);
 
     /**
+     * 根据条件对象查询记录数
+     * @param criteria 条件对象
+     * @return 记录数
+     */
+    long count(Criteria<T> criteria);
+
+    /**
      * 根据指定条件对象更新记录
      * @param criteria 条件对象
      * @return 受影响行数

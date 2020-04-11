@@ -6,6 +6,7 @@ import com.wkit.lost.mybatis.core.injector.execute.BatchDeleteById;
 import com.wkit.lost.mybatis.core.injector.execute.BatchInsert;
 import com.wkit.lost.mybatis.core.injector.execute.BatchInsertNotWithAudit;
 import com.wkit.lost.mybatis.core.injector.execute.Count;
+import com.wkit.lost.mybatis.core.injector.execute.CountByCriteria;
 import com.wkit.lost.mybatis.core.injector.execute.Delete;
 import com.wkit.lost.mybatis.core.injector.execute.DeleteByCriteria;
 import com.wkit.lost.mybatis.core.injector.execute.DeleteById;
@@ -66,6 +67,7 @@ public class DefaultInjector extends AbstractInjector {
                 new MixinUpdateNotWithNull(),
                 // query
                 new Count(),
+                new CountByCriteria(),
                 new Exists(),
                 new ExistsById(),
                 new ExistsByCriteria(),

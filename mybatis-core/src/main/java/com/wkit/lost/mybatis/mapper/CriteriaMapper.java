@@ -51,6 +51,13 @@ public interface CriteriaMapper<T, V> {
     int existsByCriteria(@Param(Constants.PARAM_CRITERIA) final Criteria<T> criteria);
 
     /**
+     * 根据条件对象查询记录数
+     * @param criteria 条件对象
+     * @return 记录数
+     */
+    long countByCriteria(@Param(Constants.PARAM_CRITERIA) final Criteria<T> criteria);
+
+    /**
      * 查询列表
      * @param criteria 条件对象
      * @return 列表

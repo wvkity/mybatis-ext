@@ -38,6 +38,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
 
     protected static final String METHOD_INSERT = "insert";
     protected static final String METHOD_INSERT_NOT_WITH_NULL = "insertNotWithNull";
+    protected final ArrayList<V> EMPTY_DATA = new ArrayList<>(0);
 
     @Inject
     protected Executor executor;
@@ -290,11 +291,10 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int batchDelete(Collection<? extends Serializable> idList) {
-        if (CollectionUtil.isEmpty(idList)) {
+        if (idList == null) {
             throw new MyBatisException("Primary key set parameters cannot be empty");
         }
-        List<? extends Serializable> list = idList.stream()
-                .filter(Objects::nonNull)
+        List<? extends Serializable> list = idList.stream().filter(Objects::nonNull)
                 .collect(Collectors.toCollection(ArrayList::new));
         if (CollectionUtil.isEmpty(list)) {
             throw new MyBatisException("Primary key set parameters cannot be empty");
@@ -304,22 +304,27 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
 
     @Override
     public boolean exists(T entity) {
-        return executor.exists(entity) > 0;
+        return entity != null && executor.exists(entity) > 0;
     }
 
     @Override
     public boolean exists(Criteria<T> criteria) {
-        return executor.existsByCriteria(criteria) > 0;
+        return criteria != null && executor.existsByCriteria(criteria) > 0;
     }
 
     @Override
     public boolean exists(Serializable id) {
-        return this.executor.existsById(id) > 0;
+        return id != null && this.executor.existsById(id) > 0;
     }
 
     @Override
     public long count(T entity) {
-        return executor.count(entity);
+        return entity == null ? 0 : executor.count(entity);
+    }
+
+    @Override
+    public long count(Criteria<T> criteria) {
+        return criteria == null ? 0 : executor.countByCriteria(criteria.resultMap(null).resultType(null));
     }
 
     @Override
@@ -329,7 +334,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
 
     @Override
     public List<V> list(Serializable... ids) {
-        return ArrayUtil.isEmpty(ids) ? new ArrayList<>() : list(Arrays.asList(ids));
+        return list(Arrays.asList(ids));
     }
 
     public List<V> list(Collection<? extends Serializable> idList) {
@@ -338,18 +343,18 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
                 .stream()
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-        return CollectionUtil.isEmpty(pks) ? new ArrayList<>() : executor.list(pks);
+        return CollectionUtil.isEmpty(pks) ? EMPTY_DATA : executor.list(pks);
     }
 
     @Override
     public List<V> list(T entity) {
-        return entity == null ? new ArrayList<>() : executor.listByEntity(entity);
+        return entity == null ? EMPTY_DATA : executor.listByEntity(entity);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public List<V> list(T... entities) {
-        return ArrayUtil.isEmpty(entities) ? new ArrayList<>() : list(Arrays.asList(entities));
+        return list(Arrays.asList(entities));
     }
 
     @Override
@@ -359,12 +364,12 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
                 .stream()
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-        return CollectionUtil.isEmpty(list) ? new ArrayList<>() : executor.listByEntities(list);
+        return CollectionUtil.isEmpty(list) ? EMPTY_DATA : executor.listByEntities(list);
     }
 
     @Override
     public List<V> list(Criteria<T> criteria) {
-        return criteria == null ? new ArrayList<>() : executor.listByCriteria(criteria.resultMap(null).resultType(null));
+        return criteria == null ? EMPTY_DATA : executor.listByCriteria(criteria.resultMap(null).resultType(null));
     }
 
     @SuppressWarnings("unchecked")
@@ -374,31 +379,43 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
             List<Object> result = executor.objectList(criteria);
             return Optional.ofNullable(result).map(value -> (List<E>) value).orElse(new ArrayList<>());
         }
-        return new ArrayList<>();
+        return new ArrayList<>(0);
     }
 
     @Override
     public List<Object> objects(Criteria<T> criteria) {
+        if (criteria == null) {
+            return new ArrayList<>(0);
+        }
         return executor.objectList(criteria.resultMap(null).resultType(null));
     }
 
     @Override
     public List<Object[]> array(Criteria<T> criteria) {
+        if (criteria == null) {
+            return new ArrayList<>(0);
+        }
         return executor.arrayList(criteria.resultMap(null).resultType(null));
     }
 
     @Override
     public List<Map<String, Object>> map(Criteria<T> criteria) {
+        if (criteria == null) {
+            return new ArrayList<>(0);
+        }
         return executor.mapList(criteria.resultMap(null).resultType(null));
     }
 
     @Override
     public List<V> list(T entity, Pageable pageable) {
-        return executor.pageableList(entity, pageable);
+        return entity == null ? EMPTY_DATA : executor.pageableList(entity, pageable);
     }
 
     @Override
     public List<V> list(Criteria<T> criteria, Pageable pageable) {
+        if (criteria == null) {
+            return EMPTY_DATA;
+        }
         return executor.pageableListByCriteria(criteria.resultMap(null).resultType(null), pageable);
     }
 
