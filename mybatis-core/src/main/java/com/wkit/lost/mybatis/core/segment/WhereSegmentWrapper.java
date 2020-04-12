@@ -5,6 +5,7 @@ import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.StringUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,5 +31,14 @@ public class WhereSegmentWrapper extends AbstractSegment<Criterion<?>> {
             }
         }
         return Constants.EMPTY;
+    }
+
+    /**
+     * 获取条件
+     * @return 条件集合
+     */
+    final List<Criterion<?>> getConditions() {
+        return this.isNotEmpty() ? Collections.unmodifiableList(new ArrayList<>(this.segments))
+                : Collections.emptyList();
     }
 }

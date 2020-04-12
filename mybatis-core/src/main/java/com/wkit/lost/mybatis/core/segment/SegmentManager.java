@@ -7,6 +7,7 @@ import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * SQL片段管理器
@@ -19,22 +20,22 @@ public class SegmentManager implements Segment {
     /**
      * WHERE片段容器
      */
-    private WhereSegmentWrapper whereWrapper = new WhereSegmentWrapper();
+    private final WhereSegmentWrapper whereWrapper = new WhereSegmentWrapper();
 
     /**
      * 分组片段容器
      */
-    private GroupSegmentWrapper groupWrapper = new GroupSegmentWrapper();
+    private final GroupSegmentWrapper groupWrapper = new GroupSegmentWrapper();
 
     /**
      * 分组筛选片段容器
      */
-    private HavingSegmentWrapper havingWrapper = new HavingSegmentWrapper();
+    private final HavingSegmentWrapper havingWrapper = new HavingSegmentWrapper();
 
     /**
      * 排序片段容器
      */
-    private OrderSegmentWrapper orderWrapper = new OrderSegmentWrapper();
+    private final OrderSegmentWrapper orderWrapper = new OrderSegmentWrapper();
 
     /**
      * 添加多个条件对象
@@ -120,5 +121,13 @@ public class SegmentManager implements Segment {
 
     private String getWhereSegment() {
         return this.whereWrapper.getSegment();
+    }
+
+    /**
+     * 获取条件集合
+     * @return 条件集合
+     */
+    public List<Criterion<?>> getConditions() {
+        return this.whereWrapper.getConditions();
     }
 }
