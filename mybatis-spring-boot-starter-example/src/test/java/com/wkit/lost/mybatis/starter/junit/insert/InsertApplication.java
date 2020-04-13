@@ -25,7 +25,7 @@ public class InsertApplication extends RootTestRunner {
     @Test
     public void singleInsertTest() {
         Grade grade = new Grade();
-        grade.setName("S1").setCreatedUserId(DEF_SYS_USER_ID).setCreatedUserName(DEF_SYS_USER_NAME)
+        grade.setName("S7").setCreatedUserId(DEF_SYS_USER_ID).setCreatedUserName(DEF_SYS_USER_NAME)
                 .setGmtCreated(LocalDateTime.now());
         int result = gradeService.save(grade);
         log.info("执行结果: {}", result);
@@ -34,7 +34,7 @@ public class InsertApplication extends RootTestRunner {
     @Test
     public void singleInsertWithNotNullTest() {
         Grade grade = new Grade();
-        grade.setName("S2").setCreatedUserId(DEF_SYS_USER_ID).setCreatedUserName(DEF_SYS_USER_NAME)
+        grade.setName("S9").setCreatedUserId(DEF_SYS_USER_ID).setCreatedUserName(DEF_SYS_USER_NAME)
                 .setGmtCreated(LocalDateTime.now());
         int result = gradeService.saveNotWithNull(grade);
         log.info("执行结果: {}", result);
@@ -44,7 +44,7 @@ public class InsertApplication extends RootTestRunner {
     public void saveTest() {
         User user = new User();
         user.setUserName("兮兮").setPassword("123456test")
-                .setState(1).setScore(88).setSex(1).setVersion(1).setDeleted(false);
+                .setState(2).setScore(65).setSex(1).setVersion(1).setDeleted(false);
         int result = userService.save(user);
         log.info("执行结果: {}", result);
     }
@@ -65,10 +65,10 @@ public class InsertApplication extends RootTestRunner {
     @Test
     public void batchInsertNotWithAuditTest() {
         Grade grade = new Grade();
-        grade.setName("S4").setCreatedUserId(DEF_SYS_USER_ID).setCreatedUserName(DEF_SYS_USER_NAME)
+        grade.setName("x1").setCreatedUserId(DEF_SYS_USER_ID).setCreatedUserName(DEF_SYS_USER_NAME)
                 .setGmtCreated(LocalDateTime.now());
         Grade g2 = new Grade();
-        g2.setName("S5").setCreatedUserId(DEF_SYS_USER_ID)
+        g2.setName("x2").setCreatedUserId(DEF_SYS_USER_ID)
                 .setCreatedUserName(DEF_SYS_USER_NAME).setGmtCreated(LocalDateTime.now());
         List<Grade> list = ArrayUtil.toList(grade, g2);
         int result = gradeService.batchSaveNotWithAudit(list);

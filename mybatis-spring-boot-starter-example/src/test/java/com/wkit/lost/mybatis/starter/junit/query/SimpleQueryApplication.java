@@ -38,9 +38,9 @@ public class SimpleQueryApplication extends RootTestRunner {
     }
 
     @Test
-    public void immediateEqualTest() {
+    public void directEqualTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        criteria.immediateEq("ID", 2L).orImmediateEq("id", 4L);
+        criteria.directEq("ID", 2L).orDirectEq("id", 4L);
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
@@ -49,15 +49,15 @@ public class SimpleQueryApplication extends RootTestRunner {
     public void notEqualTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
         criteria.ne(Grade::getId, 1L);
-        List<GradeVo> list = gradeService.list(criteria);
+        List<GradeVo> list = gradeService.list(criteria.as("sel___"));
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
 
     @Test
-    public void immediateNotEqualTest() {
+    public void directNotEqualTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        criteria.immediateNe("ID", 1L);
-        List<GradeVo> list = gradeService.list(criteria.useAlias());
+        criteria.directNe("ID", 1L);
+        List<GradeVo> list = gradeService.list(criteria.useAs());
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
 
@@ -70,9 +70,9 @@ public class SimpleQueryApplication extends RootTestRunner {
     }
 
     @Test
-    public void immediateLessThanTest() {
+    public void directLessThanTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        criteria.immediateLt("id", 3L).orImmediateGe("ID", 6L);
+        criteria.directLt("id", 3L).orDirectGe("ID", 6L);
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
@@ -86,9 +86,9 @@ public class SimpleQueryApplication extends RootTestRunner {
     }
 
     @Test
-    public void immediateLessOrEqualThanTest() {
+    public void directLessOrEqualThanTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        criteria.immediateGe("id", 5L).orImmediateLe("ID", 2L);
+        criteria.directGe("id", 5L).orDirectLe("ID", 2L);
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
@@ -102,9 +102,9 @@ public class SimpleQueryApplication extends RootTestRunner {
     }
 
     @Test
-    public void immediateGreaterThanTest() {
+    public void directGreaterThanTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        criteria.immediateGt("id", 5L).orImmediateLt("ID", 3L);
+        criteria.directGt("id", 5L).orDirectLt("ID", 3L);
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
@@ -118,9 +118,9 @@ public class SimpleQueryApplication extends RootTestRunner {
     }
 
     @Test
-    public void immediateGreaterOrEqualThanTest() {
+    public void directGreaterOrEqualThanTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        criteria.immediateGe("id", 4L).orImmediateLe("ID", 2L);
+        criteria.directGe("id", 4L).orDirectLe("ID", 2L);
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
@@ -134,9 +134,9 @@ public class SimpleQueryApplication extends RootTestRunner {
     }
 
     @Test
-    public void immediateIsNullTest() {
+    public void directIsNullTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        criteria.immediateIsNull("name").orImmediateIsNull("ID");
+        criteria.directIsNull("name").orDirectIsNull("ID");
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
@@ -158,19 +158,19 @@ public class SimpleQueryApplication extends RootTestRunner {
     }
 
     @Test
-    public void immediateInTest() {
+    public void directInTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        criteria.immediateIn("id", 2L, 3L, 4L)
-                .orImmediateIn("ID", 7L, 8L);
+        criteria.directIn("id", 2L, 3L, 4L)
+                .orDirectIn("ID", 7L, 8L);
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
 
     @Test
-    public void immediateNotInTest() {
+    public void directNotInTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        criteria.immediateNotIn("id", 2L, 3L, 4L)
-                .orImmediateNotIn("ID", 7L);
+        criteria.directNotIn("id", 2L, 3L, 4L)
+                .orDirectNotIn("ID", 7L);
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
@@ -185,10 +185,10 @@ public class SimpleQueryApplication extends RootTestRunner {
     }
 
     @Test
-    public void immediateBetweenTest() {
+    public void directBetweenTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        criteria.immediateBetween("id", 2L, 4L)
-                .orImmediateBetween("id", 7L, 9L);
+        criteria.directBetween("id", 2L, 4L)
+                .orDirectBetween("id", 7L, 9L);
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
@@ -203,10 +203,10 @@ public class SimpleQueryApplication extends RootTestRunner {
     }
 
     @Test
-    public void immediateNotBetweenTest() {
+    public void directNotBetweenTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        criteria.immediateNotBetween("id", 2L, 4L)
-                .immediateNotBetween("ID", 7L, 9L);
+        criteria.directNotBetween("id", 2L, 4L)
+                .directNotBetween("ID", 7L, 9L);
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
@@ -232,21 +232,21 @@ public class SimpleQueryApplication extends RootTestRunner {
     }
 
     @Test
-    public void immediateLikeTest() {
+    public void directLikeTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        criteria.immediateLike("name", "x2")
-                .orImmediateLikeLeft("NAME", "X2")
-                .orImmediateLikeRight("name", "X2");
+        criteria.directLike("name", "x2")
+                .orDirectLikeLeft("NAME", "X2")
+                .orDirectLikeRight("name", "X2");
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
 
     @Test
-    public void immediateNotLikeTest() {
+    public void directNotLikeTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        criteria.immediateNotLike("name", "x2");
-        //.orImmediateNotLikeLeft( "NAME", "X2" )
-        //.orImmediateNotLikeRight( "name", "X2" );
+        criteria.directNotLike("name", "x2");
+        //.orDirectNotLikeLeft( "NAME", "X2" )
+        //.orDirectNotLikeRight( "name", "X2" );
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
@@ -256,7 +256,7 @@ public class SimpleQueryApplication extends RootTestRunner {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
         String template = "LEFT({@@}, 2) = {}";
         criteria.template(template, Grade::getName, "33");
-        List<GradeVo> list = gradeService.list(criteria.useAlias());
+        List<GradeVo> list = gradeService.list(criteria.useAs());
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
 
@@ -265,7 +265,7 @@ public class SimpleQueryApplication extends RootTestRunner {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
         String template = "LEFT({@@}, {}) = {}";
         criteria.template(template, Grade::getName, 2, "33");
-        List<GradeVo> list = gradeService.list(criteria.useAlias());
+        List<GradeVo> list = gradeService.list(criteria.useAs());
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
 
@@ -282,63 +282,63 @@ public class SimpleQueryApplication extends RootTestRunner {
     }
 
     @Test
-    public void singleImmediateTemplateTest() {
+    public void singleDirectTemplateTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
         String template = "LEFT({@@}, 2) = {}";
-        criteria.immediateTemplate(template, "NAME", "33")
-                .orImmediateTemplate(template, "name", "44");
-        List<GradeVo> list = gradeService.list(criteria.useAlias());
+        criteria.directTemplate(template, "NAME", "33")
+                .orDirectTemplate(template, "name", "44");
+        List<GradeVo> list = gradeService.list(criteria.useAs());
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
 
     @Test
-    public void singleImmediateTemplateNotWithTest() {
+    public void singleDirectTemplateNotWithTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
         String template = "LEFT(NAME, 2) = {}";
-        criteria.immediateTemplate(template, "33")
-                .orImmediateTemplate(template, "44");
-        List<GradeVo> list = gradeService.list(criteria.useAlias());
+        criteria.directTemplate(template, "33")
+                .orDirectTemplate(template, "44");
+        List<GradeVo> list = gradeService.list(criteria.useAs());
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
 
     @Test
-    public void multiImmediateTemplateTest() {
+    public void multiDirectTemplateTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
         String template = "LEFT({@@}, {}) = {}";
-        criteria.immediateTemplate(template, "NAME", 2, "33");
-        List<GradeVo> list = gradeService.list(criteria.useAlias());
+        criteria.directTemplate(template, "NAME", 2, "33");
+        List<GradeVo> list = gradeService.list(criteria.useAs());
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
 
     @Test
-    public void multiImmediateTemplateNotWithTest() {
+    public void multiDirectTemplateNotWithTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
         String template = "LEFT(name, {}) = {}";
-        criteria.immediateTemplate(template, 2, "33");
-        List<GradeVo> list = gradeService.list(criteria.useAlias());
+        criteria.directTemplate(template, 2, "33");
+        List<GradeVo> list = gradeService.list(criteria.useAs());
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
 
     @Test
-    public void mapImmediateTemplateTest() {
+    public void mapDirectTemplateTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
         String template = "LEFT({@@}, ${left}) = ${realName}";
         Map<String, Object> params = new HashMap<>(2);
         params.put("left", 2);
         params.put("realName", "33");
-        criteria.immediateTemplate(template, "name", params);
+        criteria.directTemplate(template, "name", params);
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
 
     @Test
-    public void mapImmediateTemplateNotWithTest() {
+    public void mapDirectTemplateNotWithTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
         String template = "LEFT(NAME, ${left}) = ${realName}";
         Map<String, Object> params = new HashMap<>(2);
         params.put("left", 2);
         params.put("realName", "33");
-        criteria.immediateTemplate(template, params);
+        criteria.directTemplate(template, params);
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
