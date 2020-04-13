@@ -178,7 +178,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (criteria == null) {
             throw new MyBatisException("The specified object parameter cannot be null");
         }
-        return executor.updateByCriteria(criteria.enableAlias(false));
+        return executor.updateByCriteria(criteria.as(false));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -196,7 +196,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (entity == null) {
             throw new MyBatisException("The specified object parameter cannot be null");
         }
-        return executor.mixinUpdateNotWithNull(entity, criteria.enableAlias(false));
+        return executor.mixinUpdateNotWithNull(entity, criteria.as(false));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -241,7 +241,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (criteria == null) {
             throw new MyBatisException("The specified criteria parameter cannot be null");
         }
-        return executor.deleteByCriteria(criteria.enableAlias(false));
+        return executor.deleteByCriteria(criteria.as(false));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -377,7 +377,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
     public <E> List<E> custom(Criteria<T> criteria) {
         if (criteria != null && (criteria.resultType() != null || StringUtil.hasText(criteria.resultMap()))) {
             List<Object> result = executor.objectList(criteria);
-            return Optional.ofNullable(result).map(value -> (List<E>) value).orElse(new ArrayList<>());
+            return Optional.ofNullable(result).map(value -> (List<E>) value).orElse(new ArrayList<>(0));
         }
         return new ArrayList<>(0);
     }

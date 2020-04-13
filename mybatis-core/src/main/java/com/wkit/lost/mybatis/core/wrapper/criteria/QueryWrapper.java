@@ -37,14 +37,29 @@ public interface QueryWrapper<T, Chain extends QueryWrapper<T, Chain>> extends Q
      * 使用内置表别名
      * @return {@code this}
      */
-    Chain useAlias();
+    Chain useAs();
 
     /**
      * 使用表别名
      * @param alias 表别名
      * @return {@code this}
      */
-    Chain useAlias(final String alias);
+    Chain as(final String alias);
+
+    /**
+     * 开启属性名自动映射成字段别名
+     * @return {@code this}
+     */
+    default Chain propertyAutoMappingAlias() {
+        return propertyAutoMappingAlias(true);
+    }
+
+    /**
+     * 开启属性名自动映射成字段别名
+     * @param enable 是否开启
+     * @return {@code this}
+     */
+    Chain propertyAutoMappingAlias(boolean enable);
 
     /**
      * 设置范围

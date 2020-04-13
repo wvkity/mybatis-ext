@@ -2,6 +2,11 @@ package com.wkit.lost.mybatis.core.wrapper.criteria;
 
 import java.util.function.Function;
 
+/**
+ * 抽象条件包装类
+ * @param <T> 实体类型
+ * @author wvkity
+ */
 @SuppressWarnings({"serial", "unchecked"})
 public abstract class AbstractCriteriaWrapper<T> extends AbstractChainCriteriaWrapper<T, AbstractCriteriaWrapper<T>> {
 

@@ -1,12 +1,12 @@
 package com.wkit.lost.mybatis.core.wrapper.basic;
 
 import com.wkit.lost.mybatis.core.lambda.Property;
+import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 import com.wkit.lost.mybatis.core.wrapper.utils.CriteriaUtil;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
-import com.wkit.lost.mybatis.utils.ColumnConvert;
 import com.wkit.lost.mybatis.utils.StringUtil;
 
 import java.util.ArrayList;
@@ -39,14 +39,14 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
 
     /**
      * 构造方法
-     * @param criteria    条件对象
-     * @param column      字段对象
-     * @param columnAlias 字段别名
+     * @param criteria 条件对象
+     * @param column   字段对象
+     * @param alias    字段别名
      */
-    private Query(Criteria<T> criteria, ColumnWrapper column, String columnAlias) {
+    private Query(Criteria<T> criteria, ColumnWrapper column, String alias) {
         this.criteria = criteria;
         this.column = column;
-        this.columnAlias = columnAlias;
+        this.columnAlias = alias;
     }
 
     /**
@@ -61,7 +61,7 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
     public AbstractQueryWrapper<?, ?> transform(Criteria<?> criteria) {
         return Optional.ofNullable(criteria).map(it -> {
             String columnName = StringUtil.hasText(this.columnAlias) ? this.columnAlias :
-                    (this.criteria != null && this.criteria.isColumnAliasAutoMapping() ?
+                    (this.criteria != null && this.criteria.isPropertyAutoMappingAlias() ?
                             this.column.getProperty() : this.column.getColumn());
             return DirectQuery.Single.query(it, columnName, null);
         }).orElse(null);
@@ -74,12 +74,12 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
 
     @Override
     public String getSegment(boolean applyQuery) {
-        String tableAlias = this.criteria.isEnableAlias() ? this.criteria.getAlias() : null;
+        String tableAlias = this.criteria.isEnableAlias() ? this.criteria.as() : null;
         if (StringUtil.hasText(this.columnAlias)) {
-            return ColumnConvert.convertToQueryArg(this.column.getColumn(), this.columnAlias, tableAlias);
+            return ScriptUtil.convertQueryArg(tableAlias, column.getColumn(), tableAlias);
         } else {
-            return ColumnConvert.convertToQueryArg(this.column, tableAlias, criteria.getReference(),
-                    applyQuery && criteria.isColumnAliasAutoMapping());
+            return ScriptUtil.convertQueryArg(tableAlias, column, criteria.getReference(),
+                    applyQuery && criteria.isPropertyAutoMappingAlias());
         }
     }
 
@@ -114,26 +114,26 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
 
         /**
          * 查询字段
-         * @param criteria    条件对象
-         * @param property    属性Lambda对象
-         * @param columnAlias 字段别名
-         * @param <T>         实体类型
+         * @param criteria 条件对象
+         * @param property 属性Lambda对象
+         * @param alias    字段别名
+         * @param <T>      实体类型
          * @return 查询列对象
          */
-        public static <T> Query<T> query(Criteria<T> criteria, Property<T, ?> property, String columnAlias) {
-            return query(criteria, criteria.searchColumn(property), columnAlias);
+        public static <T> Query<T> query(Criteria<T> criteria, Property<T, ?> property, String alias) {
+            return query(criteria, criteria.searchColumn(property), alias);
         }
 
         /**
          * 查询字段
-         * @param criteria    条件对象
-         * @param property    属性
-         * @param columnAlias 字段别名
-         * @param <T>         实体类型
+         * @param criteria 条件对象
+         * @param property 属性
+         * @param alias    字段别名
+         * @param <T>      实体类型
          * @return 查询列对象
          */
-        public static <T> Query<T> query(Criteria<T> criteria, String property, String columnAlias) {
-            return query(criteria, criteria.searchColumn(property), columnAlias);
+        public static <T> Query<T> query(Criteria<T> criteria, String property, String alias) {
+            return query(criteria, criteria.searchColumn(property), alias);
         }
 
         /**
@@ -149,14 +149,14 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
 
         /**
          * 查询字段
-         * @param criteria    条件对象
-         * @param column      字段包装对象
-         * @param columnAlias 字段别名
-         * @param <T>         实体类型
+         * @param criteria 条件对象
+         * @param column   字段包装对象
+         * @param alias    字段别名
+         * @param <T>      实体类型
          * @return 查询列对象
          */
-        public static <T> Query<T> query(Criteria<T> criteria, ColumnWrapper column, String columnAlias) {
-            return column != null ? new Query<>(criteria, column, columnAlias) : null;
+        public static <T> Query<T> query(Criteria<T> criteria, ColumnWrapper column, String alias) {
+            return column != null ? new Query<>(criteria, column, alias) : null;
         }
     }
 

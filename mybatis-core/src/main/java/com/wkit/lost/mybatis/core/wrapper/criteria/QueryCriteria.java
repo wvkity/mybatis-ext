@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
 /**
- * 查询操作条件包装类
+ * 查询操作条件包装器
  * @param <T> 实体类型
  * @author wvkity
  */
@@ -27,5 +27,12 @@ public class QueryCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
         this.entityClass = entityClass;
         this.tableAlias = alias;
         this.inits();
+    }
+
+    @Override
+    protected QueryCriteria<T> newInstance() {
+        QueryCriteria<T> instance = new QueryCriteria<>(this.entityClass, this.tableAlias);
+        copy(instance, this);
+        return instance;
     }
 }

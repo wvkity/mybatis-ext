@@ -167,20 +167,17 @@ public final class ColumnConvert {
      */
     public static String convertToQueryArg(final ColumnWrapper column, final String tableAlias,
                                            final String reference, final boolean apply) {
-        StringBuilder buffer = new StringBuilder(60);
-        if (StringUtil.hasText(tableAlias)) {
-            buffer.append(tableAlias).append(".");
-        }
-        buffer.append(column.getColumn());
+        final String alias;
         if (apply) {
-            buffer.append(" ");
             if (StringUtil.hasText(reference)) {
-                buffer.append("\"").append(reference).append(".").append(column.getProperty()).append("\"");
+                alias = Constants.CHAR_QUOTE + reference + Constants.DOT + column.getProperty() + Constants.CHAR_QUOTE;
             } else {
-                buffer.append(column.getProperty());
+                alias = column.getProperty();
             }
+        } else {
+            alias = null;
         }
-        return buffer.toString();
+        return convertToQueryArg(column.getColumn(), alias, tableAlias);
     }
 
     /**
@@ -191,20 +188,20 @@ public final class ColumnConvert {
      * @return 字符串
      */
     public static String convertToQueryArg(final String column, final String columnAlias, final String tableAlias) {
-        StringBuilder buffer = new StringBuilder(40);
+        StringBuilder builder = new StringBuilder(40);
         if (StringUtil.hasText(tableAlias)) {
-            buffer.append(tableAlias).append(".");
+            builder.append(tableAlias).append(".");
         }
-        buffer.append(column);
+        builder.append(column);
         if (StringUtil.hasText(columnAlias)) {
-            buffer.append(" ");
+            builder.append(" AS ");
             if (columnAlias.contains(".")) {
-                buffer.append("\"").append(columnAlias).append("\"");
+                builder.append("\"").append(columnAlias).append("\"");
             } else {
-                buffer.append(columnAlias);
+                builder.append(columnAlias);
             }
         }
-        return buffer.toString();
+        return builder.toString();
     }
 
     /**

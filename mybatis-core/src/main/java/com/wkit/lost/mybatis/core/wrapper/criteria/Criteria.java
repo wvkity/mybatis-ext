@@ -32,7 +32,7 @@ public interface Criteria<T> extends Search<T>, EmbeddedResult, PlaceholderConve
      * 获取表别名
      * @return 别名
      */
-    String getAlias();
+    String as();
 
     /**
      * 是否启用别名
@@ -138,7 +138,7 @@ public interface Criteria<T> extends Search<T>, EmbeddedResult, PlaceholderConve
      * @param list 子查询条件对象集合
      * @return 当前对象
      */
-    Criteria<T> addSubCriteria(Collection<SubCriteria<?>> list);
+    Criteria<T> addSub(Collection<SubCriteria<?>> list);
 
     /**
      * 联表查询副表引用属性
@@ -152,7 +152,7 @@ public interface Criteria<T> extends Search<T>, EmbeddedResult, PlaceholderConve
      * 开启自动映射列别名(针对查询自动映射属性名)
      * @return true: 是, false: 否
      */
-    default boolean isColumnAliasAutoMapping() {
+    default boolean isPropertyAutoMappingAlias() {
         return false;
     }
 
@@ -210,7 +210,7 @@ public interface Criteria<T> extends Search<T>, EmbeddedResult, PlaceholderConve
      * @param enabled 是否启用
      * @return 当前对象
      */
-    Criteria<T> enableAlias(boolean enabled);
+    Criteria<T> as(boolean enabled);
 
     /**
      * 设置自定义resultMap key

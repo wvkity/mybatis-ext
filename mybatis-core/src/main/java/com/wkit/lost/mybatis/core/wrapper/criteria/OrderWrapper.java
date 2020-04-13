@@ -2,23 +2,19 @@ package com.wkit.lost.mybatis.core.wrapper.criteria;
 
 import com.wkit.lost.mybatis.core.lambda.LambdaConverter;
 import com.wkit.lost.mybatis.core.wrapper.aggreate.Aggregation;
-import com.wkit.lost.mybatis.core.wrapper.basic.AbstractGroupWrapper;
 import com.wkit.lost.mybatis.core.wrapper.basic.AbstractOrderWrapper;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 
 import java.util.Collection;
 
 /**
- * 分组&排序
- * @param <T>     实体类型
- * @param <Chain> 当前对象
- * @param <P>     属性lambda对象
+ * 排序
+ * @param <Chain> 子类
+ * @param <P>     Lambda类
  * @author wvkity
  */
-public interface GroupAndOrderBuilder<T, Chain extends GroupAndOrderBuilder<T, Chain, P>, P>
-        extends LambdaConverter<P> {
+public interface OrderWrapper<Chain extends OrderWrapper<Chain, P>, P> extends LambdaConverter<P> {
 
-    // region order
 
     // region ASC
 
@@ -53,8 +49,8 @@ public interface GroupAndOrderBuilder<T, Chain extends GroupAndOrderBuilder<T, C
      * @param columns 字段数组
      * @return 当前对象
      */
-    default Chain immediateAsc(String... columns) {
-        return immediateAsc(ArrayUtil.toList(columns));
+    default Chain directAsc(String... columns) {
+        return directAsc(ArrayUtil.toList(columns));
     }
 
     /**
@@ -62,8 +58,8 @@ public interface GroupAndOrderBuilder<T, Chain extends GroupAndOrderBuilder<T, C
      * @param columns 字段集合
      * @return 当前对象
      */
-    default Chain immediateAsc(Collection<String> columns) {
-        return immediateAscWithAlias(null, columns);
+    default Chain directAsc(Collection<String> columns) {
+        return directAscWithAlias(null, columns);
     }
 
     /**
@@ -72,8 +68,8 @@ public interface GroupAndOrderBuilder<T, Chain extends GroupAndOrderBuilder<T, C
      * @param columns 字段数组
      * @return 当前对象
      */
-    default Chain immediateAscWithAlias(String alias, String... columns) {
-        return immediateAscWithAlias(alias, ArrayUtil.toList(columns));
+    default Chain directAscWithAlias(String alias, String... columns) {
+        return directAscWithAlias(alias, ArrayUtil.toList(columns));
     }
 
     /**
@@ -82,7 +78,7 @@ public interface GroupAndOrderBuilder<T, Chain extends GroupAndOrderBuilder<T, C
      * @param columns 字段集合
      * @return 当前对象
      */
-    Chain immediateAscWithAlias(String alias, Collection<String> columns);
+    Chain directAscWithAlias(String alias, Collection<String> columns);
 
     /**
      * ASC排序
@@ -168,8 +164,8 @@ public interface GroupAndOrderBuilder<T, Chain extends GroupAndOrderBuilder<T, C
      * @param columns 字段数组
      * @return 当前对象
      */
-    default Chain immediateDesc(String... columns) {
-        return immediateDesc(ArrayUtil.toList(columns));
+    default Chain directDesc(String... columns) {
+        return directDesc(ArrayUtil.toList(columns));
     }
 
     /**
@@ -177,8 +173,8 @@ public interface GroupAndOrderBuilder<T, Chain extends GroupAndOrderBuilder<T, C
      * @param columns 字段集合
      * @return 当前对象
      */
-    default Chain immediateDesc(Collection<String> columns) {
-        return immediateDescWithAlias(null, columns);
+    default Chain directDesc(Collection<String> columns) {
+        return directDescWithAlias(null, columns);
     }
 
     /**
@@ -187,8 +183,8 @@ public interface GroupAndOrderBuilder<T, Chain extends GroupAndOrderBuilder<T, C
      * @param columns 字段数组
      * @return 当前对象
      */
-    default Chain immediateDescWithAlias(String alias, String... columns) {
-        return immediateDescWithAlias(alias, ArrayUtil.toList(columns));
+    default Chain directDescWithAlias(String alias, String... columns) {
+        return directDescWithAlias(alias, ArrayUtil.toList(columns));
     }
 
     /**
@@ -197,7 +193,7 @@ public interface GroupAndOrderBuilder<T, Chain extends GroupAndOrderBuilder<T, C
      * @param columns 字段集合
      * @return 当前对象
      */
-    Chain immediateDescWithAlias(String alias, Collection<String> columns);
+    Chain directDescWithAlias(String alias, Collection<String> columns);
 
     /**
      * DESC排序
@@ -265,114 +261,4 @@ public interface GroupAndOrderBuilder<T, Chain extends GroupAndOrderBuilder<T, C
      * @return 当前对象
      */
     Chain addOrder(Collection<AbstractOrderWrapper<?, ?>> orders);
-    // endregion
-
-    // region group
-
-    /**
-     * 分组
-     * @param properties 属性数组
-     * @return 当前对象
-     */
-    @SuppressWarnings({"unchecked"})
-    default Chain group(P... properties) {
-        return group(lambdaToProperties(properties));
-    }
-
-    /**
-     * 分组
-     * @param properties 属性数组
-     * @return 当前对象
-     */
-    default Chain group(String... properties) {
-        return group(ArrayUtil.toList(properties));
-    }
-
-    /**
-     * 分组
-     * @param properties 属性集合
-     * @return 当前对象
-     */
-    Chain group(Collection<String> properties);
-
-    /**
-     * 分组
-     * @param columns 字段数组
-     * @return 当前对象
-     */
-    default Chain immediateGroup(String... columns) {
-        return immediateGroup(ArrayUtil.toList(columns));
-    }
-
-    /**
-     * 分组
-     * @param columns 字段集合
-     * @return 当前对象
-     */
-    default Chain immediateGroup(Collection<String> columns) {
-        return immediateGroupWithAlias(null, columns);
-    }
-
-    /**
-     * 分组
-     * @param alias   表别名
-     * @param columns 字段数组
-     * @return 当前对象
-     */
-    default Chain immediateGroupWithAlias(String alias, String... columns) {
-        return immediateGroupWithAlias(alias, ArrayUtil.toList(columns));
-    }
-
-    /**
-     * 分组
-     * @param alias   表别名
-     * @param columns 字段集合
-     * @return 当前对象
-     */
-    Chain immediateGroupWithAlias(String alias, Collection<String> columns);
-
-    /**
-     * 分组
-     * @param foreignAlias 连表对象别名
-     * @param properties   属性数组
-     * @return 当前对象
-     */
-    @SuppressWarnings({"unchecked"})
-    Chain foreignGroup(String foreignAlias, P... properties);
-
-    /**
-     * 分组
-     * @param foreignAlias 连表对象别名
-     * @param properties   属性数组
-     * @return 当前对象
-     */
-    default Chain foreignGroup(String foreignAlias, String... properties) {
-        return foreignGroup(foreignAlias, ArrayUtil.toList(properties));
-    }
-
-    /**
-     * 分组
-     * @param foreignAlias 连表对象别名
-     * @param properties   属性集合
-     * @return 当前对象
-     */
-    Chain foreignGroup(String foreignAlias, Collection<String> properties);
-
-    /**
-     * 添加分组
-     * @param groups 分组对象数组
-     * @return 当前对象
-     */
-    default Chain add(AbstractGroupWrapper<?, ?>... groups) {
-        return addGroup(ArrayUtil.toList(groups));
-    }
-
-    /**
-     * 添加分组
-     * @param groups 分组对象集合
-     * @return 当前对象
-     */
-    Chain addGroup(Collection<AbstractGroupWrapper<?, ?>> groups);
-    // endregion
-
 }

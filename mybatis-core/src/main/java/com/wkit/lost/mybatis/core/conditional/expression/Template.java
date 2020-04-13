@@ -147,7 +147,7 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
     public String getSegment() {
         StringBuilder builder = new StringBuilder(60);
         builder.append(this.logic.getSegment()).append(Constants.SPACE);
-        String realAlias = this.criteria.getAlias();
+        String realAlias = this.criteria.as();
         String columnName = (StringUtil.hasText(realAlias) ? (realAlias.trim() + ".") : "")
                 + this.column.getColumn();
         String realTemplate = this.template.replaceAll("\\" + COLUMN_PLACEHOLDER, columnName);

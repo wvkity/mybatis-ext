@@ -87,11 +87,11 @@ public interface NestedWrapper<Chain extends NestedWrapper<Chain>> {
      *     private UserService userService;
      *
      *     QueryCriteria&lt;User&gt; criteria = new QueryCriteria&lt;&gt;(User.class);
-     *     criteria.orGt(User::getAge, 25);
-     *     criteria.and(ArrayUtil.toList(criteria.eq(User::getUserName, "张三", User::getState, 2)));
+     *     criteria.gt(User::getAge, 25);
+     *     criteria.or(ArrayUtil.toList(criteria.eq(User::getUserName, "张三", User::getState, 2)));
      *     userService.list(criteria);
      *
-     *     ==> SELECT col1, col2, ... FROM USER WHERE (USER_NAME = ? AND STATE = ?) OR AGE > ?
+     *     ==> SELECT col1, col2, ... FROM USER WHERE AGE > ? OR (USER_NAME = ? AND STATE = ?)
      * </pre>
      * @param conditions 条件
      * @return {@code this}

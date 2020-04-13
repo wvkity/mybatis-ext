@@ -4,10 +4,12 @@ import com.wkit.lost.mybatis.core.conditional.Restrictions;
 import com.wkit.lost.mybatis.core.conditional.criterion.Criterion;
 import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.constant.Match;
+import com.wkit.lost.mybatis.core.constant.Symbol;
 import com.wkit.lost.mybatis.core.converter.AbstractPlaceholderConverter;
 import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
+import com.wkit.lost.mybatis.core.wrapper.basic.QueryManager;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.Constants;
@@ -17,22 +19,32 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * 抽象基础条件包装类(负责添加条件)
+ * @param <T>     实体类型
+ * @param <Chain> 子类
+ * @param <P>     Lambda类
+ */
 @SuppressWarnings({"serial", "unchecked"})
-public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGeneralCriteriaWrapper<T, Chain, P>, P>
+abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriteriaWrapper<T, Chain, P>, P>
         extends AbstractPlaceholderConverter implements CriteriaWrapper<T, Chain, P> {
 
     // region fields
 
-    private static final String AND_OR_REGEX = "^(\\s*AND\\s+|\\s*OR\\s+)(.*)";
+    private static final String AND_OR_REGEX = "^(?i)(\\s*and\\s+|\\s*or\\s+)(.*)";
     private static final Pattern AND_OR_PATTERN = Pattern.compile(AND_OR_REGEX, Pattern.CASE_INSENSITIVE);
     protected static final String SYS_SQL_ALIAS_PREFIX = "_self_";
 
@@ -417,6 +429,120 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     @Override
     public Chain orDirectGe(String tableAlias, String column, Object value) {
         return add(Restrictions.directGe(tableAlias, column, value, Logic.OR));
+    }
+
+    // endregion
+
+    // region sub query condition
+
+    @Override
+    public Chain idEq(SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, TableHandler.getPrimaryKey(this.entityClass), sc, Logic.AND));
+    }
+
+    @Override
+    public Chain orIdEq(SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, TableHandler.getPrimaryKey(this.entityClass), sc, Logic.OR));
+    }
+
+    @Override
+    public Chain eq(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc));
+    }
+
+    @Override
+    public Chain orEq(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Logic.OR));
+    }
+
+    @Override
+    public Chain ne(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.NE));
+    }
+
+    @Override
+    public Chain orNe(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.NE, Logic.OR));
+    }
+
+    @Override
+    public Chain lt(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.LT));
+    }
+
+    @Override
+    public Chain orLt(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.LT, Logic.OR));
+    }
+
+    @Override
+    public Chain le(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.LE));
+    }
+
+    @Override
+    public Chain orLe(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.LE, Logic.OR));
+    }
+
+    @Override
+    public Chain gt(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.GT));
+    }
+
+    @Override
+    public Chain orGt(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.GT, Logic.OR));
+    }
+
+    @Override
+    public Chain ge(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.GE));
+    }
+
+    @Override
+    public Chain orGe(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.GE, Logic.OR));
+    }
+
+    @Override
+    public Chain like(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.LIKE));
+    }
+
+    @Override
+    public Chain orLike(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.LIKE, Logic.OR));
+    }
+
+    @Override
+    public Chain notLike(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.NOT_LIKE));
+    }
+
+    @Override
+    public Chain orNotLike(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.NOT_LIKE, Logic.OR));
+    }
+
+    @Override
+    public Chain in(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.IN));
+    }
+
+    @Override
+    public Chain orIn(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.IN, Logic.OR));
+    }
+
+    @Override
+    public Chain notIn(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.NOT_IN));
+    }
+
+    @Override
+    public Chain orNotIn(String property, SubCriteria<?> sc) {
+        return add(Restrictions.subQuery(this, property, sc, Symbol.NOT_IN, Logic.OR));
     }
 
     // endregion
@@ -887,6 +1013,56 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
 
     // endregion
 
+    // region nested condition
+
+    @Override
+    public Chain and(Collection<Criterion<?>> conditions) {
+        return add(Restrictions.nested(this, Logic.AND, conditions));
+    }
+
+    @Override
+    public Chain and(Criteria<?> criteria, Collection<Criterion<?>> conditions) {
+        return add(Restrictions.nested(criteria, Logic.AND, conditions));
+    }
+
+    @Override
+    public Chain and(Function<Chain, Chain> function) {
+        return doIt(function, true);
+    }
+
+    @Override
+    public Chain or(Collection<Criterion<?>> conditions) {
+        return add(Restrictions.nested(this, Logic.OR, conditions));
+    }
+
+    @Override
+    public Chain or(Criteria<?> criteria, Collection<Criterion<?>> conditions) {
+        return add(Restrictions.nested(criteria, Logic.OR, conditions));
+    }
+
+    @Override
+    public Chain or(Function<Chain, Chain> function) {
+        return doIt(function, false);
+    }
+
+    private Chain doIt(Function<Chain, Chain> function, boolean isAnd) {
+        Chain ctx = newInstance();
+        if (ctx != null) {
+            Chain instance = function.apply(ctx);
+            List<Criterion<?>> conditions = instance.segmentManager.getConditions();
+            if (CollectionUtil.hasElement(conditions)) {
+                if (isAnd) {
+                    and(conditions);
+                } else {
+                    or(conditions);
+                }
+            }
+        }
+        return this.context;
+    }
+
+    // endregion
+
     // endregion
 
     // region add methods
@@ -908,19 +1084,50 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
 
     @Override
     public Chain add(SubCriteria<?>... array) {
-        return this.context;
+        return addSub(ArrayUtil.toList(array));
     }
 
     @Override
-    public Chain addSubCriteria(Collection<SubCriteria<?>> list) {
+    public Chain addSub(Collection<SubCriteria<?>> list) {
+        if (CollectionUtil.hasElement(list)) {
+            list.stream().filter(Objects::nonNull).forEach(it -> {
+                this.subCriteriaSet.add(it);
+                if (StringUtil.hasText(it.as())) {
+                    this.subCriteriaCache.put(it.as(), it);
+                }
+            });
+        }
         return this.context;
     }
 
     // endregion 
 
+    // region sub criteria
+
+    @Override
+    public <E> SubCriteria<E> sub(Class<E> entityClass, String alias, Collection<Criterion<?>> clauses) {
+        return new SubCriteria<>(entityClass, alias, (AbstractCriteriaWrapper<?>) this, clauses);
+    }
+
+    @Override
+    public <E> SubCriteria<E> sub(Class<E> entityClass, Consumer<SubCriteria<E>> consumer) {
+        SubCriteria<E> instance = sub(entityClass);
+        consumer.accept(instance);
+        return instance;
+    }
+
+    @Override
+    public <E> SubCriteria<E> sub(Class<E> entityClass,
+                                  BiConsumer<AbstractCriteriaWrapper<T>, SubCriteria<E>> consumer) {
+        SubCriteria<E> instance = sub(entityClass);
+        consumer.accept(instance.getMaster(), instance);
+        return instance;
+    }
+    // endregion
+
     // region dep methods
     @Override
-    public <E> SubCriteria<E> searchSubCriteria(String alias) {
+    public <E> SubCriteria<E> searchSub(String alias) {
         if (StringUtil.hasText(alias) && CollectionUtil.hasElement(subCriteriaSet)) {
             return (SubCriteria<E>) Optional.ofNullable(subCriteriaCache.get(alias)).orElse(null);
         }
@@ -928,30 +1135,30 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public <E> SubCriteria<E> searchSubCriteria(Class<E> entity) {
+    public <E> SubCriteria<E> searchSub(Class<E> entity) {
         if (entity != null && CollectionUtil.hasElement(subCriteriaSet)) {
-            SubCriteria<?> subCriteria = subCriteriaSet.stream().filter(criteria -> entity.equals(criteria.getEntityClass()))
-                    .findFirst().orElse(null);
+            SubCriteria<?> subCriteria = subCriteriaSet.stream().filter(criteria ->
+                    entity.equals(criteria.getEntityClass())).findFirst().orElse(null);
             return (SubCriteria<E>) Optional.ofNullable(subCriteria).orElse(null);
         }
         return null;
     }
 
     @Override
-    public <E> SubCriteria<E> searchSubCriteria(String alias, Class<E> entity) {
+    public <E> SubCriteria<E> searchSub(String alias, Class<E> entity) {
         if (CollectionUtil.hasElement(subCriteriaSet)) {
             boolean hasTempAlias = StringUtil.hasText(alias);
             boolean hasEntity = entity != null;
             if (hasTempAlias || hasEntity) {
                 if (hasTempAlias && hasEntity) {
-                    SubCriteria<E> criteria = searchSubCriteria(entity);
-                    if (criteria != null && alias.equals(criteria.getAlias())) {
+                    SubCriteria<E> criteria = searchSub(entity);
+                    if (criteria != null && alias.equals(criteria.as())) {
                         return criteria;
                     }
                 } else if (hasTempAlias) {
-                    return searchSubCriteria(alias);
+                    return searchSub(alias);
                 } else {
-                    return searchSubCriteria(entity);
+                    return searchSub(entity);
                 }
             }
         }
@@ -989,6 +1196,33 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
         }
         return null;
     }
+
+    /**
+     * 创建新实例
+     * @return {@code this}
+     */
+    protected Chain newInstance() {
+        return null;
+    }
+
+    /**
+     * 复制属性
+     * @param target 目标对象
+     * @param source 源对象
+     */
+    void copy(AbstractCriteriaWrapper<T> target, AbstractCriteriaWrapper<T> source) {
+        if (target != null && source != null) {
+            target.builtinAlias = source.builtinAlias;
+            target.parameterSequence = source.parameterSequence;
+            target.aliasSequence = source.aliasSequence;
+            target.paramValueMappings = source.paramValueMappings;
+            target.segmentManager = new SegmentManager();
+            if (target instanceof AbstractQueryCriteriaWrapper) {
+                AbstractQueryCriteriaWrapper<T> criteria = (AbstractQueryCriteriaWrapper<T>) target;
+                criteria.queryManager = new QueryManager(criteria);
+            }
+        }
+    }
     // endregion
 
     // region get/set methods
@@ -1004,7 +1238,8 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
      */
     public final String getTableName() {
         String realTableName = getCacheTableName();
-        this.tableName = realTableName + getAlias();
+        String as = as().trim();
+        this.tableName = realTableName + (StringUtil.hasText(as) ? (" AS " + as) : as);
         return this.tableName;
     }
 
@@ -1040,7 +1275,7 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public String getAlias() {
+    public String as() {
         if (this.enableAlias) {
             if (StringUtil.hasText(this.tableAlias)) {
                 return Constants.SPACE + this.tableAlias;
@@ -1051,7 +1286,7 @@ public abstract class AbstractGeneralCriteriaWrapper<T, Chain extends AbstractGe
     }
 
     @Override
-    public Chain enableAlias(boolean enabled) {
+    public Chain as(boolean enabled) {
         return context;
     }
 

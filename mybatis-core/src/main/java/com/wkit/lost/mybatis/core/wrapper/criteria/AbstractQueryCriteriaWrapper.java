@@ -16,6 +16,7 @@ import java.util.function.Consumer;
 /**
  * 抽象查询条件包装器
  * @param <T> 实体类
+ * @author wvkity
  */
 @Log4j2
 @SuppressWarnings({"serial"})
@@ -25,10 +26,10 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     // region fields
 
     /**
-     * 是否开启自动映射列别名(自动映射属性名)
+     * 是否开启属性名自动映射成字段别名
      */
     @Getter
-    protected boolean columnAliasAutoMapping = false;
+    protected boolean propertyAutoMappingAlias = false;
 
     /**
      * 查询SQL片段
@@ -92,88 +93,88 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     // region query column
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> query(String property) {
+    public AbstractQueryCriteriaWrapper<T> select(String property) {
         this.queryManager.add(Query.Single.query(this, property));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> query(String property, String columnAlias) {
-        this.queryManager.add(Query.Single.query(this, property, columnAlias));
+    public AbstractQueryCriteriaWrapper<T> select(String property, String alias) {
+        this.queryManager.add(Query.Single.query(this, property, alias));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> directQuery(String column) {
+    public AbstractQueryCriteriaWrapper<T> directSelect(String column) {
         this.queryManager.add(DirectQuery.Single.query(this, column, null));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> directQuery(String column, String columnAlias) {
-        this.queryManager.add(DirectQuery.Single.query(column, columnAlias));
+    public AbstractQueryCriteriaWrapper<T> directSelect(String column, String alias) {
+        this.queryManager.add(DirectQuery.Single.query(column, alias));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> directQuery(String tableAlias, String column, String columnAlias) {
-        this.queryManager.add(DirectQuery.Single.query(tableAlias, column, columnAlias));
+    public AbstractQueryCriteriaWrapper<T> directSelect(String tableAlias, String column, String alias) {
+        this.queryManager.add(DirectQuery.Single.query(tableAlias, column, alias));
         return this;
     }
 
     @Override
-    public <E> AbstractQueryCriteriaWrapper<T> subQuery(SubCriteria<E> criteria, String property) {
+    public <E> AbstractQueryCriteriaWrapper<T> subSelect(SubCriteria<E> criteria, String property) {
         return this;
     }
 
     @Override
-    public <E> AbstractQueryCriteriaWrapper<T> subQuery(SubCriteria<E> criteria, String property, String columnAlias) {
+    public <E> AbstractQueryCriteriaWrapper<T> subSelect(SubCriteria<E> criteria, String property, String alias) {
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> queries(Collection<String> properties) {
+    public AbstractQueryCriteriaWrapper<T> selects(Collection<String> properties) {
         this.queryManager.add(Query.Multi.query(this, properties));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> queries(Map<String, String> properties) {
+    public AbstractQueryCriteriaWrapper<T> selects(Map<String, String> properties) {
         this.queryManager.add(Query.Multi.query(this, properties));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> directQueries(Collection<String> columns) {
+    public AbstractQueryCriteriaWrapper<T> directSelects(Collection<String> columns) {
         this.queryManager.add(DirectQuery.Multi.query(this, columns));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> directQueries(Map<String, String> columns) {
+    public AbstractQueryCriteriaWrapper<T> directSelects(Map<String, String> columns) {
         this.queryManager.add(DirectQuery.Multi.query(this, columns));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> directQueries(String tableAlias, Map<String, String> columns) {
+    public AbstractQueryCriteriaWrapper<T> directSelects(String tableAlias, Map<String, String> columns) {
         this.queryManager.add(DirectQuery.Multi.query(tableAlias, columns));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> directQueries(String tableAlias, Collection<String> columns) {
+    public AbstractQueryCriteriaWrapper<T> directSelects(String tableAlias, Collection<String> columns) {
         this.queryManager.add(DirectQuery.Multi.query(tableAlias, columns));
         return this;
     }
 
     @Override
-    public <E> AbstractQueryCriteriaWrapper<T> subQueries(SubCriteria<E> criteria, Collection<String> properties) {
+    public <E> AbstractQueryCriteriaWrapper<T> subSelects(SubCriteria<E> criteria, Collection<String> properties) {
         return this;
     }
 
     @Override
-    public <E> AbstractQueryCriteriaWrapper<T> subQueries(SubCriteria<E> criteria, Map<String, String> properties) {
+    public <E> AbstractQueryCriteriaWrapper<T> subSelects(SubCriteria<E> criteria, Map<String, String> properties) {
         return this;
     }
 
@@ -227,8 +228,14 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractCriteriaWrapper<T> enableAlias(boolean enabled) {
+    public AbstractCriteriaWrapper<T> as(boolean enabled) {
         this.enableAlias = enabled;
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> propertyAutoMappingAlias(boolean enable) {
+        this.propertyAutoMappingAlias = enable;
         return this;
     }
 
@@ -295,13 +302,13 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> useAlias() {
+    public AbstractQueryCriteriaWrapper<T> useAs() {
         this.enableAlias = true;
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> useAlias(String alias) {
+    public AbstractQueryCriteriaWrapper<T> as(String alias) {
         this.enableAlias = true;
         this.tableAlias = alias;
         return this;

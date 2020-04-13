@@ -308,7 +308,7 @@ public class DirectTemplate<T> extends DirectExpressionWrapper<T> {
         builder.append(this.logic.getSegment()).append(Constants.SPACE);
         String realTemplate;
         if (this.template.contains(COLUMN_PLACEHOLDER)) {
-            String realAlias = this.criteria.getAlias();
+            String realAlias = this.criteria.as();
             String columnName = (StringUtil.hasText(realAlias) ? (realAlias.trim() + ".") : "") + this.column;
             realTemplate = this.template.replaceAll("\\" + COLUMN_PLACEHOLDER, columnName);
         } else {

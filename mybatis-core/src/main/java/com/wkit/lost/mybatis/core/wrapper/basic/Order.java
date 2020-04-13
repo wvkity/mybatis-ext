@@ -207,7 +207,7 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
     public String getSegment() {
         if (notEmpty()) {
             String orderMode = ascending ? " ASC" : " DESC";
-            String realAlias = this.criteria != null && criteria.isEnableAlias() ? (criteria.getAlias() + ".") : "";
+            String realAlias = this.criteria != null && criteria.isEnableAlias() ? (criteria.as() + ".") : "";
             return this.columns.stream().map(it -> realAlias + it.getColumn() + orderMode)
                     .collect(Collectors.joining(", "));
         }

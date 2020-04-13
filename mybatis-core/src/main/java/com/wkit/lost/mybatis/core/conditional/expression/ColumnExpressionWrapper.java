@@ -15,7 +15,7 @@ public abstract class ColumnExpressionWrapper<T> extends ExpressionWrapper<T, Co
 
     @Override
     public String getSegment() {
-        return ScriptUtil.convertConditionArg(getAlias(), this.column,
-                this.symbol, this.logic, defaultPlaceholder(this.value));
+        return ScriptUtil.convertConditionArg(getAlias(), this.column, this.symbol, this.logic, 
+                defaultPlaceholder(this.value));
     }
 }

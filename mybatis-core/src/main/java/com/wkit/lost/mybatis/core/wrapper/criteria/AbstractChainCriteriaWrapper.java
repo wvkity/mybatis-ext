@@ -10,10 +10,16 @@ import lombok.extern.log4j.Log4j2;
 
 import java.util.Map;
 
+/**
+ * 抽象条件包装器
+ * @param <T> 实体类型
+ * @param <Chain> 子类
+ * @author wvkity
+ */
 @Log4j2
 @SuppressWarnings({"serial"})
-public abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriteriaWrapper<T, Chain>> extends
-        AbstractGeneralCriteriaWrapper<T, Chain, Property<T, ?>> {
+abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriteriaWrapper<T, Chain>> extends
+        AbstractBasicCriteriaWrapper<T, Chain, Property<T, ?>> {
 
     /**
      * 属性-字段包装对象缓存(只读)

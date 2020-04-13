@@ -1,9 +1,9 @@
 package com.wkit.lost.mybatis.core.wrapper.basic;
 
+import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
-import com.wkit.lost.mybatis.utils.ColumnConvert;
 import com.wkit.lost.mybatis.utils.StringUtil;
 
 import java.util.ArrayList;
@@ -27,36 +27,36 @@ public class DirectQuery<T> extends AbstractQueryWrapper<T, String> {
 
     /**
      * 构造方法
-     * @param column      列
-     * @param columnAlias 列别名
+     * @param column 列
+     * @param alias  列别名
      */
-    private DirectQuery(String column, String columnAlias) {
+    private DirectQuery(String column, String alias) {
         this.column = column;
-        this.columnAlias = columnAlias;
+        this.columnAlias = alias;
     }
 
     /**
      * 构造方法
-     * @param tableAlias  表别名
-     * @param column      列
-     * @param columnAlias 列别名
+     * @param tableAlias 表别名
+     * @param column     列
+     * @param alias      列别名
      */
-    private DirectQuery(String tableAlias, String column, String columnAlias) {
+    private DirectQuery(String tableAlias, String column, String alias) {
         this.tableAlias = tableAlias;
         this.column = column;
-        this.columnAlias = columnAlias;
+        this.columnAlias = alias;
     }
 
     /**
      * 构造方法
-     * @param criteria    条件对象
-     * @param column      列
-     * @param columnAlias 列别名
+     * @param criteria 条件对象
+     * @param column   列
+     * @param alias    列别名
      */
-    private DirectQuery(Criteria<T> criteria, String column, String columnAlias) {
+    private DirectQuery(Criteria<T> criteria, String column, String alias) {
         this.criteria = criteria;
         this.column = column;
-        this.columnAlias = columnAlias;
+        this.columnAlias = alias;
     }
 
     /**
@@ -85,8 +85,8 @@ public class DirectQuery<T> extends AbstractQueryWrapper<T, String> {
     public String getSegment(boolean applyQuery) {
         if (StringUtil.hasText(this.column)) {
             String realTableAlias = StringUtil.hasText(this.tableAlias) ? this.tableAlias :
-                    (this.criteria != null && this.criteria.isEnableAlias() ? this.criteria.getAlias() : null);
-            return ColumnConvert.convertToQueryArg(this.column, applyQuery ? this.columnAlias : null, realTableAlias);
+                    (this.criteria != null && this.criteria.isEnableAlias() ? this.criteria.as() : null);
+            return ScriptUtil.convertQueryArg(realTableAlias, this.column, applyQuery ? this.columnAlias : null);
         }
         return "";
     }
@@ -100,37 +100,37 @@ public class DirectQuery<T> extends AbstractQueryWrapper<T, String> {
 
         /**
          * 查询列
-         * @param column      表列
-         * @param columnAlias 列别名
-         * @param <T>         实体类型
+         * @param column 表列
+         * @param alias  列别名
+         * @param <T>    实体类型
          * @return 字符串列对象
          */
-        public static <T> DirectQuery<T> query(String column, String columnAlias) {
-            return StringUtil.isBlank(column) ? null : new DirectQuery<>(column, columnAlias);
+        public static <T> DirectQuery<T> query(String column, String alias) {
+            return StringUtil.isBlank(column) ? null : new DirectQuery<>(column, alias);
         }
 
         /**
          * 查询列
-         * @param tableAlias  表别名
-         * @param column      表列
-         * @param columnAlias 列别名
-         * @param <T>         实体类型
+         * @param tableAlias 表别名
+         * @param column     表列
+         * @param alias      列别名
+         * @param <T>        实体类型
          * @return 字符串查询列对象
          */
-        public static <T> DirectQuery<T> query(String tableAlias, String column, String columnAlias) {
-            return StringUtil.isBlank(column) ? null : new DirectQuery<>(tableAlias, column, columnAlias);
+        public static <T> DirectQuery<T> query(String tableAlias, String column, String alias) {
+            return StringUtil.isBlank(column) ? null : new DirectQuery<>(tableAlias, column, alias);
         }
 
         /**
          * 查询列
-         * @param criteria    条件对象
-         * @param column      表列
-         * @param columnAlias 列别名
-         * @param <T>         实体类型
+         * @param criteria 条件对象
+         * @param column   表列
+         * @param alias    列别名
+         * @param <T>      实体类型
          * @return 字符串查询列对象
          */
-        public static <T> DirectQuery<T> query(Criteria<T> criteria, String column, String columnAlias) {
-            return StringUtil.isBlank(column) ? null : new DirectQuery<>(criteria, column, columnAlias);
+        public static <T> DirectQuery<T> query(Criteria<T> criteria, String column, String alias) {
+            return StringUtil.isBlank(column) ? null : new DirectQuery<>(criteria, column, alias);
         }
     }
 

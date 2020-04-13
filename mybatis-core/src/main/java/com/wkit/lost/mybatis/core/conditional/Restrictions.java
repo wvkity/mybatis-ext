@@ -2,7 +2,6 @@ package com.wkit.lost.mybatis.core.conditional;
 
 import com.wkit.lost.mybatis.core.conditional.criterion.Criterion;
 import com.wkit.lost.mybatis.core.conditional.expression.Between;
-import com.wkit.lost.mybatis.core.conditional.expression.Equal;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectBetween;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectEqual;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectGreaterThan;
@@ -17,6 +16,7 @@ import com.wkit.lost.mybatis.core.conditional.expression.DirectNotIn;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectNotLike;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectNull;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectTemplate;
+import com.wkit.lost.mybatis.core.conditional.expression.Equal;
 import com.wkit.lost.mybatis.core.conditional.expression.GreaterThan;
 import com.wkit.lost.mybatis.core.conditional.expression.GreaterThanOrEqual;
 import com.wkit.lost.mybatis.core.conditional.expression.IdEqual;
@@ -30,11 +30,15 @@ import com.wkit.lost.mybatis.core.conditional.expression.NotEqual;
 import com.wkit.lost.mybatis.core.conditional.expression.NotIn;
 import com.wkit.lost.mybatis.core.conditional.expression.NotLike;
 import com.wkit.lost.mybatis.core.conditional.expression.Null;
+import com.wkit.lost.mybatis.core.conditional.expression.SubQuery;
 import com.wkit.lost.mybatis.core.conditional.expression.Template;
 import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.constant.Match;
-import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
+import com.wkit.lost.mybatis.core.constant.Symbol;
 import com.wkit.lost.mybatis.core.lambda.Property;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
+import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
+import com.wkit.lost.mybatis.core.wrapper.criteria.SubCriteria;
 
 import java.util.Collection;
 import java.util.Map;
@@ -2632,4 +2636,71 @@ public final class Restrictions {
     }
     // endregion
 
+    // region sub query
+
+    /**
+     * SUB QUERY
+     * @param criteria 条件包装对象
+     * @param column   字段包装对象
+     * @param sc       子查询条件包装对象
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> SubQuery<T> subQuery(Criteria<T> criteria, ColumnWrapper column, SubCriteria<?> sc, Logic logic) {
+        return SubQuery.create(criteria, column, sc, logic);
+    }
+
+    /**
+     * SUB QUERY
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param sc       子查询条件包装对象
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> SubQuery<T> subQuery(Criteria<T> criteria, String property, SubCriteria<?> sc) {
+        return subQuery(criteria, property, sc, Symbol.EQ, Logic.AND);
+    }
+
+    /**
+     * SUB QUERY
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param sc       子查询条件包装对象
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> SubQuery<T> subQuery(Criteria<T> criteria, String property, SubCriteria<?> sc, Logic logic) {
+        return subQuery(criteria, property, sc, Symbol.EQ, logic);
+    }
+
+    /**
+     * SUB QUERY
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param sc       子查询条件包装对象
+     * @param symbol   条件符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> SubQuery<T> subQuery(Criteria<T> criteria, String property, SubCriteria<?> sc, Symbol symbol) {
+        return subQuery(criteria, property, sc, symbol, Logic.AND);
+    }
+
+    /**
+     * SUB QUERY
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param sc       子查询条件包装对象
+     * @param symbol   条件符号
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> SubQuery<T> subQuery(Criteria<T> criteria, String property, SubCriteria<?> sc,
+                                           Symbol symbol, Logic logic) {
+        return SubQuery.create(criteria, property, sc, symbol, logic);
+    }
+    // endregion
 }

@@ -124,7 +124,7 @@ public class Group<T> extends AbstractGroupWrapper<T, ColumnWrapper> {
     @Override
     public String getSegment() {
         if (notEmpty()) {
-            String alias = criteria.isEnableAlias() ? (criteria.getAlias() + ".") : "";
+            String alias = criteria.isEnableAlias() ? (criteria.as() + ".") : "";
             return columns.stream().map(column -> alias + column.getColumn()).collect(Collectors.joining(", "));
         }
         return "";

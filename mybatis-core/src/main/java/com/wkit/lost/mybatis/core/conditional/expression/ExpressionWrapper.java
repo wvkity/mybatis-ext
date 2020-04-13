@@ -94,7 +94,7 @@ public abstract class ExpressionWrapper<T, E> implements Criterion<T>, Placehold
      */
     public String getAlias() {
         return StringUtil.hasText(this.tableAlias) ? this.tableAlias :
-                (this.criteria != null ? this.criteria.getAlias() : "");
+                (this.criteria != null ? this.criteria.as() : "");
     }
 
     /**

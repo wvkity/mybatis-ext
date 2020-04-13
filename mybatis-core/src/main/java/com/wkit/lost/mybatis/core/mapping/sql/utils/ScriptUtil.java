@@ -629,7 +629,7 @@ public final class ScriptUtil {
         }
         builder.append(column);
         if (StringUtil.hasText(columnAlias)) {
-            builder.append(Constants.SPACE);
+            builder.append(" AS ");
             if (columnAlias.contains(Constants.DOT)) {
                 builder.append(Constants.CHAR_QUOTE).append(columnAlias).append(Constants.CHAR_QUOTE);
             } else {
