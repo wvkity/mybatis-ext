@@ -89,14 +89,11 @@ public class DefaultEntityParser implements EntityParser {
         builder.namingStrategy(naming);
         if (entity.isAnnotationPresent(Table.class)) {
             Table annotation = entity.getDeclaredAnnotation(Table.class);
-            builder.name(annotation.name())
-                    .catalog(annotation.catalog())
-                    .schema(annotation.schema())
+            builder.name(annotation.name()).catalog(annotation.catalog()).schema(annotation.schema())
                     .prefix(annotation.prefix());
         } else if (AnnotationUtil.isAnnotationPresent(entity, JavaxPersistence.TABLE)) {
             AnnotationMetadata metadata = AnnotationMetadata.forObject(entity, JavaxPersistence.TABLE);
-            builder.name(metadata.stringValue(VARIABLE_NAME, null))
-                    .catalog(metadata.stringValue(VARIABLE_CATALOG, null))
+            builder.name(metadata.stringValue(VARIABLE_NAME, null)).catalog(metadata.stringValue(VARIABLE_CATALOG, null))
                     .schema(metadata.stringValue(VARIABLE_SCHEMA, null));
         }
         if (Ascii.isNullOrEmpty(builder.name())) {
@@ -326,9 +323,8 @@ public class DefaultEntityParser implements EntityParser {
             builder.identity(true).executing(Executing.AFTER).generator(identity.dialect().getKeyGenerator());
         } else {
             if (Ascii.isNullOrEmpty(identity.sql())) {
-                throw new MapperParserException(StringUtil.format("The @identity annotation on the '{}' " +
-                                "class's attribute '{}' is invalid",
-                        builder.entity().getCanonicalName(), builder.property()));
+                throw new MapperParserException(StringUtil.format("The @identity annotation on the '{}' " + 
+                        "class's attribute '{}' is invalid", builder.entity().getCanonicalName(), builder.property()));
             }
             builder.identity(true).executing(identity.executing()).generator(identity.sql());
         }
@@ -344,17 +340,13 @@ public class DefaultEntityParser implements EntityParser {
                                                   final FieldWrapper field) {
         if (field.isAnnotationPresent(SequenceGenerator.class)) {
             SequenceGenerator generator = field.getAnnotation(SequenceGenerator.class);
-            builder.sequenceName(Optional.ofNullable(generator.name())
-                    .filter(Ascii::hasText)
-                    .orElse(Optional.ofNullable(generator.sequenceName())
-                            .filter(Ascii::hasText)
-                            .orElse(null)));
+            builder.sequenceName(Optional.ofNullable(generator.name()).filter(Ascii::hasText)
+                    .orElse(Optional.ofNullable(generator.sequenceName()).filter(Ascii::hasText).orElse(null)));
         } else if (field.isAnnotationPresent(JavaxPersistence.SEQUENCE_GENERATOR)) {
             AnnotationMetadata metadata = AnnotationMetadata.forObject(field.getField(),
                     JavaxPersistence.SEQUENCE_GENERATOR);
             builder.sequenceName(Optional.ofNullable(metadata.stringValue(VARIABLE_NAME, null))
-                    .orElse(Optional.ofNullable(metadata.stringValue(VARIABLE_SEQUENCE_NAME, null))
-                            .orElse(null)));
+                    .orElse(Optional.ofNullable(metadata.stringValue(VARIABLE_SEQUENCE_NAME, null)).orElse(null)));
         }
         if (Ascii.isNullOrEmpty(builder.sequenceName())) {
             throw new MapperParserException(StringUtil.format("The @SequenceGenerator on the `{}` " +

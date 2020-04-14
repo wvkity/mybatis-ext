@@ -88,7 +88,7 @@ public class MyBatisMapperAnnotationBuilder extends MapperAnnotationBuilder {
 
     private static final Set<Class<? extends Annotation>> SQL_ANNOTATION_TYPES = new HashSet<>();
     private static final Set<Class<? extends Annotation>> SQL_PROVIDER_ANNOTATION_TYPES = new HashSet<>();
-
+    
     private final MyBatisConfiguration configuration;
     private final MapperBuilderAssistant assistant;
     private final Class<?> type;
