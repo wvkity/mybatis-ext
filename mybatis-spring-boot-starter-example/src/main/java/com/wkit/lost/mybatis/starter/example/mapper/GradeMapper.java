@@ -6,5 +6,5 @@ import com.wkit.lost.mybatis.starter.example.vo.GradeVo;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GradeMapper extends BaseMapperExecutor<Grade, GradeVo> {
+public interface GradeMapper extends BaseMapperExecutor<Grade, GradeVo, Long> {
 }

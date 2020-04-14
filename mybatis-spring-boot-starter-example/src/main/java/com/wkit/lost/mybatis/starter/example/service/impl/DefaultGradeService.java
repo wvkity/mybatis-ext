@@ -8,6 +8,7 @@ import com.wkit.lost.mybatis.starter.example.vo.GradeVo;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DefaultGradeService extends AbstractBaseServiceExecutor<GradeMapper, Grade, GradeVo> implements GradeService {
+public class DefaultGradeService extends AbstractBaseServiceExecutor<GradeMapper, Grade, GradeVo, Long> 
+        implements GradeService {
 
 }

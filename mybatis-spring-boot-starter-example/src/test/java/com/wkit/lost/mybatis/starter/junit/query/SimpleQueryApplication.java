@@ -19,6 +19,12 @@ public class SimpleQueryApplication extends RootTestRunner {
 
     @Inject
     private GradeService gradeService;
+    
+    @Test
+    public void test() {
+        List<GradeVo> list = gradeService.list(1L, 2L, 3L);
+        log.info("结果: {}", JSON.toJSONString(list, true));
+    }
 
     @Test
     public void idEqualTest() {

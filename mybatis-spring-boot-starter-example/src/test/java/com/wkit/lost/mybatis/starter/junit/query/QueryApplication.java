@@ -2,7 +2,9 @@ package com.wkit.lost.mybatis.starter.junit.query;
 
 import com.alibaba.fastjson.JSON;
 import com.wkit.lost.mybatis.core.wrapper.criteria.QueryCriteria;
+import com.wkit.lost.mybatis.starter.example.entity.Result;
 import com.wkit.lost.mybatis.starter.example.entity.User;
+import com.wkit.lost.mybatis.starter.example.service.ResultService;
 import com.wkit.lost.mybatis.starter.example.service.UserService;
 import com.wkit.lost.mybatis.starter.example.vo.UserVo;
 import com.wkit.lost.mybatis.starter.junit.RootTestRunner;
@@ -22,18 +24,26 @@ public class QueryApplication extends RootTestRunner {
 
     @Inject
     private UserService userService;
+    @Inject
+    private ResultService resultService;
+    
+    @Test
+    public void test() {
+        List<Result> result = resultService.list(1L, 2L, 3L);
+        log.info("执行结果: {}", result);
+    }
 
     @Test
     public void existsTest() {
         User u = new User();
         u.setId(1L).setSex(1).setState(2);
-        boolean result = userService.exists(u);
+        boolean result = userService.existsById(u);
         log.info("执行结果: {}", result);
     }
 
     @Test
     public void existsByIdTest() {
-        boolean result = userService.exists(2L);
+        boolean result = userService.existsById(2L);
         log.info("执行结果: {}", result);
     }
 
@@ -93,7 +103,7 @@ public class QueryApplication extends RootTestRunner {
         u2.setId(2L).setSex(1).setState(1);
         User u3 = new User();
         u3.setId(3L).setSex(2).setUserName("张三");
-        List<User> result = userService.list(u1, u2, u3);
+        List<User> result = userService.listByEntities(u1, u2, u3);
         log.info("执行结果: {}", JSON.toJSONString(result, true));
     }
 

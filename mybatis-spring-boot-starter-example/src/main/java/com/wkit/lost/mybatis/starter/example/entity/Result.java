@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 /**
  * 成绩信息
  */
-@Table(catalog = "STUDENT_MANAGEMENT")
+@Table(catalog = "MY_SCHOOL")
 @Data
 @ToString
 @Accessors(chain = true)
