@@ -65,11 +65,6 @@ public class MyBatisCustomConfiguration implements Serializable {
     private Injector injector;
 
     /**
-     * Mapper接口父类
-     */
-    private Class<?> baseMapperClass = BaseMapperExecutor.class;
-
-    /**
      * 命名策略
      */
     private NamingStrategy strategy;

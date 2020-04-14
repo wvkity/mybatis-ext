@@ -2,17 +2,17 @@ package com.wkit.lost.mybatis.config;
 
 import com.wkit.lost.mybatis.annotation.extension.Dialect;
 import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
-import com.wkit.lost.mybatis.core.injector.Injector;
 import com.wkit.lost.mybatis.core.injector.DefaultInjector;
+import com.wkit.lost.mybatis.core.injector.Injector;
 import com.wkit.lost.mybatis.exception.MapperException;
 import com.wkit.lost.mybatis.exception.MyBatisException;
+import com.wkit.lost.mybatis.mapper.BaseMapperExecutor;
 import com.wkit.lost.mybatis.session.MyBatisConfiguration;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.builder.MapperBuilderAssistant;
 import org.apache.ibatis.session.Configuration;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -23,6 +23,11 @@ import java.util.concurrent.ConcurrentSkipListSet;
  */
 @Log4j2
 public class MyBatisConfigCache {
+
+    /**
+     * Mapper接口
+     */
+    private static final Class<?> BASE_MAPPER_INTERFACE = BaseMapperExecutor.class;
 
     /**
      * 全局配置信息缓存
@@ -153,12 +158,9 @@ public class MyBatisConfigCache {
      * @param mapperInterface Mapper接口
      */
     public static void inject(final MapperBuilderAssistant assistant, Class<?> mapperInterface) {
-        Configuration configuration = assistant.getConfiguration();
-        Optional.ofNullable(getCustomConfiguration(configuration).getBaseMapperClass()).ifPresent(it -> {
-            if (it.isAssignableFrom(mapperInterface)) {
-                getInjector(configuration).inject(assistant, mapperInterface);
-            }
-        });
+        if (BASE_MAPPER_INTERFACE.isAssignableFrom(mapperInterface)) {
+            getInjector(assistant.getConfiguration()).inject(assistant, mapperInterface);
+        }
     }
 
     /**
