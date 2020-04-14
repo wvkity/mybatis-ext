@@ -14,7 +14,7 @@ import java.util.Optional;
  * @param <T> 泛型类
  * @param <V> 返回值类
  */
-public interface QueryMapper<T, V> {
+public interface QueryMapper<T, V, PK> {
 
     /**
      * 根据指定对象查询记录是否存在
@@ -28,7 +28,7 @@ public interface QueryMapper<T, V> {
      * @param id 主键值
      * @return 1: 存在 | 0: 不存在
      */
-    int existsById(Serializable id);
+    int existsById(PK id);
 
     /**
      * 根据指定对象查询记录数
@@ -42,14 +42,14 @@ public interface QueryMapper<T, V> {
      * @param id 主键
      * @return 对应数据
      */
-    Optional<V> selectOne(Serializable id);
+    Optional<V> selectOne(PK id);
 
     /**
      * 根据多个主键查询记录
      * @param idList 主键集合
      * @return 多条记录
      */
-    List<V> list(@Param(Constants.PARAM_PRIMARY_KEYS) Collection<? extends Serializable> idList);
+    List<V> list(@Param(Constants.PARAM_PRIMARY_KEYS) Collection<PK> idList);
 
     /**
      * 根据制定对象查询记录

@@ -28,13 +28,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * 泛型接口
- * @param <T> 实体类
- * @param <V> 返回值类型
+ * 通用Service抽象类
+ * @param <Executor> Mapper接口
+ * @param <T>        实体类
+ * @param <V>        返回值类型
+ * @param <PK>       主键类型
  * @author wvkity
  */
-public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExecutor<T, V>, T, V>
-        implements BaseServiceExecutor<T, V> {
+public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExecutor<T, V, PK>, T, V, PK>
+        implements BaseServiceExecutor<T, V, PK> {
 
     protected static final String METHOD_INSERT = "insert";
     protected static final String METHOD_INSERT_NOT_WITH_NULL = "insertNotWithNull";
@@ -313,7 +315,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
     }
 
     @Override
-    public boolean exists(Serializable id) {
+    public boolean existsById(PK id) {
         return id != null && this.executor.existsById(id) > 0;
     }
 
@@ -328,17 +330,18 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
     }
 
     @Override
-    public Optional<V> selectOne(Serializable id) {
+    public Optional<V> selectOne(PK id) {
         return id == null ? Optional.empty() : executor.selectOne(id);
     }
 
+    @SafeVarargs
     @Override
-    public List<V> list(Serializable... ids) {
+    public final List<V> list(PK... ids) {
         return list(Arrays.asList(ids));
     }
 
-    public List<V> list(Collection<? extends Serializable> idList) {
-        List<? extends Serializable> pks = Optional.ofNullable(idList)
+    public List<V> list(Collection<PK> idList) {
+        List<PK> pks = Optional.ofNullable(idList)
                 .orElse(new ArrayList<>())
                 .stream()
                 .filter(Objects::nonNull)
@@ -353,7 +356,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<V> list(T... entities) {
+    public List<V> listByEntities(T... entities) {
         return list(Arrays.asList(entities));
     }
 

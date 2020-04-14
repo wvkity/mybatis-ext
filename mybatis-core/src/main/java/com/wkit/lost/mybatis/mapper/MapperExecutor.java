@@ -5,5 +5,5 @@ package com.wkit.lost.mybatis.mapper;
  * @param <T> 实体、返回值类型
  * @author wvkity
  */
-public interface MapperExecutor<T> extends BaseMapperExecutor<T, T> {
+public interface MapperExecutor<T> extends SerialMapperExecutor<T, T> {
 }
