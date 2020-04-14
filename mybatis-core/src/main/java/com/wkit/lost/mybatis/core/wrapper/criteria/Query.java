@@ -1,7 +1,7 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
-import com.wkit.lost.mybatis.core.lambda.LambdaConverter;
-import com.wkit.lost.mybatis.core.lambda.Property;
+import com.wkit.lost.mybatis.core.converter.Property;
+import com.wkit.lost.mybatis.core.converter.PropertyConverter;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 
 import java.util.Collection;
@@ -13,16 +13,17 @@ import java.util.Map;
  * @param <Chain> 子类
  * @author wvkity
  */
-public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch, LambdaConverter<Property<T, ?>> {
+public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch, PropertyConverter<T> {
 
 
     /**
      * 添加查询列
      * @param property 属性
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain select(Property<T, ?> property) {
-        return select(lambdaToProperty(property));
+    default <V> Chain select(Property<T, V> property) {
+        return select(convert(property));
     }
 
     /**
@@ -38,8 +39,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param alias    列别名
      * @return {@code this}
      */
-    default Chain select(Property<T, ?> property, String alias) {
-        return select(lambdaToProperty(property), alias);
+    default <V> Chain select(Property<T, V> property, String alias) {
+        return select(convert(property), alias);
     }
 
     /**
@@ -89,10 +90,12 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * 添加查询列
      * @param criteria 子查询对象
      * @param property 属性
+     * @param <E>      实体类型
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default <E> Chain subSelect(SubCriteria<E> criteria, Property<E, ?> property) {
-        return subSelect(criteria, criteria.lambdaToProperty(property));
+    default <E, V> Chain subSelect(SubCriteria<E> criteria, Property<E, V> property) {
+        return subSelect(criteria, criteria.convert(property));
     }
 
     /**
@@ -108,10 +111,12 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param criteria 子查询对象
      * @param property 属性
      * @param alias    列别名
+     * @param <E>      实体类型
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default <E> Chain subSelect(SubCriteria<E> criteria, Property<E, ?> property, String alias) {
-        return subSelect(criteria, criteria.lambdaToProperty(property), alias);
+    default <E, V> Chain subSelect(SubCriteria<E> criteria, Property<E, V> property, String alias) {
+        return subSelect(criteria, criteria.convert(property), alias);
     }
 
 
@@ -130,8 +135,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @return {@code this}
      */
     @SuppressWarnings({"unchecked"})
-    default Chain selects(Property<T, ?>... properties) {
-        return selects(lambdaToProperties(properties));
+    default <V> Chain selects(Property<T, V>... properties) {
+        return selects(convert(ArrayUtil.toList(properties)));
     }
 
     /**
@@ -233,11 +238,12 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param criteria   子查询条件对象
      * @param properties 属性数组
      * @param <E>        实体类型
+     * @param <V>        值类型
      * @return {@code this}
      */
     @SuppressWarnings({"unchecked"})
-    default <E> Chain subSelects(SubCriteria<E> criteria, Property<E, ?>... properties) {
-        return subSelects(criteria, criteria.lambdaToProperties(properties));
+    default <E, V> Chain subSelects(SubCriteria<E> criteria, Property<E, V>... properties) {
+        return subSelects(criteria, criteria.convert(ArrayUtil.toList(properties)));
     }
 
     /**
@@ -284,10 +290,11 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
     /**
      * 排除查询列
      * @param property 属性
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain exclude(Property<T, ?> property) {
-        return exclude(lambdaToProperty(property));
+    default <V> Chain exclude(Property<T, V> property) {
+        return exclude(convert(property));
     }
 
     /**
@@ -302,11 +309,12 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
     /**
      * 排除查询列
      * @param properties 属性数组
+     * @param <V>        值类型
      * @return {@code this}
      */
     @SuppressWarnings({"unchecked"})
-    default Chain excludes(Property<T, ?>... properties) {
-        return excludes(lambdaToProperties(properties));
+    default <V> Chain excludes(Property<T, V>... properties) {
+        return excludes(convert(ArrayUtil.toList(properties)));
     }
 
     /**

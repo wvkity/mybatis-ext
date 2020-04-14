@@ -1,22 +1,23 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
-import com.wkit.lost.mybatis.core.lambda.LambdaConverter;
+import com.wkit.lost.mybatis.core.converter.Property;
+import com.wkit.lost.mybatis.core.converter.PropertyConverter;
 
 /**
  * NULL条件
+ * @param <T>     实体类型
  * @param <Chain> 子类
- * @param <P>     Lambda类
  * @author wvkity
  */
-public interface NullWrapper<Chain extends NullWrapper<Chain, P>, P> extends LambdaConverter<P> {
+public interface NullWrapper<T, Chain extends CompareWrapper<T, Chain>> extends PropertyConverter<T> {
 
     /**
      * IS NULL
      * @param property 属性
      * @return {@code this}
      */
-    default Chain isNull(P property) {
-        return isNull(lambdaToProperty(property));
+    default <V> Chain isNull(Property<T, V> property) {
+        return isNull(convert(property));
     }
 
     /**
@@ -29,10 +30,11 @@ public interface NullWrapper<Chain extends NullWrapper<Chain, P>, P> extends Lam
     /**
      * 或IS NULL
      * @param property 属性
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orIsNull(P property) {
-        return orIsNull(lambdaToProperty(property));
+    default <V> Chain orIsNull(Property<T, V> property) {
+        return orIsNull(convert(property));
     }
 
     /**
@@ -75,10 +77,11 @@ public interface NullWrapper<Chain extends NullWrapper<Chain, P>, P> extends Lam
     /**
      * IS NULL
      * @param property 属性
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain notNull(P property) {
-        return notNull(lambdaToProperty(property));
+    default <V> Chain notNull(Property<T, V> property) {
+        return notNull(convert(property));
     }
 
     /**
@@ -91,10 +94,11 @@ public interface NullWrapper<Chain extends NullWrapper<Chain, P>, P> extends Lam
     /**
      * 或IS NULL
      * @param property 属性
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orNotNull(P property) {
-        return orNotNull(lambdaToProperty(property));
+    default <V> Chain orNotNull(Property<T, V> property) {
+        return orNotNull(convert(property));
     }
 
     /**

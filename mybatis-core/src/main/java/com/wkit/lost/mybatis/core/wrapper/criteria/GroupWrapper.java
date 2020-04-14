@@ -1,6 +1,7 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
-import com.wkit.lost.mybatis.core.lambda.LambdaConverter;
+import com.wkit.lost.mybatis.core.converter.Property;
+import com.wkit.lost.mybatis.core.converter.PropertyConverter;
 import com.wkit.lost.mybatis.core.wrapper.basic.AbstractGroupWrapper;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 
@@ -8,21 +9,22 @@ import java.util.Collection;
 
 /**
  * 分组
+ * @param <T>     实体类型
  * @param <Chain> 子类
- * @param <P>     Lambda类
  * @author wvkity
  */
-public interface GroupWrapper<Chain extends GroupWrapper<Chain, P>, P> extends LambdaConverter<P> {
+public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends PropertyConverter<T> {
 
 
     /**
      * 分组
      * @param properties 属性数组
+     * @param <V>        返回值类型
      * @return 当前对象
      */
     @SuppressWarnings({"unchecked"})
-    default Chain group(P... properties) {
-        return group(lambdaToProperties(properties));
+    default <V> Chain group(Property<T, V>... properties) {
+        return group(convert(ArrayUtil.toList(properties)));
     }
 
     /**
@@ -81,10 +83,11 @@ public interface GroupWrapper<Chain extends GroupWrapper<Chain, P>, P> extends L
      * 分组
      * @param foreignAlias 连表对象别名
      * @param properties   属性数组
+     * @param <V>          返回值类型
      * @return 当前对象
      */
     @SuppressWarnings({"unchecked"})
-    Chain foreignGroup(String foreignAlias, P... properties);
+    <V> Chain foreignGroup(String foreignAlias, Property<T, V>... properties);
 
     /**
      * 分组

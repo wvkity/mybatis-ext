@@ -1,9 +1,10 @@
 package com.wkit.lost.mybatis.core.wrapper.basic;
 
-import com.wkit.lost.mybatis.core.lambda.Property;
+import com.wkit.lost.mybatis.core.converter.Property;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.AbstractQueryCriteriaWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
+import com.wkit.lost.mybatis.core.wrapper.criteria.ForeignCriteria;
 import com.wkit.lost.mybatis.core.wrapper.utils.CriteriaUtil;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
@@ -45,10 +46,11 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param criteria   查询对象
      * @param properties 属性
      * @param <T>        泛型类型
+     * @param <V>        值类型
      * @return 排序对象
      */
     @SafeVarargs
-    public static <T> Order<T> asc(Criteria<T> criteria, Property<T, ?>... properties) {
+    public static <T, V> Order<T> asc(Criteria<T> criteria, Property<T, V>... properties) {
         return new Order<>(criteria, true, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }
 
@@ -96,13 +98,14 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param properties 属性
      * @param <T>        泛型类型
      * @param <E>        泛型类型
+     * @param <V>        值类型
      * @return 排序对象
      */
     @SafeVarargs
     @SuppressWarnings({"unchecked"})
-    public static <T, E> Order<E> asc(String alias,
-                                      AbstractQueryCriteriaWrapper<T> master,
-                                      Property<E, ?>... properties) {
+    public static <T, E, V> Order<E> asc(String alias,
+                                         AbstractQueryCriteriaWrapper<T> master,
+                                         Property<E, V>... properties) {
         Criteria<E> criteria = master.searchForeign(alias);
         return new Order<>(criteria, true, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }
@@ -127,10 +130,11 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param criteria   查询对象
      * @param properties 属性
      * @param <T>        泛型类型
+     * @param <V>        值类型
      * @return 排序对象
      */
     @SafeVarargs
-    public static <T> Order<T> desc(Criteria<T> criteria, Property<T, ?>... properties) {
+    public static <T, V> Order<T> desc(Criteria<T> criteria, Property<T, V>... properties) {
         return new Order<>(criteria, false, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }
 
@@ -164,14 +168,15 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param properties 属性
      * @param <T>        泛型类型
      * @param <E>        泛型类型
+     * @param <V>        值类型
      * @return 排序对象
      */
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @SafeVarargs
-    @SuppressWarnings({"unchecked"})
-    public static <T, E> Order<E> desc(String alias,
-                                       AbstractQueryCriteriaWrapper<E> master,
-                                       Property<E, ?>... properties) {
-        Criteria<E> criteria = master.searchForeign(alias);
+    public static <T, E, V> Order<E> desc(String alias,
+                                          AbstractQueryCriteriaWrapper<E> master,
+                                          Property<E, V>... properties) {
+        ForeignCriteria<E> criteria = master.searchForeign(alias);
         return new Order<>(criteria, false, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }
 

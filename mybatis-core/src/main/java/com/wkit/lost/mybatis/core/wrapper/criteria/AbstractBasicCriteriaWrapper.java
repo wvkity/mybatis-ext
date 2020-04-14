@@ -39,8 +39,8 @@ import java.util.stream.Collectors;
  * @param <P>     Lambda类
  */
 @SuppressWarnings({"serial", "unchecked"})
-abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriteriaWrapper<T, Chain, P>, P>
-        extends AbstractPlaceholderConverter implements CriteriaWrapper<T, Chain, P> {
+abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriteriaWrapper<T, Chain>>
+        extends AbstractPlaceholderConverter implements CriteriaWrapper<T, Chain> {
 
     // region fields
 
@@ -738,182 +738,182 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
     // region fuzzy condition
 
     @Override
-    public Chain like(String property, Object value, Character escape) {
+    public Chain like(String property, String value, Character escape) {
         return add(Restrictions.like(this, property, value, escape));
     }
 
     @Override
-    public Chain orLike(String property, Object value, Character escape) {
+    public Chain orLike(String property, String value, Character escape) {
         return add(Restrictions.like(this, property, value, escape, Logic.OR));
     }
 
     @Override
-    public Chain likeLeft(String property, Object value, Character escape) {
+    public Chain likeLeft(String property, String value, Character escape) {
         return add(Restrictions.like(this, property, value, Match.END, escape));
     }
 
     @Override
-    public Chain orLikeLeft(String property, Object value, Character escape) {
+    public Chain orLikeLeft(String property, String value, Character escape) {
         return add(Restrictions.like(this, property, value, Match.END, escape, Logic.OR));
     }
 
     @Override
-    public Chain likeRight(String property, Object value, Character escape) {
+    public Chain likeRight(String property, String value, Character escape) {
         return add(Restrictions.like(this, property, value, Match.START, escape));
     }
 
     @Override
-    public Chain orLikeRight(String property, Object value, Character escape) {
+    public Chain orLikeRight(String property, String value, Character escape) {
         return add(Restrictions.like(this, property, value, Match.START, escape, Logic.OR));
     }
 
     @Override
-    public Chain notLike(String property, Object value, Character escape) {
+    public Chain notLike(String property, String value, Character escape) {
         return add(Restrictions.notLike(this, property, value, escape));
     }
 
     @Override
-    public Chain orNotLike(String property, Object value, Character escape) {
+    public Chain orNotLike(String property, String value, Character escape) {
         return add(Restrictions.notLike(this, property, value, escape, Logic.OR));
     }
 
     @Override
-    public Chain notLikeLeft(String property, Object value, Character escape) {
+    public Chain notLikeLeft(String property, String value, Character escape) {
         return add(Restrictions.notLike(this, property, value, Match.END, escape));
     }
 
     @Override
-    public Chain orNotLikeLeft(String property, Object value, Character escape) {
+    public Chain orNotLikeLeft(String property, String value, Character escape) {
         return add(Restrictions.notLike(this, property, value, Match.END, escape, Logic.OR));
     }
 
     @Override
-    public Chain notLikeRight(String property, Object value, Character escape) {
+    public Chain notLikeRight(String property, String value, Character escape) {
         return add(Restrictions.notLike(this, property, value, Match.START, escape));
     }
 
     @Override
-    public Chain orNotLikeRight(String property, Object value, Character escape) {
+    public Chain orNotLikeRight(String property, String value, Character escape) {
         return add(Restrictions.notLike(this, property, value, Match.START, escape, Logic.OR));
     }
 
     @Override
-    public Chain directLike(String column, Object value, Character escape) {
+    public Chain directLike(String column, String value, Character escape) {
         return add(Restrictions.directLike(this, column, value, escape));
     }
 
     @Override
-    public Chain directLike(String tableAlias, String column, Object value, Character escape) {
+    public Chain directLike(String tableAlias, String column, String value, Character escape) {
         return add(Restrictions.directLike(tableAlias, column, value, escape));
     }
 
     @Override
-    public Chain orDirectLike(String column, Object value, Character escape) {
+    public Chain orDirectLike(String column, String value, Character escape) {
         return add(Restrictions.directLike(this, column, value, escape, Logic.OR));
     }
 
     @Override
-    public Chain orDirectLike(String tableAlias, String column, Object value, Character escape) {
+    public Chain orDirectLike(String tableAlias, String column, String value, Character escape) {
         return add(Restrictions.directLike(tableAlias, column, value, escape, Logic.OR));
     }
 
     @Override
-    public Chain directLikeLeft(String column, Object value, Character escape) {
+    public Chain directLikeLeft(String column, String value, Character escape) {
         return add(Restrictions.directLike(this, column, value, Match.END, escape));
     }
 
     @Override
-    public Chain directLikeLeft(String tableAlias, String column, Object value, Character escape) {
+    public Chain directLikeLeft(String tableAlias, String column, String value, Character escape) {
         return add(Restrictions.directLike(tableAlias, column, value, Match.END, escape));
     }
 
     @Override
-    public Chain orDirectLikeLeft(String column, Object value, Character escape) {
+    public Chain orDirectLikeLeft(String column, String value, Character escape) {
         return add(Restrictions.directLike(this, column, value, Match.END, escape, Logic.OR));
     }
 
     @Override
-    public Chain orDirectLikeLeft(String tableAlias, String column, Object value, Character escape) {
+    public Chain orDirectLikeLeft(String tableAlias, String column, String value, Character escape) {
         return add(Restrictions.directLike(tableAlias, column, value, Match.END, escape, Logic.OR));
     }
 
     @Override
-    public Chain directLikeRight(String column, Object value, Character escape) {
+    public Chain directLikeRight(String column, String value, Character escape) {
         return add(Restrictions.directLike(this, column, value, Match.START, escape));
     }
 
     @Override
-    public Chain directLikeRight(String tableAlias, String column, Object value, Character escape) {
+    public Chain directLikeRight(String tableAlias, String column, String value, Character escape) {
         return add(Restrictions.directLike(tableAlias, column, value, Match.START, escape));
     }
 
     @Override
-    public Chain orDirectLikeRight(String column, Object value, Character escape) {
+    public Chain orDirectLikeRight(String column, String value, Character escape) {
         return add(Restrictions.directLike(this, column, value, Match.START, escape, Logic.OR));
     }
 
     @Override
-    public Chain orDirectLikeRight(String tableAlias, String column, Object value, Character escape) {
+    public Chain orDirectLikeRight(String tableAlias, String column, String value, Character escape) {
         return add(Restrictions.directLike(tableAlias, column, value, Match.START, escape, Logic.OR));
     }
 
     @Override
-    public Chain directNotLike(String column, Object value, Character escape) {
+    public Chain directNotLike(String column, String value, Character escape) {
         return add(Restrictions.directNotLike(this, column, value, escape));
     }
 
     @Override
-    public Chain directNotLike(String tableAlias, String column, Object value, Character escape) {
+    public Chain directNotLike(String tableAlias, String column, String value, Character escape) {
         return add(Restrictions.directNotLike(tableAlias, column, value, escape));
     }
 
     @Override
-    public Chain orDirectNotLike(String column, Object value, Character escape) {
+    public Chain orDirectNotLike(String column, String value, Character escape) {
         return add(Restrictions.directNotLike(this, column, value, escape, Logic.OR));
     }
 
     @Override
-    public Chain orDirectNotLike(String tableAlias, String column, Object value, Character escape) {
+    public Chain orDirectNotLike(String tableAlias, String column, String value, Character escape) {
         return add(Restrictions.directNotLike(tableAlias, column, value, escape, Logic.OR));
     }
 
     @Override
-    public Chain directNotLikeLeft(String column, Object value, Character escape) {
+    public Chain directNotLikeLeft(String column, String value, Character escape) {
         return add(Restrictions.directNotLike(this, column, value, Match.END, escape));
     }
 
     @Override
-    public Chain directNotLikeLeft(String tableAlias, String column, Object value, Character escape) {
+    public Chain directNotLikeLeft(String tableAlias, String column, String value, Character escape) {
         return add(Restrictions.directNotLike(tableAlias, column, value, Match.END, escape));
     }
 
     @Override
-    public Chain orDirectNotLikeLeft(String column, Object value, Character escape) {
+    public Chain orDirectNotLikeLeft(String column, String value, Character escape) {
         return add(Restrictions.directNotLike(this, column, value, Match.END, escape, Logic.OR));
     }
 
     @Override
-    public Chain orDirectNotLikeLeft(String tableAlias, String column, Object value, Character escape) {
+    public Chain orDirectNotLikeLeft(String tableAlias, String column, String value, Character escape) {
         return add(Restrictions.directNotLike(tableAlias, column, value, Match.END, escape, Logic.OR));
     }
 
     @Override
-    public Chain directNotLikeRight(String column, Object value, Character escape) {
+    public Chain directNotLikeRight(String column, String value, Character escape) {
         return add(Restrictions.directNotLike(this, column, value, Match.START, escape));
     }
 
     @Override
-    public Chain directNotLikeRight(String tableAlias, String column, Object value, Character escape) {
+    public Chain directNotLikeRight(String tableAlias, String column, String value, Character escape) {
         return add(Restrictions.directNotLike(tableAlias, column, value, Match.START, escape));
     }
 
     @Override
-    public Chain orDirectNotLikeRight(String column, Object value, Character escape) {
+    public Chain orDirectNotLikeRight(String column, String value, Character escape) {
         return add(Restrictions.directNotLike(this, column, value, Match.START, escape, Logic.OR));
     }
 
     @Override
-    public Chain orDirectNotLikeRight(String tableAlias, String column, Object value, Character escape) {
+    public Chain orDirectNotLikeRight(String tableAlias, String column, String value, Character escape) {
         return add(Restrictions.directNotLike(tableAlias, column, value, Match.START, escape, Logic.OR));
     }
 

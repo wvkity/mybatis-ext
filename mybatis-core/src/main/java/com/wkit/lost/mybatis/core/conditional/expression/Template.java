@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.core.conditional.expression;
 import com.wkit.lost.mybatis.core.conditional.utils.Formatter;
 import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.constant.TemplateMatch;
-import com.wkit.lost.mybatis.core.lambda.Property;
+import com.wkit.lost.mybatis.core.converter.Property;
 import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
@@ -181,10 +181,11 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
      * @param value    值
      * @param template 模板
      * @param <T>      实体类型
+     * @param <V>      值类型
      * @return 条件对象
      */
-    public static <T> Template<T> create(Criteria<T> criteria, Property<T, ?> property,
-                                         Object value, String template) {
+    public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
+                                            Object value, String template) {
         return create(criteria, property, value, template, Logic.AND);
     }
 
@@ -196,10 +197,11 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
      * @param template 模板
      * @param logic    逻辑符号
      * @param <T>      实体类型
+     * @param <V>      值类型
      * @return 条件对象
      */
-    public static <T> Template<T> create(Criteria<T> criteria, Property<T, ?> property,
-                                         Object value, String template, Logic logic) {
+    public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
+                                            Object value, String template, Logic logic) {
         if (criteria != null && property != null) {
             return create(criteria, criteria.searchColumn(property), value, template, logic);
         }
@@ -276,10 +278,11 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
      * @param values   值
      * @param template 模板
      * @param <T>      实体类型
+     * @param <V>      值类型
      * @return 条件对象
      */
-    public static <T> Template<T> create(Criteria<T> criteria, Property<T, ?> property,
-                                         Collection<Object> values, String template) {
+    public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
+                                            Collection<Object> values, String template) {
         return create(criteria, property, values, template, Logic.AND);
     }
 
@@ -291,10 +294,11 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
      * @param template 模板
      * @param logic    逻辑符号
      * @param <T>      实体类型
+     * @param <V>      值类型
      * @return 条件对象
      */
-    public static <T> Template<T> create(Criteria<T> criteria, Property<T, ?> property,
-                                         Collection<Object> values, String template, Logic logic) {
+    public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
+                                            Collection<Object> values, String template, Logic logic) {
         if (criteria != null && property != null) {
             return create(criteria, criteria.searchColumn(property), values, template, logic);
         }
@@ -372,10 +376,11 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
      * @param values   值
      * @param template 模板
      * @param <T>      实体类型
+     * @param <V>      值类型
      * @return 条件对象
      */
-    public static <T> Template<T> create(Criteria<T> criteria, Property<T, ?> property,
-                                         Map<String, Object> values, String template) {
+    public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
+                                            Map<String, Object> values, String template) {
         return create(criteria, property, values, template, Logic.AND);
     }
 
@@ -387,10 +392,11 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
      * @param template 模板
      * @param logic    逻辑符号
      * @param <T>      实体类型
+     * @param <V>      值类型
      * @return 条件对象
      */
-    public static <T> Template<T> create(Criteria<T> criteria, Property<T, ?> property,
-                                         Map<String, Object> values, String template, Logic logic) {
+    public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
+                                            Map<String, Object> values, String template, Logic logic) {
         if (criteria != null && property != null) {
             return create(criteria, criteria.searchColumn(property), values, template, logic);
         }

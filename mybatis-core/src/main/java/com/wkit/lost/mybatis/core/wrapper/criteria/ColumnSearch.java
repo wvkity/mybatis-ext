@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
-import com.wkit.lost.mybatis.core.lambda.Property;
+import com.wkit.lost.mybatis.core.converter.Property;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 
 /**

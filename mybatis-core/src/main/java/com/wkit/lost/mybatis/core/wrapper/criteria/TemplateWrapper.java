@@ -1,7 +1,8 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
 import com.wkit.lost.mybatis.core.conditional.expression.DirectTemplate;
-import com.wkit.lost.mybatis.core.lambda.LambdaConverter;
+import com.wkit.lost.mybatis.core.converter.Property;
+import com.wkit.lost.mybatis.core.converter.PropertyConverter;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 
 import java.util.Collection;
@@ -9,13 +10,13 @@ import java.util.Map;
 
 /**
  * 模板条件接口
+ * @param <T>     实体类型
  * @param <Chain> 子类
- * @param <P>     Lambda类
  * @author wvkity
  * @see com.wkit.lost.mybatis.core.conditional.expression.Template
  * @see DirectTemplate
  */
-public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> extends LambdaConverter<P> {
+public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> extends PropertyConverter<T> {
 
     /**
      * TEMPLATE
@@ -24,8 +25,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param value    值
      * @return {@code this}
      */
-    default Chain template(String template, P property, Object value) {
-        return template(template, lambdaToProperty(property), value);
+    default <V> Chain template(String template, Property<T, V> property, Object value) {
+        return template(template, convert(property), value);
     }
 
     /**
@@ -44,8 +45,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param value    值
      * @return {@code this}
      */
-    default Chain orTemplate(String template, P property, Object value) {
-        return orTemplate(template, lambdaToProperty(property), value);
+    default <V> Chain orTemplate(String template, Property<T, V> property, Object value) {
+        return orTemplate(template, convert(property), value);
     }
 
     /**
@@ -64,7 +65,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain template(String template, P property, Object... values) {
+    default <V> Chain template(String template, Property<T, V> property, Object... values) {
         return template(template, property, ArrayUtil.toList(values));
     }
 
@@ -75,8 +76,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain template(String template, P property, Collection<Object> values) {
-        return template(template, lambdaToProperty(property), values);
+    default <V> Chain template(String template, Property<T, V> property, Collection<Object> values) {
+        return template(template, convert(property), values);
     }
 
     /**
@@ -106,7 +107,7 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain orTemplate(String template, P property, Object... values) {
+    default <V> Chain orTemplate(String template, Property<T, V> property, Object... values) {
         return orTemplate(template, property, ArrayUtil.toList(values));
     }
 
@@ -117,8 +118,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain orTemplate(String template, P property, Collection<Object> values) {
-        return orTemplate(template, lambdaToProperty(property), values);
+    default <V> Chain orTemplate(String template, Property<T, V> property, Collection<Object> values) {
+        return orTemplate(template, convert(property), values);
     }
 
     /**
@@ -148,8 +149,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain template(String template, P property, Map<String, Object> values) {
-        return template(template, lambdaToProperty(property), values);
+    default <V> Chain template(String template, Property<T, V> property, Map<String, Object> values) {
+        return template(template, convert(property), values);
     }
 
     /**
@@ -168,8 +169,8 @@ public interface TemplateWrapper<Chain extends TemplateWrapper<Chain, P>, P> ext
      * @param values   值
      * @return {@code this}
      */
-    default Chain orTemplate(String template, P property, Map<String, Object> values) {
-        return orTemplate(template, lambdaToProperty(property), values);
+    default <V> Chain orTemplate(String template, Property<T, V> property, Map<String, Object> values) {
+        return orTemplate(template, convert(property), values);
     }
 
     /**

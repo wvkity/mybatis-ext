@@ -1,6 +1,7 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
-import com.wkit.lost.mybatis.core.lambda.LambdaConverter;
+import com.wkit.lost.mybatis.core.converter.Property;
+import com.wkit.lost.mybatis.core.converter.PropertyConverter;
 import com.wkit.lost.mybatis.core.wrapper.aggreate.Aggregation;
 import com.wkit.lost.mybatis.core.wrapper.basic.AbstractOrderWrapper;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
@@ -9,11 +10,11 @@ import java.util.Collection;
 
 /**
  * 排序
+ * @param <T>     实体类型
  * @param <Chain> 子类
- * @param <P>     Lambda类
  * @author wvkity
  */
-public interface OrderWrapper<Chain extends OrderWrapper<Chain, P>, P> extends LambdaConverter<P> {
+public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends PropertyConverter<T> {
 
 
     // region ASC
@@ -24,8 +25,8 @@ public interface OrderWrapper<Chain extends OrderWrapper<Chain, P>, P> extends L
      * @return 当前对象
      */
     @SuppressWarnings({"unchecked"})
-    default Chain asc(P... properties) {
-        return asc(lambdaToProperties(properties));
+    default <V> Chain asc(Property<T, V>... properties) {
+        return asc(convert(ArrayUtil.toList(properties)));
     }
 
     /**
@@ -107,10 +108,11 @@ public interface OrderWrapper<Chain extends OrderWrapper<Chain, P>, P> extends L
      * ASC排序
      * @param foreignAlias 连表对象别名
      * @param properties   属性数组
+     * @param <V>          返回值类型
      * @return 当前对象
      */
     @SuppressWarnings({"unchecked"})
-    Chain foreignAsc(String foreignAlias, P... properties);
+    <V> Chain foreignAsc(String foreignAlias, Property<T, V>... properties);
 
     /**
      * ASC排序
@@ -136,11 +138,12 @@ public interface OrderWrapper<Chain extends OrderWrapper<Chain, P>, P> extends L
     /**
      * DESC排序
      * @param properties 属性数组
+     * @param <V>        返回值类型
      * @return 当前对象
      */
     @SuppressWarnings({"unchecked"})
-    default Chain desc(P... properties) {
-        return desc(lambdaToProperties(properties));
+    default <V> Chain desc(Property<T, V>... properties) {
+        return desc(convert(ArrayUtil.toList(properties)));
     }
 
     /**
@@ -222,10 +225,11 @@ public interface OrderWrapper<Chain extends OrderWrapper<Chain, P>, P> extends L
      * DESC排序
      * @param foreignAlias 连表对象别名
      * @param properties   属性数组
+     * @param <V>          返回值类型
      * @return 当前对象
      */
     @SuppressWarnings({"unchecked"})
-    Chain foreignDesc(String foreignAlias, P... properties);
+    <V> Chain foreignDesc(String foreignAlias, Property<T, V>... properties);
 
     /**
      * DESC排序

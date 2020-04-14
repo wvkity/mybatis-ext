@@ -1,16 +1,18 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
-import com.wkit.lost.mybatis.core.lambda.LambdaConverter;
+import com.wkit.lost.mybatis.core.converter.Property;
+import com.wkit.lost.mybatis.core.converter.PropertyConverter;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * 比较条件包装接口
+ * @param <T>     实体类型
  * @param <Chain> 子类
- * @param <P>     Lambda类
+ * @author wvkity
  */
-public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> extends LambdaConverter<P> {
+public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> extends PropertyConverter<T> {
 
     /**
      * 主键等于
@@ -30,42 +32,49 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * 等于
      * @param property 属性
      * @param value    值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain eq(P property, Object value) {
-        return eq(lambdaToProperty(property), value);
+    default <V> Chain eq(Property<T, V> property, V value) {
+        return eq(convert(property), value);
     }
 
     /**
      * 等于
-     * @param p1 属性1
-     * @param v1 值1
-     * @param p2 属性2
-     * @param v2 值2
+     * @param p1   属性1
+     * @param v1   值1
+     * @param p2   属性2
+     * @param v2   值2
+     * @param <V1> 值1类型
+     * @param <V2> 值2类型
      * @return {@code this}
      */
-    default Chain eq(P p1, Object v1, P p2, Object v2) {
+    default <V1, V2> Chain eq(Property<T, V1> p1, V1 v1, Property<T, V2> p2, V2 v2) {
         Map<String, Object> props = new HashMap<>(2);
-        props.put(lambdaToProperty(p1), v1);
-        props.put(lambdaToProperty(p2), v2);
+        props.put(convert(p1), v1);
+        props.put(convert(p2), v2);
         return eq(props);
     }
 
     /**
      * 等于
-     * @param p1 属性1
-     * @param v1 值1
-     * @param p2 属性2
-     * @param v2 值2
-     * @param p3 属性3
-     * @param v3 值3
+     * @param p1   属性1
+     * @param v1   值1
+     * @param p2   属性2
+     * @param v2   值2
+     * @param p3   属性3
+     * @param v3   值3
+     * @param <V1> 值1类型
+     * @param <V2> 值2类型
+     * @param <V3> 值3类型
      * @return {@code this}
      */
-    default Chain eq(P p1, Object v1, P p2, Object v2, P p3, Object v3) {
+    default <V1, V2, V3> Chain eq(Property<T, V1> p1, V1 v1, Property<T, V2> p2, V2 v2,
+                                  Property<T, V3> p3, V3 v3) {
         Map<String, Object> props = new HashMap<>(3);
-        props.put(lambdaToProperty(p1), v1);
-        props.put(lambdaToProperty(p2), v2);
-        props.put(lambdaToProperty(p3), v3);
+        props.put(convert(p1), v1);
+        props.put(convert(p2), v2);
+        props.put(convert(p3), v3);
         return eq(props);
     }
 
@@ -121,10 +130,11 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * 或等于
      * @param property 属性
      * @param value    值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orEq(P property, Object value) {
-        return orEq(lambdaToProperty(property), value);
+    default <V> Chain orEq(Property<T, V> property, V value) {
+        return orEq(convert(property), value);
     }
 
     /**
@@ -256,10 +266,11 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * 不等于
      * @param property 属性
      * @param value    值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain ne(P property, Object value) {
-        return ne(lambdaToProperty(property), value);
+    default <V> Chain ne(Property<T, V> property, V value) {
+        return ne(convert(property), value);
     }
 
     /**
@@ -274,10 +285,11 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * 或不等于
      * @param property 属性
      * @param value    值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orNe(P property, Object value) {
-        return orNe(lambdaToProperty(property), value);
+    default <V> Chain orNe(Property<T, V> property, V value) {
+        return orNe(convert(property), value);
     }
 
     /**
@@ -326,10 +338,11 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * 小于
      * @param property 属性
      * @param value    值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain lt(P property, Object value) {
-        return lt(lambdaToProperty(property), value);
+    default <V> Chain lt(Property<T, V> property, V value) {
+        return lt(convert(property), value);
     }
 
     /**
@@ -344,10 +357,11 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * 或小于
      * @param property 属性
      * @param value    值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orLt(P property, Object value) {
-        return orLt(lambdaToProperty(property), value);
+    default <V> Chain orLt(Property<T, V> property, V value) {
+        return orLt(convert(property), value);
     }
 
     /**
@@ -398,8 +412,8 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value    值
      * @return {@code this}
      */
-    default Chain le(P property, Object value) {
-        return le(lambdaToProperty(property), value);
+    default <V> Chain le(Property<T, V> property, Object value) {
+        return le(convert(property), value);
     }
 
     /**
@@ -414,10 +428,11 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * 或小于等于
      * @param property 属性
      * @param value    值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orLe(P property, Object value) {
-        return orLe(lambdaToProperty(property), value);
+    default <V> Chain orLe(Property<T, V> property, V value) {
+        return orLe(convert(property), value);
     }
 
     /**
@@ -466,10 +481,11 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * 小于
      * @param property 属性
      * @param value    值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain gt(P property, Object value) {
-        return gt(lambdaToProperty(property), value);
+    default <V> Chain gt(Property<T, V> property, V value) {
+        return gt(convert(property), value);
     }
 
     /**
@@ -486,8 +502,8 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * @param value    值
      * @return {@code this}
      */
-    default Chain orGt(P property, Object value) {
-        return orGt(lambdaToProperty(property), value);
+    default <V> Chain orGt(Property<T, V> property, Object value) {
+        return orGt(convert(property), value);
     }
 
     /**
@@ -536,10 +552,11 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * 小于
      * @param property 属性
      * @param value    值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain ge(P property, Object value) {
-        return ge(lambdaToProperty(property), value);
+    default <V> Chain ge(Property<T, V> property, V value) {
+        return ge(convert(property), value);
     }
 
     /**
@@ -554,10 +571,11 @@ public interface CompareWrapper<Chain extends CompareWrapper<Chain, P>, P> exten
      * 或小于
      * @param property 属性
      * @param value    值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orGe(P property, Object value) {
-        return orGe(lambdaToProperty(property), value);
+    default <V> Chain orGe(Property<T, V> property, V value) {
+        return orGe(convert(property), value);
     }
 
     /**

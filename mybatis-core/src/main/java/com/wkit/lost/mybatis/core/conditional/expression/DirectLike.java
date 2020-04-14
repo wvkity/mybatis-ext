@@ -20,7 +20,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param value  值
      * @param logic  逻辑符号
      */
-    DirectLike(String column, Object value, Logic logic) {
+    DirectLike(String column, String value, Logic logic) {
         this.column = column;
         this.value = value;
         this.logic = logic;
@@ -34,7 +34,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param value      值
      * @param logic      逻辑符号
      */
-    DirectLike(String tableAlias, String column, Object value, Logic logic) {
+    DirectLike(String tableAlias, String column, String value, Logic logic) {
         this.tableAlias = tableAlias;
         this.column = column;
         this.value = value;
@@ -49,7 +49,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param value    值
      * @param logic    逻辑符号
      */
-    DirectLike(Criteria<T> criteria, String column, Object value, Logic logic) {
+    DirectLike(Criteria<T> criteria, String column, String value, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.value = value;
@@ -64,7 +64,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param match  匹配模式
      * @param logic  逻辑符号
      */
-    DirectLike(String column, Object value, Match match, Logic logic) {
+    DirectLike(String column, String value, Match match, Logic logic) {
         this.column = column;
         this.value = value;
         this.match = match;
@@ -80,7 +80,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param match      匹配模式
      * @param logic      逻辑符号
      */
-    DirectLike(String tableAlias, String column, Object value, Match match, Logic logic) {
+    DirectLike(String tableAlias, String column, String value, Match match, Logic logic) {
         this.tableAlias = tableAlias;
         this.column = column;
         this.value = value;
@@ -97,7 +97,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param match    匹配模式
      * @param logic    逻辑符号
      */
-    DirectLike(Criteria<T> criteria, String column, Object value, Match match, Logic logic) {
+    DirectLike(Criteria<T> criteria, String column, String value, Match match, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.value = value;
@@ -113,7 +113,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param escape 转义字符
      * @param logic  逻辑符号
      */
-    DirectLike(String column, Object value, Character escape, Logic logic) {
+    DirectLike(String column, String value, Character escape, Logic logic) {
         this.column = column;
         this.value = value;
         this.escape = escape;
@@ -129,7 +129,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param escape     转义字符
      * @param logic      逻辑符号
      */
-    DirectLike(String tableAlias, String column, Object value, Character escape, Logic logic) {
+    DirectLike(String tableAlias, String column, String value, Character escape, Logic logic) {
         this.tableAlias = tableAlias;
         this.column = column;
         this.value = value;
@@ -146,7 +146,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param escape   转义字符
      * @param logic    逻辑符号
      */
-    DirectLike(Criteria<T> criteria, String column, Object value, Character escape, Logic logic) {
+    DirectLike(Criteria<T> criteria, String column, String value, Character escape, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.value = value;
@@ -163,7 +163,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param escape 转义字符
      * @param logic  逻辑符号
      */
-    DirectLike(String column, Object value, Match match, Character escape, Logic logic) {
+    DirectLike(String column, String value, Match match, Character escape, Logic logic) {
         this.column = column;
         this.value = value;
         this.match = match;
@@ -181,7 +181,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param escape     转义字符
      * @param logic      逻辑符号
      */
-    DirectLike(String tableAlias, String column, Object value, Match match, Character escape, Logic logic) {
+    DirectLike(String tableAlias, String column, String value, Match match, Character escape, Logic logic) {
         this.tableAlias = tableAlias;
         this.column = column;
         this.value = value;
@@ -200,7 +200,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param escape   转义字符
      * @param logic    逻辑符号
      */
-    DirectLike(Criteria<T> criteria, String column, Object value, Match match, Character escape, Logic logic) {
+    DirectLike(Criteria<T> criteria, String column, String value, Match match, Character escape, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.value = value;
@@ -218,7 +218,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(String column, Object value) {
+    public static <T> DirectLike<T> create(String column, String value) {
         return create(column, value, Logic.AND);
     }
 
@@ -230,7 +230,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(String column, Object value, Logic logic) {
+    public static <T> DirectLike<T> create(String column, String value, Logic logic) {
         if (hasText(column)) {
             return new DirectLike<>(column, value, logic);
         }
@@ -245,7 +245,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(String column, Object value, Match match) {
+    public static <T> DirectLike<T> create(String column, String value, Match match) {
         return create(column, value, match, Logic.AND);
     }
 
@@ -258,7 +258,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(String column, Object value, Match match, Logic logic) {
+    public static <T> DirectLike<T> create(String column, String value, Match match, Logic logic) {
         if (hasText(column)) {
             return new DirectLike<>(column, value, match, logic);
         }
@@ -273,7 +273,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(String column, Object value, Character escape) {
+    public static <T> DirectLike<T> create(String column, String value, Character escape) {
         return create(column, value, escape, Logic.AND);
     }
 
@@ -286,7 +286,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(String column, Object value, Character escape, Logic logic) {
+    public static <T> DirectLike<T> create(String column, String value, Character escape, Logic logic) {
         if (hasText(column)) {
             return new DirectLike<>(column, value, escape, logic);
         }
@@ -302,7 +302,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(String column, Object value, Match match, Character escape) {
+    public static <T> DirectLike<T> create(String column, String value, Match match, Character escape) {
         return create(column, value, match, escape, Logic.AND);
     }
 
@@ -316,7 +316,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>    实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(String column, Object value, Match match,
+    public static <T> DirectLike<T> create(String column, String value, Match match,
                                            Character escape, Logic logic) {
         if (hasText(column)) {
             return new DirectLike<>(column, value, match, escape, logic);
@@ -332,7 +332,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(String tableAlias, String column, Object value) {
+    public static <T> DirectLike<T> create(String tableAlias, String column, String value) {
         return create(tableAlias, column, value, Logic.AND);
     }
 
@@ -345,7 +345,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(String tableAlias, String column, Object value, Logic logic) {
+    public static <T> DirectLike<T> create(String tableAlias, String column, String value, Logic logic) {
         if (hasText(column)) {
             return new DirectLike<>(tableAlias, column, value, logic);
         }
@@ -361,7 +361,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(String tableAlias, String column, Object value, Match match) {
+    public static <T> DirectLike<T> create(String tableAlias, String column, String value, Match match) {
         return create(tableAlias, column, value, match, Logic.AND);
     }
 
@@ -375,7 +375,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(String tableAlias, String column, Object value,
+    public static <T> DirectLike<T> create(String tableAlias, String column, String value,
                                            Match match, Logic logic) {
         if (hasText(column)) {
             return new DirectLike<>(tableAlias, column, value, match, logic);
@@ -392,7 +392,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(String tableAlias, String column, Object value,
+    public static <T> DirectLike<T> create(String tableAlias, String column, String value,
                                            Character escape) {
         return create(tableAlias, column, value, escape, Logic.AND);
     }
@@ -407,7 +407,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(String tableAlias, String column, Object value,
+    public static <T> DirectLike<T> create(String tableAlias, String column, String value,
                                            Character escape, Logic logic) {
         if (hasText(column)) {
             return new DirectLike<>(tableAlias, column, value, escape, logic);
@@ -425,7 +425,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(String tableAlias, String column, Object value,
+    public static <T> DirectLike<T> create(String tableAlias, String column, String value,
                                            Match match, Character escape) {
         return create(tableAlias, column, value, match, escape, Logic.AND);
     }
@@ -441,7 +441,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(String tableAlias, String column, Object value,
+    public static <T> DirectLike<T> create(String tableAlias, String column, String value,
                                            Match match, Character escape, Logic logic) {
         if (hasText(column)) {
             return new DirectLike<>(tableAlias, column, value, match, escape, logic);
@@ -458,7 +458,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(Criteria<T> criteria, String column, Object value) {
+    public static <T> DirectLike<T> create(Criteria<T> criteria, String column, String value) {
         return create(criteria, column, value, Logic.AND);
     }
 
@@ -471,7 +471,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(Criteria<T> criteria, String column, Object value, Logic logic) {
+    public static <T> DirectLike<T> create(Criteria<T> criteria, String column, String value, Logic logic) {
         if (criteria != null && hasText(column)) {
             return new DirectLike<>(criteria, column, value, logic);
         }
@@ -487,7 +487,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(Criteria<T> criteria, String column, Object value, Match match) {
+    public static <T> DirectLike<T> create(Criteria<T> criteria, String column, String value, Match match) {
         return create(criteria, column, value, match, Logic.AND);
     }
 
@@ -501,7 +501,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(Criteria<T> criteria, String column, Object value,
+    public static <T> DirectLike<T> create(Criteria<T> criteria, String column, String value,
                                            Match match, Logic logic) {
         if (criteria != null && hasText(column)) {
             return new DirectLike<>(criteria, column, value, match, logic);
@@ -518,7 +518,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(Criteria<T> criteria, String column, Object value,
+    public static <T> DirectLike<T> create(Criteria<T> criteria, String column, String value,
                                            Character escape) {
         return create(criteria, column, value, escape, Logic.AND);
     }
@@ -533,7 +533,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(Criteria<T> criteria, String column, Object value,
+    public static <T> DirectLike<T> create(Criteria<T> criteria, String column, String value,
                                            Character escape, Logic logic) {
         if (criteria != null && hasText(column)) {
             return new DirectLike<>(criteria, column, value, escape, logic);
@@ -551,7 +551,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(Criteria<T> criteria, String column, Object value,
+    public static <T> DirectLike<T> create(Criteria<T> criteria, String column, String value,
                                            Match match, Character escape) {
         return create(criteria, column, value, match, escape, Logic.AND);
     }
@@ -567,7 +567,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> DirectLike<T> create(Criteria<T> criteria, String column, Object value,
+    public static <T> DirectLike<T> create(Criteria<T> criteria, String column, String value,
                                            Match match, Character escape, Logic logic) {
         if (criteria != null && hasText(column)) {
             return new DirectLike<>(criteria, column, value, match, escape, logic);

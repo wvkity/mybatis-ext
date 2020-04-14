@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.wrapper.utils;
 
-import com.wkit.lost.mybatis.core.lambda.Property;
+import com.wkit.lost.mybatis.core.converter.Property;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
@@ -40,9 +40,10 @@ public final class CriteriaUtil {
      * @param criteria   条件对象
      * @param properties 属性集合
      * @param <T>        泛型类型
+     * @param <V>        返回值类型
      * @return 字段集合
      */
-    public static <T> List<ColumnWrapper> lambdaToColumn(Criteria<T> criteria, Collection<Property<T, ?>> properties) {
+    public static <T, V> List<ColumnWrapper> lambdaToColumn(Criteria<T> criteria, Collection<Property<T, V>> properties) {
         return CollectionUtil.hasElement(properties) ? properties.stream()
                 .filter(Objects::nonNull)
                 .map(criteria::searchColumn)

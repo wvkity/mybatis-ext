@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.wrapper.basic;
 
-import com.wkit.lost.mybatis.core.lambda.Property;
+import com.wkit.lost.mybatis.core.converter.Property;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.AbstractQueryCriteriaWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
@@ -57,10 +57,11 @@ public class Group<T> extends AbstractGroupWrapper<T, ColumnWrapper> {
      * @param criteria   条件对象
      * @param properties 属性数组
      * @param <T>        泛型类型
+     * @param <V>        值类型
      * @return 分组对象
      */
     @SafeVarargs
-    public static <T> Group<T> group(Criteria<T> criteria, Property<T, ?>... properties) {
+    public static <T, V> Group<T> group(Criteria<T> criteria, Property<T, V>... properties) {
         return new Group<>(criteria, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }
 
@@ -96,11 +97,12 @@ public class Group<T> extends AbstractGroupWrapper<T, ColumnWrapper> {
      * @param properties 属性
      * @param <T>        泛型类型
      * @param <E>        泛型类型
+     * @param <V>        值类型
      * @return 分组对象
      */
     @SuppressWarnings({"unchecked"})
-    public static <T, E> Group<E> group(String alias, AbstractQueryCriteriaWrapper<T> master,
-                                        Property<E, ?>... properties) {
+    public static <T, E, V> Group<E> group(String alias, AbstractQueryCriteriaWrapper<T> master,
+                                           Property<E, V>... properties) {
         ForeignCriteria<E> criteria = master.searchForeign(alias);
         return new Group<E>(criteria, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }

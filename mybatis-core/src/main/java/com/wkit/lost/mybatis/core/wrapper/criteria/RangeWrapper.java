@@ -1,25 +1,28 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
-import com.wkit.lost.mybatis.core.lambda.LambdaConverter;
+import com.wkit.lost.mybatis.core.converter.Property;
+import com.wkit.lost.mybatis.core.converter.PropertyConverter;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 
 import java.util.Collection;
 
 /**
  * 范围条件接口
+ * @param <T>     实体类型
  * @param <Chain> 子类
- * @param <P>     Lambda类
  * @author wvkity
  */
-public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends LambdaConverter<P> {
+public interface RangeWrapper<T, Chain extends CompareWrapper<T, Chain>> extends PropertyConverter<T> {
 
     /**
      * IN
      * @param property 属性
      * @param values   值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain in(P property, Object... values) {
+    @SuppressWarnings({"unchecked"})
+    default <V> Chain in(Property<T, V> property, V... values) {
         return in(property, ArrayUtil.toList(values));
     }
 
@@ -37,10 +40,11 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * IN
      * @param property 属性
      * @param values   值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain in(P property, Collection<Object> values) {
-        return in(lambdaToProperty(property), values);
+    default <V> Chain in(Property<T, V> property, Collection<V> values) {
+        return in(convert(property), values);
     }
 
     /**
@@ -55,9 +59,11 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * 或IN
      * @param property 属性
      * @param values   值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orIn(P property, Object... values) {
+    @SuppressWarnings({"unchecked"})
+    default <V> Chain orIn(Property<T, V> property, V... values) {
         return orIn(property, ArrayUtil.toList(values));
     }
 
@@ -75,10 +81,11 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * 或IN
      * @param property 属性
      * @param values   值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orIn(P property, Collection<Object> values) {
-        return orIn(lambdaToProperty(property), values);
+    default <V> Chain orIn(Property<T, V> property, Collection<V> values) {
+        return orIn(convert(property), values);
     }
 
     /**
@@ -170,9 +177,11 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * NOT IN
      * @param property 属性
      * @param values   值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain notIn(P property, Object... values) {
+    @SuppressWarnings({"unchecked"})
+    default <V> Chain notIn(Property<T, V> property, V... values) {
         return notIn(property, ArrayUtil.toList(values));
     }
 
@@ -190,10 +199,11 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * NOT IN
      * @param property 属性
      * @param values   值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain notIn(P property, Collection<Object> values) {
-        return notIn(lambdaToProperty(property), values);
+    default <V> Chain notIn(Property<T, V> property, Collection<V> values) {
+        return notIn(convert(property), values);
     }
 
     /**
@@ -208,9 +218,11 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * 或NOT IN
      * @param property 属性
      * @param values   值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orNotIn(P property, Object... values) {
+    @SuppressWarnings("unchecked")
+    default <V> Chain orNotIn(Property<T, V> property, V... values) {
         return orNotIn(property, ArrayUtil.toList(values));
     }
 
@@ -228,10 +240,11 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * 或NOT IN
      * @param property 属性
      * @param values   值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orNotIn(P property, Collection<Object> values) {
-        return orNotIn(lambdaToProperty(property), values);
+    default <V> Chain orNotIn(Property<T, V> property, Collection<V> values) {
+        return orNotIn(convert(property), values);
     }
 
     /**
@@ -324,10 +337,11 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param property 属性
      * @param begin    开始值
      * @param end      结束值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain between(P property, Object begin, Object end) {
-        return between(lambdaToProperty(property), begin, end);
+    default <V> Chain between(Property<T, V> property, V begin, V end) {
+        return between(convert(property), begin, end);
     }
 
     /**
@@ -344,10 +358,11 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param property 属性
      * @param begin    开始值
      * @param end      结束值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orBetween(P property, Object begin, Object end) {
-        return orBetween(lambdaToProperty(property), begin, end);
+    default <V> Chain orBetween(Property<T, V> property, V begin, V end) {
+        return orBetween(convert(property), begin, end);
     }
 
     /**
@@ -402,10 +417,11 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param property 属性
      * @param begin    开始值
      * @param end      结束值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain notBetween(P property, Object begin, Object end) {
-        return notBetween(lambdaToProperty(property), begin, end);
+    default <V> Chain notBetween(Property<T, V> property, V begin, V end) {
+        return notBetween(convert(property), begin, end);
     }
 
     /**
@@ -422,10 +438,11 @@ public interface RangeWrapper<Chain extends RangeWrapper<Chain, P>, P> extends L
      * @param property 属性
      * @param begin    开始值
      * @param end      结束值
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orNotBetween(P property, Object begin, Object end) {
-        return orNotBetween(lambdaToProperty(property), begin, end);
+    default <V> Chain orNotBetween(Property<T, V> property, V begin, V end) {
+        return orNotBetween(convert(property), begin, end);
     }
 
     /**

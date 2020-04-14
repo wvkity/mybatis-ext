@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.core.conditional.expression;
 
 import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.constant.Symbol;
-import com.wkit.lost.mybatis.core.lambda.Property;
+import com.wkit.lost.mybatis.core.converter.Property;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 
@@ -65,10 +65,10 @@ public class In<T> extends AbstractRangeExpression<T> {
      * @param property 属性
      * @param values   值
      * @param <T>      实体类型
+     * @param <V>      值类型
      * @return 条件对象
      */
-    public static <T> In<T> create(Criteria<T> criteria, Property<T, ?> property,
-                                   Collection<Object> values) {
+    public static <T, V> In<T> create(Criteria<T> criteria, Property<T, V> property, Collection<Object> values) {
         return create(criteria, property, values, Logic.AND);
     }
 
@@ -79,10 +79,11 @@ public class In<T> extends AbstractRangeExpression<T> {
      * @param values   值
      * @param logic    逻辑符号
      * @param <T>      实体类型
+     * @param <V>      值类型
      * @return 条件对象
      */
-    public static <T> In<T> create(Criteria<T> criteria, Property<T, ?> property,
-                                   Collection<Object> values, Logic logic) {
+    public static <T, V> In<T> create(Criteria<T> criteria, Property<T, V> property,
+                                      Collection<Object> values, Logic logic) {
         return create(criteria, criteria.searchColumn(property), values, logic);
     }
 

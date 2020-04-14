@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
-import com.wkit.lost.mybatis.core.lambda.Property;
+import com.wkit.lost.mybatis.core.converter.Property;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.metadata.PropertyMappingCache;
 import com.wkit.lost.mybatis.exception.MyBatisException;
@@ -12,14 +12,14 @@ import java.util.Map;
 
 /**
  * 抽象条件包装器
- * @param <T> 实体类型
+ * @param <T>     实体类型
  * @param <Chain> 子类
  * @author wvkity
  */
 @Log4j2
 @SuppressWarnings({"serial"})
 abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriteriaWrapper<T, Chain>> extends
-        AbstractBasicCriteriaWrapper<T, Chain, Property<T, ?>> {
+        AbstractBasicCriteriaWrapper<T, Chain> {
 
     /**
      * 属性-字段包装对象缓存(只读)
@@ -48,12 +48,12 @@ abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriter
     }
 
     @Override
-    public String lambdaToProperty(Property<T, ?> lambda) {
-        return methodToProperty(PropertyMappingCache.parse(lambda).getImplMethodName());
+    public <V> String convert(Property<T, V> property) {
+        return methodToProperty(PropertyMappingCache.parse(property).getImplMethodName());
     }
 
     @Override
-    public <E> String methodToProperty(Property<E, ?> property) {
+    public <E, V> String methodToProperty(Property<E, V> property) {
         return methodToProperty(PropertyMappingCache.parse(property).getImplMethodName());
     }
 

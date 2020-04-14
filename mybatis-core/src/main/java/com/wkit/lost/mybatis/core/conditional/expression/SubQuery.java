@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.core.conditional.expression;
 
 import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.constant.Symbol;
-import com.wkit.lost.mybatis.core.lambda.Property;
+import com.wkit.lost.mybatis.core.converter.Property;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 import com.wkit.lost.mybatis.core.wrapper.criteria.SubCriteria;
@@ -71,7 +71,7 @@ public class SubQuery<T> extends ColumnExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> SubQuery<T> create(Criteria<T> criteria, Property<T, ?> property, SubCriteria<?> sc) {
+    public static <T, V> SubQuery<T> create(Criteria<T> criteria, Property<T, V> property, SubCriteria<?> sc) {
         return create(criteria, property, sc, Symbol.EQ, Logic.AND);
     }
 
@@ -96,8 +96,8 @@ public class SubQuery<T> extends ColumnExpressionWrapper<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> SubQuery<T> create(Criteria<T> criteria, Property<T, ?> property,
-                                         SubCriteria<?> sc, Logic logic) {
+    public static <T, V> SubQuery<T> create(Criteria<T> criteria, Property<T, V> property,
+                                            SubCriteria<?> sc, Logic logic) {
         return create(criteria, property, sc, Symbol.EQ, logic);
     }
 
@@ -121,10 +121,11 @@ public class SubQuery<T> extends ColumnExpressionWrapper<T> {
      * @param sc       子查询条件包装对象
      * @param symbol   条件符号
      * @param <T>      实体类型
+     * @param <V>      值类型
      * @return 条件对象
      */
-    public static <T> SubQuery<T> create(Criteria<T> criteria, Property<T, ?> property,
-                                         SubCriteria<?> sc, Symbol symbol) {
+    public static <T, V> SubQuery<T> create(Criteria<T> criteria, Property<T, V> property,
+                                            SubCriteria<?> sc, Symbol symbol) {
         return create(criteria, property, sc, symbol, Logic.AND);
     }
 
@@ -149,10 +150,11 @@ public class SubQuery<T> extends ColumnExpressionWrapper<T> {
      * @param symbol   条件符号
      * @param logic    逻辑符号
      * @param <T>      实体类型
+     * @param <V>      值类型
      * @return 条件对象
      */
-    public static <T> SubQuery<T> create(Criteria<T> criteria, Property<T, ?> property, SubCriteria<?> sc,
-                                         Symbol symbol, Logic logic) {
+    public static <T, V> SubQuery<T> create(Criteria<T> criteria, Property<T, V> property, SubCriteria<?> sc,
+                                            Symbol symbol, Logic logic) {
         if (criteria != null && sc != null && property != null) {
             return create(criteria, criteria.searchColumn(property), sc, symbol, logic);
         }

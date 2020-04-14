@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.core.wrapper.basic;
 
-import com.wkit.lost.mybatis.core.lambda.Property;
+import com.wkit.lost.mybatis.core.converter.Property;
 import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
@@ -95,9 +95,10 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * @param criteria 条件对象
          * @param property 属性Lambda对象
          * @param <T>      实体类型
+         * @param <V>      值类型
          * @return 查询列对象
          */
-        public static <T> Query<T> query(Criteria<T> criteria, Property<T, ?> property) {
+        public static <T, V> Query<T> query(Criteria<T> criteria, Property<T, V> property) {
             return query(criteria, criteria.searchColumn(property));
         }
 
@@ -118,9 +119,10 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * @param property 属性Lambda对象
          * @param alias    字段别名
          * @param <T>      实体类型
+         * @param <V>      值类型
          * @return 查询列对象
          */
-        public static <T> Query<T> query(Criteria<T> criteria, Property<T, ?> property, String alias) {
+        public static <T, V> Query<T> query(Criteria<T> criteria, Property<T, V> property, String alias) {
             return query(criteria, criteria.searchColumn(property), alias);
         }
 
@@ -172,10 +174,11 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * @param criteria   条件对象
          * @param properties 属性数组
          * @param <T>        实体类型
+         * @param <V>        值类型
          * @return 查询对象集合
          */
         @SafeVarargs
-        public static <T> ArrayList<Query<T>> query(Criteria<T> criteria, Property<T, ?>... properties) {
+        public static <T, V> ArrayList<Query<T>> query(Criteria<T> criteria, Property<T, V>... properties) {
             return query(criteria, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
         }
 

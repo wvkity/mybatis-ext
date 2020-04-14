@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.core.conditional.expression;
 
 import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.constant.Symbol;
-import com.wkit.lost.mybatis.core.lambda.Property;
+import com.wkit.lost.mybatis.core.converter.Property;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 
@@ -32,9 +32,10 @@ public class GreaterThan<T> extends Simple<T> {
      * @param property 属性
      * @param value    值
      * @param <T>      实体类型
+     * @param <V>      值类型
      * @return 条件对象
      */
-    public static <T> GreaterThan<T> create(Criteria<T> criteria, Property<T, ?> property, Object value) {
+    public static <T, V> GreaterThan<T> create(Criteria<T> criteria, Property<T, V> property, V value) {
         return create(criteria, property, value, Logic.AND);
     }
 
@@ -45,9 +46,10 @@ public class GreaterThan<T> extends Simple<T> {
      * @param value    值
      * @param logic    逻辑符号
      * @param <T>      实体类型
+     * @param <V>      值类型
      * @return 条件对象
      */
-    public static <T> GreaterThan<T> create(Criteria<T> criteria, Property<T, ?> property, Object value, Logic logic) {
+    public static <T, V> GreaterThan<T> create(Criteria<T> criteria, Property<T, V> property, V value, Logic logic) {
         if (criteria != null && property != null) {
             return create(criteria, criteria.searchColumn(property), value, logic);
         }

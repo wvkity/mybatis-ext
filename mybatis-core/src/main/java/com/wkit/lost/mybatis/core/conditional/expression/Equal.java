@@ -2,7 +2,7 @@ package com.wkit.lost.mybatis.core.conditional.expression;
 
 import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.constant.Symbol;
-import com.wkit.lost.mybatis.core.lambda.Property;
+import com.wkit.lost.mybatis.core.converter.Property;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 
@@ -34,7 +34,7 @@ public class Equal<T> extends Simple<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> Equal<T> create(Criteria<T> criteria, Property<T, ?> property, Object value) {
+    public static <T, V> Equal<T> create(Criteria<T> criteria, Property<T, V> property, Object value) {
         return create(criteria, property, value, Logic.AND);
     }
 
@@ -47,7 +47,7 @@ public class Equal<T> extends Simple<T> {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> Equal<T> create(Criteria<T> criteria, Property<T, ?> property, Object value, Logic logic) {
+    public static <T, V> Equal<T> create(Criteria<T> criteria, Property<T, V> property, Object value, Logic logic) {
         if (criteria != null && property != null) {
             return create(criteria, criteria.searchColumn(property), value, logic);
         }

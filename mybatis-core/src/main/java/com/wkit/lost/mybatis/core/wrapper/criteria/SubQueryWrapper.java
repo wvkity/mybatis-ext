@@ -1,14 +1,15 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
-import com.wkit.lost.mybatis.core.lambda.LambdaConverter;
+import com.wkit.lost.mybatis.core.converter.Property;
+import com.wkit.lost.mybatis.core.converter.PropertyConverter;
 
 /**
  * 子查询条件接口
+ * @param <T>     实体类型
  * @param <Chain> 子类
- * @param <P>     Lambda类
  * @author wvkity
  */
-public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> extends LambdaConverter<P> {
+public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> extends PropertyConverter<T> {
 
     /**
      * 主键等于
@@ -28,10 +29,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * 等于
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain eq(P property, SubCriteria<?> sc) {
-        return eq(lambdaToProperty(property), sc);
+    default <V> Chain eq(Property<T, V> property, SubCriteria<?> sc) {
+        return eq(convert(property), sc);
     }
 
     /**
@@ -46,10 +48,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * 或等于
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orEq(P property, SubCriteria<?> sc) {
-        return orEq(lambdaToProperty(property), sc);
+    default <V> Chain orEq(Property<T, V> property, SubCriteria<?> sc) {
+        return orEq(convert(property), sc);
     }
 
     /**
@@ -64,10 +67,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * 不等于
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain ne(P property, SubCriteria<?> sc) {
-        return ne(lambdaToProperty(property), sc);
+    default <V> Chain ne(Property<T, V> property, SubCriteria<?> sc) {
+        return ne(convert(property), sc);
     }
 
     /**
@@ -82,10 +86,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * 或不等于
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orNe(P property, SubCriteria<?> sc) {
-        return orNe(lambdaToProperty(property), sc);
+    default <V> Chain orNe(Property<T, V> property, SubCriteria<?> sc) {
+        return orNe(convert(property), sc);
     }
 
     /**
@@ -100,10 +105,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * 小于
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain lt(P property, SubCriteria<?> sc) {
-        return lt(lambdaToProperty(property), sc);
+    default <V> Chain lt(Property<T, V> property, SubCriteria<?> sc) {
+        return lt(convert(property), sc);
     }
 
     /**
@@ -118,10 +124,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * 或小于
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orLt(P property, SubCriteria<?> sc) {
-        return orLt(lambdaToProperty(property), sc);
+    default <V> Chain orLt(Property<T, V> property, SubCriteria<?> sc) {
+        return orLt(convert(property), sc);
     }
 
     /**
@@ -136,10 +143,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * 小于等于
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain le(P property, SubCriteria<?> sc) {
-        return le(lambdaToProperty(property), sc);
+    default <V> Chain le(Property<T, V> property, SubCriteria<?> sc) {
+        return le(convert(property), sc);
     }
 
     /**
@@ -154,10 +162,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * 或小于等于
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orLe(P property, SubCriteria<?> sc) {
-        return orLe(lambdaToProperty(property), sc);
+    default <V> Chain orLe(Property<T, V> property, SubCriteria<?> sc) {
+        return orLe(convert(property), sc);
     }
 
     /**
@@ -172,10 +181,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * 大于
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain gt(P property, SubCriteria<?> sc) {
-        return gt(lambdaToProperty(property), sc);
+    default <V> Chain gt(Property<T, V> property, SubCriteria<?> sc) {
+        return gt(convert(property), sc);
     }
 
     /**
@@ -190,10 +200,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * 或大于
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orGt(P property, SubCriteria<?> sc) {
-        return orGt(lambdaToProperty(property), sc);
+    default <V> Chain orGt(Property<T, V> property, SubCriteria<?> sc) {
+        return orGt(convert(property), sc);
     }
 
     /**
@@ -208,10 +219,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * 大于等于
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain ge(P property, SubCriteria<?> sc) {
-        return ge(lambdaToProperty(property), sc);
+    default <V> Chain ge(Property<T, V> property, SubCriteria<?> sc) {
+        return ge(convert(property), sc);
     }
 
     /**
@@ -226,10 +238,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * 或大于等于
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orGe(P property, SubCriteria<?> sc) {
-        return orGe(lambdaToProperty(property), sc);
+    default <V> Chain orGe(Property<T, V> property, SubCriteria<?> sc) {
+        return orGe(convert(property), sc);
     }
 
     /**
@@ -244,10 +257,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * LIKE
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain like(P property, SubCriteria<?> sc) {
-        return like(lambdaToProperty(property), sc);
+    default <V> Chain like(Property<T, V> property, SubCriteria<?> sc) {
+        return like(convert(property), sc);
     }
 
     /**
@@ -262,10 +276,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * 或LIKE
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orLike(P property, SubCriteria<?> sc) {
-        return orLike(lambdaToProperty(property), sc);
+    default <V> Chain orLike(Property<T, V> property, SubCriteria<?> sc) {
+        return orLike(convert(property), sc);
     }
 
     /**
@@ -280,10 +295,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * NOT LIKE
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain notLike(P property, SubCriteria<?> sc) {
-        return notLike(lambdaToProperty(property), sc);
+    default <V> Chain notLike(Property<T, V> property, SubCriteria<?> sc) {
+        return notLike(convert(property), sc);
     }
 
     /**
@@ -298,10 +314,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * 或NOT LIKE
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orNotLike(P property, SubCriteria<?> sc) {
-        return orNotLike(lambdaToProperty(property), sc);
+    default <V> Chain orNotLike(Property<T, V> property, SubCriteria<?> sc) {
+        return orNotLike(convert(property), sc);
     }
 
     /**
@@ -311,15 +328,16 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * @return {@code this}
      */
     Chain orNotLike(String property, SubCriteria<?> sc);
-    
+
     /**
      * IN
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain in(P property, SubCriteria<?> sc) {
-        return in(lambdaToProperty(property), sc);
+    default <V> Chain in(Property<T, V> property, SubCriteria<?> sc) {
+        return in(convert(property), sc);
     }
 
     /**
@@ -334,10 +352,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * 或IN
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orIn(P property, SubCriteria<?> sc) {
-        return orIn(lambdaToProperty(property), sc);
+    default <V> Chain orIn(Property<T, V> property, SubCriteria<?> sc) {
+        return orIn(convert(property), sc);
     }
 
     /**
@@ -352,10 +371,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * NOT IN
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain notIn(P property, SubCriteria<?> sc) {
-        return notIn(lambdaToProperty(property), sc);
+    default <V> Chain notIn(Property<T, V> property, SubCriteria<?> sc) {
+        return notIn(convert(property), sc);
     }
 
     /**
@@ -370,10 +390,11 @@ public interface SubQueryWrapper<Chain extends SubQueryWrapper<Chain, P>, P> ext
      * 或NOT IN
      * @param property 属性
      * @param sc       子查询条件包装对象
+     * @param <V>      值类型
      * @return {@code this}
      */
-    default Chain orNotIn(P property, SubCriteria<?> sc) {
-        return orNotIn(lambdaToProperty(property), sc);
+    default <V> Chain orNotIn(Property<T, V> property, SubCriteria<?> sc) {
+        return orNotIn(convert(property), sc);
     }
 
     /**
