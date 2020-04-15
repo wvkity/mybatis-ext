@@ -25,6 +25,7 @@ import com.wkit.lost.mybatis.core.conditional.expression.LessThan;
 import com.wkit.lost.mybatis.core.conditional.expression.LessThanOrEqual;
 import com.wkit.lost.mybatis.core.conditional.expression.Like;
 import com.wkit.lost.mybatis.core.conditional.expression.Nested;
+import com.wkit.lost.mybatis.core.conditional.expression.NormalEqual;
 import com.wkit.lost.mybatis.core.conditional.expression.NotBetween;
 import com.wkit.lost.mybatis.core.conditional.expression.NotEqual;
 import com.wkit.lost.mybatis.core.conditional.expression.NotIn;
@@ -573,7 +574,7 @@ public final class Restrictions {
      * @param <T>      泛型类型
      * @return 条件对象
      */
-    public static <T> DirectLessThanOrEqual<T> directLe(Criteria<T> criteria, String column, 
+    public static <T> DirectLessThanOrEqual<T> directLe(Criteria<T> criteria, String column,
                                                         Object value, Logic logic) {
         return DirectLessThanOrEqual.create(criteria, column, value, logic);
     }
@@ -726,7 +727,7 @@ public final class Restrictions {
      * @param <V>      值类型
      * @return 条件对象
      */
-    public static <T, V> GreaterThanOrEqual<T> ge(Criteria<T> criteria, Property<T, V> property, 
+    public static <T, V> GreaterThanOrEqual<T> ge(Criteria<T> criteria, Property<T, V> property,
                                                   V value, Logic logic) {
         return GreaterThanOrEqual.create(criteria, property, value, logic);
     }
@@ -800,7 +801,7 @@ public final class Restrictions {
      * @param <T>        泛型类型
      * @return 条件对象
      */
-    public static <T> DirectGreaterThanOrEqual<T> directGe(String tableAlias, String column, 
+    public static <T> DirectGreaterThanOrEqual<T> directGe(String tableAlias, String column,
                                                            Object value, Logic logic) {
         return DirectGreaterThanOrEqual.create(tableAlias, column, value, logic);
     }
@@ -1121,7 +1122,7 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> DirectIn<T> directIn(Criteria<T> criteria, String column, 
+    public static <T> DirectIn<T> directIn(Criteria<T> criteria, String column,
                                            Collection<Object> values, Logic logic) {
         return DirectIn.create(criteria, column, values, logic);
     }
@@ -1253,7 +1254,7 @@ public final class Restrictions {
      * @param <V>      值类型
      * @return 条件对象
      */
-    public static <T, V> Between<T> between(Criteria<T> criteria, Property<T, V> property, 
+    public static <T, V> Between<T> between(Criteria<T> criteria, Property<T, V> property,
                                             V begin, V end, Logic logic) {
         return Between.create(criteria, property, begin, end, logic);
     }
@@ -1378,7 +1379,7 @@ public final class Restrictions {
      * @param <V>      值类型
      * @return 条件对象
      */
-    public static <T, V> NotBetween<T> notBetween(Criteria<T> criteria, Property<T, V> property, 
+    public static <T, V> NotBetween<T> notBetween(Criteria<T> criteria, Property<T, V> property,
                                                   V begin, V end, Logic logic) {
         return NotBetween.create(criteria, property, begin, end, logic);
     }
@@ -1445,7 +1446,7 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> DirectNotBetween<T> directNotBetween(String tableAlias, String column, 
+    public static <T> DirectNotBetween<T> directNotBetween(String tableAlias, String column,
                                                            Object begin, Object end) {
         return directNotBetween(tableAlias, column, begin, end, Logic.AND);
     }
@@ -2131,7 +2132,7 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> DirectNotLike<T> directNotLike(Criteria<T> criteria, String column, 
+    public static <T> DirectNotLike<T> directNotLike(Criteria<T> criteria, String column,
                                                      String value, Character escape) {
         return directNotLike(criteria, column, value, escape, Logic.AND);
     }
@@ -2646,6 +2647,97 @@ public final class Restrictions {
     }
     // endregion
 
+    // region normal equal
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param <E>           实体类型
+     * @return 条件对象
+     */
+    public static <T, V1, E, V2> NormalEqual<T> eq(Criteria<T> criteria, Property<T, V1> property,
+                                                   Criteria<E> otherCriteria, Property<E, V2> otherProperty) {
+        return eq(criteria, property, otherCriteria, otherProperty, Logic.AND);
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param logic         逻辑符号
+     * @param <E>           实体类型
+     * @return 条件对象
+     */
+    public static <T, V1, E, V2> NormalEqual<T> eq(Criteria<T> criteria, Property<T, V1> property,
+                                                   Criteria<E> otherCriteria, Property<E, V2> otherProperty,
+                                                   Logic logic) {
+        return NormalEqual.create(criteria, property, otherCriteria, otherProperty, logic);
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param <E>           实体类型
+     * @return 条件对象
+     */
+    public static <T, E> NormalEqual<T> eq(Criteria<T> criteria, String property,
+                                           Criteria<E> otherCriteria, String otherProperty) {
+        return eq(criteria, property, otherCriteria, otherProperty, Logic.AND);
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param logic         逻辑符号
+     * @param <E>           实体类型
+     * @return 条件对象
+     */
+    public static <T, E> NormalEqual<T> eq(Criteria<T> criteria, String property,
+                                           Criteria<E> otherCriteria, String otherProperty, Logic logic) {
+        return NormalEqual.create(criteria, property, otherCriteria, otherProperty, logic);
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param column        字段包装对象
+     * @param otherCriteria 其他条件包装对象
+     * @param otherColumn   其他字段包装对象
+     * @param <E>           实体类型
+     * @return 条件对象
+     */
+    public static <T, E> NormalEqual<T> eq(Criteria<T> criteria, ColumnWrapper column,
+                                           Criteria<E> otherCriteria, ColumnWrapper otherColumn) {
+        return eq(criteria, column, otherCriteria, otherColumn, Logic.AND);
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param column        字段包装对象
+     * @param otherCriteria 其他条件包装对象
+     * @param otherColumn   其他字段包装对象
+     * @param logic         逻辑符号
+     * @param <E>           实体类型
+     * @return 条件对象
+     */
+    public static <T, E> NormalEqual<T> eq(Criteria<T> criteria, ColumnWrapper column,
+                                           Criteria<E> otherCriteria, ColumnWrapper otherColumn, Logic logic) {
+        return NormalEqual.create(criteria, column, otherCriteria, otherColumn, logic);
+    }
+    // endregion
+
     // region sub query
 
     /**
@@ -2656,7 +2748,7 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> SubQuery<T> subQuery(Criteria<T> criteria, ColumnWrapper column, 
+    public static <T> SubQuery<T> subQuery(Criteria<T> criteria, ColumnWrapper column,
                                            SubCriteria<?> sc, Logic logic) {
         return SubQuery.create(criteria, column, sc, logic);
     }
@@ -2714,4 +2806,57 @@ public final class Restrictions {
         return SubQuery.create(criteria, property, sc, symbol, logic);
     }
     // endregion
+
+    // region EXISTS/NOT_EXISTS
+
+    /**
+     * EXISTS
+     * @param criteria 条件包装对象
+     * @param sc       子查询条件对象
+     * @param <T>      实体类型
+     * @param <E>      子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQuery<T> exists(Criteria<T> criteria, SubCriteria<E> sc) {
+        return exists(criteria, sc, Logic.AND);
+    }
+
+    /**
+     * EXISTS
+     * @param criteria 条件包装对象
+     * @param sc       子查询条件对象
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @param <E>      子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQuery<T> exists(Criteria<T> criteria, SubCriteria<E> sc, Logic logic) {
+        return SubQuery.create(criteria, (ColumnWrapper) null, sc, Symbol.EXISTS, logic);
+    }
+
+    /**
+     * NOT EXISTS
+     * @param criteria 条件包装对象
+     * @param sc       子查询条件对象
+     * @param <T>      实体类型
+     * @param <E>      子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQuery<T> notExists(Criteria<T> criteria, SubCriteria<E> sc) {
+        return notExists(criteria, sc, Logic.AND);
+    }
+
+    /**
+     * NOT EXISTS
+     * @param criteria 条件包装对象
+     * @param sc       子查询条件对象
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @param <E>      子查询实体类型
+     * @return 条件对象
+     */
+    public static <T, E> SubQuery<T> notExists(Criteria<T> criteria, SubCriteria<E> sc, Logic logic) {
+        return SubQuery.create(criteria, (ColumnWrapper) null, sc, Symbol.NOT_EXISTS, logic);
+    }
+    // region
 }

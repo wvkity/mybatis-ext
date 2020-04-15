@@ -404,4 +404,32 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @return {@code this}
      */
     Chain orNotIn(String property, SubCriteria<?> sc);
+
+    /**
+     * EXISTS
+     * @param sc 子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain exists(SubCriteria<?> sc);
+
+    /**
+     * 或EXISTS
+     * @param sc 子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orExists(SubCriteria<?> sc);
+
+    /**
+     * NOT EXISTS
+     * @param sc 子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain notExists(SubCriteria<?> sc);
+
+    /**
+     * 或NOT EXISTS
+     * @param sc 子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orNotExists(SubCriteria<?> sc);
 }

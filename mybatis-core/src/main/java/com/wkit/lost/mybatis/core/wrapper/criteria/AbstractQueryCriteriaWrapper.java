@@ -112,7 +112,7 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
 
     @Override
     public AbstractQueryCriteriaWrapper<T> directSelect(String column, String alias) {
-        this.queryManager.add(DirectQuery.Single.query(column, alias));
+        this.queryManager.add(DirectQuery.Single.query(this, column, alias));
         return this;
     }
 

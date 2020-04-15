@@ -127,6 +127,72 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
     Chain eq(Map<String, Object> properties);
 
     /**
+     * 等于
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param <E>           实体类型
+     * @param <V1>          返回值类型
+     * @param <V2>          返回值类型
+     * @return {@code this}
+     */
+    default <V1, E, V2> Chain normalEq(Property<T, V1> property, Criteria<E> otherCriteria, Property<E, V2> otherProperty) {
+        return normalEq(convert(property), otherCriteria, otherCriteria.convert(otherProperty));
+    }
+
+    /**
+     * 等于
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param <E>           实体类型
+     * @return {@code this}
+     */
+    <E> Chain normalEq(String property, Criteria<E> otherCriteria, String otherProperty);
+
+    /**
+     * 等于
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param <E>           实体类型
+     * @param <V>           返回值类型
+     * @return {@code this}
+     */
+    default <E, V> Chain normalEq(Property<T, V> property, Criteria<E> otherCriteria) {
+        return normalEq(convert(property), otherCriteria);
+    }
+
+    /**
+     * 等于
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param <E>           实体类型
+     * @return {@code this}
+     */
+    <E> Chain normalEq(String property, Criteria<E> otherCriteria);
+
+    /**
+     * 等于
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param <E>           实体类型
+     * @param <V>           返回值类型
+     * @return {@code this}
+     */
+    default <E, V> Chain normalEq(Criteria<E> otherCriteria, Property<E, V> otherProperty) {
+        return normalEq(otherCriteria, otherCriteria.convert(otherProperty));
+    }
+
+    /**
+     * 等于
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param <E>           实体类型
+     * @return {@code this}
+     */
+    <E> Chain normalEq(Criteria<E> otherCriteria, String otherProperty);
+
+    /**
      * 或等于
      * @param property 属性
      * @param value    值

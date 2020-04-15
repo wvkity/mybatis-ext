@@ -3,6 +3,7 @@ package com.wkit.lost.mybatis.core.wrapper.criteria;
 import com.wkit.lost.mybatis.core.conditional.criterion.Criterion;
 import com.wkit.lost.mybatis.core.constant.Range;
 import com.wkit.lost.mybatis.core.converter.PlaceholderConverter;
+import com.wkit.lost.mybatis.core.converter.PropertyConverter;
 import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.core.wrapper.aggreate.Aggregation;
 import com.wkit.lost.mybatis.executor.resultset.EmbeddedResult;
@@ -14,7 +15,7 @@ import java.util.Collection;
  * @param <T> 泛型类型
  * @author wvkity
  */
-public interface Criteria<T> extends Search<T>, EmbeddedResult, PlaceholderConverter, Segment {
+public interface Criteria<T> extends Search<T>, EmbeddedResult, PlaceholderConverter, PropertyConverter<T>, Segment {
 
     /**
      * 获取WHERE条件SQL片段

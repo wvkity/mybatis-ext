@@ -16,9 +16,6 @@ import java.util.Collection;
 @SuppressWarnings({"serial"})
 public abstract class ExpressionWrapper<T, E> implements Criterion<T>, PlaceholderConverter {
 
-    protected static final String COMMA = ", ";
-    protected static final String COLON = ": ";
-
     /**
      * Criteria对象
      */

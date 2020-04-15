@@ -76,7 +76,7 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
     public String getSegment(boolean applyQuery) {
         String tableAlias = this.criteria.isEnableAlias() ? this.criteria.as() : null;
         if (StringUtil.hasText(this.columnAlias)) {
-            return ScriptUtil.convertQueryArg(tableAlias, column.getColumn(), tableAlias);
+            return ScriptUtil.convertQueryArg(tableAlias, column.getColumn(), this.columnAlias);
         } else {
             return ScriptUtil.convertQueryArg(tableAlias, column, criteria.getReference(),
                     applyQuery && criteria.isPropertyAutoMappingAlias());

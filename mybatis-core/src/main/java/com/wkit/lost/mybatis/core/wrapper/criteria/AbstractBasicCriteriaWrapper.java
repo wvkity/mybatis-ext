@@ -239,6 +239,23 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
     }
 
     @Override
+    public <E> Chain normalEq(String property, Criteria<E> otherCriteria, String otherProperty) {
+        return add(Restrictions.eq(this, property, otherCriteria, otherProperty));
+    }
+
+    @Override
+    public <E> Chain normalEq(String property, Criteria<E> otherCriteria) {
+        return add(Restrictions.eq(this, this.searchColumn(property), otherCriteria,
+                TableHandler.getPrimaryKey(otherCriteria.getEntityClass())));
+    }
+
+    @Override
+    public <E> Chain normalEq(Criteria<E> otherCriteria, String otherProperty) {
+        return add(Restrictions.eq(this, TableHandler.getPrimaryKey(this.getEntityClass()), otherCriteria,
+                otherCriteria.searchColumn(otherProperty)));
+    }
+
+    @Override
     public Chain orEq(String property, Object value) {
         return add(Restrictions.eq(this, property, value, Logic.OR));
     }
@@ -545,6 +562,25 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
         return add(Restrictions.subQuery(this, property, sc, Symbol.NOT_IN, Logic.OR));
     }
 
+    @Override
+    public Chain exists(SubCriteria<?> sc) {
+        return add(Restrictions.exists(this, sc));
+    }
+
+    @Override
+    public Chain orExists(SubCriteria<?> sc) {
+        return add(Restrictions.exists(this, sc, Logic.OR));
+    }
+
+    @Override
+    public Chain notExists(SubCriteria<?> sc) {
+        return add(Restrictions.notExists(this, sc));
+    }
+
+    @Override
+    public Chain orNotExists(SubCriteria<?> sc) {
+        return add(Restrictions.notExists(this, sc, Logic.OR));
+    }
     // endregion
 
     // region empty condition
