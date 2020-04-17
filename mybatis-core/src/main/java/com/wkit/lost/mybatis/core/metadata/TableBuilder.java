@@ -5,6 +5,7 @@ import com.wkit.lost.mybatis.core.parser.DefaultFieldParser;
 import com.wkit.lost.mybatis.core.parser.FieldParser;
 import com.wkit.lost.mybatis.exception.MapperParserException;
 import com.wkit.lost.mybatis.utils.Ascii;
+import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -112,30 +113,34 @@ public class TableBuilder extends BuilderSupport implements Builder<TableWrapper
         // 数据表名
         String realName = realPrefix + Optional.ofNullable(Ascii.isNullOrEmpty(this.name) ?
                 this.entity.getSimpleName() : this.name).map(this::tableNameTransform).orElse("");
-        TableWrapper wrapper = new TableWrapper(this.entity, realName);
-        wrapper.setNamespace(this.namespace).setPrefix(realPrefix);
-        ifPresent(wrapper::setCatalog, this.catalog, this.configuration.getCatalog());
-        ifPresent(wrapper::setSchema, this.schema, this.configuration.getSchema());
-        wrapper.setEnableLogicDeleted(this.enableLogicDeleted);
+        final String realCatalog = StringUtil.nvl(this.catalog, this.configuration.getCatalog());
+        final String realSchema = StringUtil.nvl(this.schema, this.configuration.getSchema());
         // 创建字段对象
+        ColumnWrapper pk = null;
+        String pkProperty = null;
+        ColumnWrapper deleteColumn = null;
+        ColumnWrapper versionColumn = null;
+        Set<ColumnWrapper> columnWrappers = new LinkedHashSet<>();
         if (!columns.isEmpty()) {
             for (ColumnBuilder builder : columns) {
                 ColumnWrapper column = builder.build();
-                if (column.isPrimaryKey() && wrapper.getPrimaryKey() == null) {
+                if (column.isPrimaryKey() && primaryKey == null) {
                     // 主键
-                    wrapper.setPrimaryKey(column).setPrimaryKeyProperty(column.getProperty());
-                } else if (column.isLogicDelete() && wrapper.getLogicDeletedColumn() == null) {
+                    pk = column;
+                    pkProperty = column.getProperty();
+                } else if (column.isLogicDelete() && deleteColumn == null) {
                     // 逻辑删除标识列
-                    wrapper.setLogicDeletedColumn(column);
-                } else if (column.isVersion() && wrapper.getOptimisticLockingColumn() == null) {
+                    deleteColumn = column;
+                } else if (column.isVersion() && versionColumn == null) {
                     // 乐观锁列
-                    wrapper.setOptimisticLockingColumn(column);
+                    versionColumn = column;
                 }
-                wrapper.addColumn(column);
+                columnWrappers.add(column);
             }
         }
-        // 初始化
-        wrapper.initDefinition();
+        TableWrapper wrapper = new TableWrapper(this.entity, this.name, this.namespace, this.catalog, this.schema,
+                this.prefix, this.order, this.enableLogicDeleted, pk, pkProperty, versionColumn,
+                deleteColumn, columnWrappers);
         // 构建缓存
         PropertyMappingCache.build(wrapper);
         return wrapper;

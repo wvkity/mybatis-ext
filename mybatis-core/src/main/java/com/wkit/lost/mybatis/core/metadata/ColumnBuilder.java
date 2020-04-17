@@ -213,21 +213,19 @@ public class ColumnBuilder extends BuilderSupport implements Builder<ColumnWrapp
     @Override
     public ColumnWrapper build() {
         String columnName = realColumnName();
-        ColumnWrapper wrapper = new ColumnWrapper(this.entity, this.field, this.property, columnName,
-                javaType, this.primaryKey);
-        wrapper.setJdbcType(this.jdbcType).setTypeHandler(this.typeHandler).setSequenceName(this.sequenceName);
-        wrapper.setUuid(this.uuid).setIdentity(this.identity).setSnowflakeSequence(this.snowflakeSequence);
-        wrapper.setSnowflakeSequenceString(this.snowflakeSequenceString).setBlob(this.blob);
-        wrapper.setInsertable(this.insertable).setUpdatable(this.updatable).setUseJavaType(this.useJavaType);
-        wrapper.setCheckNotEmpty(this.checkNotEmpty).setVersion(this.version).setGenerator(this.generator);
-        wrapper.setExecuting(this.executing).setCreatedDate(this.createdDate).setCreatedUser(this.createdUser);
-        wrapper.setCreatedUserName(this.createdUserName).setDeletedDate(this.deletedDate);
-        wrapper.setDeletedUser(this.deletedUser).setDeletedUserName(this.deletedUserName);
-        wrapper.setLastModifiedDate(this.lastModifiedDate).setLastModifiedUser(this.lastModifiedUser);
-        wrapper.setLastModifiedUserName(this.lastModifiedUserName).setLogicDelete(this.logicDelete);
-        wrapper.setLogicDeletedTrueValue(this.logicDeletedTrueValue)
-                .setLogicDeletedFalseValue(this.logicDeletedFalseValue);
-        return wrapper;
+        // 字段信息
+        Descriptor descriptor = new Descriptor(this.field.getField(), this.javaType, this.property,
+                this.field.getGetter(), this.field.getSetter());
+        // 主键信息
+        Unique unique = new Unique(this.uuid, this.identity, this.snowflakeSequence,
+                this.snowflakeSequenceString, this.generator, this.executing);
+        // 审计信息
+        Auditor auditor = new Auditor(this.createdDate, this.createdUser, this.createdUserName, this.deletedDate,
+                this.deletedUser, this.deletedUserName, this.lastModifiedDate, this.lastModifiedUser,
+                this.lastModifiedUserName, this.logicDelete, this.logicDeletedTrueValue, this.logicDeletedFalseValue);
+        return new ColumnWrapper(this.entity, this.property, columnName, this.jdbcType,
+                this.typeHandler, this.sequenceName, this.primaryKey, this.blob, this.insertable, this.updatable,
+                this.useJavaType, this.checkNotEmpty, this.version, descriptor, unique, auditor);
     }
 
     /**

@@ -9,12 +9,11 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -33,8 +32,8 @@ public class TableWrapper {
      * 属性-字段包装对象缓存(只读)
      */
     @Getter(AccessLevel.NONE)
-    private Map<String, ColumnWrapper> PROPERTY_COLUMN_CACHE;
-
+    private final Map<String, ColumnWrapper> PROPERTY_COLUMN_CACHE = new ConcurrentHashMap<>();
+    private final Map<String, ColumnWrapper> IMMUTABLE_COLUMN_CACHE;
     /**
      * 实体类
      */
@@ -48,72 +47,94 @@ public class TableWrapper {
     /**
      * Mapper接口命名空间
      */
-    private String namespace;
-
-    /**
-     * 别名
-     */
-    private String alias;
+    private final String namespace;
 
     /**
      * 数据库目录
      */
-    private String catalog;
+    private final String catalog;
 
     /**
      * 数据库模式
      */
-    private String schema;
+    private final String schema;
 
     /**
-     * 前缀
+     * 表前缀
      */
-    private String prefix;
+    private final String prefix;
 
     /**
      * 排序
      */
-    private String order;
+    private final String order;
 
     /**
      * 是否启用逻辑删除
      */
-    private boolean enableLogicDeleted;
+    private final boolean enableLogicDeleted;
 
     /**
      * 主键字段
      */
-    private ColumnWrapper primaryKey;
+    private final ColumnWrapper primaryKey;
 
     /**
      * 主键属性
      */
-    private String primaryKeyProperty;
+    private final String primaryKeyProperty;
 
     /**
      * 乐观锁字段
      */
-    private ColumnWrapper optimisticLockingColumn;
+    private final ColumnWrapper optimisticLockingColumn;
 
     /**
      * 逻辑删除字段
      */
-    private ColumnWrapper logicDeletedColumn;
+    private final ColumnWrapper logicDeletedColumn;
 
     /**
      * 所有字段
      */
     @Getter(AccessLevel.NONE)
-    private Set<ColumnWrapper> columns = new LinkedHashSet<>();
+    private final Set<ColumnWrapper> columns;
 
     /**
      * 构造方法
-     * @param entity 实体类
-     * @param name   表名
+     * @param entity                  实体类
+     * @param name                    数据库表名
+     * @param namespace               Mapper接口命名空间
+     * @param catalog                 数据库目录
+     * @param schema                  数据库模式
+     * @param prefix                  表前缀
+     * @param order                   排序
+     * @param enableLogicDeleted      是否启用逻辑删除
+     * @param primaryKey              主键字段
+     * @param primaryKeyProperty      主键属性
+     * @param optimisticLockingColumn 乐观锁字段
+     * @param logicDeletedColumn      逻辑删除字段
+     * @param columns                 所有字段
      */
-    public TableWrapper(Class<?> entity, String name) {
+    public TableWrapper(Class<?> entity, String name, String namespace, String catalog, String schema,
+                        String prefix, String order, boolean enableLogicDeleted, ColumnWrapper primaryKey,
+                        String primaryKeyProperty, ColumnWrapper optimisticLockingColumn,
+                        ColumnWrapper logicDeletedColumn, Set<ColumnWrapper> columns) {
         this.entity = entity;
         this.name = name;
+        this.namespace = namespace;
+        this.catalog = catalog;
+        this.schema = schema;
+        this.prefix = prefix;
+        this.order = order;
+        this.enableLogicDeleted = enableLogicDeleted;
+        this.primaryKey = primaryKey;
+        this.primaryKeyProperty = primaryKeyProperty;
+        this.optimisticLockingColumn = optimisticLockingColumn;
+        this.logicDeletedColumn = logicDeletedColumn;
+        this.columns = columns;
+        this.initDefinition();
+        this.IMMUTABLE_COLUMN_CACHE = Collections.unmodifiableMap(this.PROPERTY_COLUMN_CACHE);
     }
 
     /**
@@ -214,12 +235,9 @@ public class TableWrapper {
     /**
      * 初始化定义信息
      */
-    void initDefinition() {
-        if (this.columns != null && !this.columns.isEmpty() && this.PROPERTY_COLUMN_CACHE == null) {
-            this.PROPERTY_COLUMN_CACHE = Collections.unmodifiableMap(this.columns.stream().collect(
-                    Collectors.toMap(ColumnWrapper::getProperty, Function.identity())));
-        } else {
-            this.PROPERTY_COLUMN_CACHE = Collections.unmodifiableMap(new HashMap<>(0));
+    private void initDefinition() {
+        if (this.columns != null && !this.columns.isEmpty()) {
+            this.columns.forEach(it -> this.PROPERTY_COLUMN_CACHE.put(it.getProperty(), it));
         }
     }
 
@@ -228,7 +246,7 @@ public class TableWrapper {
      * @return 字段映射集合
      */
     public Map<String, ColumnWrapper> columnMappings() {
-        return this.PROPERTY_COLUMN_CACHE;
+        return this.IMMUTABLE_COLUMN_CACHE;
     }
 
     /**

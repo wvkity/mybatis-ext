@@ -6,32 +6,25 @@ import com.wkit.lost.mybatis.core.handler.TableHandler;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
+
+import java.lang.reflect.Field;
 
 /**
  * 实体属性-数据库表字段映射
  * @author wvkity
  */
 @Getter
-@Setter(AccessLevel.PACKAGE)
 @ToString
 @EqualsAndHashCode
-@Accessors(chain = true)
 public class ColumnWrapper {
 
     /**
      * 实体类
      */
     private final Class<?> entity;
-
-    /**
-     * 属性对象
-     */
-    private final FieldWrapper field;
 
     /**
      * 属性
@@ -44,24 +37,19 @@ public class ColumnWrapper {
     private final String column;
 
     /**
-     * Java类型
-     */
-    private final Class<?> javaType;
-
-    /**
      * Jdbc类型
      */
-    private JdbcType jdbcType;
+    private final JdbcType jdbcType;
 
     /**
      * 类型处理器
      */
-    private Class<? extends TypeHandler<?>> typeHandler;
+    private final Class<? extends TypeHandler<?>> typeHandler;
 
     /**
      * 序列名称
      */
-    private String sequenceName;
+    private final String sequenceName;
 
     /**
      * 是否为主键
@@ -69,153 +57,93 @@ public class ColumnWrapper {
     private final boolean primaryKey;
 
     /**
-     * 是否为UUID主键
-     */
-    private boolean uuid = false;
-
-    /**
-     * 是否为自增主键
-     */
-    private boolean identity = false;
-
-    /**
-     * 是否为雪花算法主键
-     */
-    private boolean snowflakeSequence = false;
-
-    /**
-     * 是否为雪花算法字符串主键
-     */
-    private boolean snowflakeSequenceString = false;
-
-    /**
      * 是否为Blob类型
      */
-    private boolean blob = false;
+    private final boolean blob;
 
     /**
      * 是否可保存
      */
-    private boolean insertable = true;
+    private final boolean insertable;
 
     /**
      * 是否可修改
      */
-    private boolean updatable = true;
+    private final boolean updatable;
 
     /**
      * SQL语句是否设置Java类型
      */
-    private boolean useJavaType = false;
+    private final boolean useJavaType;
 
     /**
      * 字符串非空校验
      */
-    private boolean checkNotEmpty;
+    private final boolean checkNotEmpty;
 
     /**
      * 乐观锁
      */
-    private boolean version = false;
+    private final boolean version;
 
     /**
-     * 排序方式
+     * 基础信息
      */
-    private String orderBy;
+    @Getter(AccessLevel.NONE)
+    private final Descriptor descriptor;
 
     /**
-     * 主键生成方式
+     * 主键信息
      */
-    private String generator;
+    @Getter(AccessLevel.NONE)
+    private final Unique unique;
 
     /**
-     * SQL执行时机
+     * 审计信息
      */
-    private Executing executing;
-
-    /**
-     * 值
-     */
-    private Object value;
-
-    // 审计
-    /**
-     * 标识保存操作时间是否自动填充
-     */
-    private boolean createdDate;
-
-    /**
-     * 标识保存操作用户标识是否自动填充
-     */
-    private boolean createdUser;
-
-    /**
-     * 标识保存操作用户名是否自动填充
-     */
-    private boolean createdUserName;
-
-    /**
-     * 标识删除操作时间是否自动填充
-     */
-    private boolean deletedDate;
-
-    /**
-     * 标识删除操作用户标识是否自动填充
-     */
-    private boolean deletedUser;
-
-    /**
-     * 标识删除操作用户名是否自动填充
-     */
-    private boolean deletedUserName;
-
-    /**
-     * 标识更新操作时间是否自动填充
-     */
-    private boolean lastModifiedDate;
-
-    /**
-     * 标识更新操作用户标识是否自动填充
-     */
-    private boolean lastModifiedUser;
-
-    /**
-     * 标识更新操作用户名是否自动填充
-     */
-    private boolean lastModifiedUserName;
-
-    /**
-     * 是否为逻辑删除属性
-     */
-    private boolean logicDelete;
-
-    /**
-     * 逻辑删除真值
-     */
-    private Object logicDeletedTrueValue;
-
-    /**
-     * 逻辑删除假值
-     */
-    private Object logicDeletedFalseValue;
+    @Getter(AccessLevel.NONE)
+    private final Auditor auditor;
 
     /**
      * 构造方法
-     * @param entity     实体类
-     * @param field      属性对象
-     * @param property   属性
-     * @param column     字段
-     * @param javaType   Java类型
-     * @param primaryKey 是否为主键
+     * @param entity        实体类
+     * @param property      属性
+     * @param column        字段名
+     * @param jdbcType      JDBC类型
+     * @param typeHandler   类型处理器
+     * @param sequenceName  序列名称
+     * @param primaryKey    是否为主键
+     * @param blob          是否为BLOB类型
+     * @param insertable    是否可保存
+     * @param updatable     是否可更新
+     * @param useJavaType   是否使用java类型
+     * @param checkNotEmpty 是否执行非空检查
+     * @param version       是否为乐观锁
+     * @param descriptor    基本信息包装对象
+     * @param unique        主键包装对象
+     * @param auditor       审计包装对象
      */
-    public ColumnWrapper(Class<?> entity, FieldWrapper field, String property,
-                         String column, Class<?> javaType, boolean primaryKey) {
+    public ColumnWrapper(Class<?> entity, String property, String column, JdbcType jdbcType,
+                         Class<? extends TypeHandler<?>> typeHandler, String sequenceName, boolean primaryKey,
+                         boolean blob, boolean insertable, boolean updatable, boolean useJavaType,
+                         boolean checkNotEmpty, boolean version, Descriptor descriptor, Unique unique,
+                         Auditor auditor) {
         this.entity = entity;
-        this.field = field;
         this.property = property;
         this.column = column;
-        this.javaType = javaType;
+        this.jdbcType = jdbcType;
+        this.typeHandler = typeHandler;
+        this.sequenceName = sequenceName;
         this.primaryKey = primaryKey;
+        this.blob = blob;
+        this.insertable = insertable;
+        this.updatable = updatable;
+        this.useJavaType = useJavaType;
+        this.checkNotEmpty = checkNotEmpty;
+        this.version = version;
+        this.descriptor = descriptor;
+        this.unique = unique;
+        this.auditor = auditor;
     }
 
     /**
@@ -227,11 +155,91 @@ public class ColumnWrapper {
     }
 
     /**
+     * JAVA类型
+     * @return Class
+     */
+    public Class<?> getJavaType() {
+        return this.descriptor.getJavaType();
+    }
+
+    /**
+     * 字段信息
+     * @return {@link Field}
+     */
+    public Field getField() {
+        return this.descriptor.getField();
+    }
+
+    /**
+     * SQL执行时机
+     * @return {@link Executing}
+     */
+    public Executing getExecuting() {
+        return unique.getExecuting();
+    }
+
+    /**
+     * 是否为自增主键
+     * @return true: 是, false: 否
+     */
+    public boolean isIdentity() {
+        return this.unique.isIdentity();
+    }
+
+    /**
+     * 是否为UUID主键
+     * @return true: 是, false: 否
+     */
+    public boolean isUuid() {
+        return this.unique.isUuid();
+    }
+
+    /**
+     * 是否为雪花算法主键
+     * @return true: 是, false: 否
+     */
+    public boolean isSnowflakeSequence() {
+        return this.unique.isSnowflakeSequence();
+    }
+
+    /**
+     * 是否为雪花算法字符串主键
+     * @return true: 是, false: 否
+     */
+    public boolean isSnowflakeSequenceString() {
+        return this.unique.isSnowflakeSequenceString();
+    }
+
+    /**
+     * 获取逻辑删除真值
+     * @return Object
+     */
+    public Object getLogicDeletedTrueValue() {
+        return this.auditor.getLogicDeletedTrueValue();
+    }
+
+    /**
+     * 获取逻辑删除假值
+     * @return Object
+     */
+    public Object getLogicDeletedFalseValue() {
+        return this.auditor.getLogicDeletedFalseValue();
+    }
+
+    /**
+     * 是否为逻辑删除字段
+     * @return boolean
+     */
+    public boolean isLogicDelete() {
+        return this.auditor.isLogicDelete();
+    }
+
+    /**
      * 检查当前字段是否可自动审计
      * @return true: 是, false: 否
      */
     public boolean isAuditable() {
-        return (this.insertable || this.updatable) && !primaryKey && !logicDelete;
+        return (this.insertable || this.updatable) && !primaryKey && !auditor.isLogicDelete();
     }
 
     /**
@@ -246,7 +254,7 @@ public class ColumnWrapper {
             case MODIFIED:
                 return this.updatable && !primaryKey && this.modifiedAuditable();
             case DELETED:
-                return !this.logicDelete && deletedAuditable();
+                return !this.auditor.isLogicDelete() && deletedAuditable();
             default:
                 return false;
         }
@@ -257,7 +265,7 @@ public class ColumnWrapper {
      * @return true: 是, false: 否
      */
     public boolean insertedAuditable() {
-        return this.createdDate || this.createdUser || this.createdUserName;
+        return this.auditor.isCreatedDate() || this.auditor.isCreatedUser() || this.auditor.isCreatedUserName();
     }
 
     /**
@@ -265,7 +273,8 @@ public class ColumnWrapper {
      * @return true: 是, false: 否
      */
     public boolean modifiedAuditable() {
-        return this.lastModifiedDate || this.lastModifiedUser || this.lastModifiedUserName;
+        return this.auditor.isLastModifiedDate() || this.auditor.isLastModifiedUser()
+                || this.auditor.isLastModifiedUserName();
     }
 
     /**
@@ -273,6 +282,31 @@ public class ColumnWrapper {
      * @return true: 是, false: 否
      */
     public boolean deletedAuditable() {
-        return this.deletedDate || this.deletedUser || this.deletedUserName;
+        return this.auditor.isDeletedDate() || this.auditor.isDeletedUser() || this.auditor.isDeletedUserName();
+    }
+
+    /**
+     * 检查当前字段是否开启时间审计
+     * @return true: 是, false: 否
+     */
+    public boolean isDateAuditable() {
+        return this.auditor.isCreatedDate() || this.auditor.isLastModifiedDate() || this.auditor.isDeletedDate();
+    }
+
+    /**
+     * 检查当前字段是否开启用户标识审计
+     * @return true: 是, false: 否
+     */
+    public boolean isUserAuditable() {
+        return this.auditor.isCreatedUser() || this.auditor.isLastModifiedUser() || this.auditor.isDeletedUser();
+    }
+
+    /**
+     * 检查当前字段是否开启用户名审计
+     * @return true: 是, false: 否
+     */
+    public boolean isUserNameAuditable() {
+        return this.auditor.isCreatedUserName() || this.auditor.isLastModifiedUserName()
+                || this.auditor.isDeletedUserName();
     }
 }
