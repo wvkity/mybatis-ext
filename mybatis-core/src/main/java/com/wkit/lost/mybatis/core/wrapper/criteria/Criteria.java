@@ -186,7 +186,7 @@ public interface Criteria<T> extends Search<T>, EmbeddedResult, PlaceholderConve
      * @return 乐观锁值
      */
     default Object getModifyVersionValue() {
-        return 0;
+        return null;
     }
 
     /**
@@ -194,7 +194,7 @@ public interface Criteria<T> extends Search<T>, EmbeddedResult, PlaceholderConve
      * @return 乐观锁值
      */
     default Object getConditionVersionValue() {
-        return 0;
+        return null;
     }
 
     /**
