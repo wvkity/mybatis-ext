@@ -6,9 +6,14 @@ import com.wkit.lost.mybatis.core.metadata.PropertyMappingCache;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.invoke.SerializedLambda;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
+import com.wkit.lost.mybatis.utils.StringUtil;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 抽象条件包装器
@@ -25,6 +30,10 @@ abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriter
      * 属性-字段包装对象缓存(只读)
      */
     private Map<String, ColumnWrapper> _PROPERTY_COLUMN_CACHE;
+    /**
+     * 可更新字段名缓存(小写)
+     */
+    private Set<String> _UPDATABLE_COLUMN_NAME_CACHE;
 
     /**
      * 映射缓存是否标识已初始化
@@ -39,21 +48,30 @@ abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriter
 
     @Override
     public ColumnWrapper searchColumn(Property<T, ?> property) {
+        if (property == null) {
+            return null;
+        }
         return getColumn(PropertyMappingCache.parse(property));
     }
 
     @Override
     public ColumnWrapper searchColumn(String property) {
-        return getColumn(property);
+        return StringUtil.hasText(property) ? getColumn(property) : null;
     }
 
     @Override
     public <V> String convert(Property<T, V> property) {
+        if (property == null) {
+            return null;
+        }
         return methodToProperty(PropertyMappingCache.parse(property).getImplMethodName());
     }
 
     @Override
     public <E, V> String methodToProperty(Property<E, V> property) {
+        if (property == null) {
+            return null;
+        }
         return methodToProperty(PropertyMappingCache.parse(property).getImplMethodName());
     }
 
@@ -120,6 +138,8 @@ abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriter
                             "the configuration is correct!"));
             } else {
                 this.initialized = true;
+                this._UPDATABLE_COLUMN_NAME_CACHE = this._PROPERTY_COLUMN_CACHE.values().stream().map(it ->
+                        it.getColumn().toLowerCase(Locale.ENGLISH)).collect(Collectors.toSet());
             }
         }
     }
@@ -136,5 +156,22 @@ abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriter
                         "entity ['" + klass.getCanonicalName() + "'] could not be found");
             }
         }
+    }
+
+    /**
+     * 检查字段是否可更新
+     * @param column 字段名
+     * @return boolean
+     */
+    final boolean checkCanUpdatable(final String column) {
+        if (StringUtil.isBlank(column)) {
+            return false;
+        }
+        if (CollectionUtil.isEmpty(this._UPDATABLE_COLUMN_NAME_CACHE)) {
+            return true;
+        }
+        final String realColumn = column.toLowerCase(Locale.ENGLISH);
+        return Optional.ofNullable(this._UPDATABLE_COLUMN_NAME_CACHE).filter(it ->
+                it.contains(realColumn)).isPresent();
     }
 }
