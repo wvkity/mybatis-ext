@@ -18,9 +18,14 @@ import java.util.stream.Collectors;
 public abstract class AbstractSegment<E> implements Segment {
 
     /**
+     * 锁
+     */
+    private final Object LOCK = new Object();
+
+    /**
      * SQL片段集合
      */
-    protected List<E> segments;
+    protected volatile List<E> segments;
 
     /**
      * 添加多个片段对象
@@ -32,7 +37,11 @@ public abstract class AbstractSegment<E> implements Segment {
                     .collect(Collectors.toCollection(LinkedHashSet::new));
             if (CollectionUtil.hasElement(its)) {
                 if (this.segments == null) {
-                    this.segments = new CopyOnWriteArrayList<>();
+                    synchronized (LOCK) {
+                        if (this.segments == null) {
+                            this.segments = new CopyOnWriteArrayList<>();
+                        }
+                    }
                 }
                 this.segments.addAll(its);
             }
