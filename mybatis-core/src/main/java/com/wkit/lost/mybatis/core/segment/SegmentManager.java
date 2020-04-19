@@ -1,6 +1,7 @@
 package com.wkit.lost.mybatis.core.segment;
 
 import com.wkit.lost.mybatis.core.conditional.criterion.Criterion;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.basic.AbstractGroupWrapper;
 import com.wkit.lost.mybatis.core.wrapper.basic.AbstractOrderWrapper;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
@@ -129,5 +130,14 @@ public class SegmentManager implements Segment {
      */
     public List<Criterion<?>> getConditions() {
         return this.whereWrapper.getConditions();
+    }
+
+    /**
+     * 获取条件中的乐观锁值
+     * @param column 乐观锁字段包装对象
+     * @return 乐观锁值
+     */
+    public Object getVersionValue(final ColumnWrapper column) {
+        return this.whereWrapper.optimisticLockingValue(column);
     }
 }
