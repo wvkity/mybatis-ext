@@ -28,6 +28,7 @@ import com.wkit.lost.mybatis.core.injector.execute.PageableList;
 import com.wkit.lost.mybatis.core.injector.execute.PageableListByCriteria;
 import com.wkit.lost.mybatis.core.injector.execute.SelectOne;
 import com.wkit.lost.mybatis.core.injector.execute.Update;
+import com.wkit.lost.mybatis.core.injector.execute.UpdateByCriteria;
 import com.wkit.lost.mybatis.core.injector.execute.UpdateNotWithLocking;
 import com.wkit.lost.mybatis.core.injector.execute.UpdateNotWithNull;
 import com.wkit.lost.mybatis.core.injector.execute.UpdateNotWithNullAndLocking;
@@ -65,6 +66,7 @@ public class DefaultInjector extends AbstractInjector {
                 new UpdateNotWithLocking(),
                 new UpdateNotWithNullAndLocking(),
                 new MixinUpdateNotWithNull(),
+                new UpdateByCriteria(),
                 // query
                 new Count(),
                 new CountByCriteria(),

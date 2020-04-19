@@ -17,7 +17,7 @@ public abstract class AbstractGeneralCriteriaMethod<T extends Provider> extends 
     @Override
     public MappedStatement injectMappedStatement(TableWrapper table, Class<?> mapperInterface, Class<?> resultType) {
         Class<?> entity = table.getEntity();
-        ScriptBuilder builder = ScriptBuilderFactory.create(target(), table, entity, table.getAlias());
+        ScriptBuilder builder = ScriptBuilderFactory.create(target(), table, entity, null);
         Class<?> returnType = getResultType();
         return addSelectMappedStatement(mapperInterface, applyMethod(), createSqlSource(builder, entity),
                 null, returnType == null ? resultType : returnType, table);
