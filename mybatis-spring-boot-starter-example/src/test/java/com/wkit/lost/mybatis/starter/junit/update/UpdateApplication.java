@@ -1,7 +1,11 @@
 package com.wkit.lost.mybatis.starter.junit.update;
 
 import com.wkit.lost.mybatis.core.wrapper.criteria.QueryCriteria;
+import com.wkit.lost.mybatis.core.wrapper.criteria.UpdateCriteria;
+import com.wkit.lost.mybatis.starter.example.entity.BaseEntity;
+import com.wkit.lost.mybatis.starter.example.entity.Grade;
 import com.wkit.lost.mybatis.starter.example.entity.User;
+import com.wkit.lost.mybatis.starter.example.service.GradeService;
 import com.wkit.lost.mybatis.starter.example.service.UserService;
 import com.wkit.lost.mybatis.starter.junit.RootTestRunner;
 import lombok.extern.log4j.Log4j2;
@@ -15,6 +19,9 @@ public class UpdateApplication extends RootTestRunner {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private GradeService gradeService;
 
     @Test
     public void updateTest() {
@@ -59,11 +66,27 @@ public class UpdateApplication extends RootTestRunner {
     @Test
     public void mixinUpdateNotWithNullTest() {
         User user = new User();
-        user.setUserName("张三")
-                .setState(1).setScore(99).setVersion(2).setVersion(2);
+        user.setUserName("张三").setState(1).setScore(99).setVersion(2).setVersion(2);
         QueryCriteria<User> criteria = new QueryCriteria<>(User.class);
         criteria.idEq(1L).eq(User::getSex, 1, User::getVersion, 1);
         int result = userService.updateNotWithNull(user, criteria);
+        log.info("执行结果: {}", result);
+    }
+
+    @Test
+    public void updateByCriteriaTest() {
+        UpdateCriteria<User> criteria = new UpdateCriteria<>(User.class);
+        criteria.set(User::getSex, 1, User::getScore, 88, User::getPassword, "111111")
+                .eq(User::getId, 2, User::getVersion, 1, User::getDeleted, false);
+        int result = userService.update(criteria);
+        log.info("执行结果: {}", result);
+    }
+
+    @Test
+    public void updateByCriteriaTest2() {
+        UpdateCriteria<Grade> criteria = new UpdateCriteria<>(Grade.class);
+        criteria.set(Grade::getName, "SY2").eq(BaseEntity::getId, 2L);
+        int result = gradeService.update(criteria);
         log.info("执行结果: {}", result);
     }
 }

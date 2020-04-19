@@ -59,7 +59,8 @@ lost:
       #logic-deleted-property: deleted
       boolean-property-auto-add-is-prefix: true
       auto-register-builtin-plugin: true
-      auto-discern-primary-key: true
+      auto-scan-primary-key: true
+      auto-scan-audit-property: true
     executor-type: simple
   sequence:
     data-center-id: 2

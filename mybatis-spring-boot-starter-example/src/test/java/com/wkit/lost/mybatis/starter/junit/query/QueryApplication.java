@@ -37,7 +37,7 @@ public class QueryApplication extends RootTestRunner {
     public void existsTest() {
         User u = new User();
         u.setId(1L).setSex(1).setState(2);
-        boolean result = userService.existsById(u);
+        boolean result = userService.exists(u);
         log.info("执行结果: {}", result);
     }
 
