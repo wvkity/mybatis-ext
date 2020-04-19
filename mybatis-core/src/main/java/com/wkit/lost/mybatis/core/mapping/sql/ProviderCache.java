@@ -16,7 +16,7 @@ public final class ProviderCache {
     }
 
     private static final Map<String, Class<? extends Provider>> PROVIDER_CACHE =
-            Collections.synchronizedMap(new WeakHashMap<>(32));
+            Collections.synchronizedMap(new WeakHashMap<>(48));
 
     @SuppressWarnings({"unchecked"})
     public static Class<? extends Provider> getTarget(final Class<?> klass) {
