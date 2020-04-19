@@ -35,7 +35,7 @@ public class CriteriaImpl<T> extends AbstractQueryCriteriaWrapper<T> implements 
         this.entityClass = entityClass;
         this.tableAlias = alias;
         this.inits();
-        this.delegate = new UpdateCriteria<>(this.entityClass, this.tableAlias);
+        this.delegate = new UpdateCriteria<>(this.entityClass);
     }
 
     /**

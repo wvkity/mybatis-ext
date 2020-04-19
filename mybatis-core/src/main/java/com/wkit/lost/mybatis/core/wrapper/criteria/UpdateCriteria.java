@@ -18,20 +18,9 @@ public class UpdateCriteria<T> extends AbstractUpdateCriteriaWrapper<T> {
         this.inits();
     }
 
-    /**
-     * 构造方法
-     * @param entityClass 实体类
-     * @param alias       表别名
-     */
-    public UpdateCriteria(Class<T> entityClass, String alias) {
-        this.entityClass = entityClass;
-        this.tableAlias = alias;
-        this.inits();
-    }
-
     @Override
     protected UpdateCriteria<T> newInstance() {
-        UpdateCriteria<T> instance = new UpdateCriteria<>(this.entityClass, this.tableAlias);
+        UpdateCriteria<T> instance = new UpdateCriteria<>(this.entityClass);
         copy(instance, this);
         return instance;
     }
