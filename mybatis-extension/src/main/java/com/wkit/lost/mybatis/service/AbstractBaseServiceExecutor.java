@@ -334,9 +334,9 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         return id == null ? Optional.empty() : executor.selectOne(id);
     }
 
-    @SafeVarargs
+    @SuppressWarnings("unchecked")
     @Override
-    public final List<V> list(PK... ids) {
+    public List<V> list(PK... ids) {
         return list(Arrays.asList(ids));
     }
 
