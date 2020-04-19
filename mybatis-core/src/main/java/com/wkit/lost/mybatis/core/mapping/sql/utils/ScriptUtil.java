@@ -539,8 +539,7 @@ public final class ScriptUtil {
         } else {
             realSymbol = symbol;
         }
-        builder.append(column).append(Constants.SPACE).append(realSymbol.getSegment())
-                .append(Constants.SPACE);
+        builder.append(column).append(Constants.SPACE).append(realSymbol.getSegment()).append(Constants.SPACE);
         if (Symbol.filter(realSymbol) && CollectionUtil.hasElement(placeholders)) {
             switch (symbol) {
                 case EQ:

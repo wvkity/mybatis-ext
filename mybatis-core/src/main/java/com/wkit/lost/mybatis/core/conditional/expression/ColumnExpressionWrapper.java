@@ -8,14 +8,16 @@ import lombok.Getter;
 public abstract class ColumnExpressionWrapper<T> extends ExpressionWrapper<T, ColumnWrapper> {
 
     /**
-     * 属性
+     * 获取属性名
+     * @return 属性名
      */
-    @Getter
-    protected String property;
+    public String getProperty() {
+        return this.column.getProperty();
+    }
 
     @Override
     public String getSegment() {
-        return ScriptUtil.convertConditionArg(getAlias(), this.column, this.symbol, this.logic, 
+        return ScriptUtil.convertConditionArg(getAlias(), this.column, this.symbol, this.logic,
                 defaultPlaceholder(this.value));
     }
 }

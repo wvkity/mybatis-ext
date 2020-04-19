@@ -54,7 +54,7 @@ public class OptimisticLockingProcessor extends UpdateProcessorSupport {
                         if (optional.isPresent()) {
                             // 填充值
                             ColumnWrapper column = optional.get();
-                            Field field = column.getField().getField();
+                            Field field = column.getField();
                             if (METHOD_UPDATE.equals(execMethod) || METHOD_UPDATE_NOT_WITH_NULL.equals(execMethod)) {
                                 Object originalValue = originalValue(entity, field);
                                 if (originalValue != null) {
@@ -77,7 +77,7 @@ public class OptimisticLockingProcessor extends UpdateProcessorSupport {
                                     if (METHOD_UPDATE_BY_CRITERIA.equals(execMethod)) {
                                         Object modifyValue = criteria.getModifyVersionValue();
                                         if (modifyValue == null) {
-                                            ((AbstractUpdateCriteriaWrapper<?>) criteriaObject).updateVersion(
+                                            ((AbstractUpdateCriteriaWrapper<?>) criteriaObject).version(
                                                     newValue(originalValue, column.getJavaType()));
                                         }
                                     } else {
