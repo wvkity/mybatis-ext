@@ -22,7 +22,7 @@ public enum AuditMatching {
     MODIFIED,
 
     /**
-     * 开启删除操作自动审计
+     * 开启逻辑删除操作自动审计
      */
     DELETED
 }

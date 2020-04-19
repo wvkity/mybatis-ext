@@ -10,7 +10,6 @@ import com.wkit.lost.mybatis.core.naming.PhysicalNamingStrategy;
 import com.wkit.lost.mybatis.core.parser.EntityParser;
 import com.wkit.lost.mybatis.core.parser.FieldParser;
 import com.wkit.lost.mybatis.core.snowflake.sequence.Sequence;
-import com.wkit.lost.mybatis.mapper.BaseMapperExecutor;
 import com.wkit.lost.mybatis.keygen.KeyGenerator;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -102,7 +101,12 @@ public class MyBatisCustomConfiguration implements Serializable {
     /**
      * 自动识别主键(缺省@Id注解时)
      */
-    private boolean autoDiscernPrimaryKey = false;
+    private boolean autoScanPrimaryKey = false;
+
+    /**
+     * 自动识别审计字段(缺省相关审计注解时[如: @CreatedDate, @CreateUser, ...]))
+     */
+    private boolean autoScanAuditProperty = false;
 
     /**
      * 布尔值属性映射的字段是否自动添加is前缀

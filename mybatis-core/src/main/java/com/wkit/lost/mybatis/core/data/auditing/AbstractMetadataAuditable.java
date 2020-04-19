@@ -5,6 +5,7 @@ import com.wkit.lost.mybatis.core.data.auditing.time.proxy.DateTimeProviderFacto
 import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
+import com.wkit.lost.mybatis.core.wrapper.criteria.AbstractUpdateCriteriaWrapper;
 import com.wkit.lost.mybatis.utils.Ascii;
 import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.MetaObjectUtil;
@@ -17,7 +18,9 @@ import java.util.Optional;
  * 抽象元数据审计处理器
  * @author wvkity
  */
-abstract class AbstractMetadataAuditable implements MetadataAuditable {
+public abstract class AbstractMetadataAuditable implements MetadataAuditable {
+
+    protected static final String METHOD_UPDATE_BY_CRITERIA = "updateByCriteria";
 
     public AbstractMetadataAuditable() {
     }
@@ -51,6 +54,12 @@ abstract class AbstractMetadataAuditable implements MetadataAuditable {
                 if (entity != null) {
                     return invoke(MetaObjectUtil.forObject(entity), property, value);
                 }
+            } else {
+                Object criteria = Optional.ofNullable(getCriteriaParameter(metadata))
+                        .orElseGet(metadata::getOriginalObject);
+                if (criteria instanceof AbstractUpdateCriteriaWrapper) {
+                    return invoke((AbstractUpdateCriteriaWrapper<?>) criteria, property, value);
+                }
             }
         }
         return this;
@@ -68,8 +77,20 @@ abstract class AbstractMetadataAuditable implements MetadataAuditable {
                 if (entity != null) {
                     return invoke(MetaObjectUtil.forObject(entity), property, value, matching);
                 }
+            } else {
+                Object criteria = Optional.ofNullable(getCriteriaParameter(metadata))
+                        .orElseGet(metadata::getOriginalObject);
+                if (criteria instanceof AbstractUpdateCriteriaWrapper) {
+                    return invoke((AbstractUpdateCriteriaWrapper<?>) criteria, property, value);
+                }
             }
         }
+        return this;
+    }
+
+    @Override
+    public MetadataAuditable invoke(AbstractUpdateCriteriaWrapper<?> criteria, String property, Object value) {
+        Optional.ofNullable(criteria).filter(it -> it.notExists(property)).ifPresent(it -> it.set(property, value));
         return this;
     }
 
@@ -140,5 +161,18 @@ abstract class AbstractMetadataAuditable implements MetadataAuditable {
                     .orElse(false);
         }
         return false;
+    }
+
+    /**
+     * 获取条件包装参数
+     * @param metadata 元数据
+     * @return 条件包装对象
+     */
+    protected Object getCriteriaParameter(MetaObject metadata) {
+        if (metadata.hasGetter(Constants.PARAM_CRITERIA)) {
+            // 条件包装对象
+            return metadata.getValue(Constants.PARAM_CRITERIA);
+        }
+        return null;
     }
 }

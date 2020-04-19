@@ -124,7 +124,7 @@ public class TableBuilder extends BuilderSupport implements Builder<TableWrapper
         if (!columns.isEmpty()) {
             for (ColumnBuilder builder : columns) {
                 ColumnWrapper column = builder.build();
-                if (column.isPrimaryKey() && primaryKey == null) {
+                if (column.isPrimaryKey() && pk == null) {
                     // 主键
                     pk = column;
                     pkProperty = column.getProperty();
@@ -138,7 +138,7 @@ public class TableBuilder extends BuilderSupport implements Builder<TableWrapper
                 columnWrappers.add(column);
             }
         }
-        TableWrapper wrapper = new TableWrapper(this.entity, this.name, this.namespace, this.catalog, this.schema,
+        TableWrapper wrapper = new TableWrapper(this.entity, realName, this.namespace, this.catalog, this.schema,
                 this.prefix, this.order, this.enableLogicDeleted, pk, pkProperty, versionColumn,
                 deleteColumn, columnWrappers);
         // 构建缓存

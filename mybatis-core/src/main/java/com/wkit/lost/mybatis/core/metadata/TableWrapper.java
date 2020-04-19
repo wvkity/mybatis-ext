@@ -255,8 +255,16 @@ public class TableWrapper {
      * @return 字段信息
      */
     public Optional<ColumnWrapper> search(String property) {
-        return Optional.ofNullable(property).flatMap(value -> this.columns.parallelStream()
-                .filter(column -> column.getProperty().equals(property)).findAny());
+        return Optional.ofNullable(property).map(this.PROPERTY_COLUMN_CACHE::get);
+    }
+
+    /**
+     * 根据属性查找对应的字段信息
+     * @param property 属性
+     * @return 字段信息
+     */
+    public ColumnWrapper find(String property) {
+        return search(property).orElse(null);
     }
 
     /**

@@ -153,17 +153,17 @@ public class ColumnBuilder extends BuilderSupport implements Builder<ColumnWrapp
     private boolean createdUserName;
 
     /**
-     * 标识删除操作时间是否自动填充
+     * 标识逻辑删除操作时间是否自动填充
      */
     private boolean deletedDate;
 
     /**
-     * 标识删除操作用户标识是否自动填充
+     * 标识逻辑删除操作用户标识是否自动填充
      */
     private boolean deletedUser;
 
     /**
-     * 标识删除操作用户名是否自动填充
+     * 标识逻辑删除操作用户名是否自动填充
      */
     private boolean deletedUserName;
 

@@ -28,6 +28,7 @@ import com.wkit.lost.mybatis.annotation.extension.Validated;
 import com.wkit.lost.mybatis.annotation.naming.Naming;
 import com.wkit.lost.mybatis.annotation.naming.NamingStrategy;
 import com.wkit.lost.mybatis.config.MyBatisCustomConfiguration;
+import com.wkit.lost.mybatis.core.data.auditing.AuditMatching;
 import com.wkit.lost.mybatis.core.handler.FieldHandler;
 import com.wkit.lost.mybatis.core.metadata.AnnotationMetadata;
 import com.wkit.lost.mybatis.core.metadata.ColumnBuilder;
@@ -323,7 +324,7 @@ public class DefaultEntityParser implements EntityParser {
             builder.identity(true).executing(Executing.AFTER).generator(identity.dialect().getKeyGenerator());
         } else {
             if (Ascii.isNullOrEmpty(identity.sql())) {
-                throw new MapperParserException(StringUtil.format("The @identity annotation on the '{}' " + 
+                throw new MapperParserException(StringUtil.format("The @identity annotation on the '{}' " +
                         "class's attribute '{}' is invalid", builder.entity().getCanonicalName(), builder.property()));
             }
             builder.identity(true).executing(identity.executing()).generator(identity.sql());
@@ -423,7 +424,7 @@ public class DefaultEntityParser implements EntityParser {
      */
     private void parseAutoDiscernPrimaryKey(final TableBuilder table, final ColumnBuilder builder,
                                             final FieldWrapper __, final MyBatisCustomConfiguration configuration) {
-        if (configuration.isAutoDiscernPrimaryKey() && !table.hasPrimaryKey() && !builder.primaryKey()) {
+        if (configuration.isAutoScanPrimaryKey() && !table.hasPrimaryKey() && !builder.primaryKey()) {
             String[] primaryKeys = configuration.getPrimaryKeys();
             boolean include = !ArrayUtil.isEmpty(primaryKeys) && StringUtil.include(primaryKeys, builder.property());
             if (include) {
@@ -443,15 +444,33 @@ public class DefaultEntityParser implements EntityParser {
     protected void parseAuditingAnnotation(final TableBuilder __, final ColumnBuilder builder,
                                            final FieldWrapper field, final MyBatisCustomConfiguration configuration) {
         boolean modifiable = !builder.logicDelete() && builder.updatable();
-        builder.createdDate(field.isAnnotationPresent(CreatedDate.class))
-                .createdUser(field.isAnnotationPresent(CreatedUser.class))
-                .createdUserName(field.isAnnotationPresent(CreatedUserName.class));
-        builder.deletedDate(modifiable && field.isAnnotationPresent(DeletedDate.class))
-                .deletedUser(modifiable && field.isAnnotationPresent(DeletedUser.class))
-                .deletedUserName(modifiable && field.isAnnotationPresent(DeletedUserName.class));
-        builder.lastModifiedDate(modifiable && field.isAnnotationPresent(LastModifiedDate.class))
-                .lastModifiedUser(modifiable && field.isAnnotationPresent(LastModifiedUser.class))
-                .lastModifiedUserName(modifiable && field.isAnnotationPresent(LastModifiedUserName.class));
+        boolean insertable = !builder.logicDelete() && builder.insertable();
+        boolean isDisAudit = configuration.isAutoScanAuditProperty();
+        if (insertable) {
+            // 保存
+            builder.createdDate(AuditParser.matchAuditForTime(field, AuditMatching.INSERTED,
+                    isDisAudit, CreatedDate.class));
+            builder.createdUser(AuditParser.matchAuditForUser(field, AuditMatching.INSERTED,
+                    isDisAudit, CreatedUser.class));
+            builder.createdUserName(AuditParser.matchAuditForUserName(field, AuditMatching.INSERTED,
+                    isDisAudit, CreatedUserName.class));
+        }
+        if (modifiable) {
+            // 更新
+            builder.lastModifiedDate(AuditParser.matchAuditForTime(field, AuditMatching.MODIFIED,
+                    isDisAudit, LastModifiedDate.class));
+            builder.lastModifiedUser(AuditParser.matchAuditForUser(field, AuditMatching.MODIFIED,
+                    isDisAudit, LastModifiedUser.class));
+            builder.lastModifiedUserName(AuditParser.matchAuditForUserName(field, AuditMatching.MODIFIED,
+                    isDisAudit, LastModifiedUserName.class));
+            // 逻辑删除
+            builder.deletedDate(AuditParser.matchAuditForTime(field, AuditMatching.DELETED,
+                    isDisAudit, DeletedDate.class));
+            builder.deletedUser(AuditParser.matchAuditForUser(field, AuditMatching.DELETED,
+                    isDisAudit, DeletedUser.class));
+            builder.deletedUserName(AuditParser.matchAuditForUserName(field, AuditMatching.DELETED,
+                    isDisAudit, DeletedUserName.class));
+        }
     }
 
     /**
