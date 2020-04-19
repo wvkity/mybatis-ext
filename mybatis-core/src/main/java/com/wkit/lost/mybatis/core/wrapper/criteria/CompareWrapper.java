@@ -42,9 +42,9 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
     /**
      * 等于
      * @param p1   属性1
-     * @param v1   值1
+     * @param v1   属性1对应值
      * @param p2   属性2
-     * @param v2   值2
+     * @param v2   属性2对应值
      * @param <V1> 值1类型
      * @param <V2> 值2类型
      * @return {@code this}
@@ -59,11 +59,11 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
     /**
      * 等于
      * @param p1   属性1
-     * @param v1   值1
+     * @param v1   属性1对应值
      * @param p2   属性2
-     * @param v2   值2
+     * @param v2   属性2对应值
      * @param p3   属性3
-     * @param v3   值3
+     * @param v3   属性1对应值
      * @param <V1> 值1类型
      * @param <V2> 值2类型
      * @param <V3> 值3类型
@@ -89,9 +89,9 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
     /**
      * 等于
      * @param p1 属性1
-     * @param v1 值1
+     * @param v1 属性1对应值
      * @param p2 属性2
-     * @param v2 值2
+     * @param v2 属性2对应值
      * @return {@code this}
      */
     default Chain eq(String p1, Object v1, String p2, Object v2) {
@@ -104,11 +104,11 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
     /**
      * 等于
      * @param p1 属性1
-     * @param v1 值1
+     * @param v1 属性1对应值
      * @param p2 属性2
-     * @param v2 值2
+     * @param v2 属性2对应值
      * @param p3 属性3
-     * @param v3 值3
+     * @param v3 属性3对应值
      * @return {@code this}
      */
     default Chain eq(String p1, Object v1, String p2, Object v2, String p3, Object v3) {
@@ -222,9 +222,9 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
     /**
      * 等于
      * @param c1 字段1
-     * @param v1 值1
+     * @param v1 字段1对应值
      * @param c2 字段2
-     * @param v2 值2
+     * @param v2 字段2对应值
      * @return {@code this}
      */
     default Chain directEq(String c1, Object v1, String c2, Object v2) {
@@ -237,11 +237,11 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
     /**
      * 等于
      * @param c1 字段1
-     * @param v1 值1
+     * @param v1 字段1对应值
      * @param c2 字段2
-     * @param v2 值2
+     * @param v2 字段2对应值
      * @param c3 字段3
-     * @param v3 值3
+     * @param v3 字段3对应值
      * @return {@code this}
      */
     default Chain directEq(String c1, Object v1, String c2, Object v2, String c3, Object v3) {
@@ -272,9 +272,9 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * 等于
      * @param tableAlias 表别名
      * @param c1         字段1
-     * @param v1         值1
+     * @param v1         字段1对应值
      * @param c2         字段2
-     * @param v2         值2
+     * @param v2         字段2对应值
      * @return {@code this}
      */
     default Chain directEq(String tableAlias, String c1, Object v1, String c2, Object v2) {
@@ -288,11 +288,11 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * 等于
      * @param tableAlias 表别名
      * @param c1         字段1
-     * @param v1         值1
+     * @param v1         字段1对应值
      * @param c2         字段2
-     * @param v2         值2
+     * @param v2         字段2对应值
      * @param c3         字段3
-     * @param v3         值3
+     * @param v3         字段3对应值
      * @return {@code this}
      */
     default Chain directEq(String tableAlias, String c1, Object v1, String c2, Object v2, String c3, Object v3) {
