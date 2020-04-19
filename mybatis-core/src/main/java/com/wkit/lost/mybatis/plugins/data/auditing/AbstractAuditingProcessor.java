@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -60,24 +61,25 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
 
     /**
      * 获取表映射信息对象
+     * @param __        {@link MappedStatement}
      * @param parameter 参数
      * @return 表对象
      */
     @SuppressWarnings({"unchecked"})
-    protected TableWrapper parse(Object parameter) {
+    protected TableWrapper parse(MappedStatement __, Object parameter) {
         if (parameter instanceof Map) {
             Map<String, Object> map = (Map<String, Object>) parameter;
             // 检查参数是否包含实体对象
             if (map.containsKey(Constants.PARAM_ENTITY)) {
                 return Optional.ofNullable(map.getOrDefault(Constants.PARAM_ENTITY, null))
-                        .map(it -> TableHandler.getTable(it.getClass()))
-                        .orElse(null);
+                        .map(it -> TableHandler.getTable(it.getClass())).orElse(null);
             }
             // 检查参数是否包含条件对象
             if (map.containsKey(Constants.PARAM_CRITERIA)) {
                 return Optional.ofNullable(map.getOrDefault(Constants.PARAM_CRITERIA, null))
                         .map(it -> {
                             MetaObject metadata = MetaObjectUtil.forObject(it);
+                            // 存在指定实体参数
                             if (metadata.hasGetter(Constants.PARAM_ENTITY_CLASS)) {
                                 return Optional.ofNullable(metadata.getValue(Constants.PARAM_ENTITY_CLASS))
                                         .filter(klass -> klass instanceof Class)
@@ -121,33 +123,44 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
     /**
      * 必要时注入实体对象参数(注入空对象)，并返回实体元数据对象
      * @param metadata 元数据对象
-     * @param table    实体-表映射信息对象
      * @param property 属性
      * @param value    值
-     * @return {@link MetaObject}实体元数据对象
      */
-    protected MetaObject injectEntityIfNecessary(MetaObject metadata, TableWrapper table, String property, Object value) {
+    protected void injectCriteriaCondition(MetaObject metadata, String property, Object value) {
+        Object parameter = getCriteriaParameter(metadata);
+        if (parameter instanceof Criteria) {
+            Criteria<?> criteria = (Criteria<?>) parameter;
+            // 注入条件
+            criteria.add(Restrictions.eq(criteria, property, value));
+        }
+    }
+
+    /**
+     * 必要时注入实体对象参数(注入空对象)，并返回实体元数据对象
+     * @param metadata 元数据对象
+     * @param table    实体-表映射信息对象
+     */
+    protected void injectEmptyEntityIfNecessary(MetaObject metadata, TableWrapper table,
+                                                Consumer<MetaObject> consumer) {
         // 检查是否包含实体对象参数
-        if (!metadata.hasGetter(Constants.PARAM_ENTITY)) {
-            if (metadata.hasGetter(Constants.PARAM_CRITERIA)) {
-                Object parameter = metadata.getValue(Constants.PARAM_CRITERIA);
-                if (parameter instanceof Criteria) {
-                    try {
-                        Criteria<?> criteria = (Criteria<?>) parameter;
-                        // 注入条件
-                        criteria.add(Restrictions.eq(criteria, property, value));
-                        // 创建实体参数对象
-                        Object instance = table.newInstance();
-                        metadata.setValue(Constants.PARAM_ENTITY, instance);
-                        return MetaObjectUtil.forObject(instance);
-                    } catch (Exception e) {
-                        throw new MyBatisException("Failed to create an instance based on the `"
-                                + table.getEntity().getName() + "` class", e);
-                    }
+        if (metadata.hasGetter(Constants.PARAM_ENTITY)) {
+            if (consumer != null) {
+                consumer.accept(metadata);
+            }
+        } else {
+            try {
+                // 创建实体参数对象
+                Object instance = table.newInstance();
+                metadata.setValue(Constants.PARAM_ENTITY, instance);
+                MetaObject newMetaObject = MetaObjectUtil.forObject(instance);
+                if (consumer != null) {
+                    consumer.accept(newMetaObject);
                 }
+            } catch (Exception e) {
+                throw new MyBatisException("Failed to create an instance based on the `"
+                        + table.getEntity().getName() + "` class", e);
             }
         }
-        return null;
     }
 
     /**
@@ -224,6 +237,32 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
     }
 
     /**
+     * 获取实体参数
+     * @param metadata 元数据
+     * @return 实体对象
+     */
+    protected Object getEntityParameter(MetaObject metadata) {
+        if (metadata.hasGetter(Constants.PARAM_ENTITY)) {
+            // 实体对象
+            return metadata.getValue(Constants.PARAM_ENTITY);
+        }
+        return null;
+    }
+
+    /**
+     * 获取条件包装参数
+     * @param metadata 元数据
+     * @return 条件包装对象
+     */
+    protected Object getCriteriaParameter(MetaObject metadata) {
+        if (metadata.hasGetter(Constants.PARAM_CRITERIA)) {
+            // 条件包装对象
+            metadata.getValue(Constants.PARAM_CRITERIA);
+        }
+        return null;
+    }
+
+    /**
      * 处理参数
      * @param ms        {@link MappedStatement}
      * @param parameter 方法参数
@@ -240,31 +279,30 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
         if (parameters != null && !parameters.isEmpty()) {
             List<Object> objects = new ArrayList<>(parameters.size());
             for (Object param : parameters) {
-                objects.add(Optional.ofNullable(parse(param))
-                        .map(it -> auditing(ms, configuration, auditable, param, it,
-                                isInsertCommand, isExecLogicDeleting))
+                objects.add(Optional.ofNullable(parse(ms, param)).map(it ->
+                        auditing(ms, configuration, auditable, param, it, isInsertCommand, isExecLogicDeleting))
                         .orElse(param));
             }
             return objects;
-        } else if (parameter instanceof Map
-                && ((Map<?, ?>) parameter).containsKey(Constants.PARAM_BATCH_BEAN_WRAPPER)) {
-            Object wrapperTarget = ((Map<?, ?>) parameter).getOrDefault(Constants.PARAM_BATCH_BEAN_WRAPPER,
-                    null);
+        } else if (parameter instanceof Map &&
+                ((Map<?, ?>) parameter).containsKey(Constants.PARAM_BATCH_BEAN_WRAPPER)) {
+            // 批量保存操作
+            Object wrapperTarget = ((Map<?, ?>) parameter).getOrDefault(Constants.PARAM_BATCH_BEAN_WRAPPER, null);
             if (wrapperTarget != null) {
                 BatchDataBeanWrapper<Object> wrapper = (BatchDataBeanWrapper<Object>) wrapperTarget;
                 Collection<Object> data = wrapper.getData();
                 if (data != null && !data.isEmpty()) {
                     for (Object entityTarget : data) {
-                        Optional.ofNullable(parse(entityTarget)).map(it -> auditing(ms, configuration,
-                                auditable, entityTarget, it, isInsertCommand, isExecLogicDeleting));
+                        Optional.ofNullable(parse(ms, entityTarget)).map(it ->
+                                auditing(ms, configuration, auditable, entityTarget, it,
+                                        isInsertCommand, isExecLogicDeleting));
                     }
                 }
             }
             return parameter;
         } else {
-            return Optional.ofNullable(parse(parameter))
-                    .map(it -> auditing(ms, configuration, auditable, parameter, it,
-                            isInsertCommand, isExecLogicDeleting))
+            return Optional.ofNullable(parse(ms, parameter)).map(it ->
+                    auditing(ms, configuration, auditable, parameter, it, isInsertCommand, isExecLogicDeleting))
                     .orElse(parameter);
         }
     }

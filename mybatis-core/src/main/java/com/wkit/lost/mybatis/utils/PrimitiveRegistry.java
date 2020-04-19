@@ -9,6 +9,7 @@ public final class PrimitiveRegistry {
     }
 
     private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPER_TYPE_CACHE = new IdentityHashMap<>(8);
+    private static final String TRUE = "1";
 
     static {
         PRIMITIVE_WRAPPER_TYPE_CACHE.put(Boolean.class, boolean.class);
@@ -62,7 +63,7 @@ public final class PrimitiveRegistry {
             return value.charAt(0);
         }
         if (javaType == Boolean.class || javaType == boolean.class) {
-            return Boolean.valueOf(value);
+            return TRUE.equals(value) || Boolean.parseBoolean(value);
         }
         return value;
     }

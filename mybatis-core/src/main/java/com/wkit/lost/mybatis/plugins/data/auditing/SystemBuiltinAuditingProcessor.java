@@ -116,10 +116,11 @@ public class SystemBuiltinAuditingProcessor extends AbstractAuditingProcessor {
             Object notDeletedValue = logicDeletionColumn.getLogicDeletedFalseValue();
             // 注入逻辑删除值
             metadata.setValue(Constants.PARAM_LOGIC_DELETED_AUDITING_KEY, deletedValue);
-            // 创建实例
-            MetaObject injectMetadata = injectEntityIfNecessary(metadata, table, deletedProperty, notDeletedValue);
-            // 注入值
-            Optional.ofNullable(injectMetadata).ifPresent(it -> injectEntityPropertyValue(it, deletedProperty, notDeletedValue));
+            // 先注入criteria条件
+            injectCriteriaCondition(metadata, deletedProperty, notDeletedValue);
+            // 注入实体类实例
+            injectEmptyEntityIfNecessary(metadata, table, it ->
+                    injectEntityPropertyValue(it, deletedProperty, notDeletedValue));
         }
     }
 
