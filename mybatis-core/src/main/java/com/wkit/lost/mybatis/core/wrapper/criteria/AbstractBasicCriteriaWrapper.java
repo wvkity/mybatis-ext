@@ -7,6 +7,7 @@ import com.wkit.lost.mybatis.core.constant.Match;
 import com.wkit.lost.mybatis.core.constant.Symbol;
 import com.wkit.lost.mybatis.core.converter.AbstractPlaceholderConverter;
 import com.wkit.lost.mybatis.core.handler.TableHandler;
+import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.core.segment.SegmentManager;
 import com.wkit.lost.mybatis.core.wrapper.basic.QueryManager;
@@ -1246,7 +1247,7 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
      * @param target 目标对象
      * @param source 源对象
      */
-    void copy(AbstractCriteriaWrapper<T> target, AbstractCriteriaWrapper<T> source) {
+    final void copy(AbstractCriteriaWrapper<T> target, AbstractCriteriaWrapper<T> source) {
         if (target != null && source != null) {
             target.builtinAlias = source.builtinAlias;
             target.parameterSequence = source.parameterSequence;
@@ -1258,6 +1259,14 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
                 criteria.queryManager = new QueryManager(criteria);
             }
         }
+    }
+
+    /**
+     * 获取乐观锁字段
+     * @return 字段包装对象
+     */
+    final ColumnWrapper optimisticLockingColumn() {
+        return TableHandler.getTable(this.entityClass).getOptimisticLockingColumn();
     }
     // endregion
 
