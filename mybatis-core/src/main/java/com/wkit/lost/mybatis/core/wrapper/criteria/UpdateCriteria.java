@@ -8,4 +8,31 @@ package com.wkit.lost.mybatis.core.wrapper.criteria;
 public class UpdateCriteria<T> extends AbstractUpdateCriteriaWrapper<T> {
 
     private static final long serialVersionUID = 3553689733240459052L;
+
+    /**
+     * 构造方法
+     * @param entityClass 实体类
+     */
+    public UpdateCriteria(Class<T> entityClass) {
+        this.entityClass = entityClass;
+        this.inits();
+    }
+
+    /**
+     * 构造方法
+     * @param entityClass 实体类
+     * @param alias       表别名
+     */
+    public UpdateCriteria(Class<T> entityClass, String alias) {
+        this.entityClass = entityClass;
+        this.tableAlias = alias;
+        this.inits();
+    }
+
+    @Override
+    protected UpdateCriteria<T> newInstance() {
+        UpdateCriteria<T> instance = new UpdateCriteria<>(this.entityClass, this.tableAlias);
+        copy(instance, this);
+        return instance;
+    }
 }
