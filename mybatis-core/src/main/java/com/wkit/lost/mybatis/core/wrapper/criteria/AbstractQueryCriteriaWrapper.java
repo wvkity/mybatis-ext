@@ -1,13 +1,19 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
 import com.wkit.lost.mybatis.core.constant.Range;
+import com.wkit.lost.mybatis.core.converter.Property;
+import com.wkit.lost.mybatis.core.wrapper.aggreate.Aggregation;
+import com.wkit.lost.mybatis.core.wrapper.basic.AbstractOrderWrapper;
+import com.wkit.lost.mybatis.core.wrapper.basic.DirectOrder;
 import com.wkit.lost.mybatis.core.wrapper.basic.DirectQuery;
+import com.wkit.lost.mybatis.core.wrapper.basic.Order;
 import com.wkit.lost.mybatis.core.wrapper.basic.Query;
 import com.wkit.lost.mybatis.core.wrapper.basic.QueryManager;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -218,6 +224,81 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     public <E> ForeignCriteria<E> searchForeign(String alias, Class<E> entity) {
         return null;
     }
+    // endregion
+
+    // region order by
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> asc(List<String> properties) {
+        return add(Order.asc(this, properties));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> directAscWithAlias(String alias, List<String> columns) {
+        return add(DirectOrder.ascWithAlias(alias, columns));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> asc(Aggregation... aggregations) {
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> aggregateAsc(List<String> aliases) {
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <V> AbstractQueryCriteriaWrapper<T> foreignAsc(String foreignAlias, Property<T, V>... properties) {
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> foreignAsc(String foreignAlias, List<String> properties) {
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> desc(List<String> properties) {
+        return add(Order.desc(this, properties));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> directDescWithAlias(String alias, List<String> columns) {
+        return add(DirectOrder.descWithAlias(alias, columns));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> desc(Aggregation... aggregations) {
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> aggregateDesc(List<String> aliases) {
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <V> AbstractQueryCriteriaWrapper<T> foreignDesc(String foreignAlias, Property<T, V>... properties) {
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> foreignDesc(String foreignAlias, List<String> properties) {
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> addOrder(List<AbstractOrderWrapper<?, ?>> orders) {
+        this.segmentManager.addOrder(orders);
+        return this;
+    }
+
+    // endregion
+
+    // region group by
     // endregion
 
     // region get/set methods

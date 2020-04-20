@@ -6,7 +6,8 @@ package com.wkit.lost.mybatis.core.wrapper.criteria;
  * @param <Chain> 子类
  * @author wvkity
  */
-public interface QueryWrapper<T, Chain extends QueryWrapper<T, Chain>> extends Query<T, Chain> {
+public interface QueryWrapper<T, Chain extends QueryWrapper<T, Chain>> extends Query<T, Chain>,
+        OrderWrapper<T, Chain> {
 
     /**
      * 搜索{@link ForeignCriteria}对象

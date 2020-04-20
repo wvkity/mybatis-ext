@@ -1,6 +1,9 @@
 package com.wkit.lost.mybatis.core.segment;
 
 import com.wkit.lost.mybatis.core.wrapper.basic.AbstractOrderWrapper;
+import com.wkit.lost.mybatis.utils.Constants;
+
+import java.util.stream.Collectors;
 
 /**
  * 排序片段容器
@@ -12,6 +15,10 @@ public class OrderSegmentWrapper extends AbstractSegment<AbstractOrderWrapper<?,
 
     @Override
     public String getSegment() {
+        if (isNotEmpty()) {
+            return " ORDER BY " + this.segments.stream().map(Segment::getSegment)
+                    .collect(Collectors.joining(Constants.COMMA_SPACE));
+        }
         return "";
     }
 

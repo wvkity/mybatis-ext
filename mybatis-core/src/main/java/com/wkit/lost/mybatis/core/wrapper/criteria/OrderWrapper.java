@@ -6,7 +6,7 @@ import com.wkit.lost.mybatis.core.wrapper.aggreate.Aggregation;
 import com.wkit.lost.mybatis.core.wrapper.basic.AbstractOrderWrapper;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * 排序
@@ -43,7 +43,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param properties 属性集合
      * @return 当前对象
      */
-    Chain asc(Collection<String> properties);
+    Chain asc(List<String> properties);
 
     /**
      * ASC排序
@@ -59,7 +59,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param columns 字段集合
      * @return 当前对象
      */
-    default Chain directAsc(Collection<String> columns) {
+    default Chain directAsc(List<String> columns) {
         return directAscWithAlias(null, columns);
     }
 
@@ -79,7 +79,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param columns 字段集合
      * @return 当前对象
      */
-    Chain directAscWithAlias(String alias, Collection<String> columns);
+    Chain directAscWithAlias(String alias, List<String> columns);
 
     /**
      * ASC排序
@@ -102,7 +102,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param aliases 聚合函数别名集合
      * @return 当前对象
      */
-    Chain aggregateAsc(Collection<String> aliases);
+    Chain aggregateAsc(List<String> aliases);
 
     /**
      * ASC排序
@@ -130,7 +130,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param properties   属性集合
      * @return 当前对象
      */
-    Chain foreignAsc(String foreignAlias, Collection<String> properties);
+    Chain foreignAsc(String foreignAlias, List<String> properties);
     // endregion
 
     // region DESC
@@ -160,7 +160,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param properties 属性集合
      * @return 当前对象
      */
-    Chain desc(Collection<String> properties);
+    Chain desc(List<String> properties);
 
     /**
      * DESC排序
@@ -176,7 +176,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param columns 字段集合
      * @return 当前对象
      */
-    default Chain directDesc(Collection<String> columns) {
+    default Chain directDesc(List<String> columns) {
         return directDescWithAlias(null, columns);
     }
 
@@ -196,7 +196,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param columns 字段集合
      * @return 当前对象
      */
-    Chain directDescWithAlias(String alias, Collection<String> columns);
+    Chain directDescWithAlias(String alias, List<String> columns);
 
     /**
      * DESC排序
@@ -219,7 +219,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param aliases 聚合函数别名集合
      * @return 当前对象
      */
-    Chain aggregateDesc(Collection<String> aliases);
+    Chain aggregateDesc(List<String> aliases);
 
     /**
      * DESC排序
@@ -247,7 +247,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param properties   属性集合
      * @return 当前对象
      */
-    Chain foreignDesc(String foreignAlias, Collection<String> properties);
+    Chain foreignDesc(String foreignAlias, List<String> properties);
     // endregion
 
     /**
@@ -264,5 +264,5 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param orders 排序对象集合
      * @return 当前对象
      */
-    Chain addOrder(Collection<AbstractOrderWrapper<?, ?>> orders);
+    Chain addOrder(List<AbstractOrderWrapper<?, ?>> orders);
 }

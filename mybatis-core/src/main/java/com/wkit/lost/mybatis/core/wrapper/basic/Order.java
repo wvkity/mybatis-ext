@@ -11,6 +11,7 @@ import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -37,8 +38,20 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
         this.criteria = criteria;
         this.ascending = ascending;
         if (CollectionUtil.hasElement(columns)) {
-            this.columns.addAll(columns.stream().filter(Objects::nonNull).collect(Collectors.toList()));
+            this.columns = columns.stream().filter(Objects::nonNull)
+                    .collect(Collectors.toCollection(LinkedHashSet::new));
         }
+    }
+
+    @Override
+    public String getSegment() {
+        if (notEmpty()) {
+            String orderMode = ascending ? " ASC" : " DESC";
+            String realAlias = this.criteria != null && criteria.isEnableAlias() ? (criteria.as() + ".") : "";
+            return this.columns.stream().map(it -> realAlias + it.getColumn() + orderMode)
+                    .collect(Collectors.joining(", "));
+        }
+        return "";
     }
 
     /**
@@ -85,7 +98,6 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    @SuppressWarnings({"unchecked"})
     public static <T, E> Order<T> asc(String alias, AbstractQueryCriteriaWrapper<E> master,
                                       String... properties) {
         return asc(master.searchForeign(alias), ArrayUtil.toList(properties));
@@ -102,7 +114,6 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @return 排序对象
      */
     @SafeVarargs
-    @SuppressWarnings({"unchecked"})
     public static <T, E, V> Order<E> asc(String alias,
                                          AbstractQueryCriteriaWrapper<T> master,
                                          Property<E, V>... properties) {
@@ -118,7 +129,6 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    @SuppressWarnings({"unchecked"})
     public static <T, E> Order<T> asc(String alias,
                                       AbstractQueryCriteriaWrapper<E> master,
                                       List<String> properties) {
@@ -171,7 +181,6 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param <V>        值类型
      * @return 排序对象
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
     @SafeVarargs
     public static <T, E, V> Order<E> desc(String alias,
                                           AbstractQueryCriteriaWrapper<E> master,
@@ -188,7 +197,6 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    @SuppressWarnings({"unchecked"})
     public static <T, E> Order<T> desc(String alias, AbstractQueryCriteriaWrapper<E> master,
                                        String... properties) {
         return desc(master.searchForeign(alias), properties);
@@ -202,20 +210,9 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param <T>        泛型类型
      * @return 排序对象
      */
-    @SuppressWarnings({"unchecked"})
     public static <T, E> Order<T> desc(String alias, AbstractQueryCriteriaWrapper<E> master,
                                        List<String> properties) {
         return desc(master.searchForeign(alias), properties);
     }
 
-    @Override
-    public String getSegment() {
-        if (notEmpty()) {
-            String orderMode = ascending ? " ASC" : " DESC";
-            String realAlias = this.criteria != null && criteria.isEnableAlias() ? (criteria.as() + ".") : "";
-            return this.columns.stream().map(it -> realAlias + it.getColumn() + orderMode)
-                    .collect(Collectors.joining(", "));
-        }
-        return "";
-    }
 }
