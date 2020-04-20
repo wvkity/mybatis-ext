@@ -12,6 +12,7 @@ import com.wkit.lost.mybatis.utils.CollectionUtil;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -19,7 +20,6 @@ import java.util.stream.Collectors;
  * 分组(字段包装对象)
  * @param <T> 泛型类型
  * @author wvkity
- * @see ColumnWrapper
  */
 public class Group<T> extends AbstractGroupWrapper<T, ColumnWrapper> {
 
@@ -36,9 +36,18 @@ public class Group<T> extends AbstractGroupWrapper<T, ColumnWrapper> {
         }
         this.criteria = criteria;
         if (CollectionUtil.hasElement(columns)) {
-            this.columns = new LinkedHashSet<>(this.columns);
-            this.columns.addAll(columns.stream().filter(Objects::nonNull).collect(Collectors.toList()));
+            this.columns = columns.stream().filter(Objects::nonNull)
+                    .collect(Collectors.toCollection(LinkedHashSet::new));
         }
+    }
+
+    @Override
+    public String getSegment() {
+        if (notEmpty()) {
+            String alias = criteria.isEnableAlias() ? (criteria.as() + ".") : "";
+            return columns.stream().map(column -> alias + column.getColumn()).collect(Collectors.joining(", "));
+        }
+        return "";
     }
 
     /**
@@ -72,7 +81,7 @@ public class Group<T> extends AbstractGroupWrapper<T, ColumnWrapper> {
      * @param <T>        泛型类型
      * @return 分组对象
      */
-    public static <T> Group<T> group(Criteria<T> criteria, Collection<String> properties) {
+    public static <T> Group<T> group(Criteria<T> criteria, List<String> properties) {
         return new Group<>(criteria, CriteriaUtil.propertyToColumn(criteria, distinct(properties)));
     }
 
@@ -104,7 +113,7 @@ public class Group<T> extends AbstractGroupWrapper<T, ColumnWrapper> {
     public static <T, E, V> Group<E> group(String alias, AbstractQueryCriteriaWrapper<T> master,
                                            Property<E, V>... properties) {
         ForeignCriteria<E> criteria = master.searchForeign(alias);
-        return new Group<E>(criteria, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
+        return new Group<>(criteria, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }
 
     /**
@@ -116,19 +125,10 @@ public class Group<T> extends AbstractGroupWrapper<T, ColumnWrapper> {
      * @param <E>        泛型类型
      * @return 分组对象
      */
-    @SuppressWarnings({"unchecked"})
     public static <T, E> Group<E> group(String alias, AbstractQueryCriteriaWrapper<T> master,
-                                        Collection<String> properties) {
-        ForeignCriteria<?> criteria = master.searchForeign(alias);
-        return new Group<E>(criteria, CriteriaUtil.propertyToColumn(criteria, distinct(properties)));
+                                        List<String> properties) {
+        ForeignCriteria<E> criteria = master.searchForeign(alias);
+        return new Group<>(criteria, CriteriaUtil.propertyToColumn(criteria, distinct(properties)));
     }
-
-    @Override
-    public String getSegment() {
-        if (notEmpty()) {
-            String alias = criteria.isEnableAlias() ? (criteria.as() + ".") : "";
-            return columns.stream().map(column -> alias + column.getColumn()).collect(Collectors.joining(", "));
-        }
-        return "";
-    }
+    
 }

@@ -5,7 +5,7 @@ import com.wkit.lost.mybatis.core.converter.PropertyConverter;
 import com.wkit.lost.mybatis.core.wrapper.basic.AbstractGroupWrapper;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * 分组
@@ -41,7 +41,7 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @param properties 属性集合
      * @return 当前对象
      */
-    Chain group(Collection<String> properties);
+    Chain group(List<String> properties);
 
     /**
      * 分组
@@ -57,7 +57,7 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @param columns 字段集合
      * @return 当前对象
      */
-    default Chain directGroup(Collection<String> columns) {
+    default Chain directGroup(List<String> columns) {
         return directGroupWithAlias(null, columns);
     }
 
@@ -77,7 +77,7 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @param columns 字段集合
      * @return 当前对象
      */
-    Chain directGroupWithAlias(String alias, Collection<String> columns);
+    Chain directGroupWithAlias(String alias, List<String> columns);
 
     /**
      * 分组
@@ -105,7 +105,7 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @param properties   属性集合
      * @return 当前对象
      */
-    Chain foreignGroup(String foreignAlias, Collection<String> properties);
+    Chain foreignGroup(String foreignAlias, List<String> properties);
 
     /**
      * 添加分组
@@ -121,5 +121,5 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @param groups 分组对象集合
      * @return 当前对象
      */
-    Chain addGroup(Collection<AbstractGroupWrapper<?, ?>> groups);
+    Chain addGroup(List<AbstractGroupWrapper<?, ?>> groups);
 }

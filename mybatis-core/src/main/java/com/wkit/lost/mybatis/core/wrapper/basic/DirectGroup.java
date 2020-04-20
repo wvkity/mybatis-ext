@@ -1,9 +1,11 @@
 package com.wkit.lost.mybatis.core.wrapper.basic;
 
+import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.StringUtil;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -18,7 +20,17 @@ public class DirectGroup<T> extends AbstractGroupWrapper<T, String> {
     /**
      * 表别名
      */
-    private final String alias;
+    private String alias;
+
+    /**
+     * 构造方法
+     * @param criteria 条件包装对象
+     * @param columns  字段集合
+     */
+    private DirectGroup(Criteria<T> criteria, Collection<String> columns) {
+        this.criteria = criteria;
+        this.columns = distinct(columns);
+    }
 
     /**
      * 构造方法
@@ -30,14 +42,14 @@ public class DirectGroup<T> extends AbstractGroupWrapper<T, String> {
         this.columns = distinct(columns);
     }
 
-    /**
-     * 分组
-     * @param columns 字段数组
-     * @param <T>     泛型类型
-     * @return 分组对象
-     */
-    public static <T> DirectGroup<T> group(String... columns) {
-        return groupWithAlias(null, ArrayUtil.toList(columns));
+    @Override
+    public String getSegment() {
+        if (notEmpty()) {
+            String realAlias = StringUtil.hasText(this.alias) ? (this.alias + ".") :
+                    (this.criteria != null && criteria.isEnableAlias() ? (criteria.as() + ".") : "");
+            return columns.stream().map(it -> realAlias + it).collect(Collectors.joining(", "));
+        }
+        return "";
     }
 
     /**
@@ -46,8 +58,40 @@ public class DirectGroup<T> extends AbstractGroupWrapper<T, String> {
      * @param <T>     泛型类型
      * @return 分组对象
      */
-    public static <T> DirectGroup<T> group(Collection<String> columns) {
-        return groupWithAlias(null, columns);
+    public static <T> DirectGroup<T> group(String... columns) {
+        return group(null, columns);
+    }
+
+    /**
+     * 分组
+     * @param criteria 条件包装对象
+     * @param columns  字段数组
+     * @param <T>      泛型类型
+     * @return 分组对象
+     */
+    public static <T> DirectGroup<T> group(Criteria<T> criteria, String... columns) {
+        return group(criteria, ArrayUtil.toList(columns));
+    }
+
+    /**
+     * 分组
+     * @param columns 字段数组
+     * @param <T>     泛型类型
+     * @return 分组对象
+     */
+    public static <T> DirectGroup<T> group(List<String> columns) {
+        return group(null, columns);
+    }
+
+    /**
+     * 分组
+     * @param criteria 条件包装对象
+     * @param columns  字段数组
+     * @param <T>      泛型类型
+     * @return 分组对象
+     */
+    public static <T> DirectGroup<T> group(Criteria<T> criteria, List<String> columns) {
+        return new DirectGroup<>(criteria, columns);
     }
 
     /**
@@ -72,12 +116,4 @@ public class DirectGroup<T> extends AbstractGroupWrapper<T, String> {
         return new DirectGroup<>(alias, columns);
     }
 
-    @Override
-    public String getSegment() {
-        if (notEmpty()) {
-            String realAlias = StringUtil.hasText(this.alias) ? (this.alias + ".") : "";
-            return columns.stream().map(it -> realAlias + it).collect(Collectors.joining(", "));
-        }
-        return "";
-    }
 }

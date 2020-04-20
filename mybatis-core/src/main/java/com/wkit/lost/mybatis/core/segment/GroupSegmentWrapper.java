@@ -1,6 +1,9 @@
 package com.wkit.lost.mybatis.core.segment;
 
 import com.wkit.lost.mybatis.core.wrapper.basic.AbstractGroupWrapper;
+import com.wkit.lost.mybatis.utils.Constants;
+
+import java.util.stream.Collectors;
 
 /**
  * 分组片段容器
@@ -12,6 +15,10 @@ public class GroupSegmentWrapper extends AbstractSegment<AbstractGroupWrapper<?,
 
     @Override
     public String getSegment() {
+        if (isNotEmpty()) {
+            return " GROUP BY " + this.segments.stream().map(Segment::getSegment)
+                    .collect(Collectors.joining(Constants.COMMA_SPACE));
+        }
         return "";
     }
 }

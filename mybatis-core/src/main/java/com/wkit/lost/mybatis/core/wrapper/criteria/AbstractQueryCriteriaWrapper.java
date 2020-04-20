@@ -3,9 +3,12 @@ package com.wkit.lost.mybatis.core.wrapper.criteria;
 import com.wkit.lost.mybatis.core.constant.Range;
 import com.wkit.lost.mybatis.core.converter.Property;
 import com.wkit.lost.mybatis.core.wrapper.aggreate.Aggregation;
+import com.wkit.lost.mybatis.core.wrapper.basic.AbstractGroupWrapper;
 import com.wkit.lost.mybatis.core.wrapper.basic.AbstractOrderWrapper;
+import com.wkit.lost.mybatis.core.wrapper.basic.DirectGroup;
 import com.wkit.lost.mybatis.core.wrapper.basic.DirectOrder;
 import com.wkit.lost.mybatis.core.wrapper.basic.DirectQuery;
+import com.wkit.lost.mybatis.core.wrapper.basic.Group;
 import com.wkit.lost.mybatis.core.wrapper.basic.Order;
 import com.wkit.lost.mybatis.core.wrapper.basic.Query;
 import com.wkit.lost.mybatis.core.wrapper.basic.QueryManager;
@@ -299,6 +302,34 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     // endregion
 
     // region group by
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> group(List<String> properties) {
+        return add(Group.group(this, properties));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> directGroupWithAlias(String alias, List<String> columns) {
+        return add(DirectGroup.groupWithAlias(alias, columns));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <V> AbstractQueryCriteriaWrapper<T> foreignGroup(String foreignAlias, Property<T, V>... properties) {
+        return null;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> foreignGroup(String foreignAlias, List<String> properties) {
+        return null;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> addGroup(List<AbstractGroupWrapper<?, ?>> groups) {
+        this.segmentManager.addGroup(groups);
+        return this;
+    }
+    
     // endregion
 
     // region get/set methods
