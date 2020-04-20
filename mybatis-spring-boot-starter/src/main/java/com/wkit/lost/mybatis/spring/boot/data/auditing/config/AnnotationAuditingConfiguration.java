@@ -39,12 +39,7 @@ public class AnnotationAuditingConfiguration implements AuditingConfiguration {
     public boolean enableDeleted() {
         return attributes.getBoolean("deleted");
     }
-
-    @Override
-    public boolean enableAutomatic() {
-        return attributes.getBoolean("automatic");
-    }
-
+    
     @Override
     public String getAuditorAwareRef() {
         return attributes.getString("auditorAwareRef");
