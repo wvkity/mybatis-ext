@@ -45,12 +45,6 @@ public @interface EnableMetadataAuditing {
     boolean deleted() default true;
 
     /**
-     * 开启自动审计识别
-     * @return true: 开启 false: 关闭
-     */
-    boolean automatic() default false;
-
-    /**
      * {@link com.wkit.lost.mybatis.core.data.auditing.AuditorAware}实例名
      * @return {@link com.wkit.lost.mybatis.core.data.auditing.AuditorAware}实例名
      */

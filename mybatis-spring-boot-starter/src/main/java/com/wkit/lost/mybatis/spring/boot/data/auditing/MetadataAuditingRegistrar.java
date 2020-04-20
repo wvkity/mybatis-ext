@@ -26,7 +26,6 @@ class MetadataAuditingRegistrar extends BeanDefinitionRegistrarSupport<AuditingC
     private static final String INSERTED = "inserted";
     private static final String MODIFIED = "modified";
     private static final String DELETED = "deleted";
-    private static final String AUTOMATIC = "automatic";
     private static final String HANDLER_BEAN_NAME = "metadataAuditingHandler";
     private static final Class<?> REGISTER_ROOT_CLASS = MetadataAuditingHandler.class;
 
@@ -61,7 +60,6 @@ class MetadataAuditingRegistrar extends BeanDefinitionRegistrarSupport<AuditingC
         builder.addPropertyValue(INSERTED, configuration.enableInserted());
         builder.addPropertyValue(MODIFIED, configuration.enableModified());
         builder.addPropertyValue(DELETED, configuration.enableDeleted());
-        builder.addPropertyValue(AUTOMATIC, configuration.enableAutomatic());
         return builder;
     }
 

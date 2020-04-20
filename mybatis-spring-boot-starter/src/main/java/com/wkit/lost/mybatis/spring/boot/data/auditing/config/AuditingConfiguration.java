@@ -1,5 +1,9 @@
 package com.wkit.lost.mybatis.spring.boot.data.auditing.config;
 
+/**
+ * 审计注解配置
+ * @author wvkity
+ */
 public interface AuditingConfiguration {
 
     /**
@@ -19,12 +23,6 @@ public interface AuditingConfiguration {
      * @return true: 是 false: 否
      */
     boolean enableDeleted();
-
-    /**
-     * 是否开启自动识别
-     * @return true: 是 false: 否
-     */
-    boolean enableAutomatic();
 
     /**
      * {@link com.wkit.lost.mybatis.core.data.auditing.AuditorAware}实例名

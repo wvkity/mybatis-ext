@@ -7,11 +7,6 @@ package com.wkit.lost.mybatis.core.data.auditing;
 public enum AuditMatching {
 
     /**
-     * 开启系统自动识别
-     */
-    AUTO,
-
-    /**
      * 开启保存操作自动审计
      */
     INSERTED,
