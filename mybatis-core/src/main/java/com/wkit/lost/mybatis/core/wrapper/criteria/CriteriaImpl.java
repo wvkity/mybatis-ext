@@ -91,4 +91,14 @@ public class CriteriaImpl<T> extends AbstractQueryCriteriaWrapper<T> implements 
         copy(instance, this);
         return instance;
     }
+
+    /**
+     * 创建条件包装对象
+     * @param entity 实体类
+     * @param <T>    泛型类型
+     * @return 条件包装对象
+     */
+    public static <T> CriteriaImpl<T> from(final Class<T> entity) {
+        return new CriteriaImpl<>(entity);
+    }
 }

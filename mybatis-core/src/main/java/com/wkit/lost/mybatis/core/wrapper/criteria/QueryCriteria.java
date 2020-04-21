@@ -35,4 +35,14 @@ public class QueryCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
         copy(instance, this);
         return instance;
     }
+
+    /**
+     * 创建条件包装对象
+     * @param entity 实体类
+     * @param <T>    泛型类型
+     * @return 条件包装对象
+     */
+    public static <T> QueryCriteria<T> from(final Class<T> entity) {
+        return new QueryCriteria<>(entity);
+    }
 }
