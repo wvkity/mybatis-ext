@@ -60,7 +60,10 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
      * @param property      属性
      * @param otherCriteria 其他条件包装对象
      * @param otherProperty 其他属性
+     * @param <T>           实体类型
+     * @param <V1>          属性1值类型
      * @param <E>           实体类型
+     * @param <V2>          属性2值类型
      * @return 条件对象
      */
     public static <T, V1, E, V2> NormalEqual<T> create(Criteria<T> criteria, Property<T, V1> property,
@@ -75,7 +78,10 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
      * @param otherCriteria 其他条件包装对象
      * @param otherProperty 其他属性
      * @param logic         逻辑符号
+     * @param <T>           实体类型
+     * @param <V1>          属性1值类型
      * @param <E>           实体类型
+     * @param <V2>          属性2值类型
      * @return 条件对象
      */
     public static <T, V1, E, V2> NormalEqual<T> create(Criteria<T> criteria, Property<T, V1> property,
@@ -94,6 +100,7 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
      * @param property      属性
      * @param otherCriteria 其他条件包装对象
      * @param otherProperty 其他属性
+     * @param <T>           实体类型
      * @param <E>           实体类型
      * @return 条件对象
      */
@@ -109,6 +116,7 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
      * @param otherCriteria 其他条件包装对象
      * @param otherProperty 其他属性
      * @param logic         逻辑符号
+     * @param <T>           实体类型
      * @param <E>           实体类型
      * @return 条件对象
      */
@@ -127,6 +135,7 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
      * @param column        字段包装对象
      * @param otherCriteria 其他条件包装对象
      * @param otherColumn   其他字段包装对象
+     * @param <T>           实体类型
      * @param <E>           实体类型
      * @return 条件对象
      */
@@ -142,6 +151,7 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
      * @param otherCriteria 其他条件包装对象
      * @param otherColumn   其他字段包装对象
      * @param logic         逻辑符号
+     * @param <T>           实体类型
      * @param <E>           实体类型
      * @return 条件对象
      */

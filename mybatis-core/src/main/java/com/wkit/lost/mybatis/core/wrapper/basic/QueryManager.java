@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 /**
@@ -25,11 +26,6 @@ public class QueryManager implements Segment {
 
     private static final long serialVersionUID = -3275773488142492015L;
 
-    private static final int LIST_CAPACITY = 10;
-    private static final int MAP_CAPACITY = 16;
-    private static final int LIST_CRITICAL = 6;
-    private static final int MAP_CRITICAL = 14;
-
     /**
      * 条件对象
      */
@@ -38,17 +34,17 @@ public class QueryManager implements Segment {
     /**
      * 查询列容器
      */
-    private List<AbstractQueryWrapper<?, ?>> wrappers;
+    private final List<AbstractQueryWrapper<?, ?>> wrappers = new CopyOnWriteArrayList<>();
 
     /**
      * 排除查询属性
      */
-    private Set<String> excludeProperties;
+    private final Set<String> excludeProperties = new HashSet<>(8);
 
     /**
      * 排除查询列
      */
-    private Set<String> excludeColumns;
+    private final Set<String> excludeColumns = new HashSet<>(8);
 
     /**
      * 标记SQL片段已生成
@@ -92,9 +88,6 @@ public class QueryManager implements Segment {
             List<? extends AbstractQueryWrapper<?, ?>> its = wrappers.stream().filter(Objects::nonNull)
                     .collect(Collectors.toList());
             if (!its.isEmpty()) {
-                if (this.wrappers == null) {
-                    this.wrappers = new ArrayList<>(calCapacity(its.size(), LIST_CAPACITY, LIST_CRITICAL));
-                }
                 this.wrappers.addAll(its);
                 this.cached = false;
             }
@@ -119,9 +112,6 @@ public class QueryManager implements Segment {
     public QueryManager excludes(Collection<String> properties) {
         Set<String> its = distinct(properties);
         if (!its.isEmpty()) {
-            if (this.excludeProperties == null) {
-                this.excludeProperties = new HashSet<>(calCapacity(its.size(), MAP_CAPACITY, MAP_CRITICAL));
-            }
             this.excludeProperties.addAll(its);
             this.cached = false;
         }
@@ -145,9 +135,6 @@ public class QueryManager implements Segment {
     public QueryManager directExcludes(Collection<String> columns) {
         Set<String> its = distinct(columns);
         if (!its.isEmpty()) {
-            if (this.excludeColumns == null) {
-                this.excludeColumns = new HashSet<>(calCapacity(its.size(), MAP_CAPACITY, MAP_CRITICAL));
-            }
             this.excludeColumns.addAll(its);
             this.cached = false;
         }
@@ -311,22 +298,4 @@ public class QueryManager implements Segment {
                 values.stream().filter(StringUtil::hasText).collect(Collectors.toSet());
     }
 
-    /**
-     * 计算集合容器初始化大小
-     * @param size            目标大小
-     * @param defaultCapacity 默认大小
-     * @param critical        临界值
-     * @return 容器大小
-     */
-    private int calCapacity(int size, int defaultCapacity, int critical) {
-        if (size < defaultCapacity) {
-            int rem = size % defaultCapacity;
-            return rem > critical ? (defaultCapacity * 3 / 2) : defaultCapacity;
-        } else {
-            int multiple = size / defaultCapacity;
-            int rem = size % defaultCapacity;
-            return multiple * defaultCapacity + (rem > critical ? (defaultCapacity * 3 / 2)
-                    : defaultCapacity);
-        }
-    }
 }

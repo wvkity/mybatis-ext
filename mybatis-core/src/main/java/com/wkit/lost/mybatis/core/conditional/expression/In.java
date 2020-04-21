@@ -65,7 +65,7 @@ public class In<T> extends AbstractRangeExpression<T> {
      * @param property 属性
      * @param values   值
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> In<T> create(Criteria<T> criteria, Property<T, V> property, Collection<Object> values) {
@@ -79,7 +79,7 @@ public class In<T> extends AbstractRangeExpression<T> {
      * @param values   值
      * @param logic    逻辑符号
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> In<T> create(Criteria<T> criteria, Property<T, V> property,

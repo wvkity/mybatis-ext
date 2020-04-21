@@ -94,6 +94,7 @@ public class SubQuery<T> extends ColumnExpressionWrapper<T> {
      * @param sc       子查询条件包装对象
      * @param logic    逻辑符号
      * @param <T>      实体类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> SubQuery<T> create(Criteria<T> criteria, Property<T, V> property,
@@ -121,7 +122,7 @@ public class SubQuery<T> extends ColumnExpressionWrapper<T> {
      * @param sc       子查询条件包装对象
      * @param symbol   条件符号
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> SubQuery<T> create(Criteria<T> criteria, Property<T, V> property,
@@ -150,7 +151,7 @@ public class SubQuery<T> extends ColumnExpressionWrapper<T> {
      * @param symbol   条件符号
      * @param logic    逻辑符号
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> SubQuery<T> create(Criteria<T> criteria, Property<T, V> property, SubCriteria<?> sc,

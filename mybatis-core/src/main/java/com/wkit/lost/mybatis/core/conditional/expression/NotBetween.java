@@ -39,7 +39,7 @@ public class NotBetween<T> extends AbstractBetweenExpression<T> {
      * @param begin    开始值
      * @param end      结束值
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> NotBetween<T> create(Criteria<T> criteria, Property<T, V> property, V begin, V end) {
@@ -54,7 +54,7 @@ public class NotBetween<T> extends AbstractBetweenExpression<T> {
      * @param end      结束值
      * @param logic    逻辑符号
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> NotBetween<T> create(Criteria<T> criteria, Property<T, V> property,

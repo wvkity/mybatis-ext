@@ -95,7 +95,7 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * @param criteria 条件对象
          * @param property 属性Lambda对象
          * @param <T>      实体类型
-         * @param <V>      值类型
+         * @param <V>      属性值类型
          * @return 查询列对象
          */
         public static <T, V> Query<T> query(Criteria<T> criteria, Property<T, V> property) {
@@ -119,7 +119,7 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * @param property 属性Lambda对象
          * @param alias    字段别名
          * @param <T>      实体类型
-         * @param <V>      值类型
+         * @param <V>      属性值类型
          * @return 查询列对象
          */
         public static <T, V> Query<T> query(Criteria<T> criteria, Property<T, V> property, String alias) {
@@ -174,7 +174,7 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * @param criteria   条件对象
          * @param properties 属性数组
          * @param <T>        实体类型
-         * @param <V>        值类型
+         * @param <V>        属性值类型
          * @return 查询对象集合
          */
         @SafeVarargs

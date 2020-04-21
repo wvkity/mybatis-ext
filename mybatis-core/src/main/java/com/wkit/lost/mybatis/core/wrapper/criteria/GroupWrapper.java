@@ -19,7 +19,7 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
     /**
      * 分组
      * @param properties 属性数组
-     * @param <V>        返回值类型
+     * @param <V>        属性值类型
      * @return 当前对象
      */
     @SuppressWarnings({"unchecked"})
@@ -83,7 +83,7 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * 分组
      * @param foreignAlias 连表对象别名
      * @param properties   属性数组
-     * @param <V>          返回值类型
+     * @param <V>          属性值类型
      * @return 当前对象
      */
     @SuppressWarnings({"unchecked"})

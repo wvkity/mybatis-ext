@@ -181,7 +181,7 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
      * @param value    值
      * @param template 模板
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
@@ -197,7 +197,7 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
      * @param template 模板
      * @param logic    逻辑符号
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
@@ -278,7 +278,7 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
      * @param values   值
      * @param template 模板
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
@@ -294,7 +294,7 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
      * @param template 模板
      * @param logic    逻辑符号
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
@@ -376,7 +376,7 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
      * @param values   值
      * @param template 模板
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
@@ -392,7 +392,7 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
      * @param template 模板
      * @param logic    逻辑符号
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,

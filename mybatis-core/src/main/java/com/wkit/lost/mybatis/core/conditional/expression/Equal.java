@@ -32,6 +32,7 @@ public class Equal<T> extends Simple<T> {
      * @param property 属性
      * @param value    值
      * @param <T>      实体类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Equal<T> create(Criteria<T> criteria, Property<T, V> property, Object value) {
@@ -45,6 +46,7 @@ public class Equal<T> extends Simple<T> {
      * @param value    值
      * @param logic    逻辑符号
      * @param <T>      实体类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Equal<T> create(Criteria<T> criteria, Property<T, V> property, Object value, Logic logic) {

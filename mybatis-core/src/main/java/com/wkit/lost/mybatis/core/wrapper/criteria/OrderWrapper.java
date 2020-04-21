@@ -22,6 +22,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
     /**
      * ASC排序
      * @param properties 属性数组
+     * @param <V>        属性值类型
      * @return 当前对象
      */
     @SuppressWarnings({"unchecked"})
@@ -108,7 +109,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * ASC排序
      * @param foreignAlias 连表对象别名
      * @param properties   属性数组
-     * @param <V>          返回值类型
+     * @param <V>          属性值类型
      * @return 当前对象
      */
     @SuppressWarnings({"unchecked"})
@@ -138,7 +139,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
     /**
      * DESC排序
      * @param properties 属性数组
-     * @param <V>        返回值类型
+     * @param <V>        属性值类型
      * @return 当前对象
      */
     @SuppressWarnings({"unchecked"})
@@ -225,7 +226,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * DESC排序
      * @param foreignAlias 连表对象别名
      * @param properties   属性数组
-     * @param <V>          返回值类型
+     * @param <V>          属性值类型
      * @return 当前对象
      */
     @SuppressWarnings({"unchecked"})

@@ -66,7 +66,7 @@ public class Group<T> extends AbstractGroupWrapper<T, ColumnWrapper> {
      * @param criteria   条件对象
      * @param properties 属性数组
      * @param <T>        泛型类型
-     * @param <V>        值类型
+     * @param <V>        属性值类型
      * @return 分组对象
      */
     @SafeVarargs
@@ -106,7 +106,7 @@ public class Group<T> extends AbstractGroupWrapper<T, ColumnWrapper> {
      * @param properties 属性
      * @param <T>        泛型类型
      * @param <E>        泛型类型
-     * @param <V>        值类型
+     * @param <V>        属性值类型
      * @return 分组对象
      */
     @SuppressWarnings({"unchecked"})

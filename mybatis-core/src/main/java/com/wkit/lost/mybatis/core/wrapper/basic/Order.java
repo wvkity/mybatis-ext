@@ -59,7 +59,7 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param criteria   查询对象
      * @param properties 属性
      * @param <T>        泛型类型
-     * @param <V>        值类型
+     * @param <V>        属性值类型
      * @return 排序对象
      */
     @SafeVarargs
@@ -96,6 +96,7 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param master     主查询对象
      * @param properties 属性
      * @param <T>        泛型类型
+     * @param <E>        实体类型
      * @return 排序对象
      */
     public static <T, E> Order<T> asc(String alias, AbstractQueryCriteriaWrapper<E> master,
@@ -110,7 +111,7 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param properties 属性
      * @param <T>        泛型类型
      * @param <E>        泛型类型
-     * @param <V>        值类型
+     * @param <V>        属性值类型
      * @return 排序对象
      */
     @SafeVarargs
@@ -127,6 +128,7 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param master     主查询对象
      * @param properties 属性
      * @param <T>        泛型类型
+     * @param <E>        实体类型
      * @return 排序对象
      */
     public static <T, E> Order<T> asc(String alias,
@@ -140,7 +142,7 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param criteria   查询对象
      * @param properties 属性
      * @param <T>        泛型类型
-     * @param <V>        值类型
+     * @param <V>        属性值类型
      * @return 排序对象
      */
     @SafeVarargs
@@ -178,7 +180,7 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param properties 属性
      * @param <T>        泛型类型
      * @param <E>        泛型类型
-     * @param <V>        值类型
+     * @param <V>        属性值类型
      * @return 排序对象
      */
     @SafeVarargs
@@ -195,6 +197,7 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param master     主查询对象
      * @param properties 属性
      * @param <T>        泛型类型
+     * @param <E>        实体类型
      * @return 排序对象
      */
     public static <T, E> Order<T> desc(String alias, AbstractQueryCriteriaWrapper<E> master,
@@ -208,6 +211,7 @@ public class Order<T> extends AbstractOrderWrapper<T, ColumnWrapper> {
      * @param master     主查询对象
      * @param properties 属性
      * @param <T>        泛型类型
+     * @param <E>        实体类型
      * @return 排序对象
      */
     public static <T, E> Order<T> desc(String alias, AbstractQueryCriteriaWrapper<E> master,
