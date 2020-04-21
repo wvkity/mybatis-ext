@@ -35,12 +35,71 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
 
     /**
      * 添加查询列
+     * @param p1   属性1
+     * @param as1  属性1别名
+     * @param p2   属性2
+     * @param as2  属性2别名
+     * @param <V1> 属性1值类型
+     * @param <V2> 属性2值类型
+     * @return {@code this}
+     */
+    default <V1, V2> Chain select(Property<T, V1> p1, String as1, Property<T, V2> p2, String as2) {
+        return select(p1, as1).select(p2, as2);
+    }
+
+    /**
+     * 添加查询列
+     * @param p1   属性1
+     * @param as1  属性1别名
+     * @param p2   属性2
+     * @param as2  属性2别名
+     * @param p3   属性3
+     * @param as3  属性3别名
+     * @param <V1> 属性1值类型
+     * @param <V2> 属性2值类型
+     * @param <V3> 属性3值类型
+     * @return {@code this}
+     */
+    default <V1, V2, V3> Chain select(Property<T, V1> p1, String as1, Property<T, V2> p2, String as2,
+                                      Property<T, V3> p3, String as3) {
+        return select(p1, as1).select(p2, as2).select(p3, as3);
+    }
+
+    /**
+     * 添加查询列
      * @param property 属性
      * @param alias    列别名
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain select(Property<T, V> property, String alias) {
         return select(convert(property), alias);
+    }
+
+    /**
+     * 添加查询列
+     * @param p1  属性1
+     * @param as1 属性1别名
+     * @param p2  属性2
+     * @param as2 属性2别名
+     * @return {@code this}
+     */
+    default Chain select(String p1, String as1, String p2, String as2) {
+        return select(p1, as1).select(p2, as2);
+    }
+
+    /**
+     * 添加查询列
+     * @param p1  属性1
+     * @param as1 属性1别名
+     * @param p2  属性2
+     * @param as2 属性2别名
+     * @param p3  属性3
+     * @param as3 属性3别名
+     * @return {@code this}
+     */
+    default Chain select(String p1, String as1, String p2, String as2, String p3, String as3) {
+        return select(p1, as1).select(p2, as2).select(p3, as3);
     }
 
     /**
@@ -53,10 +112,50 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
 
     /**
      * 添加查询列
+     * @param properties 属性集合
+     * @return {@code this}
+     */
+    Chain select(Collection<String> properties);
+
+    /**
+     * 添加查询列
+     * @param properties 列别名-属性集合
+     * @return {@code this}
+     */
+    Chain select(Map<String, String> properties);
+
+    /**
+     * 添加查询列
      * @param column 列名
      * @return {@code this}
      */
     Chain directSelect(String column);
+
+    /**
+     * 添加查询列
+     * @param c1  字段1
+     * @param as1 字段1别名
+     * @param c2  字段2
+     * @param as2 字段2别名
+     * @return {@code this}
+     */
+    default Chain directSelect(String c1, String as1, String c2, String as2) {
+        return directSelect(c1, as1).directSelect(c2, as2);
+    }
+
+    /**
+     * 添加查询列
+     * @param c1  字段1
+     * @param as1 字段1别名
+     * @param c2  字段2
+     * @param as2 字段2别名
+     * @param c3  字段3
+     * @param as3 字段3别名
+     * @return {@code this}
+     */
+    default Chain directSelect(String c1, String as1, String c2, String as2, String c3, String as3) {
+        return directSelect(c1, as1).directSelect(c2, as2).directSelect(c3, as3);
+    }
 
     /**
      * 添加查询列
@@ -65,6 +164,20 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @return {@code this}
      */
     Chain directSelect(String column, String alias);
+
+    /**
+     * 添加查询列
+     * @param columns 列名集合
+     * @return {@code this}
+     */
+    Chain directSelect(Collection<String> columns);
+
+    /**
+     * 添加查询列
+     * @param columns 列别名-列名集合
+     * @return {@code this}
+     */
+    Chain directSelect(Map<String, String> columns);
 
     /**
      * 添加查询列
@@ -77,57 +190,115 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
 
     /**
      * 添加查询列
-     * @param criteriaAlias 子查询对象别名
-     * @param property      属性
+     * @param tableAlias 表别名
+     * @param columns    列名集合
      * @return {@code this}
      */
-    default <E> Chain subSelect(String criteriaAlias, String property) {
-        return subSelect(searchSub(criteriaAlias), property);
+    Chain directSelect(String tableAlias, Collection<String> columns);
+
+    /**
+     * 添加参数列
+     * @param tableAlias 表别名
+     * @param c1         字段1
+     * @param as1        字段1别名
+     * @param c2         字段2
+     * @param as2        字段2别名
+     * @param c3         字段3
+     * @param as3        字段3别名
+     * @return {@code this}
+     */
+    default Chain directSelect(String tableAlias, String c1, String as1, String c2, String as2) {
+        return directSelect(tableAlias, c1, as1).directSelect(tableAlias, c2, as2);
+    }
+
+    /**
+     * 添加参数列
+     * @param tableAlias 表别名
+     * @param c1         字段1
+     * @param as1        字段1别名
+     * @param c2         字段2
+     * @param as2        字段2别名
+     * @param c3         字段3
+     * @param as3        字段3别名
+     * @return {@code this}
+     */
+    default Chain directSelect(String tableAlias, String c1, String as1,
+                               String c2, String as2, String c3, String as3) {
+        return directSelect(tableAlias, c1, as1).directSelect(tableAlias, c2, as2)
+                .directSelect(tableAlias, c3, as3);
+    }
+
+    /**
+     * 添加查询列
+     * @param tableAlias 表别名
+     * @param columns    列别名-列名集合
+     * @return {@code this}
+     */
+    Chain directSelect(String tableAlias, Map<String, String> columns);
+
+    /**
+     * 添加查询列
+     * @param tableAlias 表别名
+     * @param columns    列名数组
+     * @return {@code this}
+     */
+    default Chain directSelectWithAlias(String tableAlias, String... columns) {
+        return directSelect(tableAlias, ArrayUtil.toList(columns));
+    }
+
+    /**
+     * 添加查询列
+     * @param scAlias  子查询对象别名
+     * @param property 属性
+     * @return {@code this}
+     */
+    default <E> Chain subSelect(String scAlias, String property) {
+        return subSelect(searchSub(scAlias), property);
     }
 
 
     /**
      * 添加查询列
-     * @param criteria 子查询对象
+     * @param sc       子查询对象
      * @param property 属性
      * @param <E>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
-    default <E, V> Chain subSelect(SubCriteria<E> criteria, Property<E, V> property) {
-        return subSelect(criteria, criteria.convert(property));
+    default <E, V> Chain subSelect(SubCriteria<E> sc, Property<E, V> property) {
+        return subSelect(sc, sc.convert(property));
     }
 
     /**
      * 添加查询列
-     * @param criteria 子查询对象
+     * @param sc       子查询对象
      * @param property 属性
      * @return {@code this}
      */
-    <E> Chain subSelect(SubCriteria<E> criteria, String property);
+    <E> Chain subSelect(SubCriteria<E> sc, String property);
 
     /**
      * 添加查询列
-     * @param criteria 子查询对象
+     * @param sc       子查询对象
      * @param property 属性
      * @param alias    列别名
      * @param <E>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
-    default <E, V> Chain subSelect(SubCriteria<E> criteria, Property<E, V> property, String alias) {
-        return subSelect(criteria, criteria.convert(property), alias);
+    default <E, V> Chain subSelect(SubCriteria<E> sc, Property<E, V> property, String alias) {
+        return subSelect(sc, sc.convert(property), alias);
     }
-
 
     /**
      * 添加查询列
-     * @param criteria 子查询对象
+     * @param sc       子查询对象
      * @param property 属性
      * @param alias    列别名
+     * @param <E>      实体类型
      * @return {@code this}
      */
-    <E> Chain subSelect(SubCriteria<E> criteria, String property, String alias);
+    <E> Chain subSelect(SubCriteria<E> sc, String property, String alias);
 
     /**
      * 添加查询列
@@ -136,7 +307,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      */
     @SuppressWarnings({"unchecked"})
     default <V> Chain selects(Property<T, V>... properties) {
-        return selects(convert(ArrayUtil.toList(properties)));
+        return select(convert(ArrayUtil.toList(properties)));
     }
 
     /**
@@ -145,22 +316,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @return {@code this}
      */
     default Chain selects(String... properties) {
-        return selects(ArrayUtil.toList(properties));
+        return select(ArrayUtil.toList(properties));
     }
-
-    /**
-     * 添加查询列
-     * @param properties 属性集合
-     * @return {@code this}
-     */
-    Chain selects(Collection<String> properties);
-
-    /**
-     * 添加查询列
-     * @param properties 列别名-属性集合
-     * @return {@code this}
-     */
-    Chain selects(Map<String, String> properties);
 
     /**
      * 添加查询列
@@ -168,124 +325,84 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @return {@code this}
      */
     default Chain directSelects(String... columns) {
-        return directSelects(ArrayUtil.toList(columns));
-    }
-
-    /**
-     * 添加查询列
-     * @param columns 列名集合
-     * @return {@code this}
-     */
-    Chain directSelects(Collection<String> columns);
-
-    /**
-     * 添加查询列
-     * @param columns 列别名-列名集合
-     * @return {@code this}
-     */
-    Chain directSelects(Map<String, String> columns);
-
-    /**
-     * 添加查询列
-     * @param tableAlias 表别名
-     * @param columns    列别名-列名集合
-     * @return {@code this}
-     */
-    Chain directSelects(String tableAlias, Map<String, String> columns);
-
-    /**
-     * 添加查询列
-     * @param tableAlias 表别名
-     * @param columns    列名数组
-     * @return {@code this}
-     */
-    default Chain directQueriesWithAlias(String tableAlias, String... columns) {
-        return directSelects(tableAlias, ArrayUtil.toList(columns));
-    }
-
-    /**
-     * 添加查询列
-     * @param tableAlias 表别名
-     * @param columns    列名集合
-     * @return {@code this}
-     */
-    Chain directSelects(String tableAlias, Collection<String> columns);
-
-    /**
-     * 添加子查询列
-     * @param criteriaAlias 子查询条件对象别名
-     * @param properties    属性数组
-     * @param <E>           实体类型
-     * @return {@code this}
-     */
-    default <E> Chain subSelects(String criteriaAlias, String... properties) {
-        return subSelects(criteriaAlias, ArrayUtil.toList(properties));
+        return directSelect(ArrayUtil.toList(columns));
     }
 
     /**
      * 添加子查询列
-     * @param criteriaAlias 子查询条件对象别名
-     * @param properties    属性集合
-     * @param <E>           实体类型
+     * @param scAlias    子查询条件对象别名
+     * @param properties 属性数组
+     * @param <E>        实体类型
      * @return {@code this}
      */
-    default <E> Chain subSelects(String criteriaAlias, Collection<String> properties) {
-        return subSelects(searchSub(criteriaAlias), properties);
+    default <E> Chain subSelects(String scAlias, String... properties) {
+        return subSelect(scAlias, ArrayUtil.toList(properties));
     }
 
     /**
      * 添加子查询列
-     * @param criteria   子查询条件对象
+     * @param scAlias    子查询条件对象别名
+     * @param properties 属性集合
+     * @param <E>        实体类型
+     * @return {@code this}
+     */
+    default <E> Chain subSelect(String scAlias, Collection<String> properties) {
+        return subSelect(searchSub(scAlias), properties);
+    }
+
+    /**
+     * 添加子查询列
+     * @param sc         子查询条件对象
      * @param properties 属性数组
      * @param <E>        实体类型
      * @param <V>        值类型
      * @return {@code this}
      */
     @SuppressWarnings({"unchecked"})
-    default <E, V> Chain subSelects(SubCriteria<E> criteria, Property<E, V>... properties) {
-        return subSelects(criteria, criteria.convert(ArrayUtil.toList(properties)));
+    default <E, V> Chain subSelects(SubCriteria<E> sc, Property<E, V>... properties) {
+        return subSelect(sc, sc.convert(ArrayUtil.toList(properties)));
     }
 
     /**
      * 添加子查询列
-     * @param criteria   子查询条件对象
+     * @param sc         子查询条件对象
      * @param properties 属性数组
      * @param <E>        实体类型
      * @return {@code this}
      */
-    default <E> Chain subSelects(SubCriteria<E> criteria, String... properties) {
-        return subSelects(criteria, ArrayUtil.toList(properties));
+    default <E> Chain subSelects(SubCriteria<E> sc, String... properties) {
+        return subSelect(sc, ArrayUtil.toList(properties));
     }
 
     /**
      * 添加子查询列
-     * @param criteria   子查询条件对象
+     * @param sc         子查询条件对象
      * @param properties 属性集合
      * @param <E>        实体类型
      * @return {@code this}
      */
-    <E> Chain subSelects(SubCriteria<E> criteria, Collection<String> properties);
+    <E> Chain subSelect(SubCriteria<E> sc, Collection<String> properties);
 
     /**
      * 添加子查询列
-     * @param criteriaAlias 子查询条件对象别名
-     * @param properties    列别名-属性集合
-     * @param <E>           实体类型
+     * @param scAlias    子查询条件对象别名
+     * @param properties 列别名-属性集合
+     * @param <E>        实体类型
      * @return {@code this}
      */
-    default <E> Chain subSelects(String criteriaAlias, Map<String, String> properties) {
-        return subSelects(searchSub(criteriaAlias), properties);
+    default <E> Chain subSelect(String scAlias, Map<String, String> properties) {
+        return subSelect(searchSub(scAlias), properties);
     }
 
 
     /**
      * 添加子查询列
-     * @param criteria   子查询条件对象
+     * @param sc         子查询条件对象
      * @param properties 列别名-属性集合
      * @param <E>        实体类型
      * @return {@code this}
      */
-    <E> Chain subSelects(SubCriteria<E> criteria, Map<String, String> properties);
+    <E> Chain subSelect(SubCriteria<E> sc, Map<String, String> properties);
 
     /**
      * 排除查询列

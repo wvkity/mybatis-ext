@@ -132,58 +132,58 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public <E> AbstractQueryCriteriaWrapper<T> subSelect(SubCriteria<E> criteria, String property) {
+    public <E> AbstractQueryCriteriaWrapper<T> subSelect(SubCriteria<E> sc, String property) {
         return this;
     }
 
     @Override
-    public <E> AbstractQueryCriteriaWrapper<T> subSelect(SubCriteria<E> criteria, String property, String alias) {
+    public <E> AbstractQueryCriteriaWrapper<T> subSelect(SubCriteria<E> sc, String property, String alias) {
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> selects(Collection<String> properties) {
+    public AbstractQueryCriteriaWrapper<T> select(Collection<String> properties) {
         this.queryManager.add(Query.Multi.query(this, properties));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> selects(Map<String, String> properties) {
+    public AbstractQueryCriteriaWrapper<T> select(Map<String, String> properties) {
         this.queryManager.add(Query.Multi.query(this, properties));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> directSelects(Collection<String> columns) {
+    public AbstractQueryCriteriaWrapper<T> directSelect(Collection<String> columns) {
         this.queryManager.add(DirectQuery.Multi.query(this, columns));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> directSelects(Map<String, String> columns) {
+    public AbstractQueryCriteriaWrapper<T> directSelect(Map<String, String> columns) {
         this.queryManager.add(DirectQuery.Multi.query(this, columns));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> directSelects(String tableAlias, Map<String, String> columns) {
+    public AbstractQueryCriteriaWrapper<T> directSelect(String tableAlias, Map<String, String> columns) {
         this.queryManager.add(DirectQuery.Multi.query(tableAlias, columns));
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> directSelects(String tableAlias, Collection<String> columns) {
+    public AbstractQueryCriteriaWrapper<T> directSelect(String tableAlias, Collection<String> columns) {
         this.queryManager.add(DirectQuery.Multi.query(tableAlias, columns));
         return this;
     }
 
     @Override
-    public <E> AbstractQueryCriteriaWrapper<T> subSelects(SubCriteria<E> criteria, Collection<String> properties) {
+    public <E> AbstractQueryCriteriaWrapper<T> subSelect(SubCriteria<E> sc, Collection<String> properties) {
         return this;
     }
 
     @Override
-    public <E> AbstractQueryCriteriaWrapper<T> subSelects(SubCriteria<E> criteria, Map<String, String> properties) {
+    public <E> AbstractQueryCriteriaWrapper<T> subSelect(SubCriteria<E> sc, Map<String, String> properties) {
         return this;
     }
 
@@ -329,7 +329,7 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
         this.segmentManager.addGroup(groups);
         return this;
     }
-    
+
     // endregion
 
     // region get/set methods
