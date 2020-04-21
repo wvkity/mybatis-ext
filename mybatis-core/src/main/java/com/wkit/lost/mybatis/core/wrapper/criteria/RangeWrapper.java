@@ -18,7 +18,7 @@ public interface RangeWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * IN
      * @param property 属性
      * @param values   值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     @SuppressWarnings({"unchecked"})
@@ -40,7 +40,7 @@ public interface RangeWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * IN
      * @param property 属性
      * @param values   值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain in(Property<T, V> property, Collection<V> values) {
@@ -59,7 +59,7 @@ public interface RangeWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * 或IN
      * @param property 属性
      * @param values   值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     @SuppressWarnings({"unchecked"})
@@ -81,7 +81,7 @@ public interface RangeWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * 或IN
      * @param property 属性
      * @param values   值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orIn(Property<T, V> property, Collection<V> values) {
@@ -177,7 +177,7 @@ public interface RangeWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * NOT IN
      * @param property 属性
      * @param values   值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     @SuppressWarnings({"unchecked"})
@@ -199,7 +199,7 @@ public interface RangeWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * NOT IN
      * @param property 属性
      * @param values   值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain notIn(Property<T, V> property, Collection<V> values) {
@@ -218,7 +218,7 @@ public interface RangeWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * 或NOT IN
      * @param property 属性
      * @param values   值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     @SuppressWarnings("unchecked")
@@ -240,7 +240,7 @@ public interface RangeWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * 或NOT IN
      * @param property 属性
      * @param values   值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orNotIn(Property<T, V> property, Collection<V> values) {
@@ -337,7 +337,7 @@ public interface RangeWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * @param property 属性
      * @param begin    开始值
      * @param end      结束值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain between(Property<T, V> property, V begin, V end) {
@@ -358,7 +358,7 @@ public interface RangeWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * @param property 属性
      * @param begin    开始值
      * @param end      结束值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orBetween(Property<T, V> property, V begin, V end) {
@@ -417,7 +417,7 @@ public interface RangeWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * @param property 属性
      * @param begin    开始值
      * @param end      结束值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain notBetween(Property<T, V> property, V begin, V end) {
@@ -438,7 +438,7 @@ public interface RangeWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * @param property 属性
      * @param begin    开始值
      * @param end      结束值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orNotBetween(Property<T, V> property, V begin, V end) {

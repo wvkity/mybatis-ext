@@ -24,7 +24,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param template 模板
      * @param property 属性
      * @param value    值
-     * @param <V>      返回值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain template(String template, Property<T, V> property, Object value) {
@@ -45,7 +45,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param template 模板
      * @param property 属性
      * @param value    值
-     * @param <V>      返回值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orTemplate(String template, Property<T, V> property, Object value) {
@@ -66,7 +66,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param template 模板
      * @param property 属性
      * @param values   值
-     * @param <V>      返回值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain template(String template, Property<T, V> property, Object... values) {
@@ -78,7 +78,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param template 模板
      * @param property 属性
      * @param values   值
-     * @param <V>      返回值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain template(String template, Property<T, V> property, Collection<Object> values) {
@@ -156,7 +156,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param v1       key1对应值
      * @param k2       占位符key2
      * @param v2       key2对应值
-     * @param <V>      返回值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain template(String template, Property<T, V> property, String k1, Object v1, String k2, Object v2) {
@@ -173,7 +173,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param v2       key2对应值
      * @param k3       占位符key3
      * @param v3       key3对应值
-     * @param <V>      返回值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain template(String template, Property<T, V> property, String k1, Object v1,
@@ -186,7 +186,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param template 模板
      * @param property 属性
      * @param values   值
-     * @param <V>      返回值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain template(String template, Property<T, V> property, Map<String, Object> values) {
@@ -248,7 +248,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param v1       key1对应值
      * @param k2       占位符key2
      * @param v2       key2对应值
-     * @param <V>      返回值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orTemplate(String template, Property<T, V> property, String k1, Object v1, String k2, Object v2) {
@@ -265,7 +265,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param v2       key2对应值
      * @param k3       占位符key3
      * @param v3       key3对应值
-     * @param <V>      返回值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orTemplate(String template, Property<T, V> property, String k1, Object v1,
@@ -278,7 +278,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param template 模板
      * @param property 属性
      * @param values   值
-     * @param <V>      返回值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orTemplate(String template, Property<T, V> property, Map<String, Object> values) {

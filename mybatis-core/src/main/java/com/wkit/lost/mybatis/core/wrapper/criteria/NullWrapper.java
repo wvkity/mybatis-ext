@@ -14,6 +14,7 @@ public interface NullWrapper<T, Chain extends CompareWrapper<T, Chain>> extends 
     /**
      * IS NULL
      * @param property 属性
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain isNull(Property<T, V> property) {
@@ -30,7 +31,7 @@ public interface NullWrapper<T, Chain extends CompareWrapper<T, Chain>> extends 
     /**
      * 或IS NULL
      * @param property 属性
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orIsNull(Property<T, V> property) {
@@ -77,7 +78,7 @@ public interface NullWrapper<T, Chain extends CompareWrapper<T, Chain>> extends 
     /**
      * IS NULL
      * @param property 属性
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain notNull(Property<T, V> property) {
@@ -94,7 +95,7 @@ public interface NullWrapper<T, Chain extends CompareWrapper<T, Chain>> extends 
     /**
      * 或IS NULL
      * @param property 属性
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orNotNull(Property<T, V> property) {

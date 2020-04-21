@@ -32,7 +32,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * 等于
      * @param property 属性
      * @param value    值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain eq(Property<T, V> property, V value) {
@@ -45,8 +45,8 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * @param v1   属性1对应值
      * @param p2   属性2
      * @param v2   属性2对应值
-     * @param <V1> 值1类型
-     * @param <V2> 值2类型
+     * @param <V1> 属性1值类型
+     * @param <V2> 属性2值类型
      * @return {@code this}
      */
     default <V1, V2> Chain eq(Property<T, V1> p1, V1 v1, Property<T, V2> p2, V2 v2) {
@@ -64,9 +64,9 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * @param v2   属性2对应值
      * @param p3   属性3
      * @param v3   属性1对应值
-     * @param <V1> 值1类型
-     * @param <V2> 值2类型
-     * @param <V3> 值3类型
+     * @param <V1> 属性1值类型
+     * @param <V2> 属性2值类型
+     * @param <V3> 属性3值类型
      * @return {@code this}
      */
     default <V1, V2, V3> Chain eq(Property<T, V1> p1, V1 v1, Property<T, V2> p2, V2 v2,
@@ -132,11 +132,11 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * @param otherCriteria 其他条件包装对象
      * @param otherProperty 其他属性
      * @param <E>           实体类型
-     * @param <V1>          返回值类型
-     * @param <V2>          返回值类型
+     * @param <V1>          属性1值类型
+     * @param <V2>          属性2值类型
      * @return {@code this}
      */
-    default <V1, E, V2> Chain normalEq(Property<T, V1> property, Criteria<E> otherCriteria, Property<E, V2> otherProperty) {
+    default <E, V1, V2> Chain normalEq(Property<T, V1> property, Criteria<E> otherCriteria, Property<E, V2> otherProperty) {
         return normalEq(convert(property), otherCriteria, otherCriteria.convert(otherProperty));
     }
 
@@ -155,7 +155,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * @param property      属性
      * @param otherCriteria 其他条件包装对象
      * @param <E>           实体类型
-     * @param <V>           返回值类型
+     * @param <V>           属性值类型
      * @return {@code this}
      */
     default <E, V> Chain normalEq(Property<T, V> property, Criteria<E> otherCriteria) {
@@ -176,7 +176,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * @param otherCriteria 其他条件包装对象
      * @param otherProperty 其他属性
      * @param <E>           实体类型
-     * @param <V>           返回值类型
+     * @param <V>           属性值类型
      * @return {@code this}
      */
     default <E, V> Chain normalEq(Criteria<E> otherCriteria, Property<E, V> otherProperty) {
@@ -196,7 +196,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * 或等于
      * @param property 属性
      * @param value    值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orEq(Property<T, V> property, V value) {
@@ -332,7 +332,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * 不等于
      * @param property 属性
      * @param value    值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain ne(Property<T, V> property, V value) {
@@ -351,7 +351,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * 或不等于
      * @param property 属性
      * @param value    值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orNe(Property<T, V> property, V value) {
@@ -404,7 +404,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * 小于
      * @param property 属性
      * @param value    值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain lt(Property<T, V> property, V value) {
@@ -423,7 +423,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * 或小于
      * @param property 属性
      * @param value    值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orLt(Property<T, V> property, V value) {
@@ -476,6 +476,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * 小于等于
      * @param property 属性
      * @param value    值
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain le(Property<T, V> property, Object value) {
@@ -494,7 +495,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * 或小于等于
      * @param property 属性
      * @param value    值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orLe(Property<T, V> property, V value) {
@@ -547,7 +548,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * 小于
      * @param property 属性
      * @param value    值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain gt(Property<T, V> property, V value) {
@@ -566,6 +567,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * 或小于
      * @param property 属性
      * @param value    值
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orGt(Property<T, V> property, Object value) {
@@ -618,7 +620,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * 小于
      * @param property 属性
      * @param value    值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain ge(Property<T, V> property, V value) {
@@ -637,7 +639,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * 或小于
      * @param property 属性
      * @param value    值
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orGe(Property<T, V> property, V value) {

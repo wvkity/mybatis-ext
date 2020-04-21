@@ -84,7 +84,7 @@ public final class Restrictions {
      * @param property 属性
      * @param value    值
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Equal<T> eq(Criteria<T> criteria, Property<T, V> property, V value) {
@@ -110,7 +110,7 @@ public final class Restrictions {
      * @param value    值
      * @param logic    逻辑符号
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Equal<T> eq(Criteria<T> criteria, Property<T, V> property, V value, Logic logic) {
@@ -209,7 +209,7 @@ public final class Restrictions {
      * @param property 属性
      * @param value    值
      * @param <T>      实体类
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> NotEqual<T> ne(Criteria<T> criteria, Property<T, V> property, V value) {
@@ -223,7 +223,7 @@ public final class Restrictions {
      * @param value    值
      * @param logic    逻辑符号
      * @param <T>      实体类
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> NotEqual<T> ne(Criteria<T> criteria, Property<T, V> property, V value, Logic logic) {
@@ -334,7 +334,7 @@ public final class Restrictions {
      * @param property 属性
      * @param value    值
      * @param <T>      实体类
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> LessThan<T> lt(Criteria<T> criteria, Property<T, V> property, V value) {
@@ -348,7 +348,7 @@ public final class Restrictions {
      * @param value    值
      * @param logic    逻辑符号
      * @param <T>      实体类
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> LessThan<T> lt(Criteria<T> criteria, Property<T, V> property, V value, Logic logic) {
@@ -459,7 +459,7 @@ public final class Restrictions {
      * @param property 属性
      * @param value    值
      * @param <T>      实体类
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> LessThanOrEqual<T> le(Criteria<T> criteria, Property<T, V> property, V value) {
@@ -473,7 +473,7 @@ public final class Restrictions {
      * @param value    值
      * @param logic    逻辑符号
      * @param <T>      实体类
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> LessThanOrEqual<T> le(Criteria<T> criteria, Property<T, V> property, V value, Logic logic) {
@@ -585,7 +585,7 @@ public final class Restrictions {
      * @param property 属性
      * @param value    值
      * @param <T>      实体类
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> GreaterThan<T> gt(Criteria<T> criteria, Property<T, V> property, V value) {
@@ -599,7 +599,7 @@ public final class Restrictions {
      * @param value    值
      * @param logic    逻辑符号
      * @param <T>      实体类
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> GreaterThan<T> gt(Criteria<T> criteria, Property<T, V> property, V value, Logic logic) {
@@ -710,7 +710,7 @@ public final class Restrictions {
      * @param property 属性
      * @param value    值
      * @param <T>      实体类
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> GreaterThanOrEqual<T> ge(Criteria<T> criteria, Property<T, V> property, V value) {
@@ -724,7 +724,7 @@ public final class Restrictions {
      * @param value    值
      * @param logic    逻辑符号
      * @param <T>      实体类
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> GreaterThanOrEqual<T> ge(Criteria<T> criteria, Property<T, V> property,
@@ -841,7 +841,7 @@ public final class Restrictions {
      * @param criteria 条件包装对象
      * @param property 属性
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Null<T> isNull(Criteria<T> criteria, Property<T, V> property) {
@@ -854,7 +854,7 @@ public final class Restrictions {
      * @param property 属性
      * @param logic    逻辑符号
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Null<T> isNull(Criteria<T> criteria, Property<T, V> property, Logic logic) {
@@ -935,7 +935,7 @@ public final class Restrictions {
      * @param criteria 条件包装对象
      * @param property 属性
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Null<T> notNull(Criteria<T> criteria, Property<T, V> property) {
@@ -948,7 +948,7 @@ public final class Restrictions {
      * @param property 属性
      * @param logic    逻辑符号
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Null<T> notNull(Criteria<T> criteria, Property<T, V> property, Logic logic) {
@@ -1236,7 +1236,7 @@ public final class Restrictions {
      * @param begin    开始值
      * @param end      结束值
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Between<T> between(Criteria<T> criteria, Property<T, V> property, V begin, V end) {
@@ -1251,7 +1251,7 @@ public final class Restrictions {
      * @param end      结束值
      * @param logic    逻辑符号
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Between<T> between(Criteria<T> criteria, Property<T, V> property,
@@ -1376,7 +1376,7 @@ public final class Restrictions {
      * @param end      结束值
      * @param logic    逻辑符号
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> NotBetween<T> notBetween(Criteria<T> criteria, Property<T, V> property,
@@ -2194,7 +2194,7 @@ public final class Restrictions {
      * @param value    值
      * @param template 模板
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Template<T> template(Criteria<T> criteria, Property<T, V> property,
@@ -2210,7 +2210,7 @@ public final class Restrictions {
      * @param template 模板
      * @param logic    逻辑符号
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Template<T> template(Criteria<T> criteria, Property<T, V> property, Object value,
@@ -2253,7 +2253,7 @@ public final class Restrictions {
      * @param values   值
      * @param template 模板
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Template<T> template(Criteria<T> criteria, Property<T, V> property,
@@ -2269,7 +2269,7 @@ public final class Restrictions {
      * @param template 模板
      * @param logic    逻辑符号
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Template<T> template(Criteria<T> criteria, Property<T, V> property, Collection<Object> values,
@@ -2313,7 +2313,7 @@ public final class Restrictions {
      * @param values   值
      * @param template 模板
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Template<T> template(Criteria<T> criteria, Property<T, V> property,
@@ -2329,7 +2329,7 @@ public final class Restrictions {
      * @param template 模板
      * @param logic    逻辑符号
      * @param <T>      实体类型
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return 条件对象
      */
     public static <T, V> Template<T> template(Criteria<T> criteria, Property<T, V> property, Map<String, Object> values,

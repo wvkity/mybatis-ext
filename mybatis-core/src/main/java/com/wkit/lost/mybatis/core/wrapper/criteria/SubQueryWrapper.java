@@ -29,7 +29,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * 等于
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain eq(Property<T, V> property, SubCriteria<?> sc) {
@@ -48,7 +48,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * 或等于
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orEq(Property<T, V> property, SubCriteria<?> sc) {
@@ -67,7 +67,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * 不等于
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain ne(Property<T, V> property, SubCriteria<?> sc) {
@@ -86,7 +86,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * 或不等于
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orNe(Property<T, V> property, SubCriteria<?> sc) {
@@ -105,7 +105,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * 小于
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain lt(Property<T, V> property, SubCriteria<?> sc) {
@@ -124,7 +124,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * 或小于
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orLt(Property<T, V> property, SubCriteria<?> sc) {
@@ -143,7 +143,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * 小于等于
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain le(Property<T, V> property, SubCriteria<?> sc) {
@@ -162,7 +162,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * 或小于等于
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orLe(Property<T, V> property, SubCriteria<?> sc) {
@@ -181,7 +181,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * 大于
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain gt(Property<T, V> property, SubCriteria<?> sc) {
@@ -200,7 +200,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * 或大于
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orGt(Property<T, V> property, SubCriteria<?> sc) {
@@ -219,7 +219,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * 大于等于
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain ge(Property<T, V> property, SubCriteria<?> sc) {
@@ -238,7 +238,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * 或大于等于
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orGe(Property<T, V> property, SubCriteria<?> sc) {
@@ -257,7 +257,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * LIKE
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain like(Property<T, V> property, SubCriteria<?> sc) {
@@ -276,7 +276,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * 或LIKE
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orLike(Property<T, V> property, SubCriteria<?> sc) {
@@ -295,7 +295,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * NOT LIKE
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain notLike(Property<T, V> property, SubCriteria<?> sc) {
@@ -314,7 +314,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * 或NOT LIKE
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orNotLike(Property<T, V> property, SubCriteria<?> sc) {
@@ -333,7 +333,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * IN
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain in(Property<T, V> property, SubCriteria<?> sc) {
@@ -352,7 +352,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * 或IN
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orIn(Property<T, V> property, SubCriteria<?> sc) {
@@ -371,7 +371,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * NOT IN
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain notIn(Property<T, V> property, SubCriteria<?> sc) {
@@ -390,7 +390,7 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * 或NOT IN
      * @param property 属性
      * @param sc       子查询条件包装对象
-     * @param <V>      值类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orNotIn(Property<T, V> property, SubCriteria<?> sc) {
