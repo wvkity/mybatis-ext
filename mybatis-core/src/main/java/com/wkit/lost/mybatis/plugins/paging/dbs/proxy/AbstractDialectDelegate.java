@@ -77,7 +77,7 @@ public abstract class AbstractDialectDelegate {
     /**
      * 锁
      */
-    private ReentrantLock lock = new ReentrantLock();
+    private final ReentrantLock lock = new ReentrantLock();
 
     static {
         // MYSQL

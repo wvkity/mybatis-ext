@@ -495,7 +495,7 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         return foundValues;
     }
 
-    private Object getPropertyMappingValue(ResultSet rs, MetaObject metaResultObject, ResultMapping propertyMapping,
+    /*private Object getPropertyMappingValue(ResultSet rs, MetaObject metaResultObject, ResultMapping propertyMapping,
                                            ResultLoaderMap lazyLoader, String columnPrefix)
             throws SQLException {
         if (propertyMapping.getNestedQueryId() != null) {
@@ -508,7 +508,7 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
             final String column = prependPrefix(propertyMapping.getColumn(), columnPrefix);
             return typeHandler.getResult(rs, column);
         }
-    }
+    }*/
 
     private Object getPropertyMappingValue(ResultSet rs, MetaObject metaResultObject, ResultMapping propertyMapping,
                                            ResultLoaderMap lazyLoader, String columnPrefix,

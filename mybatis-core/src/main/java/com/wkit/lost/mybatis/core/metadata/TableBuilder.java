@@ -138,7 +138,7 @@ public class TableBuilder extends BuilderSupport implements Builder<TableWrapper
                 columnWrappers.add(column);
             }
         }
-        TableWrapper wrapper = new TableWrapper(this.entity, realName, this.namespace, this.catalog, this.schema,
+        TableWrapper wrapper = new TableWrapper(this.entity, realName, this.namespace, realCatalog, realSchema,
                 this.prefix, this.order, this.enableLogicDeleted, pk, pkProperty, versionColumn,
                 deleteColumn, columnWrappers);
         // 构建缓存

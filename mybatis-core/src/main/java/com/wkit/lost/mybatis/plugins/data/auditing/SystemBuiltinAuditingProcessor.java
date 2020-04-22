@@ -110,7 +110,6 @@ public class SystemBuiltinAuditingProcessor extends AbstractAuditingProcessor {
                 throw new MyBatisException("The `" + table.getEntity().getName() + "` entity class currently does not " +
                         "have a logical deletion property");
             }
-            Class<?> javaType = logicDeletionColumn.getJavaType();
             String deletedProperty = logicDeletionColumn.getProperty();
             Object deletedValue = logicDeletionColumn.getLogicDeletedTrueValue();
             Object notDeletedValue = logicDeletionColumn.getLogicDeletedFalseValue();

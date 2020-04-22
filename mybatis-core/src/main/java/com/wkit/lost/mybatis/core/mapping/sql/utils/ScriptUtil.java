@@ -565,6 +565,8 @@ public final class ScriptUtil {
                             concatIntactArg(javaType, jdbcType, typeHandler, isUseJavaType)))
                             .collect(Collectors.joining(" AND ")));
                     break;
+                default:
+                    return Constants.EMPTY;
             }
         }
         return builder.toString();
