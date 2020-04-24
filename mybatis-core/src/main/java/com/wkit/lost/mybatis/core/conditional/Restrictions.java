@@ -1507,8 +1507,33 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
+    public static <T> Like<T> like(Criteria<T> criteria, Property<T, String> property, String value) {
+        return like(criteria, property, value, Logic.AND);
+    }
+
+    /**
+     * LIKE
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param value    值
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
     public static <T> Like<T> like(Criteria<T> criteria, String property, String value) {
         return like(criteria, property, value, Logic.AND);
+    }
+
+    /**
+     * LIKE
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param value    值
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> Like<T> like(Criteria<T> criteria, Property<T, String> property, String value, Logic logic) {
+        return Like.create(criteria, property, value, logic);
     }
 
     /**
@@ -1533,8 +1558,37 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
+    public static <T> Like<T> like(Criteria<T> criteria, Property<T, String> property,
+                                   String value, Character escape) {
+        return like(criteria, property, value, escape, Logic.AND);
+    }
+
+    /**
+     * LIKE
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param value    值
+     * @param escape   转义字符
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
     public static <T> Like<T> like(Criteria<T> criteria, String property, String value, Character escape) {
         return like(criteria, property, value, escape, Logic.AND);
+    }
+
+    /**
+     * LIKE
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param value    值
+     * @param escape   转义字符
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> Like<T> like(Criteria<T> criteria, Property<T, String> property, String value,
+                                   Character escape, Logic logic) {
+        return Like.create(criteria, property, value, escape, logic);
     }
 
     /**
@@ -1561,8 +1615,36 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
+    public static <T> Like<T> like(Criteria<T> criteria, Property<T, String> property, String value, Match match) {
+        return like(criteria, property, value, match, Logic.AND);
+    }
+
+    /**
+     * LIKE
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param value    值
+     * @param match    匹配模式
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
     public static <T> Like<T> like(Criteria<T> criteria, String property, String value, Match match) {
         return like(criteria, property, value, match, Logic.AND);
+    }
+
+    /**
+     * LIKE
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param value    值
+     * @param match    匹配模式
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> Like<T> like(Criteria<T> criteria, Property<T, String> property, String value,
+                                   Match match, Logic logic) {
+        return Like.create(criteria, property, value, match, logic);
     }
 
     /**
@@ -1578,6 +1660,21 @@ public final class Restrictions {
     public static <T> Like<T> like(Criteria<T> criteria, String property, String value,
                                    Match match, Logic logic) {
         return Like.create(criteria, property, value, match, logic);
+    }
+
+    /**
+     * LIKE
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param value    值
+     * @param match    匹配模式
+     * @param escape   转义字符
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> Like<T> like(Criteria<T> criteria, Property<T, String> property, String value,
+                                   Match match, Character escape) {
+        return like(criteria, property, value, match, escape, Logic.AND);
     }
 
     /**
@@ -1606,11 +1703,38 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
+    public static <T> Like<T> like(Criteria<T> criteria, Property<T, String> property, String value,
+                                   Match match, Character escape, Logic logic) {
+        return Like.create(criteria, property, value, match, escape, logic);
+    }
+
+    /**
+     * NOT LIKE
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param value    值
+     * @param match    匹配模式
+     * @param escape   转义字符
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
     public static <T> Like<T> like(Criteria<T> criteria, String property, String value,
                                    Match match, Character escape, Logic logic) {
         return Like.create(criteria, property, value, match, escape, logic);
     }
 
+    /**
+     * NOT LIKE
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param value    值
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> NotLike<T> notLike(Criteria<T> criteria, Property<T, String> property, String value) {
+        return notLike(criteria, property, value, Logic.AND);
+    }
 
     /**
      * NOT LIKE
@@ -1622,6 +1746,20 @@ public final class Restrictions {
      */
     public static <T> NotLike<T> notLike(Criteria<T> criteria, String property, String value) {
         return notLike(criteria, property, value, Logic.AND);
+    }
+
+    /**
+     * NOT LIKE
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param value    值
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> NotLike<T> notLike(Criteria<T> criteria, Property<T, String> property,
+                                         String value, Logic logic) {
+        return NotLike.create(criteria, property, value, logic);
     }
 
     /**
@@ -1646,8 +1784,37 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
+    public static <T> NotLike<T> notLike(Criteria<T> criteria, Property<T, String> property,
+                                         String value, Character escape) {
+        return notLike(criteria, property, value, escape, Logic.AND);
+    }
+
+    /**
+     * NOT LIKE
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param value    值
+     * @param escape   转义字符
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
     public static <T> NotLike<T> notLike(Criteria<T> criteria, String property, String value, Character escape) {
         return notLike(criteria, property, value, escape, Logic.AND);
+    }
+
+    /**
+     * NOT LIKE
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param value    值
+     * @param escape   转义字符
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> NotLike<T> notLike(Criteria<T> criteria, Property<T, String> property, String value,
+                                         Character escape, Logic logic) {
+        return NotLike.create(criteria, property, value, escape, logic);
     }
 
     /**
@@ -1674,8 +1841,37 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
+    public static <T> NotLike<T> notLike(Criteria<T> criteria, Property<T, String> property,
+                                         String value, Match match) {
+        return notLike(criteria, property, value, match, Logic.AND);
+    }
+
+    /**
+     * NOT LIKE
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param value    值
+     * @param match    匹配模式
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
     public static <T> NotLike<T> notLike(Criteria<T> criteria, String property, String value, Match match) {
         return notLike(criteria, property, value, match, Logic.AND);
+    }
+
+    /**
+     * NOT LIKE
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param value    值
+     * @param match    匹配模式
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> NotLike<T> notLike(Criteria<T> criteria, Property<T, String> property, String value,
+                                         Match match, Logic logic) {
+        return NotLike.create(criteria, property, value, match, logic);
     }
 
     /**
@@ -1703,9 +1899,40 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
+    public static <T> NotLike<T> notLike(Criteria<T> criteria, Property<T, String> property, String value,
+                                         Match match, Character escape) {
+        return notLike(criteria, property, value, match, escape, Logic.AND);
+    }
+
+    /**
+     * NOT LIKE
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param value    值
+     * @param match    匹配模式
+     * @param escape   转义字符
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
     public static <T> NotLike<T> notLike(Criteria<T> criteria, String property, String value,
                                          Match match, Character escape) {
         return notLike(criteria, property, value, match, escape, Logic.AND);
+    }
+
+    /**
+     * NOT LIKE
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param value    值
+     * @param match    匹配模式
+     * @param escape   转义字符
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @return 条件对象
+     */
+    public static <T> NotLike<T> notLike(Criteria<T> criteria, Property<T, String> property, String value,
+                                         Match match, Character escape, Logic logic) {
+        return NotLike.create(criteria, property, value, match, escape, logic);
     }
 
     /**
