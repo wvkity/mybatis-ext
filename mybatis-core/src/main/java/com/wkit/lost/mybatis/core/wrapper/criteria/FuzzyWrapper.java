@@ -9,7 +9,7 @@ import com.wkit.lost.mybatis.core.converter.PropertyConverter;
  * @param <Chain> 子类
  * @author wvkity
  */
-public interface FuzzyWrapper<T, Chain extends CompareWrapper<T, Chain>> extends PropertyConverter<T> {
+public interface FuzzyWrapper<T, Chain extends FuzzyWrapper<T, Chain>> extends PropertyConverter<T> {
 
     /**
      * LIKE
@@ -578,7 +578,7 @@ public interface FuzzyWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * @return {@code this}
      */
     default Chain directLikeLeft(String column, String value) {
-        return directLikeLeft(column, value, (Character)null);
+        return directLikeLeft(column, value, (Character) null);
     }
 
     /**
@@ -618,7 +618,7 @@ public interface FuzzyWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * @return {@code this}
      */
     default Chain orDirectLikeLeft(String column, String value) {
-        return orDirectLikeLeft(column, value, (Character)null);
+        return orDirectLikeLeft(column, value, (Character) null);
     }
 
     /**
@@ -658,7 +658,7 @@ public interface FuzzyWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * @return {@code this}
      */
     default Chain directLikeRight(String column, String value) {
-        return directLikeRight(column, value, (Character)null);
+        return directLikeRight(column, value, (Character) null);
     }
 
     /**
@@ -698,7 +698,7 @@ public interface FuzzyWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * @return {@code this}
      */
     default Chain orDirectLikeRight(String column, String value) {
-        return orDirectLikeRight(column, value, (Character)null);
+        return orDirectLikeRight(column, value, (Character) null);
     }
 
     /**
@@ -738,7 +738,7 @@ public interface FuzzyWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * @return {@code this}
      */
     default Chain directNotLike(String column, String value) {
-        return directNotLike(column, value, (Character)null);
+        return directNotLike(column, value, (Character) null);
     }
 
     /**
@@ -778,7 +778,7 @@ public interface FuzzyWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * @return {@code this}
      */
     default Chain orDirectNotLike(String column, String value) {
-        return orDirectNotLike(column, value, (Character)null);
+        return orDirectNotLike(column, value, (Character) null);
     }
 
     /**
@@ -818,7 +818,7 @@ public interface FuzzyWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * @return {@code this}
      */
     default Chain directNotLikeLeft(String column, String value) {
-        return directNotLikeLeft(column, value, (Character)null);
+        return directNotLikeLeft(column, value, (Character) null);
     }
 
     /**
@@ -858,7 +858,7 @@ public interface FuzzyWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * @return {@code this}
      */
     default Chain orDirectNotLikeLeft(String column, String value) {
-        return orDirectNotLikeLeft(column, value, (Character)null);
+        return orDirectNotLikeLeft(column, value, (Character) null);
     }
 
     /**
@@ -898,7 +898,7 @@ public interface FuzzyWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * @return {@code this}
      */
     default Chain directNotLikeRight(String column, String value) {
-        return directNotLikeRight(column, value, (Character)null);
+        return directNotLikeRight(column, value, (Character) null);
     }
 
     /**

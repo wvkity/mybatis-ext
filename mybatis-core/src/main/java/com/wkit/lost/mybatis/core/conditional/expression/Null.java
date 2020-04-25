@@ -5,6 +5,10 @@ import com.wkit.lost.mybatis.core.constant.Symbol;
 import com.wkit.lost.mybatis.core.converter.Property;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * IS NULL条件
@@ -29,82 +33,91 @@ public class Null<T> extends AbstractEmptyExpression<T> {
     }
 
     /**
-     * 创建IS NULL条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param <T>      实体类型
-     * @param <V>      属性值类型
-     * @return 条件对象
+     * 创建条件构建器
+     * @param <T> 实体类型
+     * @return 构建器
      */
-    public static <T, V> Null<T> create(Criteria<T> criteria, Property<T, V> property) {
-        return create(criteria, property, Logic.AND);
+    public static <T> Null.Builder<T> create() {
+        return new Null.Builder<>();
     }
 
     /**
-     * 创建IS NULL条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @param <V>      属性值类型
-     * @return 条件对象
+     * 条件对象构建器
+     * @param <T> 实体类
      */
-    public static <T, V> Null<T> create(Criteria<T> criteria, Property<T, V> property, Logic logic) {
-        if (criteria != null && property != null) {
-            return create(criteria, criteria.searchColumn(property), logic);
+    @Setter
+    @Accessors(chain = true, fluent = true)
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class Builder<T> {
+        /**
+         * 条件包装对象
+         */
+        private Criteria<T> criteria;
+        /**
+         * 条件包装对象
+         */
+        private ColumnWrapper column;
+        /**
+         * 属性
+         */
+        @Setter(AccessLevel.NONE)
+        private String property;
+        /**
+         * 属性
+         */
+        @Setter(AccessLevel.NONE)
+        private Property<T, ?> lambdaProperty;
+        /**
+         * 逻辑符号
+         */
+        private Logic logic;
+
+        /**
+         * 属性
+         * @param property 属性
+         * @return {@link Null.Builder}
+         */
+        public Null.Builder<T> property(String property) {
+            this.property = property;
+            return this;
         }
-        return null;
-    }
 
-    /**
-     * 创建IS NULL条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> Null<T> create(Criteria<T> criteria, String property) {
-        return create(criteria, property, Logic.AND);
-    }
-
-    /**
-     * 创建IS NULL条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> Null<T> create(Criteria<T> criteria, String property, Logic logic) {
-        if (criteria != null && hasText(property)) {
-            return create(criteria, criteria.searchColumn(property), logic);
+        /**
+         * 属性
+         * @param property 属性
+         * @param <V>      属性值类型
+         * @return {@link Null.Builder}
+         */
+        public <V> Null.Builder<T> property(Property<T, V> property) {
+            this.lambdaProperty = property;
+            return this;
         }
-        return null;
-    }
 
-    /**
-     * 创建IS NULL条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> Null<T> create(Criteria<T> criteria, ColumnWrapper column) {
-        return create(criteria, column, Logic.AND);
-    }
-
-    /**
-     * 创建IS NULL条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> Null<T> create(Criteria<T> criteria, ColumnWrapper column, Logic logic) {
-        if (criteria != null && column != null) {
-            return new Null<>(criteria, column, logic);
+        /**
+         * 构建条件对象
+         * @return 条件对象
+         */
+        public Null<T> build() {
+            if (this.column != null) {
+                return new Null<>(this.criteria, this.column, this.logic);
+            }
+            if (this.criteria == null) {
+                return null;
+            }
+            if (hasText(this.property)) {
+                ColumnWrapper wrapper = this.criteria.searchColumn(this.property);
+                if (wrapper != null) {
+                    return new Null<>(this.criteria, wrapper, this.logic);
+                }
+            }
+            if (lambdaProperty != null) {
+                ColumnWrapper wrapper = this.criteria.searchColumn(lambdaProperty);
+                if (wrapper != null) {
+                    return new Null<>(this.criteria, wrapper, this.logic);
+                }
+            }
+            return null;
         }
-        return null;
     }
+
 }

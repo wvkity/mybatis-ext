@@ -3,6 +3,10 @@ package com.wkit.lost.mybatis.core.conditional.expression;
 import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.constant.Symbol;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * 不等于条件
@@ -15,115 +19,64 @@ public class DirectNotEqual<T> extends DirectSimple<T> {
 
     /**
      * 构造方法
-     * @param column 字段名
-     * @param value  值
-     * @param logic  逻辑符号
-     */
-    DirectNotEqual(String column, Object value, Logic logic) {
-        super(column, value, Symbol.NE, logic);
-    }
-
-    /**
-     * 构造方法
+     * @param criteria   条件包装对象
      * @param tableAlias 表别名
-     * @param column     字段名
+     * @param column     列名
      * @param value      值
      * @param logic      逻辑符号
      */
-    DirectNotEqual(String tableAlias, String column, Object value, Logic logic) {
-        super(tableAlias, column, value, Symbol.NE, logic);
-    }
-
-    /**
-     * 构造方法
-     * @param criteria 条件包装对象
-     * @param column   字段名
-     * @param value    值
-     * @param logic    逻辑符号
-     */
-    DirectNotEqual(Criteria<T> criteria, String column, Object value, Logic logic) {
+    DirectNotEqual(Criteria<T> criteria, String tableAlias, String column, Object value, Logic logic) {
         super(criteria, column, value, Symbol.NE, logic);
+        super.tableAlias = tableAlias;
+    }
+    
+    /**
+     * 创建条件构建器
+     * @param <T> 实体类型
+     * @return 构建器
+     */
+    public static <T> DirectNotEqual.Builder<T> create() {
+        return new DirectNotEqual.Builder<>();
     }
 
     /**
-     * 创建不等于条件对象
-     * @param column 列名
-     * @param value  值
-     * @param <T>    泛型类型
-     * @return 条件对象
+     * 条件构建器
+     * @param <T> 实体类型
      */
-    public static <T> DirectNotEqual<T> create(String column, Object value) {
-        return create(column, value, Logic.AND);
-    }
+    @Setter
+    @Accessors(chain = true, fluent = true)
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class Builder<T> {
+        /**
+         * 条件包装对象
+         */
+        private Criteria<T> criteria;
+        /**
+         * 表别名
+         */
+        private String alias;
+        /**
+         * 条件包装对象
+         */
+        private String column;
+        /**
+         * 值
+         */
+        private Object value;
+        /**
+         * 逻辑符号
+         */
+        private Logic logic;
 
-    /**
-     * 创建不等于条件对象
-     * @param column 列名
-     * @param value  值
-     * @param logic  逻辑符号
-     * @param <T>    泛型类型
-     * @return 条件对象
-     */
-    public static <T> DirectNotEqual<T> create(String column, Object value, Logic logic) {
-        if (hasText(column)) {
-            return new DirectNotEqual<>(column, value, logic);
+        /**
+         * 构建条件对象
+         * @return 条件对象
+         */
+        public DirectNotEqual<T> build() {
+            if (isEmpty(this.column)) {
+                return null;
+            }
+            return new DirectNotEqual<>(this.criteria, this.alias, this.column, this.value, this.logic);
         }
-        return null;
-    }
-
-    /**
-     * 创建不等于条件对象
-     * @param tableAlias 表别名
-     * @param column     列名
-     * @param value      值
-     * @param <T>        泛型类型
-     * @return 条件对象
-     */
-    public static <T> DirectNotEqual<T> create(String tableAlias, String column, Object value) {
-        return create(tableAlias, column, value, Logic.AND);
-    }
-
-    /**
-     * 创建不等于条件对象
-     * @param tableAlias 表别名
-     * @param column     列名
-     * @param value      值
-     * @param logic      逻辑符号
-     * @param <T>        泛型类型
-     * @return 条件对象
-     */
-    public static <T> DirectNotEqual<T> create(String tableAlias, String column, Object value, Logic logic) {
-        if (hasText(column)) {
-            return new DirectNotEqual<>(tableAlias, column, value, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建不等于条件对象
-     * @param criteria 条件包装对象
-     * @param column   列名
-     * @param value    值
-     * @param <T>      泛型类型
-     * @return 条件对象
-     */
-    public static <T> DirectNotEqual<T> create(Criteria<T> criteria, String column, Object value) {
-        return create(criteria, column, value, Logic.AND);
-    }
-
-    /**
-     * 创建不等于条件对象
-     * @param criteria 条件包装对象
-     * @param column   列名
-     * @param value    值
-     * @param logic    逻辑符号
-     * @param <T>      泛型类型
-     * @return 条件对象
-     */
-    public static <T> DirectNotEqual<T> create(Criteria<T> criteria, String column, Object value, Logic logic) {
-        if (hasText(column)) {
-            return new DirectNotEqual<>(criteria, column, value, logic);
-        }
-        return null;
     }
 }

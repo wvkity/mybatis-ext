@@ -14,6 +14,7 @@ import com.wkit.lost.mybatis.core.conditional.expression.DirectNotBetween;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectNotEqual;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectNotIn;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectNotLike;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectNotNull;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectNull;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectTemplate;
 import com.wkit.lost.mybatis.core.conditional.expression.Equal;
@@ -30,6 +31,7 @@ import com.wkit.lost.mybatis.core.conditional.expression.NotBetween;
 import com.wkit.lost.mybatis.core.conditional.expression.NotEqual;
 import com.wkit.lost.mybatis.core.conditional.expression.NotIn;
 import com.wkit.lost.mybatis.core.conditional.expression.NotLike;
+import com.wkit.lost.mybatis.core.conditional.expression.NotNull;
 import com.wkit.lost.mybatis.core.conditional.expression.Null;
 import com.wkit.lost.mybatis.core.conditional.expression.SubQuery;
 import com.wkit.lost.mybatis.core.conditional.expression.Template;
@@ -114,7 +116,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T, V> Equal<T> eq(Criteria<T> criteria, Property<T, V> property, V value, Logic logic) {
-        return Equal.create(criteria, property, value, logic);
+        Equal.Builder<T> builder = Equal.create();
+        return builder.criteria(criteria).property(property).value(value).logic(logic).build();
     }
 
     /**
@@ -127,7 +130,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> Equal<T> eq(Criteria<T> criteria, String property, Object value, Logic logic) {
-        return Equal.create(criteria, property, value, logic);
+        Equal.Builder<T> it = Equal.create();
+        return it.criteria(criteria).property(property).value(value).logic(logic).build();
     }
 
     /**
@@ -150,7 +154,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectEqual<T> directEq(String column, Object value, Logic logic) {
-        return DirectEqual.create(column, value, logic);
+        DirectEqual.Builder<T> it = DirectEqual.create();
+        return it.column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -175,7 +180,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectEqual<T> directEq(String tableAlias, String column, Object value, Logic logic) {
-        return DirectEqual.create(tableAlias, column, value, logic);
+        DirectEqual.Builder<T> it = DirectEqual.create();
+        return it.alias(tableAlias).column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -200,7 +206,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectEqual<T> directEq(Criteria<T> criteria, String column, Object value, Logic logic) {
-        return DirectEqual.create(criteria, column, value, logic);
+        DirectEqual.Builder<T> it = DirectEqual.create();
+        return it.criteria(criteria).column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -227,7 +234,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T, V> NotEqual<T> ne(Criteria<T> criteria, Property<T, V> property, V value, Logic logic) {
-        return NotEqual.create(criteria, property, value, logic);
+        NotEqual.Builder<T> it = NotEqual.create();
+        return it.criteria(criteria).property(property).value(value).logic(logic).build();
     }
 
     /**
@@ -252,7 +260,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> NotEqual<T> ne(Criteria<T> criteria, String property, Object value, Logic logic) {
-        return NotEqual.create(criteria, property, value, logic);
+        NotEqual.Builder<T> it = NotEqual.create();
+        return it.criteria(criteria).property(property).value(value).logic(logic).build();
     }
 
     /**
@@ -275,7 +284,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectNotEqual<T> directNe(String column, Object value, Logic logic) {
-        return DirectNotEqual.create(column, value, logic);
+        DirectNotEqual.Builder<T> it = DirectNotEqual.create();
+        return it.column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -300,7 +310,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectNotEqual<T> directNe(String tableAlias, String column, Object value, Logic logic) {
-        return DirectNotEqual.create(tableAlias, column, value, logic);
+        DirectNotEqual.Builder<T> it = DirectNotEqual.create();
+        return it.alias(tableAlias).column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -325,7 +336,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectNotEqual<T> directNe(Criteria<T> criteria, String column, Object value, Logic logic) {
-        return DirectNotEqual.create(criteria, column, value, logic);
+        DirectNotEqual.Builder<T> it = DirectNotEqual.create();
+        return it.criteria(criteria).column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -352,7 +364,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T, V> LessThan<T> lt(Criteria<T> criteria, Property<T, V> property, V value, Logic logic) {
-        return LessThan.create(criteria, property, value, logic);
+        LessThan.Builder<T> it = LessThan.create();
+        return it.criteria(criteria).property(property).value(value).logic(logic).build();
     }
 
     /**
@@ -377,7 +390,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> LessThan<T> lt(Criteria<T> criteria, String property, Object value, Logic logic) {
-        return LessThan.create(criteria, property, value, logic);
+        LessThan.Builder<T> it = LessThan.create();
+        return it.criteria(criteria).property(property).value(value).logic(logic).build();
     }
 
     /**
@@ -400,7 +414,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectLessThan<T> directLt(String column, Object value, Logic logic) {
-        return DirectLessThan.create(column, value, logic);
+        DirectLessThan.Builder<T> it = DirectLessThan.create();
+        return it.column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -425,7 +440,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectLessThan<T> directLt(String tableAlias, String column, Object value, Logic logic) {
-        return DirectLessThan.create(tableAlias, column, value, logic);
+        DirectLessThan.Builder<T> it = DirectLessThan.create();
+        return it.alias(tableAlias).column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -450,7 +466,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectLessThan<T> directLt(Criteria<T> criteria, String column, Object value, Logic logic) {
-        return DirectLessThan.create(criteria, column, value, logic);
+        DirectLessThan.Builder<T> it = DirectLessThan.create();
+        return it.criteria(criteria).column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -477,7 +494,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T, V> LessThanOrEqual<T> le(Criteria<T> criteria, Property<T, V> property, V value, Logic logic) {
-        return LessThanOrEqual.create(criteria, property, value, logic);
+        LessThanOrEqual.Builder<T> it = LessThanOrEqual.create();
+        return it.criteria(criteria).property(property).value(value).logic(logic).build();
     }
 
     /**
@@ -502,7 +520,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> LessThanOrEqual<T> le(Criteria<T> criteria, String property, Object value, Logic logic) {
-        return LessThanOrEqual.create(criteria, property, value, logic);
+        LessThanOrEqual.Builder<T> it = LessThanOrEqual.create();
+        return it.criteria(criteria).property(property).value(value).logic(logic).build();
     }
 
     /**
@@ -525,7 +544,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectLessThanOrEqual<T> directLe(String column, Object value, Logic logic) {
-        return DirectLessThanOrEqual.create(column, value, logic);
+        DirectLessThanOrEqual.Builder<T> it = DirectLessThanOrEqual.create();
+        return it.column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -550,7 +570,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectLessThanOrEqual<T> directLe(String tableAlias, String column, Object value, Logic logic) {
-        return DirectLessThanOrEqual.create(tableAlias, column, value, logic);
+        DirectLessThanOrEqual.Builder<T> it = DirectLessThanOrEqual.create();
+        return it.alias(tableAlias).column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -576,7 +597,8 @@ public final class Restrictions {
      */
     public static <T> DirectLessThanOrEqual<T> directLe(Criteria<T> criteria, String column,
                                                         Object value, Logic logic) {
-        return DirectLessThanOrEqual.create(criteria, column, value, logic);
+        DirectLessThanOrEqual.Builder<T> it = DirectLessThanOrEqual.create();
+        return it.criteria(criteria).column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -603,7 +625,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T, V> GreaterThan<T> gt(Criteria<T> criteria, Property<T, V> property, V value, Logic logic) {
-        return GreaterThan.create(criteria, property, value, logic);
+        GreaterThan.Builder<T> it = GreaterThan.create();
+        return it.criteria(criteria).property(property).value(value).logic(logic).build();
     }
 
     /**
@@ -628,7 +651,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> GreaterThan<T> gt(Criteria<T> criteria, String property, Object value, Logic logic) {
-        return GreaterThan.create(criteria, property, value, logic);
+        GreaterThan.Builder<T> it = GreaterThan.create();
+        return it.criteria(criteria).property(property).value(value).logic(logic).build();
     }
 
     /**
@@ -651,7 +675,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectGreaterThan<T> directGt(String column, Object value, Logic logic) {
-        return DirectGreaterThan.create(column, value, logic);
+        DirectGreaterThan.Builder<T> it = DirectGreaterThan.create();
+        return it.column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -676,7 +701,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectGreaterThan<T> directGt(String tableAlias, String column, Object value, Logic logic) {
-        return DirectGreaterThan.create(tableAlias, column, value, logic);
+        DirectGreaterThan.Builder<T> it = DirectGreaterThan.create();
+        return it.alias(tableAlias).column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -701,7 +727,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectGreaterThan<T> directGt(Criteria<T> criteria, String column, Object value, Logic logic) {
-        return DirectGreaterThan.create(criteria, column, value, logic);
+        DirectGreaterThan.Builder<T> it = DirectGreaterThan.create();
+        return it.criteria(criteria).column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -729,7 +756,8 @@ public final class Restrictions {
      */
     public static <T, V> GreaterThanOrEqual<T> ge(Criteria<T> criteria, Property<T, V> property,
                                                   V value, Logic logic) {
-        return GreaterThanOrEqual.create(criteria, property, value, logic);
+        GreaterThanOrEqual.Builder<T> it = GreaterThanOrEqual.create();
+        return it.criteria(criteria).property(property).value(value).logic(logic).build();
     }
 
     /**
@@ -754,7 +782,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> GreaterThanOrEqual<T> ge(Criteria<T> criteria, String property, Object value, Logic logic) {
-        return GreaterThanOrEqual.create(criteria, property, value, logic);
+        GreaterThanOrEqual.Builder<T> it = GreaterThanOrEqual.create();
+        return it.criteria(criteria).property(property).value(value).logic(logic).build();
     }
 
     /**
@@ -777,7 +806,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectGreaterThanOrEqual<T> directGe(String column, Object value, Logic logic) {
-        return DirectGreaterThanOrEqual.create(column, value, logic);
+        DirectGreaterThanOrEqual.Builder<T> it = DirectGreaterThanOrEqual.create();
+        return it.column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -803,7 +833,8 @@ public final class Restrictions {
      */
     public static <T> DirectGreaterThanOrEqual<T> directGe(String tableAlias, String column,
                                                            Object value, Logic logic) {
-        return DirectGreaterThanOrEqual.create(tableAlias, column, value, logic);
+        DirectGreaterThanOrEqual.Builder<T> it = DirectGreaterThanOrEqual.create();
+        return it.alias(tableAlias).column(column).value(value).logic(logic).build();
     }
 
     /**
@@ -829,7 +860,8 @@ public final class Restrictions {
      */
     public static <T> DirectGreaterThanOrEqual<T> directGe(Criteria<T> criteria, String column,
                                                            Object value, Logic logic) {
-        return DirectGreaterThanOrEqual.create(criteria, column, value, logic);
+        DirectGreaterThanOrEqual.Builder<T> it = DirectGreaterThanOrEqual.create();
+        return it.criteria(criteria).column(column).value(value).logic(logic).build();
     }
 
     // endregion
@@ -858,7 +890,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T, V> Null<T> isNull(Criteria<T> criteria, Property<T, V> property, Logic logic) {
-        return Null.create(criteria, property, logic);
+        Null.Builder<T> it = Null.create();
+        return it.criteria(criteria).property(property).logic(logic).build();
     }
 
     /**
@@ -881,7 +914,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> Null<T> isNull(Criteria<T> criteria, String property, Logic logic) {
-        return Null.create(criteria, property, logic);
+        Null.Builder<T> it = Null.create();
+        return it.criteria(criteria).property(property).logic(logic).build();
     }
 
     /**
@@ -904,7 +938,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectNull<T> directIsNull(String tableAlias, String column, Logic logic) {
-        return DirectNull.create(tableAlias, column, logic);
+        DirectNull.Builder<T> it = DirectNull.create();
+        return it.alias(tableAlias).column(column).logic(logic).build();
     }
 
     /**
@@ -927,23 +962,24 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectNull<T> directIsNull(Criteria<T> criteria, String column, Logic logic) {
-        return DirectNull.create(criteria, column, logic);
+        DirectNull.Builder<T> it = DirectNull.create();
+        return it.criteria(criteria).column(column).logic(logic).build();
     }
 
     /**
-     * IS NULL
+     * IS NOT NULL
      * @param criteria 条件包装对象
      * @param property 属性
      * @param <T>      实体类型
      * @param <V>      属性值类型
      * @return 条件对象
      */
-    public static <T, V> Null<T> notNull(Criteria<T> criteria, Property<T, V> property) {
+    public static <T, V> NotNull<T> notNull(Criteria<T> criteria, Property<T, V> property) {
         return notNull(criteria, property, Logic.AND);
     }
 
     /**
-     * IS NULL
+     * IS NOT NULL
      * @param criteria 条件包装对象
      * @param property 属性
      * @param logic    逻辑符号
@@ -951,31 +987,33 @@ public final class Restrictions {
      * @param <V>      属性值类型
      * @return 条件对象
      */
-    public static <T, V> Null<T> notNull(Criteria<T> criteria, Property<T, V> property, Logic logic) {
-        return Null.create(criteria, property, logic);
+    public static <T, V> NotNull<T> notNull(Criteria<T> criteria, Property<T, V> property, Logic logic) {
+        NotNull.Builder<T> it = NotNull.create();
+        return it.criteria(criteria).property(property).logic(logic).build();
     }
 
     /**
-     * IS NULL
+     * IS NOT NULL
      * @param criteria 条件包装对象
      * @param property 属性
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> Null<T> notNull(Criteria<T> criteria, String property) {
+    public static <T> NotNull<T> notNull(Criteria<T> criteria, String property) {
         return notNull(criteria, property, Logic.AND);
     }
 
     /**
-     * IS NULL
+     * IS NOT NULL
      * @param criteria 条件包装对象
      * @param property 属性
      * @param logic    逻辑符号
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> Null<T> notNull(Criteria<T> criteria, String property, Logic logic) {
-        return Null.create(criteria, property, logic);
+    public static <T> NotNull<T> notNull(Criteria<T> criteria, String property, Logic logic) {
+        NotNull.Builder<T> it = NotNull.create();
+        return it.criteria(criteria).property(property).logic(logic).build();
     }
 
     /**
@@ -985,7 +1023,7 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> DirectNull<T> directNotNull(String tableAlias, String column) {
+    public static <T> DirectNotNull<T> directNotNull(String tableAlias, String column) {
         return directNotNull(tableAlias, column, Logic.AND);
     }
 
@@ -997,8 +1035,9 @@ public final class Restrictions {
      * @param <T>        实体类型
      * @return 条件对象
      */
-    public static <T> DirectNull<T> directNotNull(String tableAlias, String column, Logic logic) {
-        return DirectNull.create(tableAlias, column, logic);
+    public static <T> DirectNotNull<T> directNotNull(String tableAlias, String column, Logic logic) {
+        DirectNotNull.Builder<T> it = DirectNotNull.create();
+        return it.alias(tableAlias).column(column).logic(logic).build();
     }
 
     /**
@@ -1008,7 +1047,7 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> DirectNull<T> directNotNull(Criteria<T> criteria, String column) {
+    public static <T> DirectNotNull<T> directNotNull(Criteria<T> criteria, String column) {
         return directNotNull(criteria, column, Logic.AND);
     }
 
@@ -1020,13 +1059,42 @@ public final class Restrictions {
      * @param <T>      实体类型
      * @return 条件对象
      */
-    public static <T> DirectNull<T> directNotNull(Criteria<T> criteria, String column, Logic logic) {
-        return DirectNull.create(criteria, column, logic);
+    public static <T> DirectNotNull<T> directNotNull(Criteria<T> criteria, String column, Logic logic) {
+        DirectNotNull.Builder<T> it = DirectNotNull.create();
+        return it.criteria(criteria).column(column).logic(logic).build();
     }
 
     // endregion
 
     // region range expression
+
+    /**
+     * IN
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param values   值
+     * @param <T>      实体类型
+     * @param <V>      属性值类型
+     * @return 条件对象
+     */
+    public static <T, V> In<T> in(Criteria<T> criteria, Property<T, V> property, Collection<Object> values) {
+        return in(criteria, property, values, Logic.AND);
+    }
+
+    /**
+     * IN
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param values   值
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @param <V>      属性值类型
+     * @return 条件对象
+     */
+    public static <T, V> In<T> in(Criteria<T> criteria, Property<T, V> property, Collection<Object> values, Logic logic) {
+        In.Builder<T> it = In.create();
+        return it.criteria(criteria).property(property).values(values).logic(logic).build();
+    }
 
     /**
      * IN
@@ -1050,7 +1118,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> In<T> in(Criteria<T> criteria, String property, Collection<Object> values, Logic logic) {
-        return In.create(criteria, property, values, logic);
+        In.Builder<T> it = In.create();
+        return it.criteria(criteria).property(property).values(values).logic(logic).build();
     }
 
     /**
@@ -1073,7 +1142,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectIn<T> directIn(String column, Collection<Object> values, Logic logic) {
-        return DirectIn.create(column, values, logic);
+        DirectIn.Builder<T> it = DirectIn.create();
+        return it.column(column).values(values).logic(logic).build();
     }
 
     /**
@@ -1098,7 +1168,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectIn<T> directIn(String tableAlias, String column, Collection<Object> values, Logic logic) {
-        return DirectIn.create(tableAlias, column, values, logic);
+        DirectIn.Builder<T> it = DirectIn.create();
+        return it.alias(tableAlias).column(column).values(values).logic(logic).build();
     }
 
     /**
@@ -1124,7 +1195,37 @@ public final class Restrictions {
      */
     public static <T> DirectIn<T> directIn(Criteria<T> criteria, String column,
                                            Collection<Object> values, Logic logic) {
-        return DirectIn.create(criteria, column, values, logic);
+        DirectIn.Builder<T> it = DirectIn.create();
+        return it.criteria(criteria).column(column).values(values).logic(logic).build();
+    }
+
+    /**
+     * NOT IN
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param values   值
+     * @param <T>      实体类型
+     * @param <V>      属性值类型
+     * @return 条件对象
+     */
+    public static <T, V> NotIn<T> notIn(Criteria<T> criteria, Property<T, V> property, Collection<Object> values) {
+        return notIn(criteria, property, values, Logic.AND);
+    }
+
+    /**
+     * NOT IN
+     * @param criteria 条件包装对象
+     * @param property 属性
+     * @param values   值
+     * @param logic    逻辑符号
+     * @param <T>      实体类型
+     * @param <V>      属性值类型
+     * @return 条件对象
+     */
+    public static <T, V> NotIn<T> notIn(Criteria<T> criteria, Property<T, V> property,
+                                        Collection<Object> values, Logic logic) {
+        NotIn.Builder<T> it = NotIn.create();
+        return it.criteria(criteria).property(property).values(values).logic(logic).build();
     }
 
     /**
@@ -1150,7 +1251,8 @@ public final class Restrictions {
      */
     public static <T> NotIn<T> notIn(Criteria<T> criteria, String property,
                                      Collection<Object> values, Logic logic) {
-        return NotIn.create(criteria, property, values, logic);
+        NotIn.Builder<T> it = NotIn.create();
+        return it.criteria(criteria).property(property).values(values).logic(logic).build();
     }
 
     /**
@@ -1173,7 +1275,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectNotIn<T> directNotIn(String column, Collection<Object> values, Logic logic) {
-        return DirectNotIn.create(column, values, logic);
+        DirectNotIn.Builder<T> it = DirectNotIn.create();
+        return it.column(column).values(values).logic(logic).build();
     }
 
     /**
@@ -1199,7 +1302,8 @@ public final class Restrictions {
      */
     public static <T> DirectNotIn<T> directNotIn(String tableAlias, String column,
                                                  Collection<Object> values, Logic logic) {
-        return DirectNotIn.create(tableAlias, column, values, logic);
+        DirectNotIn.Builder<T> it = DirectNotIn.create();
+        return it.alias(tableAlias).column(column).values(values).logic(logic).build();
     }
 
     /**
@@ -1226,7 +1330,8 @@ public final class Restrictions {
      */
     public static <T> DirectNotIn<T> directNotIn(Criteria<T> criteria, String column,
                                                  Collection<Object> values, Logic logic) {
-        return DirectNotIn.create(criteria, column, values, logic);
+        DirectNotIn.Builder<T> it = DirectNotIn.create();
+        return it.criteria(criteria).column(column).values(values).logic(logic).build();
     }
 
     /**
@@ -1256,7 +1361,8 @@ public final class Restrictions {
      */
     public static <T, V> Between<T> between(Criteria<T> criteria, Property<T, V> property,
                                             V begin, V end, Logic logic) {
-        return Between.create(criteria, property, begin, end, logic);
+        Between.Builder<T> it = Between.create();
+        return it.criteria(criteria).property(property).begin(begin).end(end).logic(logic).build();
     }
 
     /**
@@ -1284,7 +1390,8 @@ public final class Restrictions {
      */
     public static <T> Between<T> between(Criteria<T> criteria, String property, Object begin,
                                          Object end, Logic logic) {
-        return Between.create(criteria, property, begin, end, logic);
+        Between.Builder<T> it = Between.create();
+        return it.criteria(criteria).property(property).begin(begin).end(end).logic(logic).build();
     }
 
     /**
@@ -1309,7 +1416,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectBetween<T> directBetween(String column, Object begin, Object end, Logic logic) {
-        return DirectBetween.create(column, begin, end, logic);
+        DirectBetween.Builder<T> it = DirectBetween.create();
+        return it.column(column).begin(begin).end(end).logic(logic).build();
     }
 
     /**
@@ -1337,7 +1445,8 @@ public final class Restrictions {
      */
     public static <T> DirectBetween<T> directBetween(String tableAlias, String column, Object begin,
                                                      Object end, Logic logic) {
-        return DirectBetween.create(tableAlias, column, begin, end, logic);
+        DirectBetween.Builder<T> it = DirectBetween.create();
+        return it.alias(tableAlias).column(column).begin(begin).end(end).logic(logic).build();
     }
 
     /**
@@ -1365,7 +1474,8 @@ public final class Restrictions {
      */
     public static <T> DirectBetween<T> directBetween(Criteria<T> criteria, String column, Object begin,
                                                      Object end, Logic logic) {
-        return DirectBetween.create(criteria, column, begin, end, logic);
+        DirectBetween.Builder<T> it = DirectBetween.create();
+        return it.criteria(criteria).column(column).begin(begin).end(end).logic(logic).build();
     }
 
     /**
@@ -1381,7 +1491,8 @@ public final class Restrictions {
      */
     public static <T, V> NotBetween<T> notBetween(Criteria<T> criteria, Property<T, V> property,
                                                   V begin, V end, Logic logic) {
-        return NotBetween.create(criteria, property, begin, end, logic);
+        NotBetween.Builder<T> it = NotBetween.create();
+        return it.criteria(criteria).property(property).begin(begin).end(end).logic(logic).build();
     }
 
     /**
@@ -1409,7 +1520,8 @@ public final class Restrictions {
      */
     public static <T> NotBetween<T> notBetween(Criteria<T> criteria, String property, Object begin,
                                                Object end, Logic logic) {
-        return NotBetween.create(criteria, property, begin, end, logic);
+        NotBetween.Builder<T> it = NotBetween.create();
+        return it.criteria(criteria).property(property).begin(begin).end(end).logic(logic).build();
     }
 
     /**
@@ -1434,7 +1546,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> DirectNotBetween<T> directNotBetween(String column, Object begin, Object end, Logic logic) {
-        return DirectNotBetween.create(column, begin, end, logic);
+        DirectNotBetween.Builder<T> it = DirectNotBetween.create();
+        return it.column(column).begin(begin).end(end).logic(logic).build();
     }
 
     /**
@@ -1463,7 +1576,8 @@ public final class Restrictions {
      */
     public static <T> DirectNotBetween<T> directNotBetween(String tableAlias, String column, Object begin,
                                                            Object end, Logic logic) {
-        return DirectNotBetween.create(tableAlias, column, begin, end, logic);
+        DirectNotBetween.Builder<T> it = DirectNotBetween.create();
+        return it.alias(tableAlias).column(column).begin(begin).end(end).logic(logic).build();
     }
 
     /**
@@ -1492,7 +1606,8 @@ public final class Restrictions {
      */
     public static <T> DirectNotBetween<T> directNotBetween(Criteria<T> criteria, String column, Object begin,
                                                            Object end, Logic logic) {
-        return DirectNotBetween.create(criteria, column, begin, end, logic);
+        DirectNotBetween.Builder<T> it = DirectNotBetween.create();
+        return it.criteria(criteria).column(column).begin(begin).end(end).logic(logic).build();
     }
 
     // endregion
@@ -1533,7 +1648,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> Like<T> like(Criteria<T> criteria, Property<T, String> property, String value, Logic logic) {
-        return Like.create(criteria, property, value, logic);
+        Like.Builder<T> it = Like.create();
+        return it.criteria(criteria).property(property).value(value).logic(logic).build();
     }
 
     /**
@@ -1546,7 +1662,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> Like<T> like(Criteria<T> criteria, String property, String value, Logic logic) {
-        return Like.create(criteria, property, value, logic);
+        Like.Builder<T> it = Like.create();
+        return it.criteria(criteria).property(property).value(value).logic(logic).build();
     }
 
     /**
@@ -1588,7 +1705,8 @@ public final class Restrictions {
      */
     public static <T> Like<T> like(Criteria<T> criteria, Property<T, String> property, String value,
                                    Character escape, Logic logic) {
-        return Like.create(criteria, property, value, escape, logic);
+        Like.Builder<T> it = Like.create();
+        return it.criteria(criteria).property(property).value(value).escape(escape).logic(logic).build();
     }
 
     /**
@@ -1603,7 +1721,8 @@ public final class Restrictions {
      */
     public static <T> Like<T> like(Criteria<T> criteria, String property, String value,
                                    Character escape, Logic logic) {
-        return Like.create(criteria, property, value, escape, logic);
+        Like.Builder<T> it = Like.create();
+        return it.criteria(criteria).property(property).value(value).escape(escape).logic(logic).build();
     }
 
     /**
@@ -1644,7 +1763,8 @@ public final class Restrictions {
      */
     public static <T> Like<T> like(Criteria<T> criteria, Property<T, String> property, String value,
                                    Match match, Logic logic) {
-        return Like.create(criteria, property, value, match, logic);
+        Like.Builder<T> it = Like.create();
+        return it.criteria(criteria).property(property).value(value).match(match).logic(logic).build();
     }
 
     /**
@@ -1659,7 +1779,8 @@ public final class Restrictions {
      */
     public static <T> Like<T> like(Criteria<T> criteria, String property, String value,
                                    Match match, Logic logic) {
-        return Like.create(criteria, property, value, match, logic);
+        Like.Builder<T> it = Like.create();
+        return it.criteria(criteria).property(property).value(value).match(match).logic(logic).build();
     }
 
     /**
@@ -1705,7 +1826,8 @@ public final class Restrictions {
      */
     public static <T> Like<T> like(Criteria<T> criteria, Property<T, String> property, String value,
                                    Match match, Character escape, Logic logic) {
-        return Like.create(criteria, property, value, match, escape, logic);
+        Like.Builder<T> it = Like.create();
+        return it.criteria(criteria).property(property).value(value).match(match).escape(escape).logic(logic).build();
     }
 
     /**
@@ -1721,7 +1843,8 @@ public final class Restrictions {
      */
     public static <T> Like<T> like(Criteria<T> criteria, String property, String value,
                                    Match match, Character escape, Logic logic) {
-        return Like.create(criteria, property, value, match, escape, logic);
+        Like.Builder<T> it = Like.create();
+        return it.criteria(criteria).property(property).value(value).match(match).escape(escape).logic(logic).build();
     }
 
     /**
@@ -1759,7 +1882,8 @@ public final class Restrictions {
      */
     public static <T> NotLike<T> notLike(Criteria<T> criteria, Property<T, String> property,
                                          String value, Logic logic) {
-        return NotLike.create(criteria, property, value, logic);
+        NotLike.Builder<T> it = NotLike.create();
+        return it.criteria(criteria).property(property).value(value).logic(logic).build();
     }
 
     /**
@@ -1772,7 +1896,8 @@ public final class Restrictions {
      * @return 条件对象
      */
     public static <T> NotLike<T> notLike(Criteria<T> criteria, String property, String value, Logic logic) {
-        return NotLike.create(criteria, property, value, logic);
+        NotLike.Builder<T> it = NotLike.create();
+        return it.criteria(criteria).property(property).value(value).logic(logic).build();
     }
 
     /**
@@ -1814,7 +1939,8 @@ public final class Restrictions {
      */
     public static <T> NotLike<T> notLike(Criteria<T> criteria, Property<T, String> property, String value,
                                          Character escape, Logic logic) {
-        return NotLike.create(criteria, property, value, escape, logic);
+        NotLike.Builder<T> it = NotLike.create();
+        return it.criteria(criteria).property(property).value(value).escape(escape).logic(logic).build();
     }
 
     /**
@@ -1829,7 +1955,8 @@ public final class Restrictions {
      */
     public static <T> NotLike<T> notLike(Criteria<T> criteria, String property, String value,
                                          Character escape, Logic logic) {
-        return NotLike.create(criteria, property, value, escape, logic);
+        NotLike.Builder<T> it = NotLike.create();
+        return it.criteria(criteria).property(property).value(value).escape(escape).logic(logic).build();
     }
 
     /**
@@ -1871,7 +1998,8 @@ public final class Restrictions {
      */
     public static <T> NotLike<T> notLike(Criteria<T> criteria, Property<T, String> property, String value,
                                          Match match, Logic logic) {
-        return NotLike.create(criteria, property, value, match, logic);
+        NotLike.Builder<T> it = NotLike.create();
+        return it.criteria(criteria).property(property).value(value).match(match).logic(logic).build();
     }
 
     /**
@@ -1886,7 +2014,8 @@ public final class Restrictions {
      */
     public static <T> NotLike<T> notLike(Criteria<T> criteria, String property, String value,
                                          Match match, Logic logic) {
-        return NotLike.create(criteria, property, value, match, logic);
+        NotLike.Builder<T> it = NotLike.create();
+        return it.criteria(criteria).property(property).value(value).match(match).logic(logic).build();
     }
 
     /**
@@ -1932,7 +2061,8 @@ public final class Restrictions {
      */
     public static <T> NotLike<T> notLike(Criteria<T> criteria, Property<T, String> property, String value,
                                          Match match, Character escape, Logic logic) {
-        return NotLike.create(criteria, property, value, match, escape, logic);
+        NotLike.Builder<T> it = NotLike.create();
+        return it.criteria(criteria).property(property).value(value).match(match).escape(escape).logic(logic).build();
     }
 
     /**
@@ -1948,7 +2078,8 @@ public final class Restrictions {
      */
     public static <T> NotLike<T> notLike(Criteria<T> criteria, String property, String value,
                                          Match match, Character escape, Logic logic) {
-        return NotLike.create(criteria, property, value, match, escape, logic);
+        NotLike.Builder<T> it = NotLike.create();
+        return it.criteria(criteria).property(property).value(value).match(match).escape(escape).logic(logic).build();
     }
 
     /**

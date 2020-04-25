@@ -131,7 +131,7 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
         if (parameter instanceof Criteria) {
             Criteria<?> criteria = (Criteria<?>) parameter;
             // 注入条件
-            criteria.add(Restrictions.eq(criteria, property, value));
+            criteria.where(Restrictions.eq(criteria, property, value));
         }
     }
 

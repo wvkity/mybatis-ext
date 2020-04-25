@@ -95,6 +95,15 @@ public abstract class ExpressionWrapper<T, E> implements Criterion<T>, Placehold
     }
 
     /**
+     * 检查字符串是否为空
+     * @param value 待检查字符串
+     * @return boolean
+     */
+    public static boolean isEmpty(String value) {
+        return StringUtil.isBlank(value);
+    }
+
+    /**
      * 检查字符串是否不为空
      * @param value 待检查字符串
      * @return boolean

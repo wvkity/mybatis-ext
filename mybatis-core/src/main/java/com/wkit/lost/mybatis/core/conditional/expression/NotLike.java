@@ -6,6 +6,10 @@ import com.wkit.lost.mybatis.core.constant.Symbol;
 import com.wkit.lost.mybatis.core.converter.Property;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * NOT LIKE模糊匹配
@@ -15,55 +19,6 @@ import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 public class NotLike<T> extends AbstractFuzzyExpression<T> {
 
     private static final long serialVersionUID = 6927519566015548400L;
-
-    /**
-     * 构造方法
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param value    值
-     * @param logic    逻辑符号
-     */
-    NotLike(Criteria<T> criteria, ColumnWrapper column, String value, Logic logic) {
-        this.criteria = criteria;
-        this.column = column;
-        this.value = value;
-        this.logic = logic;
-        this.symbol = Symbol.NOT_LIKE;
-    }
-
-    /**
-     * 构造方法
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param value    值
-     * @param match    匹配模式
-     * @param logic    逻辑符号
-     */
-    NotLike(Criteria<T> criteria, ColumnWrapper column, String value, Match match, Logic logic) {
-        this.criteria = criteria;
-        this.column = column;
-        this.value = value;
-        this.match = match;
-        this.logic = logic;
-        this.symbol = Symbol.NOT_LIKE;
-    }
-
-    /**
-     * 构造方法
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param value    值
-     * @param escape   转义字符
-     * @param logic    逻辑符号
-     */
-    NotLike(Criteria<T> criteria, ColumnWrapper column, String value, Character escape, Logic logic) {
-        this.criteria = criteria;
-        this.column = column;
-        this.value = value;
-        this.escape = escape;
-        this.logic = logic;
-        this.symbol = Symbol.NOT_LIKE;
-    }
 
     /**
      * 构造方法
@@ -81,369 +36,106 @@ public class NotLike<T> extends AbstractFuzzyExpression<T> {
         this.match = match;
         this.escape = escape;
         this.logic = logic;
-        this.symbol = Symbol.NOT_LIKE;
-    }
-
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, Property<T, String> property, String value) {
-        return create(criteria, property, value, Logic.AND);
+        this.symbol = Symbol.LIKE;
     }
 
     /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
+     * 创建条件构建器
+     * @param <T> 实体类型
+     * @return 构建器
      */
-    public static <T> NotLike<T> create(Criteria<T> criteria, Property<T, String> property, String value, Logic logic) {
-        return create(criteria, criteria.searchColumn(property), value, logic);
+    public static <T> NotLike.Builder<T> create() {
+        return new NotLike.Builder<>();
     }
 
     /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param <T>      实体类型
-     * @return 条件对象
+     * 条件对象构建器
+     * @param <T> 实体类
      */
-    public static <T> NotLike<T> create(Criteria<T> criteria, String property, String value) {
-        return create(criteria, property, value, Logic.AND);
-    }
+    @Setter
+    @Accessors(chain = true, fluent = true)
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class Builder<T> {
+        /**
+         * 条件包装对象
+         */
+        private Criteria<T> criteria;
+        /**
+         * 条件包装对象
+         */
+        private ColumnWrapper column;
+        /**
+         * 属性
+         */
+        @Setter(AccessLevel.NONE)
+        private String property;
+        /**
+         * 属性
+         */
+        @Setter(AccessLevel.NONE)
+        private Property<T, ?> lambdaProperty;
+        /**
+         * 值
+         */
+        private String value;
+        /**
+         * 匹配模式
+         */
+        private Match match = Match.ANYWHERE;
+        /**
+         * 转义字符
+         */
+        private Character escape;
+        /**
+         * 逻辑符号
+         */
+        private Logic logic;
 
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, String property, String value, Logic logic) {
-        if (criteria != null && hasText(property)) {
-            return create(criteria, criteria.searchColumn(property), value, logic);
+        /**
+         * 属性
+         * @param property 属性
+         * @return {@link NotLike.Builder}
+         */
+        public NotLike.Builder<T> property(String property) {
+            this.property = property;
+            return this;
         }
-        return null;
-    }
 
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param value    值
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, ColumnWrapper column, String value) {
-        return create(criteria, column, value, Logic.AND);
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param value    值
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, ColumnWrapper column, String value, Logic logic) {
-        if (criteria != null && column != null) {
-            return new NotLike<>(criteria, column, value, logic);
+        /**
+         * 属性
+         * @param property 属性
+         * @param <V>      属性值类型
+         * @return {@link NotLike.Builder}
+         */
+        public <V> NotLike.Builder<T> property(Property<T, V> property) {
+            this.lambdaProperty = property;
+            return this;
         }
-        return null;
-    }
 
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param match    匹配模式
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, Property<T, String> property, String value, Match match) {
-        return create(criteria, property, value, match, Logic.AND);
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param match    匹配模式
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, Property<T, String> property, String value,
-                                        Match match, Logic logic) {
-        return create(criteria, criteria.searchColumn(property), value, match, logic);
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param match    匹配模式
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, String property, String value, Match match) {
-        return create(criteria, property, value, match, Logic.AND);
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param match    匹配模式
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, String property, String value,
-                                        Match match, Logic logic) {
-        if (criteria != null && hasText(property)) {
-            return create(criteria, criteria.searchColumn(property), value, match, logic);
+        /**
+         * 构建条件对象
+         * @return 条件对象
+         */
+        public NotLike<T> build() {
+            if (this.column != null) {
+                return new NotLike<>(this.criteria, this.column, this.value, this.match, this.escape, this.logic);
+            }
+            if (this.criteria == null) {
+                return null;
+            }
+            if (hasText(this.property)) {
+                ColumnWrapper wrapper = this.criteria.searchColumn(this.property);
+                if (wrapper != null) {
+                    return new NotLike<>(this.criteria, wrapper, this.value, this.match, this.escape, this.logic);
+                }
+            }
+            if (lambdaProperty != null) {
+                ColumnWrapper wrapper = this.criteria.searchColumn(lambdaProperty);
+                if (wrapper != null) {
+                    return new NotLike<>(this.criteria, wrapper, this.value, this.match, this.escape, this.logic);
+                }
+            }
+            return null;
         }
-        return null;
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param value    值
-     * @param match    匹配模式
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, ColumnWrapper column, String value,
-                                        Match match) {
-        return create(criteria, column, value, match, Logic.AND);
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param value    值
-     * @param match    匹配模式
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, ColumnWrapper column, String value,
-                                        Match match, Logic logic) {
-        if (criteria != null && column != null) {
-            return new NotLike<>(criteria, column, value, match, logic);
-        }
-        return null;
-    }
-
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param escape   转义字符
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, Property<T, String> property, String value, Character escape) {
-        return create(criteria, property, value, escape, Logic.AND);
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param escape   转义字符
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, Property<T, String> property, String value,
-                                        Character escape, Logic logic) {
-        return create(criteria, criteria.searchColumn(property), value, escape, logic);
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param escape   转义字符
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, String property, String value, Character escape) {
-        return create(criteria, property, value, escape, Logic.AND);
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param escape   转义字符
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, String property, String value,
-                                        Character escape, Logic logic) {
-        if (criteria != null && hasText(property)) {
-            return create(criteria, criteria.searchColumn(property), value, escape, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param value    值
-     * @param escape   转义字段
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, ColumnWrapper column, String value, Character escape) {
-        return create(criteria, column, value, escape, Logic.AND);
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param value    值
-     * @param escape   转义字段
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, ColumnWrapper column, String value,
-                                        Character escape, Logic logic) {
-        if (criteria != null && column != null) {
-            return new NotLike<>(criteria, column, value, escape, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param match    匹配模式
-     * @param escape   转义字符
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, Property<T, String> property, String value,
-                                        Match match, Character escape) {
-        return create(criteria, property, value, match, escape, Logic.AND);
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param match    匹配模式
-     * @param escape   转义字符
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, Property<T, String> property, String value,
-                                        Match match, Character escape, Logic logic) {
-        return create(criteria, criteria.searchColumn(property), value, match, escape, logic);
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param match    匹配模式
-     * @param escape   转义字符
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, String property, String value,
-                                        Match match, Character escape) {
-        return create(criteria, property, value, match, escape, Logic.AND);
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param match    匹配模式
-     * @param escape   转义字符
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, String property, String value,
-                                        Match match, Character escape, Logic logic) {
-        if (criteria != null && hasText(property)) {
-            return create(criteria, criteria.searchColumn(property), value, match, escape, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param value    值
-     * @param match    匹配模式
-     * @param escape   转义字段
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, ColumnWrapper column, String value,
-                                        Match match, Character escape) {
-        return create(criteria, column, value, match, escape, Logic.AND);
-    }
-
-    /**
-     * 创建NOT LIKE条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param value    值
-     * @param match    匹配模式
-     * @param escape   转义字段
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> NotLike<T> create(Criteria<T> criteria, ColumnWrapper column, String value,
-                                        Match match, Character escape, Logic logic) {
-        if (criteria != null && column != null) {
-            return new NotLike<>(criteria, column, value, match, escape, logic);
-        }
-        return null;
     }
 }

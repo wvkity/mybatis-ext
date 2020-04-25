@@ -12,7 +12,7 @@ import java.util.Collection;
  * @param <Chain> 子类
  * @author wvkity
  */
-public interface RangeWrapper<T, Chain extends CompareWrapper<T, Chain>> extends PropertyConverter<T> {
+public interface RangeWrapper<T, Chain extends RangeWrapper<T, Chain>> extends PropertyConverter<T> {
 
     /**
      * IN
@@ -43,8 +43,9 @@ public interface RangeWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * @param <V>      属性值类型
      * @return {@code this}
      */
+    @SuppressWarnings("unchecked")
     default <V> Chain in(Property<T, V> property, Collection<V> values) {
-        return in(convert(property), values);
+        return in(convert(property), (Collection<Object>) values);
     }
 
     /**
@@ -202,8 +203,9 @@ public interface RangeWrapper<T, Chain extends CompareWrapper<T, Chain>> extends
      * @param <V>      属性值类型
      * @return {@code this}
      */
+    @SuppressWarnings("unchecked")
     default <V> Chain notIn(Property<T, V> property, Collection<V> values) {
-        return notIn(convert(property), values);
+        return notIn(convert(property), (Collection<Object>) values);
     }
 
     /**

@@ -9,7 +9,7 @@ import com.wkit.lost.mybatis.core.converter.PropertyConverter;
  * @param <Chain> 子类
  * @author wvkity
  */
-public interface NullWrapper<T, Chain extends CompareWrapper<T, Chain>> extends PropertyConverter<T> {
+public interface NullWrapper<T, Chain extends NullWrapper<T, Chain>> extends PropertyConverter<T> {
 
     /**
      * IS NULL
