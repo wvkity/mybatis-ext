@@ -338,7 +338,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param value    值
      * @return {@code this}
      */
-    Chain directTemplate(String template, Object value);
+    Chain templateWith(String template, Object value);
 
     /**
      * TEMPLATE
@@ -346,8 +346,8 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param values   值
      * @return {@code this}
      */
-    default Chain directTemplate(String template, Object... values) {
-        return directTemplate(template, ArrayUtil.toList(values));
+    default Chain templateWith(String template, Object... values) {
+        return templateWith(template, ArrayUtil.toList(values));
     }
 
     /**
@@ -356,7 +356,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param values   值
      * @return {@code this}
      */
-    Chain directTemplate(String template, Collection<Object> values);
+    Chain templateWith(String template, Collection<Object> values);
 
     /**
      * TEMPLATE
@@ -367,11 +367,11 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param v2       key2对应值
      * @return {@code this}
      */
-    default Chain directTemplate(String template, String k1, Object v1, String k2, Object v2) {
+    default Chain templateWith(String template, String k1, Object v1, String k2, Object v2) {
         Map<String, Object> values = new HashMap<>(2);
         values.put(k1, v1);
         values.put(k2, v2);
-        return directTemplate(template, values);
+        return templateWith(template, values);
     }
 
     /**
@@ -385,13 +385,159 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param v3       key3对应值
      * @return {@code this}
      */
-    default Chain directTemplate(String template, String k1, Object v1,
+    default Chain templateWith(String template, String k1, Object v1,
+                               String k2, Object v2, String k3, Object v3) {
+        Map<String, Object> values = new HashMap<>(3);
+        values.put(k1, v1);
+        values.put(k2, v2);
+        values.put(k3, v3);
+        return templateWith(template, values);
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @return {@code this}
+     */
+    Chain templateWith(String template, Map<String, Object> values);
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param value    值
+     * @return {@code this}
+     */
+    Chain templateWith(String template, String column, Object value);
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param values   值
+     * @return {@code this}
+     */
+    default Chain templateWith(String template, String column, Object... values) {
+        return templateWith(template, column, ArrayUtil.toList(values));
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param values   值
+     * @return {@code this}
+     */
+    Chain templateWith(String template, String column, Collection<Object> values);
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param k1       占位符key1
+     * @param v1       key1对应值
+     * @param k2       占位符key2
+     * @param v2       key2对应值
+     * @return {@code this}
+     */
+    default Chain templateWith(String template, String column, String k1, Object v1, String k2, Object v2) {
+        Map<String, Object> values = new HashMap<>(2);
+        values.put(k1, v1);
+        values.put(k2, v2);
+        return templateWith(template, column, values);
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param k1       占位符key1
+     * @param v1       key1对应值
+     * @param k2       占位符key2
+     * @param v2       key2对应值
+     * @param k3       占位符key3
+     * @param v3       key3对应值
+     * @return {@code this}
+     */
+    default Chain templateWith(String template, String column, String k1, Object v1,
+                               String k2, Object v2, String k3, Object v3) {
+        Map<String, Object> values = new HashMap<>(3);
+        values.put(k1, v1);
+        values.put(k2, v2);
+        values.put(k3, v3);
+        return templateWith(template, column, values);
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param column   字段
+     * @param values   值
+     * @return {@code this}
+     */
+    Chain templateWith(String template, String column, Map<String, Object> values);
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param value    值
+     * @return {@code this}
+     */
+    Chain orTemplateWith(String template, Object value);
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @return {@code this}
+     */
+    default Chain orTemplateWith(String template, Object... values) {
+        return orTemplateWith(template, ArrayUtil.toList(values));
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param values   值
+     * @return {@code this}
+     */
+    Chain orTemplateWith(String template, Collection<Object> values);
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param k1       占位符key1
+     * @param v1       key1对应值
+     * @param k2       占位符key2
+     * @param v2       key2对应值
+     * @return {@code this}
+     */
+    default Chain orTemplateWith(String template, String k1, Object v1, String k2, Object v2) {
+        Map<String, Object> values = new HashMap<>(2);
+        values.put(k1, v1);
+        values.put(k2, v2);
+        return orTemplateWith(template, values);
+    }
+
+    /**
+     * TEMPLATE
+     * @param template 模板
+     * @param k1       占位符key1
+     * @param v1       key1对应值
+     * @param k2       占位符key2
+     * @param v2       key2对应值
+     * @param k3       占位符key3
+     * @param v3       key3对应值
+     * @return {@code this}
+     */
+    default Chain orTemplateWith(String template, String k1, Object v1,
                                  String k2, Object v2, String k3, Object v3) {
         Map<String, Object> values = new HashMap<>(3);
         values.put(k1, v1);
         values.put(k2, v2);
         values.put(k3, v3);
-        return directTemplate(template, values);
+        return orTemplateWith(template, values);
     }
 
     /**
@@ -400,7 +546,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param values   值
      * @return {@code this}
      */
-    Chain directTemplate(String template, Map<String, Object> values);
+    Chain orTemplateWith(String template, Map<String, Object> values);
 
     /**
      * TEMPLATE
@@ -409,7 +555,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param value    值
      * @return {@code this}
      */
-    Chain directTemplate(String template, String column, Object value);
+    Chain orTemplateWith(String template, String column, Object value);
 
     /**
      * TEMPLATE
@@ -418,8 +564,8 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param values   值
      * @return {@code this}
      */
-    default Chain directTemplate(String template, String column, Object... values) {
-        return directTemplate(template, column, ArrayUtil.toList(values));
+    default Chain orTemplateWith(String template, String column, Object... values) {
+        return orTemplateWith(template, column, ArrayUtil.toList(values));
     }
 
     /**
@@ -429,7 +575,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param values   值
      * @return {@code this}
      */
-    Chain directTemplate(String template, String column, Collection<Object> values);
+    Chain orTemplateWith(String template, String column, Collection<Object> values);
 
     /**
      * TEMPLATE
@@ -441,11 +587,11 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param v2       key2对应值
      * @return {@code this}
      */
-    default Chain directTemplate(String template, String column, String k1, Object v1, String k2, Object v2) {
+    default Chain orTemplateWith(String template, String column, String k1, Object v1, String k2, Object v2) {
         Map<String, Object> values = new HashMap<>(2);
         values.put(k1, v1);
         values.put(k2, v2);
-        return directTemplate(template, column, values);
+        return orTemplateWith(template, column, values);
     }
 
     /**
@@ -460,13 +606,13 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param v3       key3对应值
      * @return {@code this}
      */
-    default Chain directTemplate(String template, String column, String k1, Object v1,
+    default Chain orTemplateWith(String template, String column, String k1, Object v1,
                                  String k2, Object v2, String k3, Object v3) {
         Map<String, Object> values = new HashMap<>(3);
         values.put(k1, v1);
         values.put(k2, v2);
         values.put(k3, v3);
-        return directTemplate(template, column, values);
+        return orTemplateWith(template, column, values);
     }
 
     /**
@@ -476,152 +622,6 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param values   值
      * @return {@code this}
      */
-    Chain directTemplate(String template, String column, Map<String, Object> values);
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param value    值
-     * @return {@code this}
-     */
-    Chain orDirectTemplate(String template, Object value);
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param values   值
-     * @return {@code this}
-     */
-    default Chain orDirectTemplate(String template, Object... values) {
-        return orDirectTemplate(template, ArrayUtil.toList(values));
-    }
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param values   值
-     * @return {@code this}
-     */
-    Chain orDirectTemplate(String template, Collection<Object> values);
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param k1       占位符key1
-     * @param v1       key1对应值
-     * @param k2       占位符key2
-     * @param v2       key2对应值
-     * @return {@code this}
-     */
-    default Chain orDirectTemplate(String template, String k1, Object v1, String k2, Object v2) {
-        Map<String, Object> values = new HashMap<>(2);
-        values.put(k1, v1);
-        values.put(k2, v2);
-        return orDirectTemplate(template, values);
-    }
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param k1       占位符key1
-     * @param v1       key1对应值
-     * @param k2       占位符key2
-     * @param v2       key2对应值
-     * @param k3       占位符key3
-     * @param v3       key3对应值
-     * @return {@code this}
-     */
-    default Chain orDirectTemplate(String template, String k1, Object v1,
-                                   String k2, Object v2, String k3, Object v3) {
-        Map<String, Object> values = new HashMap<>(3);
-        values.put(k1, v1);
-        values.put(k2, v2);
-        values.put(k3, v3);
-        return orDirectTemplate(template, values);
-    }
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param values   值
-     * @return {@code this}
-     */
-    Chain orDirectTemplate(String template, Map<String, Object> values);
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param column   字段
-     * @param value    值
-     * @return {@code this}
-     */
-    Chain orDirectTemplate(String template, String column, Object value);
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param column   字段
-     * @param values   值
-     * @return {@code this}
-     */
-    default Chain orDirectTemplate(String template, String column, Object... values) {
-        return orDirectTemplate(template, column, ArrayUtil.toList(values));
-    }
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param column   字段
-     * @param values   值
-     * @return {@code this}
-     */
-    Chain orDirectTemplate(String template, String column, Collection<Object> values);
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param column   字段
-     * @param k1       占位符key1
-     * @param v1       key1对应值
-     * @param k2       占位符key2
-     * @param v2       key2对应值
-     * @return {@code this}
-     */
-    default Chain orDirectTemplate(String template, String column, String k1, Object v1, String k2, Object v2) {
-        Map<String, Object> values = new HashMap<>(2);
-        values.put(k1, v1);
-        values.put(k2, v2);
-        return orDirectTemplate(template, column, values);
-    }
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param column   字段
-     * @param k1       占位符key1
-     * @param v1       key1对应值
-     * @param k2       占位符key2
-     * @param v2       key2对应值
-     * @param k3       占位符key3
-     * @param v3       key3对应值
-     * @return {@code this}
-     */
-    default Chain orDirectTemplate(String template, String column, String k1, Object v1,
-                                   String k2, Object v2, String k3, Object v3) {
-        Map<String, Object> values = new HashMap<>(3);
-        values.put(k1, v1);
-        values.put(k2, v2);
-        values.put(k3, v3);
-        return orDirectTemplate(template, column, values);
-    }
-
-    /**
-     * TEMPLATE
-     * @param template 模板
-     * @param column   字段
-     * @param values   值
-     * @return {@code this}
-     */
-    Chain orDirectTemplate(String template, String column, Map<String, Object> values);
+    Chain orTemplateWith(String template, String column, Map<String, Object> values);
 
 }

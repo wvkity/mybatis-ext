@@ -26,8 +26,7 @@ public class DirectLessThanOrEqual<T> extends DirectSimple<T> {
      * @param logic      逻辑符号
      */
     DirectLessThanOrEqual(Criteria<T> criteria, String tableAlias, String column, Object value, Logic logic) {
-        super(criteria, column, value, Symbol.LE, logic);
-        super.tableAlias = tableAlias;
+        super(criteria, tableAlias, column, value, Symbol.LE, logic);
     }
 
     /**

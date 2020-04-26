@@ -24,7 +24,7 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
     /**
      * 其他字段包装对象
      */
-    private final ColumnWrapper otherColumn;
+    private final ColumnWrapper columnWrapper;
 
     /**
      * 构造方法
@@ -40,7 +40,7 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
         this.criteria = criteria;
         this.column = column;
         this.otherCriteria = otherCriteria;
-        this.otherColumn = otherColumn;
+        this.columnWrapper = otherColumn;
         this.logic = logic;
     }
 
@@ -51,7 +51,7 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
         return this.logic.getSegment() + Constants.SPACE + (StringUtil.hasText(alias) ? (getAlias() +
                 Constants.DOT + this.column.getColumn()) : this.column.getColumn()) + Constants.SPACE +
                 this.symbol.getSegment() + Constants.SPACE + (StringUtil.hasText(otherAlias) ? (otherAlias.trim() +
-                Constants.DOT + this.otherColumn.getColumn()) : this.otherColumn.getColumn());
+                Constants.DOT + this.columnWrapper.getColumn()) : this.columnWrapper.getColumn());
     }
 
     /**

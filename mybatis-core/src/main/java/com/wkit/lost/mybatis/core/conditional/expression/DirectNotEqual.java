@@ -26,10 +26,9 @@ public class DirectNotEqual<T> extends DirectSimple<T> {
      * @param logic      逻辑符号
      */
     DirectNotEqual(Criteria<T> criteria, String tableAlias, String column, Object value, Logic logic) {
-        super(criteria, column, value, Symbol.NE, logic);
-        super.tableAlias = tableAlias;
+        super(criteria, tableAlias, column, value, Symbol.NE, logic);
     }
-    
+
     /**
      * 创建条件构建器
      * @param <T> 实体类型

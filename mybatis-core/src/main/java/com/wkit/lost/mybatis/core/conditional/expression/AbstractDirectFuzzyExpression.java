@@ -25,9 +25,10 @@ public abstract class AbstractDirectFuzzyExpression<T> extends DirectExpressionW
     @Override
     public String getSegment() {
         StringBuilder builder = new StringBuilder(60);
+        Match realMatch = this.match == null ? Match.ANYWHERE : this.match;
         builder.append(ScriptUtil.convertConditionArg(getAlias(), this.column,
                 this.symbol, this.logic, defaultPlaceholder(
-                        this.match.getSegment(this.value != null ? String.valueOf(this.value) : ""))));
+                        realMatch.getSegment(this.value != null ? String.valueOf(this.value) : ""))));
         if (escape != null) {
             builder.append(" ESCAPE ").append("'").append(escape).append("'");
         }

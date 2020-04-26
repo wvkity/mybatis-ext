@@ -28,7 +28,7 @@ public class DirectEqual<T> extends DirectSimple<T> {
      * @param logic      逻辑符号
      */
     DirectEqual(Criteria<T> criteria, String tableAlias, String column, Object value, Logic logic) {
-        super(criteria, column, value, Symbol.EQ, logic);
+        super(criteria, tableAlias, column, value, Symbol.EQ, logic);
         super.tableAlias = tableAlias;
     }
 

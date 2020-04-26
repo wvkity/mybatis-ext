@@ -5,10 +5,14 @@ import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.constant.TemplateMatch;
 import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
+import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.StringUtil;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.Collection;
 import java.util.Map;
@@ -89,7 +93,7 @@ public class DirectTemplate<T> extends DirectExpressionWrapper<T> {
     /**
      * 字段占位符标识
      */
-    private static final String COLUMN_PLACEHOLDER = "{@@}";
+    public static final String COLUMN_PLACEHOLDER = "{@@}";
 
     /**
      * 匹配模式
@@ -103,203 +107,38 @@ public class DirectTemplate<T> extends DirectExpressionWrapper<T> {
     private final String template;
 
     /**
-     * 值
+     * 多个值
      */
-    @Getter
-    @Setter
-    private Collection<Object> values;
+    private final Collection<Object> values;
 
-    @Getter
-    @Setter
-    private Map<String, Object> mapValues;
+    /**
+     * 多个键值
+     */
+    private final Map<String, Object> mapValues;
 
     /**
      * 构造方法
-     * @param template 模板
-     * @param value    值
-     * @param logic    逻辑符号
-     */
-    DirectTemplate(String template, Object value, Logic logic) {
-        this.value = value;
-        this.template = template;
-        this.logic = logic;
-        this.match = TemplateMatch.SINGLE;
-    }
-
-    /**
-     * 构造方法
-     * @param column   字段
-     * @param value    值
-     * @param template 模板
-     * @param logic    逻辑符号
-     */
-    DirectTemplate(String column, Object value, String template, Logic logic) {
-        this.column = column;
-        this.value = value;
-        this.template = template;
-        this.logic = logic;
-        this.match = TemplateMatch.SINGLE;
-    }
-
-    /**
-     * 构造方法
+     * @param criteria   条件包装对象
      * @param tableAlias 表别名
      * @param column     字段
+     * @param template   模板
      * @param value      值
-     * @param template   模板
+     * @param values     多个值
+     * @param mapValues  多个键值
      * @param logic      逻辑符号
      */
-    DirectTemplate(String tableAlias, String column, Object value, String template, Logic logic) {
+    DirectTemplate(Criteria<T> criteria, String tableAlias, String column, String template,
+                   Object value, Collection<Object> values, Map<String, Object> mapValues, Logic logic) {
+        this.criteria = criteria;
         this.tableAlias = tableAlias;
         this.column = column;
+        this.template = template;
         this.value = value;
-        this.template = template;
-        this.logic = logic;
-        this.match = TemplateMatch.SINGLE;
-    }
-
-    /**
-     * 构造方法
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param value    值
-     * @param template 模板
-     * @param logic    逻辑符号
-     */
-    DirectTemplate(Criteria<T> criteria, String column, Object value, String template, Logic logic) {
-        this.criteria = criteria;
-        this.column = column;
-        this.value = value;
-        this.template = template;
-        this.logic = logic;
-        this.match = TemplateMatch.SINGLE;
-    }
-
-
-    /**
-     * 构造方法
-     * @param template 模板
-     * @param values   值
-     * @param logic    逻辑符号
-     */
-    DirectTemplate(String template, Collection<Object> values, Logic logic) {
         this.values = values;
-        this.template = template;
+        this.mapValues = mapValues;
         this.logic = logic;
-        this.match = TemplateMatch.MULTIPLE;
-    }
-
-    /**
-     * 构造方法
-     * @param column   字段
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     */
-    DirectTemplate(String column, Collection<Object> values, String template, Logic logic) {
-        this.column = column;
-        this.values = values;
-        this.template = template;
-        this.logic = logic;
-        this.match = TemplateMatch.MULTIPLE;
-    }
-
-    /**
-     * 构造方法
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param values     值
-     * @param template   模板
-     * @param logic      逻辑符号
-     */
-    DirectTemplate(String tableAlias, String column, Collection<Object> values, String template, Logic logic) {
-        this.tableAlias = tableAlias;
-        this.column = column;
-        this.values = values;
-        this.template = template;
-        this.logic = logic;
-        this.match = TemplateMatch.MULTIPLE;
-    }
-
-    /**
-     * 构造方法
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     */
-    DirectTemplate(Criteria<T> criteria, String column, Collection<Object> values,
-                   String template, Logic logic) {
-        this.criteria = criteria;
-        this.column = column;
-        this.values = values;
-        this.template = template;
-        this.logic = logic;
-        this.match = TemplateMatch.MULTIPLE;
-    }
-
-    /**
-     * 构造方法
-     * @param template 模板
-     * @param values   值
-     * @param logic    逻辑符号
-     */
-    DirectTemplate(String template, Map<String, Object> values, Logic logic) {
-        this.mapValues = values;
-        this.template = template;
-        this.logic = logic;
-        this.match = TemplateMatch.MAP;
-    }
-
-    /**
-     * 构造方法
-     * @param column   字段
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     */
-    DirectTemplate(String column, Map<String, Object> values, String template, Logic logic) {
-        this.column = column;
-        this.mapValues = values;
-        this.template = template;
-        this.logic = logic;
-        this.match = TemplateMatch.MAP;
-    }
-
-    /**
-     * 构造方法
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param values     值
-     * @param template   模板
-     * @param logic      逻辑符号
-     */
-    DirectTemplate(String tableAlias, String column, Map<String, Object> values, String template, Logic logic) {
-        this.tableAlias = tableAlias;
-        this.column = column;
-        this.mapValues = values;
-        this.template = template;
-        this.logic = logic;
-        this.match = TemplateMatch.MAP;
-    }
-
-    /**
-     * 构造方法
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     */
-    DirectTemplate(Criteria<T> criteria, String column, Map<String, Object> values,
-                   String template, Logic logic) {
-        this.criteria = criteria;
-        this.column = column;
-        this.mapValues = values;
-        this.template = template;
-        this.logic = logic;
-        this.match = TemplateMatch.MAP;
+        this.match = CollectionUtil.hasElement(mapValues) ? TemplateMatch.MAP :
+                CollectionUtil.hasElement(values) ? TemplateMatch.MULTIPLE : TemplateMatch.SINGLE;
     }
 
     @Override
@@ -338,363 +177,63 @@ public class DirectTemplate<T> extends DirectExpressionWrapper<T> {
     }
 
     /**
-     * 创建TEMPLATE对象
-     * @param template 模板
-     * @param value    值
-     * @param <T>      实体类型
-     * @return 条件对象
+     * 创建条件构建器
+     * @param <T> 实体类型
+     * @return 构建器
      */
-    public static <T> DirectTemplate<T> create(String template, Object value) {
-        return create(template, value, Logic.AND);
+    public static <T> DirectTemplate.Builder<T> create() {
+        return new DirectTemplate.Builder<>();
     }
 
     /**
-     * 创建TEMPLATE对象
-     * @param template 模板
-     * @param value    值
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
+     * 条件构建器
+     * @param <T> 实体类型
      */
-    public static <T> DirectTemplate<T> create(String template, Object value, Logic logic) {
-        if (hasText(template)) {
-            return new DirectTemplate<>(template, value, logic);
+    @Setter
+    @Accessors(chain = true, fluent = true)
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class Builder<T> {
+        /**
+         * 条件包装对象
+         */
+        private Criteria<T> criteria;
+        /**
+         * 表别名
+         */
+        private String alias;
+        /**
+         * 条件包装对象
+         */
+        private String column;
+        /**
+         * 模板
+         */
+        private String template;
+        /**
+         * 值
+         */
+        private Object value;
+        /**
+         * 多个值
+         */
+        private Collection<Object> values;
+
+        /**
+         * Map值
+         */
+        private Map<String, Object> map;
+        /**
+         * 逻辑符号
+         */
+        private Logic logic;
+
+        /**
+         * 构建条件对象
+         * @return 条件对象
+         */
+        public DirectTemplate<T> build() {
+            return new DirectTemplate<>(this.criteria, this.alias, this.column, this.template,
+                    this.value, this.values, this.map, this.logic);
         }
-        return null;
     }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param template 模板
-     * @param values   值
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(String template, Collection<Object> values) {
-        return create(template, values, Logic.AND);
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(String template, Collection<Object> values, Logic logic) {
-        if (hasText(template)) {
-            return new DirectTemplate<>(template, values, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param template 模板
-     * @param values   值
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(String template, Map<String, Object> values) {
-        return create(template, values, Logic.AND);
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(String template, Map<String, Object> values, Logic logic) {
-        if (hasText(template)) {
-            return new DirectTemplate<>(template, values, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param column   字段
-     * @param value    值
-     * @param template 模板
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(String column, Object value, String template) {
-        return create(column, value, template, Logic.AND);
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param column   字段
-     * @param value    值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(String column, Object value, String template, Logic logic) {
-        if (hasText(column) && hasText(template) && template.contains(COLUMN_PLACEHOLDER)) {
-            return new DirectTemplate<>(column, value, template, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param column   字段
-     * @param values   值
-     * @param template 模板
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(String column, Collection<Object> values, String template) {
-        return create(column, values, template, Logic.AND);
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param column   字段
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(String column, Collection<Object> values,
-                                               String template, Logic logic) {
-        if (hasText(column) && hasText(template) && template.contains(COLUMN_PLACEHOLDER)) {
-            return new DirectTemplate<>(column, values, template, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param column   字段
-     * @param values   值
-     * @param template 模板
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(String column, Map<String, Object> values, String template) {
-        return create(column, values, template, Logic.AND);
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param column   字段
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(String column, Map<String, Object> values,
-                                               String template, Logic logic) {
-        if (hasText(column) && hasText(template) && template.contains(COLUMN_PLACEHOLDER)) {
-            return new DirectTemplate<>(column, values, template, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param value      值
-     * @param template   模板
-     * @param <T>        实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(String tableAlias, String column,
-                                               Object value, String template) {
-        return create(tableAlias, column, value, template, Logic.AND);
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param value      值
-     * @param template   模板
-     * @param logic      逻辑符号
-     * @param <T>        实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(String tableAlias, String column,
-                                               Object value, String template, Logic logic) {
-        if (hasText(column) && hasText(template) && template.contains(COLUMN_PLACEHOLDER)) {
-            return new DirectTemplate<>(tableAlias, column, value, template, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param values     值
-     * @param template   模板
-     * @param <T>        实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(String tableAlias, String column,
-                                               Collection<Object> values, String template) {
-        return create(tableAlias, column, values, template, Logic.AND);
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param values     值
-     * @param template   模板
-     * @param logic      逻辑符号
-     * @param <T>        实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(String tableAlias, String column,
-                                               Collection<Object> values, String template, Logic logic) {
-        if (hasText(column) && hasText(template)
-                && template.contains(COLUMN_PLACEHOLDER)) {
-            return new DirectTemplate<>(tableAlias, column, values, template, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param values     值
-     * @param template   模板
-     * @param <T>        实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(String tableAlias, String column,
-                                               Map<String, Object> values, String template) {
-        return create(tableAlias, column, values, template, Logic.AND);
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param tableAlias 表别名
-     * @param column     字段
-     * @param values     值
-     * @param template   模板
-     * @param logic      逻辑符号
-     * @param <T>        实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(String tableAlias, String column,
-                                               Map<String, Object> values, String template, Logic logic) {
-        if (hasText(column) && hasText(template) && template.contains(COLUMN_PLACEHOLDER)) {
-            return new DirectTemplate<>(tableAlias, column, values, template, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param value    值
-     * @param template 模板
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(Criteria<T> criteria, String column,
-                                               Object value, String template) {
-        return create(criteria, column, value, template, Logic.AND);
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param value    值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(Criteria<T> criteria, String column,
-                                               Object value, String template, Logic logic) {
-        if (criteria != null && hasText(column) && hasText(template)
-                && template.contains(COLUMN_PLACEHOLDER)) {
-            return new DirectTemplate<>(criteria, column, value, template, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param values   值
-     * @param template 模板
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(Criteria<T> criteria, String column,
-                                               Collection<Object> values, String template) {
-        return create(criteria, column, values, template, Logic.AND);
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(Criteria<T> criteria, String column,
-                                               Collection<Object> values, String template, Logic logic) {
-        if (criteria != null && hasText(column) && hasText(template)
-                && template.contains(COLUMN_PLACEHOLDER)) {
-            return new DirectTemplate<>(criteria, column, values, template, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param values   值
-     * @param template 模板
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(Criteria<T> criteria, String column,
-                                               Map<String, Object> values, String template) {
-        return create(criteria, column, values, template, Logic.AND);
-    }
-
-    /**
-     * 创建TEMPLATE对象
-     * @param criteria 条件包装对象
-     * @param column   字段
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> DirectTemplate<T> create(Criteria<T> criteria, String column,
-                                               Map<String, Object> values, String template, Logic logic) {
-        if (criteria != null && hasText(column) && hasText(template)
-                && template.contains(COLUMN_PLACEHOLDER)) {
-            return new DirectTemplate<>(criteria, column, values, template, logic);
-        }
-        return null;
-    }
-
 }

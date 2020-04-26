@@ -7,10 +7,14 @@ import com.wkit.lost.mybatis.core.converter.Property;
 import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
+import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.StringUtil;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.Collection;
 import java.util.Map;
@@ -67,7 +71,7 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
     /**
      * 字段占位符标识
      */
-    private static final String COLUMN_PLACEHOLDER = "{@@}";
+    public static final String COLUMN_PLACEHOLDER = "{@@}";
 
     /**
      * 匹配模式
@@ -82,65 +86,36 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
     private final String template;
 
     /**
-     * 值
+     * 多个值
      */
-    @Getter
-    @Setter
-    private Collection<Object> values;
+    private final Collection<Object> values;
 
-    @Getter
-    @Setter
-    private Map<String, Object> mapValues;
+    /**
+     * 多个键值
+     */
+    private final Map<String, Object> mapValues;
 
     /**
      * 构造方法
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param value    值
-     * @param template 模板
-     * @param logic    逻辑符号
+     * @param criteria  条件包装对象
+     * @param column    字段包装对象
+     * @param template  模板
+     * @param value     值
+     * @param values    多个值
+     * @param mapValues 多个键值
+     * @param logic     逻辑符号
      */
-    Template(Criteria<T> criteria, ColumnWrapper column, Object value, String template, Logic logic) {
+    Template(Criteria<T> criteria, ColumnWrapper column, String template, Object value,
+             Collection<Object> values, Map<String, Object> mapValues, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.value = value;
-        this.template = template;
-        this.logic = logic;
-        this.match = TemplateMatch.SINGLE;
-    }
-
-    /**
-     * 构造方法
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     */
-    Template(Criteria<T> criteria, ColumnWrapper column, Collection<Object> values, String template, Logic logic) {
-        this.criteria = criteria;
-        this.column = column;
         this.values = values;
+        this.mapValues = mapValues;
         this.template = template;
         this.logic = logic;
-        this.match = TemplateMatch.MULTIPLE;
-    }
-
-    /**
-     * 构造方法
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     */
-    Template(Criteria<T> criteria, ColumnWrapper column, Map<String, Object> values, String template, Logic logic) {
-        this.criteria = criteria;
-        this.column = column;
-        this.mapValues = values;
-        this.template = template;
-        this.logic = logic;
-        this.match = TemplateMatch.MAP;
+        this.match = CollectionUtil.hasElement(mapValues) ? TemplateMatch.MAP :
+                CollectionUtil.hasElement(values) ? TemplateMatch.MULTIPLE : TemplateMatch.SINGLE;
     }
 
     @Override
@@ -175,296 +150,107 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
     }
 
     /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param template 模板
-     * @param <T>      实体类型
-     * @param <V>      属性值类型
-     * @return 条件对象
+     * 创建条件构建器
+     * @param <T> 实体类型
+     * @return 构建器
      */
-    public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
-                                            Object value, String template) {
-        return create(criteria, property, value, template, Logic.AND);
+    public static <T> Template.Builder<T> create() {
+        return new Template.Builder<>();
     }
 
     /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @param <V>      属性值类型
-     * @return 条件对象
+     * 条件对象构建器
+     * @param <T> 实体类
      */
-    public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
-                                            Object value, String template, Logic logic) {
-        if (criteria != null && property != null) {
-            return create(criteria, criteria.searchColumn(property), value, template, logic);
+    @Setter
+    @Accessors(chain = true, fluent = true)
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class Builder<T> {
+        /**
+         * 条件包装对象
+         */
+        private Criteria<T> criteria;
+        /**
+         * 条件包装对象
+         */
+        private ColumnWrapper column;
+        /**
+         * 属性
+         */
+        @Setter(AccessLevel.NONE)
+        private String property;
+        /**
+         * 属性
+         */
+        @Setter(AccessLevel.NONE)
+        private Property<T, ?> lambdaProperty;
+        /**
+         * 模板
+         */
+        private String template;
+        /**
+         * 值
+         */
+        private Object value;
+        /**
+         * 多个值
+         */
+        private Collection<Object> values;
+
+        /**
+         * Map值
+         */
+        private Map<String, Object> map;
+        /**
+         * 逻辑符号
+         */
+        private Logic logic;
+        /**
+         * 属性
+         * @param property 属性
+         * @return {@link Equal.Builder}
+         */
+        public Template.Builder<T> property(String property) {
+            this.property = property;
+            return this;
         }
-        return null;
-    }
-
-    /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param template 模板
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> Template<T> create(Criteria<T> criteria, String property, Object value, String template) {
-        return create(criteria, property, value, template, Logic.AND);
-    }
-
-    /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param value    值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> Template<T> create(Criteria<T> criteria, String property,
-                                         Object value, String template, Logic logic) {
-        if (criteria != null && hasText(property)) {
-            return create(criteria, criteria.searchColumn(property), value, template, logic);
+        /**
+         * 属性
+         * @param property 属性
+         * @param <V>      属性值类型
+         * @return {@link Equal.Builder}
+         */
+        public <V> Template.Builder<T> property(Property<T, V> property) {
+            this.lambdaProperty = property;
+            return this;
         }
-        return null;
-    }
-
-    /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param value    值
-     * @param template 模板
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> Template<T> create(Criteria<T> criteria, ColumnWrapper column,
-                                         Object value, String template) {
-        return create(criteria, column, value, template, Logic.AND);
-    }
-
-    /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param value    值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> Template<T> create(Criteria<T> criteria, ColumnWrapper column,
-                                         Object value, String template, Logic logic) {
-        if (criteria != null && column != null && hasText(template) && template.contains(COLUMN_PLACEHOLDER)) {
-            return new Template<>(criteria, column, value, template, logic);
+        /**
+         * 构建条件对象
+         * @return 条件对象
+         */
+        public Template<T> build() {
+            if (this.column != null) {
+                return new Template<>(this.criteria, this.column, this.template, this.value,
+                        this.values, this.map, this.logic);
+            }
+            if (this.criteria == null) {
+                return null;
+            }
+            if (hasText(this.property)) {
+                ColumnWrapper wrapper = this.criteria.searchColumn(this.property);
+                if (wrapper != null) {
+                    return new Template<>(this.criteria, wrapper, this.template, this.value,
+                            this.values, this.map, this.logic);
+                }
+            }
+            if (lambdaProperty != null) {
+                ColumnWrapper wrapper = this.criteria.searchColumn(lambdaProperty);
+                if (wrapper != null) {
+                    return new Template<>(this.criteria, wrapper, this.template, this.value,
+                            this.values, this.map, this.logic);
+                }
+            }
+            return null;
         }
-        return null;
     }
-
-    /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param values   值
-     * @param template 模板
-     * @param <T>      实体类型
-     * @param <V>      属性值类型
-     * @return 条件对象
-     */
-    public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
-                                            Collection<Object> values, String template) {
-        return create(criteria, property, values, template, Logic.AND);
-    }
-
-    /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @param <V>      属性值类型
-     * @return 条件对象
-     */
-    public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
-                                            Collection<Object> values, String template, Logic logic) {
-        if (criteria != null && property != null) {
-            return create(criteria, criteria.searchColumn(property), values, template, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param values   值
-     * @param template 模板
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> Template<T> create(Criteria<T> criteria, String property,
-                                         Collection<Object> values, String template) {
-        return create(criteria, property, values, template, Logic.AND);
-    }
-
-    /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> Template<T> create(Criteria<T> criteria, String property,
-                                         Collection<Object> values, String template, Logic logic) {
-        if (criteria != null && hasText(property)) {
-            return create(criteria, criteria.searchColumn(property), values, template, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param values   值
-     * @param template 模板
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> Template<T> create(Criteria<T> criteria, ColumnWrapper column,
-                                         Collection<Object> values, String template) {
-        return create(criteria, column, values, template, Logic.AND);
-    }
-
-    /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> Template<T> create(Criteria<T> criteria, ColumnWrapper column,
-                                         Collection<Object> values, String template, Logic logic) {
-        if (criteria != null && column != null && hasText(template) && template.contains(COLUMN_PLACEHOLDER)) {
-            return new Template<>(criteria, column, values, template, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param values   值
-     * @param template 模板
-     * @param <T>      实体类型
-     * @param <V>      属性值类型
-     * @return 条件对象
-     */
-    public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
-                                            Map<String, Object> values, String template) {
-        return create(criteria, property, values, template, Logic.AND);
-    }
-
-    /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @param <V>      属性值类型
-     * @return 条件对象
-     */
-    public static <T, V> Template<T> create(Criteria<T> criteria, Property<T, V> property,
-                                            Map<String, Object> values, String template, Logic logic) {
-        if (criteria != null && property != null) {
-            return create(criteria, criteria.searchColumn(property), values, template, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param values   值
-     * @param template 模板
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> Template<T> create(Criteria<T> criteria, String property,
-                                         Map<String, Object> values, String template) {
-        return create(criteria, property, values, template, Logic.AND);
-    }
-
-    /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> Template<T> create(Criteria<T> criteria, String property,
-                                         Map<String, Object> values, String template, Logic logic) {
-        if (criteria != null && hasText(property)) {
-            return create(criteria, criteria.searchColumn(property), values, template, logic);
-        }
-        return null;
-    }
-
-    /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param values   值
-     * @param template 模板
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> Template<T> create(Criteria<T> criteria, ColumnWrapper column,
-                                         Map<String, Object> values, String template) {
-        return create(criteria, column, values, template, Logic.AND);
-    }
-
-    /**
-     * 创建模板条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param values   值
-     * @param template 模板
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> Template<T> create(Criteria<T> criteria, ColumnWrapper column,
-                                         Map<String, Object> values, String template, Logic logic) {
-        if (criteria != null && column != null && hasText(template) && template.contains(COLUMN_PLACEHOLDER)) {
-            return new Template<>(criteria, column, values, template, logic);
-        }
-        return null;
-    }
-
 }

@@ -64,6 +64,40 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
     Chain orEq(String property, SubCriteria<?> sc);
 
     /**
+     * 等于
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain eqWith(String column, SubCriteria<?> sc);
+
+    /**
+     * 等于
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain eqWith(String tableAlias, String column, SubCriteria<?> sc);
+
+    /**
+     * 等于
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orEqWith(String column, SubCriteria<?> sc);
+
+    /**
+     * 等于
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orEqWith(String tableAlias, String column, SubCriteria<?> sc);
+
+    /**
      * 不等于
      * @param property 属性
      * @param sc       子查询条件包装对象
@@ -100,6 +134,40 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @return {@code this}
      */
     Chain orNe(String property, SubCriteria<?> sc);
+
+    /**
+     * 不等于
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain neWith(String column, SubCriteria<?> sc);
+
+    /**
+     * 或不等于
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orNeWith(String column, SubCriteria<?> sc);
+
+    /**
+     * 不等于
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain neWith(String tableAlias, String column, SubCriteria<?> sc);
+
+    /**
+     * 或不等于
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orNeWith(String tableAlias, String column, SubCriteria<?> sc);
 
     /**
      * 小于
@@ -140,6 +208,40 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
     Chain orLt(String property, SubCriteria<?> sc);
 
     /**
+     * 小于
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain ltWith(String column, SubCriteria<?> sc);
+
+    /**
+     * 或小于
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orLtWith(String column, SubCriteria<?> sc);
+
+    /**
+     * 小于
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain ltWith(String tableAlias, String column, SubCriteria<?> sc);
+
+    /**
+     * 或小于
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orLtWith(String tableAlias, String column, SubCriteria<?> sc);
+
+    /**
      * 小于等于
      * @param property 属性
      * @param sc       子查询条件包装对象
@@ -176,6 +278,40 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @return {@code this}
      */
     Chain orLe(String property, SubCriteria<?> sc);
+
+    /**
+     * 小于等于
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain leWith(String column, SubCriteria<?> sc);
+
+    /**
+     * 或小于等于
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orLeWith(String column, SubCriteria<?> sc);
+
+    /**
+     * 小于等于
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain leWith(String tableAlias, String column, SubCriteria<?> sc);
+
+    /**
+     * 或小于等于
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orLeWith(String tableAlias, String column, SubCriteria<?> sc);
 
     /**
      * 大于
@@ -216,6 +352,40 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
     Chain orGt(String property, SubCriteria<?> sc);
 
     /**
+     * 大于
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain gtWith(String column, SubCriteria<?> sc);
+
+    /**
+     * 或大于
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orGtWith(String column, SubCriteria<?> sc);
+
+    /**
+     * 大于
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain gtWith(String tableAlias, String column, SubCriteria<?> sc);
+
+    /**
+     * 或大于
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orGtWith(String tableAlias, String column, SubCriteria<?> sc);
+
+    /**
      * 大于等于
      * @param property 属性
      * @param sc       子查询条件包装对象
@@ -252,6 +422,40 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @return {@code this}
      */
     Chain orGe(String property, SubCriteria<?> sc);
+
+    /**
+     * 大于等于
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain geWith(String column, SubCriteria<?> sc);
+
+    /**
+     * 或大于等于
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orGeWith(String column, SubCriteria<?> sc);
+
+    /**
+     * 大于等于
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain geWith(String tableAlias, String column, SubCriteria<?> sc);
+
+    /**
+     * 或大于等于
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orGeWith(String tableAlias, String column, SubCriteria<?> sc);
 
     /**
      * LIKE
@@ -330,6 +534,74 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
     Chain orNotLike(String property, SubCriteria<?> sc);
 
     /**
+     * LIKE
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain likeWith(String column, SubCriteria<?> sc);
+
+    /**
+     * 或LIKE
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orLikeWith(String column, SubCriteria<?> sc);
+
+    /**
+     * LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain likeWith(String tableAlias, String column, SubCriteria<?> sc);
+
+    /**
+     * 或LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orLikeWith(String tableAlias, String column, SubCriteria<?> sc);
+
+    /**
+     * NOT LIKE
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain notLikeWith(String column, SubCriteria<?> sc);
+
+    /**
+     * 或NOT LIKE
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orNotLikeWith(String column, SubCriteria<?> sc);
+
+    /**
+     * NOT LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain notLikeWith(String tableAlias, String column, SubCriteria<?> sc);
+
+    /**
+     * 或NOT LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orNotLikeWith(String tableAlias, String column, SubCriteria<?> sc);
+
+    /**
      * IN
      * @param property 属性
      * @param sc       子查询条件包装对象
@@ -404,6 +676,74 @@ public interface SubQueryWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @return {@code this}
      */
     Chain orNotIn(String property, SubCriteria<?> sc);
+
+    /**
+     * LIKE
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain inWith(String column, SubCriteria<?> sc);
+
+    /**
+     * 或LIKE
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orInWith(String column, SubCriteria<?> sc);
+
+    /**
+     * LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain inWith(String tableAlias, String column, SubCriteria<?> sc);
+
+    /**
+     * 或LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orInWith(String tableAlias, String column, SubCriteria<?> sc);
+
+    /**
+     * NOT LIKE
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain notInWith(String column, SubCriteria<?> sc);
+
+    /**
+     * 或NOT LIKE
+     * @param column 字段
+     * @param sc     子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orNotInWith(String column, SubCriteria<?> sc);
+
+    /**
+     * NOT LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain notInWith(String tableAlias, String column, SubCriteria<?> sc);
+
+    /**
+     * 或NOT LIKE
+     * @param tableAlias 表别名
+     * @param column     字段
+     * @param sc         子查询条件包装对象
+     * @return {@code this}
+     */
+    Chain orNotInWith(String tableAlias, String column, SubCriteria<?> sc);
 
     /**
      * EXISTS

@@ -8,6 +8,10 @@ import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 import com.wkit.lost.mybatis.core.wrapper.criteria.SubCriteria;
 import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.StringUtil;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * 子查询条件
@@ -31,8 +35,7 @@ public class SubQuery<T> extends ColumnExpressionWrapper<T> {
      * @param symbol   条件符号
      * @param logic    逻辑符号
      */
-    SubQuery(Criteria<T> criteria, ColumnWrapper column, SubCriteria<?> sc,
-             Symbol symbol, Logic logic) {
+    SubQuery(Criteria<T> criteria, ColumnWrapper column, SubCriteria<?> sc, Symbol symbol, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.subCriteria = sc;
@@ -64,181 +67,101 @@ public class SubQuery<T> extends ColumnExpressionWrapper<T> {
     }
 
     /**
-     * 创建子查询条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param sc       子查询条件包装对象
-     * @param <T>      实体类型
-     * @return 条件对象
+     * 创建条件构建器
+     * @param <T> 实体类型
+     * @return 构建器
      */
-    public static <T, V> SubQuery<T> create(Criteria<T> criteria, Property<T, V> property, SubCriteria<?> sc) {
-        return create(criteria, property, sc, Symbol.EQ, Logic.AND);
+    public static <T> SubQuery.Builder<T> create() {
+        return new SubQuery.Builder<>();
     }
 
     /**
-     * 创建子查询条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param sc       子查询条件包装对象
-     * @param <T>      实体类型
-     * @return 条件对象
+     * 条件对象构建器
+     * @param <T> 实体类
      */
-    public static <T> SubQuery<T> create(Criteria<T> criteria, String property, SubCriteria<?> sc) {
-        return create(criteria, property, sc, Symbol.EQ, Logic.AND);
-    }
+    @Setter
+    @Accessors(chain = true, fluent = true)
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class Builder<T> {
+        /**
+         * 条件包装对象
+         */
+        private Criteria<T> criteria;
+        /**
+         * 条件包装对象
+         */
+        private ColumnWrapper column;
+        /**
+         * 属性
+         */
+        @Setter(AccessLevel.NONE)
+        private String property;
+        /**
+         * 属性
+         */
+        @Setter(AccessLevel.NONE)
+        private Property<T, ?> lambdaProperty;
+        /**
+         * 子查询条件包装对象
+         */
+        private SubCriteria<?> sc;
+        /**
+         * 条件符号
+         */
+        private Symbol symbol = Symbol.EQ;
+        /**
+         * 逻辑符号
+         */
+        private Logic logic;
 
-    /**
-     * 创建子查询条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param sc       子查询条件包装对象
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @param <V>      属性值类型
-     * @return 条件对象
-     */
-    public static <T, V> SubQuery<T> create(Criteria<T> criteria, Property<T, V> property,
-                                            SubCriteria<?> sc, Logic logic) {
-        return create(criteria, property, sc, Symbol.EQ, logic);
-    }
-
-    /**
-     * 创建子查询条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param sc       子查询条件包装对象
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> SubQuery<T> create(Criteria<T> criteria, String property, SubCriteria<?> sc, Logic logic) {
-        return create(criteria, property, sc, Symbol.EQ, logic);
-    }
-
-    /**
-     * 创建子查询条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param sc       子查询条件包装对象
-     * @param symbol   条件符号
-     * @param <T>      实体类型
-     * @param <V>      属性值类型
-     * @return 条件对象
-     */
-    public static <T, V> SubQuery<T> create(Criteria<T> criteria, Property<T, V> property,
-                                            SubCriteria<?> sc, Symbol symbol) {
-        return create(criteria, property, sc, symbol, Logic.AND);
-    }
-
-    /**
-     * 创建子查询条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param sc       子查询条件包装对象
-     * @param symbol   条件符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> SubQuery<T> create(Criteria<T> criteria, String property, SubCriteria<?> sc, Symbol symbol) {
-        return create(criteria, property, sc, symbol, Logic.AND);
-    }
-
-    /**
-     * 创建子查询条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param sc       子查询条件包装对象
-     * @param symbol   条件符号
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @param <V>      属性值类型
-     * @return 条件对象
-     */
-    public static <T, V> SubQuery<T> create(Criteria<T> criteria, Property<T, V> property, SubCriteria<?> sc,
-                                            Symbol symbol, Logic logic) {
-        if (criteria != null && sc != null && property != null) {
-            return create(criteria, criteria.searchColumn(property), sc, symbol, logic);
+        /**
+         * 属性
+         * @param property 属性
+         * @return {@link SubQuery.Builder}
+         */
+        public SubQuery.Builder<T> property(String property) {
+            this.property = property;
+            return this;
         }
-        return null;
-    }
 
-    /**
-     * 创建子查询条件对象
-     * @param criteria 条件包装对象
-     * @param property 属性
-     * @param sc       子查询条件包装对象
-     * @param symbol   条件符号
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> SubQuery<T> create(Criteria<T> criteria, String property, SubCriteria<?> sc,
-                                         Symbol symbol, Logic logic) {
-        if (criteria != null && sc != null && hasText(property)) {
-            return create(criteria, criteria.searchColumn(property), sc, symbol, logic);
+        /**
+         * 属性
+         * @param property 属性
+         * @param <V>      属性值类型
+         * @return {@link SubQuery.Builder}
+         */
+        public <V> SubQuery.Builder<T> property(Property<T, V> property) {
+            this.lambdaProperty = property;
+            return this;
         }
-        return null;
-    }
 
-    /**
-     * 创建子查询条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param sc       子查询条件包装对象
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> SubQuery<T> create(Criteria<T> criteria, ColumnWrapper column, SubCriteria<?> sc) {
-        return create(criteria, column, sc, Symbol.EQ, Logic.AND);
-    }
-
-    /**
-     * 创建子查询条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param sc       子查询条件包装对象
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> SubQuery<T> create(Criteria<T> criteria, ColumnWrapper column, SubCriteria<?> sc,
-                                         Logic logic) {
-        return create(criteria, column, sc, Symbol.EQ, logic);
-    }
-
-    /**
-     * 创建子查询条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param sc       子查询条件包装对象
-     * @param symbol   条件符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> SubQuery<T> create(Criteria<T> criteria, ColumnWrapper column, SubCriteria<?> sc,
-                                         Symbol symbol) {
-        return create(criteria, column, sc, symbol, Logic.AND);
-    }
-
-    /**
-     * 创建子查询条件对象
-     * @param criteria 条件包装对象
-     * @param column   字段包装对象
-     * @param sc       子查询条件包装对象
-     * @param symbol   条件符号
-     * @param logic    逻辑符号
-     * @param <T>      实体类型
-     * @return 条件对象
-     */
-    public static <T> SubQuery<T> create(Criteria<T> criteria, ColumnWrapper column, SubCriteria<?> sc,
-                                         Symbol symbol, Logic logic) {
-        if (criteria != null && sc != null) {
-            if (symbol == Symbol.EXISTS || symbol == Symbol.NOT_EXISTS) {
-                return new SubQuery<>(criteria, column, sc, symbol, logic);
-            } else if (column != null) {
-                return new SubQuery<>(criteria, column, sc, symbol, logic);
+        /**
+         * 构建条件对象
+         * @return 条件对象
+         */
+        public SubQuery<T> build() {
+            if (this.sc == null) {
+                return null;
             }
+            if (this.column != null || this.symbol == Symbol.EXISTS || this.symbol == Symbol.NOT_EXISTS) {
+                return new SubQuery<>(this.criteria, this.column, this.sc, this.symbol, this.logic);
+            }
+            if (this.criteria == null) {
+                return null;
+            }
+            if (hasText(this.property)) {
+                ColumnWrapper wrapper = this.criteria.searchColumn(this.property);
+                if (wrapper != null) {
+                    return new SubQuery<>(this.criteria, wrapper, this.sc, this.symbol, this.logic);
+                }
+            }
+            if (lambdaProperty != null) {
+                ColumnWrapper wrapper = this.criteria.searchColumn(lambdaProperty);
+                if (wrapper != null) {
+                    return new SubQuery<>(this.criteria, wrapper, this.sc, this.symbol, this.logic);
+                }
+            }
+            return null;
         }
-        return null;
     }
 }
