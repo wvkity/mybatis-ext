@@ -36,11 +36,5 @@ public interface Criterion<T> extends Segment {
      * @return {@code this}
      */
     Criterion<T> logic(Logic logic);
-
-    /**
-     * 设置值
-     * @param value 值
-     * @return {@code this}
-     */
-    Criterion<T> value(Object value);
+    
 }

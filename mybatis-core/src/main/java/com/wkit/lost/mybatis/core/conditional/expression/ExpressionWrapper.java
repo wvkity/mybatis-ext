@@ -79,12 +79,6 @@ public abstract class ExpressionWrapper<T, E> implements Criterion<T>, Placehold
         return this;
     }
 
-    @Override
-    public ExpressionWrapper<T, ?> value(Object value) {
-        this.value = value;
-        return this;
-    }
-
     /**
      * 获取表别名
      * @return 表别名

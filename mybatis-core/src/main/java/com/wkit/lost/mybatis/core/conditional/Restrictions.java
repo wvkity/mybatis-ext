@@ -10,6 +10,7 @@ import com.wkit.lost.mybatis.core.conditional.expression.DirectIn;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectLessThan;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectLessThanOrEqual;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectLike;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectNormalEqual;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectNotBetween;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectNotEqual;
 import com.wkit.lost.mybatis.core.conditional.expression.DirectNotIn;
@@ -3041,12 +3042,15 @@ public final class Restrictions {
      * @param property      属性
      * @param otherCriteria 其他条件包装对象
      * @param otherProperty 其他属性
+     * @param <T>           实体类型
+     * @param <V1>          属性1值类型
      * @param <E>           实体类型
+     * @param <V2>          属性2值类型
      * @return 条件对象
      */
-    public static <T, V1, E, V2> NormalEqual<T> eq(Criteria<T> criteria, Property<T, V1> property,
+    public static <T, V1, E, V2> NormalEqual<T> nq(Criteria<T> criteria, Property<T, V1> property,
                                                    Criteria<E> otherCriteria, Property<E, V2> otherProperty) {
-        return eq(criteria, property, otherCriteria, otherProperty, Logic.AND);
+        return nq(criteria, property, otherCriteria, otherProperty, Logic.AND);
     }
 
     /**
@@ -3056,13 +3060,18 @@ public final class Restrictions {
      * @param otherCriteria 其他条件包装对象
      * @param otherProperty 其他属性
      * @param logic         逻辑符号
+     * @param <T>           实体类型
+     * @param <V1>          属性1值类型
      * @param <E>           实体类型
+     * @param <V2>          属性2值类型
      * @return 条件对象
      */
-    public static <T, V1, E, V2> NormalEqual<T> eq(Criteria<T> criteria, Property<T, V1> property,
+    public static <T, V1, E, V2> NormalEqual<T> nq(Criteria<T> criteria, Property<T, V1> property,
                                                    Criteria<E> otherCriteria, Property<E, V2> otherProperty,
                                                    Logic logic) {
-        return NormalEqual.create(criteria, property, otherCriteria, otherProperty, logic);
+        NormalEqual.Builder<T> it = NormalEqual.create();
+        return it.criteria(criteria).property(property).otherCriteria(otherCriteria)
+                .otherProperty(otherProperty).logic(logic).build();
     }
 
     /**
@@ -3071,12 +3080,13 @@ public final class Restrictions {
      * @param property      属性
      * @param otherCriteria 其他条件包装对象
      * @param otherProperty 其他属性
+     * @param <T>           实体类型
      * @param <E>           实体类型
      * @return 条件对象
      */
-    public static <T, E> NormalEqual<T> eq(Criteria<T> criteria, String property,
+    public static <T, E> NormalEqual<T> nq(Criteria<T> criteria, String property,
                                            Criteria<E> otherCriteria, String otherProperty) {
-        return eq(criteria, property, otherCriteria, otherProperty, Logic.AND);
+        return nq(criteria, property, otherCriteria, otherProperty, Logic.AND);
     }
 
     /**
@@ -3086,12 +3096,15 @@ public final class Restrictions {
      * @param otherCriteria 其他条件包装对象
      * @param otherProperty 其他属性
      * @param logic         逻辑符号
+     * @param <T>           实体类型
      * @param <E>           实体类型
      * @return 条件对象
      */
-    public static <T, E> NormalEqual<T> eq(Criteria<T> criteria, String property,
+    public static <T, E> NormalEqual<T> nq(Criteria<T> criteria, String property,
                                            Criteria<E> otherCriteria, String otherProperty, Logic logic) {
-        return NormalEqual.create(criteria, property, otherCriteria, otherProperty, logic);
+        NormalEqual.Builder<T> it = NormalEqual.create();
+        return it.criteria(criteria).property(property).otherCriteria(otherCriteria)
+                .otherProperty(otherProperty).logic(logic).build();
     }
 
     /**
@@ -3100,12 +3113,13 @@ public final class Restrictions {
      * @param column        字段包装对象
      * @param otherCriteria 其他条件包装对象
      * @param otherColumn   其他字段包装对象
+     * @param <T>           实体类型
      * @param <E>           实体类型
      * @return 条件对象
      */
-    public static <T, E> NormalEqual<T> eq(Criteria<T> criteria, ColumnWrapper column,
+    public static <T, E> NormalEqual<T> nq(Criteria<T> criteria, ColumnWrapper column,
                                            Criteria<E> otherCriteria, ColumnWrapper otherColumn) {
-        return eq(criteria, column, otherCriteria, otherColumn, Logic.AND);
+        return nq(criteria, column, otherCriteria, otherColumn, Logic.AND);
     }
 
     /**
@@ -3115,12 +3129,387 @@ public final class Restrictions {
      * @param otherCriteria 其他条件包装对象
      * @param otherColumn   其他字段包装对象
      * @param logic         逻辑符号
+     * @param <T>           实体类型
      * @param <E>           实体类型
      * @return 条件对象
      */
-    public static <T, E> NormalEqual<T> eq(Criteria<T> criteria, ColumnWrapper column,
+    public static <T, E> NormalEqual<T> nq(Criteria<T> criteria, ColumnWrapper column,
                                            Criteria<E> otherCriteria, ColumnWrapper otherColumn, Logic logic) {
-        return NormalEqual.create(criteria, column, otherCriteria, otherColumn, logic);
+        NormalEqual.Builder<T> it = NormalEqual.create();
+        return it.criteria(criteria).column(column).otherCriteria(otherCriteria)
+                .otherColumn(otherColumn).logic(logic).build();
+
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param otherColumn   其他表字段
+     * @param <T>           实体类型
+     * @param <E>           实体类型
+     * @param <V>           属性值类型
+     * @return 条件对象
+     */
+    public static <T, E, V> NormalEqual<T> nqWith(Criteria<T> criteria, Property<T, V> property,
+                                                  Criteria<E> otherCriteria, String otherColumn) {
+        return nqWith(criteria, property, otherCriteria, otherColumn, Logic.AND);
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param otherColumn   其他表字段
+     * @param logic         逻辑符号
+     * @param <T>           实体类型
+     * @param <E>           实体类型
+     * @param <V>           属性值类型
+     * @return 条件对象
+     */
+    public static <T, E, V> NormalEqual<T> nqWith(Criteria<T> criteria, Property<T, V> property,
+                                                  Criteria<E> otherCriteria, String otherColumn, Logic logic) {
+        NormalEqual.Builder<T> it = NormalEqual.create();
+        return it.criteria(criteria).property(property).otherCriteria(otherCriteria)
+                .otherColumn(otherColumn).logic(logic).build();
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param otherColumn   其他表字段
+     * @param <T>           实体类型
+     * @param <E>           实体类型
+     * @return 条件对象
+     */
+    public static <T, E> NormalEqual<T> nqWith(Criteria<T> criteria, String property,
+                                               Criteria<E> otherCriteria, String otherColumn) {
+        return nqWith(criteria, property, otherCriteria, otherColumn, Logic.AND);
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param otherColumn   其他表字段
+     * @param logic         逻辑符号
+     * @param <T>           实体类型
+     * @param <E>           实体类型
+     * @return 条件对象
+     */
+    public static <T, E> NormalEqual<T> nqWith(Criteria<T> criteria, String property,
+                                               Criteria<E> otherCriteria, String otherColumn, Logic logic) {
+        NormalEqual.Builder<T> it = NormalEqual.create();
+        return it.criteria(criteria).property(property).otherCriteria(otherCriteria)
+                .otherColumn(otherColumn).logic(logic).build();
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria        条件包装对象
+     * @param property        属性
+     * @param otherTableAlias 其他表别名
+     * @param otherColumn     其他表字段
+     * @param <T>             实体类型
+     * @param <E>             实体类型
+     * @param <V>             属性值类型
+     * @return 条件对象
+     */
+    public static <T, E, V> NormalEqual<T> nqWith(Criteria<T> criteria, Property<T, V> property,
+                                                  String otherTableAlias, String otherColumn) {
+        return nqWith(criteria, property, otherTableAlias, otherColumn, Logic.AND);
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria        条件包装对象
+     * @param property        属性
+     * @param otherTableAlias 其他表别名
+     * @param otherColumn     其他表字段
+     * @param logic           逻辑符号
+     * @param <T>             实体类型
+     * @param <E>             实体类型
+     * @param <V>             属性值类型
+     * @return 条件对象
+     */
+    public static <T, E, V> NormalEqual<T> nqWith(Criteria<T> criteria, Property<T, V> property,
+                                                  String otherTableAlias, String otherColumn, Logic logic) {
+        NormalEqual.Builder<T> it = NormalEqual.create();
+        return it.criteria(criteria).property(property).otherAlias(otherTableAlias)
+                .otherColumn(otherColumn).logic(logic).build();
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria        条件包装对象
+     * @param property        属性
+     * @param otherTableAlias 其他表别名
+     * @param otherColumn     其他表字段
+     * @param <T>             实体类型
+     * @param <E>             实体类型
+     * @return 条件对象
+     */
+    public static <T, E> NormalEqual<T> nqWith(Criteria<T> criteria, String property,
+                                               String otherTableAlias, String otherColumn) {
+        return nqWith(criteria, property, otherTableAlias, otherColumn, Logic.AND);
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria        条件包装对象
+     * @param property        属性
+     * @param otherTableAlias 其他表别名
+     * @param otherColumn     其他表字段
+     * @param logic           逻辑符号
+     * @param <T>             实体类型
+     * @param <E>             实体类型
+     * @return 条件对象
+     */
+    public static <T, E> NormalEqual<T> nqWith(Criteria<T> criteria, String property,
+                                               String otherTableAlias, String otherColumn, Logic logic) {
+        NormalEqual.Builder<T> it = NormalEqual.create();
+        return it.criteria(criteria).property(property).otherAlias(otherTableAlias)
+                .otherColumn(otherColumn).logic(logic).build();
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param column        字段包装对象
+     * @param otherCriteria 其他条件包装对象
+     * @param otherColumn   其他表字段
+     * @param <T>           实体类型
+     * @param <E>           实体类型
+     * @return 条件对象
+     */
+    public static <T, E> NormalEqual<T> nqWith(Criteria<T> criteria, ColumnWrapper column,
+                                               Criteria<E> otherCriteria, String otherColumn) {
+        return nqWith(criteria, column, otherCriteria, otherColumn, Logic.AND);
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param column        字段包装对象
+     * @param otherCriteria 其他条件包装对象
+     * @param otherColumn   其他表字段
+     * @param logic         逻辑符号
+     * @param <T>           实体类型
+     * @param <E>           实体类型
+     * @return 条件对象
+     */
+    public static <T, E> NormalEqual<T> nqWith(Criteria<T> criteria, ColumnWrapper column,
+                                               Criteria<E> otherCriteria, String otherColumn, Logic logic) {
+        NormalEqual.Builder<T> it = NormalEqual.create();
+        return it.criteria(criteria).column(column).otherCriteria(otherCriteria)
+                .otherColumn(otherColumn).logic(logic).build();
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria        条件包装对象
+     * @param column          字段包装对象
+     * @param otherTableAlias 其他表别名
+     * @param otherColumn     其他表字段
+     * @param <T>             实体类型
+     * @param <E>             实体类型
+     * @return 条件对象
+     */
+    public static <T, E> NormalEqual<T> nqWith(Criteria<T> criteria, ColumnWrapper column,
+                                               String otherTableAlias, String otherColumn) {
+        return nqWith(criteria, column, otherTableAlias, otherColumn, Logic.AND);
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria        条件包装对象
+     * @param column          字段包装对象
+     * @param otherTableAlias 其他表别名
+     * @param otherColumn     其他表字段
+     * @param logic           逻辑符号
+     * @param <T>             实体类型
+     * @param <E>             实体类型
+     * @return 条件对象
+     */
+    public static <T, E> NormalEqual<T> nqWith(Criteria<T> criteria, ColumnWrapper column,
+                                               String otherTableAlias, String otherColumn, Logic logic) {
+        NormalEqual.Builder<T> it = NormalEqual.create();
+        return it.criteria(criteria).column(column).otherAlias(otherTableAlias)
+                .otherColumn(otherColumn).logic(logic).build();
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param column        字段
+     * @param otherCriteria 其他条件包装对象
+     * @param otherColumn   其他表字段
+     * @param <T>           实体类型
+     * @param <E>           实体类型
+     * @return 条件对象
+     */
+    public static <T, E> DirectNormalEqual<T> drtNq(Criteria<T> criteria, String column,
+                                                    Criteria<E> otherCriteria, ColumnWrapper otherColumn) {
+        return drtNq(criteria, column, otherCriteria, otherColumn, Logic.AND);
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param column        字段
+     * @param otherCriteria 其他条件包装对象
+     * @param otherColumn   其他表字段
+     * @param logic         逻辑符号
+     * @param <T>           实体类型
+     * @param <E>           实体类型
+     * @return 条件对象
+     */
+    public static <T, E> DirectNormalEqual<T> drtNq(Criteria<T> criteria, String column, Criteria<E> otherCriteria,
+                                                    ColumnWrapper otherColumn, Logic logic) {
+        DirectNormalEqual.Builder<T> it = DirectNormalEqual.create();
+        return it.criteria(criteria).column(column).otherCriteria(otherCriteria)
+                .otherColumn(otherColumn).logic(logic).build();
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param tableAlias    表别名
+     * @param column        字段
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param <T>           实体类型
+     * @param <E>           实体类型
+     * @param <V>           属性值类型
+     * @return 条件对象
+     */
+    public static <T, E, V> DirectNormalEqual<T> drtNq(String tableAlias, String column,
+                                                       Criteria<E> otherCriteria, Property<E, V> otherProperty) {
+        return drtNq(tableAlias, column, otherCriteria, otherProperty, Logic.AND);
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param tableAlias    表别名
+     * @param column        字段
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param logic         逻辑符号
+     * @param <T>           实体类型
+     * @param <E>           实体类型
+     * @param <V>           属性值类型
+     * @return 条件对象
+     */
+    public static <T, E, V> DirectNormalEqual<T> drtNq(String tableAlias, String column, Criteria<E> otherCriteria,
+                                                       Property<E, V> otherProperty, Logic logic) {
+        DirectNormalEqual.Builder<T> it = DirectNormalEqual.create();
+        return it.alias(tableAlias).column(column).otherCriteria(otherCriteria)
+                .otherProperty(otherProperty).logic(logic).build();
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param tableAlias    表别名
+     * @param column        字段
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param <T>           实体类型
+     * @param <E>           实体类型
+     * @return 条件对象
+     */
+    public static <T, E> DirectNormalEqual<T> drtNq(String tableAlias, String column,
+                                                    Criteria<E> otherCriteria, String otherProperty) {
+        return drtNq(tableAlias, column, otherCriteria, otherProperty, Logic.AND);
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param tableAlias    表别名
+     * @param column        字段
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param logic         逻辑符号
+     * @param <T>           实体类型
+     * @param <E>           实体类型
+     * @return 条件对象
+     */
+    public static <T, E> DirectNormalEqual<T> drtNq(String tableAlias, String column,
+                                                    Criteria<E> otherCriteria, String otherProperty, Logic logic) {
+        DirectNormalEqual.Builder<T> it = DirectNormalEqual.create();
+        return it.alias(tableAlias).column(column).otherCriteria(otherCriteria)
+                .otherProperty(otherProperty).logic(logic).build();
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param column        字段
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param <T>           实体类型
+     * @param <E>           实体类型
+     * @param <V>           属性值类型
+     * @return 条件对象
+     */
+    public static <T, E, V> DirectNormalEqual<T> drtNq(Criteria<T> criteria, String column,
+                                                       Criteria<E> otherCriteria, Property<E, V> otherProperty) {
+        return drtNq(criteria, column, otherCriteria, otherProperty, Logic.AND);
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param column        字段
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param logic         逻辑符号
+     * @param <T>           实体类型
+     * @param <E>           实体类型
+     * @param <V>           属性值类型
+     * @return 条件对象
+     */
+    public static <T, E, V> DirectNormalEqual<T> drtNq(Criteria<T> criteria, String column, Criteria<E> otherCriteria,
+                                                       Property<E, V> otherProperty, Logic logic) {
+        DirectNormalEqual.Builder<T> it = DirectNormalEqual.create();
+        return it.criteria(criteria).column(column).otherCriteria(otherCriteria)
+                .otherProperty(otherProperty).logic(logic).build();
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param column        字段
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param <T>           实体类型
+     * @param <E>           实体类型
+     * @return 条件对象
+     */
+    public static <T, E> DirectNormalEqual<T> drtNq(Criteria<T> criteria, String column,
+                                                    Criteria<E> otherCriteria, String otherProperty) {
+        return drtNq(criteria, column, otherCriteria, otherProperty, Logic.AND);
+    }
+
+    /**
+     * NORMAL EQUAL
+     * @param criteria      条件包装对象
+     * @param column        字段
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param logic         逻辑符号
+     * @param <T>           实体类型
+     * @param <E>           实体类型
+     * @return 条件对象
+     */
+    public static <T, E> DirectNormalEqual<T> drtNq(Criteria<T> criteria, String column,
+                                                    Criteria<E> otherCriteria, String otherProperty, Logic logic) {
+        DirectNormalEqual.Builder<T> it = DirectNormalEqual.create();
+        return it.criteria(criteria).column(column).otherCriteria(otherCriteria)
+                .otherProperty(otherProperty).logic(logic).build();
     }
     // endregion
 
