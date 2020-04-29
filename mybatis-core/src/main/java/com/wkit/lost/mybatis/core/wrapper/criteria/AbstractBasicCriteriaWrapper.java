@@ -2,10 +2,12 @@ package com.wkit.lost.mybatis.core.wrapper.criteria;
 
 import com.wkit.lost.mybatis.core.conditional.Restrictions;
 import com.wkit.lost.mybatis.core.conditional.criterion.Criterion;
+import com.wkit.lost.mybatis.core.conditional.expression.DirectNormalEqual;
 import com.wkit.lost.mybatis.core.constant.Logic;
 import com.wkit.lost.mybatis.core.constant.Match;
 import com.wkit.lost.mybatis.core.constant.Symbol;
 import com.wkit.lost.mybatis.core.converter.AbstractPlaceholderConverter;
+import com.wkit.lost.mybatis.core.converter.Property;
 import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import com.wkit.lost.mybatis.core.metadata.TableWrapper;
@@ -45,7 +47,7 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
 
     protected static final String AND_OR_REGEX = "^(?i)(\\s*and\\s+|\\s*or\\s+)(.*)";
     protected static final Pattern AND_OR_PATTERN = Pattern.compile(AND_OR_REGEX, Pattern.CASE_INSENSITIVE);
-    protected static final String SYS_SQL_ALIAS_PREFIX = "_self_";
+    protected static final String SYS_SQL_ALIAS_PREFIX = "_it_";
 
     /**
      * 表名缓存
@@ -231,25 +233,64 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
     }
 
     @Override
-    public <E> Chain normalEq(String property, Criteria<E> otherCriteria, String otherProperty) {
-        return where(Restrictions.eq(this, property, otherCriteria, otherProperty));
+    public Chain orEq(String property, Object value) {
+        return where(Restrictions.eq(this, property, value, Logic.OR));
     }
 
     @Override
-    public <E> Chain normalEq(String property, Criteria<E> otherCriteria) {
-        return where(Restrictions.eq(this, this.searchColumn(property), otherCriteria,
+    public <E> Chain nq(String property, Criteria<E> otherCriteria, String otherProperty) {
+        return where(Restrictions.nq(this, property, otherCriteria, otherProperty));
+    }
+
+    @Override
+    public <E> Chain nq(String property, Criteria<E> otherCriteria) {
+        return where(Restrictions.nq(this, this.searchColumn(property), otherCriteria,
                 TableHandler.getPrimaryKey(otherCriteria.getEntityClass())));
     }
 
     @Override
-    public <E> Chain normalEq(Criteria<E> otherCriteria, String otherProperty) {
-        return where(Restrictions.eq(this, TableHandler.getPrimaryKey(this.getEntityClass()), otherCriteria,
+    public <E> Chain nq(Criteria<E> otherCriteria, String otherProperty) {
+        return where(Restrictions.nq(this, TableHandler.getPrimaryKey(this.getEntityClass()), otherCriteria,
                 otherCriteria.searchColumn(otherProperty)));
     }
 
     @Override
-    public Chain orEq(String property, Object value) {
-        return where(Restrictions.eq(this, property, value, Logic.OR));
+    public <E, V> Chain nq(Property<T, V> property, Criteria<E> otherCriteria, String otherColumn) {
+        return where(Restrictions.nqWith(this, property, otherCriteria, otherColumn));
+    }
+
+    @Override
+    public Chain nq(String property, String otherTableAlias, String otherColumn) {
+        return where(Restrictions.nqWith(this, property, otherTableAlias, otherColumn));
+    }
+
+    @Override
+    public <E> Chain nqWith(Criteria<E> otherCriteria, String otherColumn) {
+        return where(Restrictions.nqWith(this, TableHandler.getPrimaryKey(this.getEntityClass()),
+                otherCriteria, otherColumn));
+    }
+
+    @Override
+    public Chain nqWith(String otherTableAlias, String otherColumn) {
+        return where(Restrictions.nqWith(this, TableHandler.getPrimaryKey(this.getEntityClass()),
+                otherTableAlias, otherColumn));
+    }
+
+    @Override
+    public <E> Chain nqWith(String column, Criteria<E> otherCriteria) {
+        return where(Restrictions.drtNq(this, column, otherCriteria,
+                TableHandler.getPrimaryKey(this.getEntityClass())));
+    }
+
+    @Override
+    public Chain nqWith(String column, String otherTableAlias, String otherColumn) {
+        DirectNormalEqual.Builder<T> it = DirectNormalEqual.create();
+        return where(it.criteria(this).column(column).otherAlias(otherTableAlias).otherColumn(otherColumn).build());
+    }
+
+    @Override
+    public <E> Chain nqWith(String column, Criteria<E> otherCriteria, String property) {
+        return where(Restrictions.drtNq(this, column, otherCriteria, property));
     }
 
     @Override

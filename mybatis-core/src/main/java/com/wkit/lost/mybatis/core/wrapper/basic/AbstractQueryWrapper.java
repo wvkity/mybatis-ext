@@ -32,6 +32,11 @@ public abstract class AbstractQueryWrapper<T, E> extends AbstractWrapper<T, E> i
         return this.column != null;
     }
 
+    @Override
+    public String alias() {
+        return this.columnAlias;
+    }
+
     /**
      * 将当前查询列包装对象转换成另一个查询列包装对象
      * @param criteria 条件对象

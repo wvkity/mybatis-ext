@@ -13,11 +13,16 @@ public abstract class AbstractCriteriaProvider extends AbstractLogicDeleteProvid
      * @return 查询条件表达式
      */
     protected String getQueryCondition() {
-        return NEW_LINE + ScriptUtil.convertIfTag(CRITERIA_HAS_CONDITION_SEGMENT,
-                ScriptUtil.unSafeJoint(PARAM_CRITERIA, ".whereSegment"), true) + NEW_LINE;
+        return SPACE + ScriptUtil.unSafeJoint(PARAM_CRITERIA, DOT, "foreignSegment") + SPACE + NEW_LINE +
+                ScriptUtil.convertIfTag(CRITERIA_HAS_CONDITION_SEGMENT, CRITERIA_WHERE_SEGMENT, true) + NEW_LINE;
     }
 
+    /**
+     * 更新条件
+     * @return 条件表达式
+     */
     protected String getUpdateCondition() {
-        return NEW_LINE + ScriptUtil.convertIfTag(CRITERIA_HAS_CONDITION_SEGMENT, CRITERIA_WHERE_SEGMENT, true) + NEW_LINE;
+        return NEW_LINE + ScriptUtil.convertIfTag(CRITERIA_HAS_CONDITION_SEGMENT,
+                CRITERIA_WHERE_SEGMENT, true) + NEW_LINE;
     }
 }

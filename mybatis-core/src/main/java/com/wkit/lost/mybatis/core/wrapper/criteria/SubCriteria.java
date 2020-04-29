@@ -59,7 +59,7 @@ public class SubCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
         this.tableAlias = alias;
         this.builtinAlias = SYS_SQL_ALIAS_PREFIX + this.aliasSequence.incrementAndGet();
         if (CollectionUtil.hasElement(clauses)) {
-            this.add(clauses);
+            this.where(clauses);
         }
     }
 
@@ -77,6 +77,7 @@ public class SubCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
     public String getSegmentForCondition() {
         StringBuilder builder = new StringBuilder(Constants.BRACKET_LEFT);
         builder.append("SELECT ").append(this.getQuerySegment()).append(" FROM ").append(this.getTableName());
+        builder.append(getForeignSegment());
         if (this.isHasCondition()) {
             builder.append(Constants.SPACE).append(this.getWhereSegment());
         }

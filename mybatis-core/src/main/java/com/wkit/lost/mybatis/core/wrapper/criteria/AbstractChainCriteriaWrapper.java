@@ -30,6 +30,7 @@ abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriter
      * 属性-字段包装对象缓存(只读)
      */
     private Map<String, ColumnWrapper> _PROPERTY_COLUMN_CACHE;
+    
     /**
      * 可更新字段名缓存(小写)
      */

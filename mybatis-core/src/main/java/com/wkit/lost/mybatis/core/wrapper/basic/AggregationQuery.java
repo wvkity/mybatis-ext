@@ -8,6 +8,11 @@ public class AggregationQuery<T> extends AbstractQueryWrapper<T, Aggregation> {
     private static final long serialVersionUID = 5643412018618027094L;
 
     @Override
+    public String columnName() {
+        return null;
+    }
+
+    @Override
     public AbstractQueryWrapper<?, ?> transform(Criteria<?> criteria) {
         return null;
     }

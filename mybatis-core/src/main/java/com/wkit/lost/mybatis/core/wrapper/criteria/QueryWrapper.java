@@ -7,32 +7,8 @@ package com.wkit.lost.mybatis.core.wrapper.criteria;
  * @author wvkity
  */
 public interface QueryWrapper<T, Chain extends QueryWrapper<T, Chain>> extends Query<T, Chain>,
+        ForeignCriteriaWrapper<T, Chain>, ForeignSubCriteriaWrapper<T, Chain>,
         GroupWrapper<T, Chain>, OrderWrapper<T, Chain> {
-
-    /**
-     * 搜索{@link ForeignCriteria}对象
-     * @param alias 别名
-     * @param <E>   泛型类型
-     * @return {@link ForeignCriteria}对象
-     */
-    <E> ForeignCriteria<E> searchForeign(String alias);
-
-    /**
-     * 搜索{@link ForeignCriteria}对象
-     * @param entity 实体类
-     * @param <E>    泛型类型
-     * @return {@link ForeignCriteria}对象
-     */
-    <E> ForeignCriteria<E> searchForeign(Class<E> entity);
-
-    /**
-     * 搜索{@link ForeignCriteria}对象
-     * @param alias  别名
-     * @param entity 实体类
-     * @param <E>    泛型类型
-     * @return {@link ForeignCriteria}对象
-     */
-    <E> ForeignCriteria<E> searchForeign(String alias, Class<E> entity);
 
     /**
      * 使用内置表别名

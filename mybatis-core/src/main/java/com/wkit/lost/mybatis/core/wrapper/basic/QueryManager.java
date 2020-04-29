@@ -2,6 +2,7 @@ package com.wkit.lost.mybatis.core.wrapper.basic;
 
 import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
+import com.wkit.lost.mybatis.core.metadata.TableWrapper;
 import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.core.wrapper.criteria.AbstractQueryCriteriaWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
@@ -14,6 +15,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -49,7 +51,7 @@ public class QueryManager implements Segment {
     /**
      * 标记SQL片段已生成
      */
-    private boolean cached = false;
+    private volatile boolean cached = false;
 
     /**
      * SQL片段
@@ -59,7 +61,7 @@ public class QueryManager implements Segment {
     /**
      * 临时
      */
-    private List<AbstractQueryWrapper<?, ?>> _wrappers;
+    private volatile List<AbstractQueryWrapper<?, ?>> _wrappers;
 
     /**
      * 构造方法
@@ -160,82 +162,26 @@ public class QueryManager implements Segment {
                 return true;
             }).collect(Collectors.toList());
         } else {
-            /*if ( criteria instanceof ForeignSubCriteria || criteria instanceof SubCriteria ) {
-                if ( criteria.isFetch() ) {
-                    List<AbstractQueryWrapper<?, ?>> items = criteria.getQueries();
-                    if ( CollectionUtil.hasElement( items ) ) {
-                        queries = items.stream().map( it -> it.transform( criteria ) )
-                                .filter( Objects::nonNull ).collect( Collectors.toList() );
-                    } else {
-                        queries = new ArrayList<>( 0 );
-                    }
-                } else {
-                    queries = new ArrayList<>( 0 );
-                }
-            } else {
-                // 获取所有列
-                Set<ColumnWrapper> columnWrappers = TableHandler.getTable( criteria.getEntityClass() ).columns();
-                queries = columnWrappers.stream().filter( it ->
-                        accept( it.getProperty(), this.excludeProperties, false )
-                                && accept( it.getColumn(), this.excludeColumns, true )
-                ).map( it -> Query.Single.query( criteria, it ) ).collect( Collectors.toList() );
-            }*/
             // 获取所有列
-            Set<ColumnWrapper> columnWrappers = TableHandler.getTable(criteria.getEntityClass()).columns();
-            queries = columnWrappers.stream().filter(it ->
-                    accept(it.getProperty(), this.excludeProperties, false)
-                            && accept(it.getColumn(), this.excludeColumns, true)
-            ).map(it -> Query.Single.query(criteria, it)).collect(Collectors.toList());
-            //queries = loop( criteria );
+            Set<ColumnWrapper> columnWrappers = Optional.ofNullable(TableHandler.getTable(criteria.getEntityClass()))
+                    .map(TableWrapper::columns).orElse(null);
+            if (columnWrappers != null) {
+                queries = columnWrappers.stream().filter(it ->
+                        accept(it.getProperty(), this.excludeProperties, false)
+                                && accept(it.getColumn(), this.excludeColumns, true)
+                ).map(it -> Query.Single.query(criteria, it)).collect(Collectors.toList());
+            } else {
+                return new ArrayList<>(0);
+            }
         }
+        //queries = loop( criteria );
         this._wrappers = queries;
         this.cached = true;
         return new ArrayList<>(this._wrappers);
     }
 
-    private List<AbstractQueryWrapper<?, ?>> loop(AbstractQueryCriteriaWrapper<?> criteria) {
-        /*if ( criteria instanceof ForeignSubCriteria ) {
-            // 子查询联表
-            ForeignSubCriteria<?> fsc = ( ForeignSubCriteria<?> ) criteria;
-            if ( fsc.hasQueries() ) {
-                return fsc.getQueries();
-            }
-            List<AbstractQueryWrapper<?, ?>> items;
-            if ( fsc.isFetch() ) {
-                // 重新组装
-                items = fsc.getSubCriteria().getQueries();
-                if ( CollectionUtil.hasElement( items ) ) {
-                    return items.stream().map( it -> it.transform( criteria ) )
-                            .filter( Objects::nonNull ).collect( Collectors.toList() );
-                } else {
-                    return new ArrayList<>( 0 );
-                }
-            }
-            return new ArrayList<>( 0 );
-        } else if ( criteria instanceof SubCriteria ) {
-            // 子查询
-            SubCriteria<?> sc = ( SubCriteria<?> ) criteria;
-            if ( sc.hasQueries() ) {
-                return sc.getQueries();
-            }
-            return build( sc );
-        } else if ( criteria instanceof ForeignCriteria ) {
-            // 联表
-            ForeignCriteria<?> fc = ( ForeignCriteria<?> ) criteria;
-            if ( fc.hasQueries() ) {
-                return fc.getQueries();
-            } else if ( fc.isFetch() ) {
-                return build( fc );
-            }
-            return new ArrayList<>( 0 );
-        } else {
-            return build( criteria );
-        }*/
-        return new ArrayList<>(0);
-    }
-
     private List<AbstractQueryWrapper<?, ?>> build(Criteria<?> criteria) {
-        // 获取所有列
+        // 
         Set<ColumnWrapper> columnWrappers = TableHandler.getTable(criteria.getEntityClass()).columns();
         return columnWrappers.stream().filter(it ->
                 accept(it.getProperty(), this.excludeProperties, false)

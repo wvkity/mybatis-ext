@@ -68,6 +68,11 @@ public class DirectQuery<T> extends AbstractQueryWrapper<T, String> {
     }
 
     @Override
+    public String columnName() {
+        return this.column;
+    }
+
+    @Override
     public AbstractQueryWrapper<?, ?> transform(Criteria<?> criteria) {
         if (criteria != null) {
             return DirectQuery.Single.query(criteria,

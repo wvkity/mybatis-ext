@@ -129,7 +129,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param column 列名
      * @return {@code this}
      */
-    Chain directSelect(String column);
+    Chain selectWith(String column);
 
     /**
      * 添加查询列
@@ -139,8 +139,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param as2 字段2别名
      * @return {@code this}
      */
-    default Chain directSelect(String c1, String as1, String c2, String as2) {
-        return directSelect(c1, as1).directSelect(c2, as2);
+    default Chain selectWith(String c1, String as1, String c2, String as2) {
+        return selectWith(c1, as1).selectWith(c2, as2);
     }
 
     /**
@@ -153,8 +153,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param as3 字段3别名
      * @return {@code this}
      */
-    default Chain directSelect(String c1, String as1, String c2, String as2, String c3, String as3) {
-        return directSelect(c1, as1).directSelect(c2, as2).directSelect(c3, as3);
+    default Chain selectWith(String c1, String as1, String c2, String as2, String c3, String as3) {
+        return selectWith(c1, as1).selectWith(c2, as2).selectWith(c3, as3);
     }
 
     /**
@@ -163,21 +163,21 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param alias  列别名
      * @return {@code this}
      */
-    Chain directSelect(String column, String alias);
+    Chain selectWith(String column, String alias);
 
     /**
      * 添加查询列
      * @param columns 列名集合
      * @return {@code this}
      */
-    Chain directSelect(Collection<String> columns);
+    Chain selectWith(Collection<String> columns);
 
     /**
      * 添加查询列
      * @param columns 列别名-列名集合
      * @return {@code this}
      */
-    Chain directSelect(Map<String, String> columns);
+    Chain selectWith(Map<String, String> columns);
 
     /**
      * 添加查询列
@@ -186,7 +186,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param alias      列别名
      * @return {@code this}
      */
-    Chain directSelect(String tableAlias, String column, String alias);
+    Chain selectWith(String tableAlias, String column, String alias);
 
     /**
      * 添加查询列
@@ -194,7 +194,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns    列名集合
      * @return {@code this}
      */
-    Chain directSelect(String tableAlias, Collection<String> columns);
+    Chain selectWith(String tableAlias, Collection<String> columns);
 
     /**
      * 添加参数列
@@ -203,12 +203,10 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param as1        字段1别名
      * @param c2         字段2
      * @param as2        字段2别名
-     * @param c3         字段3
-     * @param as3        字段3别名
      * @return {@code this}
      */
-    default Chain directSelect(String tableAlias, String c1, String as1, String c2, String as2) {
-        return directSelect(tableAlias, c1, as1).directSelect(tableAlias, c2, as2);
+    default Chain selectWith(String tableAlias, String c1, String as1, String c2, String as2) {
+        return selectWith(tableAlias, c1, as1).selectWith(tableAlias, c2, as2);
     }
 
     /**
@@ -222,10 +220,10 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param as3        字段3别名
      * @return {@code this}
      */
-    default Chain directSelect(String tableAlias, String c1, String as1,
-                               String c2, String as2, String c3, String as3) {
-        return directSelect(tableAlias, c1, as1).directSelect(tableAlias, c2, as2)
-                .directSelect(tableAlias, c3, as3);
+    default Chain selectWith(String tableAlias, String c1, String as1,
+                             String c2, String as2, String c3, String as3) {
+        return selectWith(tableAlias, c1, as1).selectWith(tableAlias, c2, as2)
+                .selectWith(tableAlias, c3, as3);
     }
 
     /**
@@ -234,7 +232,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns    列别名-列名集合
      * @return {@code this}
      */
-    Chain directSelect(String tableAlias, Map<String, String> columns);
+    Chain selectWith(String tableAlias, Map<String, String> columns);
 
     /**
      * 添加查询列
@@ -242,8 +240,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns    列名数组
      * @return {@code this}
      */
-    default Chain directSelectWithAlias(String tableAlias, String... columns) {
-        return directSelect(tableAlias, ArrayUtil.toList(columns));
+    default Chain selectWithAlias(String tableAlias, String... columns) {
+        return selectWith(tableAlias, ArrayUtil.toList(columns));
     }
 
     /**
@@ -306,7 +304,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @return {@code this}
      */
     @SuppressWarnings({"unchecked"})
-    default <V> Chain selects(Property<T, V>... properties) {
+    default <V> Chain select(Property<T, V>... properties) {
         return select(convert(ArrayUtil.toList(properties)));
     }
 
@@ -324,8 +322,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns 列名数组
      * @return {@code this}
      */
-    default Chain directSelects(String... columns) {
-        return directSelect(ArrayUtil.toList(columns));
+    default Chain selectsWith(String... columns) {
+        return selectWith(ArrayUtil.toList(columns));
     }
 
     /**
@@ -455,8 +453,8 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns 列名数组
      * @return {@code this}
      */
-    default Chain directExcludes(String... columns) {
-        return directExcludes(ArrayUtil.toList(columns));
+    default Chain excludesWith(String... columns) {
+        return excludesWith(ArrayUtil.toList(columns));
     }
 
     /**
@@ -464,7 +462,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns 列名集合
      * @return {@code this}
      */
-    Chain directExcludes(Collection<String> columns);
+    Chain excludesWith(Collection<String> columns);
 
     /**
      * 获取查询字段片段

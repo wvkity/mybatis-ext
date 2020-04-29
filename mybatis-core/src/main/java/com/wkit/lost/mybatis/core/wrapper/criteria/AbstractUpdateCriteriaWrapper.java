@@ -97,7 +97,6 @@ public abstract class AbstractUpdateCriteriaWrapper<T> extends AbstractCriteriaW
         if (column == null) {
             return null;
         }
-        this.segmentManager.getConditions();
         return Optional.ofNullable(optimisticLockingColumn()).map(this.segmentManager::getVersionValue).orElse(null);
     }
 

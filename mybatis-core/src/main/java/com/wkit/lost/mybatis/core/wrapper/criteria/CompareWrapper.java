@@ -127,72 +127,6 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
     Chain eq(Map<String, Object> properties);
 
     /**
-     * 等于
-     * @param property      属性
-     * @param otherCriteria 其他条件包装对象
-     * @param otherProperty 其他属性
-     * @param <E>           实体类型
-     * @param <V1>          属性1值类型
-     * @param <V2>          属性2值类型
-     * @return {@code this}
-     */
-    default <E, V1, V2> Chain normalEq(Property<T, V1> property, Criteria<E> otherCriteria, Property<E, V2> otherProperty) {
-        return normalEq(convert(property), otherCriteria, otherCriteria.convert(otherProperty));
-    }
-
-    /**
-     * 等于
-     * @param property      属性
-     * @param otherCriteria 其他条件包装对象
-     * @param otherProperty 其他属性
-     * @param <E>           实体类型
-     * @return {@code this}
-     */
-    <E> Chain normalEq(String property, Criteria<E> otherCriteria, String otherProperty);
-
-    /**
-     * 等于
-     * @param property      属性
-     * @param otherCriteria 其他条件包装对象
-     * @param <E>           实体类型
-     * @param <V>           属性值类型
-     * @return {@code this}
-     */
-    default <E, V> Chain normalEq(Property<T, V> property, Criteria<E> otherCriteria) {
-        return normalEq(convert(property), otherCriteria);
-    }
-
-    /**
-     * 等于
-     * @param property      属性
-     * @param otherCriteria 其他条件包装对象
-     * @param <E>           实体类型
-     * @return {@code this}
-     */
-    <E> Chain normalEq(String property, Criteria<E> otherCriteria);
-
-    /**
-     * 等于
-     * @param otherCriteria 其他条件包装对象
-     * @param otherProperty 其他属性
-     * @param <E>           实体类型
-     * @param <V>           属性值类型
-     * @return {@code this}
-     */
-    default <E, V> Chain normalEq(Criteria<E> otherCriteria, Property<E, V> otherProperty) {
-        return normalEq(otherCriteria, otherCriteria.convert(otherProperty));
-    }
-
-    /**
-     * 等于
-     * @param otherCriteria 其他条件包装对象
-     * @param otherProperty 其他属性
-     * @param <E>           实体类型
-     * @return {@code this}
-     */
-    <E> Chain normalEq(Criteria<E> otherCriteria, String otherProperty);
-
-    /**
      * 或等于
      * @param property 属性
      * @param value    值
@@ -210,6 +144,161 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * @return {@code this}
      */
     Chain orEq(String property, Object value);
+
+    /**
+     * 等于(Normal Equals)
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param <E>           实体类型
+     * @param <V1>          属性1值类型
+     * @param <V2>          属性2值类型
+     * @return {@code this}
+     */
+    default <E, V1, V2> Chain nq(Property<T, V1> property, Criteria<E> otherCriteria, Property<E, V2> otherProperty) {
+        return nq(convert(property), otherCriteria, otherCriteria.convert(otherProperty));
+    }
+
+    /**
+     * 等于(Normal Equals)
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param <E>           实体类型
+     * @return {@code this}
+     */
+    <E> Chain nq(String property, Criteria<E> otherCriteria, String otherProperty);
+
+    /**
+     * 等于(Normal Equals)
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param <E>           实体类型
+     * @param <V>           属性值类型
+     * @return {@code this}
+     */
+    default <E, V> Chain nq(Property<T, V> property, Criteria<E> otherCriteria) {
+        return nq(convert(property), otherCriteria);
+    }
+
+    /**
+     * 等于(Normal Equals)
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param <E>           实体类型
+     * @return {@code this}
+     */
+    <E> Chain nq(String property, Criteria<E> otherCriteria);
+
+    /**
+     * 等于(Normal Equals)
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param <E>           实体类型
+     * @param <V>           属性值类型
+     * @return {@code this}
+     */
+    default <E, V> Chain nq(Criteria<E> otherCriteria, Property<E, V> otherProperty) {
+        return nq(otherCriteria, otherCriteria.convert(otherProperty));
+    }
+
+    /**
+     * 等于(Normal Equals)
+     * @param otherCriteria 其他条件包装对象
+     * @param otherProperty 其他属性
+     * @param <E>           实体类型
+     * @return {@code this}
+     */
+    <E> Chain nq(Criteria<E> otherCriteria, String otherProperty);
+
+    /**
+     * 等于(Normal Equals)
+     * @param property      属性
+     * @param otherCriteria 其他条件包装对象
+     * @param otherColumn   其他表字段
+     * @param <E>           实体类型
+     * @param <V>           属性值类型
+     * @return {@code this}
+     */
+    <E, V> Chain nq(Property<T, V> property, Criteria<E> otherCriteria, String otherColumn);
+    
+    /**
+     * 等于(Normal Equals)
+     * @param property        属性
+     * @param otherTableAlias 其他表别名
+     * @param otherColumn     其他表字段
+     * @param <V>             属性值类型
+     * @return {@code this}
+     */
+    default <V> Chain nq(Property<T, V> property, String otherTableAlias, String otherColumn) {
+        return nq(convert(property), otherTableAlias, otherColumn);
+    }
+
+    /**
+     * 等于(Normal Equals)
+     * @param property        属性
+     * @param otherTableAlias 其他表别名
+     * @param otherColumn     其他表字段
+     * @return {@code this}
+     */
+    Chain nq(String property, String otherTableAlias, String otherColumn);
+
+    /**
+     * 等于(Normal Equals)
+     * @param otherCriteria 其他条件包装对象
+     * @param otherColumn   其他表字段
+     * @param <E>           实体类型
+     * @return {@code this}
+     */
+    <E> Chain nqWith(Criteria<E> otherCriteria, String otherColumn);
+
+    /**
+     * 等于(Normal Equals)
+     * @param otherTableAlias 其他表别名
+     * @param otherColumn     其他表字段
+     * @return {@code this}
+     */
+    Chain nqWith(String otherTableAlias, String otherColumn);
+
+    /**
+     * 等于(Normal Equals)
+     * @param column        字段
+     * @param otherCriteria 其他条件包装对象
+     * @return {@code this}
+     */
+    <E> Chain nqWith(String column, Criteria<E> otherCriteria);
+
+    /**
+     * 等于(Normal Equals)
+     * @param column          字段
+     * @param otherTableAlias 其他表别名
+     * @param otherColumn     其他字段
+     * @return {@code this}
+     */
+    Chain nqWith(String column, String otherTableAlias, String otherColumn);
+
+    /**
+     * 等于(Normal Equals)
+     * @param column        字段
+     * @param otherCriteria 其他条件包装对象
+     * @param property      其他属性
+     * @param <E>           实体类型
+     * @param <V>           属性值类型
+     * @return {@code this}
+     */
+    default <E, V> Chain nqWith(String column, Criteria<E> otherCriteria, Property<E, V> property) {
+        return nqWith(column, otherCriteria, otherCriteria.convert(property));
+    }
+
+    /**
+     * 等于(Normal Equals)
+     * @param column        字段
+     * @param otherCriteria 其他条件包装对象
+     * @param property      其他属性
+     * @param <E>           实体类型
+     * @return {@code this}
+     */
+    <E> Chain nqWith(String column, Criteria<E> otherCriteria, String property);
 
     /**
      * 等于

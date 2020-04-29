@@ -15,8 +15,14 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractLogicDeleteProvider extends AbstractProvider {
 
+    /**
+     * criteria != null and criteria.hasCondition
+     */
     protected static final String CRITERIA_HAS_CONDITION_SEGMENT = PARAM_CRITERIA + " != null and "
             + PARAM_CRITERIA + ".hasCondition";
+    /**
+     * ${criteria.whereSegment}
+     */
     protected static final String CRITERIA_WHERE_SEGMENT = ScriptUtil.unSafeJoint(PARAM_CRITERIA,
             Constants.DOT, "whereSegment");
 

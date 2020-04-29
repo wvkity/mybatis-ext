@@ -58,6 +58,11 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
     }
 
     @Override
+    public String columnName() {
+        return this.column.getColumn();
+    }
+
+    @Override
     public AbstractQueryWrapper<?, ?> transform(Criteria<?> criteria) {
         return Optional.ofNullable(criteria).map(it -> {
             String columnName = StringUtil.hasText(this.columnAlias) ? this.columnAlias :
