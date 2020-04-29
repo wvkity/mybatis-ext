@@ -39,7 +39,7 @@ public @interface EnableMetadataAuditing {
     boolean modified() default true;
 
     /**
-     * 删除更新操作审计
+     * 逻辑删除操作审计
      * @return true: 开启 false: 关闭
      */
     boolean deleted() default true;
