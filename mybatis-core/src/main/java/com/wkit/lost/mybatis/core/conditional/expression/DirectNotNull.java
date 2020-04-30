@@ -10,10 +10,9 @@ import lombok.experimental.Accessors;
 
 /**
  * IS NOT NULL条件
- * @param <T> 实体类型
  * @author wvkity
  */
-public class DirectNotNull<T> extends AbstractDirectEmptyExpression<T> {
+public class DirectNotNull extends AbstractDirectEmptyExpression {
 
     private static final long serialVersionUID = 1242960702230360913L;
 
@@ -24,7 +23,7 @@ public class DirectNotNull<T> extends AbstractDirectEmptyExpression<T> {
      * @param column     列名
      * @param logic      逻辑符号
      */
-    DirectNotNull(Criteria<T> criteria, String tableAlias, String column, Logic logic) {
+    DirectNotNull(Criteria<?> criteria, String tableAlias, String column, Logic logic) {
         this.criteria = criteria;
         this.tableAlias = tableAlias;
         this.column = column;
@@ -34,25 +33,23 @@ public class DirectNotNull<T> extends AbstractDirectEmptyExpression<T> {
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> DirectNotNull.Builder<T> create() {
-        return new DirectNotNull.Builder<>();
+    public static DirectNotNull.Builder create() {
+        return new DirectNotNull.Builder();
     }
 
     /**
      * 条件构建器
-     * @param <T> 实体类型
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 表别名
          */
@@ -70,11 +67,11 @@ public class DirectNotNull<T> extends AbstractDirectEmptyExpression<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public DirectNotNull<T> build() {
+        public DirectNotNull build() {
             if (isEmpty(this.column)) {
                 return null;
             }
-            return new DirectNotNull<>(this.criteria, this.alias, this.column, this.logic);
+            return new DirectNotNull(this.criteria, this.alias, this.column, this.logic);
         }
     }
 }

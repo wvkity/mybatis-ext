@@ -82,7 +82,7 @@ public class ForeignCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
      * @param conditions 条件
      * @return {@code this}
      */
-    public ForeignCriteria<T> on(Criterion<?>... conditions) {
+    public ForeignCriteria<T> on(Criterion... conditions) {
         return on(ArrayUtil.toList(conditions));
     }
 
@@ -91,7 +91,7 @@ public class ForeignCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
      * @param conditions 条件
      * @return {@code this}
      */
-    public ForeignCriteria<T> on(Collection<Criterion<?>> conditions) {
+    public ForeignCriteria<T> on(Collection<Criterion> conditions) {
         if (CollectionUtil.hasElement(conditions)) {
             this.where(conditions);
         }

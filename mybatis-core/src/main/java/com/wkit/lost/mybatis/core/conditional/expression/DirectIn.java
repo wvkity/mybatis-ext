@@ -13,10 +13,9 @@ import java.util.Collection;
 
 /**
  * IN范围条件
- * @param <T> 实体类型
  * @author wvkity
  */
-public class DirectIn<T> extends AbstractDirectRangeExpression<T> {
+public class DirectIn extends AbstractDirectRangeExpression {
 
     private static final long serialVersionUID = -610559071573172529L;
 
@@ -28,7 +27,7 @@ public class DirectIn<T> extends AbstractDirectRangeExpression<T> {
      * @param values     值
      * @param logic      逻辑符号
      */
-    DirectIn(Criteria<T> criteria, String tableAlias, String column, Collection<Object> values, Logic logic) {
+    DirectIn(Criteria<?> criteria, String tableAlias, String column, Collection<Object> values, Logic logic) {
         this.criteria = criteria;
         this.tableAlias = tableAlias;
         this.column = column;
@@ -39,25 +38,23 @@ public class DirectIn<T> extends AbstractDirectRangeExpression<T> {
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> DirectIn.Builder<T> create() {
-        return new DirectIn.Builder<>();
+    public static DirectIn.Builder create() {
+        return new DirectIn.Builder();
     }
 
     /**
      * 条件构建器
-     * @param <T> 实体类型
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 表别名
          */
@@ -79,11 +76,11 @@ public class DirectIn<T> extends AbstractDirectRangeExpression<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public DirectIn<T> build() {
+        public DirectIn build() {
             if (isEmpty(this.column) || CollectionUtil.isEmpty(this.values)) {
                 return null;
             }
-            return new DirectIn<>(this.criteria, this.alias, this.column, this.values, this.logic);
+            return new DirectIn(this.criteria, this.alias, this.column, this.values, this.logic);
         }
     }
 }

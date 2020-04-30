@@ -11,10 +11,9 @@ import lombok.experimental.Accessors;
 
 /**
  * NOT LIKE条件
- * @param <T> 实体类型
  * @author wvkity
  */
-public class DirectNotLike<T> extends AbstractDirectFuzzyExpression<T> {
+public class DirectNotLike extends AbstractDirectFuzzyExpression {
 
     private static final long serialVersionUID = 2951096914408350075L;
 
@@ -28,7 +27,7 @@ public class DirectNotLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param escape     转义字符
      * @param logic      逻辑符号
      */
-    DirectNotLike(Criteria<T> criteria, String tableAlias, String column, String value,
+    DirectNotLike(Criteria<?> criteria, String tableAlias, String column, String value,
                   Match match, Character escape, Logic logic) {
         this.criteria = criteria;
         this.tableAlias = tableAlias;
@@ -42,25 +41,23 @@ public class DirectNotLike<T> extends AbstractDirectFuzzyExpression<T> {
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> DirectNotLike.Builder<T> create() {
-        return new DirectNotLike.Builder<>();
+    public static DirectNotLike.Builder create() {
+        return new DirectNotLike.Builder();
     }
 
     /**
      * 条件构建器
-     * @param <T> 实体类型
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 表别名
          */
@@ -90,11 +87,11 @@ public class DirectNotLike<T> extends AbstractDirectFuzzyExpression<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public DirectNotLike<T> build() {
-            if (isEmpty(this.column)) {
+        public DirectNotLike build() {
+            if (isEmpty(this.column) || this.value == null) {
                 return null;
             }
-            return new DirectNotLike<>(this.criteria, this.alias, this.column, this.value,
+            return new DirectNotLike(this.criteria, this.alias, this.column, this.value,
                     this.match, this.escape, this.logic);
         }
     }

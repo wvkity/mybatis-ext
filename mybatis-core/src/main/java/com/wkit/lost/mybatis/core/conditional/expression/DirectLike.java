@@ -11,10 +11,9 @@ import lombok.experimental.Accessors;
 
 /**
  * LIKE条件
- * @param <T> 实体类型
  * @author wvkity
  */
-public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
+public class DirectLike extends AbstractDirectFuzzyExpression {
 
     private static final long serialVersionUID = 7581578653676661619L;
 
@@ -28,7 +27,7 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
      * @param escape     转义字符
      * @param logic      逻辑符号
      */
-    DirectLike(Criteria<T> criteria, String tableAlias, String column, String value,
+    DirectLike(Criteria<?> criteria, String tableAlias, String column, String value,
                Match match, Character escape, Logic logic) {
         this.criteria = criteria;
         this.tableAlias = tableAlias;
@@ -42,25 +41,23 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> DirectLike.Builder<T> create() {
-        return new DirectLike.Builder<>();
+    public static DirectLike.Builder create() {
+        return new DirectLike.Builder();
     }
 
     /**
      * 条件构建器
-     * @param <T> 实体类型
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 表别名
          */
@@ -90,11 +87,11 @@ public class DirectLike<T> extends AbstractDirectFuzzyExpression<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public DirectLike<T> build() {
+        public DirectLike build() {
             if (isEmpty(this.column)) {
                 return null;
             }
-            return new DirectLike<>(this.criteria, this.alias, this.column, this.value,
+            return new DirectLike(this.criteria, this.alias, this.column, this.value,
                     this.match, this.escape, this.logic);
         }
     }

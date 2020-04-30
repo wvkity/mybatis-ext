@@ -12,10 +12,9 @@ import lombok.experimental.Accessors;
 
 /**
  * 小于条件
- * @param <T> 实体类型
  * @author wvkity
  */
-public class LessThan<T> extends Simple<T> {
+public class LessThan extends Simple {
 
     private static final long serialVersionUID = 771632679424527146L;
 
@@ -26,31 +25,29 @@ public class LessThan<T> extends Simple<T> {
      * @param value    值
      * @param logic    逻辑符号
      */
-    LessThan(Criteria<T> criteria, ColumnWrapper column, Object value, Logic logic) {
+    LessThan(Criteria<?> criteria, ColumnWrapper column, Object value, Logic logic) {
         super(criteria, column, value, Symbol.LT, logic);
     }
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> LessThan.Builder<T> create() {
-        return new LessThan.Builder<>();
+    public static LessThan.Builder create() {
+        return new LessThan.Builder();
     }
 
     /**
      * 条件对象构建器
-     * @param <T> 实体类
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 条件包装对象
          */
@@ -64,7 +61,7 @@ public class LessThan<T> extends Simple<T> {
          * 属性
          */
         @Setter(AccessLevel.NONE)
-        private Property<T, ?> lambdaProperty;
+        private Property<?, ?> lambdaProperty;
         /**
          * 值
          */
@@ -79,7 +76,7 @@ public class LessThan<T> extends Simple<T> {
          * @param property 属性
          * @return {@link LessThan.Builder}
          */
-        public LessThan.Builder<T> property(String property) {
+        public LessThan.Builder property(String property) {
             this.property = property;
             return this;
         }
@@ -87,10 +84,11 @@ public class LessThan<T> extends Simple<T> {
         /**
          * 属性
          * @param property 属性
+         * @param <T>      实体类型
          * @param <V>      属性值类型
          * @return {@link LessThan.Builder}
          */
-        public <V> LessThan.Builder<T> property(Property<T, V> property) {
+        public <T, V> LessThan.Builder property(Property<T, V> property) {
             this.lambdaProperty = property;
             return this;
         }
@@ -99,9 +97,12 @@ public class LessThan<T> extends Simple<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public LessThan<T> build() {
+        public LessThan build() {
+            if (this.value == null) {
+                return null;
+            }
             if (this.column != null) {
-                return new LessThan<>(this.criteria, this.column, this.value, this.logic);
+                return new LessThan(this.criteria, this.column, this.value, this.logic);
             }
             if (this.criteria == null) {
                 return null;
@@ -109,13 +110,13 @@ public class LessThan<T> extends Simple<T> {
             if (hasText(this.property)) {
                 ColumnWrapper wrapper = this.criteria.searchColumn(this.property);
                 if (wrapper != null) {
-                    return new LessThan<>(this.criteria, wrapper, this.value, this.logic);
+                    return new LessThan(this.criteria, wrapper, this.value, this.logic);
                 }
             }
             if (lambdaProperty != null) {
                 ColumnWrapper wrapper = this.criteria.searchColumn(lambdaProperty);
                 if (wrapper != null) {
-                    return new LessThan<>(this.criteria, wrapper, this.value, this.logic);
+                    return new LessThan(this.criteria, wrapper, this.value, this.logic);
                 }
             }
             return null;

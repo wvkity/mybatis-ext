@@ -6,6 +6,10 @@ import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.Constants;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -16,10 +20,9 @@ import java.util.stream.Collectors;
 
 /**
  * 嵌套条件
- * @param <T> 实体类
  * @author wvkity
  */
-public class Nested<T> extends ExpressionWrapper<T, Criterion<?>> {
+public class Nested extends ExpressionWrapper<Criterion> {
 
     private static final long serialVersionUID = -230495355562719147L;
     private static final String AND_OR_REGEX = "^(?i)(\\s*and\\s+|\\s*or\\s+)(.*)";
@@ -28,7 +31,7 @@ public class Nested<T> extends ExpressionWrapper<T, Criterion<?>> {
     /**
      * 条件
      */
-    private final Set<Criterion<?>> conditions = new LinkedHashSet<>(8);
+    private final Set<Criterion> conditions = new LinkedHashSet<>(8);
 
     /**
      * 构造方法
@@ -36,7 +39,7 @@ public class Nested<T> extends ExpressionWrapper<T, Criterion<?>> {
      * @param logic      逻辑符号
      * @param conditions 条件
      */
-    Nested(Criteria<T> criteria, Logic logic, Collection<Criterion<?>> conditions) {
+    Nested(Criteria<?> criteria, Collection<Criterion> conditions, Logic logic) {
         this.criteria = criteria;
         this.logic = logic;
         this.add(conditions);
@@ -47,7 +50,7 @@ public class Nested<T> extends ExpressionWrapper<T, Criterion<?>> {
      * @param conditions 条件集合
      * @return {@code this}
      */
-    public Nested<T> add(Criterion<?>... conditions) {
+    public Nested add(Criterion... conditions) {
         return add(ArrayUtil.toList(conditions));
     }
 
@@ -56,7 +59,7 @@ public class Nested<T> extends ExpressionWrapper<T, Criterion<?>> {
      * @param conditions 条件集合
      * @return {@code this}
      */
-    public Nested<T> add(Collection<Criterion<?>> conditions) {
+    public Nested add(Collection<Criterion> conditions) {
         return add(this.criteria, conditions);
     }
 
@@ -66,7 +69,7 @@ public class Nested<T> extends ExpressionWrapper<T, Criterion<?>> {
      * @param conditions 条件集合
      * @return {@code this}
      */
-    public Nested<T> add(Criteria<T> criteria, Criterion<?>... conditions) {
+    public Nested add(Criteria<?> criteria, Criterion... conditions) {
         return add(criteria, ArrayUtil.toList(conditions));
     }
 
@@ -76,8 +79,8 @@ public class Nested<T> extends ExpressionWrapper<T, Criterion<?>> {
      * @param conditions 条件集合
      * @return {@code this}
      */
-    public Nested<T> add(Criteria<T> criteria, Collection<Criterion<?>> conditions) {
-        final Criteria<T> realCriteria = criteria == null ? this.criteria : getCriteria();
+    public Nested add(Criteria<?> criteria, Collection<Criterion> conditions) {
+        final Criteria<?> realCriteria = criteria == null ? this.criteria : getCriteria();
         if (CollectionUtil.hasElement(conditions)) {
             this.conditions.addAll(conditions.stream().filter(Objects::nonNull).peek(it -> {
                 if (it.getCriteria() == null) {
@@ -107,26 +110,42 @@ public class Nested<T> extends ExpressionWrapper<T, Criterion<?>> {
     }
 
     /**
-     * 创建嵌套条件对象
-     * @param criteria   条件包装对象
-     * @param logic      逻辑符号
-     * @param conditions 条件数组
-     * @param <T>        实体类型
-     * @return 条件对象
+     * 创建条件构建器
+     * @return 构建器
      */
-    public static <T> Nested<T> create(Criteria<T> criteria, Logic logic, Criterion<?>... conditions) {
-        return create(criteria, logic, ArrayUtil.toList(conditions));
+    public static Nested.Builder create() {
+        return new Nested.Builder();
     }
 
     /**
-     * 创建嵌套条件对象
-     * @param criteria   条件包装对象
-     * @param logic      逻辑符号
-     * @param conditions 条件集合
-     * @param <T>        实体类型
-     * @return 条件对象
+     * 条件对象构建器
      */
-    public static <T> Nested<T> create(Criteria<T> criteria, Logic logic, Collection<Criterion<?>> conditions) {
-        return new Nested<>(criteria, logic, conditions);
+    @Setter
+    @Accessors(chain = true, fluent = true)
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class Builder {
+        /**
+         * 条件包装对象
+         */
+        private Criteria<?> criteria;
+        /**
+         * 条件集合
+         */
+        private Collection<Criterion> conditions;
+        /**
+         * 逻辑符号
+         */
+        private Logic logic;
+
+        /**
+         * 构建条件对象
+         * @return 条件对象
+         */
+        public Nested build() {
+            if (CollectionUtil.isEmpty(this.conditions)) {
+                return null;
+            }
+            return new Nested(this.criteria, this.conditions, this.logic);
+        }
     }
 }

@@ -12,10 +12,9 @@ import lombok.experimental.Accessors;
 
 /**
  * 等于条件(字段包装对象)
- * @param <T> 实体类
  * @author wvkity
  */
-public class Equal<T> extends Simple<T> {
+public class Equal extends Simple {
 
     private static final long serialVersionUID = 5382804937174132865L;
 
@@ -26,17 +25,16 @@ public class Equal<T> extends Simple<T> {
      * @param value    值
      * @param logic    逻辑符号
      */
-    Equal(Criteria<T> criteria, ColumnWrapper column, Object value, Logic logic) {
+    Equal(Criteria<?> criteria, ColumnWrapper column, Object value, Logic logic) {
         super(criteria, column, value, Symbol.EQ, logic);
     }
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> Equal.Builder<T> create() {
-        return new Equal.Builder<>();
+    public static Equal.Builder create() {
+        return new Equal.Builder();
     }
 
     /**
@@ -46,11 +44,11 @@ public class Equal<T> extends Simple<T> {
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 条件包装对象
          */
@@ -64,7 +62,7 @@ public class Equal<T> extends Simple<T> {
          * 属性
          */
         @Setter(AccessLevel.NONE)
-        private Property<T, ?> lambdaProperty;
+        private Property<?, ?> lambdaProperty;
         /**
          * 值
          */
@@ -79,7 +77,7 @@ public class Equal<T> extends Simple<T> {
          * @param property 属性
          * @return {@link Equal.Builder}
          */
-        public Equal.Builder<T> property(String property) {
+        public Equal.Builder property(String property) {
             this.property = property;
             return this;
         }
@@ -90,7 +88,7 @@ public class Equal<T> extends Simple<T> {
          * @param <V>      属性值类型
          * @return {@link Equal.Builder}
          */
-        public <V> Equal.Builder<T> property(Property<T, V> property) {
+        public <T, V> Equal.Builder property(Property<T, V> property) {
             this.lambdaProperty = property;
             return this;
         }
@@ -99,9 +97,12 @@ public class Equal<T> extends Simple<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public Equal<T> build() {
+        public Equal build() {
+            if (this.value == null) {
+                return null;
+            }
             if (this.column != null) {
-                return new Equal<>(this.criteria, this.column, this.value, this.logic);
+                return new Equal(this.criteria, this.column, this.value, this.logic);
             }
             if (this.criteria == null) {
                 return null;
@@ -109,13 +110,13 @@ public class Equal<T> extends Simple<T> {
             if (hasText(this.property)) {
                 ColumnWrapper wrapper = this.criteria.searchColumn(this.property);
                 if (wrapper != null) {
-                    return new Equal<>(this.criteria, wrapper, this.value, this.logic);
+                    return new Equal(this.criteria, wrapper, this.value, this.logic);
                 }
             }
             if (lambdaProperty != null) {
                 ColumnWrapper wrapper = this.criteria.searchColumn(lambdaProperty);
                 if (wrapper != null) {
-                    return new Equal<>(this.criteria, wrapper, this.value, this.logic);
+                    return new Equal(this.criteria, wrapper, this.value, this.logic);
                 }
             }
             return null;

@@ -10,10 +10,9 @@ import lombok.experimental.Accessors;
 
 /**
  * 不等于条件
- * @param <T> 实体类型
  * @author wvkity
  */
-public class DirectNotEqual<T> extends DirectSimple<T> {
+public class DirectNotEqual extends DirectSimple {
 
     private static final long serialVersionUID = -1800609049494847517L;
 
@@ -25,31 +24,29 @@ public class DirectNotEqual<T> extends DirectSimple<T> {
      * @param value      值
      * @param logic      逻辑符号
      */
-    DirectNotEqual(Criteria<T> criteria, String tableAlias, String column, Object value, Logic logic) {
+    DirectNotEqual(Criteria<?> criteria, String tableAlias, String column, Object value, Logic logic) {
         super(criteria, tableAlias, column, value, Symbol.NE, logic);
     }
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> DirectNotEqual.Builder<T> create() {
-        return new DirectNotEqual.Builder<>();
+    public static DirectNotEqual.Builder create() {
+        return new DirectNotEqual.Builder();
     }
 
     /**
      * 条件构建器
-     * @param <T> 实体类型
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 表别名
          */
@@ -71,11 +68,11 @@ public class DirectNotEqual<T> extends DirectSimple<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public DirectNotEqual<T> build() {
-            if (isEmpty(this.column)) {
+        public DirectNotEqual build() {
+            if (isEmpty(this.column) || this.value == null) {
                 return null;
             }
-            return new DirectNotEqual<>(this.criteria, this.alias, this.column, this.value, this.logic);
+            return new DirectNotEqual(this.criteria, this.alias, this.column, this.value, this.logic);
         }
     }
 }

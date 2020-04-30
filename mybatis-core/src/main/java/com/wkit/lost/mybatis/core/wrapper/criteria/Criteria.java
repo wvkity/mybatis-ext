@@ -118,14 +118,14 @@ public interface Criteria<T> extends Search<T>, EmbeddedResult, PlaceholderConve
      * @param array 条件对象数组
      * @return 当前对象
      */
-    Criteria<T> where(Criterion<?>... array);
+    Criteria<T> where(Criterion... array);
 
     /**
      * 添加多个条件
      * @param list 条件对象集合
      * @return 当前对象
      */
-    Criteria<T> where(Collection<Criterion<?>> list);
+    Criteria<T> where(Collection<Criterion> list);
 
     /**
      * 添加子查询条件对象

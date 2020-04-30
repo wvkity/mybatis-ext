@@ -43,7 +43,7 @@ public class SegmentManager implements Segment {
      * @param segments 条件对象数组
      * @return {@code this}
      */
-    public SegmentManager add(Criterion<?>... segments) {
+    public SegmentManager add(Criterion... segments) {
         return addCondition(ArrayUtil.toList(segments));
     }
 
@@ -52,7 +52,7 @@ public class SegmentManager implements Segment {
      * @param segments 条件对象集合
      * @return {@code this}
      */
-    public SegmentManager addCondition(Collection<Criterion<?>> segments) {
+    public SegmentManager addCondition(Collection<Criterion> segments) {
         this.whereWrapper.addAll(segments);
         return this;
     }
@@ -128,7 +128,7 @@ public class SegmentManager implements Segment {
      * 获取条件集合
      * @return 条件集合
      */
-    public List<Criterion<?>> getConditions() {
+    public List<Criterion> getConditions() {
         return this.whereWrapper.getConditions();
     }
 

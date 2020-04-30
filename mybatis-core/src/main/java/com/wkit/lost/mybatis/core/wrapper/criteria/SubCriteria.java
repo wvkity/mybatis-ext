@@ -24,7 +24,7 @@ public class SubCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
      * @param clauses     条件
      * @param <E>         泛型类型
      */
-    public <E> SubCriteria(Class<T> entityClass, AbstractCriteriaWrapper<E> master, Collection<Criterion<?>> clauses) {
+    public <E> SubCriteria(Class<T> entityClass, AbstractCriteriaWrapper<E> master, Collection<Criterion> clauses) {
         this(entityClass, null, master, clauses);
     }
 
@@ -48,7 +48,7 @@ public class SubCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
      * @param <E>         泛型类型
      */
     public <E> SubCriteria(Class<T> entityClass, String alias, AbstractCriteriaWrapper<E> master,
-                           Collection<Criterion<?>> clauses) {
+                           Collection<Criterion> clauses) {
         this.entityClass = entityClass;
         this.master = master;
         this.parameterSequence = master.parameterSequence;

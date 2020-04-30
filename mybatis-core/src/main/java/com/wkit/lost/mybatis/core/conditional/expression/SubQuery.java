@@ -15,10 +15,9 @@ import lombok.experimental.Accessors;
 
 /**
  * 子查询条件
- * @param <T> 实体类型
  * @author wvkity
  */
-public class SubQuery<T> extends ColumnExpressionWrapper<T> {
+public class SubQuery extends ColumnExpressionWrapper {
 
     private static final long serialVersionUID = 6237749348714845224L;
 
@@ -35,7 +34,7 @@ public class SubQuery<T> extends ColumnExpressionWrapper<T> {
      * @param symbol   条件符号
      * @param logic    逻辑符号
      */
-    SubQuery(Criteria<T> criteria, ColumnWrapper column, SubCriteria<?> sc, Symbol symbol, Logic logic) {
+    SubQuery(Criteria<?> criteria, ColumnWrapper column, SubCriteria<?> sc, Symbol symbol, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.subCriteria = sc;
@@ -68,25 +67,23 @@ public class SubQuery<T> extends ColumnExpressionWrapper<T> {
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> SubQuery.Builder<T> create() {
-        return new SubQuery.Builder<>();
+    public static SubQuery.Builder create() {
+        return new SubQuery.Builder();
     }
 
     /**
      * 条件对象构建器
-     * @param <T> 实体类
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 条件包装对象
          */
@@ -100,7 +97,7 @@ public class SubQuery<T> extends ColumnExpressionWrapper<T> {
          * 属性
          */
         @Setter(AccessLevel.NONE)
-        private Property<T, ?> lambdaProperty;
+        private Property<?, ?> lambdaProperty;
         /**
          * 子查询条件包装对象
          */
@@ -119,7 +116,7 @@ public class SubQuery<T> extends ColumnExpressionWrapper<T> {
          * @param property 属性
          * @return {@link SubQuery.Builder}
          */
-        public SubQuery.Builder<T> property(String property) {
+        public SubQuery.Builder property(String property) {
             this.property = property;
             return this;
         }
@@ -127,10 +124,11 @@ public class SubQuery<T> extends ColumnExpressionWrapper<T> {
         /**
          * 属性
          * @param property 属性
+         * @param <T>      实体类型
          * @param <V>      属性值类型
          * @return {@link SubQuery.Builder}
          */
-        public <V> SubQuery.Builder<T> property(Property<T, V> property) {
+        public <T, V> SubQuery.Builder property(Property<T, V> property) {
             this.lambdaProperty = property;
             return this;
         }
@@ -139,12 +137,12 @@ public class SubQuery<T> extends ColumnExpressionWrapper<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public SubQuery<T> build() {
+        public SubQuery build() {
             if (this.sc == null) {
                 return null;
             }
             if (this.column != null || this.symbol == Symbol.EXISTS || this.symbol == Symbol.NOT_EXISTS) {
-                return new SubQuery<>(this.criteria, this.column, this.sc, this.symbol, this.logic);
+                return new SubQuery(this.criteria, this.column, this.sc, this.symbol, this.logic);
             }
             if (this.criteria == null) {
                 return null;
@@ -152,13 +150,13 @@ public class SubQuery<T> extends ColumnExpressionWrapper<T> {
             if (hasText(this.property)) {
                 ColumnWrapper wrapper = this.criteria.searchColumn(this.property);
                 if (wrapper != null) {
-                    return new SubQuery<>(this.criteria, wrapper, this.sc, this.symbol, this.logic);
+                    return new SubQuery(this.criteria, wrapper, this.sc, this.symbol, this.logic);
                 }
             }
             if (lambdaProperty != null) {
                 ColumnWrapper wrapper = this.criteria.searchColumn(lambdaProperty);
                 if (wrapper != null) {
-                    return new SubQuery<>(this.criteria, wrapper, this.sc, this.symbol, this.logic);
+                    return new SubQuery(this.criteria, wrapper, this.sc, this.symbol, this.logic);
                 }
             }
             return null;

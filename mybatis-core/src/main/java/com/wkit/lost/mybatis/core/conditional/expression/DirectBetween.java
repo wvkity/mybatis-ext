@@ -10,10 +10,9 @@ import lombok.experimental.Accessors;
 
 /**
  * BETWEEN范围条件
- * @param <T> 实体类型
  * @author wvkity
  */
-public class DirectBetween<T> extends AbstractDirectBetweenExpression<T> {
+public class DirectBetween extends AbstractDirectBetweenExpression {
 
     private static final long serialVersionUID = -4518621207327310225L;
 
@@ -26,7 +25,7 @@ public class DirectBetween<T> extends AbstractDirectBetweenExpression<T> {
      * @param end        结束值
      * @param logic      逻辑符号
      */
-    DirectBetween(Criteria<T> criteria, String tableAlias, String column, Object begin, Object end, Logic logic) {
+    DirectBetween(Criteria<?> criteria, String tableAlias, String column, Object begin, Object end, Logic logic) {
         this.criteria = criteria;
         this.tableAlias = tableAlias;
         this.column = column;
@@ -38,25 +37,23 @@ public class DirectBetween<T> extends AbstractDirectBetweenExpression<T> {
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> DirectBetween.Builder<T> create() {
-        return new DirectBetween.Builder<>();
+    public static DirectBetween.Builder create() {
+        return new DirectBetween.Builder();
     }
 
     /**
      * 条件构建器
-     * @param <T> 实体类型
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 表别名
          */
@@ -82,11 +79,11 @@ public class DirectBetween<T> extends AbstractDirectBetweenExpression<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public DirectBetween<T> build() {
-            if (isEmpty(this.column)) {
+        public DirectBetween build() {
+            if (isEmpty(this.column) || this.begin == null || this.end == null) {
                 return null;
             }
-            return new DirectBetween<>(this.criteria, this.alias, this.column, this.begin, this.end, this.logic);
+            return new DirectBetween(this.criteria, this.alias, this.column, this.begin, this.end, this.logic);
         }
     }
 }

@@ -16,10 +16,9 @@ import java.util.Collection;
 
 /**
  * IN范围条件
- * @param <T> 实体类型
  * @author wvkity
  */
-public class In<T> extends AbstractRangeExpression<T> {
+public class In extends AbstractRangeExpression {
 
     private static final long serialVersionUID = 1408575628333900120L;
 
@@ -30,7 +29,7 @@ public class In<T> extends AbstractRangeExpression<T> {
      * @param values   值
      * @param logic    逻辑符号
      */
-    In(Criteria<T> criteria, ColumnWrapper column, Collection<Object> values, Logic logic) {
+    In(Criteria<?> criteria, ColumnWrapper column, Collection<Object> values, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.values = values;
@@ -40,25 +39,23 @@ public class In<T> extends AbstractRangeExpression<T> {
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> In.Builder<T> create() {
-        return new In.Builder<>();
+    public static In.Builder create() {
+        return new In.Builder();
     }
 
     /**
      * 条件对象构建器
-     * @param <T> 实体类
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 条件包装对象
          */
@@ -72,7 +69,7 @@ public class In<T> extends AbstractRangeExpression<T> {
          * 属性
          */
         @Setter(AccessLevel.NONE)
-        private Property<T, ?> lambdaProperty;
+        private Property<?, ?> lambdaProperty;
         /**
          * 值
          */
@@ -88,7 +85,7 @@ public class In<T> extends AbstractRangeExpression<T> {
          * @param property 属性
          * @return {@link In.Builder}
          */
-        public In.Builder<T> property(String property) {
+        public In.Builder property(String property) {
             this.property = property;
             return this;
         }
@@ -96,10 +93,11 @@ public class In<T> extends AbstractRangeExpression<T> {
         /**
          * 属性
          * @param property 属性
+         * @param <T>      实体类型
          * @param <V>      属性值类型
          * @return {@link In.Builder}
          */
-        public <V> In.Builder<T> property(Property<T, V> property) {
+        public <T, V> In.Builder property(Property<T, V> property) {
             this.lambdaProperty = property;
             return this;
         }
@@ -109,7 +107,7 @@ public class In<T> extends AbstractRangeExpression<T> {
          * @param values 值
          * @return {@link In.Builder}
          */
-        public In.Builder<T> values(Object... values) {
+        public In.Builder values(Object... values) {
             return this.values(ArrayUtil.toList(values));
         }
 
@@ -118,7 +116,7 @@ public class In<T> extends AbstractRangeExpression<T> {
          * @param values 值
          * @return {@link In.Builder}
          */
-        public In.Builder<T> values(Collection<Object> values) {
+        public In.Builder values(Collection<Object> values) {
             this.values = values;
             return this;
         }
@@ -127,23 +125,26 @@ public class In<T> extends AbstractRangeExpression<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public In<T> build() {
-            if (this.column != null) {
-                return new In<>(this.criteria, this.column, this.values, this.logic);
+        public In build() {
+            if (CollectionUtil.isEmpty(this.values)) {
+                return null;
             }
-            if (this.criteria == null || CollectionUtil.isEmpty(this.values)) {
+            if (this.column != null) {
+                return new In(this.criteria, this.column, this.values, this.logic);
+            }
+            if (this.criteria == null) {
                 return null;
             }
             if (hasText(this.property)) {
                 ColumnWrapper wrapper = this.criteria.searchColumn(this.property);
                 if (wrapper != null) {
-                    return new In<>(this.criteria, wrapper, this.values, this.logic);
+                    return new In(this.criteria, wrapper, this.values, this.logic);
                 }
             }
             if (lambdaProperty != null) {
                 ColumnWrapper wrapper = this.criteria.searchColumn(lambdaProperty);
                 if (wrapper != null) {
-                    return new In<>(this.criteria, wrapper, this.values, this.logic);
+                    return new In(this.criteria, wrapper, this.values, this.logic);
                 }
             }
             return null;

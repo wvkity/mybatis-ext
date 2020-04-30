@@ -61,10 +61,9 @@ import java.util.stream.Collectors;
  *     return:
  *     SELECT column1, column2, ... FROM GRADE WHERE LEFT(NAME, ?) = ?
  * </pre>
- * @param <T> 实体类型
  * @author wvkity
  */
-public class Template<T> extends ColumnExpressionWrapper<T> {
+public class Template extends ColumnExpressionWrapper {
 
     private static final long serialVersionUID = -7379608873522056093L;
 
@@ -105,7 +104,7 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
      * @param mapValues 多个键值
      * @param logic     逻辑符号
      */
-    Template(Criteria<T> criteria, ColumnWrapper column, String template, Object value,
+    Template(Criteria<?> criteria, ColumnWrapper column, String template, Object value,
              Collection<Object> values, Map<String, Object> mapValues, Logic logic) {
         this.criteria = criteria;
         this.column = column;
@@ -151,25 +150,23 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> Template.Builder<T> create() {
-        return new Template.Builder<>();
+    public static Template.Builder create() {
+        return new Template.Builder();
     }
 
     /**
      * 条件对象构建器
-     * @param <T> 实体类
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 条件包装对象
          */
@@ -183,7 +180,7 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
          * 属性
          */
         @Setter(AccessLevel.NONE)
-        private Property<T, ?> lambdaProperty;
+        private Property<?, ?> lambdaProperty;
         /**
          * 模板
          */
@@ -205,32 +202,40 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
          * 逻辑符号
          */
         private Logic logic;
+
         /**
          * 属性
          * @param property 属性
          * @return {@link Equal.Builder}
          */
-        public Template.Builder<T> property(String property) {
+        public Template.Builder property(String property) {
             this.property = property;
             return this;
         }
+
         /**
          * 属性
          * @param property 属性
+         * @param <T>      实体类型
          * @param <V>      属性值类型
          * @return {@link Equal.Builder}
          */
-        public <V> Template.Builder<T> property(Property<T, V> property) {
+        public <T, V> Template.Builder property(Property<T, V> property) {
             this.lambdaProperty = property;
             return this;
         }
+
         /**
          * 构建条件对象
          * @return 条件对象
          */
-        public Template<T> build() {
+        public Template build() {
+            if (this.value == null || CollectionUtil.isEmpty(this.values) 
+                    || CollectionUtil.isEmpty(this.map) || StringUtil.isBlank(this.template)) {
+                return null;
+            }
             if (this.column != null) {
-                return new Template<>(this.criteria, this.column, this.template, this.value,
+                return new Template(this.criteria, this.column, this.template, this.value,
                         this.values, this.map, this.logic);
             }
             if (this.criteria == null) {
@@ -239,14 +244,14 @@ public class Template<T> extends ColumnExpressionWrapper<T> {
             if (hasText(this.property)) {
                 ColumnWrapper wrapper = this.criteria.searchColumn(this.property);
                 if (wrapper != null) {
-                    return new Template<>(this.criteria, wrapper, this.template, this.value,
+                    return new Template(this.criteria, wrapper, this.template, this.value,
                             this.values, this.map, this.logic);
                 }
             }
             if (lambdaProperty != null) {
                 ColumnWrapper wrapper = this.criteria.searchColumn(lambdaProperty);
                 if (wrapper != null) {
-                    return new Template<>(this.criteria, wrapper, this.template, this.value,
+                    return new Template(this.criteria, wrapper, this.template, this.value,
                             this.values, this.map, this.logic);
                 }
             }

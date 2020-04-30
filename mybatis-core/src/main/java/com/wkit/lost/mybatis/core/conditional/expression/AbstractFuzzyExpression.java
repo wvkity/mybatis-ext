@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @SuppressWarnings({"serial"})
-public abstract class AbstractFuzzyExpression<T> extends ColumnExpressionWrapper<T> {
+public abstract class AbstractFuzzyExpression extends ColumnExpressionWrapper {
 
     /**
      * 匹配模式

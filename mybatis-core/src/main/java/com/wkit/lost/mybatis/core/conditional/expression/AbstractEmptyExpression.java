@@ -3,7 +3,7 @@ package com.wkit.lost.mybatis.core.conditional.expression;
 import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 
 @SuppressWarnings({"serial"})
-public abstract class AbstractEmptyExpression<T> extends ColumnExpressionWrapper<T> {
+public abstract class AbstractEmptyExpression extends ColumnExpressionWrapper {
 
     @Override
     public String getSegment() {

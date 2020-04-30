@@ -2,23 +2,20 @@ package com.wkit.lost.mybatis.core.conditional.expression;
 
 import com.wkit.lost.mybatis.core.mapping.sql.utils.ScriptUtil;
 import lombok.Getter;
-import lombok.Setter;
 
 @SuppressWarnings({"serial"})
-public abstract class AbstractBetweenExpression<T> extends ColumnExpressionWrapper<T> {
+public abstract class AbstractBetweenExpression extends ColumnExpressionWrapper {
 
     /**
      * 开始值
      */
     @Getter
-    @Setter
     protected Object begin;
 
     /**
      * 结束值
      */
     @Getter
-    @Setter
     protected Object end;
 
     @Override

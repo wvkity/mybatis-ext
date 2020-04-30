@@ -10,10 +10,9 @@ import lombok.experimental.Accessors;
 
 /**
  * 大于条件(字符串字段)
- * @param <T> 泛型类型
  * @author wvkity
  */
-public class DirectGreaterThan<T> extends DirectSimple<T> {
+public class DirectGreaterThan extends DirectSimple {
 
     private static final long serialVersionUID = 181907352196018634L;
 
@@ -25,31 +24,29 @@ public class DirectGreaterThan<T> extends DirectSimple<T> {
      * @param value      值
      * @param logic      逻辑符号
      */
-    DirectGreaterThan(Criteria<T> criteria, String tableAlias, String column, Object value, Logic logic) {
+    DirectGreaterThan(Criteria<?> criteria, String tableAlias, String column, Object value, Logic logic) {
         super(criteria, tableAlias, column, value, Symbol.GT, logic);
     }
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> DirectGreaterThan.Builder<T> create() {
-        return new DirectGreaterThan.Builder<>();
+    public static DirectGreaterThan.Builder create() {
+        return new DirectGreaterThan.Builder();
     }
 
     /**
      * 条件构建器
-     * @param <T> 实体类型
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 表别名
          */
@@ -71,11 +68,11 @@ public class DirectGreaterThan<T> extends DirectSimple<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public DirectGreaterThan<T> build() {
-            if (isEmpty(this.column)) {
+        public DirectGreaterThan build() {
+            if (isEmpty(this.column) || this.value == null) {
                 return null;
             }
-            return new DirectGreaterThan<>(this.criteria, this.alias, this.column, this.value, this.logic);
+            return new DirectGreaterThan(this.criteria, this.alias, this.column, this.value, this.logic);
         }
     }
 }

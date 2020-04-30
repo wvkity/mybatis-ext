@@ -10,7 +10,7 @@ import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
  * @param <T> 实体类型
  * @author wvkity
  */
-public class Simple<T> extends ColumnExpressionWrapper<T> {
+public class Simple extends ColumnExpressionWrapper {
 
     private static final long serialVersionUID = 431175395571986016L;
 
@@ -22,7 +22,7 @@ public class Simple<T> extends ColumnExpressionWrapper<T> {
      * @param symbol   条件符号
      * @param logic    逻辑符号
      */
-    Simple(Criteria<T> criteria, ColumnWrapper column, Object value, Symbol symbol, Logic logic) {
+    Simple(Criteria<?> criteria, ColumnWrapper column, Object value, Symbol symbol, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.value = value;

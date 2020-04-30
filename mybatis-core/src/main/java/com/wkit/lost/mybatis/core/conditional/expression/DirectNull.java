@@ -10,10 +10,9 @@ import lombok.experimental.Accessors;
 
 /**
  * IS NULL条件
- * @param <T> 实体类型
  * @author wvkity
  */
-public class DirectNull<T> extends AbstractDirectEmptyExpression<T> {
+public class DirectNull extends AbstractDirectEmptyExpression {
 
     private static final long serialVersionUID = -4663604933639152009L;
 
@@ -24,7 +23,7 @@ public class DirectNull<T> extends AbstractDirectEmptyExpression<T> {
      * @param column     列名
      * @param logic      逻辑符号
      */
-    DirectNull(Criteria<T> criteria, String tableAlias, String column, Logic logic) {
+    DirectNull(Criteria<?> criteria, String tableAlias, String column, Logic logic) {
         this.criteria = criteria;
         this.tableAlias = tableAlias;
         this.column = column;
@@ -34,25 +33,23 @@ public class DirectNull<T> extends AbstractDirectEmptyExpression<T> {
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> DirectNull.Builder<T> create() {
-        return new DirectNull.Builder<>();
+    public static DirectNull.Builder create() {
+        return new DirectNull.Builder();
     }
 
     /**
      * 条件构建器
-     * @param <T> 实体类型
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 表别名
          */
@@ -70,11 +67,11 @@ public class DirectNull<T> extends AbstractDirectEmptyExpression<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public DirectNull<T> build() {
+        public DirectNull build() {
             if (isEmpty(this.column)) {
                 return null;
             }
-            return new DirectNull<>(this.criteria, this.alias, this.column, this.logic);
+            return new DirectNull(this.criteria, this.alias, this.column, this.logic);
         }
     }
 }

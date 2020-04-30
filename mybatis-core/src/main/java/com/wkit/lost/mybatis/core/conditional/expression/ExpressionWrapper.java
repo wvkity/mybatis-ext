@@ -14,12 +14,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @SuppressWarnings({"serial"})
-public abstract class ExpressionWrapper<T, E> implements Criterion<T>, PlaceholderConverter {
+public abstract class ExpressionWrapper<E> implements Criterion, PlaceholderConverter {
 
     /**
      * Criteria对象
      */
-    protected Criteria<T> criteria;
+    protected Criteria<?> criteria;
 
     /**
      * 表别名
@@ -62,19 +62,18 @@ public abstract class ExpressionWrapper<T, E> implements Criterion<T>, Placehold
     }
 
     @Override
-    public Criteria<T> getCriteria() {
+    public Criteria<?> getCriteria() {
         return this.criteria;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public ExpressionWrapper<T, E> criteria(Criteria<?> criteria) {
-        this.criteria = (Criteria<T>) criteria;
+    public ExpressionWrapper<E> criteria(Criteria<?> criteria) {
+        this.criteria = criteria;
         return this;
     }
 
     @Override
-    public ExpressionWrapper<T, ?> logic(Logic logic) {
+    public ExpressionWrapper<?> logic(Logic logic) {
         this.logic = logic;
         return this;
     }

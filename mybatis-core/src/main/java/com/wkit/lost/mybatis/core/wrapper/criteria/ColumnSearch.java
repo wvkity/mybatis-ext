@@ -15,7 +15,7 @@ public interface ColumnSearch<T> {
      * @param property 属性
      * @return 字段映射对象
      */
-    ColumnWrapper searchColumn(Property<T, ?> property);
+    ColumnWrapper searchColumn(Property<?, ?> property);
 
     /**
      * 根据属性搜索字段映射对象

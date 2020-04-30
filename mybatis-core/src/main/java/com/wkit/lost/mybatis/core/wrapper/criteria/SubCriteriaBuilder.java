@@ -44,7 +44,7 @@ public interface SubCriteriaBuilder<T> {
      * @param <E>         实体类型
      * @return 子查询条件包装对象
      */
-    default <E> SubCriteria<E> sub(Class<E> entityClass, Criterion<?>... clauses) {
+    default <E> SubCriteria<E> sub(Class<E> entityClass, Criterion... clauses) {
         return sub(entityClass, null, ArrayUtil.toList(clauses));
     }
 
@@ -55,7 +55,7 @@ public interface SubCriteriaBuilder<T> {
      * @param <E>         实体类型
      * @return 子查询条件包装对象
      */
-    default <E> SubCriteria<E> sub(Class<E> entityClass, Collection<Criterion<?>> clauses) {
+    default <E> SubCriteria<E> sub(Class<E> entityClass, Collection<Criterion> clauses) {
         return sub(entityClass, null, clauses);
     }
 
@@ -67,7 +67,7 @@ public interface SubCriteriaBuilder<T> {
      * @param <E>         实体类型
      * @return 子查询条件包装对象
      */
-    <E> SubCriteria<E> sub(Class<E> entityClass, String alias, Collection<Criterion<?>> clauses);
+    <E> SubCriteria<E> sub(Class<E> entityClass, String alias, Collection<Criterion> clauses);
 
     /**
      * 创建子查询条件包装对象

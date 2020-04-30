@@ -19,7 +19,7 @@ public interface NestedWrapper<Chain extends NestedWrapper<Chain>> {
      * @return {@code this}
      * @see #and(Collection)
      */
-    default Chain and(Criterion<?>... conditions) {
+    default Chain and(Criterion... conditions) {
         return and(ArrayUtil.toList(conditions));
     }
 
@@ -40,7 +40,7 @@ public interface NestedWrapper<Chain extends NestedWrapper<Chain>> {
      * @param conditions 条件
      * @return {@code this}
      */
-    Chain and(Collection<Criterion<?>> conditions);
+    Chain and(Collection<Criterion> conditions);
 
     /**
      * 嵌套条件
@@ -49,7 +49,7 @@ public interface NestedWrapper<Chain extends NestedWrapper<Chain>> {
      * @return {@code this}
      * @see #and(Criteria, Collection)
      */
-    default Chain and(Criteria<?> criteria, Criterion<?>... conditions) {
+    default Chain and(Criteria<?> criteria, Criterion... conditions) {
         return and(criteria, ArrayUtil.toList(conditions));
     }
 
@@ -60,7 +60,7 @@ public interface NestedWrapper<Chain extends NestedWrapper<Chain>> {
      * @return {@code this}
      * @see #and(Collection)
      */
-    Chain and(Criteria<?> criteria, Collection<Criterion<?>> conditions);
+    Chain and(Criteria<?> criteria, Collection<Criterion> conditions);
 
     /**
      * 嵌套条件
@@ -68,14 +68,14 @@ public interface NestedWrapper<Chain extends NestedWrapper<Chain>> {
      * @return {@code this}
      */
     Chain and(Function<Chain, Chain> function);
-    
+
     /**
      * 嵌套条件
      * @param conditions 条件
      * @return {@code this}
      * @see #or(Collection)
      */
-    default Chain or(Criterion<?>... conditions) {
+    default Chain or(Criterion... conditions) {
         return or(ArrayUtil.toList(conditions));
     }
 
@@ -96,7 +96,7 @@ public interface NestedWrapper<Chain extends NestedWrapper<Chain>> {
      * @param conditions 条件
      * @return {@code this}
      */
-    Chain or(Collection<Criterion<?>> conditions);
+    Chain or(Collection<Criterion> conditions);
 
     /**
      * 嵌套条件
@@ -105,7 +105,7 @@ public interface NestedWrapper<Chain extends NestedWrapper<Chain>> {
      * @return {@code this}
      * @see #or(Criteria, Collection)
      */
-    default Chain or(Criteria<?> criteria, Criterion<?>... conditions) {
+    default Chain or(Criteria<?> criteria, Criterion... conditions) {
         return or(criteria, ArrayUtil.toList(conditions));
     }
 
@@ -116,7 +116,7 @@ public interface NestedWrapper<Chain extends NestedWrapper<Chain>> {
      * @return {@code this}
      * @see #or(Collection)
      */
-    Chain or(Criteria<?> criteria, Collection<Criterion<?>> conditions);
+    Chain or(Criteria<?> criteria, Collection<Criterion> conditions);
 
     /**
      * 嵌套条件

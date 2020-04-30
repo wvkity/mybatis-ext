@@ -17,7 +17,7 @@ import java.util.Locale;
  * 条件片段容器
  * @author wvkity
  */
-public class WhereSegmentWrapper extends AbstractSegment<Criterion<?>> {
+public class WhereSegmentWrapper extends AbstractSegment<Criterion> {
 
     private static final long serialVersionUID = -217408456601550416L;
 
@@ -42,7 +42,7 @@ public class WhereSegmentWrapper extends AbstractSegment<Criterion<?>> {
      * 获取条件
      * @return 条件集合
      */
-    final List<Criterion<?>> getConditions() {
+    final List<Criterion> getConditions() {
         return this.isNotEmpty() ? Collections.unmodifiableList(new ArrayList<>(this.segments))
                 : Collections.emptyList();
     }
@@ -55,13 +55,13 @@ public class WhereSegmentWrapper extends AbstractSegment<Criterion<?>> {
     final Object optimisticLockingValue(final ColumnWrapper column) {
         if (CollectionUtil.hasElement(this.segments)) {
             String columnName = column.getColumn().toLowerCase(Locale.ENGLISH);
-            for (Criterion<?> it : this.segments) {
+            for (Criterion it : this.segments) {
                 if (it instanceof ColumnExpressionWrapper) {
-                    if (column == ((ColumnExpressionWrapper<?>) it).getColumn()) {
+                    if (column == ((ColumnExpressionWrapper) it).getColumn()) {
                         return it.getValue();
                     }
                 } else if (it instanceof DirectExpressionWrapper) {
-                    if (columnName.equalsIgnoreCase(((DirectExpressionWrapper<?>) it).getColumn())) {
+                    if (columnName.equalsIgnoreCase(((DirectExpressionWrapper) it).getColumn())) {
                         return it.getValue();
                     }
                 }

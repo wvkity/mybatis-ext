@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @SuppressWarnings({"serial"})
-public abstract class AbstractDirectBetweenExpression<T> extends DirectExpressionWrapper<T> {
+public abstract class AbstractDirectBetweenExpression extends DirectExpressionWrapper {
 
     /**
      * 开始值

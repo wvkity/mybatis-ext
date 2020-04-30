@@ -15,9 +15,9 @@ import lombok.experimental.Accessors;
 
 /**
  * 字段相等条件
- * @param <T>
+ * @author wvkity
  */
-public class DirectNormalEqual<T> extends DirectExpressionWrapper<T> {
+public class DirectNormalEqual extends DirectExpressionWrapper {
 
     private static final long serialVersionUID = 4647292574240862335L;
 
@@ -52,7 +52,7 @@ public class DirectNormalEqual<T> extends DirectExpressionWrapper<T> {
      * @param otherColumn        其他字段
      * @param logic              逻辑符号
      */
-    <E> DirectNormalEqual(Criteria<T> criteria, String tableAlias, String column, Criteria<E> otherCriteria,
+    <E> DirectNormalEqual(Criteria<?> criteria, String tableAlias, String column, Criteria<E> otherCriteria,
                           String otherTableAlias, ColumnWrapper otherColumnWrapper, String otherColumn, Logic logic) {
         this.criteria = criteria;
         this.tableAlias = tableAlias;
@@ -91,25 +91,23 @@ public class DirectNormalEqual<T> extends DirectExpressionWrapper<T> {
 
     /**
      * 创建构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> DirectNormalEqual.Builder<T> create() {
-        return new DirectNormalEqual.Builder<>();
+    public static DirectNormalEqual.Builder create() {
+        return new DirectNormalEqual.Builder();
     }
 
     /**
      * 条件构建器
-     * @param <T> 实体类型
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        protected Criteria<T> criteria;
+        protected Criteria<?> criteria;
         /**
          * 其他包装对象
          */
@@ -156,7 +154,7 @@ public class DirectNormalEqual<T> extends DirectExpressionWrapper<T> {
          * @param property 属性
          * @return {@link DirectNormalEqual.Builder}
          */
-        public DirectNormalEqual.Builder<T> otherProperty(String property) {
+        public DirectNormalEqual.Builder otherProperty(String property) {
             this.otherProperty = property;
             return this;
         }
@@ -168,7 +166,7 @@ public class DirectNormalEqual<T> extends DirectExpressionWrapper<T> {
          * @param <V>      属性值类型
          * @return {@link DirectNormalEqual.Builder}
          */
-        public <E, V> DirectNormalEqual.Builder<T> otherProperty(Property<E, V> property) {
+        public <E, V> DirectNormalEqual.Builder otherProperty(Property<E, V> property) {
             this.otherLambdaProperty = property;
             return this;
         }
@@ -178,7 +176,7 @@ public class DirectNormalEqual<T> extends DirectExpressionWrapper<T> {
          * @param column 表字段包装对象
          * @return {@link DirectNormalEqual.Builder}
          */
-        public DirectNormalEqual.Builder<T> otherColumn(ColumnWrapper column) {
+        public DirectNormalEqual.Builder otherColumn(ColumnWrapper column) {
             this.otherColumnWrapper = column;
             return this;
         }
@@ -188,7 +186,7 @@ public class DirectNormalEqual<T> extends DirectExpressionWrapper<T> {
          * @param column 表字段
          * @return {@link DirectNormalEqual.Builder}
          */
-        public DirectNormalEqual.Builder<T> otherColumn(String column) {
+        public DirectNormalEqual.Builder otherColumn(String column) {
             this.otherColumn = column;
             return this;
         }
@@ -197,10 +195,10 @@ public class DirectNormalEqual<T> extends DirectExpressionWrapper<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public DirectNormalEqual<T> build() {
+        public DirectNormalEqual build() {
             if (hasText(this.column)) {
                 if (this.otherColumnWrapper != null) {
-                    return new DirectNormalEqual<>(this.criteria, this.alias, this.column, this.otherCriteria,
+                    return new DirectNormalEqual(this.criteria, this.alias, this.column, this.otherCriteria,
                             this.otherAlias, this.otherColumnWrapper, this.otherColumn, this.logic);
                 } else {
                     if (this.otherCriteria != null) {
@@ -213,12 +211,12 @@ public class DirectNormalEqual<T> extends DirectExpressionWrapper<T> {
                                     PropertyMappingCache.lambdaToProperty(this.otherLambdaProperty));
                         }
                         if (wrapper != null) {
-                            return new DirectNormalEqual<>(this.criteria, this.alias, this.column, this.otherCriteria,
+                            return new DirectNormalEqual(this.criteria, this.alias, this.column, this.otherCriteria,
                                     this.otherAlias, wrapper, this.otherColumn, this.logic);
                         }
                     }
                     if (hasText(this.otherColumn)) {
-                        return new DirectNormalEqual<>(this.criteria, this.alias, this.column, this.otherCriteria,
+                        return new DirectNormalEqual(this.criteria, this.alias, this.column, this.otherCriteria,
                                 this.otherAlias, this.otherColumnWrapper, this.otherColumn, this.logic);
                     }
                 }

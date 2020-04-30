@@ -7,13 +7,12 @@ import lombok.Setter;
 import java.util.Collection;
 
 @SuppressWarnings({"serial"})
-public abstract class AbstractRangeExpression<T> extends ColumnExpressionWrapper<T> {
+public abstract class AbstractRangeExpression extends ColumnExpressionWrapper {
 
     /**
      * 值
      */
     @Getter
-    @Setter
     protected Collection<Object> values;
 
     @Override

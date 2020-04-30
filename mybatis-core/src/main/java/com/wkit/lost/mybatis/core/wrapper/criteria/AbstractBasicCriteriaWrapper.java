@@ -284,8 +284,8 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
 
     @Override
     public Chain nqWith(String column, String otherTableAlias, String otherColumn) {
-        DirectNormalEqual.Builder<T> it = DirectNormalEqual.create();
-        return where(it.criteria(this).column(column).otherAlias(otherTableAlias).otherColumn(otherColumn).build());
+        return where(DirectNormalEqual.create().criteria(this).column(column)
+                .otherAlias(otherTableAlias).otherColumn(otherColumn).build());
     }
 
     @Override
@@ -1285,12 +1285,12 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
     // region nested condition
 
     @Override
-    public Chain and(Collection<Criterion<?>> conditions) {
+    public Chain and(Collection<Criterion> conditions) {
         return where(Restrictions.nested(this, Logic.AND, conditions));
     }
 
     @Override
-    public Chain and(Criteria<?> criteria, Collection<Criterion<?>> conditions) {
+    public Chain and(Criteria<?> criteria, Collection<Criterion> conditions) {
         return where(Restrictions.nested(criteria, Logic.AND, conditions));
     }
 
@@ -1300,12 +1300,12 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
     }
 
     @Override
-    public Chain or(Collection<Criterion<?>> conditions) {
+    public Chain or(Collection<Criterion> conditions) {
         return where(Restrictions.nested(this, Logic.OR, conditions));
     }
 
     @Override
-    public Chain or(Criteria<?> criteria, Collection<Criterion<?>> conditions) {
+    public Chain or(Criteria<?> criteria, Collection<Criterion> conditions) {
         return where(Restrictions.nested(criteria, Logic.OR, conditions));
     }
 
@@ -1318,7 +1318,7 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
         Chain ctx = newInstance();
         if (ctx != null) {
             Chain instance = function.apply(ctx);
-            List<Criterion<?>> conditions = instance.segmentManager.getConditions();
+            List<Criterion> conditions = instance.segmentManager.getConditions();
             if (CollectionUtil.hasElement(conditions)) {
                 if (isAnd) {
                     and(conditions);
@@ -1337,12 +1337,12 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
     // region add methods
 
     @Override
-    public Chain where(Criterion<?>... array) {
+    public Chain where(Criterion... array) {
         return where(ArrayUtil.toList(array));
     }
 
     @Override
-    public Chain where(Collection<Criterion<?>> list) {
+    public Chain where(Collection<Criterion> list) {
         this.segmentManager.addCondition(list.stream().filter(Objects::nonNull).peek(it -> {
             if (it.getCriteria() == null) {
                 it.criteria(this);
@@ -1374,7 +1374,7 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
     // region sub criteria
 
     @Override
-    public <E> SubCriteria<E> sub(Class<E> entityClass, String alias, Collection<Criterion<?>> clauses) {
+    public <E> SubCriteria<E> sub(Class<E> entityClass, String alias, Collection<Criterion> clauses) {
         return new SubCriteria<>(entityClass, alias, (AbstractCriteriaWrapper<?>) this, clauses);
     }
 

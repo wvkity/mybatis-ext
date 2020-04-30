@@ -13,10 +13,9 @@ import lombok.experimental.Accessors;
 
 /**
  * 子查询条件
- * @param <T> 实体类型
  * @author wvkity
  */
-public class DirectSubQuery<T> extends DirectExpressionWrapper<T> {
+public class DirectSubQuery extends DirectExpressionWrapper {
 
     private static final long serialVersionUID = 498998912099294395L;
 
@@ -34,7 +33,7 @@ public class DirectSubQuery<T> extends DirectExpressionWrapper<T> {
      * @param symbol     条件符号
      * @param logic      逻辑符号
      */
-    DirectSubQuery(Criteria<T> criteria, String tableAlias, String column,
+    DirectSubQuery(Criteria<?> criteria, String tableAlias, String column,
                    SubCriteria<?> sc, Symbol symbol, Logic logic) {
         this.criteria = criteria;
         this.tableAlias = tableAlias;
@@ -69,25 +68,23 @@ public class DirectSubQuery<T> extends DirectExpressionWrapper<T> {
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> DirectSubQuery.Builder<T> create() {
-        return new DirectSubQuery.Builder<>();
+    public static DirectSubQuery.Builder create() {
+        return new DirectSubQuery.Builder();
     }
 
     /**
      * 条件构建器
-     * @param <T> 实体类型
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 表别名
          */
@@ -113,8 +110,8 @@ public class DirectSubQuery<T> extends DirectExpressionWrapper<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public DirectSubQuery<T> build() {
-            return new DirectSubQuery<>(this.criteria, this.alias, this.column, this.sc, this.symbol, this.logic);
+        public DirectSubQuery build() {
+            return new DirectSubQuery(this.criteria, this.alias, this.column, this.sc, this.symbol, this.logic);
         }
     }
 }

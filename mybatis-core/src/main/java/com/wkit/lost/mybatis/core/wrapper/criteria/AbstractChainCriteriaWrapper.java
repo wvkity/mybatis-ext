@@ -48,7 +48,7 @@ abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriter
     }
 
     @Override
-    public ColumnWrapper searchColumn(Property<T, ?> property) {
+    public ColumnWrapper searchColumn(Property<?, ?> property) {
         if (property == null) {
             return null;
         }

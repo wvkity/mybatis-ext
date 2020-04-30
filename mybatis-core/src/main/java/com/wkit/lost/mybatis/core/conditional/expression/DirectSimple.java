@@ -6,10 +6,9 @@ import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 
 /**
  * 简单条件
- * @param <T> 实体类型
  * @author wvkity
  */
-public class DirectSimple<T> extends DirectExpressionWrapper<T> {
+public class DirectSimple extends DirectExpressionWrapper {
 
     private static final long serialVersionUID = 5549482113181211099L;
 
@@ -22,7 +21,7 @@ public class DirectSimple<T> extends DirectExpressionWrapper<T> {
      * @param symbol     条件符号
      * @param logic      逻辑符号
      */
-    DirectSimple(Criteria<T> criteria, String tableAlias, String column, Object value, Symbol symbol, Logic logic) {
+    DirectSimple(Criteria<?> criteria, String tableAlias, String column, Object value, Symbol symbol, Logic logic) {
         this.criteria = criteria;
         this.tableAlias = tableAlias;
         this.column = column;

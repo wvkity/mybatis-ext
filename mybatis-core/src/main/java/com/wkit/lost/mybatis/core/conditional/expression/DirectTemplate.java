@@ -83,10 +83,9 @@ import java.util.stream.Collectors;
  *     return:
  *     SELECT column1, column2, ... FROM GRADE WHERE LEFT(NAME, ?) = ?
  * </pre>
- * @param <T> 实体类型
  * @author wvkity
  */
-public class DirectTemplate<T> extends DirectExpressionWrapper<T> {
+public class DirectTemplate extends DirectExpressionWrapper {
 
     private static final long serialVersionUID = 5788833497759949457L;
 
@@ -127,7 +126,7 @@ public class DirectTemplate<T> extends DirectExpressionWrapper<T> {
      * @param mapValues  多个键值
      * @param logic      逻辑符号
      */
-    DirectTemplate(Criteria<T> criteria, String tableAlias, String column, String template,
+    DirectTemplate(Criteria<?> criteria, String tableAlias, String column, String template,
                    Object value, Collection<Object> values, Map<String, Object> mapValues, Logic logic) {
         this.criteria = criteria;
         this.tableAlias = tableAlias;
@@ -178,25 +177,23 @@ public class DirectTemplate<T> extends DirectExpressionWrapper<T> {
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> DirectTemplate.Builder<T> create() {
-        return new DirectTemplate.Builder<>();
+    public static DirectTemplate.Builder create() {
+        return new DirectTemplate.Builder();
     }
 
     /**
      * 条件构建器
-     * @param <T> 实体类型
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 表别名
          */
@@ -231,8 +228,12 @@ public class DirectTemplate<T> extends DirectExpressionWrapper<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public DirectTemplate<T> build() {
-            return new DirectTemplate<>(this.criteria, this.alias, this.column, this.template,
+        public DirectTemplate build() {
+            if (this.value == null || CollectionUtil.isEmpty(this.values)
+                    || CollectionUtil.isEmpty(this.map) || StringUtil.isBlank(this.template)) {
+                return null;
+            }
+            return new DirectTemplate(this.criteria, this.alias, this.column, this.template,
                     this.value, this.values, this.map, this.logic);
         }
     }

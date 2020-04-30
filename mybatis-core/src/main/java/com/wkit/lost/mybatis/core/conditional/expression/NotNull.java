@@ -12,10 +12,9 @@ import lombok.experimental.Accessors;
 
 /**
  * IS NOT NULL条件
- * @param <T> 实体类
  * @author wvkity
  */
-public class NotNull<T> extends AbstractEmptyExpression<T> {
+public class NotNull extends AbstractEmptyExpression {
 
     private static final long serialVersionUID = -167314360780647171L;
 
@@ -25,7 +24,7 @@ public class NotNull<T> extends AbstractEmptyExpression<T> {
      * @param column   字段包装对象
      * @param logic    逻辑符号
      */
-    NotNull(Criteria<T> criteria, ColumnWrapper column, Logic logic) {
+    NotNull(Criteria<?> criteria, ColumnWrapper column, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.logic = logic;
@@ -34,25 +33,23 @@ public class NotNull<T> extends AbstractEmptyExpression<T> {
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> NotNull.Builder<T> create() {
-        return new NotNull.Builder<>();
+    public static NotNull.Builder create() {
+        return new NotNull.Builder();
     }
 
     /**
      * 条件对象构建器
-     * @param <T> 实体类
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 条件包装对象
          */
@@ -66,7 +63,7 @@ public class NotNull<T> extends AbstractEmptyExpression<T> {
          * 属性
          */
         @Setter(AccessLevel.NONE)
-        private Property<T, ?> lambdaProperty;
+        private Property<?, ?> lambdaProperty;
         /**
          * 逻辑符号
          */
@@ -77,7 +74,7 @@ public class NotNull<T> extends AbstractEmptyExpression<T> {
          * @param property 属性
          * @return {@link NotNull.Builder}
          */
-        public NotNull.Builder<T> property(String property) {
+        public NotNull.Builder property(String property) {
             this.property = property;
             return this;
         }
@@ -85,10 +82,11 @@ public class NotNull<T> extends AbstractEmptyExpression<T> {
         /**
          * 属性
          * @param property 属性
+         * @param <T>      实体类型
          * @param <V>      属性值类型
          * @return {@link NotNull.Builder}
          */
-        public <V> NotNull.Builder<T> property(Property<T, V> property) {
+        public <T, V> NotNull.Builder property(Property<T, V> property) {
             this.lambdaProperty = property;
             return this;
         }
@@ -97,9 +95,9 @@ public class NotNull<T> extends AbstractEmptyExpression<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public NotNull<T> build() {
+        public NotNull build() {
             if (this.column != null) {
-                return new NotNull<>(this.criteria, this.column, this.logic);
+                return new NotNull(this.criteria, this.column, this.logic);
             }
             if (this.criteria == null) {
                 return null;
@@ -107,13 +105,13 @@ public class NotNull<T> extends AbstractEmptyExpression<T> {
             if (hasText(this.property)) {
                 ColumnWrapper wrapper = this.criteria.searchColumn(this.property);
                 if (wrapper != null) {
-                    return new NotNull<>(this.criteria, wrapper, this.logic);
+                    return new NotNull(this.criteria, wrapper, this.logic);
                 }
             }
             if (lambdaProperty != null) {
                 ColumnWrapper wrapper = this.criteria.searchColumn(lambdaProperty);
                 if (wrapper != null) {
-                    return new NotNull<>(this.criteria, wrapper, this.logic);
+                    return new NotNull(this.criteria, wrapper, this.logic);
                 }
             }
             return null;

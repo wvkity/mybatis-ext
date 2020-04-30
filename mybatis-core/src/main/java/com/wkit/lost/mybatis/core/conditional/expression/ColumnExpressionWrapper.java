@@ -5,7 +5,7 @@ import com.wkit.lost.mybatis.core.metadata.ColumnWrapper;
 import lombok.Getter;
 
 @SuppressWarnings({"serial"})
-public abstract class ColumnExpressionWrapper<T> extends ExpressionWrapper<T, ColumnWrapper> {
+public abstract class ColumnExpressionWrapper extends ExpressionWrapper<ColumnWrapper> {
 
     /**
      * 获取属性名

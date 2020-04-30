@@ -15,10 +15,9 @@ import lombok.experimental.Accessors;
 
 /**
  * 字段相等条件
- * @param <T> 实体类型
  * @author wvkity
  */
-public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
+public class NormalEqual extends ColumnExpressionWrapper {
 
     private static final long serialVersionUID = -2314270986996270968L;
 
@@ -52,7 +51,7 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
      * @param logic           逻辑符号
      * @param <E>             实体类型
      */
-    <E> NormalEqual(Criteria<T> criteria, ColumnWrapper column, Criteria<E> otherCriteria,
+    <E> NormalEqual(Criteria<?> criteria, ColumnWrapper column, Criteria<E> otherCriteria,
                     String otherTableAlias, ColumnWrapper otherColumnWrapper, String otherColumn, Logic logic) {
         this.criteria = criteria;
         this.column = column;
@@ -90,25 +89,23 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
 
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> NormalEqual.Builder<T> create() {
-        return new NormalEqual.Builder<>();
+    public static NormalEqual.Builder create() {
+        return new NormalEqual.Builder();
     }
 
     /**
      * 条件对象构建器
-     * @param <T> 实体类
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 条件包装对象
          */
@@ -122,7 +119,7 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
          * 属性
          */
         @Setter(AccessLevel.NONE)
-        private Property<T, ?> lambdaProperty;
+        private Property<?, ?> lambdaProperty;
         /**
          * 其他条件包装对象
          */
@@ -161,7 +158,7 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
          * @param property 属性
          * @return {@link NormalEqual.Builder}
          */
-        public NormalEqual.Builder<T> property(String property) {
+        public NormalEqual.Builder property(String property) {
             this.property = property;
             return this;
         }
@@ -169,10 +166,11 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
         /**
          * 属性
          * @param property 属性
+         * @param <T>      实体类型
          * @param <V>      属性值类型
          * @return {@link NormalEqual.Builder}
          */
-        public <V> NormalEqual.Builder<T> property(Property<T, V> property) {
+        public <T, V> NormalEqual.Builder property(Property<T, V> property) {
             this.lambdaProperty = property;
             return this;
         }
@@ -182,7 +180,7 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
          * @param property 属性
          * @return {@link NormalEqual.Builder}
          */
-        public NormalEqual.Builder<T> otherProperty(String property) {
+        public NormalEqual.Builder otherProperty(String property) {
             this.otherProperty = property;
             return this;
         }
@@ -194,7 +192,7 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
          * @param <V>      属性值类型
          * @return {@link NormalEqual.Builder}
          */
-        public <E, V> NormalEqual.Builder<T> otherProperty(Property<E, V> property) {
+        public <E, V> NormalEqual.Builder otherProperty(Property<E, V> property) {
             this.otherLambdaProperty = property;
             return this;
         }
@@ -204,7 +202,7 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
          * @param column 表字段包装对象
          * @return {@link NormalEqual.Builder}
          */
-        public NormalEqual.Builder<T> otherColumn(ColumnWrapper column) {
+        public NormalEqual.Builder otherColumn(ColumnWrapper column) {
             this.otherColumnWrapper = column;
             return this;
         }
@@ -214,7 +212,7 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
          * @param column 表字段
          * @return {@link NormalEqual.Builder}
          */
-        public NormalEqual.Builder<T> otherColumn(String column) {
+        public NormalEqual.Builder otherColumn(String column) {
             this.otherColumn = column;
             return this;
         }
@@ -223,10 +221,10 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public NormalEqual<T> build() {
+        public NormalEqual build() {
             if (this.column != null) {
                 if (this.otherColumnWrapper != null) {
-                    return new NormalEqual<>(this.criteria, this.column, this.otherCriteria,
+                    return new NormalEqual(this.criteria, this.column, this.otherCriteria,
                             this.otherAlias, this.otherColumnWrapper, this.otherColumn, this.logic);
                 }
             }
@@ -246,7 +244,7 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
             }
             if (wrapper != null) {
                 if (this.otherColumnWrapper != null) {
-                    return new NormalEqual<>(this.criteria, wrapper, this.otherCriteria,
+                    return new NormalEqual(this.criteria, wrapper, this.otherCriteria,
                             this.otherAlias, this.otherColumnWrapper, this.otherColumn, this.logic);
                 } else {
                     ColumnWrapper otherWrapper = null;
@@ -260,10 +258,10 @@ public class NormalEqual<T> extends ColumnExpressionWrapper<T> {
                         }
                     }
                     if (otherWrapper != null) {
-                        return new NormalEqual<>(this.criteria, wrapper, this.otherCriteria,
+                        return new NormalEqual(this.criteria, wrapper, this.otherCriteria,
                                 this.otherAlias, otherWrapper, this.otherColumn, this.logic);
                     } else if (hasText(this.otherColumn)) {
-                        return new NormalEqual<>(this.criteria, wrapper, this.otherCriteria,
+                        return new NormalEqual(this.criteria, wrapper, this.otherCriteria,
                                 this.otherAlias, this.otherColumnWrapper, this.otherColumn, this.logic);
                     }
                 }

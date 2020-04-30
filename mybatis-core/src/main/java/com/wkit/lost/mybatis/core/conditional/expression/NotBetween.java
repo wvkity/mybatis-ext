@@ -12,10 +12,9 @@ import lombok.experimental.Accessors;
 
 /**
  * BETWEEN范围条件
- * @param <T> 实体类型
  * @author wvkity
  */
-public class NotBetween<T> extends AbstractBetweenExpression<T> {
+public class NotBetween extends AbstractBetweenExpression {
 
     private static final long serialVersionUID = 1476232138618457610L;
 
@@ -27,7 +26,7 @@ public class NotBetween<T> extends AbstractBetweenExpression<T> {
      * @param end      结束值
      * @param logic    逻辑符号
      */
-    NotBetween(Criteria<T> criteria, ColumnWrapper column, Object begin, Object end, Logic logic) {
+    NotBetween(Criteria<?> criteria, ColumnWrapper column, Object begin, Object end, Logic logic) {
         this.criteria = criteria;
         this.column = column;
         this.begin = begin;
@@ -35,28 +34,26 @@ public class NotBetween<T> extends AbstractBetweenExpression<T> {
         this.logic = logic;
         this.symbol = Symbol.NOT_BETWEEN;
     }
-    
+
     /**
      * 创建条件构建器
-     * @param <T> 实体类型
      * @return 构建器
      */
-    public static <T> NotBetween.Builder<T> create() {
-        return new NotBetween.Builder<>();
+    public static NotBetween.Builder create() {
+        return new NotBetween.Builder();
     }
 
     /**
      * 条件对象构建器
-     * @param <T> 实体类
      */
     @Setter
     @Accessors(chain = true, fluent = true)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder<T> {
+    public static class Builder {
         /**
          * 条件包装对象
          */
-        private Criteria<T> criteria;
+        private Criteria<?> criteria;
         /**
          * 条件包装对象
          */
@@ -70,7 +67,7 @@ public class NotBetween<T> extends AbstractBetweenExpression<T> {
          * 属性
          */
         @Setter(AccessLevel.NONE)
-        private Property<T, ?> lambdaProperty;
+        private Property<?, ?> lambdaProperty;
         /**
          * 开始值
          */
@@ -89,7 +86,7 @@ public class NotBetween<T> extends AbstractBetweenExpression<T> {
          * @param property 属性
          * @return {@link NotBetween.Builder}
          */
-        public NotBetween.Builder<T> property(String property) {
+        public NotBetween.Builder property(String property) {
             this.property = property;
             return this;
         }
@@ -97,10 +94,11 @@ public class NotBetween<T> extends AbstractBetweenExpression<T> {
         /**
          * 属性
          * @param property 属性
+         * @param <T>      实体类型
          * @param <V>      属性值类型
          * @return {@link NotBetween.Builder}
          */
-        public <V> NotBetween.Builder<T> property(Property<T, V> property) {
+        public <T, V> NotBetween.Builder property(Property<T, V> property) {
             this.lambdaProperty = property;
             return this;
         }
@@ -109,12 +107,12 @@ public class NotBetween<T> extends AbstractBetweenExpression<T> {
          * 构建条件对象
          * @return 条件对象
          */
-        public NotBetween<T> build() {
+        public NotBetween build() {
             if (this.begin == null && this.end == null) {
                 return null;
             }
             if (this.column != null) {
-                return new NotBetween<>(this.criteria, this.column, this.begin, this.end, this.logic);
+                return new NotBetween(this.criteria, this.column, this.begin, this.end, this.logic);
             }
             if (this.criteria == null) {
                 return null;
@@ -122,13 +120,13 @@ public class NotBetween<T> extends AbstractBetweenExpression<T> {
             if (hasText(this.property)) {
                 ColumnWrapper wrapper = this.criteria.searchColumn(this.property);
                 if (wrapper != null) {
-                    return new NotBetween<>(this.criteria, wrapper, this.begin, this.end, this.logic);
+                    return new NotBetween(this.criteria, wrapper, this.begin, this.end, this.logic);
                 }
             }
             if (lambdaProperty != null) {
                 ColumnWrapper wrapper = this.criteria.searchColumn(lambdaProperty);
                 if (wrapper != null) {
-                    return new NotBetween<>(this.criteria, wrapper, this.begin, this.end, this.logic);
+                    return new NotBetween(this.criteria, wrapper, this.begin, this.end, this.logic);
                 }
             }
             return null;
