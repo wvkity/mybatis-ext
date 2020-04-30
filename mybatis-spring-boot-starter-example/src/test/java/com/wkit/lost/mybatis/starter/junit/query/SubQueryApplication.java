@@ -46,11 +46,45 @@ public class SubQueryApplication extends RootTestRunner {
     }
 
     @Test
+    public void directEqualTest() {
+        QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
+        criteria.sub(User.class, (it, sc) -> {
+            sc.select(User::getId).eq(User::getId, 2L, User::getState, 2);
+            it.eqWith("ID", sc);
+        });
+        List<StudentVo> result = studentService.list(criteria.useAs());
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
+    }
+
+    @Test
+    public void orDirectEqualTest() {
+        QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
+        criteria.sub(User.class, (it, sc) -> {
+            sc.select(User::getId).eq(User::getId, 2L, User::getState, 2);
+            it.eq(Student::getGradeId, 4L).orEqWith("ID", sc);
+        });
+        List<StudentVo> result = studentService.list(criteria.useAs());
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
+    }
+
+    @Test
     public void notEqualTest() {
         QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
         criteria.sub(User.class, (it, sc) -> {
             sc.select(User::getId).eq(User::getId, 2L, User::getState, 1);
             it.ne("id", sc);
+        });
+        List<StudentVo> result = studentService.list(criteria);
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
+    }
+
+    @Test
+    public void directNotEqualTest() {
+        QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
+        criteria.sub(User.class, (it, sc) -> {
+            sc.select(User::getId).eq(User::getId, 2L, User::getState, 1);
+            it.eq(Student::getDeleted, false).orNeWith("id", sc);
+            //it.neWith("id", sc);
         });
         List<StudentVo> result = studentService.list(criteria);
         log.info("执行结果: {}", JSON.toJSONString(result, true));
@@ -68,11 +102,35 @@ public class SubQueryApplication extends RootTestRunner {
     }
 
     @Test
+    public void directLessThanTest() {
+        QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
+        criteria.sub(User.class, (it, sc) -> {
+            sc.select(User::getId).eq(User::getId, 2L, User::getState, 1);
+            // it.ltWith("id", sc);
+            it.eq(Student::getDeleted, false).orLtWith("id", sc);
+        });
+        List<StudentVo> result = studentService.list(criteria);
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
+    }
+
+    @Test
     public void lessThanAndEqualTest() {
         QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
         criteria.sub(User.class, (it, sc) -> {
             sc.select(User::getId).eq(User::getId, 2L, User::getState, 1);
             it.le("id", sc);
+        });
+        List<StudentVo> result = studentService.list(criteria);
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
+    }
+
+    @Test
+    public void directLessThanAndEqualTest() {
+        QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
+        criteria.sub(User.class, (it, sc) -> {
+            sc.select(User::getId).eq(User::getId, 2L, User::getState, 1);
+            //it.leWith("id", sc);
+            it.eq(Student::getDeleted, false).orLeWith("id", sc);
         });
         List<StudentVo> result = studentService.list(criteria);
         log.info("执行结果: {}", JSON.toJSONString(result, true));
@@ -90,11 +148,35 @@ public class SubQueryApplication extends RootTestRunner {
     }
 
     @Test
+    public void directGreaterThanTest() {
+        QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
+        criteria.sub(User.class, (it, sc) -> {
+            sc.select(User::getId).eq(User::getId, 2L, User::getState, 1);
+            // it.gtWith("id", sc);
+            it.eq(Student::getDeleted, false).orGtWith("id", sc);
+        });
+        List<StudentVo> result = studentService.list(criteria);
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
+    }
+
+    @Test
     public void greaterThanAndEqualTest() {
         QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
         criteria.sub(User.class, (it, sc) -> {
             sc.select(User::getId).eq(User::getId, 2L, User::getState, 1);
             it.ge("id", sc);
+        });
+        List<StudentVo> result = studentService.list(criteria);
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
+    }
+
+    @Test
+    public void directGreaterThanAndEqualTest() {
+        QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
+        criteria.sub(User.class, (it, sc) -> {
+            sc.select(User::getId).eq(User::getId, 2L, User::getState, 1);
+            //it.geWith("id", sc);
+            it.eq(Student::getDeleted, false).geWith("id", sc);
         });
         List<StudentVo> result = studentService.list(criteria);
         log.info("执行结果: {}", JSON.toJSONString(result, true));
@@ -123,6 +205,30 @@ public class SubQueryApplication extends RootTestRunner {
     }
 
     @Test
+    public void directLikeTest() {
+        QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
+        criteria.propertyAutoMappingAlias().as("us__").sub(User.class, (it, sc) -> {
+            sc.select(User::getUserName).eq(User::getId, 2L, User::getState, 1);
+            // it.likeWith("name", sc);
+            it.eq(Student::getDeleted, false).orLikeWith("name", sc);
+        }).as("st_1_");
+        List<StudentVo> result = studentService.list(criteria);
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
+    }
+
+    @Test
+    public void directNotLikeTest() {
+        QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
+        criteria.sub(User.class, (it, sc) -> {
+            sc.select(User::getUserName).eq(User::getId, 2L, User::getState, 1);
+            //it.notLikeWith("name", sc);
+            it.eq(Student::getDeleted, false).orNotLikeWith("name", sc);
+        });
+        List<StudentVo> result = studentService.list(criteria);
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
+    }
+
+    @Test
     public void inTest() {
         QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
         criteria.sub(User.class, (it, sc) -> {
@@ -134,10 +240,46 @@ public class SubQueryApplication extends RootTestRunner {
     }
 
     @Test
-    public void existsTest() {
+    public void notInTest() {
+        QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
+        criteria.sub(User.class, (it, sc) -> {
+            sc.select(User::getId).eq(User::getId, 2L, User::getState, 1);
+            it.notIn(Student::getId, sc);
+        });
+        List<StudentVo> result = studentService.list(criteria);
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
+    }
+
+
+    @Test
+    public void directInTest() {
+        QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
+        criteria.sub(User.class, (it, sc) -> {
+            sc.select(User::getId).eq(User::getId, 2L, User::getState, 1);
+            //it.inWith("id", sc);
+            it.eq(Student::getDeleted, false).orInWith("id", sc);
+        });
+        List<StudentVo> result = studentService.list(criteria);
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
+    }
+
+    @Test
+    public void directNotInTest() {
+        QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
+        criteria.sub(User.class, (it, sc) -> {
+            sc.select(User::getId).eq(User::getId, 2L, User::getState, 1);
+            // it.notInWith("id", sc);
+            it.eq(Student::getDeleted, false).orNotInWith("id", sc);
+        });
+        List<StudentVo> result = studentService.list(criteria);
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
+    }
+
+    @Test
+    public void existsTest1() {
         QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
         criteria.useAs().sub(User.class, (it, sc) -> {
-            sc.select(User::getId).normalEq(it, Student::getId);
+            sc.select(User::getId).nq(it, Student::getId);
             it.exists(sc);
         }).useAs();
         List<StudentVo> result = studentService.list(criteria);
@@ -145,10 +287,32 @@ public class SubQueryApplication extends RootTestRunner {
     }
 
     @Test
-    public void notExistsTest() {
+    public void existsTest2() {
+        QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
+        criteria.as("st_").sub(User.class, (it, sc) -> {
+            sc.select(User::getId).nqWith("st_", "id");
+            it.exists(sc);
+        }).as("us_");
+        List<StudentVo> result = studentService.list(criteria);
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
+    }
+
+    @Test
+    public void notExistsTest1() {
         QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
         criteria.as("st_").propertyAutoMappingAlias().sub(User.class, (it, sc) -> {
-            sc.directSelect("id", "u_id").normalEq(it, Student::getId);
+            sc.selectWith("id", "u_id").nq(it, Student::getId);
+            it.notExists(sc);
+        }).as("ur_");
+        List<StudentVo> result = studentService.list(criteria);
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
+    }
+
+    @Test
+    public void notExistsTest2() {
+        QueryCriteria<Student> criteria = new QueryCriteria<>(Student.class);
+        criteria.as("st_").propertyAutoMappingAlias().sub(User.class, (it, sc) -> {
+            sc.selectWith("id", "u_id").nqWith("st_", "id");
             it.notExists(sc);
         }).as("ur_");
         List<StudentVo> result = studentService.list(criteria);

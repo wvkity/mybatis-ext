@@ -1,0 +1,25 @@
+{
+  "grades": [
+    {
+      "id": 1,
+      "name": "S1",
+      "deleted": false,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    },
+    {
+      "id": 2,
+      "name": "S2",
+      "deleted": false,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    },
+    {
+      "id": 3,
+      "name": "Y2",
+      "deleted": false,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    }
+  ]
+}

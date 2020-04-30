@@ -1,6 +1,5 @@
 package com.wkit.lost.mybatis.starter.example.entity;
 
-import com.wkit.lost.mybatis.annotation.Column;
 import com.wkit.lost.mybatis.annotation.LogicDeletion;
 import com.wkit.lost.mybatis.annotation.Table;
 import com.wkit.lost.mybatis.annotation.Version;

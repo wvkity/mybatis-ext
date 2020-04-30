@@ -1,0 +1,116 @@
+{
+  "subjects": [
+    {
+      "id": 1,
+      "name": "走进Java编程世界",
+      "hours": 57,
+      "gradeId": 1,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    },
+    {
+      "id": 2,
+      "name": "HTML和CSS网页技术",
+      "hours": 66,
+      "gradeId": 1,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    },
+    {
+      "id": 3,
+      "name": "C#语言和数据库技术",
+      "hours": 68,
+      "gradeId": 1,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    },
+    {
+      "id": 4,
+      "name": "使用C#语言开发数据库应用系统",
+      "hours": 38,
+      "gradeId": 1,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    },
+    {
+      "id": 5,
+      "name": "深入.NET平台和C#编程",
+      "hours": 75,
+      "gradeId": 2,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    },
+    {
+      "id": 6,
+      "name": "设计MySchool数据库",
+      "hours": 42,
+      "gradeId": 2,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    },
+    {
+      "id": 7,
+      "name": "基于.NET平台的软件系统分层开发",
+      "hours": 45,
+      "gradeId": 2,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    },
+    {
+      "id": 8,
+      "name": "面向对象程序设计",
+      "hours": 60,
+      "gradeId": 2,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    },
+    {
+      "id": 9,
+      "name": "使用JavaScript增强交互效果",
+      "hours": 43,
+      "gradeId": 2,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    },
+    {
+      "id": 10,
+      "name": "使用Java EE技术开发新闻发布系统",
+      "hours": 55,
+      "gradeId": 2,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    },
+    {
+      "id": 11,
+      "name": "使用ASP.NET技术开发网上书店",
+      "hours": 90,
+      "gradeId": 3,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    },
+    {
+      "id": 12,
+      "name": "开发基于Ajax和控件技术的Web应用系",
+      "hours": 62,
+      "gradeId": 3,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    },
+    {
+      "id": 13,
+      "name": "使用Java框架技术开发网上信息发布系统",
+      "hours": 54,
+      "gradeId": 3,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    },
+    {
+      "id": 14,
+      "name": "使用Java企业级技术开发企业应用",
+      "hours": 70,
+      "gradeId": 3,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    }
+  ]
+}

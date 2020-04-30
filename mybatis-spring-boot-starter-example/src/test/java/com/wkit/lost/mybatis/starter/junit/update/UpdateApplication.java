@@ -2,7 +2,6 @@ package com.wkit.lost.mybatis.starter.junit.update;
 
 import com.wkit.lost.mybatis.core.wrapper.criteria.QueryCriteria;
 import com.wkit.lost.mybatis.core.wrapper.criteria.UpdateCriteria;
-import com.wkit.lost.mybatis.starter.example.entity.BaseEntity;
 import com.wkit.lost.mybatis.starter.example.entity.Grade;
 import com.wkit.lost.mybatis.starter.example.entity.User;
 import com.wkit.lost.mybatis.starter.example.service.GradeService;
@@ -84,8 +83,8 @@ public class UpdateApplication extends RootTestRunner {
 
     @Test
     public void updateByCriteriaTest2() {
-        UpdateCriteria<Grade> criteria = new UpdateCriteria<>(Grade.class);
-        criteria.set(Grade::getName, "SY2").eq(BaseEntity::getId, 2L);
+        UpdateCriteria<Grade> criteria = UpdateCriteria.from(Grade.class);
+        criteria.set(Grade::getName, "SY2").eq(Grade::getId, 2L);
         int result = gradeService.update(criteria);
         log.info("执行结果: {}", result);
     }

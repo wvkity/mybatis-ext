@@ -26,7 +26,7 @@ public class QueryApplication extends RootTestRunner {
     private UserService userService;
     @Inject
     private ResultService resultService;
-    
+
     @Test
     public void test() {
         List<Result> result = resultService.list(1L, 2L, 3L);
@@ -168,7 +168,8 @@ public class QueryApplication extends RootTestRunner {
 
     @Test
     public void nestedTest2() {
-        QueryCriteria<User> criteria = new QueryCriteria<>(User.class);
+        QueryCriteria<User> criteria = QueryCriteria.from(User.class);
+        //criteria.leftJoin(Student.class);
         criteria.eq(User::getDeleted, false).and(it ->
                 it.and(i -> i.eq(User::getState, 2, User::getCreatedUserName, "root", User::getVersion, 3))
                         .or(i -> i.eq(User::getState, 1, User::getCreatedUserName, "system")));

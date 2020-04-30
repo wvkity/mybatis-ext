@@ -8,10 +8,11 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 学生信息
+ * 班级信息表
  */
 @Data
 @ToString
@@ -20,8 +21,9 @@ import java.time.LocalDateTime;
 @FieldNameConstants
 @EqualsAndHashCode
 @Accessors(chain = true)
-public class Student {
-    private static final long serialVersionUID = -5414906538791067259L;
+public class Klass implements Serializable {
+    
+    private static final long serialVersionUID = -8171090337461272720L;
 
     /**
      * 主键
@@ -29,45 +31,14 @@ public class Student {
     private Long id;
     
     /**
-     * 登录密码
-     */
-    private String password;
-
-    /**
-     * 姓名
+     * 班级名称
      */
     private String name;
 
     /**
-     * 性别
-     */
-    private Integer sex;
-
-    /**
-     * 所在年级
+     * 所属年级
      */
     private Long gradeId;
-
-    /**
-     * 联系电话
-     */
-    private String phone;
-
-    /**
-     * 地址
-     */
-    private String address;
-
-    /**
-     * 出生日期
-     */
-    private LocalDateTime birthday;
-
-    /**
-     * 电子邮件
-     */
-    private String email;
-
 
     /**
      * 删除标识
@@ -118,5 +89,4 @@ public class Student {
      * 删除时间
      */
     private LocalDateTime gmtDeleted;
-
 }

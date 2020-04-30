@@ -65,10 +65,10 @@ public class InsertApplication extends RootTestRunner {
     @Test
     public void batchInsertNotWithAuditTest() {
         Grade grade = new Grade();
-        grade.setName("x1").setCreatedUserId(DEF_SYS_USER_ID).setCreatedUserName(DEF_SYS_USER_NAME)
+        grade.setName("V1").setCreatedUserId(DEF_SYS_USER_ID).setCreatedUserName(DEF_SYS_USER_NAME)
                 .setGmtCreated(LocalDateTime.now());
         Grade g2 = new Grade();
-        g2.setName("x2").setCreatedUserId(DEF_SYS_USER_ID)
+        g2.setName("T2").setCreatedUserId(DEF_SYS_USER_ID)
                 .setCreatedUserName(DEF_SYS_USER_NAME).setGmtCreated(LocalDateTime.now());
         List<Grade> list = ArrayUtil.toList(grade, g2);
         int result = gradeService.batchSaveNotWithAudit(list);

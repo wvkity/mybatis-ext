@@ -12,7 +12,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@EnableMetadataAuditing(automatic = true)
+@EnableMetadataAuditing
 @EnableInterceptors
 //( interceptors = { @Plugin( value = SystemBuiltinAuditingInterceptor.class, order = 33 ) } )
 @EnableTransactionManagement

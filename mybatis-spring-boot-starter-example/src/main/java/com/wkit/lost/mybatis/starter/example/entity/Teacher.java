@@ -8,7 +8,6 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -16,13 +15,18 @@ import java.time.LocalDateTime;
  */
 @Data
 @ToString
-@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants
-@EqualsAndHashCode(callSuper = true)
-public class Teacher extends BaseEntity {
+@EqualsAndHashCode
+@Accessors(chain = true)
+public class Teacher {
     private static final long serialVersionUID = 1278029478672232127L;
+
+    /**
+     * 主键
+     */
+    private Long id;
 
     /**
      * 姓名
@@ -35,8 +39,52 @@ public class Teacher extends BaseEntity {
     private Integer sex;
 
     /**
-     * 所属年级
+     * 删除标识
      */
-    private Long gradeId;
+    private Boolean deleted;
 
+    /**
+     * 创建人
+     */
+    private String createdUserName;
+
+    /**
+     * 创建人ID
+     */
+    private Long createdUserId;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime gmtCreated;
+
+    /**
+     * 最后更新人
+     */
+    private String lastModifiedUserName;
+
+    /**
+     * 最后更新人ID
+     */
+    private Long lastModifiedUserId;
+
+    /**
+     * 最后更新时间
+     */
+    private LocalDateTime gmtLastModified;
+
+    /**
+     * 删除人ID
+     */
+    private Long deletedUserId;
+
+    /**
+     * 删除人名称
+     */
+    private String deletedUserName;
+
+    /**
+     * 删除时间
+     */
+    private LocalDateTime gmtDeleted;
 }
