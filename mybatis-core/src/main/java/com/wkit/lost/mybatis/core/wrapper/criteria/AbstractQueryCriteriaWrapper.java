@@ -367,7 +367,7 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> directAscWithAlias(String alias, List<String> columns) {
+    public AbstractQueryCriteriaWrapper<T> ascWithAlias(String alias, List<String> columns) {
         return add(DirectOrder.ascWithAlias(alias, columns));
     }
 
@@ -398,7 +398,7 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> directDescWithAlias(String alias, List<String> columns) {
+    public AbstractQueryCriteriaWrapper<T> descWithAlias(String alias, List<String> columns) {
         return add(DirectOrder.descWithAlias(alias, columns));
     }
 

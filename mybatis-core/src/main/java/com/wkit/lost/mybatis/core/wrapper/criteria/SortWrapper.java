@@ -9,12 +9,12 @@ import com.wkit.lost.mybatis.utils.ArrayUtil;
 import java.util.List;
 
 /**
- * 排序
+ * 排序接口
  * @param <T>     实体类型
  * @param <Chain> 子类
  * @author wvkity
  */
-public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends PropertyConverter<T> {
+public interface SortWrapper<T, Chain extends SortWrapper<T, Chain>> extends PropertyConverter<T> {
 
 
     // region ASC
@@ -51,8 +51,8 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param columns 字段数组
      * @return 当前对象
      */
-    default Chain directAsc(String... columns) {
-        return directAsc(ArrayUtil.toList(columns));
+    default Chain ascWith(String... columns) {
+        return ascWith(ArrayUtil.toList(columns));
     }
 
     /**
@@ -60,8 +60,8 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param columns 字段集合
      * @return 当前对象
      */
-    default Chain directAsc(List<String> columns) {
-        return directAscWithAlias(null, columns);
+    default Chain ascWith(List<String> columns) {
+        return ascWithAlias(null, columns);
     }
 
     /**
@@ -70,8 +70,8 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param columns 字段数组
      * @return 当前对象
      */
-    default Chain directAscWithAlias(String alias, String... columns) {
-        return directAscWithAlias(alias, ArrayUtil.toList(columns));
+    default Chain ascWithAlias(String alias, String... columns) {
+        return ascWithAlias(alias, ArrayUtil.toList(columns));
     }
 
     /**
@@ -80,7 +80,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param columns 字段集合
      * @return 当前对象
      */
-    Chain directAscWithAlias(String alias, List<String> columns);
+    Chain ascWithAlias(String alias, List<String> columns);
 
     /**
      * ASC排序
@@ -168,8 +168,8 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param columns 字段数组
      * @return 当前对象
      */
-    default Chain directDesc(String... columns) {
-        return directDesc(ArrayUtil.toList(columns));
+    default Chain descWith(String... columns) {
+        return descWith(ArrayUtil.toList(columns));
     }
 
     /**
@@ -177,8 +177,8 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param columns 字段集合
      * @return 当前对象
      */
-    default Chain directDesc(List<String> columns) {
-        return directDescWithAlias(null, columns);
+    default Chain descWith(List<String> columns) {
+        return descWithAlias(null, columns);
     }
 
     /**
@@ -187,8 +187,8 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param columns 字段数组
      * @return 当前对象
      */
-    default Chain directDescWithAlias(String alias, String... columns) {
-        return directDescWithAlias(alias, ArrayUtil.toList(columns));
+    default Chain descWithAlias(String alias, String... columns) {
+        return descWithAlias(alias, ArrayUtil.toList(columns));
     }
 
     /**
@@ -197,7 +197,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param columns 字段集合
      * @return 当前对象
      */
-    Chain directDescWithAlias(String alias, List<String> columns);
+    Chain descWithAlias(String alias, List<String> columns);
 
     /**
      * DESC排序

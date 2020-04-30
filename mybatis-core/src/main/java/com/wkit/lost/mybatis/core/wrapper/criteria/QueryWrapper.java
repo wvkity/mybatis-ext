@@ -8,7 +8,7 @@ package com.wkit.lost.mybatis.core.wrapper.criteria;
  */
 public interface QueryWrapper<T, Chain extends QueryWrapper<T, Chain>> extends Query<T, Chain>,
         ForeignCriteriaWrapper<T, Chain>, ForeignSubCriteriaWrapper<T, Chain>,
-        GroupWrapper<T, Chain>, OrderWrapper<T, Chain> {
+        GroupWrapper<T, Chain>, SortWrapper<T, Chain> {
 
     /**
      * 使用内置表别名
