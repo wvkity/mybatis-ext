@@ -13,6 +13,7 @@ import com.wkit.lost.mybatis.core.wrapper.basic.Group;
 import com.wkit.lost.mybatis.core.wrapper.basic.Order;
 import com.wkit.lost.mybatis.core.wrapper.basic.Query;
 import com.wkit.lost.mybatis.core.wrapper.basic.QueryManager;
+import com.wkit.lost.mybatis.executor.resultset.EmbeddedResult;
 import com.wkit.lost.mybatis.utils.CollectionUtil;
 import com.wkit.lost.mybatis.utils.Constants;
 import com.wkit.lost.mybatis.utils.StringUtil;
@@ -41,7 +42,7 @@ import java.util.stream.Collectors;
 @Log4j2
 @SuppressWarnings({"serial"})
 public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWrapper<T>
-        implements QueryWrapper<T, AbstractQueryCriteriaWrapper<T>> {
+        implements EmbeddedResult, QueryWrapper<T, AbstractQueryCriteriaWrapper<T>> {
 
     // region fields
 

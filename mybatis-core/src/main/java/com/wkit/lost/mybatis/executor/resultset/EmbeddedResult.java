@@ -10,16 +10,12 @@ public interface EmbeddedResult {
      * 获取自定义resultMap节点key
      * @return 自定义的resultMap key
      */
-    default String resultMap() {
-        return null;
-    }
+    String resultMap();
 
     /**
      * 获取自定义返回值类型
      * @return 返回值类型
      */
-    default Class<?> resultType() {
-        return null;
-    }
+    Class<?> resultType();
 
 }

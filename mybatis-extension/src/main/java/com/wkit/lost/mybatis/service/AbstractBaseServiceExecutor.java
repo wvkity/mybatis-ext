@@ -3,6 +3,7 @@ package com.wkit.lost.mybatis.service;
 import com.wkit.lost.mybatis.batch.BatchDataBeanWrapper;
 import com.wkit.lost.mybatis.binding.MyBatisMapperMethod;
 import com.wkit.lost.mybatis.core.handler.TableHandler;
+import com.wkit.lost.mybatis.core.wrapper.criteria.AbstractQueryCriteriaWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 import com.wkit.lost.mybatis.exception.MyBatisException;
 import com.wkit.lost.mybatis.mapper.BaseMapperExecutor;
@@ -326,7 +327,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
 
     @Override
     public long count(Criteria<T> criteria) {
-        return criteria == null ? 0 : executor.countByCriteria(criteria.resultMap(null).resultType(null));
+        return criteria == null ? 0 : executor.countByCriteria(criteria);
     }
 
     @Override
@@ -372,15 +373,18 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
 
     @Override
     public List<V> list(Criteria<T> criteria) {
-        return criteria == null ? EMPTY_DATA : executor.listByCriteria(criteria.resultMap(null).resultType(null));
+        return criteria == null ? EMPTY_DATA : executor.listByCriteria(criteria);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <E> List<E> custom(Criteria<T> criteria) {
-        if (criteria != null && (criteria.resultType() != null || StringUtil.hasText(criteria.resultMap()))) {
-            List<Object> result = executor.objectList(criteria);
-            return Optional.ofNullable(result).map(value -> (List<E>) value).orElse(new ArrayList<>(0));
+        if (criteria instanceof AbstractQueryCriteriaWrapper) {
+            AbstractQueryCriteriaWrapper<T> it = (AbstractQueryCriteriaWrapper<T>) criteria;
+            if (it.resultType() != null || StringUtil.hasText(it.resultMap())) {
+                List<Object> result = executor.objectList(criteria);
+                return Optional.ofNullable(result).map(value -> (List<E>) value).orElse(new ArrayList<>(0));
+            }
         }
         return new ArrayList<>(0);
     }
@@ -390,7 +394,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (criteria == null) {
             return new ArrayList<>(0);
         }
-        return executor.objectList(criteria.resultMap(null).resultType(null));
+        return executor.objectList(criteria);
     }
 
     @Override
@@ -398,7 +402,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (criteria == null) {
             return new ArrayList<>(0);
         }
-        return executor.arrayList(criteria.resultMap(null).resultType(null));
+        return executor.arrayList(criteria);
     }
 
     @Override
@@ -406,7 +410,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (criteria == null) {
             return new ArrayList<>(0);
         }
-        return executor.mapList(criteria.resultMap(null).resultType(null));
+        return executor.mapList(criteria);
     }
 
     @Override
@@ -419,7 +423,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (criteria == null) {
             return EMPTY_DATA;
         }
-        return executor.pageableListByCriteria(criteria.resultMap(null).resultType(null), pageable);
+        return executor.pageableListByCriteria(criteria, pageable);
     }
 
     @Override

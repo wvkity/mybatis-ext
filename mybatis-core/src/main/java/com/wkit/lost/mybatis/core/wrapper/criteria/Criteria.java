@@ -6,7 +6,6 @@ import com.wkit.lost.mybatis.core.converter.PlaceholderConverter;
 import com.wkit.lost.mybatis.core.converter.PropertyConverter;
 import com.wkit.lost.mybatis.core.segment.Segment;
 import com.wkit.lost.mybatis.core.wrapper.aggreate.Aggregation;
-import com.wkit.lost.mybatis.executor.resultset.EmbeddedResult;
 
 import java.util.Collection;
 
@@ -15,7 +14,7 @@ import java.util.Collection;
  * @param <T> 泛型类型
  * @author wvkity
  */
-public interface Criteria<T> extends Search<T>, EmbeddedResult, PlaceholderConverter, PropertyConverter<T>, Segment {
+public interface Criteria<T> extends Search<T>, PlaceholderConverter, PropertyConverter<T>, Segment {
 
     /**
      * 获取WHERE条件SQL片段
@@ -212,23 +211,5 @@ public interface Criteria<T> extends Search<T>, EmbeddedResult, PlaceholderConve
      * @return 当前对象
      */
     Criteria<T> as(boolean enabled);
-
-    /**
-     * 设置自定义resultMap key
-     * @param resultMap result key
-     * @return 当前对象
-     */
-    default Criteria<T> resultMap(String resultMap) {
-        return this;
-    }
-
-    /**
-     * 设置自定义返回值类型
-     * @param resultType 返回值类型
-     * @return 当前对象
-     */
-    default Criteria<T> resultType(Class<?> resultType) {
-        return this;
-    }
 
 }

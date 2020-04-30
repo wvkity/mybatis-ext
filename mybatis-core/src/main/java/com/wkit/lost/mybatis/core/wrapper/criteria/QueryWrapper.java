@@ -66,4 +66,19 @@ public interface QueryWrapper<T, Chain extends QueryWrapper<T, Chain>> extends Q
      * @return {@code this}
      */
     Chain range(long pageStart, long pageEnd, long size);
+
+    /**
+     * 设置自定义resultMap key
+     * @param resultMap result key
+     * @return {@code this}
+     */
+    Chain resultMap(String resultMap);
+
+    /**
+     * 设置自定义返回值类型
+     * @param resultType 返回值类型
+     * @return {@code this}
+     */
+    Chain resultType(Class<?> resultType);
+    
 }

@@ -50,6 +50,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * {@inheritDoc}
@@ -60,6 +61,11 @@ import java.util.Set;
 public class MyBatisResultSetHandler extends DefaultResultSetHandler {
 
     private static final Object DEFERRED = new Object();
+    /**
+     * 自定义返回值方法
+     */
+    private static final String EXEC_CUSTOM_RESULT_METHOD = "objectList";
+    private static final Pattern EXEC_METHOD_PATTERN = Pattern.compile("^(.*)\\.objectList$");
 
     private final Executor executor;
     private final Configuration configuration;
@@ -126,15 +132,18 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
         Object parameter = parameterHandler.getParameterObject();
         String resultMap = null;
         Class<?> resultType = null;
-        // 获取自定义配置
-        if (parameter instanceof Map) {
-            Map<String, Object> paramMap = (Map<String, Object>) parameter;
-            if (paramMap.containsKey(Constants.PARAM_CRITERIA)) {
-                Object value = paramMap.get(Constants.PARAM_CRITERIA);
-                if (value instanceof EmbeddedResult) {
-                    EmbeddedResult embedded = (EmbeddedResult) value;
-                    resultType = embedded.resultType();
-                    resultMap = StringUtil.hasText(embedded.resultMap()) ? embedded.resultMap() : null;
+        String msId = mappedStatement.getId();
+        if (EXEC_METHOD_PATTERN.matcher(msId).matches()) {
+            // 获取自定义配置
+            if (parameter instanceof Map) {
+                Map<String, Object> paramMap = (Map<String, Object>) parameter;
+                if (paramMap.containsKey(Constants.PARAM_CRITERIA)) {
+                    Object value = paramMap.get(Constants.PARAM_CRITERIA);
+                    if (value instanceof EmbeddedResult) {
+                        EmbeddedResult embedded = (EmbeddedResult) value;
+                        resultType = embedded.resultType();
+                        resultMap = StringUtil.hasText(embedded.resultMap()) ? embedded.resultMap() : null;
+                    }
                 }
             }
         }
