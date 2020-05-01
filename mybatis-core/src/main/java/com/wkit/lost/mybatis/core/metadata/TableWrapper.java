@@ -138,18 +138,6 @@ public class TableWrapper {
     }
 
     /**
-     * 添加字段信息
-     * @param column 字段映射对象
-     * @return {@code this}
-     */
-    TableWrapper addColumn(ColumnWrapper column) {
-        if (column != null) {
-            this.columns.add(column);
-        }
-        return this;
-    }
-
-    /**
      * 获取所有字段集合
      * @return 数据库表字段
      */
