@@ -1,6 +1,6 @@
 package com.wkit.lost.mybatis.plugins.paging;
 
-import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
+import com.wkit.lost.mybatis.core.wrapper.criteria.RangeFetch;
 import com.wkit.lost.mybatis.plugins.paging.dbs.dialect.Dialect;
 import com.wkit.lost.mybatis.plugins.processor.QueryProcessorSupport;
 import com.wkit.lost.mybatis.utils.Ascii;
@@ -21,7 +21,7 @@ abstract class PagingProcessor extends QueryProcessorSupport {
     /**
      * 锁
      */
-    private Lock lock = new ReentrantLock();
+    private final Lock lock = new ReentrantLock();
 
     /**
      * 代理工厂对象
@@ -58,18 +58,18 @@ abstract class PagingProcessor extends QueryProcessorSupport {
 
     @Override
     public boolean filter(MappedStatement ms, Object parameter) {
-        Criteria<?> criteria = getCriteria(parameter);
+        RangeFetch rangeFetch = getRangeFetch(parameter);
         Pageable pageable = getPageable(parameter);
-        return pageable == null && Optional.ofNullable(criteria).map(Criteria::isRange).orElse(false);
+        return pageable == null && Optional.ofNullable(rangeFetch).map(RangeFetch::isRange).orElse(false);
     }
 
     /**
      * 获取条件对象
      * @param parameter 参数
-     * @return {@link Criteria}
+     * @return {@link RangeFetch}
      */
-    protected Criteria<?> getCriteria(Object parameter) {
-        return getParameter(parameter, Constants.PARAM_CRITERIA, Criteria.class);
+    protected RangeFetch getRangeFetch(Object parameter) {
+        return getParameter(parameter, Constants.PARAM_CRITERIA, RangeFetch.class);
     }
 
     /**

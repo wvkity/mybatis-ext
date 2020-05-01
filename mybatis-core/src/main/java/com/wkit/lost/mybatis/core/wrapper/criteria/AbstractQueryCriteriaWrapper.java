@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 @Log4j2
 @SuppressWarnings({"serial"})
 public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWrapper<T>
-        implements EmbeddedResult, QueryWrapper<T, AbstractQueryCriteriaWrapper<T>> {
+        implements EmbeddedResult, RangeFetch, QueryWrapper<T, AbstractQueryCriteriaWrapper<T>> {
 
     // region fields
 
@@ -493,7 +493,7 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
         } else if (pageStart > 0 && pageEnd > 0) {
             return Range.PAGEABLE;
         }
-        return super.range();
+        return Range.NONE;
     }
 
     @Override

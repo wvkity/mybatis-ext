@@ -1,7 +1,6 @@
 package com.wkit.lost.mybatis.core.wrapper.criteria;
 
 import com.wkit.lost.mybatis.core.conditional.criterion.Criterion;
-import com.wkit.lost.mybatis.core.constant.Range;
 import com.wkit.lost.mybatis.core.converter.PlaceholderConverter;
 import com.wkit.lost.mybatis.core.converter.PropertyConverter;
 import com.wkit.lost.mybatis.core.segment.Segment;
@@ -40,62 +39,6 @@ public interface Criteria<T> extends Search<T>, PlaceholderConverter, PropertyCo
      */
     default boolean isEnableAlias() {
         return false;
-    }
-
-    /**
-     * 是否执行范围查询
-     * @return true: 是 false: 否
-     */
-    default boolean isRange() {
-        return false;
-    }
-
-    /**
-     * Range方式
-     * @return {@link Range}
-     */
-    default Range range() {
-        return Range.NONE;
-    }
-
-    /**
-     * 获取开始行
-     * @return 开始行
-     */
-    default long getRowStart() {
-        return 0;
-    }
-
-    /**
-     * 获取结束行
-     * @return 结束行
-     */
-    default long getRowEnd() {
-        return 0;
-    }
-
-    /**
-     * 获取开始页
-     * @return 页数
-     */
-    default long getPageStart() {
-        return 0;
-    }
-
-    /**
-     * 获取结束页
-     * @return 页数
-     */
-    default long getPageEnd() {
-        return 0;
-    }
-
-    /**
-     * 获取每页数目
-     * @return 每页大小
-     */
-    default long getPageSize() {
-        return 0;
     }
 
     /**
