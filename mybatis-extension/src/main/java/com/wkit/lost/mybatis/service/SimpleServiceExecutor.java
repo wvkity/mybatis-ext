@@ -5,5 +5,5 @@ package com.wkit.lost.mybatis.service;
  * @param <T> 实体、返回值类型
  * @author wvkity
  */
-public interface ServiceExecutor<T> extends SerialServiceExecutor<T, T> {
+public interface SimpleServiceExecutor<T> extends SerialServiceExecutor<T, T> {
 }
