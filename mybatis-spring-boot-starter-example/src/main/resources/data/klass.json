@@ -1,0 +1,100 @@
+{
+  "classes": [
+    {
+      "id": 1,
+      "name": "2011-1班",
+      "deleted": false,
+      "createdUserId": 1,
+      "createdUserName": "system",
+      "gmtCreated": "2011-08-01 00:00:00"
+    },
+    {
+      "id": 2,
+      "name": "2011-2班",
+      "deleted": false,
+      "createdUserId": 1,
+      "createdUserName": "system",
+      "gmtCreated": "2011-08-01 00:00:00"
+    },
+    {
+      "id": 3,
+      "name": "2011-3班",
+      "deleted": false,
+      "createdUserId": 1,
+      "createdUserName": "system",
+      "gmtCreated": "2011-08-01 00:00:00"
+    },
+    {
+      "id": 4,
+      "name": "2011-4班",
+      "deleted": false,
+      "createdUserId": 1,
+      "createdUserName": "system",
+      "gmtCreated": "2011-08-01 00:00:00"
+    },
+    {
+      "id": 5,
+      "name": "2012-1班",
+      "deleted": false,
+      "createdUserId": 1,
+      "createdUserName": "system",
+      "gmtCreated": "2012-08-12 00:00:00"
+    },
+    {
+      "id": 6,
+      "name": "2012-2班",
+      "deleted": false,
+      "createdUserId": 1,
+      "createdUserName": "system",
+      "gmtCreated": "2012-08-12 00:00:00"
+    },
+    {
+      "id": 7,
+      "name": "2012-3班",
+      "deleted": false,
+      "createdUserId": 1,
+      "createdUserName": "system",
+      "gmtCreated": "2012-08-12 00:00:00"
+    },
+    {
+      "id": 8,
+      "name": "2012-4班",
+      "deleted": false,
+      "createdUserId": 1,
+      "createdUserName": "system",
+      "gmtCreated": "2012-08-12 00:00:00"
+    },
+    {
+      "id": 9,
+      "name": "2013-1班",
+      "deleted": false,
+      "createdUserId": 1,
+      "createdUserName": "system",
+      "gmtCreated": "2013-08-08 10:00:00"
+    },
+    {
+      "id": 10,
+      "name": "2013-2班",
+      "deleted": false,
+      "createdUserId": 1,
+      "createdUserName": "system",
+      "gmtCreated": "2012-08-18 10:00:00"
+    },
+    {
+      "id": 11,
+      "name": "2013-3班",
+      "deleted": false,
+      "createdUserId": 1,
+      "createdUserName": "system",
+      "gmtCreated": "2012-08-18 10:00:00"
+    },
+    {
+      "id": 12,
+      "name": "2013-4班",
+      "deleted": false,
+      "createdUserId": 1,
+      "createdUserName": "system",
+      "gmtCreated": "2012-08-18 10:00:00"
+    }
+  ]
+}

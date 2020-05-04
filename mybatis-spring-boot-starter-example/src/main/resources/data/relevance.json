@@ -1,0 +1,1796 @@
+{
+  "relevances": [
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 1,
+      "teacherId": 1,
+      "year": 2011
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 1,
+      "teacherId": 1,
+      "year": 2011
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 1,
+      "teacherId": 2,
+      "year": 2011
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 1,
+      "teacherId": 2,
+      "year": 2011
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 2,
+      "teacherId": 9,
+      "year": 2011
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 2,
+      "teacherId": 9,
+      "year": 2011
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 2,
+      "teacherId": 10,
+      "year": 2011
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 2,
+      "teacherId": 10,
+      "year": 2011
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 3,
+      "teacherId": 17,
+      "year": 2011
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 3,
+      "teacherId": 17,
+      "year": 2011
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 3,
+      "teacherId": 18,
+      "year": 2011
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 3,
+      "teacherId": 18,
+      "year": 2011
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 4,
+      "teacherId": 25,
+      "year": 2011
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 4,
+      "teacherId": 25,
+      "year": 2011
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 4,
+      "teacherId": 26,
+      "year": 2011
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 4,
+      "teacherId": 26,
+      "year": 2011
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 1,
+      "teacherId": 1,
+      "year": 2012
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 1,
+      "teacherId": 1,
+      "year": 2012
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 1,
+      "teacherId": 4,
+      "year": 2012
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 1,
+      "teacherId": 4,
+      "year": 2012
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 2,
+      "teacherId": 9,
+      "year": 2012
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 2,
+      "teacherId": 9,
+      "year": 2012
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 2,
+      "teacherId": 11,
+      "year": 2012
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 2,
+      "teacherId": 11,
+      "year": 2012
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 3,
+      "teacherId": 17,
+      "year": 2012
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 3,
+      "teacherId": 17,
+      "year": 2012
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 3,
+      "teacherId": 20,
+      "year": 2012
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 3,
+      "teacherId": 20,
+      "year": 2012
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 4,
+      "teacherId": 25,
+      "year": 2012
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 4,
+      "teacherId": 25,
+      "year": 2012
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 4,
+      "teacherId": 29,
+      "year": 2012
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 4,
+      "teacherId": 29,
+      "year": 2012
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 1,
+      "teacherId": 1,
+      "year": 2012
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 1,
+      "teacherId": 1,
+      "year": 2012
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 1,
+      "teacherId": 2,
+      "year": 2012
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 1,
+      "teacherId": 2,
+      "year": 2012
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 2,
+      "teacherId": 9,
+      "year": 2012
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 2,
+      "teacherId": 9,
+      "year": 2012
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 2,
+      "teacherId": 10,
+      "year": 2012
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 2,
+      "teacherId": 10,
+      "year": 2012
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 3,
+      "teacherId": 17,
+      "year": 2012
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 3,
+      "teacherId": 17,
+      "year": 2012
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 3,
+      "teacherId": 18,
+      "year": 2012
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 3,
+      "teacherId": 18,
+      "year": 2012
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 4,
+      "teacherId": 25,
+      "year": 2012
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 4,
+      "teacherId": 25,
+      "year": 2012
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 4,
+      "teacherId": 26,
+      "year": 2012
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 4,
+      "teacherId": 26,
+      "year": 2012
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 5,
+      "teacherId": 3,
+      "year": 2012
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 5,
+      "teacherId": 3,
+      "year": 2012
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 5,
+      "teacherId": 4,
+      "year": 2012
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 5,
+      "teacherId": 5,
+      "year": 2012
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 6,
+      "teacherId": 11,
+      "year": 2012
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 6,
+      "teacherId": 11,
+      "year": 2012
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 6,
+      "teacherId": 12,
+      "year": 2012
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 6,
+      "teacherId": 13,
+      "year": 2012
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 7,
+      "teacherId": 19,
+      "year": 2012
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 7,
+      "teacherId": 19,
+      "year": 2012
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 7,
+      "teacherId": 21,
+      "year": 2012
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 7,
+      "teacherId": 22,
+      "year": 2012
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 8,
+      "teacherId": 27,
+      "year": 2012
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 8,
+      "teacherId": 27,
+      "year": 2012
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 8,
+      "teacherId": 28,
+      "year": 2012
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 8,
+      "teacherId": 30,
+      "year": 2012
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 9,
+      "teacherId": 34,
+      "year": 2012
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 9,
+      "teacherId": 36,
+      "year": 2012
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 9,
+      "teacherId": 37,
+      "year": 2012
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 9,
+      "teacherId": 37,
+      "year": 2012
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 1,
+      "teacherId": 1,
+      "year": 2013
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 1,
+      "teacherId": 1,
+      "year": 2013
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 1,
+      "teacherId": 2,
+      "year": 2013
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 1,
+      "teacherId": 2,
+      "year": 2013
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 2,
+      "teacherId": 9,
+      "year": 2013
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 2,
+      "teacherId": 9,
+      "year": 2013
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 2,
+      "teacherId": 10,
+      "year": 2013
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 2,
+      "teacherId": 10,
+      "year": 2013
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 3,
+      "teacherId": 17,
+      "year": 2013
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 3,
+      "teacherId": 17,
+      "year": 2013
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 3,
+      "teacherId": 18,
+      "year": 2013
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 3,
+      "teacherId": 18,
+      "year": 2013
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 4,
+      "teacherId": 25,
+      "year": 2013
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 4,
+      "teacherId": 25,
+      "year": 2013
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 4,
+      "teacherId": 26,
+      "year": 2013
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 4,
+      "teacherId": 26,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 5,
+      "teacherId": 3,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 5,
+      "teacherId": 4,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 5,
+      "teacherId": 4,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 5,
+      "teacherId": 5,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 6,
+      "teacherId": 11,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 6,
+      "teacherId": 11,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 6,
+      "teacherId": 12,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 6,
+      "teacherId": 13,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 7,
+      "teacherId": 20,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 7,
+      "teacherId": 20,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 7,
+      "teacherId": 21,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 7,
+      "teacherId": 22,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 8,
+      "teacherId": 27,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 8,
+      "teacherId": 28,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 8,
+      "teacherId": 28,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 8,
+      "teacherId": 29,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 9,
+      "teacherId": 35,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 9,
+      "teacherId": 35,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 9,
+      "teacherId": 36,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 9,
+      "teacherId": 37,
+      "year": 2013
+    },
+    {
+      "klassId": 9,
+      "period": 2013,
+      "semester": 1,
+      "subjectId": 1,
+      "teacherId": 7,
+      "year": 2013
+    },
+    {
+      "klassId": 11,
+      "period": 2013,
+      "semester": 1,
+      "subjectId": 1,
+      "teacherId": 7,
+      "year": 2013
+    },
+    {
+      "klassId": 10,
+      "period": 2013,
+      "semester": 1,
+      "subjectId": 1,
+      "teacherId": 8,
+      "year": 2013
+    },
+    {
+      "klassId": 12,
+      "period": 2013,
+      "semester": 1,
+      "subjectId": 1,
+      "teacherId": 8,
+      "year": 2013
+    },
+    {
+      "klassId": 10,
+      "period": 2013,
+      "semester": 1,
+      "subjectId": 2,
+      "teacherId": 9,
+      "year": 2013
+    },
+    {
+      "klassId": 9,
+      "period": 2013,
+      "semester": 1,
+      "subjectId": 2,
+      "teacherId": 9,
+      "year": 2013
+    },
+    {
+      "klassId": 11,
+      "period": 2013,
+      "semester": 1,
+      "subjectId": 2,
+      "teacherId": 13,
+      "year": 2013
+    },
+    {
+      "klassId": 12,
+      "period": 2013,
+      "semester": 1,
+      "subjectId": 2,
+      "teacherId": 13,
+      "year": 2013
+    },
+    {
+      "klassId": 11,
+      "period": 2013,
+      "semester": 1,
+      "subjectId": 3,
+      "teacherId": 19,
+      "year": 2013
+    },
+    {
+      "klassId": 9,
+      "period": 2013,
+      "semester": 1,
+      "subjectId": 3,
+      "teacherId": 19,
+      "year": 2013
+    },
+    {
+      "klassId": 10,
+      "period": 2013,
+      "semester": 1,
+      "subjectId": 3,
+      "teacherId": 20,
+      "year": 2013
+    },
+    {
+      "klassId": 12,
+      "period": 2013,
+      "semester": 1,
+      "subjectId": 3,
+      "teacherId": 20,
+      "year": 2013
+    },
+    {
+      "klassId": 9,
+      "period": 2013,
+      "semester": 1,
+      "subjectId": 4,
+      "teacherId": 27,
+      "year": 2013
+    },
+    {
+      "klassId": 10,
+      "period": 2013,
+      "semester": 1,
+      "subjectId": 4,
+      "teacherId": 27,
+      "year": 2013
+    },
+    {
+      "klassId": 11,
+      "period": 2013,
+      "semester": 1,
+      "subjectId": 4,
+      "teacherId": 28,
+      "year": 2013
+    },
+    {
+      "klassId": 12,
+      "period": 2013,
+      "semester": 1,
+      "subjectId": 4,
+      "teacherId": 28,
+      "year": 2013
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 5,
+      "teacherId": 1,
+      "year": 2013
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 5,
+      "teacherId": 1,
+      "year": 2013
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 5,
+      "teacherId": 2,
+      "year": 2013
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 5,
+      "teacherId": 3,
+      "year": 2013
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 6,
+      "teacherId": 10,
+      "year": 2013
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 6,
+      "teacherId": 10,
+      "year": 2013
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 6,
+      "teacherId": 11,
+      "year": 2013
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 6,
+      "teacherId": 12,
+      "year": 2013
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 7,
+      "teacherId": 18,
+      "year": 2013
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 7,
+      "teacherId": 21,
+      "year": 2013
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 7,
+      "teacherId": 21,
+      "year": 2013
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 7,
+      "teacherId": 22,
+      "year": 2013
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 8,
+      "teacherId": 25,
+      "year": 2013
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 8,
+      "teacherId": 29,
+      "year": 2013
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 8,
+      "teacherId": 30,
+      "year": 2013
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 8,
+      "teacherId": 30,
+      "year": 2013
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 9,
+      "teacherId": 35,
+      "year": 2013
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 9,
+      "teacherId": 35,
+      "year": 2013
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 9,
+      "teacherId": 36,
+      "year": 2013
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 1,
+      "subjectId": 9,
+      "teacherId": 37,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 10,
+      "teacherId": 4,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 10,
+      "teacherId": 5,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 10,
+      "teacherId": 5,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 10,
+      "teacherId": 6,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 11,
+      "teacherId": 14,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 11,
+      "teacherId": 15,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 11,
+      "teacherId": 15,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 11,
+      "teacherId": 16,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 12,
+      "teacherId": 17,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 12,
+      "teacherId": 17,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 12,
+      "teacherId": 23,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 12,
+      "teacherId": 24,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 13,
+      "teacherId": 26,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 13,
+      "teacherId": 26,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 13,
+      "teacherId": 31,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 13,
+      "teacherId": 32,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 14,
+      "teacherId": 33,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 14,
+      "teacherId": 33,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 14,
+      "teacherId": 34,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 14,
+      "teacherId": 38,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 15,
+      "teacherId": 39,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 15,
+      "teacherId": 40,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 15,
+      "teacherId": 41,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 1,
+      "subjectId": 15,
+      "teacherId": 41,
+      "year": 2013
+    },
+    {
+      "klassId": 9,
+      "period": 2013,
+      "semester": 2,
+      "subjectId": 1,
+      "teacherId": 7,
+      "year": 2013
+    },
+    {
+      "klassId": 10,
+      "period": 2013,
+      "semester": 2,
+      "subjectId": 1,
+      "teacherId": 7,
+      "year": 2013
+    },
+    {
+      "klassId": 11,
+      "period": 2013,
+      "semester": 2,
+      "subjectId": 1,
+      "teacherId": 8,
+      "year": 2013
+    },
+    {
+      "klassId": 12,
+      "period": 2013,
+      "semester": 2,
+      "subjectId": 1,
+      "teacherId": 8,
+      "year": 2013
+    },
+    {
+      "klassId": 11,
+      "period": 2013,
+      "semester": 2,
+      "subjectId": 2,
+      "teacherId": 9,
+      "year": 2013
+    },
+    {
+      "klassId": 10,
+      "period": 2013,
+      "semester": 2,
+      "subjectId": 2,
+      "teacherId": 9,
+      "year": 2013
+    },
+    {
+      "klassId": 9,
+      "period": 2013,
+      "semester": 2,
+      "subjectId": 2,
+      "teacherId": 13,
+      "year": 2013
+    },
+    {
+      "klassId": 12,
+      "period": 2013,
+      "semester": 2,
+      "subjectId": 2,
+      "teacherId": 13,
+      "year": 2013
+    },
+    {
+      "klassId": 9,
+      "period": 2013,
+      "semester": 2,
+      "subjectId": 3,
+      "teacherId": 19,
+      "year": 2013
+    },
+    {
+      "klassId": 10,
+      "period": 2013,
+      "semester": 2,
+      "subjectId": 3,
+      "teacherId": 19,
+      "year": 2013
+    },
+    {
+      "klassId": 11,
+      "period": 2013,
+      "semester": 2,
+      "subjectId": 3,
+      "teacherId": 20,
+      "year": 2013
+    },
+    {
+      "klassId": 12,
+      "period": 2013,
+      "semester": 2,
+      "subjectId": 3,
+      "teacherId": 20,
+      "year": 2013
+    },
+    {
+      "klassId": 11,
+      "period": 2013,
+      "semester": 2,
+      "subjectId": 4,
+      "teacherId": 27,
+      "year": 2013
+    },
+    {
+      "klassId": 9,
+      "period": 2013,
+      "semester": 2,
+      "subjectId": 4,
+      "teacherId": 27,
+      "year": 2013
+    },
+    {
+      "klassId": 10,
+      "period": 2013,
+      "semester": 2,
+      "subjectId": 4,
+      "teacherId": 28,
+      "year": 2013
+    },
+    {
+      "klassId": 12,
+      "period": 2013,
+      "semester": 2,
+      "subjectId": 4,
+      "teacherId": 28,
+      "year": 2013
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 5,
+      "teacherId": 1,
+      "year": 2013
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 5,
+      "teacherId": 1,
+      "year": 2013
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 5,
+      "teacherId": 2,
+      "year": 2013
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 5,
+      "teacherId": 3,
+      "year": 2013
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 6,
+      "teacherId": 10,
+      "year": 2013
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 6,
+      "teacherId": 10,
+      "year": 2013
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 6,
+      "teacherId": 11,
+      "year": 2013
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 6,
+      "teacherId": 12,
+      "year": 2013
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 7,
+      "teacherId": 18,
+      "year": 2013
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 7,
+      "teacherId": 21,
+      "year": 2013
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 7,
+      "teacherId": 21,
+      "year": 2013
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 7,
+      "teacherId": 22,
+      "year": 2013
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 8,
+      "teacherId": 25,
+      "year": 2013
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 8,
+      "teacherId": 29,
+      "year": 2013
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 8,
+      "teacherId": 29,
+      "year": 2013
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 8,
+      "teacherId": 30,
+      "year": 2013
+    },
+    {
+      "klassId": 7,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 9,
+      "teacherId": 35,
+      "year": 2013
+    },
+    {
+      "klassId": 5,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 9,
+      "teacherId": 36,
+      "year": 2013
+    },
+    {
+      "klassId": 6,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 9,
+      "teacherId": 36,
+      "year": 2013
+    },
+    {
+      "klassId": 8,
+      "period": 2012,
+      "semester": 2,
+      "subjectId": 9,
+      "teacherId": 37,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 10,
+      "teacherId": 4,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 10,
+      "teacherId": 5,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 10,
+      "teacherId": 5,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 10,
+      "teacherId": 6,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 11,
+      "teacherId": 14,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 11,
+      "teacherId": 14,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 11,
+      "teacherId": 15,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 11,
+      "teacherId": 16,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 12,
+      "teacherId": 17,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 12,
+      "teacherId": 23,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 12,
+      "teacherId": 24,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 12,
+      "teacherId": 24,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 13,
+      "teacherId": 26,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 13,
+      "teacherId": 31,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 13,
+      "teacherId": 31,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 13,
+      "teacherId": 32,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 14,
+      "teacherId": 33,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 14,
+      "teacherId": 34,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 14,
+      "teacherId": 38,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 14,
+      "teacherId": 38,
+      "year": 2013
+    },
+    {
+      "klassId": 3,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 15,
+      "teacherId": 39,
+      "year": 2013
+    },
+    {
+      "klassId": 2,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 15,
+      "teacherId": 40,
+      "year": 2013
+    },
+    {
+      "klassId": 1,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 15,
+      "teacherId": 40,
+      "year": 2013
+    },
+    {
+      "klassId": 4,
+      "period": 2011,
+      "semester": 2,
+      "subjectId": 15,
+      "teacherId": 41,
+      "year": 2013
+    }
+  ]
+}

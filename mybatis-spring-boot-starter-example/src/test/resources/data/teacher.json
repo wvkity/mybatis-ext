@@ -1,0 +1,13 @@
+{
+  "teachers": [
+    {
+      "id": 1,
+      "name": "张晓红",
+      "sex": 0,
+      "remark": "语文老师",
+      "deleted": false,
+      "createdUserId": 1,
+      "createdUserName": "system"
+    }
+  ]
+}
