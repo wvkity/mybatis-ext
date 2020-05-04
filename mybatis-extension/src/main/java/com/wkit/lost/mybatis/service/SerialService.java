@@ -8,5 +8,5 @@ import java.io.Serializable;
  * @param <V> 返回值类型
  * @author wvkity
  */
-public interface SerialServiceExecutor<T, V> extends BaseServiceExecutor<T, V, Serializable> {
+public interface SerialService<T, V> extends BaseService<T, V, Serializable> {
 }

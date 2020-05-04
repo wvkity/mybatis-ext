@@ -8,5 +8,5 @@ import java.io.Serializable;
  * @param <V> 返回值类型
  * @author wvkity
  */
-public interface SerialMapperExecutor<T, V> extends BaseMapperExecutor<T, V, Serializable> {
+public interface SerialMapper<T, V> extends BaseMapper<T, V, Serializable> {
 }

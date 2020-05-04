@@ -6,6 +6,6 @@ package com.wkit.lost.mybatis.mapper;
  * @param <V> 返回值类型
  * @author wvkity
  */
-public interface BaseMapperExecutor<T, V, PK> extends InsertMapper<T>, UpdateMapper<T>, DeleteMapper<T>,
+public interface BaseMapper<T, V, PK> extends InsertMapper<T>, UpdateMapper<T>, DeleteMapper<T>,
         QueryMapper<T, V, PK>, CriteriaMapper<T, V>, PagingMapper<T, V> {
 }

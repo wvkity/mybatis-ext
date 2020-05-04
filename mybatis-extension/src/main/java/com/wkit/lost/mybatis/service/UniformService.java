@@ -6,5 +6,5 @@ package com.wkit.lost.mybatis.service;
  * @param <PK> 主键类型
  * @author wvkity
  */
-public interface UniformServiceExecutor<T, PK> extends BaseServiceExecutor<T, T, PK> {
+public interface UniformService<T, PK> extends BaseService<T, T, PK> {
 }

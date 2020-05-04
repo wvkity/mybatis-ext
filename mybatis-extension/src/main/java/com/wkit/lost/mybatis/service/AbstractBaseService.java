@@ -6,7 +6,7 @@ import com.wkit.lost.mybatis.core.handler.TableHandler;
 import com.wkit.lost.mybatis.core.wrapper.criteria.AbstractQueryCriteriaWrapper;
 import com.wkit.lost.mybatis.core.wrapper.criteria.Criteria;
 import com.wkit.lost.mybatis.exception.MyBatisException;
-import com.wkit.lost.mybatis.mapper.BaseMapperExecutor;
+import com.wkit.lost.mybatis.mapper.BaseMapper;
 import com.wkit.lost.mybatis.session.SqlSessionUtil;
 import com.wkit.lost.mybatis.utils.ArrayUtil;
 import com.wkit.lost.mybatis.utils.ClassUtil;
@@ -30,32 +30,32 @@ import java.util.stream.Collectors;
 
 /**
  * 通用Service抽象类
- * @param <Executor> Mapper接口
- * @param <T>        实体类
- * @param <V>        返回值类型
- * @param <PK>       主键类型
+ * @param <Mapper> Mapper接口
+ * @param <T>      实体类
+ * @param <V>      返回值类型
+ * @param <PK>     主键类型
  * @author wvkity
  */
-public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExecutor<T, V, PK>, T, V, PK>
-        implements BaseServiceExecutor<T, V, PK> {
+public abstract class AbstractBaseService<Mapper extends BaseMapper<T, V, PK>, T, V, PK>
+        implements BaseService<T, V, PK> {
 
     protected static final String METHOD_INSERT = "insert";
     protected static final String METHOD_INSERT_NOT_WITH_NULL = "insertNotWithNull";
     protected final ArrayList<V> EMPTY_DATA = new ArrayList<>(0);
 
     @Inject
-    protected Executor executor;
+    protected Mapper mapper;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int save(T entity) {
-        return this.executor.insert(entity);
+        return this.mapper.insert(entity);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int saveNotWithNull(T entity) {
-        return this.executor.insertNotWithNull(entity);
+        return this.mapper.insertNotWithNull(entity);
     }
 
     @SuppressWarnings({"unchecked"})
@@ -80,7 +80,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int batchSave(BatchDataBeanWrapper<T> wrapper) {
-        return executor.batchInsert(wrapper);
+        return mapper.batchInsert(wrapper);
     }
 
     @SuppressWarnings({"unchecked"})
@@ -105,7 +105,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int batchSaveNotWithAudit(BatchDataBeanWrapper<T> wrapper) {
-        return executor.batchInsertNotWithAudit(wrapper);
+        return mapper.batchInsertNotWithAudit(wrapper);
     }
 
     @SuppressWarnings({"unchecked"})
@@ -172,7 +172,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (entity == null) {
             throw new MyBatisException("The specified object parameter cannot be null");
         }
-        return executor.update(entity);
+        return mapper.update(entity);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -181,7 +181,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (criteria == null) {
             throw new MyBatisException("The specified object parameter cannot be null");
         }
-        return executor.updateByCriteria(criteria.as(false));
+        return mapper.updateByCriteria(criteria.as(false));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -190,7 +190,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (entity == null) {
             throw new MyBatisException("The specified object parameter cannot be null");
         }
-        return executor.updateNotWithNull(entity);
+        return mapper.updateNotWithNull(entity);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -199,7 +199,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (entity == null) {
             throw new MyBatisException("The specified object parameter cannot be null");
         }
-        return executor.mixinUpdateNotWithNull(entity, criteria.as(false));
+        return mapper.mixinUpdateNotWithNull(entity, criteria.as(false));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -208,7 +208,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (entity == null) {
             throw new MyBatisException("The specified object parameter cannot be null");
         }
-        return executor.updateNotWithLocking(entity);
+        return mapper.updateNotWithLocking(entity);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -217,7 +217,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (entity == null) {
             throw new MyBatisException("The specified object parameter cannot be null");
         }
-        return executor.updateNotWithNullAndLocking(entity);
+        return mapper.updateNotWithNullAndLocking(entity);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -226,7 +226,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (entity == null) {
             throw new MyBatisException("The specified object parameter cannot be null");
         }
-        return executor.delete(entity);
+        return mapper.delete(entity);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -235,7 +235,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (id == null) {
             throw new MyBatisException("The primary key parameter cannot be empty");
         }
-        return executor.deleteById(id);
+        return mapper.deleteById(id);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -244,7 +244,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (criteria == null) {
             throw new MyBatisException("The specified criteria parameter cannot be null");
         }
-        return executor.deleteByCriteria(criteria.as(false));
+        return mapper.deleteByCriteria(criteria.as(false));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -253,7 +253,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (entity == null) {
             throw new MyBatisException("The specified object parameter cannot be null");
         }
-        return executor.logicDelete(entity);
+        return mapper.logicDelete(entity);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -262,7 +262,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (criteria == null) {
             throw new MyBatisException("The specified criteria parameter cannot be null");
         }
-        return executor.logicDeleteByCriteria(criteria);
+        return mapper.logicDeleteByCriteria(criteria);
     }
 
     @SuppressWarnings("unchecked")
@@ -282,7 +282,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (CollectionUtil.isEmpty(list)) {
             throw new MyBatisException("The entity object collection parameter cannot be empty.");
         }
-        return executor.batchDelete(list);
+        return mapper.batchDelete(list);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -302,37 +302,37 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (CollectionUtil.isEmpty(list)) {
             throw new MyBatisException("Primary key set parameters cannot be empty");
         }
-        return executor.batchDeleteById(list);
+        return mapper.batchDeleteById(list);
     }
 
     @Override
     public boolean exists(T entity) {
-        return entity != null && executor.exists(entity) > 0;
+        return entity != null && mapper.exists(entity) > 0;
     }
 
     @Override
     public boolean exists(Criteria<T> criteria) {
-        return criteria != null && executor.existsByCriteria(criteria) > 0;
+        return criteria != null && mapper.existsByCriteria(criteria) > 0;
     }
 
     @Override
     public boolean existsById(PK id) {
-        return id != null && this.executor.existsById(id) > 0;
+        return id != null && this.mapper.existsById(id) > 0;
     }
 
     @Override
     public long count(T entity) {
-        return entity == null ? 0 : executor.count(entity);
+        return entity == null ? 0 : mapper.count(entity);
     }
 
     @Override
     public long count(Criteria<T> criteria) {
-        return criteria == null ? 0 : executor.countByCriteria(criteria);
+        return criteria == null ? 0 : mapper.countByCriteria(criteria);
     }
 
     @Override
     public Optional<V> selectOne(PK id) {
-        return id == null ? Optional.empty() : executor.selectOne(id);
+        return id == null ? Optional.empty() : mapper.selectOne(id);
     }
 
     @SuppressWarnings("unchecked")
@@ -347,12 +347,12 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
                 .stream()
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-        return CollectionUtil.isEmpty(pks) ? EMPTY_DATA : executor.list(pks);
+        return CollectionUtil.isEmpty(pks) ? EMPTY_DATA : mapper.list(pks);
     }
 
     @Override
     public List<V> list(T entity) {
-        return entity == null ? EMPTY_DATA : executor.listByEntity(entity);
+        return entity == null ? EMPTY_DATA : mapper.listByEntity(entity);
     }
 
     @SuppressWarnings("unchecked")
@@ -368,12 +368,12 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
                 .stream()
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-        return CollectionUtil.isEmpty(list) ? EMPTY_DATA : executor.listByEntities(list);
+        return CollectionUtil.isEmpty(list) ? EMPTY_DATA : mapper.listByEntities(list);
     }
 
     @Override
     public List<V> list(Criteria<T> criteria) {
-        return criteria == null ? EMPTY_DATA : executor.listByCriteria(criteria);
+        return criteria == null ? EMPTY_DATA : mapper.listByCriteria(criteria);
     }
 
     @SuppressWarnings("unchecked")
@@ -382,7 +382,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (criteria instanceof AbstractQueryCriteriaWrapper) {
             AbstractQueryCriteriaWrapper<T> it = (AbstractQueryCriteriaWrapper<T>) criteria;
             if (it.resultType() != null || StringUtil.hasText(it.resultMap())) {
-                List<Object> result = executor.objectList(criteria);
+                List<Object> result = mapper.objectList(criteria);
                 return Optional.ofNullable(result).map(value -> (List<E>) value).orElse(new ArrayList<>(0));
             }
         }
@@ -394,7 +394,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (criteria == null) {
             return new ArrayList<>(0);
         }
-        return executor.objectList(criteria);
+        return mapper.objectList(criteria);
     }
 
     @Override
@@ -402,7 +402,7 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (criteria == null) {
             return new ArrayList<>(0);
         }
-        return executor.arrayList(criteria);
+        return mapper.arrayList(criteria);
     }
 
     @Override
@@ -410,12 +410,12 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (criteria == null) {
             return new ArrayList<>(0);
         }
-        return executor.mapList(criteria);
+        return mapper.mapList(criteria);
     }
 
     @Override
     public List<V> list(T entity, Pageable pageable) {
-        return entity == null ? EMPTY_DATA : executor.pageableList(entity, pageable);
+        return entity == null ? EMPTY_DATA : mapper.pageableList(entity, pageable);
     }
 
     @Override
@@ -423,12 +423,12 @@ public abstract class AbstractBaseServiceExecutor<Executor extends BaseMapperExe
         if (criteria == null) {
             return EMPTY_DATA;
         }
-        return executor.pageableListByCriteria(criteria, pageable);
+        return mapper.pageableListByCriteria(criteria, pageable);
     }
 
     @Override
-    public Executor getExecutor() {
-        return executor;
+    public Mapper getMapper() {
+        return mapper;
     }
 
     /**

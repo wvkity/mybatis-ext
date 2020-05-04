@@ -6,5 +6,5 @@ package com.wkit.lost.mybatis.mapper;
  * @param <PK> 主键类型
  * @author wvkity
  */
-public interface UniformMapperExecutor<T, PK> extends BaseMapperExecutor<T, T, PK> {
+public interface UniformMapper<T, PK> extends BaseMapper<T, T, PK> {
 }
