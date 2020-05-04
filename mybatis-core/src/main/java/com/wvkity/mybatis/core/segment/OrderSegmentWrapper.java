@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
  * 排序片段容器
  * @author wvkity
  */
-public class OrderSegmentWrapper extends AbstractSegment<AbstractOrderWrapper<?, ?>> {
+public class OrderSegmentWrapper extends AbstractSegment<AbstractOrderWrapper<?>> {
 
     private static final long serialVersionUID = 3568038760419441925L;
 

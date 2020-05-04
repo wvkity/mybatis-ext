@@ -13,10 +13,9 @@ import java.util.Set;
 
 /**
  * 查询列(字符串列)
- * @param <T> 实体类型
  * @author wvkity
  */
-public class DirectQuery<T> extends AbstractQueryWrapper<T, String> {
+public class DirectQuery extends AbstractQueryWrapper<String> {
 
     private static final long serialVersionUID = 6355908236271301633L;
 
@@ -53,7 +52,7 @@ public class DirectQuery<T> extends AbstractQueryWrapper<T, String> {
      * @param column   列
      * @param alias    列别名
      */
-    private DirectQuery(Criteria<T> criteria, String column, String alias) {
+    private DirectQuery(Criteria<?> criteria, String column, String alias) {
         this.criteria = criteria;
         this.column = column;
         this.columnAlias = alias;
@@ -73,7 +72,7 @@ public class DirectQuery<T> extends AbstractQueryWrapper<T, String> {
     }
 
     @Override
-    public AbstractQueryWrapper<?, ?> transform(Criteria<?> criteria) {
+    public AbstractQueryWrapper<?> transform(Criteria<?> criteria) {
         if (criteria != null) {
             return DirectQuery.Single.query(criteria,
                     StringUtil.hasText(this.columnAlias) ? this.columnAlias : this.column, null);
@@ -107,11 +106,10 @@ public class DirectQuery<T> extends AbstractQueryWrapper<T, String> {
          * 查询列
          * @param column 表列
          * @param alias  列别名
-         * @param <T>    实体类型
          * @return 字符串列对象
          */
-        public static <T> DirectQuery<T> query(String column, String alias) {
-            return StringUtil.isBlank(column) ? null : new DirectQuery<>(column, alias);
+        public static DirectQuery query(String column, String alias) {
+            return StringUtil.isBlank(column) ? null : new DirectQuery(column, alias);
         }
 
         /**
@@ -119,11 +117,10 @@ public class DirectQuery<T> extends AbstractQueryWrapper<T, String> {
          * @param tableAlias 表别名
          * @param column     表列
          * @param alias      列别名
-         * @param <T>        实体类型
          * @return 字符串查询列对象
          */
-        public static <T> DirectQuery<T> query(String tableAlias, String column, String alias) {
-            return StringUtil.isBlank(column) ? null : new DirectQuery<>(tableAlias, column, alias);
+        public static DirectQuery query(String tableAlias, String column, String alias) {
+            return StringUtil.isBlank(column) ? null : new DirectQuery(tableAlias, column, alias);
         }
 
         /**
@@ -131,11 +128,10 @@ public class DirectQuery<T> extends AbstractQueryWrapper<T, String> {
          * @param criteria 条件对象
          * @param column   表列
          * @param alias    列别名
-         * @param <T>      实体类型
          * @return 字符串查询列对象
          */
-        public static <T> DirectQuery<T> query(Criteria<T> criteria, String column, String alias) {
-            return StringUtil.isBlank(column) ? null : new DirectQuery<>(criteria, column, alias);
+        public static DirectQuery query(Criteria<?> criteria, String column, String alias) {
+            return StringUtil.isBlank(column) ? null : new DirectQuery(criteria, column, alias);
         }
     }
 
@@ -150,13 +146,12 @@ public class DirectQuery<T> extends AbstractQueryWrapper<T, String> {
          * 查询列
          * @param tableAlias 表别名
          * @param columns    表列集合
-         * @param <T>        实体类型
          * @return 字符串查询列对象集合
          */
-        public static <T> ArrayList<DirectQuery<T>> query(String tableAlias, Collection<String> columns) {
+        public static ArrayList<DirectQuery> query(String tableAlias, Collection<String> columns) {
             Set<String> its = distinct(columns);
             if (!its.isEmpty()) {
-                ArrayList<DirectQuery<T>> list = new ArrayList<>(its.size());
+                ArrayList<DirectQuery> list = new ArrayList<>(its.size());
                 for (String it : its) {
                     list.add(Single.query(tableAlias, it, null));
                 }
@@ -172,10 +167,10 @@ public class DirectQuery<T> extends AbstractQueryWrapper<T, String> {
          * @param <T>        实体类型
          * @return 字符串查询列对象集合
          */
-        public static <T> ArrayList<DirectQuery<T>> query(String tableAlias, Map<String, String> columns) {
+        public static ArrayList<DirectQuery> query(String tableAlias, Map<String, String> columns) {
             Map<String, String> its = filterNullValue(columns);
             if (CollectionUtil.hasElement(its)) {
-                ArrayList<DirectQuery<T>> list = new ArrayList<>(its.size());
+                ArrayList<DirectQuery> list = new ArrayList<>(its.size());
                 for (Map.Entry<String, String> entry : its.entrySet()) {
                     list.add(Single.query(tableAlias, entry.getValue(), entry.getKey()));
                 }
@@ -188,10 +183,9 @@ public class DirectQuery<T> extends AbstractQueryWrapper<T, String> {
          * 查询列
          * @param criteria 条件对象
          * @param columns  表列数组
-         * @param <T>      实体类型
          * @return 字符串查询列对象
          */
-        public static <T> ArrayList<DirectQuery<T>> query(Criteria<T> criteria, String... columns) {
+        public static ArrayList<DirectQuery> query(Criteria<?> criteria, String... columns) {
             return query(criteria, ArrayUtil.toList(columns));
         }
 
@@ -199,13 +193,12 @@ public class DirectQuery<T> extends AbstractQueryWrapper<T, String> {
          * 查询列
          * @param criteria 条件对象
          * @param columns  表列集合
-         * @param <T>      实体类型
          * @return 字符串查询列对象集合
          */
-        public static <T> ArrayList<DirectQuery<T>> query(Criteria<T> criteria, Collection<String> columns) {
+        public static ArrayList<DirectQuery> query(Criteria<?> criteria, Collection<String> columns) {
             Set<String> its = distinct(columns);
             if (!its.isEmpty()) {
-                ArrayList<DirectQuery<T>> list = new ArrayList<>(its.size());
+                ArrayList<DirectQuery> list = new ArrayList<>(its.size());
                 for (String it : its) {
                     list.add(Single.query(criteria, it, null));
                 }
@@ -218,13 +211,12 @@ public class DirectQuery<T> extends AbstractQueryWrapper<T, String> {
          * 查询列
          * @param criteria 条件对象
          * @param columns  列别名-列集合
-         * @param <T>      实体类型
          * @return 字符串查询列对象集合
          */
-        public static <T> ArrayList<DirectQuery<T>> query(Criteria<T> criteria, Map<String, String> columns) {
+        public static ArrayList<DirectQuery> query(Criteria<?> criteria, Map<String, String> columns) {
             Map<String, String> its = filterNullValue(columns);
             if (CollectionUtil.hasElement(its)) {
-                ArrayList<DirectQuery<T>> list = new ArrayList<>(its.size());
+                ArrayList<DirectQuery> list = new ArrayList<>(its.size());
                 for (Map.Entry<String, String> entry : its.entrySet()) {
                     list.add(Single.query(criteria, entry.getValue(), entry.getKey()));
                 }

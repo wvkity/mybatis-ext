@@ -36,7 +36,7 @@ public class QueryManager implements Segment {
     /**
      * 查询列容器
      */
-    private final List<AbstractQueryWrapper<?, ?>> wrappers = new CopyOnWriteArrayList<>();
+    private final List<AbstractQueryWrapper<?>> wrappers = new CopyOnWriteArrayList<>();
 
     /**
      * 排除查询属性
@@ -61,7 +61,7 @@ public class QueryManager implements Segment {
     /**
      * 临时
      */
-    private volatile List<AbstractQueryWrapper<?, ?>> _wrappers;
+    private volatile List<AbstractQueryWrapper<?>> _wrappers;
 
     /**
      * 构造方法
@@ -76,7 +76,7 @@ public class QueryManager implements Segment {
      * @param wrappers 查询列包装对象数组
      * @return 当前对象
      */
-    public QueryManager add(AbstractQueryWrapper<?, ?>... wrappers) {
+    public QueryManager add(AbstractQueryWrapper<?>... wrappers) {
         return add(ArrayUtil.toList(wrappers));
     }
 
@@ -85,9 +85,9 @@ public class QueryManager implements Segment {
      * @param wrappers 查询列包装对象集合
      * @return 当前对象
      */
-    public QueryManager add(Collection<? extends AbstractQueryWrapper<?, ?>> wrappers) {
+    public QueryManager add(Collection<? extends AbstractQueryWrapper<?>> wrappers) {
         if (CollectionUtil.hasElement(wrappers)) {
-            List<? extends AbstractQueryWrapper<?, ?>> its = wrappers.stream().filter(Objects::nonNull)
+            List<? extends AbstractQueryWrapper<?>> its = wrappers.stream().filter(Objects::nonNull)
                     .collect(Collectors.toList());
             if (!its.isEmpty()) {
                 this.wrappers.addAll(its);
@@ -147,17 +147,17 @@ public class QueryManager implements Segment {
      * 获取所有查询列
      * @return 查询列集合
      */
-    public List<AbstractQueryWrapper<?, ?>> getQueries() {
+    public List<AbstractQueryWrapper<?>> getQueries() {
         if (cached) {
             return new ArrayList<>(this._wrappers);
         }
-        List<AbstractQueryWrapper<?, ?>> queries;
+        List<AbstractQueryWrapper<?>> queries;
         if (CollectionUtil.hasElement(wrappers)) {
             queries = wrappers.stream().filter(it -> {
                 if (it instanceof Query) {
-                    return accept(((Query<?>) it).getProperty(), this.excludeProperties, false);
+                    return accept(((Query) it).getProperty(), this.excludeProperties, false);
                 } else if (it instanceof DirectQuery) {
-                    return accept(((DirectQuery<?>) it).getColumn(), this.excludeColumns, true);
+                    return accept(((DirectQuery) it).getColumn(), this.excludeColumns, true);
                 }
                 return true;
             }).collect(Collectors.toList());
@@ -180,7 +180,7 @@ public class QueryManager implements Segment {
         return new ArrayList<>(this._wrappers);
     }
 
-    private List<AbstractQueryWrapper<?, ?>> build(Criteria<?> criteria) {
+    private List<AbstractQueryWrapper<?>> build(Criteria<?> criteria) {
         // 
         Set<ColumnWrapper> columnWrappers = TableHandler.getTable(criteria.getEntityClass()).columns();
         return columnWrappers.stream().filter(it ->

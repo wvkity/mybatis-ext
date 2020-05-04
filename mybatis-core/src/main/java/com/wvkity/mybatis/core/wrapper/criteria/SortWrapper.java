@@ -256,7 +256,7 @@ public interface SortWrapper<T, Chain extends SortWrapper<T, Chain>> extends Pro
      * @param orders 排序对象数组
      * @return 当前对象
      */
-    default Chain add(AbstractOrderWrapper<?, ?>... orders) {
+    default Chain add(AbstractOrderWrapper<?>... orders) {
         return addOrder(ArrayUtil.toList(orders));
     }
 
@@ -265,5 +265,5 @@ public interface SortWrapper<T, Chain extends SortWrapper<T, Chain>> extends Pro
      * @param orders 排序对象集合
      * @return 当前对象
      */
-    Chain addOrder(List<AbstractOrderWrapper<?, ?>> orders);
+    Chain addOrder(List<AbstractOrderWrapper<?>> orders);
 }

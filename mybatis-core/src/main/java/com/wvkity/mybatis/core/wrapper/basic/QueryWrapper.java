@@ -4,10 +4,10 @@ import com.wvkity.mybatis.core.segment.Segment;
 
 /**
  * 查询字段接口
- * @param <T> 字段类型
+ * @param <E> 字段类型
  * @author wvkity
  */
-public interface QueryWrapper<T> extends Segment {
+public interface QueryWrapper<E> extends Segment {
 
     /**
      * 字段名

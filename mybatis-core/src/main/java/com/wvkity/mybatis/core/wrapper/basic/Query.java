@@ -20,10 +20,9 @@ import java.util.stream.Collectors;
 
 /**
  * 查询字段(字段包装对象)
- * @param <T> 实体类型
  * @author wvkity
  */
-public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
+public class Query extends AbstractQueryWrapper<ColumnWrapper> {
 
     private static final long serialVersionUID = 9171953090394342598L;
 
@@ -32,7 +31,7 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
      * @param criteria 条件对象
      * @param column   字段对象
      */
-    private Query(Criteria<T> criteria, ColumnWrapper column) {
+    private Query(Criteria<?> criteria, ColumnWrapper column) {
         this.criteria = criteria;
         this.column = column;
     }
@@ -43,7 +42,7 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
      * @param column   字段对象
      * @param alias    字段别名
      */
-    private Query(Criteria<T> criteria, ColumnWrapper column, String alias) {
+    private Query(Criteria<?> criteria, ColumnWrapper column, String alias) {
         this.criteria = criteria;
         this.column = column;
         this.columnAlias = alias;
@@ -63,7 +62,7 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
     }
 
     @Override
-    public AbstractQueryWrapper<?, ?> transform(Criteria<?> criteria) {
+    public AbstractQueryWrapper<?> transform(Criteria<?> criteria) {
         return Optional.ofNullable(criteria).map(it -> {
             String columnName = StringUtil.hasText(this.columnAlias) ? this.columnAlias :
                     (this.criteria != null && this.criteria.isPropertyAutoMappingAlias() ?
@@ -103,7 +102,7 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * @param <V>      属性值类型
          * @return 查询列对象
          */
-        public static <T, V> Query<T> query(Criteria<T> criteria, Property<T, V> property) {
+        public static <T, V> Query query(Criteria<T> criteria, Property<T, V> property) {
             return query(criteria, criteria.searchColumn(property));
         }
 
@@ -111,10 +110,9 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * 查询字段
          * @param criteria 条件对象
          * @param property 属性
-         * @param <T>      实体类型
          * @return 查询列对象
          */
-        public static <T> Query<T> query(Criteria<T> criteria, String property) {
+        public static Query query(Criteria<?> criteria, String property) {
             return query(criteria, criteria.searchColumn(property));
         }
 
@@ -127,7 +125,7 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * @param <V>      属性值类型
          * @return 查询列对象
          */
-        public static <T, V> Query<T> query(Criteria<T> criteria, Property<T, V> property, String alias) {
+        public static <T, V> Query query(Criteria<T> criteria, Property<T, V> property, String alias) {
             return query(criteria, criteria.searchColumn(property), alias);
         }
 
@@ -136,10 +134,9 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * @param criteria 条件对象
          * @param property 属性
          * @param alias    字段别名
-         * @param <T>      实体类型
          * @return 查询列对象
          */
-        public static <T> Query<T> query(Criteria<T> criteria, String property, String alias) {
+        public static Query query(Criteria<?> criteria, String property, String alias) {
             return query(criteria, criteria.searchColumn(property), alias);
         }
 
@@ -147,11 +144,10 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * 查询字段
          * @param criteria 条件对象
          * @param column   字段包装对象
-         * @param <T>      实体类型
          * @return 查询列对象
          */
-        public static <T> Query<T> query(Criteria<T> criteria, ColumnWrapper column) {
-            return column != null ? new Query<>(criteria, column) : null;
+        public static Query query(Criteria<?> criteria, ColumnWrapper column) {
+            return column != null ? new Query(criteria, column) : null;
         }
 
         /**
@@ -159,11 +155,10 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * @param criteria 条件对象
          * @param column   字段包装对象
          * @param alias    字段别名
-         * @param <T>      实体类型
          * @return 查询列对象
          */
-        public static <T> Query<T> query(Criteria<T> criteria, ColumnWrapper column, String alias) {
-            return column != null ? new Query<>(criteria, column, alias) : null;
+        public static Query query(Criteria<?> criteria, ColumnWrapper column, String alias) {
+            return column != null ? new Query(criteria, column, alias) : null;
         }
     }
 
@@ -183,7 +178,7 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * @return 查询对象集合
          */
         @SafeVarargs
-        public static <T, V> ArrayList<Query<T>> query(Criteria<T> criteria, Property<T, V>... properties) {
+        public static <T, V> ArrayList<Query> query(Criteria<T> criteria, Property<T, V>... properties) {
             return query(criteria, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
         }
 
@@ -191,10 +186,9 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * 查询字段
          * @param criteria   条件对象
          * @param properties 属性数组
-         * @param <T>        实体类型
          * @return 查询对象集合
          */
-        public static <T> ArrayList<Query<T>> query(Criteria<T> criteria, String... properties) {
+        public static ArrayList<Query> query(Criteria<?> criteria, String... properties) {
             return query(criteria, ArrayUtil.toList(properties));
         }
 
@@ -202,10 +196,9 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * 查询字段
          * @param criteria   条件对象
          * @param properties 属性集合
-         * @param <T>        实体类型
          * @return 查询对象集合
          */
-        public static <T> ArrayList<Query<T>> query(Criteria<T> criteria, Collection<String> properties) {
+        public static ArrayList<Query> query(Criteria<?> criteria, Collection<String> properties) {
             Set<String> props = distinct(properties);
             return props.isEmpty() ? new ArrayList<>(0) :
                     props.stream().map(it -> Single.query(criteria, it))
@@ -216,10 +209,9 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * 查询字段
          * @param criteria 条件对象
          * @param columns  字段包装对象集合
-         * @param <T>      实体类型
          * @return 查询对象集合
          */
-        public static <T> ArrayList<Query<T>> query(Criteria<T> criteria, List<ColumnWrapper> columns) {
+        public static ArrayList<Query> query(Criteria<?> criteria, List<ColumnWrapper> columns) {
             if (CollectionUtil.hasElement(columns)) {
                 return columns.stream().filter(Objects::nonNull).map(it -> Single.query(criteria, it))
                         .collect(Collectors.toCollection(ArrayList::new));
@@ -231,13 +223,12 @@ public class Query<T> extends AbstractQueryWrapper<T, ColumnWrapper> {
          * 查询字段
          * @param criteria   条件对象
          * @param properties 字段别名-属性集合
-         * @param <T>        实体类型
          * @return 字符串查询列对象集合
          */
-        public static <T> ArrayList<Query<T>> query(Criteria<T> criteria, Map<String, String> properties) {
+        public static ArrayList<Query> query(Criteria<?> criteria, Map<String, String> properties) {
             Map<String, String> its = filterNullValue(properties);
             if (CollectionUtil.hasElement(its)) {
-                ArrayList<Query<T>> list = new ArrayList<>(its.size());
+                ArrayList<Query> list = new ArrayList<>(its.size());
                 for (Map.Entry<String, String> entry : its.entrySet()) {
                     list.add(Single.query(criteria, entry.getValue(), entry.getKey()));
                 }

@@ -424,7 +424,7 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> addOrder(List<AbstractOrderWrapper<?, ?>> orders) {
+    public AbstractQueryCriteriaWrapper<T> addOrder(List<AbstractOrderWrapper<?>> orders) {
         this.segmentManager.addOrder(orders);
         return this;
     }
@@ -455,7 +455,7 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> addGroup(List<AbstractGroupWrapper<?, ?>> groups) {
+    public AbstractQueryCriteriaWrapper<T> addGroup(List<AbstractGroupWrapper<?>> groups) {
         this.segmentManager.addGroup(groups);
         return this;
     }

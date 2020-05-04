@@ -13,17 +13,16 @@ import java.util.stream.Collectors;
 
 /**
  * 抽象包装器
- * @param <T> 实体类型
  * @param <E> 字段类型
  * @author wvkity
  */
 @SuppressWarnings({"serial"})
-public abstract class AbstractWrapper<T, E> implements Segment {
+public abstract class AbstractWrapper<E> implements Segment {
 
     /**
      * 条件对象
      */
-    protected Criteria<T> criteria;
+    protected Criteria<?> criteria;
 
     /**
      * 字段集合

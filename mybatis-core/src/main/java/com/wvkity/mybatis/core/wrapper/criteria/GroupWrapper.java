@@ -112,7 +112,7 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @param groups 分组对象数组
      * @return 当前对象
      */
-    default Chain add(AbstractGroupWrapper<?, ?>... groups) {
+    default Chain add(AbstractGroupWrapper<?>... groups) {
         return addGroup(ArrayUtil.toList(groups));
     }
 
@@ -121,5 +121,5 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @param groups 分组对象集合
      * @return 当前对象
      */
-    Chain addGroup(List<AbstractGroupWrapper<?, ?>> groups);
+    Chain addGroup(List<AbstractGroupWrapper<?>> groups);
 }

@@ -3,7 +3,7 @@ package com.wvkity.mybatis.core.wrapper.basic;
 import com.wvkity.mybatis.core.wrapper.aggreate.Aggregation;
 import com.wvkity.mybatis.core.wrapper.criteria.Criteria;
 
-public class AggregationQuery<T> extends AbstractQueryWrapper<T, Aggregation> {
+public class AggregationQuery extends AbstractQueryWrapper<Aggregation> {
 
     private static final long serialVersionUID = 5643412018618027094L;
 
@@ -13,7 +13,7 @@ public class AggregationQuery<T> extends AbstractQueryWrapper<T, Aggregation> {
     }
 
     @Override
-    public AbstractQueryWrapper<?, ?> transform(Criteria<?> criteria) {
+    public AbstractQueryWrapper<?> transform(Criteria<?> criteria) {
         return null;
     }
 

@@ -10,12 +10,11 @@ import java.util.stream.Collectors;
 
 /**
  * 抽象查询列包装器
- * @param <T> 实体类型
  * @param <E> 字段类型
  * @author wvkity
  */
 @SuppressWarnings({"serial"})
-public abstract class AbstractQueryWrapper<T, E> extends AbstractWrapper<T, E> implements QueryWrapper<T> {
+public abstract class AbstractQueryWrapper<E> extends AbstractWrapper<E> implements QueryWrapper<E> {
 
     /**
      * 字段
@@ -42,7 +41,7 @@ public abstract class AbstractQueryWrapper<T, E> extends AbstractWrapper<T, E> i
      * @param criteria 条件对象
      * @return 新的查询列包装对象
      */
-    public abstract AbstractQueryWrapper<?, ?> transform(Criteria<?> criteria);
+    public abstract AbstractQueryWrapper<?> transform(Criteria<?> criteria);
 
     /**
      * 获取SQL片段

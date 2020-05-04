@@ -65,14 +65,14 @@ public class ForeignSubCriteria<T> extends ForeignCriteria<T> {
     protected Set<String> getQueryColumns() {
         if (this.fetch) {
             Set<String> result = new LinkedHashSet<>();
-            List<AbstractQueryWrapper<?, ?>> queries;
+            List<AbstractQueryWrapper<?>> queries;
             if (this.queryManager.hasQueries()) {
                 queries = this.queryManager.getQueries();
             } else {
                 queries = Optional.ofNullable(this.subCriteria).map(it -> it.queryManager.getQueries()).orElse(null);
             }
             Optional.ofNullable(queries).ifPresent(it -> {
-                for (AbstractQueryWrapper<?, ?> temp : it) {
+                for (AbstractQueryWrapper<?> temp : it) {
                     if (StringUtil.hasText(temp.alias())) {
                         result.add(temp.alias());
                     } else if (StringUtil.hasText(temp.columnName())) {
