@@ -22,7 +22,10 @@ import java.util.concurrent.ConcurrentSkipListSet;
  * @author wvkity
  */
 @Log4j2
-public class MyBatisConfigCache {
+public final class MyBatisConfigCache {
+
+    private MyBatisConfigCache() {
+    }
 
     /**
      * Mapper接口
