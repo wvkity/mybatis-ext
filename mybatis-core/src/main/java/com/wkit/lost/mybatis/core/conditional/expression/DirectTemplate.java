@@ -229,8 +229,8 @@ public class DirectTemplate extends DirectExpressionWrapper {
          * @return 条件对象
          */
         public DirectTemplate build() {
-            if (this.value == null || CollectionUtil.isEmpty(this.values)
-                    || CollectionUtil.isEmpty(this.map) || StringUtil.isBlank(this.template)) {
+            if (this.value == null && CollectionUtil.isEmpty(this.values)
+                    && CollectionUtil.isEmpty(this.map) && StringUtil.isBlank(this.template)) {
                 return null;
             }
             return new DirectTemplate(this.criteria, this.alias, this.column, this.template,

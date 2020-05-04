@@ -230,8 +230,8 @@ public class Template extends ColumnExpressionWrapper {
          * @return 条件对象
          */
         public Template build() {
-            if (this.value == null || CollectionUtil.isEmpty(this.values) 
-                    || CollectionUtil.isEmpty(this.map) || StringUtil.isBlank(this.template)) {
+            if (this.value == null && CollectionUtil.isEmpty(this.values) 
+                    && CollectionUtil.isEmpty(this.map) && StringUtil.isBlank(this.template)) {
                 return null;
             }
             if (this.column != null) {
