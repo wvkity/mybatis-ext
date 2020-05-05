@@ -1,6 +1,6 @@
 package com.wvkity.mybatis.core.conditional.expression;
 
-import com.wvkity.mybatis.core.conditional.utils.Formatter;
+import com.wvkity.mybatis.core.conditional.utils.PlaceholderParser;
 import com.wvkity.mybatis.core.constant.Logic;
 import com.wvkity.mybatis.core.constant.TemplateMatch;
 import com.wvkity.mybatis.core.mapping.sql.utils.ScriptUtil;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * 模板条件
  * <p>
- * "{&#64;&#64;}" is not mandatory in the template and is used to identify it as a placeholder for a database field,
+ * ":&#64;" is not mandatory in the template and is used to identify it as a placeholder for a database field,
  * which is automatically replaced with the specified field when it is converted into an SQL fragment.
  * </p>
  * <pre>
@@ -34,14 +34,14 @@ import java.util.stream.Collectors;
  *
  *     // single parameter:
  *     // NO1.
- *     String template = "LEFT(NAME, 2) = {}";
+ *     String template = "LEFT(NAME, 2) = ?0";
  *     criteria.directTemplate(template, "S1");
  *     gradeService.list(criteria);
  *     return:
  *     SELECT column1, column2, ... FROM GRADE WHERE LEFT(NAME, 2) = ?
  *
  *     // NO2.
- *     String template = "LEFT({&#64;&#64;}, 2) = {}";
+ *     String template = "LEFT(:&#64;, 2) = ?0";
  *     criteria.directTemplate(template, "NAME", "S1");
  *     gradeService.list(criteria);
  *     return:
@@ -49,14 +49,14 @@ import java.util.stream.Collectors;
  *
  *     // multiple parameter:
  *     // NO3.
- *     String template = "LEFT(NAME, {}) = {}";
+ *     String template = "LEFT(NAME, ?0) = ?1";
  *     criteria.directTemplate(template, 2, "S1");
  *     gradeService.list(criteria);
  *     return:
  *     SELECT column1, column2, ... FROM GRADE WHERE LEFT(NAME, ?) = ?
  *
  *     // NO4.
- *     String template = "LEFT({&#64;&#64;}, {}) = {}";
+ *     String template = "LEFT(:&#64;, ?0) = ?1";
  *     criteria.directTemplate(template,"NAME", 2, "S1");
  *     gradeService.list(criteria);
  *     return:
@@ -64,7 +64,7 @@ import java.util.stream.Collectors;
  *
  *     // map parameter:
  *     // NO5.
- *     String template = "LEFT(NAME, ${left}) = ${name}";
+ *     String template = "LEFT(NAME, :left) = :name";
  *     Map&lt;String, Object&gt; params = new HashMap&lt;&gt;();
  *     params.put("left", 2);
  *     params.put("name", "S1");
@@ -74,7 +74,7 @@ import java.util.stream.Collectors;
  *     SELECT column1, column2, ... FROM GRADE WHERE LEFT(NAME, ?) = ?
  *
  *     // NO6.
- *     String template = "LEFT({&#64;&#64;}, ${left}) = ${name}";
+ *     String template = "LEFT(:&#64;, :left) = :name";
  *     Map&lt;String, Object&gt; params = new HashMap&lt;&gt;();
  *     params.put("left", 2);
  *     params.put("name", "S1");
@@ -84,6 +84,7 @@ import java.util.stream.Collectors;
  *     SELECT column1, column2, ... FROM GRADE WHERE LEFT(NAME, ?) = ?
  * </pre>
  * @author wvkity
+ * @see PlaceholderParser
  */
 public class DirectTemplate extends DirectExpressionWrapper {
 
@@ -92,7 +93,7 @@ public class DirectTemplate extends DirectExpressionWrapper {
     /**
      * 字段占位符标识
      */
-    public static final String COLUMN_PLACEHOLDER = "{@@}";
+    public static final String COLUMN_PLACEHOLDER = ":@";
 
     /**
      * 匹配模式
@@ -155,18 +156,18 @@ public class DirectTemplate extends DirectExpressionWrapper {
         switch (this.match) {
             // 单个参数
             case SINGLE:
-                builder.append(Formatter.format(realTemplate,
+                builder.append(PlaceholderParser.format(realTemplate,
                         ScriptUtil.safeJoint(defaultPlaceholder(this.value))));
                 break;
             // 多个参数    
             case MULTIPLE:
-                builder.append(Formatter.format(realTemplate,
+                builder.append(PlaceholderParser.format(realTemplate,
                         this.values.stream().map(it -> ScriptUtil.safeJoint(defaultPlaceholder(it)))
                                 .collect(Collectors.toList())));
                 break;
             // Map参数    
             default:
-                builder.append(Formatter.format(realTemplate,
+                builder.append(PlaceholderParser.format(realTemplate,
                         this.mapValues.entrySet().parallelStream()
                                 .collect(Collectors.toMap(Map.Entry::getKey,
                                         it -> ScriptUtil.safeJoint(defaultPlaceholder(it.getValue()))))));

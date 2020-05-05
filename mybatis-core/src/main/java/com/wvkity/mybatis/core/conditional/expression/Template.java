@@ -1,6 +1,6 @@
 package com.wvkity.mybatis.core.conditional.expression;
 
-import com.wvkity.mybatis.core.conditional.utils.Formatter;
+import com.wvkity.mybatis.core.conditional.utils.PlaceholderParser;
 import com.wvkity.mybatis.core.constant.Logic;
 import com.wvkity.mybatis.core.constant.TemplateMatch;
 import com.wvkity.mybatis.core.converter.Property;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 /**
  * 模板条件
  * <p>
- * "{&#64;&#64;}" must exist in the template to identify it as a placeholder for a database field,
+ * ":&#64;" must exist in the template to identify it as a placeholder for a database field,
  * which is automatically replaced when it is converted into an SQL fragment.
  * </p>
  * <pre>
@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  *
  *     // single parameter:
  *     // NO1.
- *     String template = "LEFT({&#64;&#64;}, 2) = {}";
+ *     String template = "LEFT(:&#64;, 2) = ?0";
  *     criteria.template(template, Grade::Name, "S1");
  *     gradeService.list(criteria);
  *     return:
@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
  *
  *     // multiple parameter:
  *     // NO2.
- *     String template = "LEFT({&#64;&#64;}, {}) = {}";
+ *     String template = "LEFT(:&#64;, ?0) = ?1";
  *     criteria.template(template, Grade::Name, 2, "S1");
  *     gradeService.list(criteria);
  *     return:
@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
  *
  *     // map parameter:
  *     // NO3.
- *     String template = "LEFT({&#64;&#64;}, ${left}) = ${name}";
+ *     String template = "LEFT(:&#64;, :left) = :name";
  *     Map&lt;String, Object&gt; params = new HashMap&lt;&gt;();
  *     params.put("left", 2);
  *     params.put("name", "S1");
@@ -62,6 +62,7 @@ import java.util.stream.Collectors;
  *     SELECT column1, column2, ... FROM GRADE WHERE LEFT(NAME, ?) = ?
  * </pre>
  * @author wvkity
+ * @see PlaceholderParser
  */
 public class Template extends ColumnExpressionWrapper {
 
@@ -70,7 +71,7 @@ public class Template extends ColumnExpressionWrapper {
     /**
      * 字段占位符标识
      */
-    public static final String COLUMN_PLACEHOLDER = "{@@}";
+    public static final String COLUMN_PLACEHOLDER = ":@";
 
     /**
      * 匹配模式
@@ -128,18 +129,18 @@ public class Template extends ColumnExpressionWrapper {
         switch (this.match) {
             // 单个参数
             case SINGLE:
-                builder.append(Formatter.format(realTemplate,
+                builder.append(PlaceholderParser.format(realTemplate,
                         ScriptUtil.safeJoint(defaultPlaceholder(this.value))));
                 break;
             // 多个参数    
             case MULTIPLE:
-                builder.append(Formatter.format(realTemplate,
+                builder.append(PlaceholderParser.format(realTemplate,
                         this.values.stream().map(it -> ScriptUtil.safeJoint(defaultPlaceholder(it)))
                                 .collect(Collectors.toList())));
                 break;
             // Map参数    
             default:
-                builder.append(Formatter.format(realTemplate,
+                builder.append(PlaceholderParser.format(realTemplate,
                         this.mapValues.entrySet().parallelStream()
                                 .collect(Collectors.toMap(Map.Entry::getKey,
                                         it -> ScriptUtil.safeJoint(defaultPlaceholder(it.getValue()))))));
@@ -234,25 +235,27 @@ public class Template extends ColumnExpressionWrapper {
                     && CollectionUtil.isEmpty(this.map) && StringUtil.isBlank(this.template)) {
                 return null;
             }
-            if (this.column != null) {
-                return new Template(this.criteria, this.column, this.template, this.value,
-                        this.values, this.map, this.logic);
-            }
-            if (this.criteria == null) {
-                return null;
-            }
-            if (hasText(this.property)) {
-                ColumnWrapper wrapper = this.criteria.searchColumn(this.property);
-                if (wrapper != null) {
-                    return new Template(this.criteria, wrapper, this.template, this.value,
+            if (this.template.contains(COLUMN_PLACEHOLDER)) {
+                if (this.column != null) {
+                    return new Template(this.criteria, this.column, this.template, this.value,
                             this.values, this.map, this.logic);
                 }
-            }
-            if (lambdaProperty != null) {
-                ColumnWrapper wrapper = this.criteria.searchColumn(lambdaProperty);
-                if (wrapper != null) {
-                    return new Template(this.criteria, wrapper, this.template, this.value,
-                            this.values, this.map, this.logic);
+                if (this.criteria == null) {
+                    return null;
+                }
+                if (hasText(this.property)) {
+                    ColumnWrapper wrapper = this.criteria.searchColumn(this.property);
+                    if (wrapper != null) {
+                        return new Template(this.criteria, wrapper, this.template, this.value,
+                                this.values, this.map, this.logic);
+                    }
+                }
+                if (lambdaProperty != null) {
+                    ColumnWrapper wrapper = this.criteria.searchColumn(lambdaProperty);
+                    if (wrapper != null) {
+                        return new Template(this.criteria, wrapper, this.template, this.value,
+                                this.values, this.map, this.logic);
+                    }
                 }
             }
             return null;

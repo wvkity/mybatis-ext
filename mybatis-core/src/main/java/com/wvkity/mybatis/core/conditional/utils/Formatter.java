@@ -1,6 +1,7 @@
 package com.wvkity.mybatis.core.conditional.utils;
 
 import com.wvkity.mybatis.utils.ArrayUtil;
+import com.wvkity.mybatis.utils.Constants;
 import com.wvkity.mybatis.utils.StringUtil;
 
 import java.util.ArrayList;
@@ -54,7 +55,8 @@ public final class Formatter {
         if (values.isEmpty()) {
             return template;
         }
-        char[] src = template.toCharArray();
+        String realTemplate = template + Constants.SPACE;
+        char[] src = realTemplate.toCharArray();
         int offset = 0;
         int argsIndex = 0;
         int size = values.size() - 1;
