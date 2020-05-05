@@ -2,30 +2,34 @@ package com.wvkity.mybatis.core.segment;
 
 import com.wvkity.mybatis.utils.CollectionUtil;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 /**
  * 抽象SQL片段
- * @param <T> 泛型类型
  */
 @SuppressWarnings({"serial"})
 public abstract class AbstractSegment<E> implements Segment {
 
     /**
-     * 锁
-     */
-    private final Object LOCK = new Object();
-
-    /**
      * SQL片段集合
      */
-    protected volatile List<E> segments;
+    protected final List<E> segments = new ArrayList<>();
+
+    /**
+     * 添加单个片段对象
+     * @param segment 片段对象
+     */
+    public void add(E segment) {
+        if (segment != null) {
+            this.segments.add(segment);
+        }
+    }
 
     /**
      * 添加多个片段对象
@@ -36,13 +40,6 @@ public abstract class AbstractSegment<E> implements Segment {
             Set<E> its = segments.stream().filter(Objects::nonNull)
                     .collect(Collectors.toCollection(LinkedHashSet::new));
             if (CollectionUtil.hasElement(its)) {
-                if (this.segments == null) {
-                    synchronized (LOCK) {
-                        if (this.segments == null) {
-                            this.segments = new CopyOnWriteArrayList<>();
-                        }
-                    }
-                }
                 this.segments.addAll(its);
             }
         }

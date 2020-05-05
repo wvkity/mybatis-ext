@@ -39,12 +39,22 @@ public class SegmentManager implements Segment {
     private final OrderSegmentWrapper orderWrapper = new OrderSegmentWrapper();
 
     /**
+     * 添加条件
+     * @param segment 条件对象
+     * @return {@code this}
+     */
+    public SegmentManager where(Criterion segment) {
+        this.whereWrapper.add(segment);
+        return this;
+    }
+
+    /**
      * 添加多个条件对象
      * @param segments 条件对象数组
      * @return {@code this}
      */
-    public SegmentManager add(Criterion... segments) {
-        return addCondition(ArrayUtil.toList(segments));
+    public SegmentManager wheres(Criterion... segments) {
+        return wheres(ArrayUtil.toList(segments));
     }
 
     /**
@@ -52,8 +62,18 @@ public class SegmentManager implements Segment {
      * @param segments 条件对象集合
      * @return {@code this}
      */
-    public SegmentManager addCondition(Collection<Criterion> segments) {
+    public SegmentManager wheres(Collection<Criterion> segments) {
         this.whereWrapper.addAll(segments);
+        return this;
+    }
+
+    /**
+     * 添加分组
+     * @param segment 分组对象
+     * @return {@code this}
+     */
+    public SegmentManager group(AbstractGroupWrapper<?> segment) {
+        this.groupWrapper.add(segment);
         return this;
     }
 
@@ -62,8 +82,8 @@ public class SegmentManager implements Segment {
      * @param segments 分组对象数组
      * @return {@code this}
      */
-    public SegmentManager add(AbstractGroupWrapper<?>... segments) {
-        return addGroup(ArrayUtil.toList(segments));
+    public SegmentManager groups(AbstractGroupWrapper<?>... segments) {
+        return groups(ArrayUtil.toList(segments));
     }
 
     /**
@@ -71,8 +91,18 @@ public class SegmentManager implements Segment {
      * @param segments 分组对象集合
      * @return {@code this}
      */
-    public SegmentManager addGroup(Collection<AbstractGroupWrapper< ?>> segments) {
+    public SegmentManager groups(Collection<AbstractGroupWrapper< ?>> segments) {
         this.groupWrapper.addAll(segments);
+        return this;
+    }
+
+    /**
+     * 添加排序
+     * @param segment 排序对象
+     * @return {@code this}
+     */
+    public SegmentManager order(AbstractOrderWrapper<?> segment) {
+        this.orderWrapper.add(segment);
         return this;
     }
 
@@ -81,8 +111,8 @@ public class SegmentManager implements Segment {
      * @param segments 排序对象数组
      * @return {@code this}
      */
-    public SegmentManager add(AbstractOrderWrapper<?>... segments) {
-        return addOrder(ArrayUtil.toList(segments));
+    public SegmentManager orders(AbstractOrderWrapper<?>... segments) {
+        return orders(ArrayUtil.toList(segments));
     }
 
     /**
@@ -90,7 +120,7 @@ public class SegmentManager implements Segment {
      * @param segments 排序对象集合
      * @return {@code this}
      */
-    public SegmentManager addOrder(Collection<AbstractOrderWrapper<?>> segments) {
+    public SegmentManager orders(Collection<AbstractOrderWrapper<?>> segments) {
         this.orderWrapper.addAll(segments);
         return this;
     }

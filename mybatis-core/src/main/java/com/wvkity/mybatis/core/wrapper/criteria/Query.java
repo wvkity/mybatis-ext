@@ -417,9 +417,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param property 属性
      * @return {@code this}
      */
-    default Chain exclude(String property) {
-        return excludes(property);
-    }
+    Chain exclude(String property);
 
     /**
      * 排除查询列
@@ -447,6 +445,14 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @return {@code this}
      */
     Chain excludes(Collection<String> properties);
+
+    /**
+     * 排除查询列
+     * @param column 列名
+     * @return {@code this}
+     */
+    Chain excludeWith(String column);
+
 
     /**
      * 排除查询列

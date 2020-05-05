@@ -4,7 +4,7 @@ import com.wvkity.mybatis.core.conditional.criterion.Criterion;
 import com.wvkity.mybatis.core.converter.PlaceholderConverter;
 import com.wvkity.mybatis.core.converter.PropertyConverter;
 import com.wvkity.mybatis.core.segment.Segment;
-import com.wvkity.mybatis.core.wrapper.aggreate.Aggregation;
+import com.wvkity.mybatis.core.wrapper.aggreate.Function;
 
 import java.util.Collection;
 
@@ -54,6 +54,12 @@ public interface Criteria<T> extends Search<T>, PlaceholderConverter, PropertyCo
      * @return 条件对象
      */
     <E> AbstractCriteriaWrapper<E> getRootMaster();
+
+    /**
+     * 添加条件
+     * @param criterion 条件对象
+     */
+    Criteria<T> add(Criterion criterion);
 
     /**
      * 添加多个条件
@@ -144,7 +150,7 @@ public interface Criteria<T> extends Search<T>, PlaceholderConverter, PropertyCo
      * @param alias 聚合函数别名
      * @return 聚合函数对象
      */
-    default Aggregation getAggregate(String alias) {
+    default Function getAggregate(String alias) {
         return null;
     }
 

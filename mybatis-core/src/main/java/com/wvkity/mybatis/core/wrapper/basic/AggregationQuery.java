@@ -1,9 +1,9 @@
 package com.wvkity.mybatis.core.wrapper.basic;
 
-import com.wvkity.mybatis.core.wrapper.aggreate.Aggregation;
+import com.wvkity.mybatis.core.wrapper.aggreate.Function;
 import com.wvkity.mybatis.core.wrapper.criteria.Criteria;
 
-public class AggregationQuery extends AbstractQueryWrapper<Aggregation> {
+public class AggregationQuery extends AbstractQueryWrapper<Function> {
 
     private static final long serialVersionUID = 5643412018618027094L;
 

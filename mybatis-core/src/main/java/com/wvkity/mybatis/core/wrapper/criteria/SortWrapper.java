@@ -2,7 +2,7 @@ package com.wvkity.mybatis.core.wrapper.criteria;
 
 import com.wvkity.mybatis.core.converter.Property;
 import com.wvkity.mybatis.core.converter.PropertyConverter;
-import com.wvkity.mybatis.core.wrapper.aggreate.Aggregation;
+import com.wvkity.mybatis.core.wrapper.aggreate.Function;
 import com.wvkity.mybatis.core.wrapper.basic.AbstractOrderWrapper;
 import com.wvkity.mybatis.utils.ArrayUtil;
 
@@ -84,10 +84,10 @@ public interface SortWrapper<T, Chain extends SortWrapper<T, Chain>> extends Pro
 
     /**
      * ASC排序
-     * @param aggregations 聚合函数数组
+     * @param functions 聚合函数数组
      * @return 当前对象
      */
-    Chain asc(Aggregation... aggregations);
+    Chain asc(Function... functions);
 
     /**
      * ASC排序
@@ -201,10 +201,10 @@ public interface SortWrapper<T, Chain extends SortWrapper<T, Chain>> extends Pro
 
     /**
      * DESC排序
-     * @param aggregations 聚合函数数组
+     * @param functions 聚合函数数组
      * @return 当前对象
      */
-    Chain desc(Aggregation... aggregations);
+    Chain desc(Function... functions);
 
     /**
      * DESC排序
@@ -253,11 +253,18 @@ public interface SortWrapper<T, Chain extends SortWrapper<T, Chain>> extends Pro
 
     /**
      * 添加排序
+     * @param order 排序对象
+     * @return 当前对象
+     */
+    Chain order(AbstractOrderWrapper<?> order);
+
+    /**
+     * 添加排序
      * @param orders 排序对象数组
      * @return 当前对象
      */
-    default Chain add(AbstractOrderWrapper<?>... orders) {
-        return addOrder(ArrayUtil.toList(orders));
+    default Chain orders(AbstractOrderWrapper<?>... orders) {
+        return orders(ArrayUtil.toList(orders));
     }
 
     /**
@@ -265,5 +272,5 @@ public interface SortWrapper<T, Chain extends SortWrapper<T, Chain>> extends Pro
      * @param orders 排序对象集合
      * @return 当前对象
      */
-    Chain addOrder(List<AbstractOrderWrapper<?>> orders);
+    Chain orders(List<AbstractOrderWrapper<?>> orders);
 }

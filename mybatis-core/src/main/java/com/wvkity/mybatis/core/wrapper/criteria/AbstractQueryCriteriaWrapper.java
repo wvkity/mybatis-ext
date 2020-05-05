@@ -3,7 +3,7 @@ package com.wvkity.mybatis.core.wrapper.criteria;
 import com.wvkity.mybatis.core.constant.Join;
 import com.wvkity.mybatis.core.constant.Range;
 import com.wvkity.mybatis.core.converter.Property;
-import com.wvkity.mybatis.core.wrapper.aggreate.Aggregation;
+import com.wvkity.mybatis.core.wrapper.aggreate.Function;
 import com.wvkity.mybatis.core.wrapper.basic.AbstractGroupWrapper;
 import com.wvkity.mybatis.core.wrapper.basic.AbstractOrderWrapper;
 import com.wvkity.mybatis.core.wrapper.basic.DirectGroup;
@@ -130,31 +130,31 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
 
     @Override
     public AbstractQueryCriteriaWrapper<T> select(String property) {
-        this.queryManager.add(Query.Single.query(this, property));
+        this.queryManager.query(Query.Single.query(this, property));
         return this;
     }
 
     @Override
     public AbstractQueryCriteriaWrapper<T> select(String property, String alias) {
-        this.queryManager.add(Query.Single.query(this, property, alias));
+        this.queryManager.query(Query.Single.query(this, property, alias));
         return this;
     }
 
     @Override
     public AbstractQueryCriteriaWrapper<T> selectWith(String column) {
-        this.queryManager.add(DirectQuery.Single.query(this, column, null));
+        this.queryManager.query(DirectQuery.Single.query(this, column, null));
         return this;
     }
 
     @Override
     public AbstractQueryCriteriaWrapper<T> selectWith(String column, String alias) {
-        this.queryManager.add(DirectQuery.Single.query(this, column, alias));
+        this.queryManager.query(DirectQuery.Single.query(this, column, alias));
         return this;
     }
 
     @Override
     public AbstractQueryCriteriaWrapper<T> selectWith(String tableAlias, String column, String alias) {
-        this.queryManager.add(DirectQuery.Single.query(tableAlias, column, alias));
+        this.queryManager.query(DirectQuery.Single.query(tableAlias, column, alias));
         return this;
     }
 
@@ -170,37 +170,37 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
 
     @Override
     public AbstractQueryCriteriaWrapper<T> select(Collection<String> properties) {
-        this.queryManager.add(Query.Multi.query(this, properties));
+        this.queryManager.queries(Query.Multi.query(this, properties));
         return this;
     }
 
     @Override
     public AbstractQueryCriteriaWrapper<T> select(Map<String, String> properties) {
-        this.queryManager.add(Query.Multi.query(this, properties));
+        this.queryManager.queries(Query.Multi.query(this, properties));
         return this;
     }
 
     @Override
     public AbstractQueryCriteriaWrapper<T> selectWith(Collection<String> columns) {
-        this.queryManager.add(DirectQuery.Multi.query(this, columns));
+        this.queryManager.queries(DirectQuery.Multi.query(this, columns));
         return this;
     }
 
     @Override
     public AbstractQueryCriteriaWrapper<T> selectWith(Map<String, String> columns) {
-        this.queryManager.add(DirectQuery.Multi.query(this, columns));
+        this.queryManager.queries(DirectQuery.Multi.query(this, columns));
         return this;
     }
 
     @Override
     public AbstractQueryCriteriaWrapper<T> selectWith(String tableAlias, Map<String, String> columns) {
-        this.queryManager.add(DirectQuery.Multi.query(tableAlias, columns));
+        this.queryManager.queries(DirectQuery.Multi.query(tableAlias, columns));
         return this;
     }
 
     @Override
     public AbstractQueryCriteriaWrapper<T> selectWith(String tableAlias, Collection<String> columns) {
-        this.queryManager.add(DirectQuery.Multi.query(tableAlias, columns));
+        this.queryManager.queries(DirectQuery.Multi.query(tableAlias, columns));
         return this;
     }
 
@@ -215,8 +215,20 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
+    public AbstractQueryCriteriaWrapper<T> exclude(String property) {
+        this.queryManager.exclude(property);
+        return this;
+    }
+
+    @Override
     public AbstractQueryCriteriaWrapper<T> excludes(Collection<String> properties) {
         this.queryManager.excludes(properties);
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> excludeWith(String column) {
+        this.queryManager.excludeWith(column);
         return this;
     }
 
@@ -363,16 +375,16 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
 
     @Override
     public AbstractQueryCriteriaWrapper<T> asc(List<String> properties) {
-        return add(Order.asc(this, properties));
+        return order(Order.asc(this, properties));
     }
 
     @Override
     public AbstractQueryCriteriaWrapper<T> ascWithAlias(String alias, List<String> columns) {
-        return add(DirectOrder.ascWithAlias(alias, columns));
+        return order(DirectOrder.ascWithAlias(alias, columns));
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> asc(Aggregation... aggregations) {
+    public AbstractQueryCriteriaWrapper<T> asc(Function... functions) {
         return this;
     }
 
@@ -394,16 +406,16 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
 
     @Override
     public AbstractQueryCriteriaWrapper<T> desc(List<String> properties) {
-        return add(Order.desc(this, properties));
+        return order(Order.desc(this, properties));
     }
 
     @Override
     public AbstractQueryCriteriaWrapper<T> descWithAlias(String alias, List<String> columns) {
-        return add(DirectOrder.descWithAlias(alias, columns));
+        return order(DirectOrder.descWithAlias(alias, columns));
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> desc(Aggregation... aggregations) {
+    public AbstractQueryCriteriaWrapper<T> desc(Function... functions) {
         return this;
     }
 
@@ -424,8 +436,14 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> addOrder(List<AbstractOrderWrapper<?>> orders) {
-        this.segmentManager.addOrder(orders);
+    public AbstractQueryCriteriaWrapper<T> order(AbstractOrderWrapper<?> order) {
+        this.segmentManager.order(order);
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> orders(List<AbstractOrderWrapper<?>> orders) {
+        this.segmentManager.orders(orders);
         return this;
     }
 
@@ -434,13 +452,19 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     // region group by
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> group(List<String> properties) {
-        return add(Group.group(this, properties));
+    public AbstractQueryCriteriaWrapper<T> group(AbstractGroupWrapper<?> group) {
+        this.segmentManager.group(group);
+        return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> directGroupWithAlias(String alias, List<String> columns) {
-        return add(DirectGroup.groupWithAlias(alias, columns));
+    public AbstractQueryCriteriaWrapper<T> group(List<String> properties) {
+        return group(Group.group(this, properties));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> groupWithAlias(String alias, List<String> columns) {
+        return group(DirectGroup.groupWithAlias(alias, columns));
     }
 
     @SuppressWarnings("unchecked")
@@ -455,8 +479,8 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> addGroup(List<AbstractGroupWrapper<?>> groups) {
-        this.segmentManager.addGroup(groups);
+    public AbstractQueryCriteriaWrapper<T> groups(List<AbstractGroupWrapper<?>> groups) {
+        this.segmentManager.groups(groups);
         return this;
     }
 

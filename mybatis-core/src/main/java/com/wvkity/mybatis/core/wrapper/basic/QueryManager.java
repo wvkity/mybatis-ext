@@ -5,7 +5,6 @@ import com.wvkity.mybatis.core.metadata.ColumnWrapper;
 import com.wvkity.mybatis.core.metadata.TableWrapper;
 import com.wvkity.mybatis.core.segment.Segment;
 import com.wvkity.mybatis.core.wrapper.criteria.AbstractQueryCriteriaWrapper;
-import com.wvkity.mybatis.core.wrapper.criteria.Criteria;
 import com.wvkity.mybatis.utils.ArrayUtil;
 import com.wvkity.mybatis.utils.CollectionUtil;
 import com.wvkity.mybatis.utils.StringUtil;
@@ -73,19 +72,31 @@ public class QueryManager implements Segment {
 
     /**
      * 添加查询列
-     * @param wrappers 查询列包装对象数组
-     * @return 当前对象
+     * @param wrapper 查询列包装对象
+     * @return {@code this}
      */
-    public QueryManager add(AbstractQueryWrapper<?>... wrappers) {
-        return add(ArrayUtil.toList(wrappers));
+    public QueryManager query(AbstractQueryWrapper<?> wrapper) {
+        if (wrapper != null) {
+            this.wrappers.add(wrapper);
+        }
+        return this;
+    }
+
+    /**
+     * 添加查询列
+     * @param wrappers 查询列包装对象数组
+     * @return {@code this}
+     */
+    public QueryManager queries(AbstractQueryWrapper<?>... wrappers) {
+        return queries(ArrayUtil.toList(wrappers));
     }
 
     /**
      * 添加查询列
      * @param wrappers 查询列包装对象集合
-     * @return 当前对象
+     * @return {@code this}
      */
-    public QueryManager add(Collection<? extends AbstractQueryWrapper<?>> wrappers) {
+    public QueryManager queries(Collection<? extends AbstractQueryWrapper<?>> wrappers) {
         if (CollectionUtil.hasElement(wrappers)) {
             List<? extends AbstractQueryWrapper<?>> its = wrappers.stream().filter(Objects::nonNull)
                     .collect(Collectors.toList());
@@ -99,8 +110,20 @@ public class QueryManager implements Segment {
 
     /**
      * 排除查询属性
+     * @param property 属性
+     * @return {@code this}
+     */
+    public QueryManager exclude(String property) {
+        if (StringUtil.hasText(property)) {
+            this.excludeProperties.add(property);
+        }
+        return this;
+    }
+
+    /**
+     * 排除查询属性
      * @param properties 属性数组
-     * @return 当前对象
+     * @return {@code this}
      */
     public QueryManager excludes(String... properties) {
         return excludes(ArrayUtil.toList(properties));
@@ -109,7 +132,7 @@ public class QueryManager implements Segment {
     /**
      * 排除查询属性
      * @param properties 属性集合
-     * @return 当前对象
+     * @return {@code this}
      */
     public QueryManager excludes(Collection<String> properties) {
         Set<String> its = distinct(properties);
@@ -122,19 +145,31 @@ public class QueryManager implements Segment {
 
     /**
      * 排除查询列
-     * @param columns 列名数组
-     * @return 当前对象
+     * @param column 字段
+     * @return {@code this}
      */
-    public QueryManager directExcludes(String... columns) {
-        return directExcludes(ArrayUtil.toList(columns));
+    public QueryManager excludeWith(String column) {
+        if (StringUtil.hasText(column)) {
+            this.excludeColumns.add(column);
+        }
+        return this;
     }
 
     /**
      * 排除查询列
-     * @param columns 列名集合
-     * @return 当前对象
+     * @param columns 字段数组
+     * @return {@code this}
      */
-    public QueryManager directExcludes(Collection<String> columns) {
+    public QueryManager excludesWith(String... columns) {
+        return excludesWith(ArrayUtil.toList(columns));
+    }
+
+    /**
+     * 排除查询列
+     * @param columns 字段集合
+     * @return {@code this}
+     */
+    public QueryManager excludesWith(Collection<String> columns) {
         Set<String> its = distinct(columns);
         if (!its.isEmpty()) {
             this.excludeColumns.addAll(its);
@@ -178,15 +213,6 @@ public class QueryManager implements Segment {
         this._wrappers = queries;
         this.cached = true;
         return new ArrayList<>(this._wrappers);
-    }
-
-    private List<AbstractQueryWrapper<?>> build(Criteria<?> criteria) {
-        // 
-        Set<ColumnWrapper> columnWrappers = TableHandler.getTable(criteria.getEntityClass()).columns();
-        return columnWrappers.stream().filter(it ->
-                accept(it.getProperty(), this.excludeProperties, false)
-                        && accept(it.getColumn(), this.excludeColumns, true)
-        ).map(it -> Query.Single.query(criteria, it)).collect(Collectors.toList());
     }
 
     /**

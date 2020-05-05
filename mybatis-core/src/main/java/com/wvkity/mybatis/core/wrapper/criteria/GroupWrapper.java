@@ -58,7 +58,7 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @return 当前对象
      */
     default Chain directGroup(List<String> columns) {
-        return directGroupWithAlias(null, columns);
+        return groupWithAlias(null, columns);
     }
 
     /**
@@ -67,8 +67,8 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @param columns 字段数组
      * @return 当前对象
      */
-    default Chain directGroupWithAlias(String alias, String... columns) {
-        return directGroupWithAlias(alias, ArrayUtil.toList(columns));
+    default Chain groupWithAlias(String alias, String... columns) {
+        return groupWithAlias(alias, ArrayUtil.toList(columns));
     }
 
     /**
@@ -77,7 +77,7 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @param columns 字段集合
      * @return 当前对象
      */
-    Chain directGroupWithAlias(String alias, List<String> columns);
+    Chain groupWithAlias(String alias, List<String> columns);
 
     /**
      * 分组
@@ -109,11 +109,18 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
 
     /**
      * 添加分组
+     * @param group 分组对象
+     * @return 当前对象
+     */
+    Chain group(AbstractGroupWrapper<?> group);
+
+    /**
+     * 添加分组
      * @param groups 分组对象数组
      * @return 当前对象
      */
-    default Chain add(AbstractGroupWrapper<?>... groups) {
-        return addGroup(ArrayUtil.toList(groups));
+    default Chain groups(AbstractGroupWrapper<?>... groups) {
+        return groups(ArrayUtil.toList(groups));
     }
 
     /**
@@ -121,5 +128,5 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @param groups 分组对象集合
      * @return 当前对象
      */
-    Chain addGroup(List<AbstractGroupWrapper<?>> groups);
+    Chain groups(List<AbstractGroupWrapper<?>> groups);
 }

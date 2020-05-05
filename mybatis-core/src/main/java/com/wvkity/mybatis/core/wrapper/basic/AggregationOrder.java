@@ -1,6 +1,6 @@
 package com.wvkity.mybatis.core.wrapper.basic;
 
-import com.wvkity.mybatis.core.wrapper.aggreate.Aggregation;
+import com.wvkity.mybatis.core.wrapper.aggreate.Function;
 import com.wvkity.mybatis.core.wrapper.criteria.Criteria;
 import com.wvkity.mybatis.utils.ArrayUtil;
 import com.wvkity.mybatis.utils.CollectionUtil;
@@ -14,29 +14,29 @@ import java.util.stream.Collectors;
  * 排序(聚合函数对象)
  * @author wvkity
  */
-public class AggregationOrder extends AbstractOrderWrapper<Aggregation> {
+public class AggregationOrder extends AbstractOrderWrapper<Function> {
 
     private static final long serialVersionUID = -6042427127886318392L;
 
     /**
      * 构造方法
-     * @param aggregations 聚合函数集合
+     * @param functions 聚合函数集合
      * @param ascending    排序方式(是否为ASC排序)
      */
-    private AggregationOrder(boolean ascending, Collection<Aggregation> aggregations) {
+    private AggregationOrder(boolean ascending, Collection<Function> functions) {
         this.ascending = ascending;
-        if (CollectionUtil.hasElement(aggregations)) {
-            this.columns.addAll(aggregations.stream().filter(Objects::nonNull).collect(Collectors.toList()));
+        if (CollectionUtil.hasElement(functions)) {
+            this.columns.addAll(functions.stream().filter(Objects::nonNull).collect(Collectors.toList()));
         }
     }
 
     /**
      * ASC排序
-     * @param aggregations 聚合函数
+     * @param functions 聚合函数
      * @return 排序对象
      */
-    public static AggregationOrder asc(Aggregation... aggregations) {
-        return asc(ArrayUtil.toList(aggregations));
+    public static AggregationOrder asc(Function... functions) {
+        return asc(ArrayUtil.toList(functions));
     }
 
     /**
@@ -64,29 +64,29 @@ public class AggregationOrder extends AbstractOrderWrapper<Aggregation> {
 
     /**
      * ASC排序
-     * @param aggregations 聚合函数
+     * @param functions 聚合函数
      * @return 排序对象
      */
-    public static AggregationOrder asc(List<Aggregation> aggregations) {
-        return new AggregationOrder(true, aggregations);
+    public static AggregationOrder asc(List<Function> functions) {
+        return new AggregationOrder(true, functions);
     }
 
     /**
      * ASC排序
-     * @param aggregations 聚合函数
+     * @param functions 聚合函数
      * @return 排序对象
      */
-    public static AggregationOrder desc(Aggregation... aggregations) {
-        return desc(ArrayUtil.toList(aggregations));
+    public static AggregationOrder desc(Function... functions) {
+        return desc(ArrayUtil.toList(functions));
     }
 
     /**
      * ASC排序
-     * @param aggregations 聚合函数
+     * @param functions 聚合函数
      * @return 排序对象
      */
-    public static AggregationOrder desc(List<Aggregation> aggregations) {
-        return new AggregationOrder(false, aggregations);
+    public static AggregationOrder desc(List<Function> functions) {
+        return new AggregationOrder(false, functions);
     }
 
     /**
