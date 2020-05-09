@@ -1,12 +1,12 @@
-package com.wvkity.mybatis.plugins.paging.dbs.dialect.exact;
+package com.wvkity.mybatis.plugins.paging.dialect.exact;
 
 import com.wvkity.mybatis.plugins.cache.Cache;
 import com.wvkity.mybatis.plugins.cache.CacheFactory;
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.AbstractPageableDialect;
-import com.wvkity.mybatis.plugins.paging.dbs.sql.SqlServerPageSqlParser;
-import com.wvkity.mybatis.plugins.paging.dbs.sql.replace.RegexWithNoLockReplace;
-import com.wvkity.mybatis.plugins.paging.dbs.sql.replace.SimpleWithNoLockReplace;
-import com.wvkity.mybatis.plugins.paging.dbs.sql.replace.WithNoLockReplace;
+import com.wvkity.mybatis.plugins.paging.dialect.AbstractPageableDialect;
+import com.wvkity.mybatis.plugins.paging.sql.SqlServerPageSqlParser;
+import com.wvkity.mybatis.plugins.paging.sql.replace.RegexWithNoLockReplace;
+import com.wvkity.mybatis.plugins.paging.sql.replace.SimpleWithNoLockReplace;
+import com.wvkity.mybatis.plugins.paging.sql.replace.WithNoLockReplace;
 import com.wvkity.mybatis.plugins.exception.MyBatisPluginException;
 import com.wvkity.mybatis.utils.StringUtil;
 import org.apache.ibatis.cache.CacheKey;

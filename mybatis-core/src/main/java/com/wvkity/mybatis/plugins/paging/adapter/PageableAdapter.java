@@ -1,9 +1,9 @@
-package com.wvkity.mybatis.plugins.paging.dbs.adapter;
+package com.wvkity.mybatis.plugins.paging.adapter;
 
 import com.wvkity.mybatis.plugins.paging.config.PageableConfig;
 import com.wvkity.mybatis.plugins.paging.config.ThreadLocalPageable;
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.PageableDialect;
-import com.wvkity.mybatis.plugins.paging.dbs.proxy.PageableDialectDelegate;
+import com.wvkity.mybatis.plugins.paging.dialect.PageableDialect;
+import com.wvkity.mybatis.plugins.paging.proxy.PageableDialectDelegate;
 import com.wvkity.mybatis.plugins.exception.MyBatisPluginException;
 import com.wkit.lost.paging.Pageable;
 import org.apache.ibatis.mapping.MappedStatement;

@@ -1,6 +1,6 @@
-package com.wvkity.mybatis.plugins.paging.dbs.proxy;
+package com.wvkity.mybatis.plugins.paging.proxy;
 
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.AbstractDialect;
+import com.wvkity.mybatis.plugins.paging.dialect.AbstractDialect;
 
 import java.util.Optional;
 

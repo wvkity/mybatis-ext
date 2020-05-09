@@ -1,4 +1,4 @@
-package com.wvkity.mybatis.plugins.paging.dbs.sql;
+package com.wvkity.mybatis.plugins.paging.sql;
 
 import com.wvkity.mybatis.utils.CollectionUtil;
 import com.wvkity.mybatis.utils.StringUtil;

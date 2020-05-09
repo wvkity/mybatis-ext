@@ -1,7 +1,7 @@
 package com.wvkity.mybatis.plugins.paging.config;
 
-import com.wvkity.mybatis.utils.StringUtil;
 import com.wvkity.mybatis.plugins.utils.PageableUtil;
+import com.wvkity.mybatis.utils.StringUtil;
 import com.wkit.lost.paging.Pageable;
 import com.wkit.lost.paging.Pager;
 import lombok.Getter;

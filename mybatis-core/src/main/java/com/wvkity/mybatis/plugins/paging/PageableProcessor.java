@@ -2,8 +2,8 @@ package com.wvkity.mybatis.plugins.paging;
 
 import com.wvkity.mybatis.plugins.cache.Cache;
 import com.wvkity.mybatis.plugins.cache.CacheFactory;
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.Dialect;
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.PageableDialect;
+import com.wvkity.mybatis.plugins.paging.dialect.Dialect;
+import com.wvkity.mybatis.plugins.paging.dialect.PageableDialect;
 import com.wvkity.mybatis.plugins.executor.Executors;
 import com.wvkity.mybatis.utils.MappedStatementUtil;
 import lombok.extern.log4j.Log4j2;
@@ -39,7 +39,7 @@ public class PageableProcessor extends PagingProcessor {
 
     @Override
     protected String getDefaultDialect() {
-        return "com.wvkity.mybatis.plugins.paging.dbs.adapter.PageableAdapter";
+        return "com.wvkity.mybatis.plugins.paging.adapter.PageableAdapter";
     }
 
     @Override

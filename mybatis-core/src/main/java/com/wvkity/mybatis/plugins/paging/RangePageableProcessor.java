@@ -1,6 +1,6 @@
 package com.wvkity.mybatis.plugins.paging;
 
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.Dialect;
+import com.wvkity.mybatis.plugins.paging.dialect.Dialect;
 import com.wvkity.mybatis.plugins.executor.Executors;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.cache.CacheKey;
@@ -28,7 +28,7 @@ public class RangePageableProcessor extends PagingProcessor {
 
     @Override
     protected String getDefaultDialect() {
-        return "com.wkit.lost.mybatis.plugins.paging.dbs.adapter.RangePageableAdapter";
+        return "com.wvkity.mybatis.plugins.paging.adapter.RangePageableAdapter";
     }
 
     @Override

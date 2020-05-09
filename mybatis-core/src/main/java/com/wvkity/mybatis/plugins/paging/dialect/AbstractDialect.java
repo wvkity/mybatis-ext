@@ -1,9 +1,9 @@
-package com.wvkity.mybatis.plugins.paging.dbs.dialect;
+package com.wvkity.mybatis.plugins.paging.dialect;
 
 import com.wvkity.mybatis.plugins.paging.config.RangePageable;
 import com.wvkity.mybatis.plugins.paging.config.ThreadLocalPageable;
 import com.wvkity.mybatis.plugins.paging.config.ThreadLocalRangePageable;
-import com.wvkity.mybatis.plugins.paging.dbs.sql.OriginalSqlForCountParser;
+import com.wvkity.mybatis.plugins.paging.sql.OriginalSqlForCountParser;
 import com.wvkity.mybatis.utils.CollectionUtil;
 import com.wvkity.mybatis.utils.MetaObjectUtil;
 import com.wkit.lost.paging.Pageable;

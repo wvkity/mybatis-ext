@@ -1,6 +1,6 @@
-package com.wvkity.mybatis.plugins.paging.dbs.dialect.exact;
+package com.wvkity.mybatis.plugins.paging.dialect.exact;
 
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.AbstractPageableDialect;
+import com.wvkity.mybatis.plugins.paging.dialect.AbstractPageableDialect;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;

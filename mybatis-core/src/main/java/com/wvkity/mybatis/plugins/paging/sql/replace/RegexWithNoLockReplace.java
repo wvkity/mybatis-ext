@@ -1,4 +1,4 @@
-package com.wvkity.mybatis.plugins.paging.dbs.sql.replace;
+package com.wvkity.mybatis.plugins.paging.sql.replace;
 
 public class RegexWithNoLockReplace extends AbstractWithNoLockReplace {
 

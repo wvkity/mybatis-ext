@@ -1,4 +1,4 @@
-package com.wvkity.mybatis.plugins.paging.dbs.dialect;
+package com.wvkity.mybatis.plugins.paging.dialect;
 
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.session.RowBounds;

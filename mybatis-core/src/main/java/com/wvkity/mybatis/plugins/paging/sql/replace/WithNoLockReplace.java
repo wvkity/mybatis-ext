@@ -1,4 +1,4 @@
-package com.wvkity.mybatis.plugins.paging.dbs.sql.replace;
+package com.wvkity.mybatis.plugins.paging.sql.replace;
 
 /**
  * SQL SERVER数据库防止锁住查询出现异常

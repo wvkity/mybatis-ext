@@ -1,16 +1,16 @@
-package com.wvkity.mybatis.plugins.paging.dbs.proxy;
+package com.wvkity.mybatis.plugins.paging.proxy;
 
 import com.wvkity.mybatis.config.MyBatisConfigCache;
 import com.wvkity.mybatis.config.MyBatisCustomConfiguration;
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.AbstractDialect;
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.Dialect;
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.exact.Db2Dialect;
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.exact.HsqldbDialect;
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.exact.InformixDialect;
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.exact.MySqlDialect;
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.exact.OracleDialect;
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.exact.SqlServer2012LaterDialect;
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.exact.SqlServerDialect;
+import com.wvkity.mybatis.plugins.paging.dialect.AbstractDialect;
+import com.wvkity.mybatis.plugins.paging.dialect.Dialect;
+import com.wvkity.mybatis.plugins.paging.dialect.exact.Db2Dialect;
+import com.wvkity.mybatis.plugins.paging.dialect.exact.HsqldbDialect;
+import com.wvkity.mybatis.plugins.paging.dialect.exact.InformixDialect;
+import com.wvkity.mybatis.plugins.paging.dialect.exact.MySqlDialect;
+import com.wvkity.mybatis.plugins.paging.dialect.exact.OracleDialect;
+import com.wvkity.mybatis.plugins.paging.dialect.exact.SqlServer2012LaterDialect;
+import com.wvkity.mybatis.plugins.paging.dialect.exact.SqlServerDialect;
 import com.wvkity.mybatis.plugins.exception.MyBatisPluginException;
 import com.wvkity.mybatis.utils.Ascii;
 import lombok.extern.log4j.Log4j2;

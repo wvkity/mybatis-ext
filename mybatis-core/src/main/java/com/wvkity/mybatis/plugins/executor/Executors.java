@@ -1,7 +1,7 @@
 package com.wvkity.mybatis.plugins.executor;
 
 import com.wvkity.mybatis.plugins.exception.MyBatisPluginException;
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.Dialect;
+import com.wvkity.mybatis.plugins.paging.dialect.Dialect;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;

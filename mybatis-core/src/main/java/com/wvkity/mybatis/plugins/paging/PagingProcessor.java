@@ -1,7 +1,7 @@
 package com.wvkity.mybatis.plugins.paging;
 
 import com.wvkity.mybatis.core.wrapper.criteria.RangeFetch;
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.Dialect;
+import com.wvkity.mybatis.plugins.paging.dialect.Dialect;
 import com.wvkity.mybatis.plugins.processor.QueryProcessorSupport;
 import com.wvkity.mybatis.utils.Ascii;
 import com.wvkity.mybatis.utils.ClassUtil;

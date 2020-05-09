@@ -1,4 +1,4 @@
-package com.wvkity.mybatis.plugins.paging.dbs.dialect;
+package com.wvkity.mybatis.plugins.paging.dialect;
 
 import com.wvkity.mybatis.plugins.paging.config.ThreadLocalPageable;
 import com.wkit.lost.paging.Pageable;

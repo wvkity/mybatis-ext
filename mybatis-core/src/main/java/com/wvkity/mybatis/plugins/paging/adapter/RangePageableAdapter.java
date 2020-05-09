@@ -1,10 +1,10 @@
-package com.wvkity.mybatis.plugins.paging.dbs.adapter;
+package com.wvkity.mybatis.plugins.paging.adapter;
 
 import com.wvkity.mybatis.plugins.paging.config.RangePageable;
 import com.wvkity.mybatis.plugins.paging.config.RangePageableConfig;
 import com.wvkity.mybatis.plugins.paging.config.ThreadLocalRangePageable;
-import com.wvkity.mybatis.plugins.paging.dbs.dialect.Dialect;
-import com.wvkity.mybatis.plugins.paging.dbs.proxy.RangePageableDialectDelegate;
+import com.wvkity.mybatis.plugins.paging.dialect.Dialect;
+import com.wvkity.mybatis.plugins.paging.proxy.RangePageableDialectDelegate;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
