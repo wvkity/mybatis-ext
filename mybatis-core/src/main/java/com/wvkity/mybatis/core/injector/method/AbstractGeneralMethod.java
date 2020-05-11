@@ -2,9 +2,9 @@ package com.wvkity.mybatis.core.injector.method;
 
 import com.wvkity.mybatis.annotation.extension.Executing;
 import com.wvkity.mybatis.core.mapping.script.ScriptBuilder;
-import com.wvkity.mybatis.core.mapping.sql.Provider;
-import com.wvkity.mybatis.core.mapping.sql.ProviderBuilder;
-import com.wvkity.mybatis.core.mapping.sql.ProviderCache;
+import com.wvkity.mybatis.core.mapping.sql.Creator;
+import com.wvkity.mybatis.core.mapping.sql.CreatorBuilder;
+import com.wvkity.mybatis.core.mapping.sql.CreatorCache;
 import com.wvkity.mybatis.core.mapping.sql.utils.ScriptUtil;
 import com.wvkity.mybatis.core.metadata.ColumnWrapper;
 import com.wvkity.mybatis.core.metadata.TableWrapper;
@@ -24,7 +24,7 @@ import java.util.Optional;
  * 抽象通用方法注入
  * @param <T> SQL提供类
  */
-public abstract class AbstractGeneralMethod<T extends Provider> extends AbstractMethod implements ProviderBuilder<T> {
+public abstract class AbstractGeneralMethod<T extends Creator> extends AbstractMethod implements CreatorBuilder<T> {
 
     /**
      * 创建主键生成器
@@ -73,34 +73,34 @@ public abstract class AbstractGeneralMethod<T extends Provider> extends Abstract
      * @param mapperInterface 接口
      * @param __              返回值类型
      * @param table           表对象
-     * @param provider        SQL提供者
+     * @param creator         SQL提供者
      * @return {@link MappedStatement}对象
      */
     protected MappedStatement addInsertMappedStatement(Class<?> mapperInterface, Class<?> __,
-                                                       TableWrapper table, Provider provider) {
+                                                       TableWrapper table, Creator creator) {
         KeyGenerator keyGenerator = createKeyGenerator(table, (mapperInterface.getName() + "." + applyMethod()));
         ColumnWrapper primary = table.getPrimaryKey();
         boolean hasPrimaryKey = primary != null;
         Class<?> entity = table.getEntity();
-        ScriptBuilder scriptBuilder = createScriptBuilder(table, provider);
+        ScriptBuilder scriptBuilder = createScriptBuilder(table, creator);
         return addInsertMappedStatement(mapperInterface, applyMethod(), createSqlSource(scriptBuilder, entity),
                 entity, keyGenerator, hasPrimaryKey ? primary.getProperty() : null, hasPrimaryKey ?
                         primary.getColumn() : null);
     }
-    
+
     /**
      * 添加删除{@link MappedStatement}对象到MyBatis容器中
      * @param mapperInterface 接口
      * @param __              返回值类型
      * @param table           表对象
-     * @param provider        SQL提供者
+     * @param creator         SQL提供者
      * @return {@link MappedStatement}对象
      */
     protected MappedStatement addDeleteMappedStatement(Class<?> mapperInterface, Class<?> __,
-                                                       TableWrapper table, Provider provider) {
+                                                       TableWrapper table, Creator creator) {
         Class<?> entity = table.getEntity();
         return addDeleteMappedStatement(mapperInterface, applyMethod(),
-                createSqlSource(createScriptBuilder(table, provider), entity), null);
+                createSqlSource(createScriptBuilder(table, creator), entity), null);
     }
 
     /**
@@ -108,14 +108,14 @@ public abstract class AbstractGeneralMethod<T extends Provider> extends Abstract
      * @param mapperInterface 接口
      * @param __              返回值类型
      * @param table           表对象
-     * @param provider        SQL提供者
+     * @param creator         SQL提供者
      * @return {@link MappedStatement}对象
      */
     protected MappedStatement addUpdateMappedStatement(Class<?> mapperInterface, Class<?> __,
-                                                       TableWrapper table, Provider provider) {
+                                                       TableWrapper table, Creator creator) {
         Class<?> entity = table.getEntity();
         return addUpdateMappedStatement(mapperInterface, applyMethod(),
-                createSqlSource(createScriptBuilder(table, provider), entity), entity);
+                createSqlSource(createScriptBuilder(table, creator), entity), entity);
     }
 
     /**
@@ -123,19 +123,19 @@ public abstract class AbstractGeneralMethod<T extends Provider> extends Abstract
      * @param mapperInterface 接口
      * @param table           表对象
      * @param resultType      返回值类型
-     * @param provider        SQL提供者
+     * @param creator         SQL提供者
      * @return {@link MappedStatement}对象
      */
     protected MappedStatement addSelectMappedStatement(Class<?> mapperInterface, Class<?> resultType,
-                                                       TableWrapper table, Provider provider) {
+                                                       TableWrapper table, Creator creator) {
         Class<?> entity = table.getEntity();
         return addSelectMappedStatement(mapperInterface, applyMethod(), createSqlSource(
-                createScriptBuilder(table, provider), entity), entity, resultType, table);
+                createScriptBuilder(table, creator), entity), entity, resultType, table);
     }
 
     @SuppressWarnings({"unchecked"})
     @Override
     public T target() {
-        return (T) ProviderCache.newInstance(getClass());
+        return (T) CreatorCache.newInstance(getClass());
     }
 }

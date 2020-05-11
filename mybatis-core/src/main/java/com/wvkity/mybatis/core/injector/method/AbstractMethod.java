@@ -2,7 +2,7 @@ package com.wvkity.mybatis.core.injector.method;
 
 import com.wvkity.mybatis.core.mapping.script.ScriptBuilder;
 import com.wvkity.mybatis.core.mapping.script.ScriptBuilderFactory;
-import com.wvkity.mybatis.core.mapping.sql.Provider;
+import com.wvkity.mybatis.core.mapping.sql.Creator;
 import com.wvkity.mybatis.core.metadata.TableWrapper;
 import com.wvkity.mybatis.utils.StringUtil;
 import lombok.extern.log4j.Log4j2;
@@ -39,7 +39,8 @@ public abstract class AbstractMethod implements Method {
     protected LanguageDriver languageDriver;
 
     @Override
-    public void inject(MapperBuilderAssistant assistant, Class<?> mapperInterface, Class<?> resultType, TableWrapper table) {
+    public void inject(MapperBuilderAssistant assistant, Class<?> mapperInterface,
+                       Class<?> resultType, TableWrapper table) {
         this.assistant = assistant;
         this.configuration = assistant.getConfiguration();
         this.languageDriver = this.configuration.getDefaultScriptingLanguageInstance();
@@ -157,23 +158,23 @@ public abstract class AbstractMethod implements Method {
 
     /**
      * 创建脚本构建器
-     * @param table    表对象
-     * @param provider SQL提供者
+     * @param table   表对象
+     * @param creator SQL提供者
      * @return 脚本构建器
      */
-    protected ScriptBuilder createScriptBuilder(TableWrapper table, Provider provider) {
-        return createScriptBuilder(null, table, provider);
+    protected ScriptBuilder createScriptBuilder(TableWrapper table, Creator creator) {
+        return createScriptBuilder(null, table, creator);
     }
 
     /**
      * 创建脚本构建器
-     * @param alias    表别名
-     * @param table    表对象
-     * @param provider SQL提供者
+     * @param alias   表别名
+     * @param table   表对象
+     * @param creator SQL提供者
      * @return 脚本构建器
      */
-    protected ScriptBuilder createScriptBuilder(String alias, TableWrapper table, Provider provider) {
-        return ScriptBuilderFactory.create(provider, table, table.getEntity(), alias);
+    protected ScriptBuilder createScriptBuilder(String alias, TableWrapper table, Creator creator) {
+        return ScriptBuilderFactory.create(creator, table, table.getEntity(), alias);
     }
 
     /**

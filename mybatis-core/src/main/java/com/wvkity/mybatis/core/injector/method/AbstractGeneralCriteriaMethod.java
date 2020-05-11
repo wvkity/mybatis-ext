@@ -2,7 +2,7 @@ package com.wvkity.mybatis.core.injector.method;
 
 import com.wvkity.mybatis.core.mapping.script.ScriptBuilder;
 import com.wvkity.mybatis.core.mapping.script.ScriptBuilderFactory;
-import com.wvkity.mybatis.core.mapping.sql.Provider;
+import com.wvkity.mybatis.core.mapping.sql.Creator;
 import com.wvkity.mybatis.core.metadata.TableWrapper;
 import com.wvkity.mybatis.core.wrapper.criteria.Criteria;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -13,15 +13,15 @@ import org.apache.ibatis.mapping.MappedStatement;
  * @author wvkity
  * @see Criteria
  */
-public abstract class AbstractGeneralCriteriaMethod<T extends Provider> extends AbstractGeneralMethod<T> {
+public abstract class AbstractGeneralCriteriaMethod<T extends Creator> extends AbstractGeneralMethod<T> {
 
     @Override
     public MappedStatement injectMappedStatement(TableWrapper table, Class<?> mapperInterface, Class<?> resultType) {
         Class<?> entity = table.getEntity();
         ScriptBuilder builder = ScriptBuilderFactory.create(target(), table, entity, null);
         Class<?> returnType = getResultType();
-        return addSelectMappedStatement(mapperInterface, applyMethod(), createSqlSource(builder, entity),
-                null, returnType == null ? resultType : returnType, table);
+        return addSelectMappedStatement(mapperInterface, applyMethod(), createSqlSource(builder, entity), null,
+                returnType == null ? resultType : returnType, table);
     }
 
     /**

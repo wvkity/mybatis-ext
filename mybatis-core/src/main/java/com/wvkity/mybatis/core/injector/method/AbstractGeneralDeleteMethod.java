@@ -1,6 +1,6 @@
 package com.wvkity.mybatis.core.injector.method;
 
-import com.wvkity.mybatis.core.mapping.sql.Provider;
+import com.wvkity.mybatis.core.mapping.sql.Creator;
 import com.wvkity.mybatis.core.metadata.TableWrapper;
 import org.apache.ibatis.mapping.MappedStatement;
 
@@ -9,11 +9,11 @@ import org.apache.ibatis.mapping.MappedStatement;
  * @param <T> SQL提供类
  * @author wvkity
  */
-public abstract class AbstractGeneralDeleteMethod<T extends Provider> extends AbstractGeneralMethod<T> {
+public abstract class AbstractGeneralDeleteMethod<T extends Creator> extends AbstractGeneralMethod<T> {
 
     @Override
     public MappedStatement injectMappedStatement(TableWrapper table, Class<?> mapperInterface, Class<?> resultType) {
         return addDeleteMappedStatement(mapperInterface, resultType, table, target());
     }
-    
+
 }

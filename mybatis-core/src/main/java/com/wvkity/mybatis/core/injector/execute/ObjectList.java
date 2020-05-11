@@ -1,13 +1,13 @@
 package com.wvkity.mybatis.core.injector.execute;
 
 import com.wvkity.mybatis.core.injector.method.AbstractGeneralCriteriaMethod;
-import com.wvkity.mybatis.core.mapping.sql.criteria.GeneralCriteriaProvider;
+import com.wvkity.mybatis.core.mapping.sql.criteria.GeneralCriteriaCreator;
 
 /**
  * 根据指定条件包装对象查询记录(Object)
  * @author wvkity
  */
-public class ObjectList extends AbstractGeneralCriteriaMethod<GeneralCriteriaProvider> {
+public class ObjectList extends AbstractGeneralCriteriaMethod<GeneralCriteriaCreator> {
     
     @Override
     public Class<?> getResultType() {
