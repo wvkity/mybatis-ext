@@ -81,10 +81,10 @@ public class ForeignSubCriteria<T> extends ForeignCriteria<T> {
                 }
             });
             if (CollectionUtil.hasElement(this.FOREIGN_CRITERIA_SET)) {
-                for (ForeignCriteria<?> foreign : this.FOREIGN_CRITERIA_SET) {
-                    Set<String> tempQueries = foreign.getQueryColumns();
-                    if (CollectionUtil.hasElement(tempQueries)) {
-                        result.addAll(tempQueries);
+                for (AbstractForeignCriteria<?> it : this.FOREIGN_CRITERIA_SET) {
+                    Set<String> temp = it.getQueryColumns();
+                    if (CollectionUtil.hasElement(temp)) {
+                        result.addAll(temp);
                     }
                 }
             }

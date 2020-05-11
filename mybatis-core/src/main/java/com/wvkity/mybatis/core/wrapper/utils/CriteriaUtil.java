@@ -29,10 +29,8 @@ public final class CriteriaUtil {
      * @return 字段集合
      */
     public static <T> List<ColumnWrapper> propertyToColumn(Criteria<T> criteria, Collection<String> properties) {
-        return CollectionUtil.hasElement(properties) ? properties.stream()
-                .filter(StringUtil::hasText)
-                .map(criteria::searchColumn)
-                .collect(Collectors.toList()) : new ArrayList<>(0);
+        return CollectionUtil.hasElement(properties) ? properties.stream().map(criteria::searchColumn)
+                .filter(Objects::nonNull).collect(Collectors.toList()) : new ArrayList<>(0);
     }
 
     /**
@@ -44,9 +42,7 @@ public final class CriteriaUtil {
      * @return 字段集合
      */
     public static <T, V> List<ColumnWrapper> lambdaToColumn(Criteria<T> criteria, Collection<Property<T, V>> properties) {
-        return CollectionUtil.hasElement(properties) ? properties.stream()
-                .filter(Objects::nonNull)
-                .map(criteria::searchColumn)
-                .collect(Collectors.toList()) : new ArrayList<>(0);
+        return CollectionUtil.hasElement(properties) ? properties.stream().map(criteria::searchColumn)
+                .filter(Objects::nonNull).collect(Collectors.toList()) : new ArrayList<>(0);
     }
 }

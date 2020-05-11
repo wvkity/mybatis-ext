@@ -1,13 +1,11 @@
 package com.wvkity.mybatis.core.wrapper.criteria;
 
-import com.wvkity.mybatis.core.segment.SegmentManager;
-
 /**
  * 基本条件包装类
  * @param <T> 实体类型
  * @author wvkity
  */
-public class BasicCriteria<T> extends AbstractCriteriaWrapper<T> {
+public class SimpleCriteria<T> extends AbstractCriteriaWrapper<T> {
 
     private static final long serialVersionUID = -6095556771822358933L;
 
@@ -15,7 +13,7 @@ public class BasicCriteria<T> extends AbstractCriteriaWrapper<T> {
      * 构造方法
      * @param entityClass 实体类
      */
-    public BasicCriteria(Class<T> entityClass) {
+    public SimpleCriteria(Class<T> entityClass) {
         this(entityClass, null);
     }
 
@@ -24,19 +22,16 @@ public class BasicCriteria<T> extends AbstractCriteriaWrapper<T> {
      * @param entityClass 实体类
      * @param alias       别名
      */
-    public BasicCriteria(Class<T> entityClass, String alias) {
+    public SimpleCriteria(Class<T> entityClass, String alias) {
         this.entityClass = entityClass;
-        this.parameterSequence = master.parameterSequence;
-        this.aliasSequence = master.aliasSequence;
-        this.paramValueMappings = master.paramValueMappings;
-        this.segmentManager = new SegmentManager();
+        this.inits();
         this.tableAlias = alias;
         this.builtinAlias = SYS_SQL_ALIAS_PREFIX + this.aliasSequence.incrementAndGet();
     }
 
     @Override
-    protected BasicCriteria<T> newInstance() {
-        BasicCriteria<T> instance = new BasicCriteria<>(this.entityClass, this.tableAlias);
+    protected SimpleCriteria<T> newInstance() {
+        SimpleCriteria<T> instance = new SimpleCriteria<>(this.entityClass, this.tableAlias);
         copy(instance, this);
         return instance;
     }
@@ -47,7 +42,18 @@ public class BasicCriteria<T> extends AbstractCriteriaWrapper<T> {
      * @param <T>    泛型类型
      * @return 条件包装对象
      */
-    public static <T> BasicCriteria<T> from(final Class<T> entity) {
-        return new BasicCriteria<>(entity);
+    public static <T> SimpleCriteria<T> from(final Class<T> entity) {
+        return new SimpleCriteria<>(entity);
+    }
+
+    /**
+     * 创建条件包装对象
+     * @param instance 实体对象
+     * @param <T>      泛型类型
+     * @return 条件包装对象
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> SimpleCriteria<T> from(T instance) {
+        return from((Class<T>) instance.getClass());
     }
 }

@@ -8,7 +8,39 @@ package com.wvkity.mybatis.core.wrapper.criteria;
  */
 public interface QueryWrapper<T, Chain extends QueryWrapper<T, Chain>> extends Query<T, Chain>,
         ForeignCriteriaWrapper<T, Chain>, ForeignSubCriteriaWrapper<T, Chain>,
-        GroupWrapper<T, Chain>, SortWrapper<T, Chain> {
+        GroupWrapper<T, Chain>, OrderWrapper<T, Chain>, FunctionWrapper<T, Chain>, HavingWrapper<T, Chain> {
+
+    /**
+     * 获取主条件对象
+     * @param <E> 泛型类型
+     * @return 条件对象
+     */
+    <E> AbstractQueryCriteriaWrapper<E> getMaster();
+
+    /**
+     * 获取顶级主条件对象
+     * @param <E> 泛型类型
+     * @return 条件对象
+     */
+    <E> AbstractQueryCriteriaWrapper<E> getRootMaster();
+
+    /**
+     * 查询排除聚合函数
+     * @return {@code this}
+     */
+    Chain excludeFunc();
+
+    /**
+     * 只查询聚合函数
+     * @return {@code this}
+     */
+    Chain onlyQueryFunc();
+
+    /**
+     * 所有列分组(除聚合函数外)
+     * @return {@code this}
+     */
+    Chain groups();
 
     /**
      * 使用内置表别名
@@ -80,5 +112,5 @@ public interface QueryWrapper<T, Chain extends QueryWrapper<T, Chain>> extends Q
      * @return {@code this}
      */
     Chain resultType(Class<?> resultType);
-    
+
 }

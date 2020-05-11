@@ -1,18 +1,29 @@
 package com.wvkity.mybatis.core.wrapper.criteria;
 
+import com.wvkity.mybatis.core.constant.Comparator;
 import com.wvkity.mybatis.core.constant.Join;
+import com.wvkity.mybatis.core.constant.Logic;
 import com.wvkity.mybatis.core.constant.Range;
 import com.wvkity.mybatis.core.converter.Property;
+import com.wvkity.mybatis.core.handler.TableHandler;
+import com.wvkity.mybatis.core.wrapper.aggreate.AbstractFunction;
+import com.wvkity.mybatis.core.wrapper.aggreate.Aggregator;
 import com.wvkity.mybatis.core.wrapper.aggreate.Function;
+import com.wvkity.mybatis.core.wrapper.aggreate.FunctionBuilder;
 import com.wvkity.mybatis.core.wrapper.basic.AbstractGroupWrapper;
-import com.wvkity.mybatis.core.wrapper.basic.AbstractOrderWrapper;
+import com.wvkity.mybatis.core.wrapper.basic.AbstractQueryWrapper;
+import com.wvkity.mybatis.core.wrapper.basic.AbstractSortWrapper;
+import com.wvkity.mybatis.core.wrapper.basic.Case;
+import com.wvkity.mybatis.core.wrapper.basic.CaseQuery;
 import com.wvkity.mybatis.core.wrapper.basic.DirectGroup;
-import com.wvkity.mybatis.core.wrapper.basic.DirectOrder;
 import com.wvkity.mybatis.core.wrapper.basic.DirectQuery;
+import com.wvkity.mybatis.core.wrapper.basic.DirectSort;
+import com.wvkity.mybatis.core.wrapper.basic.FunctionQuery;
+import com.wvkity.mybatis.core.wrapper.basic.FunctionSort;
 import com.wvkity.mybatis.core.wrapper.basic.Group;
-import com.wvkity.mybatis.core.wrapper.basic.Order;
 import com.wvkity.mybatis.core.wrapper.basic.Query;
 import com.wvkity.mybatis.core.wrapper.basic.QueryManager;
+import com.wvkity.mybatis.core.wrapper.basic.Sort;
 import com.wvkity.mybatis.executor.resultset.EmbeddedResult;
 import com.wvkity.mybatis.utils.CollectionUtil;
 import com.wvkity.mybatis.utils.Constants;
@@ -40,17 +51,32 @@ import java.util.stream.Collectors;
  * @author wvkity
  */
 @Log4j2
-@SuppressWarnings({"serial"})
+@SuppressWarnings({"serial", "unchecked"})
 public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWrapper<T>
         implements EmbeddedResult, RangeFetch, QueryWrapper<T, AbstractQueryCriteriaWrapper<T>> {
 
     // region fields
 
     /**
+     * 主表查询条件对象
+     */
+    protected AbstractQueryCriteriaWrapper<?> master;
+
+    /**
      * 是否开启属性名自动映射成字段别名
      */
     @Getter
     protected boolean propertyAutoMappingAlias = false;
+
+    /**
+     * 查询是否包含聚合函数
+     */
+    protected boolean includeFunctionForQuery = true;
+
+    /**
+     * 仅仅只查询聚合函数
+     */
+    protected boolean onlyFunctionForQuery = false;
 
     /**
      * 查询SQL片段
@@ -111,12 +137,12 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     /**
      * 连表对象集合
      */
-    protected final Set<ForeignCriteria<?>> FOREIGN_CRITERIA_SET = new LinkedHashSet<>(8);
+    protected final Set<AbstractForeignCriteria<?>> FOREIGN_CRITERIA_SET = new LinkedHashSet<>(8);
 
     /**
      * 连表对象缓存
      */
-    protected final Map<String, ForeignCriteria<?>> FOREIGN_CRITERIA_CACHE = new ConcurrentHashMap<>(8);
+    protected final Map<String, AbstractForeignCriteria<?>> FOREIGN_CRITERIA_CACHE = new ConcurrentHashMap<>(8);
 
     @Override
     protected void inits() {
@@ -159,16 +185,6 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public <E> AbstractQueryCriteriaWrapper<T> subSelect(SubCriteria<E> sc, String property) {
-        return this;
-    }
-
-    @Override
-    public <E> AbstractQueryCriteriaWrapper<T> subSelect(SubCriteria<E> sc, String property, String alias) {
-        return this;
-    }
-
-    @Override
     public AbstractQueryCriteriaWrapper<T> select(Collection<String> properties) {
         this.queryManager.queries(Query.Multi.query(this, properties));
         return this;
@@ -205,16 +221,6 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public <E> AbstractQueryCriteriaWrapper<T> subSelect(SubCriteria<E> sc, Collection<String> properties) {
-        return this;
-    }
-
-    @Override
-    public <E> AbstractQueryCriteriaWrapper<T> subSelect(SubCriteria<E> sc, Map<String, String> properties) {
-        return this;
-    }
-
-    @Override
     public AbstractQueryCriteriaWrapper<T> exclude(String property) {
         this.queryManager.exclude(property);
         return this;
@@ -238,43 +244,22 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
         return this;
     }
 
-    protected <E> AbstractQueryCriteriaWrapper<T> ifPresent(Criteria<E> criteria,
-                                                            Consumer<? super Criteria<E>> consumer) {
-        Optional.ofNullable(criteria).ifPresent(consumer);
+    @Override
+    public AbstractQueryCriteriaWrapper<T> select(Case _case) {
+        this.queryManager.query(CaseQuery.Single.query(_case));
         return this;
     }
 
     @Override
-    public String getQuerySegment() {
-        if (CollectionUtil.hasElement(this.FOREIGN_CRITERIA_SET)) {
-            List<String> segments = new ArrayList<>(this.FOREIGN_CRITERIA_SET.size() + 1);
-            String segment = this.queryManager.getSegment();
-            if (StringUtil.hasText(segment)) {
-                segments.add(segment);
-            }
-            for (ForeignCriteria<?> foreign : this.FOREIGN_CRITERIA_SET) {
-                if (foreign instanceof ForeignSubCriteria && foreign.isFetch()) {
-                    Set<String> columns = foreign.getQueryColumns();
-                    String realAlias = StringUtil.hasText(foreign.as()) ?
-                            (foreign.as().trim() + Constants.DOT) : Constants.EMPTY;
-                    if (CollectionUtil.hasElement(columns)) {
-                        segments.add(columns.stream().map(it -> realAlias + it)
-                                .collect(Collectors.joining(Constants.COMMA_SPACE)));
-                    }
-                } else if (foreign.isFetch() || foreign.queryManager.hasQueries()) {
-                    String temp = foreign.queryManager.getSegment();
-                    if (StringUtil.hasText(temp)) {
-                        segments.add(temp);
-                    }
-                }
-            }
-            if (CollectionUtil.hasElement(segments)) {
-                return String.join(Constants.COMMA_SPACE, segments);
-            } else {
-                return Constants.EMPTY;
-            }
-        }
-        return this.queryManager.getSegment();
+    public AbstractQueryCriteriaWrapper<T> selects(Collection<Case> cases) {
+        this.queryManager.queries(CaseQuery.Multi.queries(cases));
+        return this;
+    }
+
+    protected <E> AbstractQueryCriteriaWrapper<T> ifPresent(Criteria<E> criteria,
+                                                            Consumer<? super Criteria<E>> consumer) {
+        Optional.ofNullable(criteria).ifPresent(consumer);
+        return this;
     }
 
     // endregion
@@ -375,22 +360,22 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
 
     @Override
     public AbstractQueryCriteriaWrapper<T> asc(List<String> properties) {
-        return order(Order.asc(this, properties));
+        return sort(Sort.asc(this, properties));
     }
 
     @Override
     public AbstractQueryCriteriaWrapper<T> ascWithAlias(String alias, List<String> columns) {
-        return order(DirectOrder.ascWithAlias(alias, columns));
+        return sort(DirectSort.ascWithAlias(alias, columns));
     }
 
     @Override
     public AbstractQueryCriteriaWrapper<T> asc(Function... functions) {
-        return this;
+        return sort(FunctionSort.asc(functions));
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> aggregateAsc(List<String> aliases) {
-        return this;
+    public AbstractQueryCriteriaWrapper<T> funcAsc(List<String> aliases) {
+        return sort(FunctionSort.asc(this.searchFunctions(aliases)));
     }
 
     @SuppressWarnings("unchecked")
@@ -406,22 +391,22 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
 
     @Override
     public AbstractQueryCriteriaWrapper<T> desc(List<String> properties) {
-        return order(Order.desc(this, properties));
+        return sort(Sort.desc(this, properties));
     }
 
     @Override
     public AbstractQueryCriteriaWrapper<T> descWithAlias(String alias, List<String> columns) {
-        return order(DirectOrder.descWithAlias(alias, columns));
+        return sort(DirectSort.descWithAlias(alias, columns));
     }
 
     @Override
     public AbstractQueryCriteriaWrapper<T> desc(Function... functions) {
-        return this;
+        return sort(FunctionSort.desc(functions));
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> aggregateDesc(List<String> aliases) {
-        return this;
+    public AbstractQueryCriteriaWrapper<T> funcDesc(List<String> aliases) {
+        return sort(FunctionSort.desc(this.searchFunctions(aliases)));
     }
 
     @SuppressWarnings("unchecked")
@@ -436,14 +421,14 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> order(AbstractOrderWrapper<?> order) {
-        this.segmentManager.order(order);
+    public AbstractQueryCriteriaWrapper<T> sort(AbstractSortWrapper<?> sort) {
+        this.segmentManager.sort(sort);
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> orders(List<AbstractOrderWrapper<?>> orders) {
-        this.segmentManager.orders(orders);
+    public AbstractQueryCriteriaWrapper<T> sorts(List<AbstractSortWrapper<?>> sorts) {
+        this.segmentManager.sorts(sorts);
         return this;
     }
 
@@ -452,13 +437,17 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     // region group by
 
     @Override
+    public AbstractQueryCriteriaWrapper<T> group(String property) {
+        return group(Group.group(this, property));
+    }
+
+    @Override
     public AbstractQueryCriteriaWrapper<T> group(AbstractGroupWrapper<?> group) {
         this.segmentManager.group(group);
         return this;
     }
 
-    @Override
-    public AbstractQueryCriteriaWrapper<T> group(List<String> properties) {
+    public AbstractQueryCriteriaWrapper<T> groups(Collection<String> properties) {
         return group(Group.group(this, properties));
     }
 
@@ -486,7 +475,468 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
 
     // endregion
 
+    // region function
+
+    // region count
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> count() {
+        return function(FunctionBuilder.create().criteria(this)
+                .column(TableHandler.getPrimaryKey(this.entityClass)).count());
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> count(Case _case) {
+        return function(Aggregator.count(this, _case));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> count(String property, boolean distinct, String alias) {
+        return function(Aggregator.count(this, property, distinct, alias));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> count(String property, boolean distinct, String alias,
+                                                 Comparator comparator, Object value) {
+        return function(Aggregator.count(this, property, distinct, alias, comparator, value, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> count(String property, boolean distinct, String alias,
+                                                 Comparator comparator, Object min, Object max) {
+        return function(Aggregator.count(this, property, distinct, alias, comparator, min, max, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> countWith(String column, boolean distinct, String alias) {
+        return function(Aggregator.countWith(this, column, distinct, alias));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> countWith(String tableAlias, String column, boolean distinct, String alias) {
+        return function(Aggregator.countWith(tableAlias, column, distinct, alias));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> countWith(String column, boolean distinct, String alias,
+                                                     Comparator comparator, Object value) {
+        return function(Aggregator.countWith(this, column, distinct, alias, comparator, value, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> countWith(String column, boolean distinct, String alias,
+                                                     Comparator comparator, Object min, Object max) {
+        return function(Aggregator.countWith(this, column, distinct, alias, comparator, min, max, Logic.AND));
+    }
+
+    // endregion
+
+    // region sum
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> sum(Case _case) {
+        return function(Aggregator.sum(this, _case));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> sum(String property, boolean distinct, String alias) {
+        return function(Aggregator.sum(this, property, distinct, alias));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> sum(String property, boolean distinct,
+                                               String alias, Comparator comparator, Object value) {
+        return function(Aggregator.sum(this, property, distinct, alias, comparator, value, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> sum(String property, boolean distinct, String alias,
+                                               Comparator comparator, Object min, Object max) {
+        return function(Aggregator.sum(this, property, distinct, alias, comparator, min, max, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> sum(String property, boolean distinct, String alias, Integer scale) {
+        return peek(Aggregator.sum(this, property, distinct, alias), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> sum(String property, boolean distinct, String alias,
+                                               Integer scale, Comparator comparator, Object value) {
+        return peek(Aggregator.sum(this, property, distinct, alias, comparator, value, Logic.AND), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> sum(String property, boolean distinct, String alias,
+                                               Integer scale, Comparator comparator, Object min, Object max) {
+        return peek(Aggregator.sum(this, property, distinct, alias, comparator, min, max, Logic.AND), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> sumWith(String column, boolean distinct, String alias) {
+        return function(Aggregator.sumWith(this, column, distinct, alias));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> sumWith(String tableAlias, String column, boolean distinct, String alias) {
+        return function(Aggregator.sumWith(tableAlias, column, distinct, alias));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> sumWith(String column, boolean distinct, String alias,
+                                                   Comparator comparator, Object value) {
+        return function(Aggregator.sumWith(this, column, distinct, alias, comparator, value, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> sumWith(String column, boolean distinct, String alias,
+                                                   Comparator comparator, Object min, Object max) {
+        return function(Aggregator.sumWith(this, column, distinct, alias, comparator, min, max, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> sumWith(String column, boolean distinct, String alias, Integer scale) {
+        return peek(Aggregator.sumWith(this, column, distinct, alias), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> sumWith(String tableAlias, String column, boolean distinct,
+                                                   String alias, Integer scale) {
+        return peek(Aggregator.sumWith(tableAlias, column, distinct, alias), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> sumWith(String column, boolean distinct, String alias, Integer scale,
+                                                   Comparator comparator, Object value) {
+        return peek(Aggregator.sumWith(this, column, distinct, alias, comparator, value, Logic.AND), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> sumWith(String column, boolean distinct, String alias, Integer scale,
+                                                   Comparator comparator, Object min, Object max) {
+        return peek(Aggregator.sumWith(this, column, distinct, alias, comparator, min, max, Logic.AND), scale);
+    }
+
+    // endregion
+
+    // region avg
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> avg(Case _case) {
+        return function(Aggregator.avg(this, _case));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> avg(String property, boolean distinct, String alias) {
+        return function(Aggregator.avg(this, property, distinct, alias));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> avg(String property, boolean distinct, String alias,
+                                               Comparator comparator, Object value) {
+        return function(Aggregator.avg(this, property, distinct, alias, comparator, value, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> avg(String property, boolean distinct, String alias,
+                                               Comparator comparator, Object min, Object max) {
+        return function(Aggregator.avg(this, property, distinct, alias, comparator, min, max, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> avg(String property, boolean distinct, String alias, Integer scale) {
+        return peek(Aggregator.avg(this, property, distinct, alias), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> avg(String property, boolean distinct, String alias,
+                                               Integer scale, Comparator comparator, Object value) {
+        return peek(Aggregator.avg(this, property, distinct, alias, comparator, value, Logic.AND), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> avg(String property, boolean distinct, String alias,
+                                               Integer scale, Comparator comparator, Object min, Object max) {
+        return peek(Aggregator.avg(this, property, distinct, alias, comparator, min, max, Logic.AND), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> avgWith(String column, boolean distinct, String alias) {
+        return function(Aggregator.avgWith(this, column, distinct, alias));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> avgWith(String tableAlias, String column, boolean distinct, String alias) {
+        return function(Aggregator.avgWith(tableAlias, column, distinct, alias));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> avgWith(String column, boolean distinct, String alias,
+                                                   Comparator comparator, Object value) {
+        return function(Aggregator.avgWith(this, column, distinct, alias, comparator, value, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> avgWith(String column, boolean distinct, String alias,
+                                                   Comparator comparator, Object min, Object max) {
+        return function(Aggregator.avgWith(this, column, distinct, alias, comparator, min, max, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> avgWith(String column, boolean distinct, String alias, Integer scale) {
+        return peek(Aggregator.avgWith(this, column, distinct, alias), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> avgWith(String tableAlias, String column, boolean distinct,
+                                                   String alias, Integer scale) {
+        return peek(Aggregator.avgWith(tableAlias, column, distinct, alias), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> avgWith(String column, boolean distinct, String alias, Integer scale,
+                                                   Comparator comparator, Object value) {
+        return peek(Aggregator.avgWith(this, column, distinct, alias, comparator, value, Logic.AND), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> avgWith(String column, boolean distinct, String alias, Integer scale,
+                                                   Comparator comparator, Object min, Object max) {
+        return peek(Aggregator.avgWith(this, column, distinct, alias, comparator, min, max, Logic.AND), scale);
+    }
+
+    // endregion
+
+    // region min
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> min(Case _case) {
+        return function(Aggregator.min(this, _case));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> min(String property, String alias) {
+        return function(Aggregator.min(this, property, alias));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> min(String property, String alias,
+                                               Comparator comparator, Object value) {
+        return function(Aggregator.min(this, property, alias, comparator, value, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> min(String property, String alias,
+                                               Comparator comparator, Object min, Object max) {
+        return function(Aggregator.min(this, property, alias, comparator, min, max, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> min(String property, String alias, Integer scale) {
+        return peek(Aggregator.min(this, property, alias), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> min(String property, String alias, Integer scale,
+                                               Comparator comparator, Object min, Object max) {
+        return peek(Aggregator.min(this, property, alias, comparator, min, max, Logic.AND), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> minWith(String column, String alias) {
+        return function(Aggregator.minWith(this, column, alias));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> minWith(String tableAlias, String column, String alias) {
+        return function(Aggregator.minWith(tableAlias, column, alias));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> minWith(String column, String alias, Comparator comparator, Object value) {
+        return function(Aggregator.minWith(this, column, alias, comparator, value, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> minWith(String column, String alias, 
+                                                   Comparator comparator, Object min, Object max) {
+        return function(Aggregator.minWith(this, column, alias, comparator, min, max, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> minWith(String column, String alias, Integer scale) {
+        return peek(Aggregator.minWith(this, column, alias), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> minWith(String tableAlias, String column, String alias, Integer scale) {
+        return peek(Aggregator.minWith(tableAlias, column, alias), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> minWith(String column, String alias, Integer scale, 
+                                                   Comparator comparator, Object value) {
+        return peek(Aggregator.minWith(this, column, alias, comparator, value, Logic.AND), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> minWith(String column, String alias, Integer scale, 
+                                                   Comparator comparator, Object min, Object max) {
+        return peek(Aggregator.minWith(this, column, alias, comparator, min, max, Logic.AND), scale);
+    }
+
+    // endregion
+
+    // region max
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> max(Case _case) {
+        return function(Aggregator.max(this, _case));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> max(String property, String alias) {
+        return function(Aggregator.max(this, property, alias));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> max(String property, String alias,
+                                               Comparator comparator, Object value) {
+        return function(Aggregator.max(this, property, alias, comparator, value, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> max(String property, String alias,
+                                               Comparator comparator, Object min, Object max) {
+        return function(Aggregator.max(this, property, alias, comparator, min, max, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> max(String property, String alias, Integer scale) {
+        return peek(Aggregator.max(this, property, alias), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> max(String property, String alias, Integer scale,
+                                               Comparator comparator, Object min, Object max) {
+        return peek(Aggregator.max(this, property, alias, comparator, min, max, Logic.AND), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> maxWith(String column, String alias) {
+        return function(Aggregator.maxWith(this, column, alias));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> maxWith(String tableAlias, String column, String alias) {
+        return function(Aggregator.maxWith(tableAlias, column, alias));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> maxWith(String column, String alias, Comparator comparator, Object value) {
+        return function(Aggregator.maxWith(this, column, alias, comparator, value, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> maxWith(String column, String alias,
+                                                   Comparator comparator, Object min, Object max) {
+        return function(Aggregator.maxWith(this, column, alias, comparator, min, max, Logic.AND));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> maxWith(String column, String alias, Integer scale) {
+        return peek(Aggregator.maxWith(this, column, alias), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> maxWith(String tableAlias, String column, String alias, Integer scale) {
+        return peek(Aggregator.maxWith(tableAlias, column, alias), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> maxWith(String column, String alias, Integer scale,
+                                                   Comparator comparator, Object value) {
+        return peek(Aggregator.maxWith(this, column, alias, comparator, value, Logic.AND), scale);
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> maxWith(String column, String alias, Integer scale,
+                                                   Comparator comparator, Object min, Object max) {
+        return peek(Aggregator.maxWith(this, column, alias, comparator, min, max, Logic.AND), scale);
+    }
+
+    // endregion
+
+    private AbstractQueryCriteriaWrapper<T> peek(AbstractFunction<?> function, Integer scale) {
+        Optional.ofNullable(function).ifPresent(it -> {
+            it.scale(scale);
+            function(it);
+        });
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> function(Function function) {
+        this.queryManager.query(FunctionQuery.Single.query(function));
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> functions(Collection<Function> functions) {
+        this.queryManager.queries(FunctionQuery.Multi.queries(functions));
+        return this;
+    }
+
+    // endregion
+
+
+    // region having
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> having(String alias) {
+        return this.having(this.queryManager.searchFunction(alias));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> havings(List<String> aliases) {
+        return this.havings(this.queryManager.searchFunctions(aliases));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> having(Function function) {
+        this.segmentManager.having(function);
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> havings(Collection<Function> functions) {
+        this.segmentManager.havings(functions);
+        return this;
+    }
+
+
+    // endregion
+
     // region get/set methods
+
+    @Override
+    public <E> AbstractQueryCriteriaWrapper<E> getMaster() {
+        return this.master != null ? (AbstractQueryCriteriaWrapper<E>) this.master : null;
+    }
+
+    @Override
+    public <E> AbstractQueryCriteriaWrapper<E> getRootMaster() {
+        AbstractQueryCriteriaWrapper<E> rootMaster;
+        if (this.isRoot()) {
+            return (AbstractQueryCriteriaWrapper<E>) this;
+        } else {
+            AbstractQueryCriteriaWrapper<E> root = getMaster();
+            while (!root.isRoot()) {
+                root = root.getMaster();
+            }
+            return root;
+        }
+    }
 
     @Override
     public boolean isEnableAlias() {
@@ -568,6 +1018,24 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
+    public AbstractQueryCriteriaWrapper<T> excludeFunc() {
+        this.includeFunctionForQuery = false;
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> onlyQueryFunc() {
+        this.onlyFunctionForQuery = true;
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> groups() {
+        this.groupAll = true;
+        return this;
+    }
+
+    @Override
     public AbstractQueryCriteriaWrapper<T> useAs() {
         this.enableAlias = true;
         return this;
@@ -578,6 +1046,49 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
         this.enableAlias = true;
         this.tableAlias = alias;
         return this;
+    }
+
+    @Override
+    public Function searchFunction(String alias) {
+        return Optional.ofNullable(this.queryManager.searchFunction(alias)).orElse(null);
+    }
+
+    @Override
+    public List<Function> searchFunctions(List<String> aliases) {
+        return Optional.ofNullable(this.queryManager.searchFunctions(aliases)).orElse(null);
+    }
+
+    @Override
+    public String getQuerySegment() {
+        if (CollectionUtil.hasElement(this.FOREIGN_CRITERIA_SET)) {
+            List<String> segments = new ArrayList<>(this.FOREIGN_CRITERIA_SET.size() + 1);
+            String segment = this.isOnly() ? this.queryManager.getFuncSegment() : this.queryManager.getSegment();
+            if (StringUtil.hasText(segment)) {
+                segments.add(segment);
+            }
+            for (AbstractForeignCriteria<?> it : this.FOREIGN_CRITERIA_SET) {
+                if (it.isFetch() && it instanceof ForeignSubCriteria) {
+                    Set<String> columns = it.getQueryColumns();
+                    String realAlias = StringUtil.hasText(it.as()) ?
+                            (it.as().trim() + Constants.DOT) : Constants.EMPTY;
+                    if (CollectionUtil.hasElement(columns)) {
+                        segments.add(columns.stream().map(c -> realAlias + c)
+                                .collect(Collectors.joining(Constants.COMMA_SPACE)));
+                    }
+                } else if (it.isFetch() || it.queryManager.hasQueries()) {
+                    String temp = it.queryManager.getSegment();
+                    if (StringUtil.hasText(temp)) {
+                        segments.add(temp);
+                    }
+                }
+            }
+            if (CollectionUtil.hasElement(segments)) {
+                return String.join(Constants.COMMA_SPACE, segments);
+            } else {
+                return Constants.EMPTY;
+            }
+        }
+        return this.isOnly() ? this.queryManager.getFuncSegment() : this.queryManager.getSegment();
     }
 
     /**
@@ -594,7 +1105,41 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     public String getGroupSegment() {
-        return "";
+        List<String> columns = new ArrayList<>();
+        List<AbstractQueryWrapper<?>> queries = this.queryManager.getQueries();
+        if (CollectionUtil.hasElement(queries)) {
+            String realAlias = StringUtil.hasText(this.as()) ?
+                    (this.as().trim() + Constants.DOT) : Constants.EMPTY;
+            for (AbstractQueryWrapper<?> it : queries) {
+                if (it instanceof Query || it instanceof DirectQuery) {
+                    columns.add(realAlias + it.columnName());
+                }
+            }
+        }
+        if (CollectionUtil.hasElement(this.FOREIGN_CRITERIA_SET)) {
+            for (AbstractForeignCriteria<?> it : this.FOREIGN_CRITERIA_SET) {
+                if (it.isFetch() && it instanceof ForeignSubCriteria) {
+                    String realAlias = StringUtil.hasText(it.as()) ?
+                            (it.as().trim() + Constants.DOT) : Constants.EMPTY;
+                    Set<String> its = it.getQueryColumns();
+                    if (CollectionUtil.hasElement(its)) {
+                        for (String c : its) {
+                            columns.add(realAlias + c);
+                        }
+                    }
+                } else if (it.isFetch() || it.queryManager.hasQueries()) {
+                    List<AbstractQueryWrapper<?>> its = it.queryManager.getQueries();
+                    String realAlias = StringUtil.hasText(it.as()) ?
+                            (it.as().trim() + Constants.DOT) : Constants.EMPTY;
+                    for (AbstractQueryWrapper<?> query : its) {
+                        if (query instanceof Query || query instanceof DirectQuery) {
+                            columns.add(realAlias + query.columnName());
+                        }
+                    }
+                }
+            }
+        }
+        return columns.isEmpty() ? Constants.EMPTY : String.join(Constants.COMMA_SPACE, columns);
     }
 
     /**

@@ -3,7 +3,7 @@ package com.wvkity.mybatis.core.wrapper.criteria;
 import com.wvkity.mybatis.core.converter.Property;
 import com.wvkity.mybatis.core.converter.PropertyConverter;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -50,7 +50,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * @return {@code this}
      */
     default <V1, V2> Chain eq(Property<T, V1> p1, V1 v1, Property<T, V2> p2, V2 v2) {
-        Map<String, Object> props = new HashMap<>(2);
+        Map<String, Object> props = new LinkedHashMap<>(2);
         props.put(convert(p1), v1);
         props.put(convert(p2), v2);
         return eq(props);
@@ -71,7 +71,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      */
     default <V1, V2, V3> Chain eq(Property<T, V1> p1, V1 v1, Property<T, V2> p2, V2 v2,
                                   Property<T, V3> p3, V3 v3) {
-        Map<String, Object> props = new HashMap<>(3);
+        Map<String, Object> props = new LinkedHashMap<>(3);
         props.put(convert(p1), v1);
         props.put(convert(p2), v2);
         props.put(convert(p3), v3);
@@ -95,7 +95,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * @return {@code this}
      */
     default Chain eq(String p1, Object v1, String p2, Object v2) {
-        Map<String, Object> props = new HashMap<>(2);
+        Map<String, Object> props = new LinkedHashMap<>(2);
         props.put(p1, v1);
         props.put(p2, v2);
         return eq(props);
@@ -112,7 +112,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * @return {@code this}
      */
     default Chain eq(String p1, Object v1, String p2, Object v2, String p3, Object v3) {
-        Map<String, Object> props = new HashMap<>(3);
+        Map<String, Object> props = new LinkedHashMap<>(3);
         props.put(p1, v1);
         props.put(p2, v2);
         props.put(p3, v3);
@@ -221,7 +221,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * @return {@code this}
      */
     <E, V> Chain nq(Property<T, V> property, Criteria<E> otherCriteria, String otherColumn);
-    
+
     /**
      * 等于(Normal Equals)
      * @param property        属性
@@ -317,7 +317,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * @return {@code this}
      */
     default Chain eqWith(String c1, Object v1, String c2, Object v2) {
-        Map<String, Object> columns = new HashMap<>(2);
+        Map<String, Object> columns = new LinkedHashMap<>(2);
         columns.put(c1, v1);
         columns.put(c2, v2);
         return eqWith(columns);
@@ -334,7 +334,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * @return {@code this}
      */
     default Chain eqWith(String c1, Object v1, String c2, Object v2, String c3, Object v3) {
-        Map<String, Object> columns = new HashMap<>(3);
+        Map<String, Object> columns = new LinkedHashMap<>(3);
         columns.put(c1, v1);
         columns.put(c2, v2);
         columns.put(c3, v3);
@@ -367,7 +367,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * @return {@code this}
      */
     default Chain eqWith(String tableAlias, String c1, Object v1, String c2, Object v2) {
-        Map<String, Object> columns = new HashMap<>(2);
+        Map<String, Object> columns = new LinkedHashMap<>(2);
         columns.put(c1, v1);
         columns.put(c2, v2);
         return eqWith(tableAlias, columns);
@@ -385,7 +385,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * @return {@code this}
      */
     default Chain eqWith(String tableAlias, String c1, Object v1, String c2, Object v2, String c3, Object v3) {
-        Map<String, Object> columns = new HashMap<>(3);
+        Map<String, Object> columns = new LinkedHashMap<>(3);
         columns.put(c1, v1);
         columns.put(c2, v2);
         columns.put(c3, v3);

@@ -2,6 +2,7 @@ package com.wvkity.mybatis.core.wrapper.criteria;
 
 import com.wvkity.mybatis.core.converter.Property;
 import com.wvkity.mybatis.core.converter.PropertyConverter;
+import com.wvkity.mybatis.core.wrapper.basic.Case;
 import com.wvkity.mybatis.utils.ArrayUtil;
 
 import java.util.Collection;
@@ -246,60 +247,6 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
 
     /**
      * 添加查询列
-     * @param scAlias  子查询对象别名
-     * @param property 属性
-     * @return {@code this}
-     */
-    default <E> Chain subSelect(String scAlias, String property) {
-        return subSelect(searchSub(scAlias), property);
-    }
-
-
-    /**
-     * 添加查询列
-     * @param sc       子查询对象
-     * @param property 属性
-     * @param <E>      实体类型
-     * @param <V>      属性值类型
-     * @return {@code this}
-     */
-    default <E, V> Chain subSelect(SubCriteria<E> sc, Property<E, V> property) {
-        return subSelect(sc, sc.convert(property));
-    }
-
-    /**
-     * 添加查询列
-     * @param sc       子查询对象
-     * @param property 属性
-     * @return {@code this}
-     */
-    <E> Chain subSelect(SubCriteria<E> sc, String property);
-
-    /**
-     * 添加查询列
-     * @param sc       子查询对象
-     * @param property 属性
-     * @param alias    列别名
-     * @param <E>      实体类型
-     * @param <V>      属性值类型
-     * @return {@code this}
-     */
-    default <E, V> Chain subSelect(SubCriteria<E> sc, Property<E, V> property, String alias) {
-        return subSelect(sc, sc.convert(property), alias);
-    }
-
-    /**
-     * 添加查询列
-     * @param sc       子查询对象
-     * @param property 属性
-     * @param alias    列别名
-     * @param <E>      实体类型
-     * @return {@code this}
-     */
-    <E> Chain subSelect(SubCriteria<E> sc, String property, String alias);
-
-    /**
-     * 添加查询列
      * @param properties 属性数组
      * @return {@code this}
      */
@@ -325,82 +272,6 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
     default Chain selectsWith(String... columns) {
         return selectWith(ArrayUtil.toList(columns));
     }
-
-    /**
-     * 添加子查询列
-     * @param scAlias    子查询条件对象别名
-     * @param properties 属性数组
-     * @param <E>        实体类型
-     * @return {@code this}
-     */
-    default <E> Chain subSelects(String scAlias, String... properties) {
-        return subSelect(scAlias, ArrayUtil.toList(properties));
-    }
-
-    /**
-     * 添加子查询列
-     * @param scAlias    子查询条件对象别名
-     * @param properties 属性集合
-     * @param <E>        实体类型
-     * @return {@code this}
-     */
-    default <E> Chain subSelect(String scAlias, Collection<String> properties) {
-        return subSelect(searchSub(scAlias), properties);
-    }
-
-    /**
-     * 添加子查询列
-     * @param sc         子查询条件对象
-     * @param properties 属性数组
-     * @param <E>        实体类型
-     * @param <V>        值类型
-     * @return {@code this}
-     */
-    @SuppressWarnings({"unchecked"})
-    default <E, V> Chain subSelects(SubCriteria<E> sc, Property<E, V>... properties) {
-        return subSelect(sc, sc.convert(ArrayUtil.toList(properties)));
-    }
-
-    /**
-     * 添加子查询列
-     * @param sc         子查询条件对象
-     * @param properties 属性数组
-     * @param <E>        实体类型
-     * @return {@code this}
-     */
-    default <E> Chain subSelects(SubCriteria<E> sc, String... properties) {
-        return subSelect(sc, ArrayUtil.toList(properties));
-    }
-
-    /**
-     * 添加子查询列
-     * @param sc         子查询条件对象
-     * @param properties 属性集合
-     * @param <E>        实体类型
-     * @return {@code this}
-     */
-    <E> Chain subSelect(SubCriteria<E> sc, Collection<String> properties);
-
-    /**
-     * 添加子查询列
-     * @param scAlias    子查询条件对象别名
-     * @param properties 列别名-属性集合
-     * @param <E>        实体类型
-     * @return {@code this}
-     */
-    default <E> Chain subSelect(String scAlias, Map<String, String> properties) {
-        return subSelect(searchSub(scAlias), properties);
-    }
-
-
-    /**
-     * 添加子查询列
-     * @param sc         子查询条件对象
-     * @param properties 列别名-属性集合
-     * @param <E>        实体类型
-     * @return {@code this}
-     */
-    <E> Chain subSelect(SubCriteria<E> sc, Map<String, String> properties);
 
     /**
      * 排除查询列
@@ -469,6 +340,29 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @return {@code this}
      */
     Chain excludesWith(Collection<String> columns);
+
+    /**
+     * Case选择查询
+     * @param _case {@link Case}
+     * @return {@code this}
+     */
+    Chain select(Case _case);
+
+    /**
+     * Case选择查询
+     * @param cases {@link Case}
+     * @return {@code this}
+     */
+    default Chain selects(Case... cases) {
+        return selects(ArrayUtil.toList(cases));
+    }
+
+    /**
+     * Case选择查询
+     * @param cases {@link Case}
+     * @return {@code this}
+     */
+    Chain selects(Collection<Case> cases);
 
     /**
      * 获取查询字段片段

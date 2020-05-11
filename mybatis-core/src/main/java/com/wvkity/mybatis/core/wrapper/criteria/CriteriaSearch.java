@@ -10,25 +10,25 @@ public interface CriteriaSearch {
      * 搜索子查询条件对象
      * @param tableAlias 子查询别名
      * @param <E>        泛型类型
-     * @return {@link SubCriteria}
+     * @return {@link AbstractSubCriteria}
      */
-    <E> SubCriteria<E> searchSub(String tableAlias);
+    <E> AbstractSubCriteria<E> searchSub(String tableAlias);
 
     /**
      * 搜索子查询条件对象
      * @param entity 实体类
      * @param <E>    泛型类型
-     * @return {@link SubCriteria}
+     * @return {@link AbstractSubCriteria}
      */
-    <E> SubCriteria<E> searchSub(Class<E> entity);
+    <E> AbstractSubCriteria<E> searchSub(Class<E> entity);
 
     /**
      * 搜索子查询条件对象
      * @param subTempTabAlias 子查询别名
      * @param entity          实体类
      * @param <E>             泛型类型
-     * @return {@link SubCriteria}
+     * @return {@link AbstractSubCriteria}
      */
-    <E> SubCriteria<E> searchSub(String subTempTabAlias, Class<E> entity);
+    <E> AbstractSubCriteria<E> searchSub(String subTempTabAlias, Class<E> entity);
 
 }

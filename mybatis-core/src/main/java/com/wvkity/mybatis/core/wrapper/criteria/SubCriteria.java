@@ -1,10 +1,9 @@
 package com.wvkity.mybatis.core.wrapper.criteria;
 
 import com.wvkity.mybatis.core.conditional.criterion.Criterion;
-import com.wvkity.mybatis.core.segment.SegmentManager;
 import com.wvkity.mybatis.core.wrapper.basic.QueryManager;
+import com.wvkity.mybatis.core.wrapper.basic.SegmentManager;
 import com.wvkity.mybatis.utils.CollectionUtil;
-import com.wvkity.mybatis.utils.Constants;
 
 import java.util.Collection;
 
@@ -13,7 +12,7 @@ import java.util.Collection;
  * @param <T> 实体类型
  * @author wvkity
  */
-public class SubCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
+public class SubCriteria<T> extends AbstractSubCriteria<T> {
 
     private static final long serialVersionUID = 4851693309633974454L;
 
@@ -24,7 +23,8 @@ public class SubCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
      * @param clauses     条件
      * @param <E>         泛型类型
      */
-    public <E> SubCriteria(Class<T> entityClass, AbstractCriteriaWrapper<E> master, Collection<Criterion> clauses) {
+    public <E> SubCriteria(Class<T> entityClass, AbstractQueryCriteriaWrapper<E> master,
+                           Collection<Criterion> clauses) {
         this(entityClass, null, master, clauses);
     }
 
@@ -35,7 +35,7 @@ public class SubCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
      * @param master      主表条件包装对象
      * @param <E>         泛型类型
      */
-    public <E> SubCriteria(Class<T> entityClass, String alias, AbstractCriteriaWrapper<E> master) {
+    public <E> SubCriteria(Class<T> entityClass, String alias, AbstractQueryCriteriaWrapper<E> master) {
         this(entityClass, alias, master, null);
     }
 
@@ -47,7 +47,7 @@ public class SubCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
      * @param clauses     条件
      * @param <E>         泛型类型
      */
-    public <E> SubCriteria(Class<T> entityClass, String alias, AbstractCriteriaWrapper<E> master,
+    public <E> SubCriteria(Class<T> entityClass, String alias, AbstractQueryCriteriaWrapper<E> master,
                            Collection<Criterion> clauses) {
         this.entityClass = entityClass;
         this.master = master;
@@ -70,18 +70,8 @@ public class SubCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
         return instance;
     }
 
-    /**
-     * 获取条件
-     * @return 条件片段
-     */
-    public String getSegmentForCondition() {
-        StringBuilder builder = new StringBuilder(Constants.BRACKET_LEFT);
-        builder.append("SELECT ").append(this.getQuerySegment()).append(" FROM ").append(this.getTableName());
-        builder.append(getForeignSegment());
-        if (this.isHasCondition()) {
-            builder.append(Constants.SPACE).append(this.getWhereSegment());
-        }
-        builder.append(Constants.BRACKET_RIGHT);
-        return builder.toString();
+    @Override
+    public boolean isRoot() {
+        return false;
     }
 }

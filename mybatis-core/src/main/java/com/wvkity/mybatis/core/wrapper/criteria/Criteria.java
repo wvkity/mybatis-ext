@@ -5,8 +5,10 @@ import com.wvkity.mybatis.core.converter.PlaceholderConverter;
 import com.wvkity.mybatis.core.converter.PropertyConverter;
 import com.wvkity.mybatis.core.segment.Segment;
 import com.wvkity.mybatis.core.wrapper.aggreate.Function;
+import com.wvkity.mybatis.utils.ArrayUtil;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 条件包装接口
@@ -42,18 +44,12 @@ public interface Criteria<T> extends Search<T>, PlaceholderConverter, PropertyCo
     }
 
     /**
-     * 获取主条件对象
-     * @param <E> 泛型类型
-     * @return 条件对象
+     * 是否为最顶层对象
+     * @return true: 是 | false: 否
      */
-    <E> AbstractCriteriaWrapper<E> getMaster();
-
-    /**
-     * 获取顶级主条件对象
-     * @param <E> 泛型类型
-     * @return 条件对象
-     */
-    <E> AbstractCriteriaWrapper<E> getRootMaster();
+    default boolean isRoot() {
+        return true;
+    }
 
     /**
      * 添加条件
@@ -80,14 +76,14 @@ public interface Criteria<T> extends Search<T>, PlaceholderConverter, PropertyCo
      * @param array 子查询条件对象数组
      * @return 当前对象
      */
-    Criteria<T> where(SubCriteria<?>... array);
+    Criteria<T> where(AbstractSubCriteria<?>... array);
 
     /**
      * 添加子查询条件对象
      * @param list 子查询条件对象集合
      * @return 当前对象
      */
-    Criteria<T> addSub(Collection<SubCriteria<?>> list);
+    Criteria<T> addSub(Collection<AbstractSubCriteria<?>> list);
 
     /**
      * 联表查询副表引用属性
@@ -150,7 +146,25 @@ public interface Criteria<T> extends Search<T>, PlaceholderConverter, PropertyCo
      * @param alias 聚合函数别名
      * @return 聚合函数对象
      */
-    default Function getAggregate(String alias) {
+    default Function searchFunction(final String alias) {
+        return null;
+    }
+
+    /**
+     * 搜索聚合函数对象集合
+     * @param aliases 聚合函数别名数组
+     * @return 聚合函数对象集合
+     */
+    default List<Function> searchFunctions(final String... aliases) {
+        return searchFunctions(ArrayUtil.toList(aliases));
+    }
+
+    /**
+     * 搜索聚合函数对象集合
+     * @param aliases 聚合函数别名集合
+     * @return 聚合函数对象集合
+     */
+    default List<Function> searchFunctions(final List<String> aliases) {
         return null;
     }
 

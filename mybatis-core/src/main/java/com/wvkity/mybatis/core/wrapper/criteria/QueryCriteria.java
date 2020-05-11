@@ -9,6 +9,10 @@ public class QueryCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
 
     private static final long serialVersionUID = -5025331186998284119L;
 
+    public QueryCriteria() {
+        this.inits();
+    }
+
     /**
      * 构造方法
      * @param entityClass 实体类
@@ -44,5 +48,16 @@ public class QueryCriteria<T> extends AbstractQueryCriteriaWrapper<T> {
      */
     public static <T> QueryCriteria<T> from(final Class<T> entity) {
         return new QueryCriteria<>(entity);
+    }
+
+    /**
+     * 创建条件包装对象
+     * @param instance 实体对象
+     * @param <T>      泛型类型
+     * @return 条件包装对象
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> QueryCriteria<T> from(T instance) {
+        return from((Class<T>) instance.getClass());
     }
 }

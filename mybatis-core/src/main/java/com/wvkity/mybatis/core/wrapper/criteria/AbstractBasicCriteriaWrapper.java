@@ -11,7 +11,7 @@ import com.wvkity.mybatis.core.converter.Property;
 import com.wvkity.mybatis.core.handler.TableHandler;
 import com.wvkity.mybatis.core.metadata.ColumnWrapper;
 import com.wvkity.mybatis.core.metadata.TableWrapper;
-import com.wvkity.mybatis.core.segment.SegmentManager;
+import com.wvkity.mybatis.core.wrapper.basic.SegmentManager;
 import com.wvkity.mybatis.utils.ArrayUtil;
 import com.wvkity.mybatis.utils.CollectionUtil;
 import com.wvkity.mybatis.utils.Constants;
@@ -77,11 +77,6 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
      * 当前对象
      */
     protected final Chain context = (Chain) this;
-
-    /**
-     * 主表查询条件对象
-     */
-    protected AbstractCriteriaWrapper<?> master;
 
     /**
      * 表名
@@ -168,16 +163,6 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
     protected boolean groupAll;
 
     /**
-     * 查询是否包含聚合函数
-     */
-    protected boolean includeFunctionForQuery = true;
-
-    /**
-     * 仅仅只查询聚合函数
-     */
-    protected boolean onlyFunctionForQuery = false;
-
-    /**
      * 联表SQL片段
      */
     protected String foreignSegment;
@@ -185,12 +170,12 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
     /**
      * 子查询条件对象集合
      */
-    protected Set<SubCriteria<?>> subCriteriaSet;
+    protected Set<AbstractSubCriteria<?>> subCriteriaSet;
 
     /**
      * 子查询条件缓存
      */
-    protected Map<String, SubCriteria<?>> subCriteriaCache;
+    protected Map<String, AbstractSubCriteria<?>> subCriteriaCache;
     // endregion
 
     /**
@@ -1356,12 +1341,12 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
     }
 
     @Override
-    public Chain where(SubCriteria<?>... array) {
+    public Chain where(AbstractSubCriteria<?>... array) {
         return addSub(ArrayUtil.toList(array));
     }
 
     @Override
-    public Chain addSub(Collection<SubCriteria<?>> list) {
+    public Chain addSub(Collection<AbstractSubCriteria<?>> list) {
         if (CollectionUtil.hasElement(list)) {
             list.stream().filter(Objects::nonNull).forEach(it -> {
                 this.subCriteriaSet.add(it);
@@ -1379,7 +1364,7 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
 
     @Override
     public <E> SubCriteria<E> sub(Class<E> entityClass, String alias, Collection<Criterion> clauses) {
-        return new SubCriteria<>(entityClass, alias, (AbstractCriteriaWrapper<?>) this, clauses);
+        return new SubCriteria<>(entityClass, alias, (AbstractQueryCriteriaWrapper<?>) this, clauses);
     }
 
     @Override
@@ -1400,7 +1385,7 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
 
     // region dep methods
     @Override
-    public <E> SubCriteria<E> searchSub(String alias) {
+    public <E> AbstractSubCriteria<E> searchSub(String alias) {
         if (StringUtil.hasText(alias) && CollectionUtil.hasElement(subCriteriaSet)) {
             return (SubCriteria<E>) Optional.ofNullable(subCriteriaCache.get(alias)).orElse(null);
         }
@@ -1408,23 +1393,23 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
     }
 
     @Override
-    public <E> SubCriteria<E> searchSub(Class<E> entity) {
+    public <E> AbstractSubCriteria<E> searchSub(Class<E> entity) {
         if (entity != null && CollectionUtil.hasElement(subCriteriaSet)) {
-            SubCriteria<?> subCriteria = subCriteriaSet.stream().filter(criteria ->
+            AbstractSubCriteria<?> subCriteria = subCriteriaSet.stream().filter(criteria ->
                     entity.equals(criteria.getEntityClass())).findFirst().orElse(null);
-            return (SubCriteria<E>) Optional.ofNullable(subCriteria).orElse(null);
+            return (AbstractSubCriteria<E>) Optional.ofNullable(subCriteria).orElse(null);
         }
         return null;
     }
 
     @Override
-    public <E> SubCriteria<E> searchSub(String alias, Class<E> entity) {
+    public <E> AbstractSubCriteria<E> searchSub(String alias, Class<E> entity) {
         if (CollectionUtil.hasElement(subCriteriaSet)) {
             boolean hasTempAlias = StringUtil.hasText(alias);
             boolean hasEntity = entity != null;
             if (hasTempAlias || hasEntity) {
                 if (hasTempAlias && hasEntity) {
-                    SubCriteria<E> criteria = searchSub(entity);
+                    AbstractSubCriteria<E> criteria = searchSub(entity);
                     if (criteria != null && alias.equals(criteria.as())) {
                         return criteria;
                     }

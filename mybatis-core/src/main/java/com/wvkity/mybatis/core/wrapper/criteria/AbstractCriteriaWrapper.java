@@ -7,24 +7,9 @@ import java.util.function.Function;
  * @param <T> 实体类型
  * @author wvkity
  */
-@SuppressWarnings({"serial", "unchecked"})
+@SuppressWarnings({"serial"})
 public abstract class AbstractCriteriaWrapper<T> extends AbstractChainCriteriaWrapper<T, AbstractCriteriaWrapper<T>> {
-
-    @Override
-    public <E> AbstractCriteriaWrapper<E> getMaster() {
-        return this.master != null ? (AbstractCriteriaWrapper<E>) this.master : null;
-    }
-
-    @Override
-    public <E> AbstractCriteriaWrapper<E> getRootMaster() {
-        AbstractCriteriaWrapper<E> rootMaster;
-        AbstractCriteriaWrapper<E> root = (AbstractCriteriaWrapper<E>) this;
-        while ((rootMaster = root.getMaster()) != null) {
-            root = rootMaster;
-        }
-        return root;
-    }
-
+    
     /**
      * 桥接
      * @param function function对象

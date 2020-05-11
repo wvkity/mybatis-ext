@@ -3,7 +3,7 @@ package com.wvkity.mybatis.core.wrapper.criteria;
 import com.wvkity.mybatis.core.converter.Property;
 import com.wvkity.mybatis.core.converter.PropertyConverter;
 import com.wvkity.mybatis.core.wrapper.aggreate.Function;
-import com.wvkity.mybatis.core.wrapper.basic.AbstractOrderWrapper;
+import com.wvkity.mybatis.core.wrapper.basic.AbstractSortWrapper;
 import com.wvkity.mybatis.utils.ArrayUtil;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * @param <Chain> 子类
  * @author wvkity
  */
-public interface SortWrapper<T, Chain extends SortWrapper<T, Chain>> extends PropertyConverter<T> {
+public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends PropertyConverter<T> {
 
 
     // region ASC
@@ -94,8 +94,8 @@ public interface SortWrapper<T, Chain extends SortWrapper<T, Chain>> extends Pro
      * @param aliases 聚合函数别名数组
      * @return 当前对象
      */
-    default Chain aggregateAsc(String... aliases) {
-        return aggregateAsc(ArrayUtil.toList(aliases));
+    default Chain funcAsc(String... aliases) {
+        return funcAsc(ArrayUtil.toList(aliases));
     }
 
     /**
@@ -103,7 +103,7 @@ public interface SortWrapper<T, Chain extends SortWrapper<T, Chain>> extends Pro
      * @param aliases 聚合函数别名集合
      * @return 当前对象
      */
-    Chain aggregateAsc(List<String> aliases);
+    Chain funcAsc(List<String> aliases);
 
     /**
      * ASC排序
@@ -211,8 +211,8 @@ public interface SortWrapper<T, Chain extends SortWrapper<T, Chain>> extends Pro
      * @param aliases 聚合函数别名数组
      * @return 当前对象
      */
-    default Chain aggregateDesc(String... aliases) {
-        return aggregateDesc(ArrayUtil.toList(aliases));
+    default Chain funcDesc(String... aliases) {
+        return funcDesc(ArrayUtil.toList(aliases));
     }
 
     /**
@@ -220,7 +220,7 @@ public interface SortWrapper<T, Chain extends SortWrapper<T, Chain>> extends Pro
      * @param aliases 聚合函数别名集合
      * @return 当前对象
      */
-    Chain aggregateDesc(List<String> aliases);
+    Chain funcDesc(List<String> aliases);
 
     /**
      * DESC排序
@@ -253,24 +253,24 @@ public interface SortWrapper<T, Chain extends SortWrapper<T, Chain>> extends Pro
 
     /**
      * 添加排序
-     * @param order 排序对象
+     * @param sort 排序对象
      * @return 当前对象
      */
-    Chain order(AbstractOrderWrapper<?> order);
+    Chain sort(AbstractSortWrapper<?> sort);
 
     /**
      * 添加排序
-     * @param orders 排序对象数组
+     * @param sorts 排序对象数组
      * @return 当前对象
      */
-    default Chain orders(AbstractOrderWrapper<?>... orders) {
-        return orders(ArrayUtil.toList(orders));
+    default Chain sorts(AbstractSortWrapper<?>... sorts) {
+        return sorts(ArrayUtil.toList(sorts));
     }
 
     /**
      * 添加排序
-     * @param orders 排序对象集合
+     * @param sorts 排序对象集合
      * @return 当前对象
      */
-    Chain orders(List<AbstractOrderWrapper<?>> orders);
+    Chain sorts(List<AbstractSortWrapper<?>> sorts);
 }

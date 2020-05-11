@@ -5,6 +5,7 @@ import com.wvkity.mybatis.core.converter.PropertyConverter;
 import com.wvkity.mybatis.core.wrapper.basic.AbstractGroupWrapper;
 import com.wvkity.mybatis.utils.ArrayUtil;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,6 +16,22 @@ import java.util.List;
  */
 public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends PropertyConverter<T> {
 
+    /**
+     * 分组
+     * @param property 属性
+     * @param <V>      属性值类型
+     * @return 当前对象
+     */
+    default <V> Chain group(Property<T, V> property) {
+        return group(convert(property));
+    }
+
+    /**
+     * 分组
+     * @param property 属性
+     * @return 当前对象
+     */
+    Chain group(String property);
 
     /**
      * 分组
@@ -23,8 +40,8 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @return 当前对象
      */
     @SuppressWarnings({"unchecked"})
-    default <V> Chain group(Property<T, V>... properties) {
-        return group(convert(ArrayUtil.toList(properties)));
+    default <V> Chain groups(Property<T, V>... properties) {
+        return groups(convert(ArrayUtil.toList(properties)));
     }
 
     /**
@@ -32,8 +49,8 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @param properties 属性数组
      * @return 当前对象
      */
-    default Chain group(String... properties) {
-        return group(ArrayUtil.toList(properties));
+    default Chain groups(String... properties) {
+        return groups(ArrayUtil.toList(properties));
     }
 
     /**
@@ -41,7 +58,7 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @param properties 属性集合
      * @return 当前对象
      */
-    Chain group(List<String> properties);
+    Chain groups(Collection<String> properties);
 
     /**
      * 分组

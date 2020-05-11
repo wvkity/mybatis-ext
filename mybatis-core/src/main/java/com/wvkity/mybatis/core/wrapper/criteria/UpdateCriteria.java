@@ -34,4 +34,15 @@ public class UpdateCriteria<T> extends AbstractUpdateCriteriaWrapper<T> {
     public static <T> UpdateCriteria<T> from(final Class<T> entity) {
         return new UpdateCriteria<>(entity);
     }
+
+    /**
+     * 创建条件包装对象
+     * @param instance 实体对象
+     * @param <T>      泛型类型
+     * @return 条件包装对象
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> UpdateCriteria<T> from(T instance) {
+        return from((Class<T>) instance.getClass());
+    }
 }
