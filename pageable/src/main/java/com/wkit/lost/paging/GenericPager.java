@@ -8,7 +8,7 @@ import java.util.List;
  * 泛型分页
  * @author wvkity
  */
-public class PagerWrap<E> extends Pager {
+public class GenericPager<E> extends AbstractPager {
 
     private static final long serialVersionUID = 3752141957648406085L;
 
@@ -30,7 +30,7 @@ public class PagerWrap<E> extends Pager {
     /**
      * 构造方法
      */
-    public PagerWrap() {
+    public GenericPager() {
         super();
     }
 
@@ -38,7 +38,7 @@ public class PagerWrap<E> extends Pager {
      * 构造方法
      * @param page 当前页
      */
-    public PagerWrap(String page) {
+    public GenericPager(String page) {
         super(page);
     }
 
@@ -46,7 +46,7 @@ public class PagerWrap<E> extends Pager {
      * 构造方法
      * @param page 当前页
      */
-    public PagerWrap(long page) {
+    public GenericPager(long page) {
         super(page);
     }
 
@@ -55,7 +55,7 @@ public class PagerWrap<E> extends Pager {
      * @param page 当前页
      * @param size 每页数目
      */
-    public PagerWrap(String page, String size) {
+    public GenericPager(String page, String size) {
         super(page, size);
     }
 
@@ -64,7 +64,7 @@ public class PagerWrap<E> extends Pager {
      * @param page 当前页
      * @param size 每页数目
      */
-    public PagerWrap(long page, long size) {
+    public GenericPager(long page, long size) {
         super(page, size);
     }
 
@@ -74,7 +74,7 @@ public class PagerWrap<E> extends Pager {
      * @return {@code this}
      */
     @SuppressWarnings("unchecked")
-    public PagerWrap<E> add(E... elements) {
+    public GenericPager<E> add(E... elements) {
         if (elements == null || elements.length == 0) {
             this.data = null;
             this.empty = true;
@@ -92,7 +92,7 @@ public class PagerWrap<E> extends Pager {
      * 清空元素
      * @return {@code this}
      */
-    public PagerWrap<E> clear() {
+    public GenericPager<E> clear() {
         if (this.data != null && !this.data.isEmpty()) {
             this.data.clear();
             this.empty = true;
@@ -100,24 +100,89 @@ public class PagerWrap<E> extends Pager {
         return this;
     }
 
+    /**
+     * 获取数据
+     * @return 数据列表
+     */
     public List<E> getData() {
         return this.data;
     }
 
+    /**
+     * 设置数据
+     * @param data 数据列表
+     */
     public void setData(List<E> data) {
         this.data = data;
     }
 
+    /**
+     * 数据是否为空
+     * @return boolean
+     */
     public boolean isEmpty() {
         this.empty = this.data == null || this.data.isEmpty();
         return this.empty;
     }
 
+    /**
+     * 是否自动填充数据
+     * @return boolean
+     */
     public boolean autoFilling() {
         return autoFilling;
     }
 
-    public void autoFilling(boolean autoFilling) {
+    /**
+     * 设置是否自动填充数据
+     * @param autoFilling 是否自动填充数据
+     * @return {@code this}
+     */
+    public GenericPager<E> autoFilling(boolean autoFilling) {
         this.autoFilling = autoFilling;
+        return this;
+    }
+
+
+    /**
+     * 创建分页实例
+     * @param page 当前页
+     * @param <E>  泛型类型
+     * @return 分页对象
+     */
+    public static <E> GenericPager<E> of(final String page) {
+        return new GenericPager<>(page);
+    }
+
+    /**
+     * 创建分页实例
+     * @param page 当前页
+     * @param <E>  泛型类型
+     * @return 分页对象
+     */
+    public static <E> GenericPager<E> of(final long page) {
+        return new GenericPager<>(page);
+    }
+
+    /**
+     * 创建分页实例
+     * @param page 当前页
+     * @param size 每页显示数目
+     * @param <E>  泛型类型
+     * @return 分页对象
+     */
+    public static <E> GenericPager<E> of(final long page, final long size) {
+        return new GenericPager<>(page, size);
+    }
+
+    /**
+     * 创建分页实例
+     * @param page 当前页
+     * @param size 每页显示数目
+     * @param <E>  泛型类型
+     * @return 分页对象
+     */
+    public static <E> GenericPager<E> of(final String page, final String size) {
+        return new GenericPager<>(page, size);
     }
 }
