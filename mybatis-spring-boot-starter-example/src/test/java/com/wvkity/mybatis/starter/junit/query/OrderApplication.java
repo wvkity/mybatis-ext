@@ -26,7 +26,7 @@ public class OrderApplication extends RootTestRunner {
         QueryCriteria<User> criteria = new QueryCriteria<>(User.class);
         criteria.and(it -> it.eq(User::getSex, 1, User::getState, 1)).orIdEq(1L);
         criteria.asc(User::getState).asc("version").ascWithAlias("st_", "GMT_CREATED").as("st_");
-        criteria.group(User::getState);
+        criteria.groups(User::getState);
         List<User> result = userService.list(criteria);
         log.info("执行结果: {}", JSON.toJSONString(result, true));
     }

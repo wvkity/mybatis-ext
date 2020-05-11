@@ -276,7 +276,7 @@ public class SimpleQueryApplication extends RootTestRunner {
     @Test
     public void singleTemplateTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        String template = "LEFT({@@}, 2) = {}";
+        String template = "LEFT(:@, 2) = ?0";
         criteria.template(template, Grade::getName, "33");
         List<GradeVo> list = gradeService.list(criteria.useAs());
         log.info("结果: {}", JSON.toJSONString(list, true));
@@ -285,7 +285,7 @@ public class SimpleQueryApplication extends RootTestRunner {
     @Test
     public void multiTemplateTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        String template = "LEFT({@@}, {}) = {}";
+        String template = "LEFT(:@, ?0) = ?1";
         criteria.template(template, Grade::getName, 2, "33");
         List<GradeVo> list = gradeService.list(criteria.useAs());
         log.info("结果: {}", JSON.toJSONString(list, true));
@@ -294,7 +294,7 @@ public class SimpleQueryApplication extends RootTestRunner {
     @Test
     public void mapTemplateTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        String template = "LEFT({@@}, ${left}) = ${realName}";
+        String template = "LEFT(:@, :left) = :realName";
         Map<String, Object> params = new HashMap<>(2);
         params.put("left", 2);
         params.put("realName", "33");
@@ -304,9 +304,18 @@ public class SimpleQueryApplication extends RootTestRunner {
     }
 
     @Test
+    public void templateTest2() {
+        QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
+        String template = "LEFT(:@, :0) = :1";
+        criteria.template(template, Grade::getName, 2, "初一");
+        List<GradeVo> list = gradeService.list(criteria);
+        log.info("结果: {}", JSON.toJSONString(list, true));
+    }
+
+    @Test
     public void mapTemplateTest2() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        String template = "LEFT({@@}, ${left}) = ${realName}";
+        String template = "LEFT(:@, :left) = :realName";
         criteria.template(template, Grade::getName, "left", 2, "realName", "x2");
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
@@ -315,7 +324,7 @@ public class SimpleQueryApplication extends RootTestRunner {
     @Test
     public void singleDirectTemplateTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        String template = "LEFT({@@}, 2) = {}";
+        String template = "LEFT(:@, 2) = ?0";
         criteria.templateWith(template, "NAME", "33")
                 .orTemplateWith(template, "name", "44");
         List<GradeVo> list = gradeService.list(criteria.useAs());
@@ -325,7 +334,7 @@ public class SimpleQueryApplication extends RootTestRunner {
     @Test
     public void singleDirectTemplateNotWithTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        String template = "LEFT(NAME, 2) = {}";
+        String template = "LEFT(NAME, 2) = ?0";
         criteria.templateWith(template, "33")
                 .orTemplateWith(template, "44");
         List<GradeVo> list = gradeService.list(criteria.useAs());
@@ -335,7 +344,7 @@ public class SimpleQueryApplication extends RootTestRunner {
     @Test
     public void multiDirectTemplateTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        String template = "LEFT({@@}, {}) = {}";
+        String template = "LEFT(:@, ?0) = ?1";
         criteria.templateWith(template, "NAME", 2, "33");
         List<GradeVo> list = gradeService.list(criteria.useAs());
         log.info("结果: {}", JSON.toJSONString(list, true));
@@ -344,7 +353,7 @@ public class SimpleQueryApplication extends RootTestRunner {
     @Test
     public void multiDirectTemplateNotWithTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        String template = "LEFT(name, {}) = {}";
+        String template = "LEFT(name, ?0) = ?1";
         criteria.templateWith(template, 2, "33");
         List<GradeVo> list = gradeService.list(criteria.useAs());
         log.info("结果: {}", JSON.toJSONString(list, true));
@@ -353,7 +362,7 @@ public class SimpleQueryApplication extends RootTestRunner {
     @Test
     public void mapDirectTemplateTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        String template = "LEFT({@@}, ${left}) = ${realName}";
+        String template = "LEFT(:@, :left) = :realName";
         Map<String, Object> params = new HashMap<>(2);
         params.put("left", 2);
         params.put("realName", "33");
@@ -365,7 +374,7 @@ public class SimpleQueryApplication extends RootTestRunner {
     @Test
     public void mapDirectTemplateTest2() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        String template = "LEFT({@@}, ${left}) = ${realName}";
+        String template = "LEFT(:@, ?left) = :realName";
         criteria.templateWith(template, "name", "left", 2, "realName", "x2");
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
@@ -374,7 +383,7 @@ public class SimpleQueryApplication extends RootTestRunner {
     @Test
     public void mapDirectTemplateNotWithTest() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        String template = "LEFT(NAME, ${left}) = ${realName}";
+        String template = "LEFT(NAME, :left) = :realName";
         Map<String, Object> params = new HashMap<>(2);
         params.put("left", 2);
         params.put("realName", "初一");
@@ -386,7 +395,7 @@ public class SimpleQueryApplication extends RootTestRunner {
     @Test
     public void mapDirectTemplateNotWithTest2() {
         QueryCriteria<Grade> criteria = new QueryCriteria<>(Grade.class);
-        String template = "LEFT(NAME, ${left}) = ${realName}";
+        String template = "LEFT(NAME, :left) = :realName";
         criteria.templateWith(template, "left", 2, "realName", "x2");
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
