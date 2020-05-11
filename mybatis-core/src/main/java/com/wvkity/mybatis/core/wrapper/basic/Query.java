@@ -62,16 +62,6 @@ public class Query extends AbstractQueryWrapper<ColumnWrapper> {
     }
 
     @Override
-    public AbstractQueryWrapper<?> transform(Criteria<?> criteria) {
-        return Optional.ofNullable(criteria).map(it -> {
-            String columnName = StringUtil.hasText(this.columnAlias) ? this.columnAlias :
-                    (this.criteria != null && this.criteria.isPropertyAutoMappingAlias() ?
-                            this.column.getProperty() : this.column.getColumn());
-            return DirectQuery.Single.query(it, columnName, null);
-        }).orElse(null);
-    }
-
-    @Override
     public String getSegment() {
         return getSegment(true);
     }

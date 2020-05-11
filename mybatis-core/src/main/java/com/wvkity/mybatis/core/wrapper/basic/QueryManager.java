@@ -4,18 +4,22 @@ import com.wvkity.mybatis.core.handler.TableHandler;
 import com.wvkity.mybatis.core.metadata.ColumnWrapper;
 import com.wvkity.mybatis.core.metadata.TableWrapper;
 import com.wvkity.mybatis.core.segment.Segment;
+import com.wvkity.mybatis.core.wrapper.aggreate.Function;
 import com.wvkity.mybatis.core.wrapper.criteria.AbstractQueryCriteriaWrapper;
 import com.wvkity.mybatis.utils.ArrayUtil;
 import com.wvkity.mybatis.utils.CollectionUtil;
+import com.wvkity.mybatis.utils.Constants;
 import com.wvkity.mybatis.utils.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -28,6 +32,11 @@ public class QueryManager implements Segment {
     private static final long serialVersionUID = -3275773488142492015L;
 
     /**
+     * 排序缓存
+     */
+    private final Map<String, Function> FUNCTION_CACHE = new ConcurrentHashMap<>(8);
+
+    /**
      * 条件对象
      */
     private final AbstractQueryCriteriaWrapper<?> criteria;
@@ -35,17 +44,22 @@ public class QueryManager implements Segment {
     /**
      * 查询列容器
      */
-    private final List<AbstractQueryWrapper<?>> wrappers = new CopyOnWriteArrayList<>();
+    private final List<AbstractQueryWrapper<?>> WRAPPERS = new CopyOnWriteArrayList<>();
+
+    /**
+     * 查询聚合函数
+     */
+    private final List<AbstractQueryWrapper<?>> FUNCTION_WRAPPERS = new CopyOnWriteArrayList<>();
 
     /**
      * 排除查询属性
      */
-    private final Set<String> excludeProperties = new HashSet<>(8);
+    private final Set<String> EXCLUDE_PROPERTIES = new HashSet<>(8);
 
     /**
      * 排除查询列
      */
-    private final Set<String> excludeColumns = new HashSet<>(8);
+    private final Set<String> EXCLUDE_COLUMNS = new HashSet<>(8);
 
     /**
      * 标记SQL片段已生成
@@ -77,7 +91,13 @@ public class QueryManager implements Segment {
      */
     public QueryManager query(AbstractQueryWrapper<?> wrapper) {
         if (wrapper != null) {
-            this.wrappers.add(wrapper);
+            if (wrapper instanceof FunctionQuery) {
+                this.FUNCTION_WRAPPERS.add(wrapper);
+                cacheFunction(wrapper);
+            } else {
+                this.WRAPPERS.add(wrapper);
+            }
+            this.cached = false;
         }
         return this;
     }
@@ -101,11 +121,24 @@ public class QueryManager implements Segment {
             List<? extends AbstractQueryWrapper<?>> its = wrappers.stream().filter(Objects::nonNull)
                     .collect(Collectors.toList());
             if (!its.isEmpty()) {
-                this.wrappers.addAll(its);
+                for (AbstractQueryWrapper<?> it : its) {
+                    if (it instanceof FunctionQuery) {
+                        this.FUNCTION_WRAPPERS.add(it);
+                        cacheFunction(it);
+                    } else {
+                        this.WRAPPERS.add(it);
+                    }
+                }
                 this.cached = false;
             }
         }
         return this;
+    }
+
+    private void cacheFunction(AbstractQueryWrapper<?> wrapper) {
+        if (StringUtil.hasText(wrapper.alias())) {
+            this.FUNCTION_CACHE.put(wrapper.alias(), ((FunctionQuery) wrapper).getFunction());
+        }
     }
 
     /**
@@ -115,7 +148,7 @@ public class QueryManager implements Segment {
      */
     public QueryManager exclude(String property) {
         if (StringUtil.hasText(property)) {
-            this.excludeProperties.add(property);
+            this.EXCLUDE_PROPERTIES.add(property);
         }
         return this;
     }
@@ -137,7 +170,7 @@ public class QueryManager implements Segment {
     public QueryManager excludes(Collection<String> properties) {
         Set<String> its = distinct(properties);
         if (!its.isEmpty()) {
-            this.excludeProperties.addAll(its);
+            this.EXCLUDE_PROPERTIES.addAll(its);
             this.cached = false;
         }
         return this;
@@ -150,7 +183,7 @@ public class QueryManager implements Segment {
      */
     public QueryManager excludeWith(String column) {
         if (StringUtil.hasText(column)) {
-            this.excludeColumns.add(column);
+            this.EXCLUDE_COLUMNS.add(column);
         }
         return this;
     }
@@ -172,7 +205,7 @@ public class QueryManager implements Segment {
     public QueryManager excludesWith(Collection<String> columns) {
         Set<String> its = distinct(columns);
         if (!its.isEmpty()) {
-            this.excludeColumns.addAll(its);
+            this.EXCLUDE_COLUMNS.addAll(its);
             this.cached = false;
         }
         return this;
@@ -187,32 +220,68 @@ public class QueryManager implements Segment {
             return new ArrayList<>(this._wrappers);
         }
         List<AbstractQueryWrapper<?>> queries;
-        if (CollectionUtil.hasElement(wrappers)) {
-            queries = wrappers.stream().filter(it -> {
+        if (CollectionUtil.hasElement(WRAPPERS)) {
+            queries = WRAPPERS.stream().filter(it -> {
                 if (it instanceof Query) {
-                    return accept(((Query) it).getProperty(), this.excludeProperties, false);
+                    return accept(((Query) it).getProperty(), this.EXCLUDE_PROPERTIES, false);
                 } else if (it instanceof DirectQuery) {
-                    return accept(((DirectQuery) it).getColumn(), this.excludeColumns, true);
+                    return accept(((DirectQuery) it).getColumn(), this.EXCLUDE_COLUMNS, true);
                 }
                 return true;
             }).collect(Collectors.toList());
+            if (this.criteria.isInclude() && !this.FUNCTION_WRAPPERS.isEmpty()) {
+                queries.addAll(this.FUNCTION_WRAPPERS);
+            }
         } else {
             // 获取所有列
             Set<ColumnWrapper> columnWrappers = Optional.ofNullable(TableHandler.getTable(criteria.getEntityClass()))
                     .map(TableWrapper::columns).orElse(null);
             if (columnWrappers != null) {
                 queries = columnWrappers.stream().filter(it ->
-                        accept(it.getProperty(), this.excludeProperties, false)
-                                && accept(it.getColumn(), this.excludeColumns, true)
-                ).map(it -> Query.Single.query(criteria, it)).collect(Collectors.toList());
+                        accept(it.getProperty(), this.EXCLUDE_PROPERTIES, false)
+                                && accept(it.getColumn(), this.EXCLUDE_COLUMNS, true)
+                ).map(it -> Query.Single.query(this.criteria, it)).collect(Collectors.toList());
+                if (this.criteria.isInclude() && !this.FUNCTION_WRAPPERS.isEmpty()) {
+                    queries.addAll(this.FUNCTION_WRAPPERS);
+                }
             } else {
                 return new ArrayList<>(0);
             }
         }
-        //queries = loop( criteria );
         this._wrappers = queries;
         this.cached = true;
         return new ArrayList<>(this._wrappers);
+    }
+
+    /**
+     * 搜索聚合函数对象
+     * @param alias 聚合函数别名
+     * @return 聚合函数对象
+     */
+    public Function searchFunction(final String alias) {
+        return this.FUNCTION_CACHE.get(alias);
+    }
+
+    /**
+     * 搜索聚合函数对象
+     * @param aliases 聚合函数别名数组
+     * @return 聚合函数对象集合
+     */
+    public List<Function> searchFunctions(final String... aliases) {
+        return searchFunctions(ArrayUtil.toList(aliases));
+    }
+
+    /**
+     * 搜索聚合函数对象
+     * @param aliases 聚合函数别名集合
+     * @return 聚合函数对象集合
+     */
+    public List<Function> searchFunctions(final List<String> aliases) {
+        if (CollectionUtil.hasElement(aliases)) {
+            return aliases.stream().filter(StringUtil::hasText).map(this::searchFunction)
+                    .filter(Objects::nonNull).collect(Collectors.toList());
+        }
+        return null;
     }
 
     /**
@@ -220,7 +289,7 @@ public class QueryManager implements Segment {
      * @return true: 是, false: 否
      */
     public boolean hasQueries() {
-        return this.wrappers != null && !this.wrappers.isEmpty();
+        return this.WRAPPERS != null && !this.WRAPPERS.isEmpty();
     }
 
     @Override
@@ -233,13 +302,23 @@ public class QueryManager implements Segment {
     }
 
     /**
+     * 获取聚合函数SQL片段
+     * @return SQL片段
+     */
+    public String getFuncSegment() {
+        return this.FUNCTION_WRAPPERS.isEmpty() ? Constants.EMPTY : this.FUNCTION_WRAPPERS.stream()
+                .map(it -> it.getSegment(true)).filter(StringUtil::hasText)
+                .collect(Collectors.joining(Constants.COMMA_SPACE));
+    }
+
+    /**
      * 获取SQL片段
      * @param applyQuery 是否为查询语句
      * @return SQL片段
      */
     public String getSegment(boolean applyQuery) {
         return getQueries().stream().map(it -> it.getSegment(applyQuery))
-                .filter(StringUtil::hasText).collect(Collectors.joining(", "));
+                .filter(StringUtil::hasText).collect(Collectors.joining(Constants.COMMA_SPACE));
     }
 
     /**

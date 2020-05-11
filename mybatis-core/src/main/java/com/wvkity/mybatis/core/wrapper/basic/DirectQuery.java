@@ -72,15 +72,6 @@ public class DirectQuery extends AbstractQueryWrapper<String> {
     }
 
     @Override
-    public AbstractQueryWrapper<?> transform(Criteria<?> criteria) {
-        if (criteria != null) {
-            return DirectQuery.Single.query(criteria,
-                    StringUtil.hasText(this.columnAlias) ? this.columnAlias : this.column, null);
-        }
-        return null;
-    }
-
-    @Override
     public String getSegment() {
         return getSegment(true);
     }
