@@ -451,6 +451,11 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<T, V, PK>, T
     }
 
     @Override
+    public List<V> list(Pageable pageable) {
+        return pageable == null ? EMPTY_DATA : mapper.simpleList(pageable);
+    }
+
+    @Override
     public List<V> list(T entity, Pageable pageable) {
         return entity == null ? EMPTY_DATA : mapper.pageableList(entity, pageable);
     }

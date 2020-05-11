@@ -30,6 +30,7 @@ import com.wvkity.mybatis.core.injector.execute.ObjectPageableList;
 import com.wvkity.mybatis.core.injector.execute.PageableList;
 import com.wvkity.mybatis.core.injector.execute.PageableListByCriteria;
 import com.wvkity.mybatis.core.injector.execute.SelectOne;
+import com.wvkity.mybatis.core.injector.execute.SimpleList;
 import com.wvkity.mybatis.core.injector.execute.Update;
 import com.wvkity.mybatis.core.injector.execute.UpdateByCriteria;
 import com.wvkity.mybatis.core.injector.execute.UpdateNotWithLocking;
@@ -78,6 +79,7 @@ public class DefaultInjector extends AbstractInjector {
                 new ExistsByCriteria(),
                 new SelectOne(),
                 new List(),
+                new SimpleList(),
                 new ObjectList(),
                 new ArrayList(),
                 new MapList(),

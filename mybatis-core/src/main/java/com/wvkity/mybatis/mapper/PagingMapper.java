@@ -16,6 +16,13 @@ import java.util.Map;
 public interface PagingMapper<T, V> {
 
     /**
+     * 分页查询列表
+     * @param pageable 分页对象
+     * @return 列表
+     */
+    List<V> simpleList(@Param(Constants.PARAM_PAGEABLE) Pageable pageable);
+
+    /**
      * 查询数据
      * @param criteria 条件对象
      * @return Object集合
@@ -52,7 +59,7 @@ public interface PagingMapper<T, V> {
      * @return 列表
      */
     List<Object[]> arrayPageableList(@Param(Constants.PARAM_CRITERIA) Criteria<T> criteria,
-                                    @Param(Constants.PARAM_PAGEABLE) Pageable pageable);
+                                     @Param(Constants.PARAM_PAGEABLE) Pageable pageable);
 
     /**
      * 分页查询列表
@@ -61,7 +68,7 @@ public interface PagingMapper<T, V> {
      * @return 列表
      */
     List<Map<String, Object>> mapPageableList(@Param(Constants.PARAM_CRITERIA) Criteria<T> criteria,
-                                     @Param(Constants.PARAM_PAGEABLE) Pageable pageable);
+                                              @Param(Constants.PARAM_PAGEABLE) Pageable pageable);
 
     /**
      * 分页查询记录
@@ -80,5 +87,5 @@ public interface PagingMapper<T, V> {
      */
     List<V> pageableListByCriteria(@Param(Constants.PARAM_CRITERIA) Criteria<T> criteria,
                                    @Param(Constants.PARAM_PAGEABLE) Pageable pageable);
-    
+
 }

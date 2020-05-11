@@ -82,6 +82,13 @@ public interface QueryService<T, V, PK> {
 
     /**
      * 分页查询记录
+     * @param pageable 分页对象
+     * @return 多条记录
+     */
+    List<V> list(Pageable pageable);
+
+    /**
+     * 分页查询记录
      * @param entity   指定对象
      * @param pageable 分页对象
      * @return 多条记录
