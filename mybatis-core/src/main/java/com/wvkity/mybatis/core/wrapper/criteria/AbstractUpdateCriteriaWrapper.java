@@ -55,7 +55,7 @@ public abstract class AbstractUpdateCriteriaWrapper<T> extends AbstractCriteriaW
     }
 
     @Override
-    public AbstractUpdateCriteriaWrapper<T> directSet(String column, Object value) {
+    public AbstractUpdateCriteriaWrapper<T> setWith(String column, Object value) {
         if (checkCanUpdatable(column)) {
             this.UPDATE_COLUMN_CACHE.put(column, value);
         }
@@ -63,9 +63,9 @@ public abstract class AbstractUpdateCriteriaWrapper<T> extends AbstractCriteriaW
     }
 
     @Override
-    public AbstractUpdateCriteriaWrapper<T> directSet(Map<String, Object> columns) {
+    public AbstractUpdateCriteriaWrapper<T> setWith(Map<String, Object> columns) {
         if (CollectionUtil.hasElement(columns)) {
-            columns.forEach(this::directSet);
+            columns.forEach(this::setWith);
         }
         return this;
     }

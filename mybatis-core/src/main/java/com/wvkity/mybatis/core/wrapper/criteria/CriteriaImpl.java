@@ -63,14 +63,14 @@ public class CriteriaImpl<T> extends AbstractQueryCriteriaWrapper<T> implements 
     }
 
     @Override
-    public CriteriaImpl<T> directSet(String column, Object value) {
-        this.delegate.directSet(column, value);
+    public CriteriaImpl<T> setWith(String column, Object value) {
+        this.delegate.setWith(column, value);
         return this;
     }
 
     @Override
-    public CriteriaImpl<T> directSet(Map<String, Object> columns) {
-        this.delegate.directSet(columns);
+    public CriteriaImpl<T> setWith(Map<String, Object> columns) {
+        this.delegate.setWith(columns);
         return this;
     }
 

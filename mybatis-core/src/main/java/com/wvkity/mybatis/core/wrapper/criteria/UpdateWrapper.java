@@ -102,7 +102,7 @@ public interface UpdateWrapper<T, Chain extends UpdateWrapper<T, Chain>> extends
      * @param value  值
      * @return {@code this}
      */
-    Chain directSet(String column, Object value);
+    Chain setWith(String column, Object value);
 
     /**
      * 添加多个更新字段
@@ -112,8 +112,8 @@ public interface UpdateWrapper<T, Chain extends UpdateWrapper<T, Chain>> extends
      * @param v2 字段2对应值
      * @return {@code this}
      */
-    default Chain directSet(String c1, Object v1, String c2, Object v2) {
-        return directSet(c1, v1).directSet(c2, v2);
+    default Chain setWith(String c1, Object v1, String c2, Object v2) {
+        return setWith(c1, v1).setWith(c2, v2);
     }
 
     /**
@@ -126,8 +126,8 @@ public interface UpdateWrapper<T, Chain extends UpdateWrapper<T, Chain>> extends
      * @param v3 字段3对应值
      * @return {@code this}
      */
-    default Chain directSet(String c1, Object v1, String c2, Object v2, String c3, Object v3) {
-        return directSet(c1, v1).directSet(c2, v2).directSet(c3, v3);
+    default Chain setWith(String c1, Object v1, String c2, Object v2, String c3, Object v3) {
+        return setWith(c1, v1).setWith(c2, v2).setWith(c3, v3);
     }
 
     /**
@@ -135,7 +135,7 @@ public interface UpdateWrapper<T, Chain extends UpdateWrapper<T, Chain>> extends
      * @param columns 字段-值集合
      * @return {@code this}
      */
-    Chain directSet(Map<String, Object> columns);
+    Chain setWith(Map<String, Object> columns);
 
     /**
      * 修改版本
