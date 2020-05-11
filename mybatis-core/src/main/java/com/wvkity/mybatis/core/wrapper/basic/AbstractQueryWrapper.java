@@ -37,13 +37,6 @@ public abstract class AbstractQueryWrapper<E> extends AbstractWrapper<E> impleme
     }
 
     /**
-     * 将当前查询列包装对象转换成另一个查询列包装对象
-     * @param criteria 条件对象
-     * @return 新的查询列包装对象
-     */
-    public abstract AbstractQueryWrapper<?> transform(Criteria<?> criteria);
-
-    /**
      * 获取SQL片段
      * @param applyQuery 是否为查询语句
      * @return SQL片段
