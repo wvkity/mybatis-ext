@@ -1,6 +1,7 @@
 package com.wvkity.mybatis.core.injector;
 
 import com.wvkity.mybatis.core.injector.execute.ArrayList;
+import com.wvkity.mybatis.core.injector.execute.ArrayPageableList;
 import com.wvkity.mybatis.core.injector.execute.BatchDelete;
 import com.wvkity.mybatis.core.injector.execute.BatchDeleteById;
 import com.wvkity.mybatis.core.injector.execute.BatchInsert;
@@ -22,8 +23,10 @@ import com.wvkity.mybatis.core.injector.execute.ListByEntity;
 import com.wvkity.mybatis.core.injector.execute.LogicDelete;
 import com.wvkity.mybatis.core.injector.execute.LogicDeleteByCriteria;
 import com.wvkity.mybatis.core.injector.execute.MapList;
+import com.wvkity.mybatis.core.injector.execute.MapPageableList;
 import com.wvkity.mybatis.core.injector.execute.MixinUpdateNotWithNull;
 import com.wvkity.mybatis.core.injector.execute.ObjectList;
+import com.wvkity.mybatis.core.injector.execute.ObjectPageableList;
 import com.wvkity.mybatis.core.injector.execute.PageableList;
 import com.wvkity.mybatis.core.injector.execute.PageableListByCriteria;
 import com.wvkity.mybatis.core.injector.execute.SelectOne;
@@ -78,6 +81,9 @@ public class DefaultInjector extends AbstractInjector {
                 new ObjectList(),
                 new ArrayList(),
                 new MapList(),
+                new ObjectPageableList(),
+                new ArrayPageableList(),
+                new MapPageableList(),
                 new ListByEntity(),
                 new ListByEntities(),
                 new ListByCriteria(),

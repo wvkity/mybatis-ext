@@ -65,7 +65,7 @@ public class MyBatisResultSetHandler extends DefaultResultSetHandler {
      * 自定义返回值方法
      */
     private static final String EXEC_CUSTOM_RESULT_METHOD = "objectList";
-    private static final Pattern EXEC_METHOD_PATTERN = Pattern.compile("^(.*)\\.objectList$");
+    private static final Pattern EXEC_METHOD_PATTERN = Pattern.compile("^(.*)\\.(objectList|objectPageableList)$");
 
     private final Executor executor;
     private final Configuration configuration;

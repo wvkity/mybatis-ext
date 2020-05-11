@@ -1,5 +1,6 @@
 package com.wvkity.mybatis.service;
 
+import com.wkit.lost.paging.Pageable;
 import com.wvkity.mybatis.batch.BatchDataBeanWrapper;
 import com.wvkity.mybatis.binding.MyBatisMapperMethod;
 import com.wvkity.mybatis.core.handler.TableHandler;
@@ -13,7 +14,6 @@ import com.wvkity.mybatis.utils.ClassUtil;
 import com.wvkity.mybatis.utils.CollectionUtil;
 import com.wvkity.mybatis.utils.Constants;
 import com.wvkity.mybatis.utils.StringUtil;
-import com.wkit.lost.paging.Pageable;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -411,6 +411,43 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<T, V, PK>, T
             return new ArrayList<>(0);
         }
         return mapper.mapList(criteria);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <E> List<E> custom(Criteria<T> criteria, Pageable pageable) {
+        if (criteria instanceof AbstractQueryCriteriaWrapper) {
+            AbstractQueryCriteriaWrapper<T> it = (AbstractQueryCriteriaWrapper<T>) criteria;
+            if (it.resultType() != null || StringUtil.hasText(it.resultMap())) {
+                List<Object> result = mapper.objectPageableList(criteria, pageable);
+                return Optional.ofNullable(result).map(value -> (List<E>) value).orElse(new ArrayList<>(0));
+            }
+        }
+        return new ArrayList<>(0);
+    }
+
+    @Override
+    public List<Object> objects(Criteria<T> criteria, Pageable pageable) {
+        if (criteria == null) {
+            return new ArrayList<>(0);
+        }
+        return mapper.objectPageableList(criteria, pageable);
+    }
+
+    @Override
+    public List<Object[]> array(Criteria<T> criteria, Pageable pageable) {
+        if (criteria == null) {
+            return new ArrayList<>(0);
+        }
+        return mapper.arrayPageableList(criteria, pageable);
+    }
+
+    @Override
+    public List<Map<String, Object>> map(Criteria<T> criteria, Pageable pageable) {
+        if (criteria == null) {
+            return new ArrayList<>(0);
+        }
+        return mapper.mapPageableList(criteria, pageable);
     }
 
     @Override

@@ -66,7 +66,7 @@ public interface CriteriaService<T, V> {
     /**
      * 查询列表(返回自定义类型)
      * @param criteria 条件对象
-     * @param <E>      返回值泛型
+     * @param <E>      自定义返回值类型
      * @return 列表
      */
     <E> List<E> custom(Criteria<T> criteria);
@@ -81,16 +81,49 @@ public interface CriteriaService<T, V> {
     /**
      * 查询数据
      * @param criteria 条件对象
-     * @return Object集合
+     * @return Object[]列表
      */
     List<Object[]> array(Criteria<T> criteria);
 
     /**
      * 查询数据
      * @param criteria 条件对象
-     * @return Map
+     * @return Map列表
      */
     List<Map<String, Object>> map(Criteria<T> criteria);
+
+    /**
+     * 分页查询列表
+     * @param criteria 条件对象
+     * @param pageable 分页对象
+     * @param <E>      自定义返回值类型
+     * @return 列表
+     */
+    <E> List<E> custom(Criteria<T> criteria, Pageable pageable);
+
+    /**
+     * 分页查询列表
+     * @param criteria 条件对象
+     * @param pageable 分页对象
+     * @return 列表
+     */
+    List<Object> objects(Criteria<T> criteria, Pageable pageable);
+
+    /**
+     * 分页查询列表
+     * @param criteria 条件对象
+     * @param pageable 分页对象
+     * @return 列表
+     */
+    List<Object[]> array(Criteria<T> criteria, Pageable pageable);
+
+    /**
+     * 分页查询列表
+     * @param criteria 条件对象
+     * @param pageable 分页对象
+     * @return 列表
+     */
+    List<Map<String, Object>> map(Criteria<T> criteria, Pageable pageable);
 
     /**
      * 分页查询列表
