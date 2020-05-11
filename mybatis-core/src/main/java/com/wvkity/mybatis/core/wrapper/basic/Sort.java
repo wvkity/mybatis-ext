@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * 排序(字段包装对象)
  * @author wvkity
  */
-public class Order extends AbstractOrderWrapper<ColumnWrapper> {
+public class Sort extends AbstractSortWrapper<ColumnWrapper> {
 
     private static final long serialVersionUID = -7981752420346514008L;
 
@@ -30,7 +30,7 @@ public class Order extends AbstractOrderWrapper<ColumnWrapper> {
      * @param columns   字段集合
      * @param ascending 排序方式(是否为ASC排序)
      */
-    private Order(Criteria<?> criteria, boolean ascending, Collection<ColumnWrapper> columns) {
+    private Sort(Criteria<?> criteria, boolean ascending, Collection<ColumnWrapper> columns) {
         if (criteria == null) {
             throw new MyBatisException("The Criteria object cannot be empty");
         }
@@ -62,8 +62,8 @@ public class Order extends AbstractOrderWrapper<ColumnWrapper> {
      * @return 排序对象
      */
     @SafeVarargs
-    public static <T, V> Order asc(Criteria<T> criteria, Property<T, V>... properties) {
-        return new Order(criteria, true, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
+    public static <T, V> Sort asc(Criteria<T> criteria, Property<T, V>... properties) {
+        return new Sort(criteria, true, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }
 
     /**
@@ -72,7 +72,7 @@ public class Order extends AbstractOrderWrapper<ColumnWrapper> {
      * @param properties 属性
      * @return 排序对象
      */
-    public static Order asc(Criteria<?> criteria, String... properties) {
+    public static Sort asc(Criteria<?> criteria, String... properties) {
         return asc(criteria, ArrayUtil.toList(properties));
     }
 
@@ -82,8 +82,8 @@ public class Order extends AbstractOrderWrapper<ColumnWrapper> {
      * @param properties 属性
      * @return 排序对象
      */
-    public static Order asc(Criteria<?> criteria, List<String> properties) {
-        return new Order(criteria, true, CriteriaUtil.propertyToColumn(criteria, distinct(properties)));
+    public static Sort asc(Criteria<?> criteria, List<String> properties) {
+        return new Sort(criteria, true, CriteriaUtil.propertyToColumn(criteria, distinct(properties)));
     }
 
     /**
@@ -93,7 +93,7 @@ public class Order extends AbstractOrderWrapper<ColumnWrapper> {
      * @param properties 属性
      * @return 排序对象
      */
-    public static Order asc(String alias, AbstractQueryCriteriaWrapper<?> master, String... properties) {
+    public static Sort asc(String alias, AbstractQueryCriteriaWrapper<?> master, String... properties) {
         return asc(master.searchForeign(alias), ArrayUtil.toList(properties));
     }
 
@@ -107,10 +107,10 @@ public class Order extends AbstractOrderWrapper<ColumnWrapper> {
      * @return 排序对象
      */
     @SafeVarargs
-    public static <E, V> Order asc(String alias, AbstractQueryCriteriaWrapper<?> master,
-                                   Property<E, V>... properties) {
+    public static <E, V> Sort asc(String alias, AbstractQueryCriteriaWrapper<?> master,
+                                  Property<E, V>... properties) {
         Criteria<E> criteria = master.searchForeign(alias);
-        return new Order(criteria, true, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
+        return new Sort(criteria, true, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }
 
     /**
@@ -120,7 +120,7 @@ public class Order extends AbstractOrderWrapper<ColumnWrapper> {
      * @param properties 属性
      * @return 排序对象
      */
-    public static Order asc(String alias, AbstractQueryCriteriaWrapper<?> master, List<String> properties) {
+    public static Sort asc(String alias, AbstractQueryCriteriaWrapper<?> master, List<String> properties) {
         return asc(master.searchForeign(alias), properties);
     }
 
@@ -133,8 +133,8 @@ public class Order extends AbstractOrderWrapper<ColumnWrapper> {
      * @return 排序对象
      */
     @SafeVarargs
-    public static <T, V> Order desc(Criteria<T> criteria, Property<T, V>... properties) {
-        return new Order(criteria, false, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
+    public static <T, V> Sort desc(Criteria<T> criteria, Property<T, V>... properties) {
+        return new Sort(criteria, false, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }
 
     /**
@@ -143,7 +143,7 @@ public class Order extends AbstractOrderWrapper<ColumnWrapper> {
      * @param properties 属性
      * @return 排序对象
      */
-    public static Order desc(Criteria<?> criteria, String... properties) {
+    public static Sort desc(Criteria<?> criteria, String... properties) {
         return desc(criteria, ArrayUtil.toList(properties));
     }
 
@@ -153,8 +153,8 @@ public class Order extends AbstractOrderWrapper<ColumnWrapper> {
      * @param properties 属性
      * @return 排序对象
      */
-    public static Order desc(Criteria<?> criteria, List<String> properties) {
-        return new Order(criteria, false, CriteriaUtil.propertyToColumn(criteria, distinct(properties)));
+    public static Sort desc(Criteria<?> criteria, List<String> properties) {
+        return new Sort(criteria, false, CriteriaUtil.propertyToColumn(criteria, distinct(properties)));
     }
 
     /**
@@ -167,10 +167,10 @@ public class Order extends AbstractOrderWrapper<ColumnWrapper> {
      * @return 排序对象
      */
     @SafeVarargs
-    public static <E, V> Order desc(String alias, AbstractQueryCriteriaWrapper<E> master,
-                                    Property<E, V>... properties) {
+    public static <E, V> Sort desc(String alias, AbstractQueryCriteriaWrapper<E> master,
+                                   Property<E, V>... properties) {
         ForeignCriteria<E> criteria = master.searchForeign(alias);
-        return new Order(criteria, false, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
+        return new Sort(criteria, false, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }
 
     /**
@@ -180,7 +180,7 @@ public class Order extends AbstractOrderWrapper<ColumnWrapper> {
      * @param properties 属性
      * @return 排序对象
      */
-    public static Order desc(String alias, AbstractQueryCriteriaWrapper<?> master, String... properties) {
+    public static Sort desc(String alias, AbstractQueryCriteriaWrapper<?> master, String... properties) {
         return desc(master.searchForeign(alias), properties);
     }
 
@@ -191,7 +191,7 @@ public class Order extends AbstractOrderWrapper<ColumnWrapper> {
      * @param properties 属性
      * @return 排序对象
      */
-    public static Order desc(String alias, AbstractQueryCriteriaWrapper<?> master, List<String> properties) {
+    public static Sort desc(String alias, AbstractQueryCriteriaWrapper<?> master, List<String> properties) {
         return desc(master.searchForeign(alias), properties);
     }
 

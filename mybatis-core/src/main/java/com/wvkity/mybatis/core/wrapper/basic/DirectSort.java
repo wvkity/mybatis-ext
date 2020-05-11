@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * 排序(字符串字段)
  * @author wvkity
  */
-public class DirectOrder extends AbstractOrderWrapper<String> {
+public class DirectSort extends AbstractSortWrapper<String> {
 
     private static final long serialVersionUID = 7837358423348936221L;
 
@@ -29,7 +29,7 @@ public class DirectOrder extends AbstractOrderWrapper<String> {
      * @param ascending 排序方式(是否为ASC排序)
      * @param columns   字段集合
      */
-    public DirectOrder(Criteria<?> criteria, boolean ascending, Collection<String> columns) {
+    public DirectSort(Criteria<?> criteria, boolean ascending, Collection<String> columns) {
         this.criteria = criteria;
         this.ascending = ascending;
         this.columns = distinct(columns);
@@ -41,7 +41,7 @@ public class DirectOrder extends AbstractOrderWrapper<String> {
      * @param ascending 排序方式(是否为ASC排序)
      * @param columns   字段集合
      */
-    public DirectOrder(String alias, boolean ascending, Collection<String> columns) {
+    public DirectSort(String alias, boolean ascending, Collection<String> columns) {
         this.alias = alias;
         this.ascending = ascending;
         this.columns = distinct(columns);
@@ -64,8 +64,8 @@ public class DirectOrder extends AbstractOrderWrapper<String> {
      * @param columns 字段
      * @return 排序对象
      */
-    public static DirectOrder asc(String... columns) {
-        return new DirectOrder((Criteria<?>) null, true, ArrayUtil.toList(columns));
+    public static DirectSort asc(String... columns) {
+        return new DirectSort((Criteria<?>) null, true, ArrayUtil.toList(columns));
     }
 
     /**
@@ -74,8 +74,8 @@ public class DirectOrder extends AbstractOrderWrapper<String> {
      * @param columns  字段
      * @return 排序对象
      */
-    public static DirectOrder asc(Criteria<?> criteria, String... columns) {
-        return new DirectOrder(criteria, true, ArrayUtil.toList(columns));
+    public static DirectSort asc(Criteria<?> criteria, String... columns) {
+        return new DirectSort(criteria, true, ArrayUtil.toList(columns));
     }
 
     /**
@@ -84,7 +84,7 @@ public class DirectOrder extends AbstractOrderWrapper<String> {
      * @param columns 字段
      * @return 排序对象
      */
-    public static DirectOrder ascWithAlias(String alias, String... columns) {
+    public static DirectSort ascWithAlias(String alias, String... columns) {
         return ascWithAlias(alias, ArrayUtil.toList(columns));
     }
 
@@ -94,8 +94,8 @@ public class DirectOrder extends AbstractOrderWrapper<String> {
      * @param columns 字段
      * @return 排序对象
      */
-    public static DirectOrder ascWithAlias(String alias, List<String> columns) {
-        return new DirectOrder(alias, true, columns);
+    public static DirectSort ascWithAlias(String alias, List<String> columns) {
+        return new DirectSort(alias, true, columns);
     }
 
     /**
@@ -103,8 +103,8 @@ public class DirectOrder extends AbstractOrderWrapper<String> {
      * @param columns 字段
      * @return 排序对象
      */
-    public static DirectOrder desc(String... columns) {
-        return new DirectOrder((Criteria<?>) null, false, ArrayUtil.toList(columns));
+    public static DirectSort desc(String... columns) {
+        return new DirectSort((Criteria<?>) null, false, ArrayUtil.toList(columns));
     }
 
     /**
@@ -113,8 +113,8 @@ public class DirectOrder extends AbstractOrderWrapper<String> {
      * @param columns  字段
      * @return 排序对象
      */
-    public static DirectOrder desc(Criteria<?> criteria, String... columns) {
-        return new DirectOrder(criteria, false, ArrayUtil.toList(columns));
+    public static DirectSort desc(Criteria<?> criteria, String... columns) {
+        return new DirectSort(criteria, false, ArrayUtil.toList(columns));
     }
 
     /**
@@ -123,7 +123,7 @@ public class DirectOrder extends AbstractOrderWrapper<String> {
      * @param columns 字段
      * @return 排序对象
      */
-    public static DirectOrder descWithAlias(String alias, String... columns) {
+    public static DirectSort descWithAlias(String alias, String... columns) {
         return descWithAlias(alias, ArrayUtil.toList(columns));
     }
 
@@ -133,8 +133,8 @@ public class DirectOrder extends AbstractOrderWrapper<String> {
      * @param columns 字段
      * @return 排序对象
      */
-    public static DirectOrder descWithAlias(String alias, List<String> columns) {
-        return new DirectOrder(alias, false, columns);
+    public static DirectSort descWithAlias(String alias, List<String> columns) {
+        return new DirectSort(alias, false, columns);
     }
 
 }

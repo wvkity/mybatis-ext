@@ -8,7 +8,7 @@ import lombok.Getter;
  * @param <E> 字段类型
  */
 @SuppressWarnings({"serial"})
-public abstract class AbstractOrderWrapper<E> extends AbstractWrapper<E> implements OrderWrapper<E> {
+public abstract class AbstractSortWrapper<E> extends AbstractWrapper<E> implements SortWrapper<E> {
 
     /**
      * 排序方式

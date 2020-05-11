@@ -7,5 +7,5 @@ import com.wvkity.mybatis.core.segment.Segment;
  * @param <E> 字段类型
  * @author wvkity
  */
-public interface OrderWrapper<E> extends Segment {
+public interface SortWrapper<E> extends Segment {
 }
