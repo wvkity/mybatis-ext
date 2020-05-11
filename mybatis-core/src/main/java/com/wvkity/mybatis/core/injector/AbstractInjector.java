@@ -5,6 +5,7 @@ import com.wvkity.mybatis.core.handler.TableHandler;
 import com.wvkity.mybatis.core.injector.method.Method;
 import com.wvkity.mybatis.core.metadata.TableWrapper;
 import com.wvkity.mybatis.mapper.SimpleMapper;
+import com.wvkity.mybatis.mapper.UniformMapper;
 import com.wvkity.mybatis.utils.ArrayUtil;
 import com.wvkity.mybatis.utils.CollectionUtil;
 import lombok.extern.log4j.Log4j2;
@@ -37,7 +38,7 @@ public abstract class AbstractInjector implements Injector {
                     // 拦截解析实体-表映射
                     TableWrapper table = TableHandler.parse(assistant, entityClass);
                     // 获取返回值类型
-                    int index = SimpleMapper.class.isAssignableFrom(mapperInterface) ? 0 : 1;
+                    int index = index(mapperInterface);
                     Class<?> resultType = index == 0 ? entityClass : getGenericType(genericTypes, index);
                     // 注入方法
                     methods.forEach(it -> it.inject(assistant, mapperInterface, resultType, table));
@@ -47,6 +48,11 @@ public abstract class AbstractInjector implements Injector {
                 mapperRegistryCache.add(interfaceName);
             }
         }
+    }
+
+    private int index(Class<?> mapperInterface) {
+        return (SimpleMapper.class.isAssignableFrom(mapperInterface) ||
+                UniformMapper.class.isAssignableFrom(mapperInterface)) ? 0 : 1;
     }
 
     /**
