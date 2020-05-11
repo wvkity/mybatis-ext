@@ -78,7 +78,7 @@ public class Group extends AbstractGroupWrapper<ColumnWrapper> {
      * @param properties 属性集合
      * @return 分组对象
      */
-    public static Group group(Criteria<?> criteria, List<String> properties) {
+    public static Group group(Criteria<?> criteria, Collection<String> properties) {
         return new Group(criteria, CriteriaUtil.propertyToColumn(criteria, distinct(properties)));
     }
 
