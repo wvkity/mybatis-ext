@@ -1,5 +1,6 @@
-package com.wvkity.mybatis.core.segment;
+package com.wvkity.mybatis.core.wrapper.basic;
 
+import com.wvkity.mybatis.core.segment.Segment;
 import com.wvkity.mybatis.utils.CollectionUtil;
 
 import java.util.ArrayList;
@@ -12,9 +13,10 @@ import java.util.stream.Collectors;
 
 /**
  * 抽象SQL片段
+ * @author wvkity
  */
 @SuppressWarnings({"serial"})
-public abstract class AbstractSegment<E> implements Segment {
+public abstract class AbstractSegmentWrapper<E> implements Segment {
 
     /**
      * SQL片段集合

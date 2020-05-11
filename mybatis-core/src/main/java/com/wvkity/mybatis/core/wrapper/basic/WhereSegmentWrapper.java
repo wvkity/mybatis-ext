@@ -1,9 +1,10 @@
-package com.wvkity.mybatis.core.segment;
+package com.wvkity.mybatis.core.wrapper.basic;
 
 import com.wvkity.mybatis.core.conditional.criterion.Criterion;
 import com.wvkity.mybatis.core.conditional.expression.ColumnExpressionWrapper;
 import com.wvkity.mybatis.core.conditional.expression.DirectExpressionWrapper;
 import com.wvkity.mybatis.core.metadata.ColumnWrapper;
+import com.wvkity.mybatis.core.segment.Segment;
 import com.wvkity.mybatis.utils.CollectionUtil;
 import com.wvkity.mybatis.utils.Constants;
 import com.wvkity.mybatis.utils.StringUtil;
@@ -17,7 +18,7 @@ import java.util.Locale;
  * 条件片段容器
  * @author wvkity
  */
-public class WhereSegmentWrapper extends AbstractSegment<Criterion> {
+public class WhereSegmentWrapper extends AbstractSegmentWrapper<Criterion> {
 
     private static final long serialVersionUID = -217408456601550416L;
 
