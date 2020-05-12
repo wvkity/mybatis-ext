@@ -3,6 +3,7 @@ package com.wvkity.mybatis.core.wrapper.criteria;
 import com.wvkity.mybatis.core.conditional.Restrictions;
 import com.wvkity.mybatis.core.conditional.criterion.Criterion;
 import com.wvkity.mybatis.core.conditional.expression.DirectNormalEqual;
+import com.wvkity.mybatis.core.conditional.expression.Pure;
 import com.wvkity.mybatis.core.constant.Logic;
 import com.wvkity.mybatis.core.constant.Match;
 import com.wvkity.mybatis.core.constant.Symbol;
@@ -190,6 +191,12 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
     }
 
     // region conditions
+
+
+    @Override
+    public Chain pure(String expression) {
+        return add(Restrictions.pure(expression));
+    }
 
     // region simple condition
     @Override
@@ -1205,17 +1212,17 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
 
     @Override
     public Chain templateWith(String template, Object value) {
-        return add(Restrictions.templateWith(template, value));
+        return add(Restrictions.templateWith(this, template, value));
     }
 
     @Override
     public Chain templateWith(String template, Collection<Object> values) {
-        return add(Restrictions.templateWith(template, values));
+        return add(Restrictions.templateWith(this, template, values));
     }
 
     @Override
     public Chain templateWith(String template, Map<String, Object> values) {
-        return add(Restrictions.templateWith(template, values));
+        return add(Restrictions.templateWith(this, template, values));
     }
 
     @Override
@@ -1235,17 +1242,17 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
 
     @Override
     public Chain orTemplateWith(String template, Object value) {
-        return add(Restrictions.templateWith(template, value, Logic.OR));
+        return add(Restrictions.templateWith(this, template, value, Logic.OR));
     }
 
     @Override
     public Chain orTemplateWith(String template, Collection<Object> values) {
-        return add(Restrictions.templateWith(template, values, Logic.OR));
+        return add(Restrictions.templateWith(this, template, values, Logic.OR));
     }
 
     @Override
     public Chain orTemplateWith(String template, Map<String, Object> values) {
-        return add(Restrictions.templateWith(template, values, Logic.OR));
+        return add(Restrictions.templateWith(this, template, values, Logic.OR));
     }
 
     @Override
@@ -1321,6 +1328,9 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
 
     @Override
     public Chain add(Criterion criterion) {
+        if (criterion.getCriteria() == null && !(criterion instanceof Pure)) {
+            criterion.criteria(this);
+        }
         this.segmentManager.where(criterion);
         return this.context;
     }
@@ -1333,7 +1343,7 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
     @Override
     public Chain where(Collection<Criterion> list) {
         this.segmentManager.wheres(list.stream().filter(Objects::nonNull).peek(it -> {
-            if (it.getCriteria() == null) {
+            if (it.getCriteria() == null && !(it instanceof Pure)) {
                 it.criteria(this);
             }
         }).collect(Collectors.toList()));
@@ -1570,7 +1580,7 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
             if (AND_OR_PATTERN.matcher(condition).matches()) {
                 return " WHERE " + condition.replaceFirst(AND_OR_REGEX, "$2");
             }
-            return condition;
+            return " WHERE " + condition;
         }
         return Constants.EMPTY;
     }

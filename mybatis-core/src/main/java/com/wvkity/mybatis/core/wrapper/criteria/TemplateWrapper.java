@@ -1,13 +1,13 @@
 package com.wvkity.mybatis.core.wrapper.criteria;
 
 import com.wvkity.mybatis.core.conditional.expression.DirectTemplate;
+import com.wvkity.mybatis.core.conditional.expression.Template;
 import com.wvkity.mybatis.core.converter.Property;
 import com.wvkity.mybatis.core.converter.PropertyConverter;
 import com.wvkity.mybatis.utils.ArrayUtil;
-import com.wvkity.mybatis.core.conditional.expression.Template;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -207,7 +207,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @return {@code this}
      */
     default Chain template(String template, String property, String k1, Object v1, String k2, Object v2) {
-        Map<String, Object> values = new HashMap<>(2);
+        Map<String, Object> values = new LinkedHashMap<>(2);
         values.put(k1, v1);
         values.put(k2, v2);
         return template(template, property, values);
@@ -227,7 +227,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      */
     default Chain template(String template, String property, String k1,
                            Object v1, String k2, Object v2, String k3, Object v3) {
-        Map<String, Object> values = new HashMap<>(3);
+        Map<String, Object> values = new LinkedHashMap<>(3);
         values.put(k1, v1);
         values.put(k2, v2);
         values.put(k3, v3);
@@ -299,7 +299,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @return {@code this}
      */
     default Chain orTemplate(String template, String property, String k1, Object v1, String k2, Object v2) {
-        Map<String, Object> values = new HashMap<>(2);
+        Map<String, Object> values = new LinkedHashMap<>(2);
         values.put(k1, v1);
         values.put(k2, v2);
         return orTemplate(template, property, values);
@@ -319,7 +319,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      */
     default Chain orTemplate(String template, String property, String k1,
                              Object v1, String k2, Object v2, String k3, Object v3) {
-        Map<String, Object> values = new HashMap<>(3);
+        Map<String, Object> values = new LinkedHashMap<>(3);
         values.put(k1, v1);
         values.put(k2, v2);
         values.put(k3, v3);
@@ -371,7 +371,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @return {@code this}
      */
     default Chain templateWith(String template, String k1, Object v1, String k2, Object v2) {
-        Map<String, Object> values = new HashMap<>(2);
+        Map<String, Object> values = new LinkedHashMap<>(2);
         values.put(k1, v1);
         values.put(k2, v2);
         return templateWith(template, values);
@@ -390,7 +390,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      */
     default Chain templateWith(String template, String k1, Object v1,
                                String k2, Object v2, String k3, Object v3) {
-        Map<String, Object> values = new HashMap<>(3);
+        Map<String, Object> values = new LinkedHashMap<>(3);
         values.put(k1, v1);
         values.put(k2, v2);
         values.put(k3, v3);
@@ -445,7 +445,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @return {@code this}
      */
     default Chain templateWith(String template, String column, String k1, Object v1, String k2, Object v2) {
-        Map<String, Object> values = new HashMap<>(2);
+        Map<String, Object> values = new LinkedHashMap<>(2);
         values.put(k1, v1);
         values.put(k2, v2);
         return templateWith(template, column, values);
@@ -465,7 +465,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      */
     default Chain templateWith(String template, String column, String k1, Object v1,
                                String k2, Object v2, String k3, Object v3) {
-        Map<String, Object> values = new HashMap<>(3);
+        Map<String, Object> values = new LinkedHashMap<>(3);
         values.put(k1, v1);
         values.put(k2, v2);
         values.put(k3, v3);
@@ -517,7 +517,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @return {@code this}
      */
     default Chain orTemplateWith(String template, String k1, Object v1, String k2, Object v2) {
-        Map<String, Object> values = new HashMap<>(2);
+        Map<String, Object> values = new LinkedHashMap<>(2);
         values.put(k1, v1);
         values.put(k2, v2);
         return orTemplateWith(template, values);
@@ -536,7 +536,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      */
     default Chain orTemplateWith(String template, String k1, Object v1,
                                  String k2, Object v2, String k3, Object v3) {
-        Map<String, Object> values = new HashMap<>(3);
+        Map<String, Object> values = new LinkedHashMap<>(3);
         values.put(k1, v1);
         values.put(k2, v2);
         values.put(k3, v3);
@@ -591,7 +591,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @return {@code this}
      */
     default Chain orTemplateWith(String template, String column, String k1, Object v1, String k2, Object v2) {
-        Map<String, Object> values = new HashMap<>(2);
+        Map<String, Object> values = new LinkedHashMap<>(2);
         values.put(k1, v1);
         values.put(k2, v2);
         return orTemplateWith(template, column, values);
@@ -611,7 +611,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      */
     default Chain orTemplateWith(String template, String column, String k1, Object v1,
                                  String k2, Object v2, String k3, Object v3) {
-        Map<String, Object> values = new HashMap<>(3);
+        Map<String, Object> values = new LinkedHashMap<>(3);
         values.put(k1, v1);
         values.put(k2, v2);
         values.put(k3, v3);

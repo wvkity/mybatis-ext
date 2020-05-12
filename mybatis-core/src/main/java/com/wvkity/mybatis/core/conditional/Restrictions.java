@@ -35,6 +35,7 @@ import com.wvkity.mybatis.core.conditional.expression.NotIn;
 import com.wvkity.mybatis.core.conditional.expression.NotLike;
 import com.wvkity.mybatis.core.conditional.expression.NotNull;
 import com.wvkity.mybatis.core.conditional.expression.Null;
+import com.wvkity.mybatis.core.conditional.expression.Pure;
 import com.wvkity.mybatis.core.conditional.expression.SubQuery;
 import com.wvkity.mybatis.core.conditional.expression.Template;
 import com.wvkity.mybatis.core.constant.Logic;
@@ -2502,7 +2503,6 @@ public final class Restrictions {
                 .map(values).logic(logic).build();
     }
 
-
     /**
      * TEMPLATE
      * @param template 模板
@@ -2522,6 +2522,29 @@ public final class Restrictions {
      */
     public static DirectTemplate templateWith(String template, Object value, Logic logic) {
         return DirectTemplate.create().template(template).value(value).logic(logic).build();
+    }
+
+    /**
+     * TEMPLATE
+     * @param criteria 条件包装对象
+     * @param template 模板
+     * @param value    值
+     * @return 条件对象
+     */
+    public static DirectTemplate templateWith(Criteria<?> criteria, String template, Object value) {
+        return templateWith(criteria, template, value, Logic.AND);
+    }
+
+    /**
+     * TEMPLATE
+     * @param criteria 条件包装对象
+     * @param template 模板
+     * @param value    值
+     * @param logic    逻辑符号
+     * @return 条件对象
+     */
+    public static DirectTemplate templateWith(Criteria<?> criteria, String template, Object value, Logic logic) {
+        return DirectTemplate.create().criteria(criteria).template(template).value(value).logic(logic).build();
     }
 
     /**
@@ -2547,6 +2570,30 @@ public final class Restrictions {
 
     /**
      * TEMPLATE
+     * @param criteria 条件包装对象
+     * @param template 模板
+     * @param values   值
+     * @return 条件对象
+     */
+    public static DirectTemplate templateWith(Criteria<?> criteria, String template, Collection<Object> values) {
+        return templateWith(criteria, template, values, Logic.AND);
+    }
+
+    /**
+     * TEMPLATE
+     * @param criteria 条件包装对象
+     * @param template 模板
+     * @param values   值
+     * @param logic    逻辑符号
+     * @return 条件对象
+     */
+    public static DirectTemplate templateWith(Criteria<?> criteria, String template,
+                                              Collection<Object> values, Logic logic) {
+        return DirectTemplate.create().criteria(criteria).template(template).values(values).logic(logic).build();
+    }
+
+    /**
+     * TEMPLATE
      * @param template 模板
      * @param values   值
      * @return 条件对象
@@ -2566,6 +2613,29 @@ public final class Restrictions {
         return DirectTemplate.create().template(template).map(values).logic(logic).build();
     }
 
+    /**
+     * TEMPLATE
+     * @param criteria 条件包装对象
+     * @param template 模板
+     * @param values   值
+     * @return 条件对象
+     */
+    public static DirectTemplate templateWith(Criteria<?> criteria, String template, Map<String, Object> values) {
+        return templateWith(criteria, template, values, Logic.AND);
+    }
+
+    /**
+     * TEMPLATE
+     * @param criteria 条件包装对象
+     * @param template 模板
+     * @param values   值
+     * @param logic    逻辑符号
+     * @return 条件对象
+     */
+    public static DirectTemplate templateWith(Criteria<?> criteria, String template,
+                                              Map<String, Object> values, Logic logic) {
+        return DirectTemplate.create().criteria(criteria).template(template).map(values).logic(logic).build();
+    }
 
     /**
      * TEMPLATE
@@ -3447,4 +3517,13 @@ public final class Restrictions {
         return SubQuery.create().criteria(criteria).sc(sc).symbol(Symbol.NOT_EXISTS).logic(logic).build();
     }
     // region
+
+    /**
+     * 纯SQL条件
+     * @param expression 条件
+     * @return 条件对象
+     */
+    public static Pure pure(String expression) {
+        return Pure.of(expression);
+    }
 }
