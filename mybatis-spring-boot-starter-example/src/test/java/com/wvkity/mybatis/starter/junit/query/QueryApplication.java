@@ -10,7 +10,7 @@ import com.wvkity.mybatis.starter.example.vo.UserVo;
 import com.wvkity.mybatis.starter.junit.RootTestRunner;
 import com.wkit.lost.paging.Pageable;
 import com.wkit.lost.paging.Pager;
-import com.wkit.lost.paging.PagerWrap;
+import com.wkit.lost.paging.GenericPager;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 
@@ -114,12 +114,18 @@ public class QueryApplication extends RootTestRunner {
         List<User> result = userService.list(u1, new Pager());
         log.info("执行结果: {}", JSON.toJSONString(result, true));
     }
+    
+    @Test
+    public void simpleListTest() {
+        List<Exam> result = examService.list(Pager.of(2));
+        log.info("执行结果: {}", JSON.toJSONString(result, true));
+    }
 
     @Test
     public void pageableListByCriteriaTest() {
         QueryCriteria<User> criteria = new QueryCriteria<>(User.class);
         criteria.eq(User::getSex, 1, User::getPassword, "123456a");
-        Pageable pageable = new PagerWrap<User>();
+        Pageable pageable = new GenericPager<User>();
         List<User> result = userService.list(criteria, pageable);
         log.info("执行结果: {}", JSON.toJSONString(result, true));
         log.info("pageable对象值: {}", JSON.toJSONString(pageable, true));
