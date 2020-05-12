@@ -10,8 +10,10 @@ import java.util.List;
 /**
  * 删除数据操作接口
  * @param <T> 泛型类
+ * @param <PK> 主键
+ * @author wvkity
  */
-public interface DeleteMapper<T> {
+public interface DeleteMapper<T, PK> {
 
     /**
      * 根据指定对象删除记录
@@ -25,7 +27,7 @@ public interface DeleteMapper<T> {
      * @param id 主键
      * @return 受影响行数
      */
-    int deleteById(Serializable id);
+    int deleteById(PK id);
 
     /**
      * 逻辑删除
@@ -46,6 +48,6 @@ public interface DeleteMapper<T> {
      * @param idList 主键集合
      * @return 受影响行数
      */
-    int batchDeleteById(@Param(Constants.PARAM_PRIMARY_KEYS) List<? extends Serializable> idList);
+    int batchDeleteById(@Param(Constants.PARAM_PRIMARY_KEYS) List<PK> idList);
 
 }

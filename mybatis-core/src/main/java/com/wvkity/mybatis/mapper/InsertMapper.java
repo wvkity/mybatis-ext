@@ -30,17 +30,17 @@ public interface InsertMapper<T> {
     /**
      * 批量保存记录
      * <p>保存对象会自动审计</p>
-     * @param dataWrapper 待保存包装对象
+     * @param wrapper 待保存包装对象
      * @return 受影响行数
      */
-    int batchInsert(@Param(Constants.PARAM_BATCH_BEAN_WRAPPER) BatchDataBeanWrapper<T> dataWrapper);
+    int batchInsert(@Param(Constants.PARAM_BATCH_BEAN_WRAPPER) BatchDataBeanWrapper<T> wrapper);
 
     /**
      * 批量保存记录
      * <p>保存对象不会自动审计</p>
-     * @param dataWrapper 待保存包装对象
+     * @param wrapper 待保存包装对象
      * @return 受影响行数
      */
-    int batchInsertNotWithAudit(@Param(Constants.PARAM_BATCH_BEAN_WRAPPER) BatchDataBeanWrapper<T> dataWrapper);
+    int batchInsertNotWithAudit(@Param(Constants.PARAM_BATCH_BEAN_WRAPPER) BatchDataBeanWrapper<T> wrapper);
 
 }
