@@ -22,7 +22,7 @@ import java.util.stream.Stream;
  */
 @Data
 @Accessors(chain = true)
-@ConfigurationProperties(prefix = "lost.mybatis", ignoreInvalidFields = true)
+@ConfigurationProperties(prefix = "wvkity.mybatis", ignoreInvalidFields = true)
 public class MyBatisProperties {
 
     private static final ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();

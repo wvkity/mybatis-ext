@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @Accessors(chain = true)
-@ConfigurationProperties(prefix = "lost.sequence", ignoreInvalidFields = true)
+@ConfigurationProperties(prefix = "wvkity.sequence", ignoreInvalidFields = true)
 public class SequenceProperties {
 
     /**

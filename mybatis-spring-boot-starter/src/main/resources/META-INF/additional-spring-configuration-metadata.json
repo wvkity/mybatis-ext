@@ -2,24 +2,24 @@
   "groups": [
     {
       "sourceType": "com.wvkity.mybatis.spring.boot.autoconfigure.MyBatisProperties",
-      "name": "lost.mybatis",
+      "name": "wvkity.mybatis",
       "type": "com.wvkity.mybatis.spring.boot.autoconfigure.MyBatisProperties"
     },
     {
       "sourceType": "com.wvkity.mybatis.spring.boot.autoconfigure.MyBatisProperties",
-      "name": "lost.mybatis.configuration",
+      "name": "wvkity.mybatis.configuration",
       "sourceMethod": "getConfiguration()",
       "type": "com.wvkity.mybatis.session.MyBatisConfiguration"
     },
     {
       "sourceType": "com.wvkity.mybatis.spring.boot.autoconfigure.MyBatisProperties",
-      "name": "lost.mybatis.customConfiguration",
+      "name": "wvkity.mybatis.customConfiguration",
       "sourceMethod": "getCustomConfiguration",
       "type": "com.wvkity.mybatis.config.MyBatisCustomConfiguration"
     },
     {
       "sourceType": "com.wvkity.mybatis.spring.boot.sequence.SequenceProperties",
-      "name": "lost.sequence",
+      "name": "wvkity.sequence",
       "type": "com.wvkity.mybatis.spring.boot.sequence.SequenceProperties"
     }
   ]
