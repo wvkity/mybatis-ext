@@ -264,6 +264,7 @@ public interface CompareWrapper<T, Chain extends CompareWrapper<T, Chain>> exten
      * 等于(Normal Equals)
      * @param column        字段
      * @param otherCriteria 其他条件包装对象
+     * @param <E>           实体类型
      * @return {@code this}
      */
     <E> Chain nqWith(String column, Criteria<E> otherCriteria);

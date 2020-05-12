@@ -98,7 +98,6 @@ public class Group extends AbstractGroupWrapper<ColumnWrapper> {
      * @param alias      联表对象别名
      * @param master     条件对象
      * @param properties 属性
-     * @param <T>        泛型类型
      * @param <E>        泛型类型
      * @param <V>        属性值类型
      * @return 分组对象

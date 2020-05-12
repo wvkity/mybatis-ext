@@ -249,7 +249,7 @@ public final class Restrictions {
     }
 
     /**
-     * 小于
+     * 不等于
      * @param column 字段
      * @param value  值
      * @return 条件对象
@@ -259,7 +259,7 @@ public final class Restrictions {
     }
 
     /**
-     * 小于
+     * 不等于
      * @param column 字段
      * @param value  值
      * @param logic  逻辑符号
@@ -270,7 +270,7 @@ public final class Restrictions {
     }
 
     /**
-     * 小于
+     * 不等于
      * @param tableAlias 表别名
      * @param column     字段
      * @param value      值
@@ -281,7 +281,7 @@ public final class Restrictions {
     }
 
     /**
-     * 小于
+     * 不等于
      * @param tableAlias 表别名
      * @param column     字段
      * @param value      值
@@ -293,7 +293,7 @@ public final class Restrictions {
     }
 
     /**
-     * 小于
+     * 不等于
      * @param criteria 条件包装对象
      * @param column   字段
      * @param value    值
@@ -304,7 +304,7 @@ public final class Restrictions {
     }
 
     /**
-     * 小于
+     * 不等于
      * @param criteria 条件包装对象
      * @param column   字段
      * @param value    值
@@ -359,7 +359,6 @@ public final class Restrictions {
      * @param property 属性
      * @param value    值
      * @param logic    逻辑符号
-     * @param <T>      实体类
      * @return 条件对象
      */
     public static LessThan lt(Criteria<?> criteria, String property, Object value, Logic logic) {
@@ -487,7 +486,6 @@ public final class Restrictions {
      * 小于或等于
      * @param column 字段
      * @param value  值
-     * @param <T>    泛型类型
      * @return 条件对象
      */
     public static DirectLessThanOrEqual leWith(String column, Object value) {
@@ -545,7 +543,6 @@ public final class Restrictions {
      * @param column   字段
      * @param value    值
      * @param logic    逻辑符号
-     * @param <T>      泛型类型
      * @return 条件对象
      */
     public static DirectLessThanOrEqual leWith(Criteria<?> criteria, String column, Object value, Logic logic) {
@@ -670,7 +667,7 @@ public final class Restrictions {
     }
 
     /**
-     * 大于
+     * 大于等于
      * @param criteria 条件包装对象
      * @param property 属性
      * @param value    值
@@ -683,7 +680,7 @@ public final class Restrictions {
     }
 
     /**
-     * 大于
+     * 大于等于
      * @param criteria 条件包装对象
      * @param property 属性
      * @param value    值
@@ -698,7 +695,7 @@ public final class Restrictions {
     }
 
     /**
-     * 大于
+     * 大于等于
      * @param criteria 条件包装对象
      * @param property 属性
      * @param value    值
@@ -709,7 +706,7 @@ public final class Restrictions {
     }
 
     /**
-     * 大于
+     * 大于等于
      * @param criteria 条件包装对象
      * @param property 属性
      * @param value    值
@@ -721,7 +718,7 @@ public final class Restrictions {
     }
 
     /**
-     * 大于
+     * 大于等于
      * @param column 字段
      * @param value  值
      * @return 条件对象
@@ -731,7 +728,7 @@ public final class Restrictions {
     }
 
     /**
-     * 大于
+     * 大于等于
      * @param column 字段
      * @param value  值
      * @param logic  逻辑符号
@@ -742,7 +739,7 @@ public final class Restrictions {
     }
 
     /**
-     * 大于
+     * 大于等于
      * @param tableAlias 表别名
      * @param column     字段
      * @param value      值
@@ -753,7 +750,7 @@ public final class Restrictions {
     }
 
     /**
-     * 大于
+     * 大于等于
      * @param tableAlias 表别名
      * @param column     字段
      * @param value      值
@@ -765,7 +762,7 @@ public final class Restrictions {
     }
 
     /**
-     * 大于
+     * 大于等于
      * @param criteria 条件包装对象
      * @param column   字段
      * @param value    值
@@ -776,7 +773,7 @@ public final class Restrictions {
     }
 
     /**
-     * 大于
+     * 大于等于
      * @param criteria 条件包装对象
      * @param column   字段
      * @param value    值
@@ -1207,7 +1204,7 @@ public final class Restrictions {
     }
 
     /**
-     * BETWEEN AND
+     * BETWEEN
      * @param criteria 条件包装对象
      * @param property 属性
      * @param begin    开始值
@@ -1221,7 +1218,7 @@ public final class Restrictions {
     }
 
     /**
-     * BETWEEN AND
+     * BETWEEN
      * @param criteria 条件包装对象
      * @param property 属性
      * @param begin    开始值
@@ -1236,7 +1233,7 @@ public final class Restrictions {
     }
 
     /**
-     * BETWEEN AND
+     * BETWEEN
      * @param criteria 条件包装对象
      * @param property 属性
      * @param begin    开始值
@@ -1248,7 +1245,7 @@ public final class Restrictions {
     }
 
     /**
-     * BETWEEN AND
+     * BETWEEN
      * @param criteria 条件包装对象
      * @param property 属性
      * @param begin    开始值
@@ -1261,7 +1258,7 @@ public final class Restrictions {
     }
 
     /**
-     * BETWEEN AND
+     * BETWEEN
      * @param column 字段
      * @param begin  开始值
      * @param end    结束值
@@ -1272,7 +1269,7 @@ public final class Restrictions {
     }
 
     /**
-     * BETWEEN AND
+     * BETWEEN
      * @param column 字段
      * @param begin  开始值
      * @param end    结束值
@@ -1284,7 +1281,7 @@ public final class Restrictions {
     }
 
     /**
-     * BETWEEN AND
+     * BETWEEN
      * @param tableAlias 表别名
      * @param column     字段
      * @param begin      开始值
@@ -1296,7 +1293,7 @@ public final class Restrictions {
     }
 
     /**
-     * BETWEEN AND
+     * BETWEEN
      * @param tableAlias 表别名
      * @param column     字段
      * @param begin      开始值
@@ -1309,7 +1306,7 @@ public final class Restrictions {
     }
 
     /**
-     * BETWEEN AND
+     * BETWEEN
      * @param criteria 条件包装对象
      * @param column   字段
      * @param begin    开始值
@@ -1321,7 +1318,7 @@ public final class Restrictions {
     }
 
     /**
-     * BETWEEN AND
+     * BETWEEN
      * @param criteria 条件包装对象
      * @param column   字段
      * @param begin    开始值
@@ -1335,7 +1332,7 @@ public final class Restrictions {
     }
 
     /**
-     * NOT BETWEEN AND
+     * NOT BETWEEN
      * @param criteria 条件包装对象
      * @param property 属性
      * @param begin    开始值
@@ -1349,7 +1346,7 @@ public final class Restrictions {
     }
 
     /**
-     * NOT BETWEEN AND
+     * NOT BETWEEN
      * @param criteria 条件包装对象
      * @param property 属性
      * @param begin    开始值
@@ -1365,7 +1362,7 @@ public final class Restrictions {
     }
 
     /**
-     * NOT BETWEEN AND
+     * NOT BETWEEN
      * @param criteria 条件包装对象
      * @param property 属性
      * @param begin    开始值
@@ -1377,7 +1374,7 @@ public final class Restrictions {
     }
 
     /**
-     * NOT BETWEEN AND
+     * NOT BETWEEN
      * @param criteria 条件包装对象
      * @param property 属性
      * @param begin    开始值
@@ -1390,7 +1387,7 @@ public final class Restrictions {
     }
 
     /**
-     * NOT BETWEEN AND
+     * NOT BETWEEN
      * @param column 字段
      * @param begin  开始值
      * @param end    结束值
@@ -1401,7 +1398,7 @@ public final class Restrictions {
     }
 
     /**
-     * NOT BETWEEN AND
+     * NOT BETWEEN
      * @param column 字段
      * @param begin  开始值
      * @param end    结束值
@@ -1413,7 +1410,7 @@ public final class Restrictions {
     }
 
     /**
-     * NOT BETWEEN AND
+     * NOT BETWEEN
      * @param tableAlias 表别名
      * @param column     字段
      * @param begin      开始值
@@ -1425,7 +1422,7 @@ public final class Restrictions {
     }
 
     /**
-     * NOT BETWEEN AND
+     * NOT BETWEEN
      * @param tableAlias 表别名
      * @param column     字段
      * @param begin      开始值
@@ -1439,7 +1436,7 @@ public final class Restrictions {
     }
 
     /**
-     * NOT BETWEEN AND
+     * NOT BETWEEN
      * @param criteria 条件包装对象
      * @param column   字段
      * @param begin    开始值
@@ -1451,7 +1448,7 @@ public final class Restrictions {
     }
 
     /**
-     * NOT BETWEEN AND
+     * NOT BETWEEN
      * @param criteria 条件包装对象
      * @param column   字段
      * @param begin    开始值
@@ -1907,6 +1904,7 @@ public final class Restrictions {
      * LIKE
      * @param tableAlias 表别名
      * @param column     字段
+     * @param value      值
      * @return 条件对象
      */
     public static DirectLike likeWith(String tableAlias, String column, String value) {
@@ -2009,6 +2007,7 @@ public final class Restrictions {
      * LIKE
      * @param criteria 条件包装对象
      * @param column   字段
+     * @param value    值
      * @return 条件对象
      */
     public static DirectLike likeWith(Criteria<?> criteria, String column, String value) {
@@ -2112,6 +2111,7 @@ public final class Restrictions {
      * NOT LIKE
      * @param tableAlias 表别名
      * @param column     字段
+     * @param value      值
      * @return 条件对象
      */
     public static DirectNotLike notLikeWith(String tableAlias, String column, String value) {
@@ -2218,6 +2218,7 @@ public final class Restrictions {
      * NOT LIKE
      * @param criteria 条件包装对象
      * @param column   字段
+     * @param value    值
      * @return 条件对象
      */
     public static DirectNotLike notLikeWith(Criteria<?> criteria, String column, String value) {
@@ -3141,7 +3142,6 @@ public final class Restrictions {
      * @param otherCriteria 其他条件包装对象
      * @param otherProperty 其他属性
      * @param logic         逻辑符号
-     * @param <T>           实体类型
      * @param <E>           实体类型
      * @param <V>           属性值类型
      * @return 条件对象
@@ -3188,10 +3188,10 @@ public final class Restrictions {
      * @param criteria 条件包装对象
      * @param column   字段包装对象
      * @param sc       子查询条件包装对象
-     * @param <T>      实体类型
+     * @param logic    逻辑符号
      * @return 条件对象
      */
-    public static <T> SubQuery sq(Criteria<T> criteria, ColumnWrapper column, SubCriteria<?> sc, Logic logic) {
+    public static SubQuery sq(Criteria<?> criteria, ColumnWrapper column, SubCriteria<?> sc, Logic logic) {
         return SubQuery.create().criteria(criteria).column(column).sc(sc).logic(logic).build();
     }
 
@@ -3440,7 +3440,6 @@ public final class Restrictions {
      * @param criteria 条件包装对象
      * @param sc       子查询条件对象
      * @param logic    逻辑符号
-     * @param <T>      实体类型
      * @param <E>      子查询实体类型
      * @return 条件对象
      */

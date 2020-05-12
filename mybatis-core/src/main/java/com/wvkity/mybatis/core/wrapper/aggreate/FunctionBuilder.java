@@ -109,6 +109,8 @@ public final class FunctionBuilder {
     /**
      * 设置属性
      * @param property 属性
+     * @param <T>      实体类型
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     public <T, V> FunctionBuilder property(final Property<T, V> property) {

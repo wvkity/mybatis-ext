@@ -42,7 +42,7 @@ public interface UpdateWrapper<T, Chain extends UpdateWrapper<T, Chain>> extends
      * @param <V2> 值2类型
      * @return {@code this}
      */
-    default <V1, V2, V3> Chain set(Property<T, V1> p1, V1 v1, Property<T, V2> p2, V2 v2) {
+    default <V1, V2> Chain set(Property<T, V1> p1, V1 v1, Property<T, V2> p2, V2 v2) {
         return set(convert(p1), v1, convert(p2), v2);
     }
 

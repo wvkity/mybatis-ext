@@ -54,34 +54,35 @@ public interface Criteria<T> extends Search<T>, PlaceholderConverter, PropertyCo
     /**
      * 添加条件
      * @param criterion 条件对象
+     * @return {@code this}
      */
     Criteria<T> add(Criterion criterion);
 
     /**
      * 添加多个条件
      * @param array 条件对象数组
-     * @return 当前对象
+     * @return {@code this}
      */
     Criteria<T> where(Criterion... array);
 
     /**
      * 添加多个条件
      * @param list 条件对象集合
-     * @return 当前对象
+     * @return {@code this}
      */
     Criteria<T> where(Collection<Criterion> list);
 
     /**
      * 添加子查询条件对象
      * @param array 子查询条件对象数组
-     * @return 当前对象
+     * @return {@code this}
      */
     Criteria<T> where(AbstractSubCriteria<?>... array);
 
     /**
      * 添加子查询条件对象
      * @param list 子查询条件对象集合
-     * @return 当前对象
+     * @return {@code this}
      */
     Criteria<T> addSub(Collection<AbstractSubCriteria<?>> list);
 
@@ -171,7 +172,7 @@ public interface Criteria<T> extends Search<T>, PlaceholderConverter, PropertyCo
     /**
      * 是否启用别名
      * @param enabled 是否启用
-     * @return 当前对象
+     * @return {@code this}
      */
     Criteria<T> as(boolean enabled);
 

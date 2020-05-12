@@ -38,7 +38,7 @@ public interface ForeignSubCriteriaWrapper<T, Chain extends ForeignCriteriaWrapp
      * @param consumer {@link}
      * @return {@code this}
      */
-    default <E> ForeignSubCriteria<?> innerJoin(SubCriteria<?> sc, BiConsumer<AbstractQueryCriteriaWrapper<T>,
+    default ForeignSubCriteria<?> innerJoin(SubCriteria<?> sc, BiConsumer<AbstractQueryCriteriaWrapper<T>,
             ForeignSubCriteria<?>> consumer) {
         return join(sc, Join.INNER, consumer);
     }
@@ -48,7 +48,7 @@ public interface ForeignSubCriteriaWrapper<T, Chain extends ForeignCriteriaWrapp
      * @param sc 子查询对象
      * @return {@code this}
      */
-    default <E> ForeignSubCriteria<?> leftJoin(SubCriteria<?> sc) {
+    default ForeignSubCriteria<?> leftJoin(SubCriteria<?> sc) {
         return join(sc, Join.LEFT);
     }
 
@@ -58,7 +58,7 @@ public interface ForeignSubCriteriaWrapper<T, Chain extends ForeignCriteriaWrapp
      * @param consumer {@link}
      * @return {@code this}
      */
-    default <E> ForeignSubCriteria<?> leftJoin(SubCriteria<?> sc, Consumer<ForeignSubCriteria<?>> consumer) {
+    default ForeignSubCriteria<?> leftJoin(SubCriteria<?> sc, Consumer<ForeignSubCriteria<?>> consumer) {
         return join(sc, Join.LEFT, consumer);
     }
 

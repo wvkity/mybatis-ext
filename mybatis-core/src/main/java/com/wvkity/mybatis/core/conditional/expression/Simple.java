@@ -7,7 +7,6 @@ import com.wvkity.mybatis.core.wrapper.criteria.Criteria;
 
 /**
  * 简单条件
- * @param <T> 实体类型
  * @author wvkity
  */
 public class Simple extends ColumnExpressionWrapper {

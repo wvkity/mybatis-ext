@@ -111,6 +111,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param template 模板
      * @param property 属性
      * @param values   值
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orTemplate(String template, Property<T, V> property, Object... values) {
@@ -123,6 +124,7 @@ public interface TemplateWrapper<T, Chain extends CompareWrapper<T, Chain>> exte
      * @param template 模板
      * @param property 属性
      * @param values   值
+     * @param <V>      属性值类型
      * @return {@code this}
      */
     default <V> Chain orTemplate(String template, Property<T, V> property, Collection<Object> values) {

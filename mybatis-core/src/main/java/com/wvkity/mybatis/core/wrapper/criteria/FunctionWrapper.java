@@ -1316,6 +1316,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
     /**
      * SUM聚合函数
      * @param column 字段
+     * @param scale  保留小数位数
      * @return {@code this}
      */
     default Chain sumWith(String column, Integer scale) {
@@ -1326,6 +1327,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * SUM聚合函数
      * @param column   字段
      * @param distinct 是否去重
+     * @param scale    保留小数位数
      * @return {@code this}
      */
     default Chain sumWith(String column, boolean distinct, Integer scale) {
@@ -1336,6 +1338,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * SUM聚合函数
      * @param column 字段
      * @param alias  别名
+     * @param scale  保留小数位数
      * @return {@code this}
      */
     default Chain sumWith(String column, String alias, Integer scale) {
@@ -1347,6 +1350,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * @param column   字段
      * @param distinct 是否去重
      * @param alias    别名
+     * @param scale    保留小数位数
      * @return {@code this}
      */
     Chain sumWith(String column, boolean distinct, String alias, Integer scale);
@@ -1355,6 +1359,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * SUM聚合函数
      * @param tableAlias 表别名
      * @param column     字段
+     * @param scale      保留小数位数
      * @return {@code this}
      */
     default Chain sumWithAlias(String tableAlias, String column, Integer scale) {
@@ -1366,6 +1371,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * @param tableAlias 表别名
      * @param column     字段
      * @param distinct   是否去重
+     * @param scale      保留小数位数
      * @return {@code this}
      */
     default Chain sumWith(String tableAlias, String column, boolean distinct, Integer scale) {
@@ -1377,6 +1383,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * @param tableAlias 表别名
      * @param column     字段
      * @param alias      别名
+     * @param scale      保留小数位数
      * @return {@code this}
      */
     default Chain sumWith(String tableAlias, String column, String alias, Integer scale) {
@@ -1389,6 +1396,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * @param column     字段
      * @param distinct   是否去重
      * @param alias      别名
+     * @param scale      保留小数位数
      * @return {@code this}
      */
     Chain sumWith(String tableAlias, String column, boolean distinct, String alias, Integer scale);
@@ -1396,6 +1404,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
     /**
      * SUM聚合函数
      * @param column     字段
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param value      值
      * @return {@code this}
@@ -1408,6 +1417,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * SUM聚合函数
      * @param column     字段
      * @param distinct   是否去重
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param value      值
      * @return {@code this}
@@ -1420,6 +1430,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * SUM聚合函数
      * @param column     字段
      * @param alias      别名
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param value      值
      * @return {@code this}
@@ -1433,6 +1444,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * @param column     字段
      * @param distinct   是否去重
      * @param alias      别名
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param value      值
      * @return {@code this}
@@ -1442,6 +1454,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
     /**
      * SUM聚合函数
      * @param column     字段
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param min        最小值
      * @param max        最大值
@@ -1455,6 +1468,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * SUM聚合函数
      * @param column     字段
      * @param distinct   是否去重
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param min        最小值
      * @param max        最大值
@@ -1469,6 +1483,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * SUM聚合函数
      * @param column     字段
      * @param alias      别名
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param min        最小值
      * @param max        最大值
@@ -2294,6 +2309,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
     /**
      * AVG聚合函数
      * @param column 字段
+     * @param scale  保留小数位数
      * @return {@code this}
      */
     default Chain avgWith(String column, Integer scale) {
@@ -2304,6 +2320,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * AVG聚合函数
      * @param column   字段
      * @param distinct 是否去重
+     * @param scale    保留小数位数
      * @return {@code this}
      */
     default Chain avgWith(String column, boolean distinct, Integer scale) {
@@ -2314,6 +2331,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * AVG聚合函数
      * @param column 字段
      * @param alias  别名
+     * @param scale  保留小数位数
      * @return {@code this}
      */
     default Chain avgWith(String column, String alias, Integer scale) {
@@ -2325,6 +2343,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * @param column   字段
      * @param distinct 是否去重
      * @param alias    别名
+     * @param scale    保留小数位数
      * @return {@code this}
      */
     Chain avgWith(String column, boolean distinct, String alias, Integer scale);
@@ -2333,6 +2352,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * AVG聚合函数
      * @param tableAlias 表别名
      * @param column     字段
+     * @param scale      保留小数位数
      * @return {@code this}
      */
     default Chain avgWithAlias(String tableAlias, String column, Integer scale) {
@@ -2344,6 +2364,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * @param tableAlias 表别名
      * @param column     字段
      * @param distinct   是否去重
+     * @param scale      保留小数位数
      * @return {@code this}
      */
     default Chain avgWith(String tableAlias, String column, boolean distinct, Integer scale) {
@@ -2355,6 +2376,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * @param tableAlias 表别名
      * @param column     字段
      * @param alias      别名
+     * @param scale      保留小数位数
      * @return {@code this}
      */
     default Chain avgWith(String tableAlias, String column, String alias, Integer scale) {
@@ -2367,6 +2389,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * @param column     字段
      * @param distinct   是否去重
      * @param alias      别名
+     * @param scale      保留小数位数
      * @return {@code this}
      */
     Chain avgWith(String tableAlias, String column, boolean distinct, String alias, Integer scale);
@@ -2374,6 +2397,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
     /**
      * AVG聚合函数
      * @param column     字段
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param value      值
      * @return {@code this}
@@ -2386,6 +2410,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * AVG聚合函数
      * @param column     字段
      * @param distinct   是否去重
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param value      值
      * @return {@code this}
@@ -2398,6 +2423,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * AVG聚合函数
      * @param column     字段
      * @param alias      别名
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param value      值
      * @return {@code this}
@@ -2411,6 +2437,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * @param column     字段
      * @param distinct   是否去重
      * @param alias      别名
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param value      值
      * @return {@code this}
@@ -2420,6 +2447,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
     /**
      * AVG聚合函数
      * @param column     字段
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param min        最小值
      * @param max        最大值
@@ -2433,6 +2461,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * AVG聚合函数
      * @param column     字段
      * @param distinct   是否去重
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param min        最小值
      * @param max        最大值
@@ -2447,6 +2476,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * AVG聚合函数
      * @param column     字段
      * @param alias      别名
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param min        最小值
      * @param max        最大值
@@ -2799,6 +2829,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
     /**
      * MIN聚合函数
      * @param column 字段
+     * @param scale  保留小数位数
      * @return {@code this}
      */
     default Chain minWith(String column, Integer scale) {
@@ -2809,6 +2840,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * MIN聚合函数
      * @param column 字段
      * @param alias  别名
+     * @param scale  保留小数位数
      * @return {@code this}
      */
     Chain minWith(String column, String alias, Integer scale);
@@ -2817,6 +2849,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * MIN聚合函数
      * @param tableAlias 表别名
      * @param column     字段
+     * @param scale      保留小数位数
      * @return {@code this}
      */
     default Chain minWithAlias(String tableAlias, String column, Integer scale) {
@@ -2828,6 +2861,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * @param tableAlias 表别名
      * @param column     字段
      * @param alias      别名
+     * @param scale      保留小数位数
      * @return {@code this}
      */
     Chain minWith(String tableAlias, String column, String alias, Integer scale);
@@ -2835,6 +2869,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
     /**
      * MIN聚合函数
      * @param column     字段
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param value      值
      * @return {@code this}
@@ -2847,6 +2882,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * MIN聚合函数
      * @param column     字段
      * @param alias      别名
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param value      值
      * @return {@code this}
@@ -2856,6 +2892,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
     /**
      * MIN聚合函数
      * @param column     字段
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param min        最小值
      * @param max        最大值
@@ -2869,6 +2906,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * MIN聚合函数
      * @param column     字段
      * @param alias      别名
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param min        最小值
      * @param max        最大值
@@ -3204,6 +3242,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
     /**
      * MAX聚合函数
      * @param column 字段
+     * @param scale  保留小数位数
      * @return {@code this}
      */
     default Chain maxWith(String column, Integer scale) {
@@ -3214,6 +3253,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * MAX聚合函数
      * @param column 字段
      * @param alias  别名
+     * @param scale  保留小数位数
      * @return {@code this}
      */
     Chain maxWith(String column, String alias, Integer scale);
@@ -3222,6 +3262,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * MAX聚合函数
      * @param tableAlias 表别名
      * @param column     字段
+     * @param scale      保留小数位数
      * @return {@code this}
      */
     default Chain maxWithAlias(String tableAlias, String column, Integer scale) {
@@ -3233,6 +3274,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * @param tableAlias 表别名
      * @param column     字段
      * @param alias      别名
+     * @param scale      保留小数位数
      * @return {@code this}
      */
     Chain maxWith(String tableAlias, String column, String alias, Integer scale);
@@ -3240,6 +3282,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
     /**
      * MAX聚合函数
      * @param column     字段
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param value      值
      * @return {@code this}
@@ -3252,6 +3295,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * MAX聚合函数
      * @param column     字段
      * @param alias      别名
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param value      值
      * @return {@code this}
@@ -3261,6 +3305,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
     /**
      * MAX聚合函数
      * @param column     字段
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param min        最小值
      * @param max        最大值
@@ -3274,6 +3319,7 @@ public interface FunctionWrapper<T, Chain extends FunctionWrapper<T, Chain>> ext
      * MAX聚合函数
      * @param column     字段
      * @param alias      别名
+     * @param scale      保留小数位数
      * @param comparator 比较运算符
      * @param min        最小值
      * @param max        最大值

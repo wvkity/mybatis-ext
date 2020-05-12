@@ -248,6 +248,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
     /**
      * 添加查询列
      * @param properties 属性数组
+     * @param <V>        属性值类型
      * @return {@code this}
      */
     @SuppressWarnings({"unchecked"})

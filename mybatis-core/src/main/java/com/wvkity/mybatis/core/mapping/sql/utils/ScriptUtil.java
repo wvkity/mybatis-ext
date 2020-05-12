@@ -103,11 +103,11 @@ public final class ScriptUtil {
      * 转换成if条件标签脚本
      * <pre>
      *     // Examples:
-     *     ScriptUtil.convertIfTag("age != null and age > 0",
-     *          ScriptUtil.safeJointBeforePart("AND AGE >=", "age" ), true);
+     *     ScriptUtil.convertIfTag("age != null and age &gt; 0",
+     *          ScriptUtil.safeJointBeforePart("AND AGE &ge;", "age" ), true);
      *     return:
-     *     &lt;if test="age != null and age > 0"&gt;
-     *      AND AGE >= #{age}
+     *     &lt;if test="age != null and age &gt; 0"&gt;
+     *      AND AGE &ge; #{age}
      *     &lt;/if&gt;
      *
      *     ScriptUtil.convertIfTag("userName != null and userName != ''", "AND USER_NAME LIKE #{userName}", true);
@@ -211,7 +211,7 @@ public final class ScriptUtil {
      *     ScriptUtil.convertChooseTag("entity.version != null", "AND VERSION = #{entity.version}", "AND VERSION IS NULL");
      *     return:
      *     &lt;choose&gt;
-     *      &lt;when test="entity.version != null">
+     *      &lt;when test="entity.version != null"&gt;
      *       AND VERSION = #{entity.version}
      *      &lt;/when&gt;
      *      &lt;otherwise&gt;
@@ -369,14 +369,14 @@ public final class ScriptUtil {
      * 转换成参数
      * <pre>
      *     // Examples:
-     *     // execute = {@link Execute#REPLACE} && tableAlias == null
+     *     // execute = {@link Execute#REPLACE} AND tableAlias == null
      *     ScriptUtil.convertPartArg()
      *     return:
      *     USER_NAME = #{entity.userName}
      *     return:
      *     USER_NAME = #{entity.userName, javaType="java.lang.String", jdbcType="VARCHAR", typeHandler="xx.xxx.ClassName"}
      *
-     *     // execute = {@link Execute#REPLACE} && tableAlias != null
+     *     // execute = {@link Execute#REPLACE} AND tableAlias != null
      *     tableAlias.USER_NAME = #{entity.userName}
      *     tableAlias.USER_NAME = #{entity.userName, javaType="java.lang.String", jdbcType="VARCHAR", typeHandler="xx.xxx.ClassName"}
      *

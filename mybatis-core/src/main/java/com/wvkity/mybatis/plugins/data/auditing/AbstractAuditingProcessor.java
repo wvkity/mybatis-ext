@@ -139,6 +139,7 @@ abstract class AbstractAuditingProcessor extends UpdateProcessorSupport {
      * 必要时注入实体对象参数(注入空对象)，并返回实体元数据对象
      * @param metadata 元数据对象
      * @param table    实体-表映射信息对象
+     * @param consumer {@link Consumer}
      */
     protected void injectEmptyEntityIfNecessary(MetaObject metadata, TableWrapper table,
                                                 Consumer<MetaObject> consumer) {

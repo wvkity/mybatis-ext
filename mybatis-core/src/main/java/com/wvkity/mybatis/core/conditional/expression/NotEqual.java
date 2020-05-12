@@ -12,7 +12,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 不等于条件
- * @param <T> 实体类型
  * @author wvkity
  */
 public class NotEqual extends Simple {

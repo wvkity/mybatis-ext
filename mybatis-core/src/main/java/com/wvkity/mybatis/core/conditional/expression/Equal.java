@@ -39,7 +39,6 @@ public class Equal extends Simple {
 
     /**
      * 条件对象构建器
-     * @param <T> 实体类
      */
     @Setter
     @Accessors(chain = true, fluent = true)
@@ -85,6 +84,7 @@ public class Equal extends Simple {
         /**
          * 属性
          * @param property 属性
+         * @param <T>      实体类型
          * @param <V>      属性值类型
          * @return {@link Equal.Builder}
          */

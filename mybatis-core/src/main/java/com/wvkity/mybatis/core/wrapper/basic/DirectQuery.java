@@ -155,7 +155,6 @@ public class DirectQuery extends AbstractQueryWrapper<String> {
          * 查询列
          * @param tableAlias 表别名
          * @param columns    列别名-列集合
-         * @param <T>        实体类型
          * @return 字符串查询列对象集合
          */
         public static ArrayList<DirectQuery> query(String tableAlias, Map<String, String> columns) {
