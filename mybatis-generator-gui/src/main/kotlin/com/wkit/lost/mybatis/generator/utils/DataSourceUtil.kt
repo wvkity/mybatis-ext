@@ -26,7 +26,7 @@ class DataSourceUtil {
         private val LOG: Logger = LogManager.getLogger(DataSourceUtil)
         private val DATA_SOURCE_CACHE: MutableMap<String, DataSource> = ConcurrentHashMap()
         private val DRIVER_CACHE: MutableMap<DatabaseType, Driver> = ConcurrentHashMap()
-        
+
         fun getConnection(config: ConnectionConfig): Connection {
             return getConnection(DatabaseType.valueOf(config.dbType!!), config.schema, config.host, config.port,
                     config.userName, config.password, config.encoding)
@@ -66,14 +66,14 @@ class DataSourceUtil {
             }
             jdbcUrl = jdbcUrl.format(*args.toArray())
             val props = Properties()
-            userName.takeIf { 
+            userName.takeIf {
                 !(it.isNullOrBlank())
-            } ?.run {
+            }?.run {
                 props.setProperty("user", userName)
             }
-            password.takeIf { 
+            password.takeIf {
                 !(it.isNullOrBlank())
-            } ?.run {
+            }?.run {
                 props.setProperty("password", password)
             }
             DriverManager.setLoginTimeout(5)

@@ -12,7 +12,7 @@ import java.util.*
  * SSH连接方式
  */
 open class SshConnectionController : BasicConnectionController() {
-    
+
     companion object {
         private val LOG = LogManager.getLogger(SshConnectionController)
     }
@@ -22,31 +22,31 @@ open class SshConnectionController : BasicConnectionController() {
      */
     @FXML
     protected lateinit var sshConnectionHost: TextField
-    
+
     /**
      * SSH端口
      */
     @FXML
     protected lateinit var sshConnectionPort: TextField
-    
+
     /**
      * SSH用户名
      */
     @FXML
     protected lateinit var sshUserName: TextField
-    
+
     /**
      * SSH密码
      */
     @FXML
     protected lateinit var sshPassword: PasswordField
-    
+
     /**
      * 本地端口
      */
     @FXML
     protected lateinit var localPort: TextField
-    
+
     /**
      * 目标端口
      */
@@ -89,7 +89,7 @@ open class SshConnectionController : BasicConnectionController() {
     override fun setConnectionConfig(config: ConnectionConfig?) {
         super.setConnectionConfig(config)
         val that = this
-        config?.run { 
+        config?.run {
             sshConnectionHost.text = config.sshHost
             sshConnectionPort.text = config.sshPort
             that.sshUserName.text = config.sshUserName

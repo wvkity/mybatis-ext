@@ -9,27 +9,27 @@ ${IMPORTS}
  */
 #end
 #if(${LOMBOK_ANNOTATION} != "")${LOMBOK_ANNOTATION}${NEW_LINE}#end
-#if($USE_SWAGGER_ANNOTATION)@ApiModel( value = "${TABLE_COMMENT}" )${NEW_LINE}#end
+#if($USE_SWAGGER_ANNOTATION)@ApiModel(value = "${TABLE_COMMENT}")${NEW_LINE}#end
 public class ${CLASS_NAME}$!{EXT_CLASS}{
 
-    #if($IMPL_SERIALIZABLE)
+#if($IMPL_SERIALIZABLE)
     #if($DYNAMIC_CREATE_SERIAL_UID)
     /** private static final long serialVersionUID = 1L;*/
     #else
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID=1L;
     #end
 
-    #end
-    #foreach($column in $COLUMNS)
+#end
+#foreach($column in $COLUMNS)
     #if($NEED_COMMENT)
     /**
      * ${column.comment}
      */
     #end
     #if($USE_SWAGGER_ANNOTATION)
-    @ApiModelProperty( value = "${column.comment}" )
+    @ApiModelProperty(value = "${column.comment}")
     #end
-    private $column.javaType $column.propertyName;
-    
-    #end
+private $column.javaType $column.propertyName;
+
+#end
 }

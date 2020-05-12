@@ -8,8 +8,10 @@
         <!-- 日志路径 -->
         <Property name="LOG_DIR" value="${LOG_HOME}/${LOG_FILE_NAME}/${date:yyyy-MM}"/>
         <!-- 日志格式 -->
-        <Property name="CONSOLE_LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss SSS}]: %-5level %class{36} [Method: %M -- Line: %L] - %m%n"/>
-        <Property name="ERROR_LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss SSS}]: %-5level %class{36} [Method: %M -- Line: %L] - %m%n"/>
+        <Property name="CONSOLE_LOG_PATTERN"
+                  value="[%d{yyyy-MM-dd HH:mm:ss SSS}]: %-5level %class{36} [Method: %M -- Line: %L] - %m%n"/>
+        <Property name="ERROR_LOG_PATTERN"
+                  value="[%d{yyyy-MM-dd HH:mm:ss SSS}]: %-5level %class{36} [Method: %M -- Line: %L] - %m%n"/>
         <!-- 日志大小开始割分 -->
         <Property name="LOG_FILE_SIZE" value="50 MB"/>
         <!-- 日志级别 -->

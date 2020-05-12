@@ -34,9 +34,11 @@ class Generator(generatorConfig: GeneratorConfig, tableData: List<Table>) {
         private const val DEFAULT_GROUP_ID = "com.springboot.mybatis.example"
         private const val ENTITY = "{Entity}"
         private const val ENTITY_DTO = "{EntityDTO}"
+
         // mybatis-plus
         private const val MYBATIS_PLUS_MODEL = "com.baomidou.mybatisplus.extension.activerecord.Model"
         private const val IMPORT_MYBATIS_PLUS_MODEL = "import $MYBATIS_PLUS_MODEL;"
+
         // 系统类
         private const val SYS_MAPPER_INTERFACE = "com.wkit.lost.mybatis.mapper.MapperExecutor"
         private const val SYS_MAPPER_INTERFACE_NAME = "MapperExecutor"
@@ -141,7 +143,7 @@ class Generator(generatorConfig: GeneratorConfig, tableData: List<Table>) {
             config.uniqueGroupId
         }
         if (connectionConfig != null) {
-            when(DatabaseType.valueOf(connectionConfig.dbType!!)) {
+            when (DatabaseType.valueOf(connectionConfig.dbType!!)) {
                 DatabaseType.MYSQL -> params[KEY_DRIVER_REF] = "implementation 'mysql:mysql-connector-java:5.1.48'$NEW_LINE"
                 DatabaseType.MYSQL_8 -> params[KEY_DRIVER_REF] = "implementation 'mysql:mysql-connector-java:8.0.15'$NEW_LINE"
                 DatabaseType.SQLITE -> params[KEY_DRIVER_REF] = "implementation 'org.xerial:sqlite-jdbc:3.28.0'$NEW_LINE"
@@ -188,7 +190,7 @@ class Generator(generatorConfig: GeneratorConfig, tableData: List<Table>) {
         list.sort()
         params[KEY_IMPORTS] = list.joinToString(NEW_LINE)
         params[KEY_ANNOTATIONS] = annotations.joinToString(NEW_LINE)
-        val applicationFilePath =  if (basePackage.isNotBlank()) {
+        val applicationFilePath = if (basePackage.isNotBlank()) {
             params[KEY_PACKAGE_NAME] = "package $basePackage;"
             config.basePackageAbsolutePath()
         } else {

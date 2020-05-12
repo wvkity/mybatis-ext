@@ -1,28 +1,28 @@
 package com.wkit.lost.mybatis.generator.code.bean
 
 data class Table(var className: String, var tableName: String, var author: String, var comment: String) {
-    
+
     var packageName = ""
     var entityImplSerializable: Boolean = true
     var dtoEntityImplSerializable: Boolean = true
     var hasPrimaryKey = false
     var schema = ""
-    var columns= ArrayList<Column>()
+    var columns = ArrayList<Column>()
     var importJavaTypes = HashSet<String>()
     var importAnnotationJavaTypes = HashSet<String>()
-    
+
     fun addImportJavaType(importJavaType: String?) {
-        importJavaType.takeIf { 
+        importJavaType.takeIf {
             !it.isNullOrBlank()
-        } ?.run { 
+        }?.run {
             importJavaTypes.add("import $this;")
         }
     }
-    
+
     fun addAnnotationJavaType(annotationType: String?) {
         annotationType.takeIf {
             !it.isNullOrBlank()
-        } ?.run {
+        }?.run {
             importAnnotationJavaTypes.add("import $this;")
         }
     }

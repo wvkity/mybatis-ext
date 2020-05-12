@@ -20,11 +20,11 @@ class FileUtil {
          * 斜杠
          */
         val SLASH: String = File.separator
-        
+
         fun isDir(filePath: String): Boolean {
-            return File(filePath).takeIf { 
+            return File(filePath).takeIf {
                 it.exists()
-            } ?.run { 
+            }?.run {
                 this.isDirectory
             } ?: run {
                 false

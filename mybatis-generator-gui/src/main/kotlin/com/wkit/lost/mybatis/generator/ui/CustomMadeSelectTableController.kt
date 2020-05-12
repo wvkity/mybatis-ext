@@ -160,7 +160,7 @@ class CustomMadeSelectTableController : AbstractController() {
         commentInput.prefWidth = 210.0
         commentInput.prefHeight = 28.0
         commentInput.text = table.getComment()
-        commentInput.textProperty().addListener { _, _, newComment -> 
+        commentInput.textProperty().addListener { _, _, newComment ->
             table.setComment(newComment)
         }
         gridPanel.add(commentInput, 5, 0)
@@ -225,7 +225,7 @@ class CustomMadeSelectTableController : AbstractController() {
         commentColumn.isSortable = false
         commentColumn.cellValueFactory = PropertyValueFactory<Column, String>(TABLE_COLUMN_PROP_COMMENT)
         commentColumn.cellFactory = TextFieldTableCell.forTableColumn()
-        commentColumn.setOnEditCommit { 
+        commentColumn.setOnEditCommit {
             it.tableView.items[it.tablePosition.row].commentProperty().set(it.newValue)
         }
         // 类型处理
@@ -250,11 +250,11 @@ class CustomMadeSelectTableController : AbstractController() {
      */
     @FXML
     fun cancelChanged() {
-        tableTabPanel.tabs.forEach { 
+        tableTabPanel.tabs.forEach {
             val userData = it.userData
             userData.takeIf { tableBean ->
                 tableBean != null
-            } ?.run { 
+            }?.run {
                 (userData as Table).rollback()
             }
         }
@@ -270,7 +270,7 @@ class CustomMadeSelectTableController : AbstractController() {
             val userData = it.userData
             userData.takeIf { tableBean ->
                 tableBean != null
-            } ?.run {
+            }?.run {
                 (userData as Table).confirmChange()
             }
         }

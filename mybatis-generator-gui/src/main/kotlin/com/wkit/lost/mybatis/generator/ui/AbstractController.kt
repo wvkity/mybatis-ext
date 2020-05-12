@@ -118,12 +118,12 @@ abstract class AbstractController : Parent(), Initializable {
             }
         }
     }
-    
+
     fun removeErrors(vararg nodes: Node) {
-        nodes.takeIf { 
+        nodes.takeIf {
             it.isNotEmpty()
-        } ?.run {
-            nodes.forEach { 
+        }?.run {
+            nodes.forEach {
                 removeError(it)
             }
         }
@@ -142,13 +142,13 @@ abstract class AbstractController : Parent(), Initializable {
             node.styleClass.remove(selector)
         }
     }
-    
+
     fun validate(vararg nodes: Control?): Boolean {
-        return nodes.takeIf { 
+        return nodes.takeIf {
             nodes.isNotEmpty()
-        } ?.run { 
+        }?.run {
             var result = true
-            nodes.forEach { 
+            nodes.forEach {
                 val vs = validate(it)
                 if (!vs && result) {
                     result = false
@@ -188,12 +188,12 @@ abstract class AbstractController : Parent(), Initializable {
             true
         }
     }
-    
+
     fun valueChangedListeners(vararg nodes: TextField?) {
-        nodes.takeIf { 
+        nodes.takeIf {
             it.isNotEmpty()
-        } ?.run { 
-            this.forEach { 
+        }?.run {
+            this.forEach {
                 valueChangedListener(it)
             }
         }
@@ -212,7 +212,7 @@ abstract class AbstractController : Parent(), Initializable {
      * @param node TextField对象
      * @param callback 回调函数
      */
-    fun valueChangedListener(node: TextField?, callback: ((observable: ObservableValue<out String>, 
+    fun valueChangedListener(node: TextField?, callback: ((observable: ObservableValue<out String>,
                                                            oldValue: String, newValue: String) -> Unit)?) {
         node?.run {
             val that = this
@@ -230,10 +230,10 @@ abstract class AbstractController : Parent(), Initializable {
 
     fun focusedClearErrorListeners(vararg nodes: TextField?, filter: ((observable: ObservableValue<out Boolean>,
                                                                        oldPropertyValue: Boolean, newPropertyValue: Boolean) -> Boolean)) {
-        nodes.takeIf { 
+        nodes.takeIf {
             it.isNotEmpty()
-        } ?.run {
-            nodes.forEach { 
+        }?.run {
+            nodes.forEach {
                 it?.run {
                     this.focusedProperty().addListener { observable, oldPropertyValue, newPropertyValue ->
                         if (filter(observable, oldPropertyValue, newPropertyValue)) {

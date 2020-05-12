@@ -9,7 +9,7 @@ ${IMPORTS}
  */
 #end
 @Controller
-#if(${LOMBOK_ANNOTATION} != "")${LOMBOK_ANNOTATION}${NEW_LINE}#end
+    #if(${LOMBOK_ANNOTATION} != "")${LOMBOK_ANNOTATION}${NEW_LINE}#end
 public class ${CLASS_NAME}$!{EXT_CLASS} {
     $!{SERVICE_CLASS}
-}
+        }

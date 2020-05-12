@@ -7,7 +7,7 @@ class JdbcJavaTypeRegistrar {
         private val IMPORT_JAVA_TYPE_CACHE = HashMap<String, String>()
         private val IMPORT_JAVA_TYPE_FLIP_CACHE = HashMap<String, String>()
         private val NOT_IMPORT_JAVA_TYPE_CACHE = HashSet<String>()
-        
+
         init {
             IMPORT_JAVA_TYPE_CACHE["BigDecimal"] = "java.math.BigDecimal"
             IMPORT_JAVA_TYPE_CACHE["Date"] = "java.util.Date"
@@ -19,10 +19,10 @@ class JdbcJavaTypeRegistrar {
             IMPORT_JAVA_TYPE_CACHE["ZonedDateTime"] = "java.time.ZonedDateTime"
             IMPORT_JAVA_TYPE_CACHE["OffsetTime"] = "java.time.OffsetTime"
             IMPORT_JAVA_TYPE_CACHE["OffsetDateTime"] = "java.time.OffsetDateTime"
-            for((k, v) in IMPORT_JAVA_TYPE_CACHE) {
+            for ((k, v) in IMPORT_JAVA_TYPE_CACHE) {
                 IMPORT_JAVA_TYPE_FLIP_CACHE[v] = k
             }
-            NOT_IMPORT_JAVA_TYPE_CACHE.addAll(listOf("char", "Character", "boolean", "Boolean", "byte", "Byte", 
+            NOT_IMPORT_JAVA_TYPE_CACHE.addAll(listOf("char", "Character", "boolean", "Boolean", "byte", "Byte",
                     "float", "Float", "double", "Double", "short", "Short", "int", "Integer", "long", "Long", "String"))
         }
 
@@ -53,20 +53,20 @@ class JdbcJavaTypeRegistrar {
                 null
             }
         }
-        
+
         fun javaType(shortJavaType: String, defaultType: String): String {
             return javaType(shortJavaType) ?: return defaultType
         }
-        
+
         fun notNeedImport(javaType: String): Boolean {
             return NOT_IMPORT_JAVA_TYPE_CACHE.contains(javaType)
         }
-        
+
         fun consistent(importJavaType: String, javaType: String): Boolean {
             val shortJavaType = IMPORT_JAVA_TYPE_FLIP_CACHE[importJavaType]
-            return shortJavaType.takeIf { 
+            return shortJavaType.takeIf {
                 it.isNullOrBlank()
-            } ?.run {
+            }?.run {
                 false
             } ?: run {
                 shortJavaType == javaType

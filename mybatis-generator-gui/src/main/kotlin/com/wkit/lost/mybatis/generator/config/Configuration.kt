@@ -18,14 +18,17 @@ class Configuration {
          * 根目录
          */
         private const val BASE_DIR = ".MybatisGenerator"
+
         /**
          * 配置目录
          */
         private const val CONFIG_DIR = "config"
+
         /**
          * 日志文件目录
          */
         private const val LOG_DIR = "logs"
+
         /**
          * 数据库文件
          */

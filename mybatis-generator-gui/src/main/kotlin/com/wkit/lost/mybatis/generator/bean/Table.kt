@@ -17,33 +17,39 @@ class Table constructor(originalTableName: String, originalComment: String, tabl
     companion object {
         private val LOG = LogManager.getLogger(Table)
     }
-    
+
     private val schema = originalSchema
 
     /**
      * 表名(禁止修改)
      */
     private val name = SimpleStringProperty("")
+
     /**
      * 表名前缀
      */
     private val prefix = SimpleStringProperty("")
+
     /**
      * 默认类名(禁止修改)
      */
     private val defaultClassName = SimpleStringProperty("")
+
     /**
      * 类名
      */
     private val className = SimpleStringProperty("")
+
     /**
      * 注释
      */
     private val comment = SimpleStringProperty("")
+
     /**
      * 作者
      */
     private val author = SimpleStringProperty("")
+
     /**
      * 列
      */
@@ -108,12 +114,12 @@ class Table constructor(originalTableName: String, originalComment: String, tabl
 
     private fun processTablePrefix(originalTableName: String, tablePrefix: String) {
         val array = tablePrefix.trim().split(Regex(",\\s*"))
-        val tableName = array.takeIf { 
+        val tableName = array.takeIf {
             it.isNotEmpty()
-        } ?.run { 
+        }?.run {
             val tableNameTemp = originalTableName.toUpperCase(Locale.ENGLISH)
             var realTableName = originalTableName
-            for(prefixValue in array) {
+            for (prefixValue in array) {
                 if (tableNameTemp.startsWith(prefixValue.toUpperCase(Locale.ENGLISH))) {
                     realTableName = originalTableName.substring(prefixValue.length)
                     prefix.set(prefixValue)
@@ -199,7 +205,7 @@ class Table constructor(originalTableName: String, originalComment: String, tabl
     fun setAuthor(author: String) {
         this.author.set(author)
     }
-    
+
     fun getSchema(): String {
         return this.schema
     }

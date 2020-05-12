@@ -14,7 +14,7 @@ public final class Ascii {
      * @param c 待检查字符
      * @return true: 是, false: 否
      */
-    public static boolean isLowerCase( char c ) {
+    public static boolean isLowerCase(char c) {
         return 'a' <= c && c <= 'z';
     }
 
@@ -23,7 +23,7 @@ public final class Ascii {
      * @param c 待检查字符
      * @return true: 是, false: 否
      */
-    public static boolean isUpperCase( char c ) {
+    public static boolean isUpperCase(char c) {
         return 'A' <= c && c <= 'Z';
     }
 
@@ -32,8 +32,8 @@ public final class Ascii {
      * @param c 待转换字符
      * @return 大写字母
      */
-    public static char toLowerCase( char c ) {
-        return isLowerCase( c ) ? c : ( char ) ( c ^ CASE_MASK );
+    public static char toLowerCase(char c) {
+        return isLowerCase(c) ? c : (char) (c ^ CASE_MASK);
     }
 
     /**
@@ -41,8 +41,8 @@ public final class Ascii {
      * @param c 待转换字母
      * @return 大写字母
      */
-    public static char toUpperCase( char c ) {
-        return isLowerCase( c ) ? ( char ) ( c ^ CASE_MASK ) : c;
+    public static char toUpperCase(char c) {
+        return isLowerCase(c) ? (char) (c ^ CASE_MASK) : c;
     }
 
     /**
@@ -50,19 +50,19 @@ public final class Ascii {
      * @param string 待转换字符串
      * @return 字符串转换后的副本
      */
-    public static String toLowerCase( String string ) {
-        if ( string != null && !string.trim().isEmpty() ) {
+    public static String toLowerCase(String string) {
+        if (string != null && !string.trim().isEmpty()) {
             int size = string.length();
-            for ( int i = 0; i < size; i++ ) {
-                if ( isUpperCase( string.charAt( i ) ) ) {
+            for (int i = 0; i < size; i++) {
+                if (isUpperCase(string.charAt(i))) {
                     char[] chars = string.toCharArray();
-                    for ( ; i < size; i++ ) {
-                        char c = chars[ i ];
-                        if ( isUpperCase( c ) ) {
-                            chars[ i ] = ( char ) ( c ^ CASE_MASK );
+                    for (; i < size; i++) {
+                        char c = chars[i];
+                        if (isUpperCase(c)) {
+                            chars[i] = (char) (c ^ CASE_MASK);
                         }
                     }
-                    return String.valueOf( chars );
+                    return String.valueOf(chars);
                 }
             }
         }
@@ -74,20 +74,20 @@ public final class Ascii {
      * @param chars 待转换字符串
      * @return 字符串转换后的副本
      */
-    public static String toLowerCase( CharSequence chars ) {
-        if ( chars != null ) {
-            if ( chars instanceof String ) {
-                return toLowerCase( ( String ) chars );
+    public static String toLowerCase(CharSequence chars) {
+        if (chars != null) {
+            if (chars instanceof String) {
+                return toLowerCase((String) chars);
             }
             int size = chars.length();
-            if ( size == 0 ) {
+            if (size == 0) {
                 return EMPTY;
             }
-            char[] charArray = new char[ size ];
-            for ( int i = 0; i < size; i++ ) {
-                charArray[ i ] = toLowerCase( chars.charAt( i ) );
+            char[] charArray = new char[size];
+            for (int i = 0; i < size; i++) {
+                charArray[i] = toLowerCase(chars.charAt(i));
             }
-            return String.valueOf( charArray );
+            return String.valueOf(charArray);
         }
         return null;
     }
@@ -97,19 +97,19 @@ public final class Ascii {
      * @param string 待转换字符串
      * @return 字符串转换后的副本
      */
-    public static String toUpperCase( String string ) {
-        if ( string != null && !string.trim().isEmpty() ) {
+    public static String toUpperCase(String string) {
+        if (string != null && !string.trim().isEmpty()) {
             int size = string.length();
-            for ( int i = 0; i < size; i++ ) {
-                if ( isLowerCase( string.charAt( i ) ) ) {
+            for (int i = 0; i < size; i++) {
+                if (isLowerCase(string.charAt(i))) {
                     char[] chars = string.toCharArray();
-                    for ( ; i < size; i++ ) {
-                        char c = chars[ i ];
-                        if ( isLowerCase( c ) ) {
-                            chars[ i ] = ( char ) ( c ^ CASE_MASK );
+                    for (; i < size; i++) {
+                        char c = chars[i];
+                        if (isLowerCase(c)) {
+                            chars[i] = (char) (c ^ CASE_MASK);
                         }
                     }
-                    return String.valueOf( chars );
+                    return String.valueOf(chars);
                 }
             }
         }
@@ -121,20 +121,20 @@ public final class Ascii {
      * @param chars 待转换字符串
      * @return 字符串转换后的副本
      */
-    public static String toUpperCase( CharSequence chars ) {
-        if ( chars != null ) {
-            if ( chars instanceof String ) {
-                return toLowerCase( ( String ) chars );
+    public static String toUpperCase(CharSequence chars) {
+        if (chars != null) {
+            if (chars instanceof String) {
+                return toLowerCase((String) chars);
             }
             int size = chars.length();
-            if ( size == 0 ) {
+            if (size == 0) {
                 return EMPTY;
             }
-            char[] charArray = new char[ size ];
-            for ( int i = 0; i < size; i++ ) {
-                charArray[ i ] = toUpperCase( chars.charAt( i ) );
+            char[] charArray = new char[size];
+            for (int i = 0; i < size; i++) {
+                charArray[i] = toUpperCase(chars.charAt(i));
             }
-            return String.valueOf( charArray );
+            return String.valueOf(charArray);
         }
         return null;
     }
@@ -144,7 +144,7 @@ public final class Ascii {
      * @param string 待转换字符串
      * @return 如果为null则返回空字符串，否则原字符串
      */
-    public static String nullToEmpty( String string ) {
+    public static String nullToEmpty(String string) {
         return string == null ? EMPTY : string;
     }
 
@@ -153,8 +153,8 @@ public final class Ascii {
      * @param string 待转换字符串
      * @return 如果为空字符串则返回null，否则返回原字符串
      */
-    public static String emptyToNull( String string ) {
-        return isNullOrEmpty( string ) ? NULL : string;
+    public static String emptyToNull(String string) {
+        return isNullOrEmpty(string) ? NULL : string;
     }
 
     /**
@@ -162,7 +162,7 @@ public final class Ascii {
      * @param string 待检查字符串
      * @return true: 是，false: 否
      */
-    public static boolean isNullOrEmpty( String string ) {
+    public static boolean isNullOrEmpty(String string) {
         return string == null || string.isEmpty();
     }
 
@@ -171,8 +171,8 @@ public final class Ascii {
      * @param string 待检查字符串
      * @return true: 是，false: 否
      */
-    public static boolean hasText( String string ) {
-        return !isNullOrEmpty( string ) && !string.trim().isEmpty();
+    public static boolean hasText(String string) {
+        return !isNullOrEmpty(string) && !string.trim().isEmpty();
     }
 
     /**
@@ -180,7 +180,7 @@ public final class Ascii {
      * @param string 待转换字符串
      * @return boolean
      */
-    public static boolean toBool( String string ) {
-        return hasText( string ) && ( "true".equalsIgnoreCase( string ) || "1".equals( string ) );
+    public static boolean toBool(String string) {
+        return hasText(string) && ("true".equalsIgnoreCase(string) || "1".equals(string));
     }
 }

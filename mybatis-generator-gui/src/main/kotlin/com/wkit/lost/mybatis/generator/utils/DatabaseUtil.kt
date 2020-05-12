@@ -16,7 +16,7 @@ import kotlin.collections.HashSet
 class DatabaseUtil {
 
     companion object {
-        
+
         private val LOG = LogManager.getLogger(DatabaseUtil)
 
         private const val IS_PREFIX = "IS_"
@@ -123,7 +123,7 @@ class DatabaseUtil {
                                 }
                                 val schema = rs.getString("TABLE_CAT").takeIf { sc ->
                                     !sc.isNullOrBlank()
-                                } ?.run { 
+                                }?.run {
                                     this
                                 } ?: run {
                                     ""
@@ -168,7 +168,7 @@ class DatabaseUtil {
                 val isSqlServer = DatabaseType.SQL_SERVER == DatabaseType.valueOf(config.dbType!!)
                 val rs = if (isSqlServer) {
                     // SQL SERVER采用以下查询获取列信息
-                    JdbcTemplate.resultSet(DataSourceUtil.getConnection(config, defaultSchema), 
+                    JdbcTemplate.resultSet(DataSourceUtil.getConnection(config, defaultSchema),
                             SQL_SERVER_COLUMN_INFO_SQL, tableName)
                 } else {
                     metadata.getColumns(realSchema, null, tableName, null)

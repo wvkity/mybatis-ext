@@ -1,12 +1,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="$!MAPPER_CLASS_NAME">
     <resultMap id="BaseResultMap" type="$!CLASS_NAME">
-    #foreach($it in $COLUMNS)
-    #if($it.primary)
-        <id property="${it.propertyName}" column="${it.columnName}"/>
-    #else
-        <result property="${it.propertyName}" column="${it.columnName}"/>
-    #end
-    #end
+        #foreach($it in $COLUMNS)
+            #if($it.primary)
+                <id property="${it.propertyName}" column="${it.columnName}"/>
+            #else
+                <exam property="${it.propertyName}" column="${it.columnName}"/>
+            #end
+        #end
     </resultMap>
 </mapper>

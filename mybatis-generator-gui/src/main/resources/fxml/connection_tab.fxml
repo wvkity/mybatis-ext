@@ -25,19 +25,22 @@
         </Tab>
     </TabPane>
     <AnchorPane style="-fx-background-color: #e6e6e6;" GridPane.rowIndex="1" prefWidth="720.0">
-        <Button mnemonicParsing="false" text="测试连接" prefWidth="90.0" layoutX="27.0" AnchorPane.topAnchor="7.0" AnchorPane.leftAnchor="15.0" AnchorPane.bottomAnchor="7.0">
+        <Button mnemonicParsing="false" text="测试连接" prefWidth="90.0" layoutX="27.0" AnchorPane.topAnchor="7.0"
+                AnchorPane.leftAnchor="15.0" AnchorPane.bottomAnchor="7.0">
             <styleClass>
                 <String fx:value="button"/>
                 <String fx:value="theme_warn"/>
             </styleClass>
         </Button>
-        <Button mnemonicParsing="false" text="取消" onAction="#cancel" prefWidth="90.0" layoutX="510.0" AnchorPane.topAnchor="7.0" AnchorPane.bottomAnchor="7.0">
+        <Button mnemonicParsing="false" text="取消" onAction="#cancel" prefWidth="90.0" layoutX="510.0"
+                AnchorPane.topAnchor="7.0" AnchorPane.bottomAnchor="7.0">
             <styleClass>
                 <String fx:value="button"/>
                 <String fx:value="theme_default"/>
             </styleClass>
         </Button>
-        <Button mnemonicParsing="false" onAction="#saveConnectionConfig" text="保存" prefWidth="90.0" layoutX="668" AnchorPane.topAnchor="7.0" AnchorPane.rightAnchor="15.0" AnchorPane.bottomAnchor="7.0">
+        <Button mnemonicParsing="false" onAction="#saveConnectionConfig" text="保存" prefWidth="90.0" layoutX="668"
+                AnchorPane.topAnchor="7.0" AnchorPane.rightAnchor="15.0" AnchorPane.bottomAnchor="7.0">
             <styleClass>
                 <String fx:value="button"/>
                 <String fx:value="theme_success"/>

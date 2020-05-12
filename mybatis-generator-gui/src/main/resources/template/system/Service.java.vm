@@ -9,5 +9,5 @@ ${IMPORTS}
  */
 #end
 public interface ${CLASS_NAME}$!{EXT_CLASS} {
-    
-}
+
+        }

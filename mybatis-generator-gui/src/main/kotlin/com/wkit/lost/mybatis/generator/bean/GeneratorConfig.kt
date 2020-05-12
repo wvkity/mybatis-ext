@@ -11,29 +11,34 @@ class GeneratorConfig {
         private const val BASE_PACKAGE = "{BasePackage}"
         private val DOT_REGEX = Regex("\\.")
     }
-    
+
     private var basePackageTempVariable = ""
 
     /**
      * 保存的名称
      */
     var name: String = ""
+
     /**
      * 项目目录
      */
     var projectFolder: String = ""
+
     /**
      * 模块(项目)名称
      */
     var moduleName: String = ""
+
     /**
      * groupId(Maven|Gradle)
      */
     var uniqueGroupId: String = ""
+
     /**
      * 表前缀
      */
     var tableNamePrefix: String = ""
+
     /**
      * 主键(ID)
      */
@@ -318,7 +323,7 @@ class GeneratorConfig {
     fun resourcesAbsolutePath(): String {
         return projectAbsolutePath() + this.resourcesTargetFolder + FileUtil.SLASH
     }
-    
+
     fun testResourcesAbsolutePath(): String {
         return projectAbsolutePath() + FileUtil.SLASH + "src" + FileUtil.SLASH + "test" + FileUtil.SLASH + "resources" + FileUtil.SLASH
     }
@@ -410,7 +415,7 @@ class GeneratorConfig {
             }
         }
     }
-    
+
     fun configInit(): GeneratorConfig {
         this.basePackageTempVariable = basePackage()
         return this
@@ -495,7 +500,7 @@ class GeneratorConfig {
             }
         }
     }
-    
+
     fun replaceDot(packageName: String): String {
         return packageName.replace(DOT_REGEX, FileUtil.SLASH)
     }

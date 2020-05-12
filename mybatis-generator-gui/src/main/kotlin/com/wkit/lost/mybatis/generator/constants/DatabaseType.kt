@@ -4,7 +4,7 @@ package com.wkit.lost.mybatis.generator.constants
  * 数据库类型枚举类
  * @author wvkity
  */
-enum class DatabaseType( val driverClass: String, val connectionUrlPattern: String) {
+enum class DatabaseType(val driverClass: String, val connectionUrlPattern: String) {
     /**
      * MySQL
      */
@@ -23,7 +23,7 @@ enum class DatabaseType( val driverClass: String, val connectionUrlPattern: Stri
     /**
      * PostgreSQL
      */
-    POSTGRESQL("org.postgresql.Driver","jdbc:postgresql://%s:%s/%s"),
+    POSTGRESQL("org.postgresql.Driver", "jdbc:postgresql://%s:%s/%s"),
 
     /**
      * SQL SERVER

@@ -88,17 +88,17 @@ open class BasicConnectionController : AbstractController() {
      */
     protected var executeUpdate = false
     protected var primaryKey = -1
-    
+
     protected fun isNotSqlite(): Boolean {
-        return databaseType.takeIf { 
+        return databaseType.takeIf {
             databaseType.value != null
-        } ?.run {
+        }?.run {
             DatabaseType.valueOf(databaseType.value.toUpperCase(Locale.ENGLISH)) != DatabaseType.SQLITE
         } ?: run {
             true
         }
     }
-    
+
     open protected fun needRequired(node: TextField?, value: String?) {
         if (isNotSqlite()) {
             validate(node, value)
@@ -111,9 +111,9 @@ open class BasicConnectionController : AbstractController() {
         try {
             // 事件监听
             valueChangedListener(this.connectionHost)
-            valueChangedListener(this.connectionPort) { _, _, value -> needRequired(connectionPort, value)}
-            valueChangedListener(this.userName) { _, _, value -> needRequired(userName, value)}
-            valueChangedListener(this.password) { _, _, value -> needRequired(password, value)}
+            valueChangedListener(this.connectionPort) { _, _, value -> needRequired(connectionPort, value) }
+            valueChangedListener(this.userName) { _, _, value -> needRequired(userName, value) }
+            valueChangedListener(this.password) { _, _, value -> needRequired(password, value) }
             // 获取焦点时清除错误
             focusedClearErrorListeners(connectionPort, userName, password) { _, _, _ -> !isNotSqlite() }
         } catch (e: Exception) {
@@ -189,7 +189,7 @@ open class BasicConnectionController : AbstractController() {
         }
         return result
     }
-    
+
     open fun extractConnectionConfig(): ConnectionConfig {
         val name = connectionName.text
         val host = connectionHost.text

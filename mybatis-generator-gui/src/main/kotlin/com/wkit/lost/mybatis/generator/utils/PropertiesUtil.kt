@@ -9,12 +9,12 @@ import kotlin.collections.HashMap
 class PropertiesUtil {
 
     companion object {
-        
+
         private val LOG = LogManager.getLogger(PropertiesUtil)
-        
+
         fun loadProperties(inputStream: InputStream?): MutableMap<String, String> {
             return inputStream?.run {
-                return inputStream.use { 
+                return inputStream.use {
                     val map = HashMap<String, String>()
                     try {
                         val properties = Properties()

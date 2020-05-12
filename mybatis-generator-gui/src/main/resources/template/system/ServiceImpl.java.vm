@@ -10,5 +10,5 @@ ${IMPORTS}
 #end
 @Service
 public class ${CLASS_NAME}$!{EXT_CLASS} {
-    
-}
+
+        }

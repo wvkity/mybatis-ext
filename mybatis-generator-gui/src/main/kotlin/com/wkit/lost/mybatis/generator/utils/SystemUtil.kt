@@ -5,7 +5,7 @@ package com.wkit.lost.mybatis.generator.utils;
  * @author wvkity
  */
 class SystemUtil {
-    
+
     companion object {
         /**
          * 获取用户主目录
@@ -14,7 +14,7 @@ class SystemUtil {
         fun userHome(): String {
             return System.getProperties().getProperty("user.home")
         }
-        
+
         fun userDir(): String {
             return System.getProperties().getProperty("user.dir")
         }

@@ -14,42 +14,52 @@ class Column constructor(originalColumnName: String, originalJdbcType: String, o
      * 是否选择
      */
     private val checked = SimpleBooleanProperty(true)
+
     /**
      * 列名
      */
     private val columnName = SimpleStringProperty("")
+
     /**
      * 长度
      */
     private val columnLength = SimpleStringProperty("")
+
     /**
      * JDBC类型
      */
     private val jdbcType = SimpleStringProperty("")
+
     /**
      * Java类型
      */
     private val javaType = SimpleStringProperty("")
+
     /**
      * 属性名
      */
     private val propertyName = SimpleStringProperty("")
+
     /**
      * 注释
      */
     private val comment = SimpleStringProperty("")
+
     /**
      * 是否主键
      */
     private val primary = SimpleBooleanProperty(false)
+
     /**
      * 列索引
      */
     private val index = SimpleStringProperty("")
+
     /**
      * 导入的Java类型
      */
     private val importJavaType = SimpleStringProperty("")
+
     /**
      * 处理器
      */
@@ -168,7 +178,7 @@ class Column constructor(originalColumnName: String, originalJdbcType: String, o
     private fun typeHandleRollback() {
         this.typeHandle.set(getTypeHandleValue())
     }
-    
+
     private fun commentRollback() {
         this.comment.set(getCommentValue())
     }
@@ -222,11 +232,11 @@ class Column constructor(originalColumnName: String, originalJdbcType: String, o
             typeHandleOverride
         }
     }
-    
+
     private fun getCommentValue(): String {
-        return this.commentOverride.takeIf { 
+        return this.commentOverride.takeIf {
             it.isBlank()
-        } ?.run {
+        }?.run {
             defaultComment
         } ?: run {
             commentOverride
@@ -252,11 +262,11 @@ class Column constructor(originalColumnName: String, originalJdbcType: String, o
     fun getDefaultTypeHandle(): String {
         return this.defaultTypeHandle
     }
-    
+
     fun getDefaultComment(): String {
         return this.defaultComment
     }
-    
+
 
     fun getChecked(): Boolean {
         return this.checked.get()

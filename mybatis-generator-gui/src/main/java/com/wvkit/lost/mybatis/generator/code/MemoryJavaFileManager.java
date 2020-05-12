@@ -23,34 +23,34 @@ public class MemoryJavaFileManager extends ForwardingJavaFileManager<JavaFileMan
     private static final String FILE_EXT = ".java";
     private Map<String, byte[]> classBytes;
 
-    public MemoryJavaFileManager( JavaFileManager fileManager ) {
-        super( fileManager );
+    public MemoryJavaFileManager(JavaFileManager fileManager) {
+        super(fileManager);
         classBytes = new HashMap<>();
     }
 
     private static class StringInputBuffer extends SimpleJavaFileObject {
         final String code;
 
-        StringInputBuffer( String name, String code ) {
-            super( toURI( name ), Kind.SOURCE );
+        StringInputBuffer(String name, String code) {
+            super(toURI(name), Kind.SOURCE);
             this.code = code;
         }
 
         @Override
-        public CharBuffer getCharContent( boolean ignoreEncodingErrors ) {
-            return CharBuffer.wrap( code );
+        public CharBuffer getCharContent(boolean ignoreEncodingErrors) {
+            return CharBuffer.wrap(code);
         }
 
         public Reader openReader() {
-            return new StringReader( code );
+            return new StringReader(code);
         }
     }
 
     private class ClassOutputBuffer extends SimpleJavaFileObject {
         private String name;
 
-        ClassOutputBuffer( String name ) {
-            super( toURI( name ), Kind.CLASS );
+        ClassOutputBuffer(String name) {
+            super(toURI(name), Kind.CLASS);
             this.name = name;
         }
 
@@ -66,35 +66,35 @@ public class MemoryJavaFileManager extends ForwardingJavaFileManager<JavaFileMan
             };
         }
     }
-    
+
     @Override
-    public JavaFileObject getJavaFileForOutput( JavaFileManager.Location location, String className,
-                                             JavaFileObject.Kind kind, FileObject sibling ) throws IOException {
+    public JavaFileObject getJavaFileForOutput(JavaFileManager.Location location, String className,
+                                               JavaFileObject.Kind kind, FileObject sibling) throws IOException {
         if (kind == JavaFileObject.Kind.CLASS) {
-            return new ClassOutputBuffer( className );
+            return new ClassOutputBuffer(className);
         } else {
-            return super.getJavaFileForOutput( location, className, kind, sibling );
+            return super.getJavaFileForOutput(location, className, kind, sibling);
         }
     }
-    
+
     static JavaFileObject makeStringCode(String name, String code) {
-        return new StringInputBuffer( name, code );
+        return new StringInputBuffer(name, code);
     }
 
-    static URI toURI( String name ) {
-        File file = new File( name );
-        if ( file.exists() ) {
+    static URI toURI(String name) {
+        File file = new File(name);
+        if (file.exists()) {
             return file.toURI();
         } else {
             try {
                 final StringBuilder builder = new StringBuilder();
-                builder.append( "mfm:///" ).append( name.replace( '.', '/' ) );
-                if ( name.endsWith( FILE_EXT ) ) {
-                    builder.replace( builder.length() - FILE_EXT.length(), builder.length(), FILE_EXT );
+                builder.append("mfm:///").append(name.replace('.', '/'));
+                if (name.endsWith(FILE_EXT)) {
+                    builder.replace(builder.length() - FILE_EXT.length(), builder.length(), FILE_EXT);
                 }
-                return URI.create( builder.toString() );
-            } catch ( Exception e ) {
-                return URI.create( "mfm:///com/sun/script/java/java_source" );
+                return URI.create(builder.toString());
+            } catch (Exception e) {
+                return URI.create("mfm:///com/sun/script/java/java_source");
             }
         }
     }

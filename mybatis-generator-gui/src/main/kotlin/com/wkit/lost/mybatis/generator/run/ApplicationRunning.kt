@@ -84,7 +84,7 @@ class ApplicationRunning : Application() {
             LOG.error("The load system configuration failed: {}", e.message, e)
         }
     }
-    
+
 }
 
 fun main(args: Array<String>) = Application.launch(ApplicationRunning::class.java, *args)
