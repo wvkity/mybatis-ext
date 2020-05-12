@@ -400,4 +400,12 @@ public class SimpleQueryApplication extends RootTestRunner {
         List<GradeVo> list = gradeService.list(criteria);
         log.info("结果: {}", JSON.toJSONString(list, true));
     }
+    
+    @Test
+    public void pureTest() {
+        QueryCriteria<Grade> criteria = QueryCriteria.from(Grade.class);
+        criteria.pure("left(NAME, 2) = '初二'");
+        List<GradeVo> list = gradeService.list(criteria);
+        log.info("结果: {}", JSON.toJSONString(list, true));
+    }
 }
