@@ -166,7 +166,7 @@ public final class AuditParser {
     }
 
     /**
-     * 匹配用户标识审计字段
+     * 匹配用户名审计字段
      * @param field       属性包装对象
      * @param matching    审计模式
      * @param autoDiscern 是否自动匹配
