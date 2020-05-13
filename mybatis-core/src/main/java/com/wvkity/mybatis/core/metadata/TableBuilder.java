@@ -12,7 +12,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.LinkedHashSet;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -104,15 +103,12 @@ public class TableBuilder extends BuilderSupport implements Builder<TableWrapper
 
     @Override
     public TableWrapper build() {
-        int mode = namingMode();
         // 数据库表名前缀
         String realPrefix = Optional.ofNullable(Ascii.isNullOrEmpty(this.prefix) ?
-                configuration.getTablePrefix() : this.prefix).map(it -> mode == 0 ?
-                it.toLowerCase(Locale.ENGLISH) : mode == 1 ? it.toUpperCase(Locale.ENGLISH) : it)
-                .orElse("");
+                configuration.getTablePrefix() : this.prefix).orElse("");
         // 数据表名
-        String realName = realPrefix + Optional.ofNullable(Ascii.isNullOrEmpty(this.name) ?
-                this.entity.getSimpleName() : this.name).map(this::tableNameTransform).orElse("");
+        String realName = (realPrefix + (Ascii.hasText(this.name) ? this.name :
+                tableNameTransform(this.entity.getSimpleName())));
         final String realCatalog = StringUtil.nvl(this.catalog, this.configuration.getCatalog());
         final String realSchema = StringUtil.nvl(this.schema, this.configuration.getSchema());
         // 创建字段对象
