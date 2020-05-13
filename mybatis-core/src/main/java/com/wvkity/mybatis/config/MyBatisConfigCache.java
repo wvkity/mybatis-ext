@@ -28,6 +28,21 @@ public final class MyBatisConfigCache {
     }
 
     /**
+     * 锁
+     */
+    private static final Object LOCK = new Object();
+
+    /**
+     * 标识是否已修改过
+     */
+    private static volatile boolean isChange = false;
+
+    /**
+     * 根据属性查找字段不匹配是否抛出异常
+     */
+    private static boolean notMatchingWithThrows = true;
+
+    /**
      * Mapper接口
      */
     private static final Class<?> BASE_MAPPER_INTERFACE = BaseMapper.class;
@@ -93,7 +108,8 @@ public final class MyBatisConfigCache {
      * @param configuration       MyBatis配置
      * @param customConfiguration 自定义全局配置
      */
-    public static void cacheCustomConfiguration(final Configuration configuration, MyBatisCustomConfiguration customConfiguration) {
+    public static void cacheCustomConfiguration(final Configuration configuration,
+                                                MyBatisCustomConfiguration customConfiguration) {
         if (configuration == null || customConfiguration == null) {
             throw new MyBatisException("Mybatis configuration object cannot be empty, please initialize it first");
         }
@@ -103,6 +119,7 @@ public final class MyBatisConfigCache {
         } else {
             CONFIGURATION_CACHE.put(configuration.toString(), customConfiguration);
         }
+        changeNotMatchingWithThrows(customConfiguration);
     }
 
     /**
@@ -173,5 +190,28 @@ public final class MyBatisConfigCache {
      */
     public static Dialect getDialect(final Configuration configuration) {
         return getCustomConfiguration(configuration).getDialect();
+    }
+
+    /**
+     * 修改根据属性查找字段不匹配是否抛出异常
+     * @param configuration 自定义配置
+     */
+    private static void changeNotMatchingWithThrows(final MyBatisCustomConfiguration configuration) {
+        if (!isChange) {
+            synchronized (LOCK) {
+                if (configuration != null) {
+                    notMatchingWithThrows = configuration.isNotMatchingWithThrows();
+                    isChange = true;
+                }
+            }
+        }
+    }
+
+    /**
+     * 根据属性查找字段不匹配是否抛出异常
+     * @return true: 是, false: 否
+     */
+    public static boolean isNotMatchingWithThrows() {
+        return notMatchingWithThrows;
     }
 }

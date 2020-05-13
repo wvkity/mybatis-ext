@@ -114,7 +114,7 @@ public class DefaultEntityParser implements EntityParser {
         } else {
             fields = FieldHandler.parse(fieldParser, entity);
         }
-        boolean autoAddIsPrefix = configuration.isBooleanPropertyAutoAddIsPrefix();
+        boolean autoAddIsPrefix = configuration.isAutoAddIsPrefixedWithBooleanProperty();
         fields.stream().filter(it -> this.filter(it, configuration)).forEach(it -> {
             ColumnBuilder columnBuilder = ColumnBuilder.create();
             columnBuilder.entity(entity)

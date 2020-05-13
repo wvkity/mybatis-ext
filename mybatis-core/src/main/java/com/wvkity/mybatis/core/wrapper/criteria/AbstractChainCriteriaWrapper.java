@@ -1,5 +1,6 @@
 package com.wvkity.mybatis.core.wrapper.criteria;
 
+import com.wvkity.mybatis.config.MyBatisConfigCache;
 import com.wvkity.mybatis.core.converter.Property;
 import com.wvkity.mybatis.core.metadata.ColumnWrapper;
 import com.wvkity.mybatis.core.metadata.PropertyMappingCache;
@@ -30,7 +31,7 @@ abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriter
      * 属性-字段包装对象缓存(只读)
      */
     private Map<String, ColumnWrapper> _PROPERTY_COLUMN_CACHE;
-    
+
     /**
      * 可更新字段名缓存(小写)
      */
@@ -92,25 +93,20 @@ abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriter
      */
     protected ColumnWrapper getColumn(String property) {
         if (!initialized) {
-        /*if ( this instanceof ForeignSubCriteria ) {
-                // 子查询联表条件
-                ForeignSubCriteria<?> foreign = ( ForeignSubCriteria<?> ) this;
-                ColumnWrapper wrapper = null;
-                if ( foreign.propertyForQueryCache != null && !foreign.propertyForQueryCache.isEmpty() ) {
-                    wrapper = foreign.propertyForQueryCache.getOrDefault( property, null );
-                }
-                if ( wrapper == null && foreign.subCriteria != null ) {
-                    return foreign.subCriteria.getColumn( property );
-                }
-                return wrapper;
-            }*/
             initMappings(this.entityClass);
         }
-        ColumnWrapper column = this._PROPERTY_COLUMN_CACHE.getOrDefault(property, null);
+        ColumnWrapper column = this._PROPERTY_COLUMN_CACHE.get(property);
         if (column == null) {
-            log.warn("The field mapping information for the entity class({}) cannot be found based on the `{}` " +
-                    "attribute. Check to see if the attribute exists or is decorated using the @transient " +
-                    "annotation.", this.entityClass.getCanonicalName(), property);
+            if (MyBatisConfigCache.isNotMatchingWithThrows()) {
+                throw new MyBatisException("The field mapping information for the entity class(" +
+                        this.entityClass.getCanonicalName() + ") cannot be found based on the `" + property + "` " +
+                        "attribute. Check to see if the attribute exists or is decorated using the @transient " +
+                        "annotation.");
+            } else {
+                log.warn("The field mapping information for the entity class({}) cannot be found based on the `{}` " +
+                        "attribute. Check to see if the attribute exists or is decorated using the @transient " +
+                        "annotation.", this.entityClass.getCanonicalName(), property);
+            }
         }
         return column;
     }

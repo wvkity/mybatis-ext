@@ -1328,10 +1328,12 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
 
     @Override
     public Chain add(Criterion criterion) {
-        if (criterion.getCriteria() == null && !(criterion instanceof Pure)) {
-            criterion.criteria(this);
+        if (criterion != null) {
+            if (criterion.getCriteria() == null && !(criterion instanceof Pure)) {
+                criterion.criteria(this);
+            }
+            this.segmentManager.where(criterion);
         }
-        this.segmentManager.where(criterion);
         return this.context;
     }
 

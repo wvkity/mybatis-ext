@@ -114,7 +114,7 @@ public class MyBatisCustomConfiguration implements Serializable {
     /**
      * 布尔值属性映射的字段是否自动添加is前缀
      */
-    private boolean booleanPropertyAutoAddIsPrefix = true;
+    private boolean autoAddIsPrefixedWithBooleanProperty = true;
 
     /**
      * 是否自动注册内置插件
@@ -200,6 +200,11 @@ public class MyBatisCustomConfiguration implements Serializable {
      * 元数据审计处理器
      */
     private MetadataAuditable metadataAuditable;
+
+    /**
+     * 根据属性查找字段不匹配是否抛出异常
+     */
+    private boolean notMatchingWithThrows = true;
 
     /**
      * 缓存当前对象
