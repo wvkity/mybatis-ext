@@ -3,12 +3,23 @@ package com.wvkity.mybatis.spring;
 import com.wvkity.mybatis.builder.xml.MyBatisXMLConfigBuilder;
 import com.wvkity.mybatis.config.MyBatisConfigCache;
 import com.wvkity.mybatis.config.MyBatisCustomConfiguration;
+import com.wvkity.mybatis.core.data.auditing.MetadataAuditable;
+import com.wvkity.mybatis.core.injector.Injector;
+import com.wvkity.mybatis.core.parser.EntityParser;
+import com.wvkity.mybatis.core.parser.FieldParser;
+import com.wvkity.mybatis.core.snowflake.sequence.Sequence;
+import com.wvkity.mybatis.keygen.GuidGenerator;
+import com.wvkity.mybatis.keygen.KeyGenerator;
+import com.wvkity.mybatis.plugins.batch.BatchParameterFilterInterceptor;
+import com.wvkity.mybatis.plugins.batch.BatchStatementInterceptor;
+import com.wvkity.mybatis.plugins.data.auditing.SystemBuiltinAuditingInterceptor;
 import com.wvkity.mybatis.session.MyBatisConfiguration;
 import com.wvkity.mybatis.session.MyBatisSqlSessionFactoryBuilder;
 import com.wvkity.mybatis.type.handlers.EnumSupport;
 import com.wvkity.mybatis.type.handlers.EnumTypeHandler;
 import com.wvkity.mybatis.type.handlers.StandardOffsetDateTimeTypeHandler;
-import lombok.extern.log4j.Log4j2;
+import com.wvkity.mybatis.utils.ArrayUtil;
+import com.wvkity.mybatis.utils.CollectionUtil;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.executor.ErrorContext;
@@ -25,13 +36,19 @@ import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.type.EnumOrdinalTypeHandler;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
+import org.mybatis.logging.Logger;
+import org.mybatis.logging.LoggerFactory;
 import org.mybatis.spring.transaction.SpringManagedTransactionFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.NestedIOException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -47,10 +64,14 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static org.springframework.util.Assert.notNull;
@@ -59,9 +80,10 @@ import static org.springframework.util.StringUtils.hasLength;
 import static org.springframework.util.StringUtils.isEmpty;
 import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
-@Log4j2
-public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, InitializingBean,
+public class MyBatisSqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, InitializingBean,
         ApplicationListener<ApplicationEvent> {
+
+    private static final Logger log = LoggerFactory.getLogger(MyBatisSqlSessionFactoryBean.class);
 
     private static final ResourcePatternResolver RESOURCE_PATTERN_RESOLVER = new PathMatchingResourcePatternResolver();
     private static final MetadataReaderFactory METADATA_READER_FACTORY = new CachingMetadataReaderFactory();
@@ -75,7 +97,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
     private SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new MyBatisSqlSessionFactoryBuilder();
     private SqlSessionFactory sqlSessionFactory;
     //EnvironmentAware requires spring 3.1
-    private String environment = SqlSessionFactoryBean.class.getSimpleName();
+    private String environment = MyBatisSqlSessionFactoryBean.class.getSimpleName();
     private boolean failFast;
     private Interceptor[] plugins;
     private TypeHandler<?>[] typeHandlers;
@@ -89,6 +111,13 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
     private Cache cache;
     private ObjectFactory objectFactory;
     private ObjectWrapperFactory objectWrapperFactory;
+
+    /**
+     * 上下文对象
+     */
+    private ApplicationContext applicationContext;
+    private DefaultListableBeanFactory beanFactory;
+    private AutowireCapableBeanFactory autowireBeanFactory;
 
     /**
      * 自定义配置
@@ -132,7 +161,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
             xmlConfigBuilder = new MyBatisXMLConfigBuilder(this.configLocation.getInputStream(), null, this.configurationProperties);
             targetConfiguration = xmlConfigBuilder.getConfiguration();
         } else {
-            log.debug("{}", "Property 'configuration' or 'configLocation' not specified, using default MyBatis Configuration");
+            log.debug(() -> "Property 'configuration' or 'configLocation' not specified, using default MyBatis Configuration");
             targetConfiguration = new MyBatisConfiguration();
             Optional.ofNullable(this.configurationProperties).ifPresent(targetConfiguration::setVariables);
             xmlConfigBuilder = null;
@@ -170,19 +199,39 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
         if (!isEmpty(this.typeAliases)) {
             Stream.of(this.typeAliases).forEach(typeAlias -> {
                 targetConfiguration.getTypeAliasRegistry().registerAlias(typeAlias);
-                log.debug("Registered type alias: `{}`", typeAlias);
+                log.debug(() -> "Registered type alias: `" + typeAlias + "`");
             });
         }
 
         if (this.customConfiguration == null) {
             this.customConfiguration = MyBatisConfigCache.defaults();
         }
+        // SQL注入器
+        ifPresent(Injector.class, customConfiguration::setInjector);
+        // 实体解析器
+        ifPresent(EntityParser.class, customConfiguration::setEntityParser);
+        // 属性解析器
+        ifPresent(FieldParser.class, customConfiguration::setFieldParser);
+        // 主键生成器
+        if (hasBeanFromContext(KeyGenerator.class)) {
+            customConfiguration.setKeyGenerator(getBean(KeyGenerator.class));
+        } else {
+            customConfiguration.setKeyGenerator(new GuidGenerator());
+        }
+        // 雪花算法主键生成器
+        ifPresent(Sequence.class, customConfiguration::setSequence);
+        // 元数据审计
+        ifPresent(MetadataAuditable.class, customConfiguration::setMetadataAuditable);
         targetConfiguration.setCustomConfiguration(this.customConfiguration);
 
-        if (!isEmpty(this.plugins)) {
-            Stream.of(this.plugins).forEach(plugin -> {
-                targetConfiguration.addInterceptor(plugin);
-                log.debug("Registered plugin: `${}`", plugin);
+        // 注册内置的插件
+        List<Interceptor> interceptors = new ArrayList<>(ArrayUtil.toList(this.plugins));
+        registerPlugins(this.customConfiguration, interceptors);
+        if (CollectionUtil.hasElement(interceptors)) {
+            this.plugins = interceptors.toArray(new Interceptor[0]);
+            interceptors.forEach(it -> {
+                targetConfiguration.addInterceptor(it);
+                log.debug(() -> "Registered plugin: `" + it + "`");
             });
         }
 
@@ -197,7 +246,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
         // 注册JDK8+ time api(JSR-310)
         if (targetConfiguration.getTypeHandlerRegistry()
                 .getMappingTypeHandler(StandardOffsetDateTimeTypeHandler.class) == null) {
-            Optional.of(scanClasses("com.wkit.lost.mybatis.type", TypeHandler.class)).ifPresent(classes ->
+            Optional.of(scanClasses("com.wvkity.mybatis.type", TypeHandler.class)).ifPresent(classes ->
                     classes.stream().filter(clazz -> !clazz.isInterface())
                             .filter(clazz -> !Modifier.isAbstract(clazz.getModifiers()))
                             .filter(clazz -> ClassUtils.getConstructorIfAvailable(clazz) != null)
@@ -208,7 +257,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
         if (!isEmpty(this.typeHandlers)) {
             Stream.of(this.typeHandlers).forEach(typeHandler -> {
                 targetConfiguration.getTypeHandlerRegistry().register(typeHandler);
-                log.debug("Registered type handler: `{}`", typeHandler);
+                log.debug(() -> "Registered type handler: `" + typeHandler + "`");
             });
         }
 
@@ -226,7 +275,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
         if (xmlConfigBuilder != null) {
             try {
                 xmlConfigBuilder.parse();
-                log.debug("Parsed configuration file: `{}`", this.configLocation);
+                log.debug(() -> "Parsed configuration file: `" + this.configLocation + "`");
             } catch (Exception e) {
                 throw new NestedIOException("Failed to parse config resource: " + this.configLocation, e);
             } finally {
@@ -236,11 +285,12 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
         targetConfiguration.setEnvironment(new Environment(this.environment,
                 this.transactionFactory == null ? new SpringManagedTransactionFactory() : this.transactionFactory,
                 this.dataSource));
+
         // 自定义操作(针对MyBatisCache)
         customConfiguration.cacheSelf(targetConfiguration);
         if (this.mapperLocations != null) {
             if (this.mapperLocations.length == 0) {
-                log.warn("{}", "Property 'mapperLocations' was specified but matching resources are not found.");
+                log.warn(() -> "Property 'mapperLocations' was specified but matching resources are not found.");
             } else {
                 for (Resource mapperLocation : this.mapperLocations) {
                     if (mapperLocation == null) {
@@ -255,15 +305,122 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
                     } finally {
                         ErrorContext.instance().reset();
                     }
-                    log.debug("Parsed mapper file: `{}`", mapperLocation);
+                    log.debug(() -> "Parsed mapper file: `" + mapperLocation + "`");
                 }
             }
         } else {
-            log.debug("{}", "Property 'mapperLocations' was not specified.");
+            log.debug(() -> "Property 'mapperLocations' was not specified.");
         }
         SqlSessionFactory factory = this.sqlSessionFactoryBuilder.build(targetConfiguration);
         customConfiguration.setSqlSessionFactory(factory);
         return factory;
+    }
+
+    /**
+     * 注册默认提供的插件
+     * @param customConfiguration mybatis自定义配置
+     * @param interceptorList     插件(拦截器)集合
+     */
+    private void registerPlugins(MyBatisCustomConfiguration customConfiguration, List<Interceptor> interceptorList) {
+        // 存在多个插件，由于内部使用代理(代理类又被代理)，越是在外面优先级越高
+        List<Class<? extends Interceptor>> plugins = customConfiguration.getPlugins();
+        if (!CollectionUtils.isEmpty(plugins)) {
+            for (Class<? extends Interceptor> plugin : new LinkedHashSet<>(plugins)) {
+                if (plugin != null && pluginRegistrable(plugin)) {
+                    Optional.ofNullable(newInstance(plugin))
+                            .ifPresent(interceptor -> {
+                                interceptorList.add(interceptor);
+                                registerExistingInterceptorBean(interceptor);
+                            });
+                }
+            }
+        }
+        /////// 注入内置拦截器 ///////
+        if (customConfiguration.isAutoRegisterBuiltinPlugin()) {
+            // 默认审计插件(主键、逻辑删除)
+            if (pluginRegistrable(SystemBuiltinAuditingInterceptor.class)) {
+                Interceptor interceptor = new SystemBuiltinAuditingInterceptor();
+                interceptorList.add(interceptor);
+                registerExistingInterceptorBean(interceptor);
+            }
+
+            // 批量保存操作Statement插件
+            if (pluginRegistrable(BatchStatementInterceptor.class)) {
+                Interceptor interceptor = new BatchStatementInterceptor();
+                interceptorList.add(interceptor);
+                registerExistingInterceptorBean(interceptor);
+            }
+
+            // 批量保存操作参数拦截插件
+            if (pluginRegistrable(BatchParameterFilterInterceptor.class)) {
+                Interceptor interceptor = new BatchParameterFilterInterceptor();
+                interceptorList.add(interceptor);
+                registerExistingInterceptorBean(interceptor);
+            }
+        }
+    }
+
+    /**
+     * 检查插件是否可注册
+     * @param clazz 具体插件类
+     * @param <T>   类型
+     * @return true: 是 false: 否
+     */
+    private <T extends Interceptor> boolean pluginRegistrable(Class<T> clazz) {
+        if (!ArrayUtil.isEmpty(this.plugins)) {
+            for (Interceptor plugin : this.plugins) {
+                if (plugin.getClass().isAssignableFrom(clazz)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 将{@link MyBatisCustomConfiguration}配置的插件注入到Spring容器中
+     * @param existingInterceptor 插件(拦截器)
+     */
+    private void registerExistingInterceptorBean(Interceptor existingInterceptor) {
+        if (this.beanFactory != null && existingInterceptor != null) {
+            try {
+                // 注入到Spring容器中
+                String beanName = existingInterceptor.getClass().getSimpleName();
+                this.beanFactory.registerSingleton((Character.toLowerCase(beanName.charAt(0)) +
+                        beanName.substring(1)), existingInterceptor);
+                // 注入依赖
+                if (this.autowireBeanFactory != null) {
+                    this.autowireBeanFactory.autowireBean(existingInterceptor);
+                }
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+    }
+
+    private <T> T newInstance(Class<T> clazz) {
+        if (clazz != null) {
+            try {
+                return clazz.getDeclaredConstructor().newInstance();
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+        return null;
+    }
+
+    private <T> void ifPresent(Class<T> clazz, Consumer<T> consumer) {
+        if (hasBeanFromContext(clazz)) {
+            consumer.accept(getBean(clazz));
+        }
+    }
+
+    private boolean hasBeanFromContext(final Class<?> target) {
+        return this.applicationContext.getBeanNamesForType(target, false, false).length > 0;
+    }
+
+    private <T> T getBean(Class<T> clazz) {
+        return this.applicationContext.getBean(clazz);
     }
 
     /**
@@ -315,7 +472,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
                         classes.add(clazz);
                     }
                 } catch (Throwable e) {
-                    log.warn("Cannot load the `{}`. Cause by {}", resource, e.toString());
+                    log.warn(() -> "Cannot load the `" + resource + "`. Cause by " + e.toString());
                 }
             }
         }
@@ -567,6 +724,26 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
 
     public void setTypeEnumsPackage(String typeEnumsPackage) {
         this.typeEnumsPackage = typeEnumsPackage;
+    }
+
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
+    private void initBeanFactory() {
+        try {
+            if (applicationContext instanceof GenericApplicationContext) {
+                GenericApplicationContext context = ((GenericApplicationContext) applicationContext);
+                this.beanFactory = context.getDefaultListableBeanFactory();
+                try {
+                    this.autowireBeanFactory = context.getAutowireCapableBeanFactory();
+                } catch (Exception e) {
+                    // ignore
+                }
+            }
+        } catch (Exception e) {
+            // ignore
+        }
     }
 
     public void setCustomConfiguration(MyBatisCustomConfiguration customConfiguration) {
