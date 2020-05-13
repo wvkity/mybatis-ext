@@ -9,7 +9,7 @@ import com.wvkity.mybatis.mapper.BaseMapper;
  * @param <PK> 主键类型
  * @author wvkity
  */
-public interface BaseService<T, V, PK> extends SaveService<T>, UpdateService<T>, DeleteService<T>,
+public interface BaseService<T, V, PK> extends SaveService<T>, UpdateService<T>, DeleteService<T, PK>,
         QueryService<T, V, PK>, CriteriaService<T, V> {
 
     /**

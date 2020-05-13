@@ -18,7 +18,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -231,7 +230,7 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<T, V, PK>, T
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public int delete(Serializable id) {
+    public int deleteById(PK id) {
         if (id == null) {
             throw new MyBatisException("The primary key parameter cannot be empty");
         }
@@ -285,19 +284,20 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<T, V, PK>, T
         return mapper.batchDelete(list);
     }
 
+    @SuppressWarnings("unchecked")
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public int batchDelete(Serializable... idArray) {
-        return batchDelete(ArrayUtil.toList(idArray));
+    public int batchDeleteById(PK... idArray) {
+        return batchDeleteById(ArrayUtil.toList(idArray));
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public int batchDelete(Collection<? extends Serializable> idList) {
+    public int batchDeleteById(Collection<PK> idList) {
         if (idList == null) {
             throw new MyBatisException("Primary key set parameters cannot be empty");
         }
-        List<? extends Serializable> list = idList.stream().filter(Objects::nonNull)
+        List<PK> list = idList.stream().filter(Objects::nonNull)
                 .collect(Collectors.toCollection(ArrayList::new));
         if (CollectionUtil.isEmpty(list)) {
             throw new MyBatisException("Primary key set parameters cannot be empty");
@@ -378,7 +378,7 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<T, V, PK>, T
 
     @SuppressWarnings("unchecked")
     @Override
-    public <E> List<E> custom(Criteria<T> criteria) {
+    public <E> List<E> customize(Criteria<T> criteria) {
         if (criteria instanceof AbstractQueryCriteriaWrapper) {
             AbstractQueryCriteriaWrapper<T> it = (AbstractQueryCriteriaWrapper<T>) criteria;
             if (it.resultType() != null || StringUtil.hasText(it.resultMap())) {
@@ -415,7 +415,7 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<T, V, PK>, T
 
     @SuppressWarnings("unchecked")
     @Override
-    public <E> List<E> custom(Criteria<T> criteria, Pageable pageable) {
+    public <E> List<E> customize(Criteria<T> criteria, Pageable pageable) {
         if (criteria instanceof AbstractQueryCriteriaWrapper) {
             AbstractQueryCriteriaWrapper<T> it = (AbstractQueryCriteriaWrapper<T>) criteria;
             if (it.resultType() != null || StringUtil.hasText(it.resultMap())) {

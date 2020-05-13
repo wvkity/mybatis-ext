@@ -69,7 +69,7 @@ public interface CriteriaService<T, V> {
      * @param <E>      自定义返回值类型
      * @return 列表
      */
-    <E> List<E> custom(Criteria<T> criteria);
+    <E> List<E> customize(Criteria<T> criteria);
 
     /**
      * 查询数据
@@ -99,7 +99,7 @@ public interface CriteriaService<T, V> {
      * @param <E>      自定义返回值类型
      * @return 列表
      */
-    <E> List<E> custom(Criteria<T> criteria, Pageable pageable);
+    <E> List<E> customize(Criteria<T> criteria, Pageable pageable);
 
     /**
      * 分页查询列表
