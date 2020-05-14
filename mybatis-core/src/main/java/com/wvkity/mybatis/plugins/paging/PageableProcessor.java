@@ -115,7 +115,7 @@ public class PageableProcessor extends PagingProcessor {
 
     @Override
     public boolean filter(MappedStatement ms, Object parameter) {
-        return true;
+        return parameter != null;
     }
 
     @Override
