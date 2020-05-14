@@ -44,6 +44,12 @@ public interface QueryMapper<T, V, PK> {
     Optional<V> selectOne(PK id);
 
     /**
+     * 查询所有记录
+     * @return 多条记录
+     */
+    List<V> emptyList();
+
+    /**
      * 根据多个主键查询记录
      * @param idList 主键集合
      * @return 多条记录
@@ -63,5 +69,5 @@ public interface QueryMapper<T, V, PK> {
      * @return 多条记录
      */
     List<V> listByEntities(@Param(Constants.PARAM_ENTITIES) Collection<T> entities);
-    
+
 }

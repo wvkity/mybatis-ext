@@ -44,6 +44,12 @@ public interface QueryService<T, V, PK> {
     Optional<V> selectOne(PK id);
 
     /**
+     * 查询所有记录
+     * @return 多条记录
+     */
+    List<V> list();
+
+    /**
      * 根据多个主键查询记录
      * @param ids 主键数组
      * @return 多条记录
