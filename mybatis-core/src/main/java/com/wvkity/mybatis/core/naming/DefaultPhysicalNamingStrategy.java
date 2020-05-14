@@ -9,12 +9,12 @@ import com.wvkity.mybatis.annotation.naming.NamingStrategy;
 public class DefaultPhysicalNamingStrategy implements PhysicalNamingStrategy {
 
     @Override
-    public String tableNameValueOf(String tableName, NamingStrategy strategy) {
+    public String tableName(String tableName, NamingStrategy strategy) {
         return valueOf(tableName, strategy);
     }
 
     @Override
-    public String columnNameValueOf(String columnName, NamingStrategy strategy) {
+    public String columnName(String columnName, NamingStrategy strategy) {
         return valueOf(columnName, strategy);
     }
 

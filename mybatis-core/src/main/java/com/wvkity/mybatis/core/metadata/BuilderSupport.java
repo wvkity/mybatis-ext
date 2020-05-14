@@ -54,7 +54,7 @@ abstract class BuilderSupport {
      * @return 新数据库表名
      */
     protected String tableNameTransform(String tableName) {
-        return this.physicalNamingStrategy.tableNameValueOf(tableName, this.namingStrategy);
+        return this.physicalNamingStrategy.tableName(tableName, this.namingStrategy);
     }
 
     /**
@@ -63,7 +63,7 @@ abstract class BuilderSupport {
      * @return 新数据库表字段名
      */
     protected String columnNameTransform(String columnName) {
-        return this.physicalNamingStrategy.columnNameValueOf(columnName, this.namingStrategy);
+        return this.physicalNamingStrategy.columnName(columnName, this.namingStrategy);
     }
 
     /**
