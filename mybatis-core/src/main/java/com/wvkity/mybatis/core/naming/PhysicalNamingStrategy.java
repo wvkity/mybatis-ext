@@ -14,7 +14,7 @@ public interface PhysicalNamingStrategy {
      * @param strategy  命名策略
      * @return 新的表名
      */
-    String tableNameValueOf(final String tableName, NamingStrategy strategy);
+    String tableName(final String tableName, NamingStrategy strategy);
 
     /**
      * 字段命名
@@ -22,5 +22,5 @@ public interface PhysicalNamingStrategy {
      * @param strategy   命名策略
      * @return 新的字段名
      */
-    String columnNameValueOf(final String columnName, NamingStrategy strategy);
+    String columnName(final String columnName, NamingStrategy strategy);
 }

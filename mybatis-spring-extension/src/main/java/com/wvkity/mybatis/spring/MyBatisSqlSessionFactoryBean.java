@@ -336,7 +336,7 @@ public class MyBatisSqlSessionFactoryBean implements FactoryBean<SqlSessionFacto
             }
         }
         /////// 注入内置拦截器 ///////
-        if (customConfiguration.isAutoRegisterBuiltinPlugin()) {
+        if (customConfiguration.isAutoRegisterPlugins()) {
             // 默认审计插件(主键、逻辑删除)
             if (pluginRegistrable(SystemBuiltinAuditingInterceptor.class)) {
                 Interceptor interceptor = new SystemBuiltinAuditingInterceptor();
