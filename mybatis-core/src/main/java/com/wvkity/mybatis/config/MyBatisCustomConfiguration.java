@@ -118,13 +118,8 @@ public class MyBatisCustomConfiguration implements Serializable {
 
     /**
      * 是否自动注册内置插件
-     * <pre>
-     *     {@link SystemBuiltinAuditingInterceptor}
-     *     {@link BatchStatementInterceptor}
-     *     {@link BatchParameterFilterInterceptor}
-     * </pre>
      */
-    private boolean autoRegisterBuiltinPlugin = true;
+    private boolean autoRegisterPlugin = true;
 
     /**
      * 全局主键标识(用于自动识别主键)
