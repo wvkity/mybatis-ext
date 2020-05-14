@@ -390,7 +390,7 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<T, V, PK>, T
     }
 
     @Override
-    public List<Object> objects(Criteria<T> criteria) {
+    public List<Object> objectList(Criteria<T> criteria) {
         if (criteria == null) {
             return new ArrayList<>(0);
         }
@@ -398,7 +398,7 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<T, V, PK>, T
     }
 
     @Override
-    public List<Object[]> array(Criteria<T> criteria) {
+    public List<Object[]> arrayList(Criteria<T> criteria) {
         if (criteria == null) {
             return new ArrayList<>(0);
         }
@@ -406,7 +406,7 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<T, V, PK>, T
     }
 
     @Override
-    public List<Map<String, Object>> map(Criteria<T> criteria) {
+    public List<Map<String, Object>> mapList(Criteria<T> criteria) {
         if (criteria == null) {
             return new ArrayList<>(0);
         }
@@ -427,7 +427,7 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<T, V, PK>, T
     }
 
     @Override
-    public List<Object> objects(Criteria<T> criteria, Pageable pageable) {
+    public List<Object> objectList(Criteria<T> criteria, Pageable pageable) {
         if (criteria == null) {
             return new ArrayList<>(0);
         }
@@ -435,7 +435,7 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<T, V, PK>, T
     }
 
     @Override
-    public List<Object[]> array(Criteria<T> criteria, Pageable pageable) {
+    public List<Object[]> arrayList(Criteria<T> criteria, Pageable pageable) {
         if (criteria == null) {
             return new ArrayList<>(0);
         }
@@ -443,7 +443,7 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<T, V, PK>, T
     }
 
     @Override
-    public List<Map<String, Object>> map(Criteria<T> criteria, Pageable pageable) {
+    public List<Map<String, Object>> mapList(Criteria<T> criteria, Pageable pageable) {
         if (criteria == null) {
             return new ArrayList<>(0);
         }
