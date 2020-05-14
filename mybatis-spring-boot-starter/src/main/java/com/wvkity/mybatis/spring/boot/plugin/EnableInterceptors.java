@@ -14,14 +14,12 @@ import java.lang.annotation.Target;
 
 /**
  * 启用系统默认提供插件注解
- * <p>
- * <em>默认注册以下拦截器: </em>
- *     <ul>
- *         <li>乐观锁拦截器: {@link OptimisticLockingInterceptor}</li>
- *         <li>常规分页拦截器: {@link PageableInterceptor}</li>
- *         <li>范围分页拦截器: {@link RangePageableInterceptor}</li>
- *     </ul>
- * </p>
+ * <p>默认注册以下拦截器: </p>
+ * <ul>
+ *   <li>乐观锁拦截器: {@link OptimisticLockingInterceptor}</li>
+ *   <li>常规分页拦截器: {@link PageableInterceptor}</li>
+ *   <li>范围分页拦截器: {@link RangePageableInterceptor}</li>
+ * </ul>
  * @author wvkity
  * @see MybatisInterceptorRegistrar
  */
