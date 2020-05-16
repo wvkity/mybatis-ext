@@ -1,6 +1,8 @@
 package com.wvkity.mybatis.core.metadata;
 
 import com.wvkity.mybatis.core.data.auditing.AuditMatching;
+import com.wvkity.mybatis.core.immutable.ImmutableLinkedMap;
+import com.wvkity.mybatis.core.immutable.ImmutableLinkedSet;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -8,7 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Optional;
@@ -29,11 +31,25 @@ import java.util.stream.Collectors;
 public class TableWrapper {
 
     /**
-     * 属性-字段包装对象缓存(只读)
+     * 属性-字段包装对象缓存
      */
     @Getter(AccessLevel.NONE)
     private final Map<String, ColumnWrapper> PROPERTY_COLUMN_CACHE = new ConcurrentHashMap<>();
-    private final Map<String, ColumnWrapper> IMMUTABLE_COLUMN_CACHE;
+    /**
+     * 属性-字段包装对象缓存(有序只读)
+     */
+    @Getter(AccessLevel.NONE)
+    private final Map<String, ColumnWrapper> READ_ONLY_PROPERTY_COLUMN_CACHE;
+    /**
+     * 所有字段包装对象缓存
+     */
+    @Getter(AccessLevel.NONE)
+    private final Set<ColumnWrapper> COLUMN_CACHE;
+    /**
+     * 所有字段包装对象缓存(只读)
+     */
+    @Getter(AccessLevel.NONE)
+    private final Set<ColumnWrapper> READ_ONLY_COLUMN_CACHE;
     /**
      * 实体类
      */
@@ -95,12 +111,6 @@ public class TableWrapper {
     private final ColumnWrapper logicDeletedColumn;
 
     /**
-     * 所有字段
-     */
-    @Getter(AccessLevel.NONE)
-    private final Set<ColumnWrapper> columns;
-
-    /**
      * 构造方法
      * @param entity                  实体类
      * @param name                    数据库表名
@@ -132,9 +142,9 @@ public class TableWrapper {
         this.primaryKeyProperty = primaryKeyProperty;
         this.optimisticLockingColumn = optimisticLockingColumn;
         this.logicDeletedColumn = logicDeletedColumn;
-        this.columns = columns;
-        this.initDefinition();
-        this.IMMUTABLE_COLUMN_CACHE = Collections.unmodifiableMap(this.PROPERTY_COLUMN_CACHE);
+        this.COLUMN_CACHE = new LinkedHashSet<>(columns);
+        this.READ_ONLY_COLUMN_CACHE = ImmutableLinkedSet.construct(this.COLUMN_CACHE);
+        this.READ_ONLY_PROPERTY_COLUMN_CACHE = this.initDefinition();
     }
 
     /**
@@ -142,7 +152,7 @@ public class TableWrapper {
      * @return 数据库表字段
      */
     public Set<ColumnWrapper> columns() {
-        return new LinkedHashSet<>(this.columns);
+        return this.READ_ONLY_COLUMN_CACHE;
     }
 
     /**
@@ -217,16 +227,22 @@ public class TableWrapper {
      * @return 字段集合
      */
     private Set<ColumnWrapper> filtrate(Predicate<ColumnWrapper> filter) {
-        return this.columns.stream().filter(filter).collect(Collectors.toCollection(LinkedHashSet::new));
+        return this.READ_ONLY_COLUMN_CACHE.stream().filter(filter).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     /**
      * 初始化定义信息
      */
-    private void initDefinition() {
-        if (this.columns != null && !this.columns.isEmpty()) {
-            this.columns.forEach(it -> this.PROPERTY_COLUMN_CACHE.put(it.getProperty(), it));
+    private Map<String, ColumnWrapper> initDefinition() {
+        if (this.COLUMN_CACHE != null && !this.COLUMN_CACHE.isEmpty()) {
+            Map<String, ColumnWrapper> ret = new LinkedHashMap<>();
+            this.READ_ONLY_COLUMN_CACHE.forEach(it -> {
+                this.PROPERTY_COLUMN_CACHE.put(it.getProperty(), it);
+                ret.put(it.getProperty(), it);
+            });
+            return ImmutableLinkedMap.construct(ret);
         }
+        return ImmutableLinkedMap.of();
     }
 
     /**
@@ -234,7 +250,7 @@ public class TableWrapper {
      * @return 字段映射集合
      */
     public Map<String, ColumnWrapper> columnMappings() {
-        return this.IMMUTABLE_COLUMN_CACHE;
+        return this.READ_ONLY_PROPERTY_COLUMN_CACHE;
     }
 
     /**
@@ -244,15 +260,6 @@ public class TableWrapper {
      */
     public Optional<ColumnWrapper> search(String property) {
         return Optional.ofNullable(property).map(this.PROPERTY_COLUMN_CACHE::get);
-    }
-
-    /**
-     * 根据属性查找对应的字段信息
-     * @param property 属性
-     * @return 字段信息
-     */
-    public ColumnWrapper find(String property) {
-        return search(property).orElse(null);
     }
 
     /**
