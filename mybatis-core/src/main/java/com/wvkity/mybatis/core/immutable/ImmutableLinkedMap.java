@@ -232,7 +232,7 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
      * @param args 多个参数
      * @param <K>  键
      * @param <V>  值
-     * @return 不可变Map集合
+     * @return {@link ImmutableLinkedMap}
      */
     @SuppressWarnings("unchecked")
     public static <K, V> Map<K, V> from(Object... args) {
@@ -256,12 +256,22 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
     }
 
     /**
+     * 创建空Map集合
+     * @param <K> 键类型
+     * @param <V> 值类型
+     * @return {@link ImmutableLinkedMap}
+     */
+    public static <K, V> Map<K, V> of() {
+        return emptyMap();
+    }
+
+    /**
      * 创建不可变Map集合
      * @param k   键
      * @param v   值
      * @param <K> 键类型
      * @param <V> 值类型
-     * @return 不可变Map集合
+     * @return {@link ImmutableLinkedMap}
      */
     public static <K, V> Map<K, V> of(K k, V v) {
         return from(k, v);
@@ -275,7 +285,7 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
      * @param v2  键2对应映射值
      * @param <K> 键类型
      * @param <V> 值类型
-     * @return 不可变Map集合
+     * @return {@link ImmutableLinkedMap}
      */
     public static <K, V> Map<K, V> of(K k1, V v1, K k2, V v2) {
         return from(k1, v1, k2, v2);
@@ -291,7 +301,7 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
      * @param v3  键3对应映射值
      * @param <K> 键类型
      * @param <V> 值类型
-     * @return 不可变Map集合
+     * @return {@link ImmutableLinkedMap}
      */
     public static <K, V> Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3) {
         return from(k1, v1, k2, v2, k3, v3);
@@ -309,7 +319,7 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
      * @param v4  键4对应映射值
      * @param <K> 键类型
      * @param <V> 值类型
-     * @return 不可变Map集合
+     * @return {@link ImmutableLinkedMap}
      */
     public static <K, V> Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4) {
         return from(k1, v1, k2, v2, k3, v3, k4, v4);
@@ -329,7 +339,7 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
      * @param v5  键5对应映射值
      * @param <K> 键类型
      * @param <V> 值类型
-     * @return 不可变Map集合
+     * @return {@link ImmutableLinkedMap}
      */
     public static <K, V> Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5) {
         return from(k1, v1, k2, v2, k3, v3, k4, v4, k5, v5);
@@ -340,7 +350,7 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
      * @param entries {@link Entry}
      * @param <K>     键类型
      * @param <V>     值类型
-     * @return 不可变Map集合
+     * @return {@link ImmutableLinkedMap}
      */
     @SuppressWarnings("unchecked")
     public static <K, V> Map<K, V> of(Entry<? extends K, ? extends V>... entries) {
@@ -364,7 +374,7 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
      * @param entries {@link Iterable}
      * @param <K>     键类型
      * @param <V>     值类型
-     * @return 不可变Map集合
+     * @return {@link ImmutableLinkedMap}
      */
     @SuppressWarnings("unchecked")
     public static <K, V> Map<K, V> of(Iterable<? extends Entry<? extends K, ? extends V>> entries) {
@@ -380,7 +390,7 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
      * @param iterator {@link Iterator}
      * @param <K>      键类型
      * @param <V>      值类型
-     * @return 不可变Map集合
+     * @return {@link ImmutableLinkedMap}
      */
     @SuppressWarnings("unchecked")
     public static <K, V> Map<K, V> of(Iterator<? extends Entry<? extends K, ? extends V>> iterator) {
@@ -390,5 +400,5 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
         }
         return of(arg.toArray(new Entry[0]));
     }
-    
+
 }
