@@ -153,10 +153,10 @@ public class TableWrapper {
         this.optimisticLockingColumn = optimisticLockingColumn;
         this.logicDeletedColumn = logicDeletedColumn;
         this.COLUMN_CACHE = new LinkedHashSet<>(columns);
-        this.READ_ONLY_COLUMN_CACHE = ImmutableLinkedSet.construct(this.COLUMN_CACHE);
+        this.READ_ONLY_COLUMN_CACHE = ImmutableLinkedSet.of(this.COLUMN_CACHE);
         this.READ_ONLY_PROPERTY_COLUMN_CACHE = this.initDefinition();
-        this.READ_ONLY_INSERTABLE_COLUMN_CACHE = ImmutableLinkedSet.construct(filtrate(ColumnWrapper::isInsertable));
-        this.READ_ONLY_UPDATABLE_COLUMN_CACHE = ImmutableLinkedSet.construct(filtrate(ColumnWrapper::isUpdatable));
+        this.READ_ONLY_INSERTABLE_COLUMN_CACHE = ImmutableLinkedSet.of(filtrate(ColumnWrapper::isInsertable));
+        this.READ_ONLY_UPDATABLE_COLUMN_CACHE = ImmutableLinkedSet.of(filtrate(ColumnWrapper::isUpdatable));
     }
 
     /**
@@ -252,7 +252,7 @@ public class TableWrapper {
                 this.PROPERTY_COLUMN_CACHE.put(it.getProperty(), it);
                 ret.put(it.getProperty(), it);
             });
-            return ImmutableLinkedMap.construct(ret);
+            return ImmutableLinkedMap.of(ret);
         }
         return ImmutableLinkedMap.of();
     }

@@ -143,7 +143,7 @@ abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriter
                 this.initialized = true;
                 Set<String> tmp = TableHandler.getTable(klass).updatableColumns().stream().map(it ->
                         it.getColumn().toLowerCase(Locale.ENGLISH)).collect(Collectors.toCollection(LinkedHashSet::new));
-                this._UPDATABLE_COLUMN_NAME_CACHE = ImmutableLinkedSet.construct(tmp);
+                this._UPDATABLE_COLUMN_NAME_CACHE = ImmutableLinkedSet.of(tmp);
             }
         }
     }
