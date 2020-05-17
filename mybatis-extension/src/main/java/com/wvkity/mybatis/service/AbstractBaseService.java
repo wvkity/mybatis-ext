@@ -268,12 +268,12 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<T, V, PK>, T
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int batchDelete(T... entities) {
-        return batchDeleteByEntities(Arrays.asList(entities));
+        return batchDelete(Arrays.asList(entities));
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public int batchDeleteByEntities(Collection<T> entities) {
+    public int batchDelete(List<T> entities) {
         if (entities == null) {
             throw new MyBatisException("The entity object collection parameter cannot be empty.");
         }
@@ -321,13 +321,18 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<T, V, PK>, T
     }
 
     @Override
+    public long count() {
+        return this.mapper.allCount();
+    }
+
+    @Override
     public long count(T entity) {
-        return entity == null ? 0 : mapper.count(entity);
+        return Optional.ofNullable(entity).map(this.mapper::count).orElseGet(this::count);
     }
 
     @Override
     public long count(Criteria<T> criteria) {
-        return criteria == null ? 0 : mapper.countByCriteria(criteria);
+        return Optional.ofNullable(criteria).map(this.mapper::countByCriteria).orElseGet(this::count);
     }
 
     @Override

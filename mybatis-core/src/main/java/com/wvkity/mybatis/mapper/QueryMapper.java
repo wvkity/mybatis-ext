@@ -30,6 +30,12 @@ public interface QueryMapper<T, V, PK> {
     int existsById(PK id);
 
     /**
+     * 查询所有记录数
+     * @return 记录数
+     */
+    long allCount();
+
+    /**
      * 根据指定对象查询记录数
      * @param entity 指定对象
      * @return 记录数

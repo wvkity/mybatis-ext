@@ -30,6 +30,12 @@ public interface QueryService<T, V, PK> {
     boolean existsById(PK id);
 
     /**
+     * 查询所有记录数
+     * @return 记录数
+     */
+    long count();
+
+    /**
      * 根据指定对象查询记录数
      * @param entity 指定对象
      * @return 记录数

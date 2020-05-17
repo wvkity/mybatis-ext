@@ -1,7 +1,7 @@
 package com.wvkity.mybatis.service;
 
-import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 删除操作接口
@@ -44,7 +44,7 @@ public interface DeleteService<T, PK> {
      * @param entities 对象集合
      * @return 受影响行数
      */
-    int batchDeleteByEntities(Collection<T> entities);
+    int batchDelete(List<T> entities);
 
     /**
      * 根据主键批量删除记录

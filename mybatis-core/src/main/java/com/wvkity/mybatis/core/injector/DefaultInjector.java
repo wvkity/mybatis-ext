@@ -1,5 +1,6 @@
 package com.wvkity.mybatis.core.injector;
 
+import com.wvkity.mybatis.core.injector.execute.AllCount;
 import com.wvkity.mybatis.core.injector.execute.ArrayList;
 import com.wvkity.mybatis.core.injector.execute.ArrayPageableList;
 import com.wvkity.mybatis.core.injector.execute.BatchDelete;
@@ -73,6 +74,7 @@ public class DefaultInjector extends AbstractInjector {
                 new MixinUpdateNotWithNull(),
                 new UpdateByCriteria(),
                 // query
+                new AllCount(),
                 new Count(),
                 new CountByCriteria(),
                 new Exists(),
