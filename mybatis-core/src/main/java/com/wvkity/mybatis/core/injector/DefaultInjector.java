@@ -11,7 +11,7 @@ import com.wvkity.mybatis.core.injector.execute.CountByCriteria;
 import com.wvkity.mybatis.core.injector.execute.Delete;
 import com.wvkity.mybatis.core.injector.execute.DeleteByCriteria;
 import com.wvkity.mybatis.core.injector.execute.DeleteById;
-import com.wvkity.mybatis.core.injector.execute.EmptyList;
+import com.wvkity.mybatis.core.injector.execute.AllList;
 import com.wvkity.mybatis.core.injector.execute.Exists;
 import com.wvkity.mybatis.core.injector.execute.ExistsByCriteria;
 import com.wvkity.mybatis.core.injector.execute.ExistsById;
@@ -80,7 +80,7 @@ public class DefaultInjector extends AbstractInjector {
                 new ExistsByCriteria(),
                 new SelectOne(),
                 new List(),
-                new EmptyList(),
+                new AllList(),
                 new SimpleList(),
                 new ObjectList(),
                 new ArrayList(),

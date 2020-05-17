@@ -47,7 +47,7 @@ public interface QueryMapper<T, V, PK> {
      * 查询所有记录
      * @return 多条记录
      */
-    List<V> emptyList();
+    List<V> allList();
 
     /**
      * 根据多个主键查询记录

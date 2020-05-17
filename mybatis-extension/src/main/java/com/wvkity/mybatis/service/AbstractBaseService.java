@@ -452,7 +452,7 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<T, V, PK>, T
 
     @Override
     public List<V> list() {
-        return mapper.emptyList();
+        return mapper.allList();
     }
 
     @Override

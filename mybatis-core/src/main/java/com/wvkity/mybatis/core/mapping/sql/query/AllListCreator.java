@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  * 查询所有记录SQL
  * @author wvkity
  */
-public class EmptyListCreator extends AbstractCreator {
+public class AllListCreator extends AbstractCreator {
 
     @Override
     public String build() {
