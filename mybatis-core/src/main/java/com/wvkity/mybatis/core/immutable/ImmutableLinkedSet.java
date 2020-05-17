@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.NoSuchElementException;
@@ -39,21 +38,22 @@ public final class ImmutableLinkedSet<E> extends AbstractImmutableSet<E> {
     }
 
     @SuppressWarnings("unchecked")
-    ImmutableLinkedSet(Set<E> original) {
-        this.size = original.size();
+    ImmutableLinkedSet(E... elements) {
+        Set<E> tmp = new LinkedHashSet<>(ArrayUtil.toList(elements));
+        this.size = tmp.size();
         if (this.size > 0) {
             this.elements = (E[]) new Object[(((this.size << 2) + 1) & ~1)];
-            this.source = (E[]) new Object[this.size];
-            this.init(original);
+            this.source = (E[]) tmp.toArray();
+            this.init(elements);
         } else {
             this.elements = (E[]) new Object[0];
             this.source = (E[]) new Object[0];
         }
     }
 
-    private void init(Set<E> original) {
-        int i = -1;
-        for (E element : original) {
+    @SafeVarargs
+    private final void init(E... args) {
+        for (E element : args) {
             E v = Objects.requireNonNull(element);
             int idx = probe(v);
             if (idx >= 0) {
@@ -61,7 +61,6 @@ public final class ImmutableLinkedSet<E> extends AbstractImmutableSet<E> {
                 this.elements[idx] = v;
             } else {
                 this.elements[-(idx + 1)] = v;
-                this.source[++i] = v;
             }
         }
     }
@@ -159,22 +158,6 @@ public final class ImmutableLinkedSet<E> extends AbstractImmutableSet<E> {
 
     /**
      * 创建不可变Set集合
-     * @param original 源数据
-     * @param <E>      元素类型
-     * @return {@link ImmutableLinkedSet}
-     */
-    public static <E> Set<E> construct(Set<E> original) {
-        if (original == null) {
-            throw new NullPointerException();
-        }
-        if (original.isEmpty()) {
-            return of();
-        }
-        return new ImmutableLinkedSet<>(original);
-    }
-
-    /**
-     * 创建不可变Set集合
      * @param <E> 元素类型
      * @return {@link ImmutableLinkedSet}
      */
@@ -189,7 +172,7 @@ public final class ImmutableLinkedSet<E> extends AbstractImmutableSet<E> {
      * @return {@link ImmutableLinkedSet}
      */
     public static <E> Set<E> of(E e1) {
-        return from(e1);
+        return construct(e1);
     }
 
     /**
@@ -200,7 +183,7 @@ public final class ImmutableLinkedSet<E> extends AbstractImmutableSet<E> {
      * @return {@link ImmutableLinkedSet}
      */
     public static <E> Set<E> of(E e1, E e2) {
-        return from(e1, e2);
+        return construct(e1, e2);
     }
 
     /**
@@ -212,7 +195,7 @@ public final class ImmutableLinkedSet<E> extends AbstractImmutableSet<E> {
      * @return {@link ImmutableLinkedSet}
      */
     public static <E> Set<E> of(E e1, E e2, E e3) {
-        return from(e1, e2, e3);
+        return construct(e1, e2, e3);
     }
 
     /**
@@ -225,7 +208,7 @@ public final class ImmutableLinkedSet<E> extends AbstractImmutableSet<E> {
      * @return {@link ImmutableLinkedSet}
      */
     public static <E> Set<E> of(E e1, E e2, E e3, E e4) {
-        return from(e1, e2, e3, e4);
+        return construct(e1, e2, e3, e4);
     }
 
     /**
@@ -239,7 +222,7 @@ public final class ImmutableLinkedSet<E> extends AbstractImmutableSet<E> {
      * @return {@link ImmutableLinkedSet}
      */
     public static <E> Set<E> of(E e1, E e2, E e3, E e4, E e5) {
-        return from(e1, e2, e3, e4, e5);
+        return construct(e1, e2, e3, e4, e5);
     }
 
     /**
@@ -272,7 +255,7 @@ public final class ImmutableLinkedSet<E> extends AbstractImmutableSet<E> {
                 while (iterator.hasNext()) {
                     elements.add(iterator.next());
                 }
-                return construct(elements);
+                return of(elements);
             }
             return of(first);
         }
@@ -289,8 +272,10 @@ public final class ImmutableLinkedSet<E> extends AbstractImmutableSet<E> {
     public static <E> Set<E> of(Collection<? extends E> elements) {
         if (elements instanceof AbstractImmutableSet) {
             return (Set<E>) elements;
+        } else if (elements instanceof Set) {
+            return (Set<E>) construct((elements).toArray());
         }
-        return construct(new HashSet<>(elements));
+        return (Set<E>) construct(new LinkedHashSet<>(elements).toArray());
     }
 
     /**
@@ -300,10 +285,11 @@ public final class ImmutableLinkedSet<E> extends AbstractImmutableSet<E> {
      * @return {@link ImmutableLinkedSet}
      */
     @SafeVarargs
-    public static <E> Set<E> from(E... elements) {
+    public static <E> Set<E> construct(E... elements) {
         if (elements.length == 0) {
             return of();
         }
-        return construct(new LinkedHashSet<>(ArrayUtil.toList(elements)));
+        return new ImmutableLinkedSet<>(elements);
     }
+    
 }

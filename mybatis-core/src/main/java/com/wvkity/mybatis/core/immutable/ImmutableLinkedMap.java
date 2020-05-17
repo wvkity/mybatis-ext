@@ -7,9 +7,8 @@ import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -41,12 +40,20 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
         this.keys = new Object[0];
     }
 
-    ImmutableLinkedMap(Map<K, V> map) {
-        this.size = map.size();
+    ImmutableLinkedMap(Object... args) {
+        int length = args.length;
+        if ((length & 1) != 0) {
+            throw new IllegalArgumentException("The parameter length must be even.");
+        }
+        Set<Object> tmp = new HashSet<>();
+        for (int i = 0; i < length; i += 2) {
+            tmp.add(args[i]);
+        }
+        this.size = tmp.size();
         if (this.size > 0) {
             this.table = new Object[(((this.size << 2) + 1) & ~1)];
             this.keys = new Object[this.size];
-            this.init(map);
+            this.init(args);
         } else {
             this.table = new Object[0];
             this.keys = new Object[0];
@@ -99,20 +106,22 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
         return hash;
     }
 
-    private void init(Map<K, V> map) {
-        int j = -1;
-        for (Entry<K, V> entry : map.entrySet()) {
-            K k = Objects.requireNonNull(entry.getKey());
-            V v = Objects.requireNonNull(entry.getValue());
-            int idx = probe(k);
-            if (idx >= 0) {
+    private void init(Object... args) {
+        int kk = 0;
+        for (int i = 0, j = args.length; i < j; i += 2) {
+            @SuppressWarnings("unchecked")
+            K k = (K) Objects.requireNonNull(args[i]);
+            @SuppressWarnings("unchecked")
+            V v = (V) Objects.requireNonNull(args[i + 1]);
+            int index = probe(k);
+            if (index >= 0) {
                 // 覆盖
-                this.table[idx + 1] = v;
+                this.table[index + 1] = v;
             } else {
-                int i = -(idx + 1);
-                this.table[i] = k;
-                this.table[i + 1] = v;
-                this.keys[++j] = k;
+                int dest = -(index + 1);
+                this.table[dest] = k;
+                this.table[dest + 1] = v;
+                this.keys[kk++] = k;
             }
         }
     }
@@ -208,51 +217,14 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
     }
 
     /**
-     * 创建不可改变Map集合
-     * @param original 源数据
-     * @param <K>      键
-     * @param <V>      值
-     * @return {@link ImmutableLinkedMap}
-     */
-    public static <K, V> Map<K, V> construct(Map<K, V> original) {
-        if (original == null) {
-            throw new NullPointerException();
-        }
-        if (original instanceof AbstractImmutableMap) {
-            return original;
-        }
-        if (original.isEmpty()) {
-            return emptyMap();
-        }
-        return new ImmutableLinkedMap<>(original);
-    }
-
-    /**
      * 创建不可变Map集合
      * @param args 多个参数
      * @param <K>  键
      * @param <V>  值
      * @return {@link ImmutableLinkedMap}
      */
-    @SuppressWarnings("unchecked")
-    public static <K, V> Map<K, V> from(Object... args) {
-        int length = args.length;
-        if ((length & 1) != 0) {
-            throw new IllegalArgumentException("The parameter length must be even.");
-        }
-        Map<K, V> map = new LinkedHashMap<>(length << 1);
-        if (length == 2) {
-            K k = (K) Objects.requireNonNull(args[0]);
-            V v = (V) Objects.requireNonNull(args[1]);
-            map.put(k, v);
-        } else {
-            for (int i = 0; i < length; i += 2) {
-                K k = (K) Objects.requireNonNull(args[i]);
-                V v = (V) Objects.requireNonNull(args[i + 1]);
-                map.put(k, v);
-            }
-        }
-        return construct(map);
+    public static <K, V> Map<K, V> construct(Object... args) {
+        return new ImmutableLinkedMap<>(args);
     }
 
     /**
@@ -274,7 +246,7 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
      * @return {@link ImmutableLinkedMap}
      */
     public static <K, V> Map<K, V> of(K k, V v) {
-        return from(k, v);
+        return construct(k, v);
     }
 
     /**
@@ -288,7 +260,7 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
      * @return {@link ImmutableLinkedMap}
      */
     public static <K, V> Map<K, V> of(K k1, V v1, K k2, V v2) {
-        return from(k1, v1, k2, v2);
+        return construct(k1, v1, k2, v2);
     }
 
     /**
@@ -304,7 +276,7 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
      * @return {@link ImmutableLinkedMap}
      */
     public static <K, V> Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3) {
-        return from(k1, v1, k2, v2, k3, v3);
+        return construct(k1, v1, k2, v2, k3, v3);
     }
 
     /**
@@ -322,7 +294,7 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
      * @return {@link ImmutableLinkedMap}
      */
     public static <K, V> Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4) {
-        return from(k1, v1, k2, v2, k3, v3, k4, v4);
+        return construct(k1, v1, k2, v2, k3, v3, k4, v4);
     }
 
     /**
@@ -342,7 +314,28 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
      * @return {@link ImmutableLinkedMap}
      */
     public static <K, V> Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5) {
-        return from(k1, v1, k2, v2, k3, v3, k4, v4, k5, v5);
+        return construct(k1, v1, k2, v2, k3, v3, k4, v4, k5, v5);
+    }
+
+    /**
+     * 创建不可改变Map集合
+     * @param original 源数据
+     * @param <K>      键
+     * @param <V>      值
+     * @return {@link ImmutableLinkedMap}
+     */
+    @SuppressWarnings("unchecked")
+    public static <K, V> Map<K, V> of(Map<K, V> original) {
+        if (original == null) {
+            throw new NullPointerException();
+        }
+        if (original instanceof AbstractImmutableMap) {
+            return original;
+        }
+        if (original.isEmpty()) {
+            return emptyMap();
+        }
+        return of(original.entrySet().toArray(new Entry[0]));
     }
 
     /**
@@ -358,14 +351,15 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
         if (size == 0) {
             return ImmutableLinkedMap.emptyMap();
         } else if (size == 1) {
-            return from(entries[0].getKey(), entries[0].getValue());
+            return construct(entries[0].getKey(), entries[0].getValue());
         } else {
-            Map<K, V> arg = new HashMap<>(size);
-            for (Entry<? extends K, ? extends V> value : entries) {
-                Entry<K, V> entry = (Entry<K, V>) value;
-                arg.put(entry.getKey(), entry.getValue());
+            Object[] args = new Object[size << 1];
+            int i = 0;
+            for (Entry<? extends K, ? extends V> entry : entries) {
+                args[i++] = entry.getKey();
+                args[i++] = entry.getValue();
             }
-            return construct(arg);
+            return construct(args);
         }
     }
 
@@ -400,5 +394,5 @@ public final class ImmutableLinkedMap<K, V> extends AbstractImmutableMap<K, V> i
         }
         return of(arg.toArray(new Entry[0]));
     }
-
+    
 }

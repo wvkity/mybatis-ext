@@ -142,14 +142,14 @@ final class CollSer implements Serializable {
             // ignore high order 24 bits
             switch (tag & 0xff) {
                 case IMM_LIST:
-                    return ImmutableList.of(array);
+                    return ImmutableList.construct(array);
                 case IMM_SET:
-                    return ImmutableSet.of(array);
+                    return ImmutableSet.construct(array);
                 case IMM_MAP:
                     if (array.length == 0) {
                         return ImmutableMap.emptyMap();
                     } else {
-                        return ImmutableMap.from(array);
+                        return ImmutableMap.construct(array);
                     }
                 default:
                     throw new InvalidObjectException(String.format("invalid flags 0x%x", tag));

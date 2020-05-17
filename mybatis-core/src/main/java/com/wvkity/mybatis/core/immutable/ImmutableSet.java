@@ -36,18 +36,20 @@ public final class ImmutableSet<E> extends AbstractImmutableSet<E> {
     }
 
     @SuppressWarnings("unchecked")
-    ImmutableSet(Set<E> original) {
-        this.size = original.size();
+    ImmutableSet(E... elements) {
+        Set<E> tmp = new HashSet<>(ArrayUtil.toList(elements));
+        this.size = tmp.size();
         if (this.size > 0) {
             this.elements = (E[]) new Object[(((this.size << 2) + 1) & ~1)];
-            this.init(original);
+            this.init(elements);
         } else {
             this.elements = (E[]) new Object[0];
         }
     }
 
-    private void init(Set<E> original) {
-        for (E element : original) {
+    @SafeVarargs
+    private final void init(E... args) {
+        for (E element : args) {
             E v = Objects.requireNonNull(element);
             int idx = probe(v);
             if (idx >= 0) {
@@ -168,22 +170,6 @@ public final class ImmutableSet<E> extends AbstractImmutableSet<E> {
 
     /**
      * 创建不可变Set集合
-     * @param original 源数据
-     * @param <E>      元素类型
-     * @return {@link ImmutableSet}
-     */
-    public static <E> Set<E> construct(Set<E> original) {
-        if (original == null) {
-            throw new NullPointerException();
-        }
-        if (original.isEmpty()) {
-            return of();
-        }
-        return new ImmutableSet<>(original);
-    }
-
-    /**
-     * 创建不可变Set集合
      * @param <E> 元素类型
      * @return {@link ImmutableSet}
      */
@@ -198,7 +184,7 @@ public final class ImmutableSet<E> extends AbstractImmutableSet<E> {
      * @return {@link ImmutableSet}
      */
     public static <E> Set<E> of(E e1) {
-        return from(e1);
+        return construct(e1);
     }
 
     /**
@@ -209,7 +195,7 @@ public final class ImmutableSet<E> extends AbstractImmutableSet<E> {
      * @return {@link ImmutableSet}
      */
     public static <E> Set<E> of(E e1, E e2) {
-        return from(e1, e2);
+        return construct(e1, e2);
     }
 
     /**
@@ -221,7 +207,7 @@ public final class ImmutableSet<E> extends AbstractImmutableSet<E> {
      * @return {@link ImmutableSet}
      */
     public static <E> Set<E> of(E e1, E e2, E e3) {
-        return from(e1, e2, e3);
+        return construct(e1, e2, e3);
     }
 
     /**
@@ -234,7 +220,7 @@ public final class ImmutableSet<E> extends AbstractImmutableSet<E> {
      * @return {@link ImmutableSet}
      */
     public static <E> Set<E> of(E e1, E e2, E e3, E e4) {
-        return from(e1, e2, e3, e4);
+        return construct(e1, e2, e3, e4);
     }
 
     /**
@@ -248,7 +234,7 @@ public final class ImmutableSet<E> extends AbstractImmutableSet<E> {
      * @return {@link ImmutableSet}
      */
     public static <E> Set<E> of(E e1, E e2, E e3, E e4, E e5) {
-        return from(e1, e2, e3, e4, e5);
+        return construct(e1, e2, e3, e4, e5);
     }
 
     /**
@@ -281,7 +267,7 @@ public final class ImmutableSet<E> extends AbstractImmutableSet<E> {
                 while (iterator.hasNext()) {
                     elements.add(iterator.next());
                 }
-                return construct(elements);
+                return of(elements);
             }
             return of(first);
         }
@@ -299,7 +285,10 @@ public final class ImmutableSet<E> extends AbstractImmutableSet<E> {
         if (elements instanceof AbstractImmutableSet) {
             return (Set<E>) elements;
         }
-        return construct(new HashSet<>(elements));
+        if (elements instanceof Set) {
+            return (Set<E>) construct(elements.toArray());
+        }
+        return (Set<E>) construct(new HashSet<>(elements).toArray());
     }
 
     /**
@@ -309,11 +298,11 @@ public final class ImmutableSet<E> extends AbstractImmutableSet<E> {
      * @return {@link ImmutableSet}
      */
     @SafeVarargs
-    public static <E> Set<E> from(E... elements) {
+    public static <E> Set<E> construct(E... elements) {
         if (elements.length == 0) {
             return of();
         }
-        return construct(new HashSet<>(ArrayUtil.toList(elements)));
+        return new ImmutableSet<>(elements);
     }
-    
+
 }
