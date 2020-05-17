@@ -2,6 +2,8 @@ package com.wvkity.mybatis.core.wrapper.criteria;
 
 import com.wvkity.mybatis.config.MyBatisConfigCache;
 import com.wvkity.mybatis.core.converter.Property;
+import com.wvkity.mybatis.core.handler.TableHandler;
+import com.wvkity.mybatis.core.immutable.ImmutableLinkedSet;
 import com.wvkity.mybatis.core.metadata.ColumnWrapper;
 import com.wvkity.mybatis.core.metadata.PropertyMappingCache;
 import com.wvkity.mybatis.exception.MyBatisException;
@@ -10,10 +12,14 @@ import com.wvkity.mybatis.utils.CollectionUtil;
 import com.wvkity.mybatis.utils.StringUtil;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -126,7 +132,7 @@ abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriter
      * @param printing 是否打印警告信息
      */
     protected final void initMappingCache(Class<?> klass, boolean printing) {
-        if (klass != null) {
+        if (klass != null && !this.initialized) {
             this._PROPERTY_COLUMN_CACHE = PropertyMappingCache.columnCache(klass);
             if (CollectionUtil.isEmpty(this._PROPERTY_COLUMN_CACHE)) {
                 if (printing)
@@ -135,8 +141,9 @@ abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriter
                             "the configuration is correct!"));
             } else {
                 this.initialized = true;
-                this._UPDATABLE_COLUMN_NAME_CACHE = this._PROPERTY_COLUMN_CACHE.values().stream().map(it ->
-                        it.getColumn().toLowerCase(Locale.ENGLISH)).collect(Collectors.toSet());
+                Set<String> tmp = TableHandler.getTable(klass).updatableColumns().stream().map(it ->
+                        it.getColumn().toLowerCase(Locale.ENGLISH)).collect(Collectors.toCollection(LinkedHashSet::new));
+                this._UPDATABLE_COLUMN_NAME_CACHE = ImmutableLinkedSet.construct(tmp);
             }
         }
     }
@@ -170,5 +177,29 @@ abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriter
         final String realColumn = column.toLowerCase(Locale.ENGLISH);
         return Optional.ofNullable(this._UPDATABLE_COLUMN_NAME_CACHE).filter(it ->
                 it.contains(realColumn)).isPresent();
+    }
+
+    /**
+     * 检查是否存在包装对象
+     * @return boolean
+     */
+    protected final boolean hasColumnWrapperCache() {
+        return CollectionUtil.hasElement(this._PROPERTY_COLUMN_CACHE);
+    }
+
+    /**
+     * 选择包装字段
+     * @param predicate {@link Predicate}
+     * @return 包装字段对象集合
+     */
+    protected final List<ColumnWrapper> filtration(Predicate<ColumnWrapper> predicate) {
+        if (!this.initialized) {
+            initMappingCache(this.entityClass, true);
+        }
+        TableHandler.getTable(this.entityClass);
+        if (hasColumnWrapperCache()) {
+            return this._PROPERTY_COLUMN_CACHE.values().stream().filter(predicate).collect(Collectors.toList());
+        }
+        return new ArrayList<>(0);
     }
 }
