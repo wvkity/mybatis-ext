@@ -6,6 +6,7 @@ import com.wvkity.mybatis.core.constant.Logic;
 import com.wvkity.mybatis.core.constant.Range;
 import com.wvkity.mybatis.core.converter.Property;
 import com.wvkity.mybatis.core.handler.TableHandler;
+import com.wvkity.mybatis.core.metadata.ColumnWrapper;
 import com.wvkity.mybatis.core.wrapper.aggreate.AbstractFunction;
 import com.wvkity.mybatis.core.wrapper.aggreate.Aggregator;
 import com.wvkity.mybatis.core.wrapper.aggreate.Function;
@@ -42,6 +43,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 
@@ -153,6 +155,18 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     // endregion
 
     // region query column
+
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> filtrate(Predicate<ColumnWrapper> predicate) {
+        if (predicate != null) {
+            List<ColumnWrapper> its = this.filtration(predicate);
+            if (CollectionUtil.hasElement(its)) {
+                this.queryManager.queries(Query.Multi.query(this, its));
+            }
+        }
+        return this;
+    }
 
     @Override
     public AbstractQueryCriteriaWrapper<T> select(String property) {

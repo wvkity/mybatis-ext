@@ -113,4 +113,9 @@ public interface QueryWrapper<T, Chain extends QueryWrapper<T, Chain>> extends Q
      */
     Chain resultType(Class<?> resultType);
 
+    /**
+     * 获取查询字段片段
+     * @return SQL字符串
+     */
+    String getQuerySegment();
 }

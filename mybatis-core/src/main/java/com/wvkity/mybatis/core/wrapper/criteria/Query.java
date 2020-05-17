@@ -2,11 +2,13 @@ package com.wvkity.mybatis.core.wrapper.criteria;
 
 import com.wvkity.mybatis.core.converter.Property;
 import com.wvkity.mybatis.core.converter.PropertyConverter;
+import com.wvkity.mybatis.core.metadata.ColumnWrapper;
 import com.wvkity.mybatis.core.wrapper.basic.Case;
 import com.wvkity.mybatis.utils.ArrayUtil;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.Predicate;
 
 /**
  * 查询列接口
@@ -16,6 +18,12 @@ import java.util.Map;
  */
 public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch, PropertyConverter<T> {
 
+    /**
+     * 选择查询列
+     * @param predicate {@link Predicate}
+     * @return {@code this}
+     */
+    Chain filtrate(Predicate<ColumnWrapper> predicate);
 
     /**
      * 添加查询列
@@ -275,6 +283,29 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
     }
 
     /**
+     * Case选择查询
+     * @param _case {@link Case}
+     * @return {@code this}
+     */
+    Chain select(Case _case);
+
+    /**
+     * Case选择查询
+     * @param cases {@link Case}
+     * @return {@code this}
+     */
+    default Chain selects(Case... cases) {
+        return selects(ArrayUtil.toList(cases));
+    }
+
+    /**
+     * Case选择查询
+     * @param cases {@link Case}
+     * @return {@code this}
+     */
+    Chain selects(Collection<Case> cases);
+
+    /**
      * 排除查询列
      * @param property 属性
      * @param <V>      值类型
@@ -341,34 +372,5 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @return {@code this}
      */
     Chain excludesWith(Collection<String> columns);
-
-    /**
-     * Case选择查询
-     * @param _case {@link Case}
-     * @return {@code this}
-     */
-    Chain select(Case _case);
-
-    /**
-     * Case选择查询
-     * @param cases {@link Case}
-     * @return {@code this}
-     */
-    default Chain selects(Case... cases) {
-        return selects(ArrayUtil.toList(cases));
-    }
-
-    /**
-     * Case选择查询
-     * @param cases {@link Case}
-     * @return {@code this}
-     */
-    Chain selects(Collection<Case> cases);
-
-    /**
-     * 获取查询字段片段
-     * @return SQL字符串
-     */
-    String getQuerySegment();
 
 }
