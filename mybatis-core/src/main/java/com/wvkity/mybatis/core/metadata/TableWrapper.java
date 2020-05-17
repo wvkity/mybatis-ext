@@ -51,6 +51,16 @@ public class TableWrapper {
     @Getter(AccessLevel.NONE)
     private final Set<ColumnWrapper> READ_ONLY_COLUMN_CACHE;
     /**
+     * 可保存字段包装对象缓存(只读)
+     */
+    @Getter(AccessLevel.NONE)
+    private final Set<ColumnWrapper> READ_ONLY_INSERTABLE_COLUMN_CACHE;
+    /**
+     * 可更新字段包装对象缓存(只读)
+     */
+    @Getter(AccessLevel.NONE)
+    private final Set<ColumnWrapper> READ_ONLY_UPDATABLE_COLUMN_CACHE;
+    /**
      * 实体类
      */
     private final Class<?> entity;
@@ -145,6 +155,8 @@ public class TableWrapper {
         this.COLUMN_CACHE = new LinkedHashSet<>(columns);
         this.READ_ONLY_COLUMN_CACHE = ImmutableLinkedSet.construct(this.COLUMN_CACHE);
         this.READ_ONLY_PROPERTY_COLUMN_CACHE = this.initDefinition();
+        this.READ_ONLY_INSERTABLE_COLUMN_CACHE = ImmutableLinkedSet.construct(filtrate(ColumnWrapper::isInsertable));
+        this.READ_ONLY_UPDATABLE_COLUMN_CACHE = ImmutableLinkedSet.construct(filtrate(ColumnWrapper::isUpdatable));
     }
 
     /**
@@ -160,7 +172,7 @@ public class TableWrapper {
      * @return 可保存字段集合
      */
     public Set<ColumnWrapper> insertableColumns() {
-        return filtrate(ColumnWrapper::isInsertable);
+        return this.READ_ONLY_INSERTABLE_COLUMN_CACHE;
     }
 
     /**
@@ -168,7 +180,7 @@ public class TableWrapper {
      * @return 可更新字段集合
      */
     public Set<ColumnWrapper> updatableColumns() {
-        return filtrate(ColumnWrapper::isUpdatable);
+        return this.READ_ONLY_UPDATABLE_COLUMN_CACHE;
     }
 
     /**
