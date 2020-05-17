@@ -657,6 +657,6 @@ public final class ScriptUtil {
      * @return 序列SQL
      */
     public static String getSequenceScript(final Dialect dialect, String sequenceName) {
-        return SequenceKeyGenerator.getInstance(dialect).toSqlString(sequenceName);
+        return SequenceKeyGenerator.valueOf(dialect.name()).getScript(sequenceName);
     }
 }

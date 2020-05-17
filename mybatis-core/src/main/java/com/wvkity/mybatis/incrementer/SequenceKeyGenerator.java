@@ -18,7 +18,7 @@ public enum SequenceKeyGenerator {
      */
     ORACLE {
         @Override
-        public String toSqlString(String sequenceName) {
+        public String getScript(String sequenceName) {
             return "SELECT " + sequenceName + ".NEXTVAL FROM DUAL";
         }
     },
@@ -28,7 +28,7 @@ public enum SequenceKeyGenerator {
      */
     DB2 {
         @Override
-        public String toSqlString(String sequenceName) {
+        public String getScript(String sequenceName) {
             return "values nextval for " + sequenceName;
         }
     },
@@ -38,49 +38,25 @@ public enum SequenceKeyGenerator {
      */
     H2 {
         @Override
-        public String toSqlString(String sequenceName) {
+        public String getScript(String sequenceName) {
             return "select " + sequenceName + ".nextval";
         }
     },
 
     /**
-     * POSTGRE
+     * POSTGRESQL
      */
-    POSTGRE {
+    POSTGRESQL {
         @Override
-        public String toSqlString(String sequenceName) {
+        public String getScript(String sequenceName) {
             return "select nextval('" + sequenceName + "')";
         }
     };
 
     /**
-     * 缓存
-     */
-    private static final Map<String, SequenceKeyGenerator> CACHE = Stream.of(ORACLE, DB2, H2, POSTGRE)
-            .collect(Collectors.toConcurrentMap(Enum::name, Function.identity()));
-
-    /**
-     * 获取序列实例
-     * @param dialect 数据类型
-     * @return 序列实例
-     */
-    public static SequenceKeyGenerator getInstance(Dialect dialect) {
-        return getInstance(dialect.name());
-    }
-
-    /**
-     * 获取序列实例
-     * @param dialect 数据类型
-     * @return 序列实例
-     */
-    public static SequenceKeyGenerator getInstance(String dialect) {
-        return CACHE.get(dialect);
-    }
-
-    /**
-     * 序列转SQL语句
+     * 获取sql脚本
      * @param sequenceName 序列名称
-     * @return SQL语句
+     * @return sql脚本
      */
-    public abstract String toSqlString(final String sequenceName);
+    public abstract String getScript(final String sequenceName);
 }
