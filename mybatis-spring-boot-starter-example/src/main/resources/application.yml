@@ -45,7 +45,7 @@ wvkity:
     #- classpath:/mybatis/mapper/*.xml
     configuration:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-      #map-underscore-to-camel-case: false
+      map-underscore-to-camel-case: false
     custom-configuration:
       #dialect: mysql
       primary-key: snowflake_sequence
@@ -57,11 +57,12 @@ wvkity:
         #- com.wkit.lost.mybatis.plugins.paging.PageableInterceptor
         #- com.wkit.lost.mybatis.plugins.paging.RangePageableInterceptor
       #logic-deleted-property: deleted
-      boolean-property-auto-add-is-prefix: true
-      auto-register-builtin-plugin: true
       auto-scan-primary-key: true
       auto-scan-audit-property: true
-      strategy: camel_hump_lowercase
+      not-matching-with-throws: true
+      auto-register-plugin: true
+      strategy: camel_hump_uppercase
+      auto-add-is-prefixed-with-boolean-property: true
     executor-type: simple
   sequence:
     data-center-id: 2

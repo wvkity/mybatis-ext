@@ -29,7 +29,7 @@ public class FunctionApplication extends RootTestRunner {
         QueryCriteria<Exam> criteria = QueryCriteria.from(Exam.class);
         criteria.select(Exam::getStudentId, Exam::getExamYear, Exam::getPeriod).sum("score", "total").groups(Exam::getStudentId, Exam::getExamYear);
         criteria.eq(Exam::getGrade, 2, Exam::getPeriod, 2012, Exam::getSemester, 1);
-        List<Map<String, Object>> result = examService.map(criteria);
+        List<Map<String, Object>> result = examService.mapList(criteria);
         log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -40,7 +40,7 @@ public class FunctionApplication extends RootTestRunner {
         criteria.eq(Exam::getGrade, 2, Exam::getPeriod, 2012, Exam::getSemester, 1);
         criteria.select(Exam::getStudentId, Exam::getExamYear, Exam::getPeriod).sum("score", "total")
                 .groups(Exam::getStudentId, Exam::getExamYear).funcDesc("total").desc(Exam::getStudentId);
-        List<Map<String, Object>> result = examService.map(criteria);
+        List<Map<String, Object>> result = examService.mapList(criteria);
         log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -55,7 +55,7 @@ public class FunctionApplication extends RootTestRunner {
                 .groups(Exam::getStudentId, Exam::getExamYear).funcDesc("total").desc(Exam::getStudentId);
         // 分组筛选
         criteria.having("total");
-        List<Map<String, Object>> result = examService.map(criteria);
+        List<Map<String, Object>> result = examService.mapList(criteria);
         log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -70,7 +70,7 @@ public class FunctionApplication extends RootTestRunner {
                 .groups(Exam::getStudentId, Exam::getExamYear).funcDesc("total").desc(Exam::getStudentId);
         // 分组筛选
         criteria.having("total");
-        List<Map<String, Object>> result = examService.map(criteria);
+        List<Map<String, Object>> result = examService.mapList(criteria);
         log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -85,7 +85,7 @@ public class FunctionApplication extends RootTestRunner {
                 .groups(Exam::getStudentId, Exam::getExamYear).funcDesc("total").desc(Exam::getStudentId);
         // 分组筛选
         criteria.having("total");
-        List<Map<String, Object>> result = examService.map(criteria.range(2, 10));
+        List<Map<String, Object>> result = examService.mapList(criteria.range(2, 10));
         log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -100,7 +100,7 @@ public class FunctionApplication extends RootTestRunner {
                 .groups(Exam::getStudentId, Exam::getExamYear).funcDesc("total").desc(Exam::getStudentId);
         // 分组筛选
         criteria.having("total");
-        List<Map<String, Object>> result = examService.map(criteria.range(2, 10));
+        List<Map<String, Object>> result = examService.mapList(criteria.range(2, 10));
         log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -119,7 +119,7 @@ public class FunctionApplication extends RootTestRunner {
                 .desc(Exam::getStudentId);
         // 分组筛选
         criteria.havings("total", "avg");
-        List<Map<String, Object>> result = examService.custom(criteria.resultType(Map.class).range(1, 3, 12));
+        List<Map<String, Object>> result = examService.customize(criteria.resultType(Map.class).range(1, 3, 12));
         log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -138,7 +138,7 @@ public class FunctionApplication extends RootTestRunner {
                 .desc(Exam::getStudentId);
         // 分组筛选
         criteria.havings("total", "avg");
-        List<Object[]> result = examService.array(criteria.range(1, 3, 12));
+        List<Object[]> result = examService.arrayList(criteria.range(1, 3, 12));
         log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -154,7 +154,7 @@ public class FunctionApplication extends RootTestRunner {
                 .desc(Exam::getStudentId);
         // 分组筛选
         criteria.havings("total");
-        List<Object[]> result = examService.array(criteria.range(1, 3, 12));
+        List<Object[]> result = examService.arrayList(criteria.range(1, 3, 12));
         log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -171,7 +171,7 @@ public class FunctionApplication extends RootTestRunner {
                 .desc(Exam::getStudentId);
         // 分组筛选
         criteria.havings("total", "avg");
-        List<Object[]> result = examService.array(criteria.range(1, 3, 12));
+        List<Object[]> result = examService.arrayList(criteria.range(1, 3, 12));
         log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -189,7 +189,7 @@ public class FunctionApplication extends RootTestRunner {
                 .desc(Exam::getStudentId);
         // 分组筛选
         criteria.havings("total", "avg");
-        List<Map<String, Object>> result = examService.map(criteria.range(1, 3, 12));
+        List<Map<String, Object>> result = examService.mapList(criteria.range(1, 3, 12));
         log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -211,7 +211,7 @@ public class FunctionApplication extends RootTestRunner {
         // criteria.onlyQueryFunc();
         // 不查询聚合函数
         criteria.excludeFunc();
-        List<Map<String, Object>> result = examService.map(criteria.range(1, 3, 12));
+        List<Map<String, Object>> result = examService.mapList(criteria.range(1, 3, 12));
         log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -234,7 +234,7 @@ public class FunctionApplication extends RootTestRunner {
         // criteria.onlyQueryFunc();
         // 不查询聚合函数
         // criteria.excludeFunc();
-        List<Map<String, Object>> result = examService.map(criteria.range(1, 3, 12));
+        List<Map<String, Object>> result = examService.mapList(criteria.range(1, 3, 12));
         log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -257,7 +257,7 @@ public class FunctionApplication extends RootTestRunner {
         // criteria.onlyQueryFunc();
         // 不查询聚合函数
         // criteria.excludeFunc();
-        List<Map<String, Object>> result = examService.map(criteria, new Pager());
+        List<Map<String, Object>> result = examService.mapList(criteria, new Pager());
         log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -281,7 +281,7 @@ public class FunctionApplication extends RootTestRunner {
         // 不查询聚合函数
         // criteria.excludeFunc();
         GenericPager<LinkedHashMap<String, Object>> pager;
-        List<Map<String, Object>> result = examService.custom(criteria.resultType(LinkedHashMap.class), (pager = GenericPager.of(1, 10)));
+        List<Map<String, Object>> result = examService.customize(criteria.resultType(LinkedHashMap.class), (pager = GenericPager.of(1, 10)));
         log.info("result: {}", JSON.toJSONString(result, true));
         log.info("=================================");
         log.info("pager: {}", JSON.toJSONString(pager, true));

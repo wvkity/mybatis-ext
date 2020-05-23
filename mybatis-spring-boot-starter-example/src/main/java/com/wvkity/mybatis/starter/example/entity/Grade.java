@@ -8,6 +8,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
@@ -21,7 +22,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldNameConstants
 @Accessors(chain = true)
-public class Grade {
+public class Grade implements Serializable {
 
     private static final long serialVersionUID = -4653601420462226184L;
 

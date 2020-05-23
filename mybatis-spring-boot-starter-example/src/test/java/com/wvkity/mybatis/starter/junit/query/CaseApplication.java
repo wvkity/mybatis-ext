@@ -51,7 +51,7 @@ public class CaseApplication extends RootTestRunner {
         criteria.eq(Exam::getGrade, 2, Exam::getPeriod, 2012, Exam::getSemester, 1);
         criteria.eq(Exam::getSubjectId, 9);
         criteria.groups();
-        List<Map<String, Object>> result = examService.map(criteria);
+        List<Map<String, Object>> result = examService.mapList(criteria);
         //log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -68,7 +68,7 @@ public class CaseApplication extends RootTestRunner {
         criteria.eq(Exam::getGrade, 2, Exam::getPeriod, 2012, Exam::getSemester, 1);
         criteria.eq(Exam::getSubjectId, 9);
         criteria.groups();
-        List<Map<String, Object>> result = examService.map(criteria);
+        List<Map<String, Object>> result = examService.mapList(criteria);
         //log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -94,7 +94,7 @@ public class CaseApplication extends RootTestRunner {
         criteria.groups();
         // 根据超过95分次数排序
         criteria.funcDesc("total_3", "total_1");
-        List<Map<String, Object>> result = examService.map(criteria);
+        List<Map<String, Object>> result = examService.mapList(criteria);
         //log.info("result: {}", JSON.toJSONString(result, true));
     }
 
@@ -124,7 +124,7 @@ public class CaseApplication extends RootTestRunner {
         // 连表查询学生姓名
         criteria.innerJoin(Student.class).on(st -> st.nq(criteria, Exam::getStudentId))
                 .select(Student::getName, "student.name").as("st");
-        List<Map<String, Object>> result = examService.map(criteria);
+        List<Map<String, Object>> result = examService.mapList(criteria);
         log.info("result: {}", JSON.toJSONString(result, true));
     }
 }

@@ -30,7 +30,7 @@ public class DeleteApplication extends RootTestRunner {
 
     @Test
     public void deleteByIdTest() {
-        int result = userService.delete(5L);
+        int result = userService.deleteById(5L);
         log.info("执行结果: {}", result);
     }
 
@@ -44,7 +44,7 @@ public class DeleteApplication extends RootTestRunner {
 
     @Test
     public void batchDeleteByIdTest() {
-        int result = userService.batchDelete(5L, 6L, 7L);
+        int result = userService.batchDeleteById(5L, 6L, 7L);
         log.info("执行结果: {}", result);
     }
 

@@ -135,7 +135,7 @@ public class QueryApplication extends RootTestRunner {
     public void arrayListTest() {
         QueryCriteria<User> criteria = new QueryCriteria<>(User.class);
         criteria.eq(User::getSex, 1, User::getPassword, "123456a");
-        List<Object[]> result = userService.array(criteria);
+        List<Object[]> result = userService.arrayList(criteria);
         log.info("执行结果: {}", JSON.toJSONString(result, true));
     }
 
@@ -143,7 +143,7 @@ public class QueryApplication extends RootTestRunner {
     public void objectListTest() {
         QueryCriteria<User> criteria = new QueryCriteria<>(User.class);
         criteria.eq(User::getSex, 1, User::getPassword, "123456a");
-        List<Map<String, Object>> result = userService.map(criteria);
+        List<Map<String, Object>> result = userService.mapList(criteria);
         log.info("执行结果: {}", JSON.toJSONString(result, true));
     }
 
@@ -151,7 +151,7 @@ public class QueryApplication extends RootTestRunner {
     public void mapListTest() {
         QueryCriteria<User> criteria = new QueryCriteria<>(User.class);
         criteria.eq(User::getSex, 1, User::getPassword, "123456a");
-        List<Object> result = userService.objects(criteria);
+        List<Object> result = userService.objectList(criteria);
         log.info("执行结果: {}", JSON.toJSONString(result, true));
     }
 
@@ -159,7 +159,7 @@ public class QueryApplication extends RootTestRunner {
     public void customTest() {
         QueryCriteria<User> criteria = new QueryCriteria<>(User.class);
         criteria.eq(User::getSex, 1, User::getPassword, "123456a");
-        List<UserVo> result = userService.custom(criteria.resultType(UserVo.class));
+        List<UserVo> result = userService.customize(criteria.resultType(UserVo.class));
         log.info("结果类型: {}", result.isEmpty() ? null : result.get(0).getClass());
         log.info("执行结果: {}", JSON.toJSONString(result, true));
     }
@@ -179,6 +179,7 @@ public class QueryApplication extends RootTestRunner {
         criteria.eq(User::getDeleted, false).and(it ->
                 it.and(i -> i.eq(User::getState, 2, User::getCreatedUserName, "root", User::getVersion, 3))
                         .or(i -> i.eq(User::getState, 1, User::getCreatedUserName, "system")));
+        //criteria.eq("status", 1);
         List<User> result = userService.list(criteria.range(13));
         log.info("执行结果: {}", JSON.toJSONString(result, true));
     }
