@@ -9,6 +9,7 @@ import com.wvkity.mybatis.core.metadata.PropertyMappingCache;
 import com.wvkity.mybatis.exception.MyBatisException;
 import com.wvkity.mybatis.invoke.SerializedLambda;
 import com.wvkity.mybatis.utils.CollectionUtil;
+import com.wvkity.mybatis.utils.Constants;
 import com.wvkity.mybatis.utils.StringUtil;
 import lombok.extern.log4j.Log4j2;
 
@@ -201,5 +202,16 @@ abstract class AbstractChainCriteriaWrapper<T, Chain extends AbstractChainCriter
             return this._PROPERTY_COLUMN_CACHE.values().stream().filter(predicate).collect(Collectors.toList());
         }
         return new ArrayList<>(0);
+    }
+
+    @Override
+    public String getQuerySegment() {
+        if (this.hasColumnWrapperCache()) {
+            String temp = as();
+            String alias = StringUtil.hasText(temp) ? (temp.trim() + Constants.DOT) : Constants.EMPTY;
+            return this._PROPERTY_COLUMN_CACHE.values().stream().map(it -> (alias + it.getColumn()))
+                    .collect(Collectors.joining(Constants.COMMA_SPACE));
+        }
+        return super.getQuerySegment();
     }
 }

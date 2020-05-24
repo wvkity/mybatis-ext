@@ -79,17 +79,7 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
      * 仅仅只查询聚合函数
      */
     protected boolean onlyFunctionForQuery = false;
-
-    /**
-     * 查询SQL片段
-     */
-    private String querySegment;
-
-    /**
-     * 连表SQL片段
-     */
-    private String foreignSegment;
-
+    
     /**
      * 返回值映射Map
      */

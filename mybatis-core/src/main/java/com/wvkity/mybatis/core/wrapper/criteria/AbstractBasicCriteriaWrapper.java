@@ -164,9 +164,14 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
     protected boolean groupAll;
 
     /**
+     * 查询SQL片段
+     */
+    protected String querySegment = "";
+
+    /**
      * 联表SQL片段
      */
-    protected String foreignSegment;
+    protected String foreignSegment = "";
 
     /**
      * 子查询条件对象集合
@@ -1586,5 +1591,14 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
         }
         return Constants.EMPTY;
     }
+
+    public String getQuerySegment() {
+        return querySegment;
+    }
+
+    public String getForeignSegment() {
+        return foreignSegment;
+    }
+
     // endregion
 }
