@@ -18,19 +18,19 @@ import java.lang.annotation.Target;
 public @interface Column {
 
     /**
-     * 字段
+     * 字段名
      * @return 字段名
      */
     String name() default "";
 
     /**
-     * 是否可插入
+     * 执行insert操作的时候是否包含此字段
      * @return boolean
      */
     boolean insertable() default true;
 
     /**
-     * 是否可更新
+     * 执行updatable操作的时候是否包含此字段
      * @return boolean
      */
     boolean updatable() default true;

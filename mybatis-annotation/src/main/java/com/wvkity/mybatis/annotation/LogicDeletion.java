@@ -18,13 +18,13 @@ import java.lang.annotation.Target;
 public @interface LogicDeletion {
 
     /**
-     * 是
+     * 标识已删除值
      * @return 标识已删除值
      */
     String trueValue() default "";
 
     /**
-     * 否
+     * 标识未删除值
      * @return 标识未删除值
      */
     String falseValue() default "";

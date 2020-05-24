@@ -7,17 +7,17 @@ package com.wvkity.mybatis.annotation.extension;
 public enum GenerationType {
 
     /**
-     *
+     * 通过表产生主键
      */
     TABLE,
 
     /**
-     * 序列(Oracle)
+     * 通过序列产生主键，通过@SequenceGenerator注解指定序列名(Oracle)
      */
     SEQUENCE,
 
     /**
-     * 自增(MySql、SQL SERVER)
+     * 采用数据库 ID自增长的方式来自增主键字段(MySql、SQL SERVER)
      */
     IDENTITY,
 

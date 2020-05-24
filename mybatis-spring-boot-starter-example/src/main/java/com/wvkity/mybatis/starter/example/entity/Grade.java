@@ -1,5 +1,7 @@
 package com.wvkity.mybatis.starter.example.entity;
 
+import com.wvkity.mybatis.annotation.Id;
+import com.wvkity.mybatis.annotation.Identity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,6 +31,7 @@ public class Grade implements Serializable {
     /**
      * 主键
      */
+    @Identity
     private Long id;
 
     /**

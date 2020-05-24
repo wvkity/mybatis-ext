@@ -37,6 +37,7 @@ public @interface Table {
 
     /**
      * 表名前缀
+     * <p>当前值为空则使用全局配置的前缀</p>
      * @return 字符串
      */
     String prefix() default "";

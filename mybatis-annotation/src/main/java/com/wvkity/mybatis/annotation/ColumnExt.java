@@ -43,12 +43,14 @@ public @interface ColumnExt {
 
     /**
      * 字符串空值校验
+     * <p>当字段为字符串类型时，且作为条件时是否校验空值，默认值为全局配置</p>
      * @return {@link Validated}
      */
     Validated empty() default Validated.CONFIG;
 
     /**
      * 使用Java类型
+     * <p>添加操作、更新操作、作为条件等是否自动拼接Java类型，默认值为全局配置</p>
      * @return {@link UseJavaType}
      */
     UseJavaType useJavaType() default UseJavaType.CONFIG;

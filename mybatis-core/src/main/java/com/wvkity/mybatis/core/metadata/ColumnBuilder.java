@@ -122,7 +122,7 @@ public class ColumnBuilder extends BuilderSupport implements Builder<ColumnWrapp
     private String orderBy;
 
     /**
-     * 主键生成方式
+     * 主键生成方式(根据sql语句)
      */
     private String generator;
 

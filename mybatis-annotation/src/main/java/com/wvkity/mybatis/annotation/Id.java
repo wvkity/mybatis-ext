@@ -16,16 +16,4 @@ import java.lang.annotation.Target;
 @Documented
 @Inherited
 public @interface Id {
-
-    /**
-     * prefix别名{@link #prefix()}
-     * @return 前缀
-     */
-    String value() default "";
-
-    /**
-     * 主键前缀
-     * @return 前缀
-     */
-    String prefix() default "";
 }
