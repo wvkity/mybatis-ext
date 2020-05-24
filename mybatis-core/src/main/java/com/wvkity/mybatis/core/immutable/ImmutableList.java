@@ -195,7 +195,9 @@ public final class ImmutableList<E> extends AbstractImmutableList<E> implements 
 
     /**
      * 创建不可变List集合
-     * @param <E> 元素数组
+     * @param args 参数列表
+     * @param <E>  元素数组
+     * @return {@link ImmutableList}
      */
     @SafeVarargs
     public static <E> List<E> construct(E... args) {
