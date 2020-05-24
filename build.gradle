@@ -1,9 +1,7 @@
 import java.text.SimpleDateFormat
 
 plugins {
-    //id 'org.jetbrains.kotlin.jvm' version '1.3.41'
     id 'org.springframework.boot' version '2.2.0.RELEASE'
-    //id 'com.gradle.build-scan' version '2.4.2' apply true
     id "com.github.hierynomus.license" version "0.15.0" apply true
 }
 
@@ -24,7 +22,7 @@ ext {
             cglib = "3.3.0",
             aspectjweaver = "1.9.3",
             slf4j = "1.7.26",
-            log4j2 = "2.11.2",
+            log4j2 = "2.12.1",
             disruptor = "3.4.2",
             guava = "28.0-jre",
             servlet = "4.0.1",
@@ -93,11 +91,6 @@ ext {
     ]
 }
 
-/*buildScan {
-    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-    termsOfServiceAgree = 'yes'
-}*/
-
 allprojects {
     group 'com.wvkity'
     version '1.0.2-SNAPSHOT'
@@ -105,9 +98,9 @@ allprojects {
 }
 
 subprojects {
-    //apply plugin: "kotlin"
     apply plugin: 'java-library'
     apply plugin: 'maven'
+    apply plugin: 'idea'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
 
@@ -181,18 +174,18 @@ subprojects {
     sourceSets {
         main {
             java {
-                srcDir 'src/main/java'
+                srcDirs 'src/main/java'
             }
             resources {
-                srcDir 'src/main/resources'
+                srcDirs 'src/main/resource'
             }
         }
         test {
             java {
-                srcDir 'src/main/java'
+                srcDirs 'src/main/java'
             }
             resources {
-                srcDir 'src/main/resources'
+                srcDirs 'src/main/resources'
             }
         }
     }
@@ -214,8 +207,9 @@ subprojects {
 
     dependencies {
         implementation fileTree(dir: "libs", include: ["*.jar"])
-        implementation "${lib.log4j2}"
+        compileOnly "${lib.log4j2}"
         annotationProcessor "${lib.log4j2}"
+        testAnnotationProcessor "${lib.log4j2}"
         compileOnly "${lib.lombok}"
         annotationProcessor "${lib.lombok}"
         testCompileOnly "${lib.lombok}"

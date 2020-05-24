@@ -10,6 +10,15 @@ pluginManagement {
         mavenCentral()
     }
 }
+plugins {
+    id "com.gradle.enterprise" version "3.3.1"
+}
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+        termsOfServiceAgree = 'no'
+    }
+}
 rootProject.name = 'mybatis'
 include 'pageable'
 include 'mybatis-annotation'
@@ -18,5 +27,5 @@ include 'mybatis-extension'
 include 'mybatis-spring-extension'
 include 'mybatis-spring-boot-starter'
 // include 'mybatis-generator-gui'
-include 'mybatis-spring-boot-starter-example'
+// include 'mybatis-spring-boot-starter-example'
 
