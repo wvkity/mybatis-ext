@@ -5,6 +5,7 @@ import com.wvkity.mybatis.core.converter.PropertyConverter;
 import com.wvkity.mybatis.core.metadata.ColumnWrapper;
 import com.wvkity.mybatis.core.wrapper.basic.Case;
 import com.wvkity.mybatis.utils.ArrayUtil;
+import com.wvkity.mybatis.utils.Constants;
 
 import java.util.Collection;
 import java.util.Map;
@@ -231,8 +232,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      */
     default Chain selectWith(String tableAlias, String c1, String as1,
                              String c2, String as2, String c3, String as3) {
-        return selectWith(tableAlias, c1, as1).selectWith(tableAlias, c2, as2)
-                .selectWith(tableAlias, c3, as3);
+        return selectWith(tableAlias, c1, as1).selectWith(tableAlias, c2, as2).selectWith(tableAlias, c3, as3);
     }
 
     /**
@@ -329,8 +329,16 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @return {@code this}
      */
     @SuppressWarnings({"unchecked"})
-    default <V> Chain excludes(Property<T, V>... properties) {
-        return excludes(convert(ArrayUtil.toList(properties)));
+    default <V> Chain exclude(Property<T, V>... properties) {
+        int size = properties.length;
+        if (size == 0) {
+            return exclude(Constants.EMPTY);
+        } else if (size == 1) {
+            return exclude(properties[0]);
+        } else if (size == 2) {
+            return exclude(properties[0]).exclude(properties[1]);
+        }
+        return exclude(convert(ArrayUtil.toList(properties)));
     }
 
     /**
@@ -338,8 +346,16 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param properties 属性数组
      * @return {@code this}
      */
-    default Chain excludes(String... properties) {
-        return excludes(ArrayUtil.toList(properties));
+    default Chain exclude(String... properties) {
+        int size = properties.length;
+        if (size == 0) {
+            return exclude(Constants.EMPTY);
+        } else if (size == 1) {
+            return exclude(properties[0]);
+        } else if (size == 2) {
+            return exclude(properties[0]).exclude(properties[1]);
+        }
+        return exclude(ArrayUtil.toList(properties));
     }
 
     /**
@@ -347,7 +363,7 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param properties 属性集合
      * @return {@code this}
      */
-    Chain excludes(Collection<String> properties);
+    Chain exclude(Collection<String> properties);
 
     /**
      * 排除查询列
@@ -355,15 +371,22 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @return {@code this}
      */
     Chain excludeWith(String column);
-
-
+    
     /**
      * 排除查询列
      * @param columns 列名数组
      * @return {@code this}
      */
-    default Chain excludesWith(String... columns) {
-        return excludesWith(ArrayUtil.toList(columns));
+    default Chain excludeWith(String... columns) {
+        int size = columns.length;
+        if (size == 0) {
+            return excludeWith(Constants.EMPTY);
+        } else if (size == 1) {
+            return excludeWith(columns[0]);
+        } else if (size == 2) {
+            return excludeWith(columns[0]).excludeWith(columns[1]);
+        }
+        return excludeWith(ArrayUtil.toList(columns));
     }
 
     /**
@@ -371,6 +394,6 @@ public interface Query<T, Chain extends Query<T, Chain>> extends CriteriaSearch,
      * @param columns 列名集合
      * @return {@code this}
      */
-    Chain excludesWith(Collection<String> columns);
+    Chain excludeWith(Collection<String> columns);
 
 }

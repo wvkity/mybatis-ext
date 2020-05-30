@@ -20,8 +20,8 @@ public interface SubCriteriaBuilder<T> {
      * @param <E>         实体类型
      * @return 子查询条件包装对象
      */
-    default <E> SubCriteria<E> sub(Class<E> entityClass) {
-        return sub(entityClass, null, null);
+    default <E> SubCriteria<E> sc(Class<E> entityClass) {
+        return sc(entityClass, null, null);
     }
 
     /**
@@ -31,8 +31,8 @@ public interface SubCriteriaBuilder<T> {
      * @param <E>         实体类型
      * @return 子查询条件包装对象
      */
-    default <E> SubCriteria<E> sub(Class<E> entityClass, String alias) {
-        return sub(entityClass, alias, null);
+    default <E> SubCriteria<E> sc(Class<E> entityClass, String alias) {
+        return sc(entityClass, alias, null);
     }
 
     /**
@@ -42,8 +42,8 @@ public interface SubCriteriaBuilder<T> {
      * @param <E>         实体类型
      * @return 子查询条件包装对象
      */
-    default <E> SubCriteria<E> sub(Class<E> entityClass, Criterion... clauses) {
-        return sub(entityClass, null, ArrayUtil.toList(clauses));
+    default <E> SubCriteria<E> sc(Class<E> entityClass, Criterion... clauses) {
+        return sc(entityClass, null, ArrayUtil.toList(clauses));
     }
 
     /**
@@ -53,8 +53,8 @@ public interface SubCriteriaBuilder<T> {
      * @param <E>         实体类型
      * @return 子查询条件包装对象
      */
-    default <E> SubCriteria<E> sub(Class<E> entityClass, Collection<Criterion> clauses) {
-        return sub(entityClass, null, clauses);
+    default <E> SubCriteria<E> sc(Class<E> entityClass, Collection<Criterion> clauses) {
+        return sc(entityClass, null, clauses);
     }
 
     /**
@@ -65,7 +65,7 @@ public interface SubCriteriaBuilder<T> {
      * @param <E>         实体类型
      * @return 子查询条件包装对象
      */
-    <E> SubCriteria<E> sub(Class<E> entityClass, String alias, Collection<Criterion> clauses);
+    <E> SubCriteria<E> sc(Class<E> entityClass, String alias, Collection<Criterion> clauses);
 
     /**
      * 创建子查询条件包装对象
@@ -74,7 +74,7 @@ public interface SubCriteriaBuilder<T> {
      * @param <E>         实体类型
      * @return 子查询条件包装对象
      */
-    <E> SubCriteria<E> sub(Class<E> entityClass, Consumer<SubCriteria<E>> consumer);
+    <E> SubCriteria<E> sc(Class<E> entityClass, Consumer<SubCriteria<E>> consumer);
 
     /**
      * 创建子查询条件包装对象
@@ -83,5 +83,5 @@ public interface SubCriteriaBuilder<T> {
      * @param <E>         实体类型
      * @return 子查询条件包装对象
      */
-    <E> SubCriteria<E> sub(Class<E> entityClass, BiConsumer<AbstractCriteriaWrapper<T>, SubCriteria<E>> consumer);
+    <E> SubCriteria<E> sc(Class<E> entityClass, BiConsumer<AbstractCriteriaWrapper<T>, SubCriteria<E>> consumer);
 }

@@ -6,6 +6,7 @@ import com.wvkity.mybatis.core.wrapper.aggreate.Function;
 import com.wvkity.mybatis.core.wrapper.basic.AbstractSortWrapper;
 import com.wvkity.mybatis.utils.ArrayUtil;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,9 +22,19 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
 
     /**
      * ASC排序
+     * @param property 属性
+     * @param <V>      属性值类型
+     * @return {@code this}
+     */
+    default <V> Chain asc(Property<T, V> property) {
+        return asc(convert(property));
+    }
+
+    /**
+     * ASC排序
      * @param properties 属性数组
      * @param <V>        属性值类型
-     * @return 当前对象
+     * @return {@code this}
      */
     @SuppressWarnings({"unchecked"})
     default <V> Chain asc(Property<T, V>... properties) {
@@ -32,8 +43,15 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
 
     /**
      * ASC排序
+     * @param property 属性
+     * @return {@code this}
+     */
+    Chain asc(String property);
+
+    /**
+     * ASC排序
      * @param properties 属性数组
-     * @return 当前对象
+     * @return {@code this}
      */
     default Chain asc(String... properties) {
         return asc(ArrayUtil.toList(properties));
@@ -42,14 +60,21 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
     /**
      * ASC排序
      * @param properties 属性集合
-     * @return 当前对象
+     * @return {@code this}
      */
     Chain asc(List<String> properties);
 
     /**
      * ASC排序
+     * @param column 字段
+     * @return {@code this}
+     */
+    Chain ascWith(String column);
+
+    /**
+     * ASC排序
      * @param columns 字段数组
-     * @return 当前对象
+     * @return {@code this}
      */
     default Chain ascWith(String... columns) {
         return ascWith(ArrayUtil.toList(columns));
@@ -58,7 +83,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
     /**
      * ASC排序
      * @param columns 字段集合
-     * @return 当前对象
+     * @return {@code this}
      */
     default Chain ascWith(List<String> columns) {
         return ascWithAlias(null, columns);
@@ -68,7 +93,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * ASC排序
      * @param alias   表别名
      * @param columns 字段数组
-     * @return 当前对象
+     * @return {@code this}
      */
     default Chain ascWithAlias(String alias, String... columns) {
         return ascWithAlias(alias, ArrayUtil.toList(columns));
@@ -78,21 +103,44 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * ASC排序
      * @param alias   表别名
      * @param columns 字段集合
-     * @return 当前对象
+     * @return {@code this}
      */
     Chain ascWithAlias(String alias, List<String> columns);
 
     /**
      * ASC排序
-     * @param functions 聚合函数数组
-     * @return 当前对象
+     * @param function 聚合函数
+     * @return {@code this}
      */
-    Chain asc(Function... functions);
+    Chain asc(Function function);
+
+    /**
+     * ASC排序
+     * @param functions 聚合函数数组
+     * @return {@code this}
+     */
+    default Chain asc(Function... functions) {
+        return asc(ArrayUtil.toList(functions));
+    }
+
+    /**
+     * ASC排序
+     * @param functions 聚合函数集合
+     * @return {@code this}
+     */
+    Chain asc(Collection<Function> functions);
+
+    /**
+     * ASC排序
+     * @param alias 聚合函数别名
+     * @return {@code this}
+     */
+    Chain funcAsc(String alias);
 
     /**
      * ASC排序
      * @param aliases 聚合函数别名数组
-     * @return 当前对象
+     * @return {@code this}
      */
     default Chain funcAsc(String... aliases) {
         return funcAsc(ArrayUtil.toList(aliases));
@@ -101,7 +149,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
     /**
      * ASC排序
      * @param aliases 聚合函数别名集合
-     * @return 当前对象
+     * @return {@code this}
      */
     Chain funcAsc(List<String> aliases);
 
@@ -110,7 +158,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param foreignAlias 连表对象别名
      * @param properties   属性数组
      * @param <V>          属性值类型
-     * @return 当前对象
+     * @return {@code this}
      */
     @SuppressWarnings({"unchecked"})
     <V> Chain foreignAsc(String foreignAlias, Property<T, V>... properties);
@@ -119,7 +167,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * ASC排序
      * @param foreignAlias 连表对象别名
      * @param properties   属性数组
-     * @return 当前对象
+     * @return {@code this}
      */
     default Chain foreignAsc(String foreignAlias, String... properties) {
         return foreignAsc(foreignAlias, ArrayUtil.toList(properties));
@@ -129,7 +177,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * ASC排序
      * @param foreignAlias 连表对象别名
      * @param properties   属性集合
-     * @return 当前对象
+     * @return {@code this}
      */
     Chain foreignAsc(String foreignAlias, List<String> properties);
     // endregion
@@ -138,9 +186,19 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
 
     /**
      * DESC排序
+     * @param property 属性
+     * @param <V>      属性值类型
+     * @return {@code this}
+     */
+    default <V> Chain desc(Property<T, V> property) {
+        return desc(convert(property));
+    }
+
+    /**
+     * DESC排序
      * @param properties 属性数组
      * @param <V>        属性值类型
-     * @return 当前对象
+     * @return {@code this}
      */
     @SuppressWarnings({"unchecked"})
     default <V> Chain desc(Property<T, V>... properties) {
@@ -149,8 +207,15 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
 
     /**
      * DESC排序
+     * @param property 属性
+     * @return {@code this}
+     */
+    Chain desc(String property);
+
+    /**
+     * DESC排序
      * @param properties 属性数组
-     * @return 当前对象
+     * @return {@code this}
      */
     default Chain desc(String... properties) {
         return desc(ArrayUtil.toList(properties));
@@ -159,14 +224,21 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
     /**
      * DESC排序
      * @param properties 属性集合
-     * @return 当前对象
+     * @return {@code this}
      */
     Chain desc(List<String> properties);
 
     /**
      * DESC排序
+     * @param column 字段
+     * @return {@code this}
+     */
+    Chain descWith(String column);
+
+    /**
+     * DESC排序
      * @param columns 字段数组
-     * @return 当前对象
+     * @return {@code this}
      */
     default Chain descWith(String... columns) {
         return descWith(ArrayUtil.toList(columns));
@@ -175,7 +247,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
     /**
      * DESC排序
      * @param columns 字段集合
-     * @return 当前对象
+     * @return {@code this}
      */
     default Chain descWith(List<String> columns) {
         return descWithAlias(null, columns);
@@ -185,7 +257,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * DESC排序
      * @param alias   表别名
      * @param columns 字段数组
-     * @return 当前对象
+     * @return {@code this}
      */
     default Chain descWithAlias(String alias, String... columns) {
         return descWithAlias(alias, ArrayUtil.toList(columns));
@@ -195,21 +267,44 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * DESC排序
      * @param alias   表别名
      * @param columns 字段集合
-     * @return 当前对象
+     * @return {@code this}
      */
     Chain descWithAlias(String alias, List<String> columns);
 
     /**
      * DESC排序
-     * @param functions 聚合函数数组
-     * @return 当前对象
+     * @param function 聚合函数
+     * @return {@code this}
      */
-    Chain desc(Function... functions);
+    Chain desc(Function function);
+
+    /**
+     * DESC排序
+     * @param functions 聚合函数数组
+     * @return {@code this}
+     */
+    default Chain desc(Function... functions) {
+        return desc(ArrayUtil.toList(functions));
+    }
+
+    /**
+     * DESC排序
+     * @param functions 聚合函数数组
+     * @return {@code this}
+     */
+    Chain desc(Collection<Function> functions);
+
+    /**
+     * DESC排序
+     * @param alias 聚合函数别名
+     * @return {@code this}
+     */
+    Chain funcDesc(String alias);
 
     /**
      * DESC排序
      * @param aliases 聚合函数别名数组
-     * @return 当前对象
+     * @return {@code this}
      */
     default Chain funcDesc(String... aliases) {
         return funcDesc(ArrayUtil.toList(aliases));
@@ -218,7 +313,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
     /**
      * DESC排序
      * @param aliases 聚合函数别名集合
-     * @return 当前对象
+     * @return {@code this}
      */
     Chain funcDesc(List<String> aliases);
 
@@ -227,7 +322,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * @param foreignAlias 连表对象别名
      * @param properties   属性数组
      * @param <V>          属性值类型
-     * @return 当前对象
+     * @return {@code this}
      */
     @SuppressWarnings({"unchecked"})
     <V> Chain foreignDesc(String foreignAlias, Property<T, V>... properties);
@@ -236,7 +331,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * DESC排序
      * @param foreignAlias 连表对象别名
      * @param properties   属性数组
-     * @return 当前对象
+     * @return {@code this}
      */
     default Chain foreignDesc(String foreignAlias, String... properties) {
         return foreignDesc(foreignAlias, ArrayUtil.toList(properties));
@@ -246,7 +341,7 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
      * DESC排序
      * @param foreignAlias 连表对象别名
      * @param properties   属性集合
-     * @return 当前对象
+     * @return {@code this}
      */
     Chain foreignDesc(String foreignAlias, List<String> properties);
     // endregion
@@ -254,23 +349,23 @@ public interface OrderWrapper<T, Chain extends OrderWrapper<T, Chain>> extends P
     /**
      * 添加排序
      * @param sort 排序对象
-     * @return 当前对象
+     * @return {@code this}
      */
     Chain sort(AbstractSortWrapper<?> sort);
 
     /**
      * 添加排序
      * @param sorts 排序对象数组
-     * @return 当前对象
+     * @return {@code this}
      */
-    default Chain sorts(AbstractSortWrapper<?>... sorts) {
-        return sorts(ArrayUtil.toList(sorts));
+    default Chain sort(AbstractSortWrapper<?>... sorts) {
+        return sort(ArrayUtil.toList(sorts));
     }
 
     /**
      * 添加排序
      * @param sorts 排序对象集合
-     * @return 当前对象
+     * @return {@code this}
      */
-    Chain sorts(List<AbstractSortWrapper<?>> sorts);
+    Chain sort(List<AbstractSortWrapper<?>> sorts);
 }

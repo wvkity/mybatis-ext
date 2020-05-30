@@ -6,6 +6,7 @@ import com.wvkity.mybatis.utils.ArrayUtil;
 import com.wvkity.mybatis.utils.CollectionUtil;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -44,11 +45,39 @@ public class FunctionSort extends AbstractSortWrapper<Function> {
 
     /**
      * ASC排序
+     * @param function 聚合函数
+     * @return 排序对象
+     */
+    public static FunctionSort asc(Function function) {
+        return sort(true, function);
+    }
+
+    /**
+     * ASC排序
      * @param functions 聚合函数
      * @return 排序对象
      */
     public static FunctionSort asc(Function... functions) {
         return asc(ArrayUtil.toList(functions));
+    }
+
+    /**
+     * ASC排序
+     * @param functions 聚合函数
+     * @return 排序对象
+     */
+    public static FunctionSort asc(List<Function> functions) {
+        return sort(true, functions);
+    }
+
+    /**
+     * ASC排序
+     * @param criteria 条件对象
+     * @param alias    聚合函数别名
+     * @return 排序对象
+     */
+    public static FunctionSort asc(Criteria<?> criteria, String alias) {
+        return sort(true, criteria.searchFunction(alias));
     }
 
     /**
@@ -75,16 +104,16 @@ public class FunctionSort extends AbstractSortWrapper<Function> {
     }
 
     /**
-     * ASC排序
-     * @param functions 聚合函数
+     * DESC排序
+     * @param function 聚合函数
      * @return 排序对象
      */
-    public static FunctionSort asc(List<Function> functions) {
-        return new FunctionSort(true, functions);
+    public static FunctionSort desc(Function function) {
+        return sort(false, function);
     }
 
     /**
-     * ASC排序
+     * DESC排序
      * @param functions 聚合函数
      * @return 排序对象
      */
@@ -93,12 +122,22 @@ public class FunctionSort extends AbstractSortWrapper<Function> {
     }
 
     /**
-     * ASC排序
+     * DESC排序
      * @param functions 聚合函数
      * @return 排序对象
      */
     public static FunctionSort desc(List<Function> functions) {
-        return new FunctionSort(false, functions);
+        return sort(false, functions);
+    }
+
+    /**
+     * DESC排序
+     * @param criteria 条件对象
+     * @param alias    聚合函数别名
+     * @return 排序对象
+     */
+    public static FunctionSort desc(Criteria<?> criteria, String alias) {
+        return sort(false, criteria.searchFunction(alias));
     }
 
     /**
@@ -124,4 +163,29 @@ public class FunctionSort extends AbstractSortWrapper<Function> {
         return null;
     }
 
+    /**
+     * 排序
+     * @param ascending 是否升序
+     * @param function  聚合函数对象
+     * @return {@link FunctionSort}
+     */
+    public static FunctionSort sort(boolean ascending, Function function) {
+        if (function == null) {
+            return null;
+        }
+        return new FunctionSort(ascending, Collections.singletonList(function));
+    }
+
+    /**
+     * 排序
+     * @param ascending 是否升序
+     * @param functions 聚合函数对象集合
+     * @return {@link FunctionSort}
+     */
+    public static FunctionSort sort(boolean ascending, Collection<Function> functions) {
+        if (functions == null || functions.isEmpty()) {
+            return null;
+        }
+        return new FunctionSort(ascending, functions);
+    }
 }

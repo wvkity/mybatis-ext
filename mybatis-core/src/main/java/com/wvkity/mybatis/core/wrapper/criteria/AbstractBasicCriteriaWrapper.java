@@ -1331,8 +1331,7 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
 
     // region add methods
 
-    @Override
-    public Chain add(Criterion criterion) {
+    protected Chain add(Criterion criterion) {
         if (criterion != null) {
             if (criterion.getCriteria() == null && !(criterion instanceof Pure)) {
                 criterion.criteria(this);
@@ -1344,6 +1343,16 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
 
     @Override
     public Chain where(Criterion... array) {
+        if (ArrayUtil.isEmpty(array)) {
+            return this.context;
+        }
+        int size = array.length;
+        if (size == 0) {
+            return add(array[0]);
+        }
+        if (size == 2) {
+            return add(array[0]).add(array[1]);
+        }
         return where(ArrayUtil.toList(array));
     }
 
@@ -1380,21 +1389,21 @@ abstract class AbstractBasicCriteriaWrapper<T, Chain extends AbstractBasicCriter
     // region sub criteria
 
     @Override
-    public <E> SubCriteria<E> sub(Class<E> entityClass, String alias, Collection<Criterion> clauses) {
+    public <E> SubCriteria<E> sc(Class<E> entityClass, String alias, Collection<Criterion> clauses) {
         return new SubCriteria<>(entityClass, alias, (AbstractQueryCriteriaWrapper<?>) this, clauses);
     }
 
     @Override
-    public <E> SubCriteria<E> sub(Class<E> entityClass, Consumer<SubCriteria<E>> consumer) {
-        SubCriteria<E> instance = sub(entityClass);
+    public <E> SubCriteria<E> sc(Class<E> entityClass, Consumer<SubCriteria<E>> consumer) {
+        SubCriteria<E> instance = sc(entityClass);
         consumer.accept(instance);
         return instance;
     }
 
     @Override
-    public <E> SubCriteria<E> sub(Class<E> entityClass,
-                                  BiConsumer<AbstractCriteriaWrapper<T>, SubCriteria<E>> consumer) {
-        SubCriteria<E> instance = sub(entityClass);
+    public <E> SubCriteria<E> sc(Class<E> entityClass,
+                                 BiConsumer<AbstractCriteriaWrapper<T>, SubCriteria<E>> consumer) {
+        SubCriteria<E> instance = sc(entityClass);
         consumer.accept(instance.getMaster(), instance);
         return instance;
     }

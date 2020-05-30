@@ -231,7 +231,7 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> excludes(Collection<String> properties) {
+    public AbstractQueryCriteriaWrapper<T> exclude(Collection<String> properties) {
         this.queryManager.excludes(properties);
         return this;
     }
@@ -243,7 +243,7 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> excludesWith(Collection<String> columns) {
+    public AbstractQueryCriteriaWrapper<T> excludeWith(Collection<String> columns) {
         this.queryManager.excludes(columns);
         return this;
     }
@@ -363,8 +363,18 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     // region order by
 
     @Override
+    public AbstractQueryCriteriaWrapper<T> asc(String property) {
+        return sort(Sort.asc(this, property));
+    }
+
+    @Override
     public AbstractQueryCriteriaWrapper<T> asc(List<String> properties) {
         return sort(Sort.asc(this, properties));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> ascWith(String column) {
+        return sort(DirectSort.asc(this, column));
     }
 
     @Override
@@ -373,8 +383,8 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> asc(Function... functions) {
-        return sort(FunctionSort.asc(functions));
+    public AbstractQueryCriteriaWrapper<T> funcAsc(String alias) {
+        return sort(FunctionSort.asc(this, alias));
     }
 
     @Override
@@ -394,8 +404,28 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
+    public AbstractQueryCriteriaWrapper<T> asc(Function function) {
+        return sort(FunctionSort.sort(true, function));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> asc(Collection<Function> functions) {
+        return sort(FunctionSort.sort(true, functions));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> desc(String property) {
+        return sort(Sort.desc(this, property));
+    }
+
+    @Override
     public AbstractQueryCriteriaWrapper<T> desc(List<String> properties) {
         return sort(Sort.desc(this, properties));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> descWith(String column) {
+        return sort(DirectSort.desc(this, column));
     }
 
     @Override
@@ -404,8 +434,8 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> desc(Function... functions) {
-        return sort(FunctionSort.desc(functions));
+    public AbstractQueryCriteriaWrapper<T> funcDesc(String alias) {
+        return sort(FunctionSort.desc(this, alias));
     }
 
     @Override
@@ -425,13 +455,23 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
+    public AbstractQueryCriteriaWrapper<T> desc(Function function) {
+        return sort(FunctionSort.sort(false, function));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> desc(Collection<Function> functions) {
+        return sort(FunctionSort.sort(false, functions));
+    }
+
+    @Override
     public AbstractQueryCriteriaWrapper<T> sort(AbstractSortWrapper<?> sort) {
         this.segmentManager.sort(sort);
         return this;
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> sorts(List<AbstractSortWrapper<?>> sorts) {
+    public AbstractQueryCriteriaWrapper<T> sort(List<AbstractSortWrapper<?>> sorts) {
         this.segmentManager.sorts(sorts);
         return this;
     }
@@ -445,14 +485,18 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
         return group(Group.group(this, property));
     }
 
-    @Override
-    public AbstractQueryCriteriaWrapper<T> group(AbstractGroupWrapper<?> group) {
-        this.segmentManager.group(group);
-        return this;
+    public AbstractQueryCriteriaWrapper<T> group(Collection<String> properties) {
+        return group(Group.group(this, properties));
     }
 
-    public AbstractQueryCriteriaWrapper<T> groups(Collection<String> properties) {
-        return group(Group.group(this, properties));
+    @Override
+    public AbstractQueryCriteriaWrapper<T> groupWith(String column) {
+        return group(DirectGroup.group(this, column));
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> groupWith(List<String> columns) {
+        return group(DirectGroup.group(this, columns));
     }
 
     @Override
@@ -472,7 +516,13 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> groups(List<AbstractGroupWrapper<?>> groups) {
+    public AbstractQueryCriteriaWrapper<T> group(AbstractGroupWrapper<?> group) {
+        this.segmentManager.group(group);
+        return this;
+    }
+
+    @Override
+    public AbstractQueryCriteriaWrapper<T> group(List<AbstractGroupWrapper<?>> groups) {
         this.segmentManager.groups(groups);
         return this;
     }
@@ -902,8 +952,8 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> havings(List<String> aliases) {
-        return this.havings(this.queryManager.searchFunctions(aliases));
+    public AbstractQueryCriteriaWrapper<T> having(List<String> aliases) {
+        return this.having(this.queryManager.searchFunctions(aliases));
     }
 
     @Override
@@ -913,7 +963,7 @@ public abstract class AbstractQueryCriteriaWrapper<T> extends AbstractCriteriaWr
     }
 
     @Override
-    public AbstractQueryCriteriaWrapper<T> havings(Collection<Function> functions) {
+    public AbstractQueryCriteriaWrapper<T> having(Collection<Function> functions) {
         this.segmentManager.havings(functions);
         return this;
     }

@@ -6,11 +6,11 @@ import com.wvkity.mybatis.core.wrapper.criteria.AbstractQueryCriteriaWrapper;
 import com.wvkity.mybatis.core.wrapper.criteria.Criteria;
 import com.wvkity.mybatis.core.wrapper.criteria.ForeignCriteria;
 import com.wvkity.mybatis.core.wrapper.utils.CriteriaUtil;
-import com.wvkity.mybatis.exception.MyBatisException;
 import com.wvkity.mybatis.utils.ArrayUtil;
 import com.wvkity.mybatis.utils.CollectionUtil;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -31,9 +31,6 @@ public class Sort extends AbstractSortWrapper<ColumnWrapper> {
      * @param ascending 排序方式(是否为ASC排序)
      */
     private Sort(Criteria<?> criteria, boolean ascending, Collection<ColumnWrapper> columns) {
-        if (criteria == null) {
-            throw new MyBatisException("The Criteria object cannot be empty");
-        }
         this.criteria = criteria;
         this.ascending = ascending;
         if (CollectionUtil.hasElement(columns)) {
@@ -55,6 +52,18 @@ public class Sort extends AbstractSortWrapper<ColumnWrapper> {
 
     /**
      * ASC排序
+     * @param criteria 查询对象
+     * @param property 属性
+     * @param <T>      泛型类型
+     * @param <V>      属性值类型
+     * @return 排序对象
+     */
+    public static <T, V> Sort asc(Criteria<T> criteria, Property<T, V> property) {
+        return sort(criteria, true, criteria.searchColumn(property));
+    }
+
+    /**
+     * ASC排序
      * @param criteria   查询对象
      * @param properties 属性
      * @param <T>        泛型类型
@@ -63,7 +72,17 @@ public class Sort extends AbstractSortWrapper<ColumnWrapper> {
      */
     @SafeVarargs
     public static <T, V> Sort asc(Criteria<T> criteria, Property<T, V>... properties) {
-        return new Sort(criteria, true, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
+        return sort(criteria, true, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
+    }
+
+    /**
+     * ASC排序
+     * @param criteria 查询对象
+     * @param property 属性
+     * @return 排序对象
+     */
+    public static Sort asc(Criteria<?> criteria, String property) {
+        return sort(criteria, true, criteria.searchColumn(property));
     }
 
     /**
@@ -83,7 +102,7 @@ public class Sort extends AbstractSortWrapper<ColumnWrapper> {
      * @return 排序对象
      */
     public static Sort asc(Criteria<?> criteria, List<String> properties) {
-        return new Sort(criteria, true, CriteriaUtil.propertyToColumn(criteria, distinct(properties)));
+        return sort(criteria, true, CriteriaUtil.propertyToColumn(criteria, distinct(properties)));
     }
 
     /**
@@ -110,7 +129,7 @@ public class Sort extends AbstractSortWrapper<ColumnWrapper> {
     public static <E, V> Sort asc(String alias, AbstractQueryCriteriaWrapper<?> master,
                                   Property<E, V>... properties) {
         Criteria<E> criteria = master.searchForeign(alias);
-        return new Sort(criteria, true, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
+        return sort(criteria, true, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }
 
     /**
@@ -126,6 +145,18 @@ public class Sort extends AbstractSortWrapper<ColumnWrapper> {
 
     /**
      * DESC排序
+     * @param criteria 查询对象
+     * @param property 属性
+     * @param <T>      泛型类型
+     * @param <V>      属性值类型
+     * @return 排序对象
+     */
+    public static <T, V> Sort desc(Criteria<T> criteria, Property<T, V> property) {
+        return sort(criteria, false, criteria.searchColumn(property));
+    }
+
+    /**
+     * DESC排序
      * @param criteria   查询对象
      * @param properties 属性
      * @param <T>        泛型类型
@@ -134,8 +165,19 @@ public class Sort extends AbstractSortWrapper<ColumnWrapper> {
      */
     @SafeVarargs
     public static <T, V> Sort desc(Criteria<T> criteria, Property<T, V>... properties) {
-        return new Sort(criteria, false, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
+        return sort(criteria, false, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }
+
+    /**
+     * DESC排序
+     * @param criteria 查询对象
+     * @param property 属性
+     * @return 排序对象
+     */
+    public static Sort desc(Criteria<?> criteria, String property) {
+        return sort(criteria, false, criteria.searchColumn(property));
+    }
+
 
     /**
      * DESC排序
@@ -154,7 +196,7 @@ public class Sort extends AbstractSortWrapper<ColumnWrapper> {
      * @return 排序对象
      */
     public static Sort desc(Criteria<?> criteria, List<String> properties) {
-        return new Sort(criteria, false, CriteriaUtil.propertyToColumn(criteria, distinct(properties)));
+        return sort(criteria, false, CriteriaUtil.propertyToColumn(criteria, distinct(properties)));
     }
 
     /**
@@ -170,7 +212,7 @@ public class Sort extends AbstractSortWrapper<ColumnWrapper> {
     public static <E, V> Sort desc(String alias, AbstractQueryCriteriaWrapper<E> master,
                                    Property<E, V>... properties) {
         ForeignCriteria<E> criteria = master.searchForeign(alias);
-        return new Sort(criteria, false, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
+        return sort(criteria, false, CriteriaUtil.lambdaToColumn(criteria, ArrayUtil.toList(properties)));
     }
 
     /**
@@ -195,4 +237,31 @@ public class Sort extends AbstractSortWrapper<ColumnWrapper> {
         return desc(master.searchForeign(alias), properties);
     }
 
+    /**
+     * 排序
+     * @param criteria  条件包装对象
+     * @param ascending 是否升序
+     * @param column    字段包装对象
+     * @return {@link Sort}
+     */
+    public static Sort sort(Criteria<?> criteria, boolean ascending, ColumnWrapper column) {
+        if (column == null) {
+            return null;
+        }
+        return new Sort(criteria, ascending, Collections.singletonList(column));
+    }
+
+    /**
+     * 排序
+     * @param criteria  条件包装对象
+     * @param ascending 是否升序
+     * @param columns   字段包装对象集合
+     * @return {@link Sort}
+     */
+    public static Sort sort(Criteria<?> criteria, boolean ascending, Collection<ColumnWrapper> columns) {
+        if (columns == null || columns.isEmpty()) {
+            return null;
+        }
+        return new Sort(criteria, ascending, columns);
+    }
 }

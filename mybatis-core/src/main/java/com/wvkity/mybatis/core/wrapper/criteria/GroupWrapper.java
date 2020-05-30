@@ -28,6 +28,17 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
 
     /**
      * 分组
+     * @param properties 属性数组
+     * @param <V>        属性值类型
+     * @return 当前对象
+     */
+    @SuppressWarnings({"unchecked"})
+    default <V> Chain group(Property<T, V>... properties) {
+        return group(convert(ArrayUtil.toList(properties)));
+    }
+
+    /**
+     * 分组
      * @param property 属性
      * @return 当前对象
      */
@@ -36,21 +47,10 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
     /**
      * 分组
      * @param properties 属性数组
-     * @param <V>        属性值类型
      * @return 当前对象
      */
-    @SuppressWarnings({"unchecked"})
-    default <V> Chain groups(Property<T, V>... properties) {
-        return groups(convert(ArrayUtil.toList(properties)));
-    }
-
-    /**
-     * 分组
-     * @param properties 属性数组
-     * @return 当前对象
-     */
-    default Chain groups(String... properties) {
-        return groups(ArrayUtil.toList(properties));
+    default Chain group(String... properties) {
+        return group(ArrayUtil.toList(properties));
     }
 
     /**
@@ -58,15 +58,22 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @param properties 属性集合
      * @return 当前对象
      */
-    Chain groups(Collection<String> properties);
+    Chain group(Collection<String> properties);
+
+    /**
+     * 分组
+     * @param column 字段
+     * @return 当前对象
+     */
+    Chain groupWith(String column);
 
     /**
      * 分组
      * @param columns 字段数组
      * @return 当前对象
      */
-    default Chain directGroup(String... columns) {
-        return directGroup(ArrayUtil.toList(columns));
+    default Chain groupWith(String... columns) {
+        return groupWith(ArrayUtil.toList(columns));
     }
 
     /**
@@ -74,9 +81,7 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @param columns 字段集合
      * @return 当前对象
      */
-    default Chain directGroup(List<String> columns) {
-        return groupWithAlias(null, columns);
-    }
+    Chain groupWith(List<String> columns);
 
     /**
      * 分组
@@ -126,7 +131,7 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
 
     /**
      * 添加分组
-     * @param group 分组对象
+     * @param group 分组对象集合
      * @return 当前对象
      */
     Chain group(AbstractGroupWrapper<?> group);
@@ -136,8 +141,8 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @param groups 分组对象数组
      * @return 当前对象
      */
-    default Chain groups(AbstractGroupWrapper<?>... groups) {
-        return groups(ArrayUtil.toList(groups));
+    default Chain group(AbstractGroupWrapper<?>... groups) {
+        return group(ArrayUtil.toList(groups));
     }
 
     /**
@@ -145,5 +150,5 @@ public interface GroupWrapper<T, Chain extends GroupWrapper<T, Chain>> extends P
      * @param groups 分组对象集合
      * @return 当前对象
      */
-    Chain groups(List<AbstractGroupWrapper<?>> groups);
+    Chain group(List<AbstractGroupWrapper<?>> groups);
 }

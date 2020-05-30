@@ -26,8 +26,8 @@ public interface HavingWrapper<T, Chain extends HavingWrapper<T, Chain>> {
      * @param aliases 聚合函数别名数组
      * @return {@code this}
      */
-    default Chain havings(String... aliases) {
-        return havings(ArrayUtil.toList(aliases));
+    default Chain having(String... aliases) {
+        return having(ArrayUtil.toList(aliases));
     }
 
     /**
@@ -35,7 +35,7 @@ public interface HavingWrapper<T, Chain extends HavingWrapper<T, Chain>> {
      * @param aliases 聚合函数别名集合
      * @return {@code this}
      */
-    Chain havings(List<String> aliases);
+    Chain having(List<String> aliases);
 
     /**
      * 聚合函数筛选条件
@@ -49,8 +49,8 @@ public interface HavingWrapper<T, Chain extends HavingWrapper<T, Chain>> {
      * @param functions 聚合函数对象集合
      * @return {@code this}
      */
-    default Chain havings(Function... functions) {
-        return havings(ArrayUtil.toList(functions));
+    default Chain having(Function... functions) {
+        return having(ArrayUtil.toList(functions));
     }
 
     /**
@@ -58,5 +58,5 @@ public interface HavingWrapper<T, Chain extends HavingWrapper<T, Chain>> {
      * @param functions 聚合函数对象集合
      * @return {@code this}
      */
-    Chain havings(Collection<Function> functions);
+    Chain having(Collection<Function> functions);
 }

@@ -52,13 +52,6 @@ public interface Criteria<T> extends Search<T>, PlaceholderConverter, PropertyCo
     }
 
     /**
-     * 添加条件
-     * @param criterion 条件对象
-     * @return {@code this}
-     */
-    Criteria<T> add(Criterion criterion);
-
-    /**
      * 添加多个条件
      * @param array 条件对象数组
      * @return {@code this}
