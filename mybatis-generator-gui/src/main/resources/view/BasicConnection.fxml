@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/8.0.121"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.wvkity.mybatis.code.make.view.BasicConnectionView">
+    <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="0.0">
+        <GridPane alignment="CENTER_RIGHT" prefHeight="400.0" prefWidth="720.0">
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="244.0" minWidth="114.0"
+                                   prefWidth="140.0"/>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="225.0" minWidth="36.0"
+                                   prefWidth="86.0"/>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="477.0" minWidth="101.0"
+                                   prefWidth="147.0"/>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="100.0" minWidth="16.0"
+                                   prefWidth="82.0"/>
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="300.0" minWidth="16.0"
+                                   prefWidth="272.0"/>
+                <ColumnConstraints/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="34.0" prefHeight="34.0"/>
+                <RowConstraints maxHeight="34.0" prefHeight="34.0"/>
+                <RowConstraints maxHeight="34.0" prefHeight="34.0"/>
+                <RowConstraints maxHeight="34.0" prefHeight="34.0"/>
+                <RowConstraints maxHeight="34.0" prefHeight="34.0"/>
+                <RowConstraints maxHeight="34.0" prefHeight="34.0"/>
+                <RowConstraints maxHeight="34.0" prefHeight="34.0"/>
+                <RowConstraints maxHeight="34.0" prefHeight="34.0"/>
+            </rowConstraints>
+            <Label text="保存名称(选填):"/>
+            <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.valignment="CENTER">
+                <TextField fx:id="connectName" text="\@localhost" prefHeight="27.0" prefWidth="391.0"
+                           GridPane.columnIndex="1">
+                    <GridPane.margin>
+                        <Insets left="5.0"/>
+                    </GridPane.margin>
+                </TextField>
+                <GridPane.margin>
+                    <Insets left="5.0" right="5.0"/>
+                </GridPane.margin>
+            </HBox>
+            <Label text="数据库类型:" GridPane.rowIndex="1"/>
+            <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="1"
+                  GridPane.valignment="CENTER">
+                <ComboBox fx:id="databaseType" prefHeight="27.0" prefWidth="220.0">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="MYSQL"/>
+                            <String fx:value="MYSQL8"/>
+                            <String fx:value="ORACLE"/>
+                            <String fx:value="POSTGRESQL"/>
+                            <String fx:value="MSSQL"/>
+                            <String fx:value="SQLITE"/>
+                        </FXCollections>
+                    </items>
+                    <value>
+                        <String fx:value="MYSQL"/>
+                    </value>
+                </ComboBox>
+                <GridPane.margin>
+                    <Insets left="5.0" right="5.0"/>
+                </GridPane.margin>
+            </HBox>
+            <Label text="主机名(Host):" GridPane.rowIndex="2"/>
+            <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2"
+                  GridPane.valignment="CENTER">
+                <TextField fx:id="host" prefHeight="27.0" prefWidth="220.0" text="localhost"
+                           GridPane.columnIndex="1">
+                    <GridPane.margin>
+                        <Insets left="5.0"/>
+                    </GridPane.margin>
+                </TextField>
+                <GridPane.margin>
+                    <Insets left="5.0" right="5.0"/>
+                </GridPane.margin>
+            </HBox>
+            <Label text="端口(Port):" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+            <HBox alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                <TextField fx:id="port" text="3306" prefHeight="27.0" prefWidth="80.0" GridPane.columnIndex="1">
+                    <GridPane.margin>
+                        <Insets left="5.0"/>
+                    </GridPane.margin>
+                </TextField>
+                <GridPane.margin>
+                    <Insets left="5.0" right="5.0"/>
+                </GridPane.margin>
+            </HBox>
+            <Label text="用户名:" GridPane.rowIndex="3"/>
+            <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="3"
+                  GridPane.valignment="CENTER">
+                <TextField fx:id="userName" prefHeight="27.0" prefWidth="220.0" GridPane.columnIndex="1">
+                    <GridPane.margin>
+                        <Insets left="5.0"/>
+                    </GridPane.margin>
+                </TextField>
+                <GridPane.margin>
+                    <Insets left="5.0" right="5.0"/>
+                </GridPane.margin>
+            </HBox>
+            <Label text="密码:" GridPane.rowIndex="4"/>
+            <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="4"
+                  GridPane.valignment="CENTER">
+                <PasswordField fx:id="password" prefHeight="27.0" prefWidth="220.0" GridPane.columnIndex="1">
+                    <GridPane.margin>
+                        <Insets left="5.0"/>
+                    </GridPane.margin>
+                </PasswordField>
+                <GridPane.margin>
+                    <Insets left="5.0" right="5.0"/>
+                </GridPane.margin>
+            </HBox>
+            <Label text="编码:" GridPane.rowIndex="5"/>
+            <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="5"
+                  GridPane.valignment="CENTER">
+                <ComboBox fx:id="encoding" prefHeight="27.0" prefWidth="220.0">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="utf8mb4"/>
+                            <String fx:value="utf8"/>
+                            <String fx:value="gbk"/>
+                            <String fx:value="gb2312"/>
+                        </FXCollections>
+                    </items>
+                    <value>
+                        <String fx:value="utf8"/>
+                    </value>
+                </ComboBox>
+                <GridPane.margin>
+                    <Insets left="5.0" right="5.0"/>
+                </GridPane.margin>
+            </HBox>
+            <Label text="数据库(Schema):" GridPane.rowIndex="6"/>
+            <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="6"
+                  GridPane.valignment="CENTER">
+                <TextField fx:id="schema" prefHeight="27.0" prefWidth="391.0" GridPane.columnIndex="1">
+                    <GridPane.margin>
+                        <Insets left="5.0"/>
+                    </GridPane.margin>
+                </TextField>
+                <GridPane.margin>
+                    <Insets left="5.0" right="5.0"/>
+                </GridPane.margin>
+            </HBox>
+            <Label text="Connection URL:" GridPane.rowIndex="7"/>
+            <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="7"
+                  GridPane.valignment="CENTER">
+                <TextField fx:id="driver" prefHeight="27.0" prefWidth="391.0" GridPane.columnIndex="1">
+                    <GridPane.margin>
+                        <Insets left="5.0"/>
+                    </GridPane.margin>
+                </TextField>
+                <GridPane.margin>
+                    <Insets left="5.0" right="5.0"/>
+                </GridPane.margin>
+            </HBox>
+        </GridPane>
+    </VBox>
+</AnchorPane>

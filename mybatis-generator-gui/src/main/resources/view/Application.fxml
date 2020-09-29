@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TreeView?>
+<BorderPane prefHeight="680.0" prefWidth="1140.0" stylesheets="@../style/style.css"
+            xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.wvkity.mybatis.code.make.view.MainWindowView">
+    <!-- Top panel S -->
+    <top>
+        <VBox>
+            <ToolBar minHeight="70.0" prefHeight="81.0" prefWidth="-Infinity" BorderPane.alignment="CENTER">
+                <!-- Database connection label S -->
+                <Label fx:id="connectionLabel" contentDisplay="TOP" text="数据库连接" textAlignment="CENTER">
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <padding>
+                        <Insets left="10.0" right="10.0"/>
+                    </padding>
+                </Label>
+                <!-- Table entity mapping configuration label S -->
+                <Label fx:id="mappingConfigLabel" contentDisplay="TOP" text="配置">
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                    <padding>
+                        <Insets left="10.0" right="10.0"/>
+                    </padding>
+                </Label>
+            </ToolBar>
+        </VBox>
+    </top>
+    <!-- Center panel S -->
+    <center>
+        <SplitPane dividerPositions="0.215">
+            <!-- Database connection panel S -->
+            <AnchorPane maxWidth="540.0" minWidth="200.0" prefHeight="600.0" prefWidth="240.0">
+                <TreeView fx:id="databaseTreeView" layoutX="-14.0" maxWidth="0.0" prefHeight="600.0" prefWidth="245.0"
+                          style="-fx-font-size: 14px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+            </AnchorPane>
+            <AnchorPane minWidth="400.0" prefHeight="600.0">
+            </AnchorPane>
+        </SplitPane>
+    </center>
+</BorderPane>

@@ -16,7 +16,7 @@ public class DateTimeProviderProxy implements InvocationHandler {
     /**
      * 目标对象
      */
-    private AbstractProvider target;
+    private final AbstractProvider target;
 
     /**
      * 构造方法

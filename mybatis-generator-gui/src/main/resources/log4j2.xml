@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF">
+    <properties>
+        <!-- 日志根目录 -->
+        <Property name="LOG_HOME">${sys:user.home}/.mybatis_generator/logs</Property>
+        <!-- 日志文件名 -->
+        <Property name="LOG_FILE_NAME">mybatis-generator-gui</Property>
+        <!-- 日志路径 -->
+        <Property name="LOG_DIR">${LOG_HOME}/${LOG_FILE_NAME}/${date:yyyy-MM}</Property>
+        <Property name="PID">????</Property>
+        <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
+        <Property name="LOG_LEVEL_PATTERN">%5p</Property>
+        <Property name="LOG_DATE_FORMAT_PATTERN">yyyy-MM-dd HH:mm:ss.SSS</Property>
+        <!-- 日志格式 -->
+        <Property name="CONSOLE_LOG_PATTERN">%style{%d{${LOG_DATE_FORMAT_PATTERN}}}{bright,white} %highlight{%-5level} %style{[PID:${sys:PID}]}{cyan} [%style{%t}{bright,blue}] [%style{%class{36}}{bright,yellow}:%style{%M}{bright,green} %style{%L}{bright,yellow}] : %msg%n%style{%throwable}{red}</Property>
+        <Property name="ERROR_LOG_PATTERN">%d{${LOG_DATE_FORMAT_PATTERN}} %-5level [PID:${sys:PID}]{cyan} [%t] [%class{36}:%M %L] : %msg%n</Property>
+        <!-- 日志大小开始割分 -->
+        <Property name="LOG_FILE_SIZE" value="50 MB"/>
+        <!-- 日志级别 -->
+        <Property name="INFO_LEVEL" value="info"/>
+        <Property name="ERROR_LEVEL" value="error"/>
+    </properties>
+    <appenders>
+        <!-- 控制台输出 -->
+        <Console name="CONSOLE" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${sys:CONSOLE_LOG_PATTERN}" disableAnsi="false" noConsoleNoAnsi="false"/>
+        </Console>
+        <!-- 每日文件 -->
+        <RollingFile name="ERROR"
+                     fileName="${sys:LOG_DIR}/${LOG_FILE_NAME}-error.log"
+                     filePattern="${sys:LOG_DIR}/${LOG_FILE_NAME}-error-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${sys:ERROR_LOG_PATTERN}"/>
+            <ThresholdFilter level="${sys:ERROR_LEVEL}" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                <SizeBasedTriggeringPolicy size="${sys:LOG_FILE_SIZE}"/>
+            </Policies>
+        </RollingFile>
+    </appenders>
+    <loggers>
+        <!-- SQL输出 -->
+        <!--<logger name="com.wkit.lost.mybatis" level="${consoleLevel}" includeLocation="true" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFile"/>
+        </logger>-->
+        <!-- 同步 -->
+        <!--<Root level="${consoleLevel}" includeLocation="true">
+            <appender-ref ref="Console" />
+            <appender-ref ref="RollingFile" />
+        </Root>-->
+        <!-- 异步 -->
+        <AsyncRoot level="${INFO_LEVEL}" includeLocation="true">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="ERROR"/>
+        </AsyncRoot>
+    </loggers>
+</configuration>

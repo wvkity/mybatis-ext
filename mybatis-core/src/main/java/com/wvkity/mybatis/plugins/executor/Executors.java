@@ -21,7 +21,7 @@ import java.util.Optional;
  */
 public abstract class Executors {
 
-    private static Field additionalParametersField;
+    private static final Field additionalParametersField;
 
     static {
         try {

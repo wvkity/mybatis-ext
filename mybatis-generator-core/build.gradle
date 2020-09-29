@@ -1,0 +1,10 @@
+dependencies {
+    api "javax.persistence:javax.persistence-api:2.2"
+    api "commons-io:commons-io:2.6"
+    api "commons-beanutils:commons-beanutils:1.9.4"
+    api "org.apache.commons:commons-lang3:3.9"
+    api "org.freemarker:freemarker:2.3.30"
+    api "org.apache.logging.log4j:log4j-core:2.12.1"
+    api "io.springfox:springfox-swagger2:2.10.5"
+    api "${lib.fastjson}"
+}

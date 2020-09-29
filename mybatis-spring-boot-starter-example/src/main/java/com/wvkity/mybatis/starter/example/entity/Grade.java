@@ -31,7 +31,7 @@ public class Grade implements Serializable {
     /**
      * 主键
      */
-    @Identity
+    @Identity(useJdbc = true)
     private Long id;
 
     /**

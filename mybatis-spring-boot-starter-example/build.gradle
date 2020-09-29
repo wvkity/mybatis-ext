@@ -6,6 +6,8 @@ dependencies {
     implementation "${lib.inject}"
     implementation "${lib.aspect}"
     implementation "${lib.fastjson}"
+    implementation "${lib.log4j2}"
+    testImplementation "${lib.log4j2}"
     //implementation "druid"]
     implementation "com.zaxxer:HikariCP:3.3.1"
     implementation "mysql:mysql-connector-java:8.0.15"
